@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hovee_attendence/controllers/auth_controllers.dart';
+import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/view/splash_screen.dart';
 import 'package:get/get.dart';
+
+
+
+class MyBindings extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<SplashController>(() => SplashController());
+    Get.lazyPut<AuthControllers>(() => AuthControllers());
+  }
+}
 
 void main() {
     WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +32,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+        initialBinding: MyBindings(),
       title: 'Attendence',
       debugShowCheckedModeBanner: false,
   

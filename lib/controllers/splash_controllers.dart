@@ -1,5 +1,8 @@
 // controllers/splash_controller.dart
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logger/logger.dart';
@@ -10,14 +13,33 @@ import 'package:logger/logger.dart';
 
 class SplashController extends GetxController {
   var showSecondImage = false.obs;
+    var appConfig = AppConfig().obs;
+
 
   @override
   void onInit() {
     super.onInit();
+ 
     Future.delayed(const Duration(seconds: 1), () {
       showSecondImage.value = true;
     });
-    checkUserLoggedIn();
+    fetchAppConfig();
+  
+  }
+
+    Future<void> fetchAppConfig() async {
+    try {
+      var response = await WebService.fetchAppConfig();
+      if (response != null) {
+        appConfig.value = response;
+          checkUserLoggedIn();
+        Logger().i('AppConfig loaded successfully');
+      } else {
+        Logger().e('Failed to load AppConfig');
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 
   Future<void> checkUserLoggedIn() async {
@@ -28,6 +50,7 @@ class SplashController extends GetxController {
         seconds: 2
       ));
         Get.off(() => const LoginSignUp());
+
       
 
       // if (token != null && token.trim().isNotEmpty) {
