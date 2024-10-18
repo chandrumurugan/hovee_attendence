@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
+import 'package:hovee_attendence/view/dashBoard.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatelessWidget {
@@ -267,17 +268,12 @@ class OtpScreen extends StatelessWidget {
                                                 "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ",
                                             btnName: 'Ok',
                                             onTap: () {
-                                              // Navigator.pushReplacement(
-                                              //     context,
-                                              //     MaterialPageRoute(
-                                              //         builder: (context) => const AccountSetup()));
-                                              Get.snackbar("Development",
-                                                  "Developmewnt is in progreess");
 
-                                              // Navigator.pushReplacement(
-                                              //     context,
-                                              //     MaterialPageRoute(
-                                              //         builder: (context) => const RoleSelection()));
+                                        Get.offAll(()=>DashBoard());
+                                              // Get.snackbar("Development",
+                                              //     "Developmewnt is in progreess");
+
+                                       
                                             },
                                           );
                                         },
@@ -320,22 +316,7 @@ class OtpScreen extends StatelessWidget {
                                               ),
                                             );
                                     }),
-                                    // child: _isLoading1
-                                    //     ? const ButtonLoader()
-                                    // : const Center(
-                                    //     child: Text(
-                                    //       'Verify Code',
-                                    //       style:
-                                    //           TextStyle(
-                                    //         fontSize: 16,
-                                    //         fontWeight:
-                                    //             FontWeight
-                                    //                 .w600,
-                                    //         color: Colors
-                                    //             .white,
-                                    //       ),
-                                    //     ),
-                                    //   ),
+                            
                                   ),
                                 ),
                                 Text(

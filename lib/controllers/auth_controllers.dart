@@ -155,9 +155,12 @@ class AuthControllers extends GetxController
     if (validateOtp()) {
       isLoading.value = true;
       try {
+        // Logger().i("moving to otp ===>$");
         var response = await WebService.otp(otpController.text,
+        currentTabIndex.value == 0 ? loginResponse.value.accountVerificationToken! :
             registerResponse.value.data!.accountVerificationToken!);
         if (response != null) {
+          Logger().i(response.data);
           otpResponse.value = response!;
           box.write('Token', response.token);
 

@@ -1,0 +1,346 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hovee_attendence/components/tutorHomeComponents.dart';
+import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
+
+class TutorHome extends StatelessWidget {
+   TutorHome({super.key});
+   final TutorHomeController controller = Get.put(TutorHomeController());
+
+  @override
+  Widget build(BuildContext context) {
+ 
+    return  Scaffold(
+        key: controller.tutorScaffoldKey,
+
+      appBar: AppBar(
+            automaticallyImplyLeading: false,
+        elevation: 5,
+        shadowColor: Colors.grey.shade100,
+        title:  Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+             mainAxisSize: MainAxisSize.min,
+             children: [
+                 InkWell(
+                  onTap: () {
+                  controller.tutorScaffoldKey.currentState!.openDrawer();
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const SideMenu()));
+                  },
+                  child: Image.asset(
+                    'assets/appbar/Group 2322.png',
+                    color: AppConstants.primaryColor,
+                  ),
+                ),
+                const SizedBox(
+                  width: 30,
+                ),
+                SvgPicture.asset(
+                  'assets/appbar/hovee_attendance_app_icon_.svg',
+                  height: 40,
+                ),
+                Image.asset(
+                  'assets/appConstantImg/colorlogoword.png',
+                  height: 30,
+                ),
+             ],
+             
+
+
+          ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey.shade200),
+              child: Row(
+                // mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Image.asset(
+                    'assets/appbar/bell 5.png',
+                    color: Colors.black.withOpacity(0.4),
+                    height: 30,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => const ChatScreen()));
+                    },
+                    child: Icon(
+                      Icons.message,
+                      color: Colors.black.withOpacity(0.4),
+                    ),
+                  )
+                ],
+              ),
+            ),
+        ],
+        ),
+                centerTitle: false,
+        surfaceTintColor: Colors.white,
+        backgroundColor: Colors.white,
+
+      ),
+     
+     
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Padding(  padding: const EdgeInsets.all(10.0),
+            child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [ 
+                     const HomePageHeader(
+                  title: 'Attendance Monitoring',
+                  userType: "Tutor",
+                ),
+                SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.18,
+                ),
+                    Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Text(
+                    'Attendance Report',
+                    style: GoogleFonts.nunito(
+                        fontSize: 18, fontWeight: FontWeight.w700),
+                  ),
+                ),
+                  const ChartApp(),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  ' My Listings',
+                  style: GoogleFonts.nunito(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                 GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio: 1.0,
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10 // Number of columns
+                      ),
+                  itemBuilder: (context, int index) {
+                      final item = controller.monitor[index];
+                    return InkWell(
+                      onTap: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => _widgets[index]));
+                      },
+                      child: Card(
+                        elevation: 10,
+                        shadowColor: Colors.grey,
+                        surfaceTintColor: Colors.white,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 18),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: item['color']),
+                                child: Image.asset(
+                                  item['image'],
+                                  color: Colors.white,
+                                  height: 30,
+                                ),
+                              ),
+                              Text(item['title'])
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: controller.monitor.length,
+                ),
+
+
+
+
+
+               ],
+
+            ),
+            
+            ),
+                   Positioned(
+              left: 20,
+              right: 20,
+              top: MediaQuery.sizeOf(context).height * 0.16,
+              child: const LineChartSample()),
+
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+class HomePageHeader extends StatelessWidget {
+  @override
+  const HomePageHeader(
+      {super.key, required this.title, required this.userType});
+  final String title;
+  final String userType;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.fromLTRB(20, 5, 20, 40),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(
+                'assets/tutorHomeImg/Homepage_bg_banner (1).png',
+              )),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          gradient: LinearGradient(
+            colors: [Color(0xFFC13584), Color(0xFF833AB4)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const CircleAvatar(
+                          radius: 25,
+                          backgroundImage:
+                              AssetImage('assets/tutorHomeImg/Rectangle 18373.png'),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text('Jessica',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 24.0,
+                              color: Colors.white,
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text("${userType}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 20.0,
+                              color: Colors.amber,
+                            )),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 3),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.green),
+                          child: Row(
+                            children: [
+                              const Text('4.2',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 10.0,
+                                    color: Colors.white,
+                                  )),
+                              Image.asset('assets/tutorHomeImg/star 1.png')
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          height: 15,
+                          width: 1,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text('Hov ID : TS90013435267',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 13.0,
+                              color: Colors.white,
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+              child: Text(
+                title,
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        ));
+  }
+}
+
+
+
