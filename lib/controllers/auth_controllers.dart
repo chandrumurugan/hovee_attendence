@@ -6,9 +6,12 @@ import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/loginSignup/otp_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:get_storage/get_storage.dart';
 
 class AuthControllers extends GetxController
     with GetSingleTickerProviderStateMixin {
+  final box = GetStorage();
+
   late TabController tabController;
   var currentTabIndex = 0.obs;
   //login
@@ -93,10 +96,10 @@ class AuthControllers extends GetxController
     }
     return true;
   }
-    bool validateOtp() {
+
+  bool validateOtp() {
     if (otpController.text.isEmpty) {
-      Get.snackbar(
-          'Validation Error', 'Otp cannot be empty.');
+      Get.snackbar('Validation Error', 'Otp cannot be empty.');
       return false;
     }
     return true;
@@ -113,7 +116,7 @@ class AuthControllers extends GetxController
           Get.to(() => OtpScreen());
         } else {
           Logger().e('Failed to load AppConfig');
-           isLoading.value = false;
+          isLoading.value = false;
         }
       } catch (e) {
         Logger().e(e);
@@ -137,10 +140,10 @@ class AuthControllers extends GetxController
         if (response != null) {
           registerResponse.value = response;
           isLoading.value = false;
-          Get.to(() =>  OtpScreen());
+          Get.to(() => OtpScreen());
         } else {
           Logger().e('Failed to load AppConfig');
-           isLoading.value = false;
+          isLoading.value = false;
         }
       } catch (e) {
         print(e);
@@ -148,31 +151,29 @@ class AuthControllers extends GetxController
     }
   }
 
-  Future<int?> otp()async{
-     if (validateOtp()){
-        isLoading.value = true;
-        try {
-          var response = await WebService.otp(otpController.text, registerResponse.value.data!.accountVerificationToken!);
-            if (response != null) {
-              otpResponse.value = response!;
-            isLoading.value = false;   
-            return response.statusCode;
-            }else{
-                    isLoading.value = false;   
-                    return null;
-            }
-       
-          //    Get.snackbar(
-          // '', response.message!);
+  Future<int?> otp() async {
+    if (validateOtp()) {
+      isLoading.value = true;
+      try {
+        var response = await WebService.otp(otpController.text,
+            registerResponse.value.data!.accountVerificationToken!);
+        if (response != null) {
+          otpResponse.value = response!;
+          box.write('Token', response.token);
 
-
-        } catch (e) {
-           print(e); 
+          isLoading.value = false;
+          return response.statusCode;
+        } else {
+          isLoading.value = false;
           return null;
-         
         }
 
-     } 
-
+        //    Get.snackbar(
+        // '', response.message!);
+      } catch (e) {
+        print(e);
+        return null;
+      }
+    }
   }
 }
