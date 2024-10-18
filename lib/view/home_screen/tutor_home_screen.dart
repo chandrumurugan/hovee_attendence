@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
+import 'package:hovee_attendence/view/batch_screen.dart';
 
 class TutorHome extends StatelessWidget {
    TutorHome({super.key});
@@ -146,10 +147,7 @@ class TutorHome extends StatelessWidget {
                       final item = controller.monitor[index];
                     return InkWell(
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => _widgets[index]));
+                        Get.to(()=>TutorBatchList());
                       },
                       child: Card(
                         elevation: 10,

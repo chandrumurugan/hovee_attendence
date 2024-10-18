@@ -1,6 +1,10 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/config/appConfig.dart';
+import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/getCouseList_model.dart';
+import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
@@ -125,6 +129,75 @@ class WebService {
     } catch (e) {
       print("Error in fetching login: $e");
       return null;
+    }
+  }
+
+  static Future<AddBatchDataModel?> addBatch(Map<String, dynamic> batchData) async {
+    final url = Uri.parse('$baseUrl/batch/addBatch'); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+  // Retrieve the token from storage
+  final token = box.read('Token') ?? '';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+           'Authorization': 'Bearer$token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return AddBatchDataModel.fromJson(json.decode(response.body));
+      } else {
+        print('Failed to add batch: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error adding batch: $e');
+      return null;
+    }
+  }
+  
+
+   static Future<getBatchListModel> fetchBatchList() async {
+    final url = Uri.parse('$baseUrl/batch/getBatchList');
+    final box = GetStorage(); // Get an instance of GetStorage
+  // Retrieve the token from storage
+  final token = box.read('Token') ?? '';
+  print(token);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return getBatchListModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load batch list');
+    }
+  }
+
+  static Future<GetCourseListModel> fetchCourseList() async {
+     final url = Uri.parse('$baseUrl/course/getCourse');
+      final box = GetStorage(); // Get an instance of GetStorage
+  // Retrieve the token from storage
+  final token = box.read('Token') ?? '';
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return GetCourseListModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load course list');
     }
   }
 }
