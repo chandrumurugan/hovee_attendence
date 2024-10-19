@@ -40,7 +40,7 @@ class CommonDropdownInputField extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: 300, // Adjust height as needed
+          height: 200, // Adjust height as needed
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [

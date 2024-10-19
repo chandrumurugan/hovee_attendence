@@ -16,7 +16,7 @@ class ModalService {
 
           // Return a ListView of ID Proofs with Radio Buttons
           return SizedBox(
-            height: 300, // Set a fixed height for the modal sheet
+            height: 250, // Set a fixed height for the modal sheet
             child: ListView.builder(
               itemCount: idProofs.length,
               itemBuilder: (context, index) {

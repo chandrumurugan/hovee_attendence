@@ -38,104 +38,88 @@ class CustomDialogBox extends StatefulWidget {
 class _CustomDialogBoxState extends State<CustomDialogBox> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.topCenter,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          height: MediaQuery.sizeOf(context).height * 0.28,
-          width: MediaQuery.sizeOf(context).width * 0.8,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 100,
+      ),
+      child: SizedBox(
+         width: MediaQuery.sizeOf(context).width * 1,
+        child: Dialog(
+           backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.topCenter,
             children: [
-              const SizedBox(
-                height: 25,
-              ),
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                height: MediaQuery.sizeOf(context).height * 0.28,
+                width: MediaQuery.sizeOf(context).width * 0.8,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextSpan(
-                      text: " ${widget.title1}",
-                      style: GoogleFonts.nunito(
-                          color: Colors.black,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w400),
+                    const SizedBox(
+                      height: 25,
                     ),
-                    TextSpan(
-                      text: " ${widget.title2}",
-                      style: GoogleFonts.nunito(
-                          color: widget.color,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              // Text(
-              //   widget.subtitle,
-              //   textAlign: TextAlign.center,
-              //   style: GoogleFonts.nunito(
-              //       color: Colors.grey.shade600,
-              //       fontSize: 14,
-              //       fontWeight: FontWeight.w400),
-              // ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: !widget.singleBtn
-                    ? MainAxisAlignment.spaceEvenly
-                    : MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: widget.onTap,
-                    child: Container(
-                      width: widget.singleBtn
-                          ? MediaQuery.sizeOf(context).width * 0.35
-                          : MediaQuery.sizeOf(context).width * 0.30,
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                         gradient: LinearGradient(
-                                  colors: [
-                                    widget.color,
-                                    widget.color1 ??  widget.color,
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Center(
-                        child: Text(
-                          widget.btnName,
-                          style: GoogleFonts.nunito(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20),
-                        ),
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: " ${widget.title1}",
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          TextSpan(
+                            text: " ${widget.title2}",
+                            style: GoogleFonts.nunito(
+                                color: widget.color,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  !widget.singleBtn
-                      ? InkWell(
-                          onTap: widget.onTap2!,
+                    const SizedBox(height: 10),
+                    // Text(
+                    //   widget.subtitle,
+                    //   textAlign: TextAlign.center,
+                    //   style: GoogleFonts.nunito(
+                    //       color: Colors.grey.shade600,
+                    //       fontSize: 14,
+                    //       fontWeight: FontWeight.w400),
+                    // ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: !widget.singleBtn
+                          ? MainAxisAlignment.spaceEvenly
+                          : MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: widget.onTap,
                           child: Container(
-                            width: MediaQuery.sizeOf(context).width * 0.3,
+                            width: widget.singleBtn
+                                ? MediaQuery.sizeOf(context).width * 0.35
+                                : MediaQuery.sizeOf(context).width * 0.30,
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    widget.color,
-                                    widget.color1 ??  widget.color,
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                borderRadius: BorderRadius.circular(8)),
+                               gradient: LinearGradient(
+                                        colors: [
+                                          widget.color,
+                                          widget.color1 ??  widget.color,
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
                             child: Center(
                               child: Text(
-                                widget.btnName2!,
+                                widget.btnName,
                                 style: GoogleFonts.nunito(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
@@ -143,26 +127,56 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                               ),
                             ),
                           ),
-                        )
-                      : const SizedBox(),
-                ],
-              )
+                        ),
+                        !widget.singleBtn
+                            ? InkWell(
+                                onTap: widget.onTap2!,
+                                child: Container(
+                                  width: MediaQuery.sizeOf(context).width * 0.3,
+                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          widget.color,
+                                          widget.color1 ??  widget.color,
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Center(
+                                    child: Text(
+                                      widget.btnName2!,
+                                      style: GoogleFonts.nunito(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const SizedBox(),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Positioned(
+                top: -40,
+                left: 30,
+                child: CircleAvatar(
+                  radius: 40,
+                  backgroundColor: Colors.white,
+                  child: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: widget.color,
+                      child: widget.icon),
+                ),
+              ),
             ],
           ),
         ),
-        Positioned(
-          top: -40,
-          left: 30,
-          child: CircleAvatar(
-            radius: 40,
-            backgroundColor: Colors.white,
-            child: CircleAvatar(
-                radius: 30,
-                backgroundColor: widget.color,
-                child: widget.icon),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

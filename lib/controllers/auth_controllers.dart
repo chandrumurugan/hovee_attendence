@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
@@ -39,12 +41,13 @@ class AuthControllers extends GetxController
   var registerResponse = RegisterModal().obs;
   var otpResponse = OtpModal().obs;
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    tabController = TabController(length: 2, vsync: this);
-  }
+  var _start = 30.obs; // Reactive variable to hold the timer value
+  var _isTimerRunning =
+      true.obs; // Reactive variable to track if the timer is running
+  Timer? _timer;
+
+  int get timerValue => _start.value; // Getter for timer value
+  bool get isTimerRunning => _isTimerRunning.value; // Getter for timer state
 
   bool validateFields() {
     if (firstNameController.text.isEmpty) {
@@ -52,20 +55,32 @@ class AuthControllers extends GetxController
       return false;
     }
     if (lastNameController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'First name cannot be empty');
+      Get.snackbar('Validation Error', 'Last name cannot be empty');
       return false;
     }
     if (emailController.text.isEmpty) {
       Get.snackbar('Validation Error', 'Email cannot be empty');
       return false;
     }
+    // Email format validation
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+        .hasMatch(emailController.text)) {
+      Get.snackbar('Validation Error', 'Invalid email fomat');
+      return false;
+    }
+
     if (dobController.text.isEmpty) {
       Get.snackbar('Validation Error', 'DOB cannot be empty');
       return false;
     }
 
     if (phController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'Phone no cannot be empty');
+      Get.snackbar('Validation Error', 'Phone number cannot be empty');
+      return false;
+    }
+    // Phone number format validation (10 digits)
+    if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
+      Get.snackbar('Validation Error', 'Invalid number');
       return false;
     }
 
@@ -73,6 +88,7 @@ class AuthControllers extends GetxController
       Get.snackbar('Validation Error', 'Pincode cannot be empty');
       return false;
     }
+
     if (!acceptedTerms.value) {
       Get.snackbar(
           'Validation Error', 'Please accept the terms and conditions');
@@ -89,17 +105,37 @@ class AuthControllers extends GetxController
   }
 
   bool validateLogin() {
-    if (logInController.text.isEmpty) {
+    String input = logInController.text.trim();
+
+    if (input.isEmpty) {
       Get.snackbar(
           'Validation Error', 'Phone number or Email ID cannot be empty.');
       return false;
     }
+
+    // Check if the input is a phone number (10 digits)
+    if (RegExp(r'^[0-9]+$').hasMatch(input)) {
+      if (input.length != 10) {
+        Get.snackbar(
+            'Validation Error', 'Phone number must be exactly 10 digits.');
+        return false;
+      }
+      return true; // It's a valid phone number
+    }
+
+    // Check if the input is a valid email format
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input)) {
+      Get.snackbar('Validation Error', 'Please enter a valid email address.');
+      return false;
+    }
+
+    // If the input is a valid email
     return true;
   }
 
   bool validateOtp() {
     if (otpController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'Otp cannot be empty.');
+      Get.snackbar('Validation Error', 'Please enter the OTP');
       return false;
     }
     return true;
@@ -156,9 +192,11 @@ class AuthControllers extends GetxController
       isLoading.value = true;
       try {
         // Logger().i("moving to otp ===>$");
-        var response = await WebService.otp(otpController.text,
-        currentTabIndex.value == 0 ? loginResponse.value.accountVerificationToken! :
-            registerResponse.value.data!.accountVerificationToken!);
+        var response = await WebService.otp(
+            otpController.text,
+            currentTabIndex.value == 0
+                ? loginResponse.value.accountVerificationToken!
+                : registerResponse.value.data!.accountVerificationToken!);
         if (response != null) {
           Logger().i(response.data);
           otpResponse.value = response!;
@@ -179,4 +217,41 @@ class AuthControllers extends GetxController
       }
     }
   }
+
+  // Function to start the timer
+  void startTimer() {
+    _start.value = 30; // Reset the timer value
+    _isTimerRunning.value = true;
+    const oneSec = Duration(seconds: 1);
+    _timer?.cancel(); // Cancel any previous timer if running
+    _timer = Timer.periodic(oneSec, (Timer timer) {
+      if (_start.value == 0) {
+        _isTimerRunning.value = false;
+        timer.cancel();
+      } else {
+        _start.value--;
+      }
+    });
+  }
+
+  // Function to resend OTP
+  Future<void> resendOtp() async {
+    // Add your resend OTP logic here
+    // After successful resend, restart the timer
+    startTimer();
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel(); // Cancel timer when controller is closed
+    super.onClose();
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    tabController = TabController(length: 2, vsync: this);
+  }
+  
 }

@@ -222,6 +222,7 @@ import 'package:hovee_attendence/controllers/role_controller.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/accountsetup_screen.dart';
+import 'package:hovee_attendence/view/dashBoard.dart';
 
 class RoleSelection extends StatefulWidget {
   const RoleSelection({Key? key}) : super(key: key);
@@ -453,7 +454,8 @@ class _RoleSelectionState extends State<RoleSelection> {
                           // Handle button press
                           // You can access selectedRoleId and selectedRoleTypeId here
 
-                          Get.to(()=> AccoiuntSetup(roleId:selectedRoleId! , roleTypeId: selectedRoleTypeId!,));
+                         // Get.to(()=> AccoiuntSetup(roleId:selectedRoleId! , roleTypeId: selectedRoleTypeId!,));
+                          Get.to(()=>DashBoard());
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

@@ -218,7 +218,7 @@ class LoginSignUp extends StatelessWidget {
                                         height: 10,
                                       ),
                                       Text(
-                                        'Phone / Email ID',
+                                        'Enter Phone no / Email ID',
                                         style: GoogleFonts.nunito(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
@@ -308,13 +308,24 @@ class LoginSignUp extends StatelessWidget {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        const Text(
-                                          'Name',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black,
-                                          ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Name',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                    '*',
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.red.withOpacity(0.6),
+                                    ),),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 5,
@@ -330,7 +341,7 @@ class LoginSignUp extends StatelessWidget {
                                                 child: InputTextField(
                                                     suffix: false,
                                                     readonly: false,
-                                                    hintText: 'First',
+                                                    hintText: 'First name',
                                                     keyboardType:
                                                         TextInputType.name,
                                                     inputFormatter:
@@ -353,7 +364,7 @@ class LoginSignUp extends StatelessWidget {
                                                 child: InputTextField(
                                                   suffix: false,
                                                   readonly: false,
-                                                  hintText: 'Last',
+                                                  hintText: 'Last name',
                                                   keyboardType:
                                                       TextInputType.name,
                                                   inputFormatter:
@@ -373,13 +384,24 @@ class LoginSignUp extends StatelessWidget {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        const Text(
-                                          'Email',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black,
-                                          ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Email',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                             Text(
+                                    '*',
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.red.withOpacity(0.6),
+                                    ),),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 10,
@@ -402,18 +424,30 @@ class LoginSignUp extends StatelessWidget {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        const Text(
-                                          'Date of birth',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black,
-                                          ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Date of birth',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                             Text(
+                                    '*',
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.red.withOpacity(0.6),
+                                    ),),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 5,
                                         ),
                                         InputTextField(
+                                          
                                             suffix: true,
                                             readonly: true,
                                             isDate: true,
@@ -432,13 +466,24 @@ class LoginSignUp extends StatelessWidget {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        const Text(
-                                          'Phone number',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black,
-                                          ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Phone number',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                             Text(
+                                    '*',
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.red.withOpacity(0.6),
+                                    ),),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 5,
@@ -460,13 +505,24 @@ class LoginSignUp extends StatelessWidget {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        const Text(
-                                          'Pincode',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black,
-                                          ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Pincode',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                             Text(
+                                    '*',
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.red.withOpacity(0.6),
+                                    ),),
+                                          ],
                                         ),
                                         const SizedBox(
                                           height: 5,
@@ -502,44 +558,16 @@ class LoginSignUp extends StatelessWidget {
                                                 // });
                                               },
                                             ),
-                                            RichText(
-                                              text: TextSpan(
-                                                children: [
-                                                  const TextSpan(
-                                                    text: 'I accept the ',
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.black),
-                                                  ),
-                                                  TextSpan(
-                                                    text:
-                                                        'terms and conditions',
-                                                    style: const TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.blue,
-                                                    ),
-                                                    recognizer:
-                                                        TapGestureRecognizer()
-                                                          ..onTap = () {
-                                                            // Navigator
-                                                            //     .push(
-                                                            //   context,
-                                                            //   MaterialPageRoute(
-                                                            //     builder:
-                                                            //         (context) =>
-                                                            //             WebViewLoader(
-                                                            //       loadUrl:
-                                                            //           "http://hovee.in/attn-web/terms-conditions.php",
-                                                            //       isBottomMenu:
-                                                            //           false,
-                                                            //     ),
-                                                            //   ),
-                                                            // );
-                                                          },
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                            Text(
+                                    'I allow to submit ID proof to update profile info',
+                                    overflow: TextOverflow.clip,
+                                    style: GoogleFonts.nunito(
+                                      height: 1.5,
+                                      fontSize: 13,
+                                      color: Colors.black.withOpacity(0.5),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                           ],
                                         ),
                                         Visibility(
@@ -552,13 +580,25 @@ class LoginSignUp extends StatelessWidget {
                                         Visibility(
                                           visible: authController
                                               .acceptedTerms.value,
-                                          child: const Text(
-                                            'Proof',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
+                                          child: Row(
+                                            children: [
+                                              const Text(
+                                                'Proof',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              Text(
+                                    '*',
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.red.withOpacity(0.6),
+                                    ),
+                                  ),
+                                            ],
                                           ),
                                         ),
                                         Visibility(
@@ -608,6 +648,37 @@ class LoginSignUp extends StatelessWidget {
                                             ),
                                           ),
                                         ),
+                                        const SizedBox(height: 10),
+                                        Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'By continuing, you agree to ',
+                            style: GoogleFonts.nunito(
+                              fontSize: 12,
+                              color: Colors.black.withOpacity(0.5),
+                              fontWeight: FontWeight.w500,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: 'Terms & Conditions',
+                                style: GoogleFonts.nunito(
+                                  fontSize: 12,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                   
+                                  },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                                         const SizedBox(
                                           height: 16,
                                         ),
@@ -618,13 +689,27 @@ class LoginSignUp extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: <Widget>[
-                                              const Row(
+                                               Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
+                                                  Text(
+                                  'Get updates on ',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 13,
+                                    color: Colors.black.withOpacity(0.5),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                                                   Icon(
                                                       FontAwesomeIcons.whatsapp,
                                                       color: Colors.green),
-                                                  Text(' WhatsApp updates'),
+                                                  Text(
+                                  ' WhatsApp',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 13,
+                                    color: Colors.black.withOpacity(0.5),
+                                    fontWeight: FontWeight.w500,
+                                  ),),
                                                 ],
                                               ),
 

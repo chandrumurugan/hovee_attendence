@@ -27,6 +27,12 @@ class TutorAddBatchController extends GetxController {
 
     void setMode(String value) => modeController.value = value;
 
+    final List<String> teacher = ['Online', 'Offline',];
+
+    void setTeacher(String value) => batchTeacherController.value = value;
+
+    
+
   bool validateFields(BuildContext context) {
     validationMessages.clear();
 

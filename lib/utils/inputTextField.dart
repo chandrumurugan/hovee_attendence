@@ -47,11 +47,10 @@ class _InputTextFieldState extends State<InputTextField> {
         keyboardType: widget.keyboardType,
         inputFormatters:
             widget.inputFormatter != null ? [widget.inputFormatter!] : [],
-            onChanged: widget.onChanged,
-        
+        onChanged: widget.onChanged,
         
         decoration: InputDecoration(
-          suffix: widget.suffix!
+          suffixIcon: widget.suffix!
               ? IconButton(
                   onPressed: () async {
                     if (widget.isDate!) {

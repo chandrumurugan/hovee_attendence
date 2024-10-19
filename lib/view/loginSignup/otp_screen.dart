@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
@@ -9,15 +10,33 @@ import 'package:hovee_attendence/view/dashBoard.dart';
 import 'package:hovee_attendence/view/roleSelection.dart';
 import 'package:pinput/pinput.dart';
 
-class OtpScreen extends StatelessWidget {
+class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key});
 
   @override
+  State<OtpScreen> createState() => _OtpScreenState();
+}
+
+class _OtpScreenState extends State<OtpScreen> {
+  final authController = Get.find<AuthControllers>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Replace 'YOUR_AUTH_TOKEN' with the actual token
+    authController.startTimer();
+    authController.otpController.clear();
+  }
+
+   @override
+  void dispose() {
+    authController.otpController.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    //  final AuthControllers authController = Get.put(AuthControllers());
-    // final authController = Get.put(AuthControllers());
-    final authController = Get.find<AuthControllers>();
-    const focusedBorderColor = Colors.white;
+    const focusedBorderColor = Colors.blue;
     final defaultPinTheme = PinTheme(
       width: 50,
       height: 38,
@@ -104,8 +123,9 @@ class OtpScreen extends StatelessWidget {
             ),
           ),
           Padding(
-            padding:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
+            padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.1,
+                bottom: MediaQuery.of(context).size.height * 0.1),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Card(
@@ -114,7 +134,7 @@ class OtpScreen extends StatelessWidget {
                 surfaceTintColor: Colors.white,
                 color: Colors.white,
                 child: Container(
-                  height: 250,
+                  height: 330,
                   width: MediaQuery.sizeOf(context).width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
@@ -153,28 +173,27 @@ class OtpScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 10),
                         child: Column(
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text(
-                                  'OTP',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                  ),
-                                ),
                                 Text(
-                                  'Enter the otp sent to +91 ${authController.currentTabIndex == 0 ? authController.logInController.text : authController.phController.text}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.grey,
-                                  ),
-                                )
+                                    "Enter the OTP sent to your\nmobile number or email ID",
+                                    style: GoogleFonts.nunito(
+                                        fontSize: 16.0,
+                                        color: Color(0xFF000000),
+                                        fontWeight: FontWeight.w600)),
+                                // Text(
+                                //   'Enter the otp sent to +91 ${authController.currentTabIndex == 0 ? authController.logInController.text : authController.phController.text}',
+                                //   style: const TextStyle(
+                                //     fontSize: 12,
+                                //     fontWeight: FontWeight.w400,
+                                //     color: Colors.grey,
+                                //   ),
+                                // )
                               ],
                             ),
                             const SizedBox(
@@ -252,33 +271,27 @@ class OtpScreen extends StatelessWidget {
                                     var valiue = await authController.otp();
                                     if (valiue == 200) {
                                       showModalBottomSheet(
-                                        context: context,
-                                        isDismissible: false,
-                                        builder: (BuildContext context) {
-                                          return CustomDialogBox(
-                                            singleBtn: true,
-                                            title1: 'Logged In ',
-                                            title2: 'Successfully',
-                                            color: const Color(0xFFC13584),
-                                            color1: const Color(0xFF833AB4),
-                                            icon: const Icon(
-                                              Icons.check,
-                                              color: Colors.white,
-                                            ),
-                                            subtitle:
-                                                "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, ",
-                                            btnName: 'Ok',
-                                            onTap: () {
-
-                                        Get.offAll(()=>RoleSelection());
-                                              // Get.snackbar("Development",
-                                              //     "Developmewnt is in progreess");
-
-                                       
-                                            },
-                                          );
-                                        },
-                                      );
+                                          isDismissible: false,
+                                          enableDrag: false,
+                                          context: context,
+                                          backgroundColor: Colors.transparent,
+                                          builder: (context) {
+                                            return CustomDialogBox(
+                                                title1: 'Logged in',
+                                                title2: 'successfully !',
+                                                subtitle: 'subtitle',
+                                                btnName: 'Ok',
+                                                onTap: () {
+                                                  Get.offAll(
+                                                      () => RoleSelection());
+                                                },
+                                                icon: Icon(
+                                                  Icons.check,
+                                                  color: Colors.white,
+                                                ),
+                                                color: Color(0xFF833AB4),
+                                                singleBtn: true);
+                                          });
                                     }
                                   },
                                   child: Container(
@@ -317,7 +330,6 @@ class OtpScreen extends StatelessWidget {
                                               ),
                                             );
                                     }),
-                            
                                   ),
                                 ),
                                 Text(
@@ -330,6 +342,38 @@ class OtpScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Obx(() {
+                            return authController.isTimerRunning
+                                ? Text(
+                                    'Resend in ${authController.timerValue} secs',
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: const Color(0xffD9D9D9),
+                                    ),
+                                  )
+                                : TextButton(
+                                    onPressed: () {
+                                      authController.resendOtp();
+                                    },
+                                    child: Text(
+                                      'Didn\'t receive OTP? Resend OTP',
+                                      style: GoogleFonts.nunito(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: const Color(0xff0024A5),
+                                      ),
+                                    ),
+                                  );
+                          }),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -341,3 +385,4 @@ class OtpScreen extends StatelessWidget {
     );
   }
 }
+

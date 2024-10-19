@@ -167,7 +167,7 @@ class _TutorBatchListState extends State<TutorBatchList> {
                 // Display "No data found" when the list is empty
                 return Center(
                   child: Text(
-                    'No data found',
+                    'No list found',
                     style: GoogleFonts.nunito(
                       color: Colors.black54,
                       fontSize: 16,
