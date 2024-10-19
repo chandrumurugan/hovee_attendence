@@ -6,30 +6,29 @@ import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/view/batch_screen.dart';
+import 'package:hovee_attendence/view/course_screen.dart';
 
 class TutorHome extends StatelessWidget {
-   TutorHome({super.key});
-   final TutorHomeController controller = Get.put(TutorHomeController());
+  TutorHome({super.key});
+  final TutorHomeController controller = Get.put(TutorHomeController());
 
   @override
   Widget build(BuildContext context) {
- 
-    return  Scaffold(
-        key: controller.tutorScaffoldKey,
-
+    return Scaffold(
+      key: controller.tutorScaffoldKey,
       appBar: AppBar(
-            automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
         elevation: 5,
         shadowColor: Colors.grey.shade100,
-        title:  Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-             mainAxisSize: MainAxisSize.min,
-             children: [
-                 InkWell(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
                   onTap: () {
-                  controller.tutorScaffoldKey.currentState!.openDrawer();
+                    controller.tutorScaffoldKey.currentState!.openDrawer();
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
@@ -51,11 +50,8 @@ class TutorHome extends StatelessWidget {
                   'assets/appConstantImg/colorlogoword.png',
                   height: 30,
                 ),
-             ],
-             
-
-
-          ),
+              ],
+            ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
@@ -88,126 +84,123 @@ class TutorHome extends StatelessWidget {
                 ],
               ),
             ),
-        ],
+          ],
         ),
-                centerTitle: false,
+        centerTitle: false,
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
-
       ),
-     
-     
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Padding(  padding: const EdgeInsets.all(10.0),
-            child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [ 
-                     const HomePageHeader(
-                  title: 'Attendance Monitoring',
-                  userType: "Tutor",
-                ),
-                SizedBox(
-                  height: MediaQuery.sizeOf(context).height * 0.18,
-                ),
-                    Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Text(
-                    'Attendance Report',
-                    style: GoogleFonts.nunito(
-                        fontSize: 18, fontWeight: FontWeight.w700),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const HomePageHeader(
+                    title: 'Attendance Monitoring',
+                    userType: "Tutor",
                   ),
-                ),
+                  SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.18,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(
+                      'Attendance Report',
+                      style: GoogleFonts.nunito(
+                          fontSize: 18, fontWeight: FontWeight.w700),
+                    ),
+                  ),
                   const ChartApp(),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  ' My Listings',
-                  style: GoogleFonts.nunito(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                 GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 1.0,
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10 // Number of columns
-                      ),
-                  itemBuilder: (context, int index) {
+                  Text(
+                    ' My Listings',
+                    style: GoogleFonts.nunito(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 1.0,
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10 // Number of columns
+                            ),
+                    itemBuilder: (context, int index) {
                       final item = controller.monitor[index];
-                    return InkWell(
-                      onTap: () {
-                        Get.to(()=>TutorBatchList());
-                      },
-                      child: Card(
-                        elevation: 10,
-                        shadowColor: Colors.grey,
-                        surfaceTintColor: Colors.white,
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.white),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 18),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: item['color']),
-                                child: Image.asset(
-                                  item['image'],
-                                  color: Colors.white,
-                                  height: 30,
+                      return InkWell(
+                        onTap: () {
+                          // Navigate to different screens based on the title
+                          if (item['title'] == 'Batches') {
+                            Get.to(() =>
+                                TutorBatchList()); // Navigate to the batch screen
+                          } else if (item['title'] == 'Courses') {
+                            Get.to(() =>
+                                TutorCourseList()); // Navigate to the course screen
+                          } else {
+                            // Handle other cases or do nothing
+                            print('Unknown screen');
+                          }
+                        },
+                        child: Card(
+                          elevation: 10,
+                          shadowColor: Colors.grey,
+                          surfaceTintColor: Colors.white,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.white),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 18),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: item['color']),
+                                  child: Image.asset(
+                                    item['image'],
+                                    color: Colors.white,
+                                    height: 30,
+                                  ),
                                 ),
-                              ),
-                              Text(item['title'])
-                            ],
+                                Text(item['title'])
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                  itemCount: controller.monitor.length,
-                ),
-
-
-
-
-
-               ],
-
+                      );
+                    },
+                    itemCount: controller.monitor.length,
+                  ),
+                ],
+              ),
             ),
-            
-            ),
-                   Positioned(
-              left: 20,
-              right: 20,
-              top: MediaQuery.sizeOf(context).height * 0.16,
-              child: const LineChartSample()),
-
+            Positioned(
+                left: 20,
+                right: 20,
+                top: MediaQuery.sizeOf(context).height * 0.16,
+                child: const LineChartSample()),
           ],
         ),
       ),
     );
   }
 }
-
-
-
-
 
 class HomePageHeader extends StatelessWidget {
   @override
@@ -251,8 +244,8 @@ class HomePageHeader extends StatelessWidget {
                       children: [
                         const CircleAvatar(
                           radius: 25,
-                          backgroundImage:
-                              AssetImage('assets/tutorHomeImg/Rectangle 18373.png'),
+                          backgroundImage: AssetImage(
+                              'assets/tutorHomeImg/Rectangle 18373.png'),
                         ),
                         const SizedBox(
                           width: 10,
@@ -339,6 +332,3 @@ class HomePageHeader extends StatelessWidget {
         ));
   }
 }
-
-
-

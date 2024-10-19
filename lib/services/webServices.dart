@@ -134,10 +134,8 @@ class WebService {
     }
   }
 
-  static Future<AddBatchDataModel?> addBatch(
-      Map<String, dynamic> batchData) async {
-    final url = Uri.parse(
-        '$baseUrl/batch/addBatch'); // Replace with the actual endpoint
+  static Future<AddBatchDataModel?> addBatch(Map<String, dynamic> batchData) async {
+    final url = Uri.parse("${baseUrl}batch/addBatch"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
@@ -147,10 +145,10 @@ class WebService {
         body: json.encode(batchData),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer$token',
+           'Authorization': 'Bearer $token',
         },
       );
-
+        print(response.body);
       if (response.statusCode == 200) {
         return AddBatchDataModel.fromJson(json.decode(response.body));
       } else {
@@ -163,8 +161,8 @@ class WebService {
     }
   }
 
-  static Future<getBatchListModel> fetchBatchList() async {
-    final url = Uri.parse('$baseUrl/batch/getBatchList');
+   static Future<getBatchListModel> fetchBatchList() async {
+    final url = Uri.parse('${baseUrl}batch/getBatchList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
@@ -200,7 +198,7 @@ class WebService {
     }
   }
 
-  static Future<GetCourseListModel> fetchCourseList() async {
+  static Future<GetCourseDataModel> fetchCourseList() async {
     final url = Uri.parse('$baseUrl/course/getCourse');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
@@ -214,7 +212,7 @@ class WebService {
     );
 
     if (response.statusCode == 200) {
-      return GetCourseListModel.fromJson(json.decode(response.body));
+      return GetCourseDataModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load course list');
     }

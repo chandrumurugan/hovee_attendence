@@ -118,8 +118,8 @@ class TutorAddBatchController extends GetxController {
         final AddBatchDataModel? response = await WebService.addBatch(batchData);
 
         if (response != null && response.success == true) {
-          //Get.to(() => BatchScreen());
           SnackBarUtils.showSuccessSnackBar(context, 'Batch added successfully');
+          Get.back();
         } else {
           SnackBarUtils.showErrorSnackBar(context, response?.message ?? 'Failed to add batch');
         }

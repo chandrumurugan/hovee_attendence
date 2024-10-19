@@ -7,23 +7,28 @@ import 'package:hovee_attendence/services/webServices.dart';
 
 
 class CourseController extends GetxController {
-  var courseList = <CouseData>[].obs;
+  var courseList = <Data>[].obs;
   var isLoading = true.obs;
 
   // Method to fetch batch list
   void fetchCourseList() async {
-    try {
-      isLoading(true);
-      var courseResponse = await WebService.fetchCourseList();
-      if (courseResponse.data != null) {
-        courseList.value = courseResponse.data!;
-      }
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch course');
-    } finally {
-      isLoading(false);
+  try {
+    isLoading(true);
+    var courseResponse = await WebService.fetchCourseList();
+    if (courseResponse.data != null) {
+      print('Course data fetched: ${courseResponse.data}');
+      courseList.value = courseResponse.data!;
+    } else {
+      print('Course data is null');
     }
+  } catch (e) {
+    print('Error: $e');
+    Get.snackbar('Error', 'Failed to fetch course');
+  } finally {
+    isLoading(false);
   }
+}
+
 
    void navigateToAddCourseScreen() {
    // Get.to(() => TutorAddBatchScreen());
