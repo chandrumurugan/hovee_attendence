@@ -8,6 +8,7 @@ import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
+import 'package:hovee_attendence/modals/role_modal.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -36,11 +37,12 @@ class WebService {
 
   static Future<LoginModal?> login(String identifiers) async {
     try {
-       var headers = {'Content-Type': 'application/json'};
+      var headers = {'Content-Type': 'application/json'};
       var data = {"identifier": identifiers};
       var url = Uri.parse("${baseUrl}user/auth/login");
-      var response = await http.post(url, body: jsonEncode(data),headers:headers );
-         Logger().i(response.bodyBytes);
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
+      Logger().i(response.bodyBytes);
       Logger().i(response.body);
 
       if (response.statusCode == 200) {
@@ -90,7 +92,7 @@ class WebService {
         var result = jsonDecode(response.body);
         return RegisterModal.fromJson(result);
       } else {
-     Map<String, dynamic> result = jsonDecode(response.body);
+        Map<String, dynamic> result = jsonDecode(response.body);
         Get.snackbar("Error", "${result["message"]}");
 
         return null;
@@ -110,12 +112,12 @@ class WebService {
         "account_verification_token": accountverificationtoken,
         "otp": otp
       };
-        Logger().i(data);
+      Logger().i(data);
 
       var url = Uri.parse("${baseUrl}user/verifyOtp");
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
-          Logger().i(response.body);
+      Logger().i(response.body);
 
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
@@ -132,18 +134,20 @@ class WebService {
     }
   }
 
-  static Future<AddBatchDataModel?> addBatch(Map<String, dynamic> batchData) async {
-    final url = Uri.parse('$baseUrl/batch/addBatch'); // Replace with the actual endpoint
+  static Future<AddBatchDataModel?> addBatch(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        '$baseUrl/batch/addBatch'); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
-  // Retrieve the token from storage
-  final token = box.read('Token') ?? '';
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
     try {
       final response = await http.post(
         url,
         body: json.encode(batchData),
         headers: {
           'Content-Type': 'application/json',
-           'Authorization': 'Bearer$token',
+          'Authorization': 'Bearer$token',
         },
       );
 
@@ -158,14 +162,13 @@ class WebService {
       return null;
     }
   }
-  
 
-   static Future<getBatchListModel> fetchBatchList() async {
+  static Future<getBatchListModel> fetchBatchList() async {
     final url = Uri.parse('$baseUrl/batch/getBatchList');
     final box = GetStorage(); // Get an instance of GetStorage
-  // Retrieve the token from storage
-  final token = box.read('Token') ?? '';
-  print(token);
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -181,11 +184,27 @@ class WebService {
     }
   }
 
+  static Future<List<Role>?> getRoles() async {
+    try {
+      var url = Uri.parse("${baseUrl}roles/getRoles");
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        var jsonData = json.decode(response.body)['data'] as List;
+        return jsonData.map((role) => Role.fromJson(role)).toList();
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   static Future<GetCourseListModel> fetchCourseList() async {
-     final url = Uri.parse('$baseUrl/course/getCourse');
-      final box = GetStorage(); // Get an instance of GetStorage
-  // Retrieve the token from storage
-  final token = box.read('Token') ?? '';
+    final url = Uri.parse('$baseUrl/course/getCourse');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {

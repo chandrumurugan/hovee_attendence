@@ -6,6 +6,7 @@ import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/dashBoard.dart';
+import 'package:hovee_attendence/view/roleSelection.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpScreen extends StatelessWidget {
@@ -269,7 +270,7 @@ class OtpScreen extends StatelessWidget {
                                             btnName: 'Ok',
                                             onTap: () {
 
-                                        Get.offAll(()=>DashBoard());
+                                        Get.offAll(()=>RoleSelection());
                                               // Get.snackbar("Development",
                                               //     "Developmewnt is in progreess");
 

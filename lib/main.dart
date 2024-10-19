@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/dashBoard_controllers.dart';
+import 'package:hovee_attendence/controllers/role_controller.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/view/splash_screen.dart';
@@ -15,7 +16,8 @@ class MyBindings extends Bindings {
     Get.lazyPut<SplashController>(() => SplashController());
     Get.lazyPut<AuthControllers>(() => AuthControllers());
        Get.lazyPut<DashboardController>(() => DashboardController()); //TutorHomeController
-         Get.lazyPut<TutorHomeController>(() => TutorHomeController());
+         Get.lazyPut<TutorHomeController>(() => TutorHomeController());//RoleController
+          Get.lazyPut<RoleController>(() => RoleController());
   }
 }
 
