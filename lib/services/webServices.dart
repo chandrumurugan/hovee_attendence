@@ -217,4 +217,55 @@ class WebService {
       throw Exception('Failed to load course list');
     }
   }
+
+
+    Future<http.StreamedResponse> submitAccountSetup({
+    required String token,
+    required Map<dynamic, dynamic> personalInfo,
+    required Map<dynamic, dynamic> addressInfo,
+    required Map<dynamic, dynamic> educationInfo,
+    required String roleId,
+     required String roleTypeId,
+    String resumePath = '',
+    String educationCertPath = '',
+    String experienceCertPath = '',
+  }) async {
+    var headers = {
+      'Authorization': token, // Pass the token for authorization
+    };
+
+    var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
+
+    // Add personal info
+    request.fields['personal_info'] = jsonEncode(personalInfo);
+
+    // Add address info
+    request.fields['permanent_address'] = jsonEncode([addressInfo]);
+
+    // Add education info
+    request.fields['education_info'] = jsonEncode([educationInfo]);
+
+    // Add other fields
+    request.fields['type'] = 'N';
+    request.fields['rolesId'] = roleId;
+    request.fields['rolesTypeId'] = roleTypeId;
+   request.headers.addAll(headers);
+   Logger().i(request.fields);
+ 
+
+    // Add files (if present)
+    if (resumePath.isNotEmpty) {
+      request.files.add(await http.MultipartFile.fromPath('resume', resumePath));
+    }
+    if (educationCertPath.isNotEmpty) {
+      request.files.add(await http.MultipartFile.fromPath('education_certificate', educationCertPath));
+    }
+    if (experienceCertPath.isNotEmpty) {
+      request.files.add(await http.MultipartFile.fromPath('experience_certificate', experienceCertPath));
+    }
+        Logger().i(request.headers);
+
+    // Send the request
+    return await request.send();
+  }
 }

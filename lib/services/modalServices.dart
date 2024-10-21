@@ -6,7 +6,7 @@ import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 
 class ModalService {
-  static void openIDProofModalSheet(BuildContext context, SplashController splashController,AuthControllers authController) {
+  static void openIDProofModalSheet(BuildContext context, SplashController splashController,dynamic authController) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {

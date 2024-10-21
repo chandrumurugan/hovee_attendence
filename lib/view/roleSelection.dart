@@ -454,8 +454,7 @@ class _RoleSelectionState extends State<RoleSelection> {
                           // Handle button press
                           // You can access selectedRoleId and selectedRoleTypeId here
 
-                         // Get.to(()=> AccoiuntSetup(roleId:selectedRoleId! , roleTypeId: selectedRoleTypeId!,));
-                          Get.to(()=>DashBoard());
+                          Get.to(()=> AccountSetup(roleId:selectedRoleId! , roleTypeId: selectedRoleTypeId!,));
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
