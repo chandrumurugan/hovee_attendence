@@ -81,6 +81,7 @@ flutter:
     - assets/bottomBar/
     - assets/bgImage/
     - assets/headerIcons/
+    - assets/sidemenu/
     - assets/
     # - images/a_dot_ham.jpeg
 

@@ -7,6 +7,7 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/view/batch_screen.dart';
 import 'package:hovee_attendence/view/course_screen.dart';
+import 'package:hovee_attendence/view/sidemenu.dart';
 
 class TutorHome extends StatelessWidget {
   TutorHome({super.key});
@@ -16,6 +17,7 @@ class TutorHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: controller.tutorScaffoldKey,
+       drawer: const SideMenu(isGuest: false),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 5,

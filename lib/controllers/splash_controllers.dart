@@ -54,10 +54,10 @@ class SplashController extends GetxController {
       String? token = prefs.getString('user_token');
       Future.delayed(const Duration(seconds: 2));
       String isLoggedIn = box.read('Token') ?? "";
-      if (isLoggedIn.isNotEmpty) {
-        Get.off(() => TutorHome());
-      } else {
-        Get.off(() => const LoginSignUp());
+      if(isLoggedIn.isNotEmpty){
+           Get.offAll(() =>  TutorHome());
+      }else{
+           Get.offAll(() => const LoginSignUp());
       }
 
       // if (token != null && token.trim().isNotEmpty) {

@@ -7,6 +7,7 @@ class CommonDropdownInputField extends StatelessWidget {
   final RxString selectedValue;
   final List<String> items;
   final Function(String) onChanged;
+  
 
   CommonDropdownInputField({
     Key? key,
@@ -22,9 +23,14 @@ class CommonDropdownInputField extends StatelessWidget {
     return Obx(() {
       return TextField(
         decoration: InputDecoration(
-          labelText: title,
+          // labelText: title,
           suffixIcon: Icon(Icons.keyboard_arrow_down), // Down arrow icon
-          border: OutlineInputBorder(),
+            filled: true,
+          fillColor: Colors.grey[200],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14.0),
+            borderSide: BorderSide.none,
+          ),
         ),
         readOnly: true,
         onTap: () {

@@ -11,6 +11,7 @@ import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
+import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -138,8 +139,10 @@ class WebService {
     }
   }
 
-  static Future<AddBatchDataModel?> addBatch(Map<String, dynamic> batchData) async {
-    final url = Uri.parse("${baseUrl}batch/addBatch"); // Replace with the actual endpoint
+  static Future<AddBatchDataModel?> addBatch(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}batch/addBatch"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
@@ -149,10 +152,10 @@ class WebService {
         body: json.encode(batchData),
         headers: {
           'Content-Type': 'application/json',
-           'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer $token',
         },
       );
-        print(response.body);
+      print(response.body);
       if (response.statusCode == 200) {
         return AddBatchDataModel.fromJson(json.decode(response.body));
       } else {
@@ -165,7 +168,7 @@ class WebService {
     }
   }
 
-   static Future<getBatchListModel> fetchBatchList() async {
+  static Future<getBatchListModel> fetchBatchList() async {
     final url = Uri.parse('${baseUrl}batch/getBatchList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
@@ -222,8 +225,7 @@ class WebService {
     }
   }
 
-
-    Future<http.StreamedResponse> submitAccountSetup({
+  Future<http.StreamedResponse> submitAccountSetup({
     required String token,
     required Map<dynamic, dynamic> personalInfo,
     required Map<dynamic, dynamic> addressInfo,
@@ -239,7 +241,8 @@ class WebService {
       'Content-Type': 'application/json'
     };
 
-    var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
+    var request =
+        http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
 
     // Add personal info
     request.fields['personal_info'] = jsonEncode(personalInfo);
@@ -248,7 +251,7 @@ class WebService {
     request.fields['permanent_address'] = jsonEncode(addressInfo);
 
     // Add education info
-     request.fields['education_info'] = jsonEncode(educationInfo);
+    request.fields['education_info'] = jsonEncode(educationInfo);
 
     // Add other fields
     request.fields['type'] = 'N';
@@ -258,9 +261,8 @@ class WebService {
     //  request.fields['experience_certificate'] = '';
     //  request.fields['rolesId'] = roleId;
     //  request.fields['rolesTypeId'] = roleTypeId;
-   request.headers.addAll(headers);
-   Logger().i(request.fields);
- 
+    request.headers.addAll(headers);
+    Logger().i(request.fields);
 
     // Add files (if present)
     // if (resumePath.isNotEmpty) {
@@ -272,9 +274,32 @@ class WebService {
     // if (experienceCertPath.isNotEmpty) {
     //   request.files.add(await http.MultipartFile.fromPath('experience_certificate', experienceCertPath));
     // }
-        Logger().i(request.headers);
+    Logger().i(request.headers);
 
     // Send the request
     return await request.send();
+  }
+
+  static Future<UserProfileM?> fetchUserProfile() async {
+    final box = GetStorage(); // Get an instance of GetStorage
+
+    final token = box.read('Token') ?? '';
+    try {
+      var headers = { 'Authorization': "Bearer $token"};
+      var url = Uri.parse("${baseUrl}user/getUserProfile");
+      var response = await http.post(url, headers: headers);
+
+      Logger().i(response.headers);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        return UserProfileM.fromJson(data);
+      } else {
+        print("Failed to load app config");
+        return null;
+      }
+    } catch (e) {
+      print(e);
+        return null;
+    }
   }
 }

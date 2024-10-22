@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/dashBoard.dart';
+import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/roleSelection.dart';
 import 'package:pinput/pinput.dart';
 
@@ -294,6 +295,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                             subtitle: 'subtitle',
                                             btnName: 'Ok',
                                             onTap: () {
+                                              authController.currentTabIndex == 0 ? Get.offAll(() =>  TutorHome()) :
                                               // Navigate to the appropriate screen after successful login or registration
                                               Get.offAll(() => const RoleSelection());
                                             },

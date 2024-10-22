@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:logger/logger.dart';
 
 class TutorHomeController extends GetxController{
     GlobalKey<ScaffoldState> tutorScaffoldKey = GlobalKey<ScaffoldState>();
@@ -61,4 +63,13 @@ class TutorHomeController extends GetxController{
       'color': const Color.fromRGBO(186, 1, 97, 1)
     },
   ];
+  var token = GetStorage();
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    Logger().i(token.read('Token') ?? "");
+
+  }
 }
