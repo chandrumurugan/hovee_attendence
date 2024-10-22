@@ -184,7 +184,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                     "Enter the OTP sent to your\nmobile number or email ID",
                                     style: GoogleFonts.nunito(
                                         fontSize: 16.0,
-                                        color: Color(0xFF000000),
+                                        color: const Color(0xFF000000),
                                         fontWeight: FontWeight.w600)),
                                 // Text(
                                 //   'Enter the otp sent to +91 ${authController.currentTabIndex == 0 ? authController.logInController.text : authController.phController.text}',
@@ -295,13 +295,13 @@ class _OtpScreenState extends State<OtpScreen> {
                                             btnName: 'Ok',
                                             onTap: () {
                                               // Navigate to the appropriate screen after successful login or registration
-                                              Get.offAll(() => RoleSelection());
+                                              Get.offAll(() => const RoleSelection());
                                             },
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.check,
                                               color: Colors.white,
                                             ),
-                                            color: Color(0xFF833AB4),
+                                            color: const Color(0xFF833AB4),
                                             singleBtn: true,
                                           );
                                         },

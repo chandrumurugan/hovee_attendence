@@ -1,8 +1,10 @@
 // controllers/splash_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logger/logger.dart';
@@ -14,6 +16,7 @@ import 'package:logger/logger.dart';
 class SplashController extends GetxController {
   var showSecondImage = false.obs;
     var appConfig = AppConfig().obs;
+     final box = GetStorage();
 
 
   @override
@@ -49,7 +52,14 @@ class SplashController extends GetxController {
       Future.delayed(const Duration(
         seconds: 2
       ));
-        Get.off(() => const LoginSignUp());
+      String isLoggedIn = box.read('Token') ?? "";
+      if(isLoggedIn.isNotEmpty){
+           Get.off(() =>  TutorHome());
+      }else{
+           Get.off(() => const LoginSignUp());
+      }
+     
+     
 
       
 

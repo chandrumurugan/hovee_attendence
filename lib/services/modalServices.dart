@@ -19,15 +19,18 @@ class ModalService {
               itemCount: idProofs.length,
               separatorBuilder: (context, index) =>  Container(), // Add a separator between items
               itemBuilder: (context, index) {
-                return RadioListTile<String>(
-                  title: Text(idProofs[index].label!), // Display the ID Proof name
-                  value: idProofs[index].label!,
-                  groupValue: authController.selectedIDProof.value, // Track the selected ID Proof
-                  onChanged: (value) {
-                    authController.selectedIDProof.value = value!; // Update the selected value
-                    authController.idProofController.text = value; // Update the text field
-                    Navigator.pop(context); // Close the bottom sheet after selection
-                  },
+                return SizedBox(
+                  height: 40,
+                  child: RadioListTile<String>(
+                    title: Text(idProofs[index].label!), // Display the ID Proof name
+                    value: idProofs[index].label!,
+                    groupValue: authController.selectedIDProof.value, // Track the selected ID Proof
+                    onChanged: (value) {
+                      authController.selectedIDProof.value = value!; // Update the selected value
+                      authController.idProofController.text = value; // Update the text field
+                      Navigator.pop(context); // Close the bottom sheet after selection
+                    },
+                  ),
                 );
               },
             ),

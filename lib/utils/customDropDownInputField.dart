@@ -64,16 +64,20 @@ class CommonDropdownInputField extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Obx(() {
                     final isSelected = selectedValue.value == items[index]; // Check if the item is selected
-                    return RadioListTile<String>(
-                      title: Text(items[index]),
-                      value: items[index],
-                      groupValue: selectedValue.value, // Track the selected item
-                      onChanged: (value) {
-                        selectedValue.value = value!; // Update the selected value
-                        controllerValue.value = value; // Update controller value
-                        onChanged(value); // Call the onChanged callback
-                        Navigator.of(context).pop(); // Close the bottom sheet
-                      },
+                    return SizedBox(
+                      height: 40,
+                      child: RadioListTile<String>(
+                        contentPadding: EdgeInsets.symmetric(vertical: 0),
+                        title: Text(items[index]),
+                        value: items[index],
+                        groupValue: selectedValue.value, // Track the selected item
+                        onChanged: (value) {
+                          selectedValue.value = value!; // Update the selected value
+                          controllerValue.value = value; // Update controller value
+                          onChanged(value); // Call the onChanged callback
+                          Navigator.of(context).pop(); // Close the bottom sheet
+                        },
+                      ),
                     );
                   });
                 },

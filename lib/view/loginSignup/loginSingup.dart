@@ -564,30 +564,55 @@ class LoginSignUp extends StatelessWidget {
                                           height: 5,
                                         ),
                                         Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
-                                            Checkbox(
-                                              value: authController
-                                                  .acceptedTerms.value,
-                                              onChanged: (bool? newValue) {
-                                                authController.acceptedTerms
-                                                    .value = newValue ?? false;
-                                                // setState(() {
-                                                //   _acceptedTerms =
-                                                //       newValue!;
-                                                // });
-                                              },
+                                            Expanded(
+                                              child: CheckboxListTile.adaptive(  value: authController
+                                                    .acceptedTerms.value,
+                                                 contentPadding: const EdgeInsets.symmetric(horizontal: 0), 
+                                                
+                                                onChanged: (bool? newValue) {
+                                                  authController.acceptedTerms
+                                                      .value = newValue ?? false;},
+                                                      controlAffinity: ListTileControlAffinity.leading,
+                                                      // contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                                      
+                                                      
+                                                      title:  Text(
+                                                'I allow to submit ID proof to update profile info',
+                                                overflow: TextOverflow.clip,
+                                                style: GoogleFonts.nunito(
+                                                  height: 1.5,
+                                                  fontSize: 13,
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ) ,),
                                             ),
-                                            Text(
-                                              'I allow to submit ID proof to update profile info',
-                                              overflow: TextOverflow.clip,
-                                              style: GoogleFonts.nunito(
-                                                height: 1.5,
-                                                fontSize: 13,
-                                                color: Colors.black
-                                                    .withOpacity(0.5),
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
+                                            // Checkbox(
+                                            //   value: authController
+                                            //       .acceptedTerms.value,
+                                            //   onChanged: (bool? newValue) {
+                                            //     authController.acceptedTerms
+                                            //         .value = newValue ?? false;
+                                            //     // setState(() {
+                                            //     //   _acceptedTerms =
+                                            //     //       newValue!;
+                                            //     // });
+                                            //   },
+                                            // ),
+                                            // Text(
+                                            //   'I allow to submit ID proof to update profile info',
+                                            //   overflow: TextOverflow.clip,
+                                            //   style: GoogleFonts.nunito(
+                                            //     height: 1.5,
+                                            //     fontSize: 13,
+                                            //     color: Colors.black
+                                            //         .withOpacity(0.5),
+                                            //     fontWeight: FontWeight.w500,
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                         Visibility(
@@ -726,7 +751,7 @@ class LoginSignUp extends StatelessWidget {
                                                           FontWeight.w500,
                                                     ),
                                                   ),
-                                                  Icon(
+                                                  const Icon(
                                                       FontAwesomeIcons.whatsapp,
                                                       color: Colors.green),
                                                   Text(
