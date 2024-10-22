@@ -231,12 +231,13 @@ class LoginSignUp extends StatelessWidget {
                                       InputTextField(
                                         suffix: false,
                                         readonly: false,
-                                        inputFormatter:
-                                            FilteringTextInputFormatter.allow(
-                                          RegExp(
-                                            r"[a-zA-Z0-9\s@&_,-\.']",
+                                        inputFormatter: [
+                                          FilteringTextInputFormatter.allow(
+                                            RegExp(
+                                              r"[a-zA-Z0-9\s@&_,-\.']",
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                         hintText: 'Phone number / Email ID',
                                         keyboardType: TextInputType.name,
                                         controller:
@@ -249,7 +250,9 @@ class LoginSignUp extends StatelessWidget {
                                         children: [
                                           InkWell(
                                             onTap: () async {
-                                            authController.logIn(authController.logInController.text);
+                                              authController.logIn(
+                                                  authController
+                                                      .logInController.text,context);
                                             },
                                             child: Container(
                                               height: 48,
@@ -319,12 +322,14 @@ class LoginSignUp extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                    '*',
-                                    style: GoogleFonts.nunito(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.red.withOpacity(0.6),
-                                    ),),
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(
@@ -344,13 +349,14 @@ class LoginSignUp extends StatelessWidget {
                                                     hintText: 'First name',
                                                     keyboardType:
                                                         TextInputType.name,
-                                                    inputFormatter:
-                                                        FilteringTextInputFormatter
-                                                            .allow(
-                                                      RegExp(
-                                                        r"[a-zA-Z0-9\s@&_,-\.']",
+                                                    inputFormatter: [
+                                                      FilteringTextInputFormatter
+                                                          .allow(
+                                                        RegExp(
+                                                          r"[a-zA-Z0-9\s@&_,-\.']",
+                                                        ),
                                                       ),
-                                                    ),
+                                                    ],
                                                     controller: authController
                                                         .firstNameController),
                                               ),
@@ -367,13 +373,14 @@ class LoginSignUp extends StatelessWidget {
                                                   hintText: 'Last name',
                                                   keyboardType:
                                                       TextInputType.name,
-                                                  inputFormatter:
-                                                      FilteringTextInputFormatter
-                                                          .allow(
-                                                    RegExp(
-                                                      r"[a-zA-Z0-9\s@&_,-\.']",
+                                                  inputFormatter: [
+                                                    FilteringTextInputFormatter
+                                                        .allow(
+                                                      RegExp(
+                                                        r"[a-zA-Z0-9\s@&_,-\.']",
+                                                      ),
                                                     ),
-                                                  ),
+                                                  ],
                                                   controller: authController
                                                       .lastNameController,
                                                 ),
@@ -394,13 +401,15 @@ class LoginSignUp extends StatelessWidget {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                             Text(
-                                    '*',
-                                    style: GoogleFonts.nunito(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.red.withOpacity(0.6),
-                                    ),),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(
@@ -409,14 +418,14 @@ class LoginSignUp extends StatelessWidget {
                                         InputTextField(
                                             suffix: false,
                                             readonly: false,
-                                            inputFormatter:
-                                                FilteringTextInputFormatter
-                                                    .allow(
-                                              RegExp(
-                                                r"[a-zA-Z0-9@&_,-\.']",
+                                            inputFormatter: [
+                                              FilteringTextInputFormatter.allow(
+                                                RegExp(
+                                                  r"[a-zA-Z0-9@&_,-\.']",
+                                                ),
                                               ),
-                                            ),
-                                            hintText: 'Enter your email',
+                                            ],
+                                            hintText: 'Enter here',
                                             keyboardType:
                                                 TextInputType.emailAddress,
                                             controller:
@@ -434,24 +443,25 @@ class LoginSignUp extends StatelessWidget {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                             Text(
-                                    '*',
-                                    style: GoogleFonts.nunito(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.red.withOpacity(0.6),
-                                    ),),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(
                                           height: 5,
                                         ),
                                         InputTextField(
-                                          
                                             suffix: true,
                                             readonly: true,
                                             isDate: true,
-                                            hintText: 'Enter your dob',
+                                            hintText: 'Select your dob',
                                             initialDate:
                                                 DateTime.now().subtract(
                                               const Duration(days: 365 * 18),
@@ -476,32 +486,35 @@ class LoginSignUp extends StatelessWidget {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                             Text(
-                                    '*',
-                                    style: GoogleFonts.nunito(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.red.withOpacity(0.6),
-                                    ),),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(
                                           height: 5,
                                         ),
                                         InputTextField(
-                                            suffix: false,
-                                            readonly: false,
-                                            hintText: 'Enter your phone number',
-                                            keyboardType: TextInputType.phone,
-                                            inputFormatter:
-                                                FilteringTextInputFormatter
-                                                    .allow(
-                                              RegExp(
-                                                r"[0-9]",
-                                              ),
+                                          suffix: false,
+                                          readonly: false,
+                                          hintText: 'Enter your phone number',
+                                          keyboardType: TextInputType.phone,
+                                          inputFormatter: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(r"[0-9]"),
                                             ),
-                                            controller:
-                                                authController.phController),
+                                            LengthLimitingTextInputFormatter(
+                                                10), // Restrict to 10 digits
+                                          ],
+                                          controller:
+                                              authController.phController,
+                                        ),
                                         const SizedBox(
                                           height: 5,
                                         ),
@@ -515,13 +528,15 @@ class LoginSignUp extends StatelessWidget {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                             Text(
-                                    '*',
-                                    style: GoogleFonts.nunito(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.red.withOpacity(0.6),
-                                    ),),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         const SizedBox(
@@ -531,12 +546,16 @@ class LoginSignUp extends StatelessWidget {
                                           suffix: false,
                                           readonly: false,
                                           hintText: 'Enter your pincode',
-                                          inputFormatter:
-                                              FilteringTextInputFormatter.allow(
-                                            RegExp(
-                                              r"[0-9]",
+                                          inputFormatter: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(
+                                                r"[0-9]",
+                                              ),
+                                              
                                             ),
-                                          ),
+                                            LengthLimitingTextInputFormatter(
+                                                6),
+                                          ],
                                           keyboardType: TextInputType.number,
                                           controller:
                                               authController.pincodeController,
@@ -559,15 +578,16 @@ class LoginSignUp extends StatelessWidget {
                                               },
                                             ),
                                             Text(
-                                    'I allow to submit ID proof to update profile info',
-                                    overflow: TextOverflow.clip,
-                                    style: GoogleFonts.nunito(
-                                      height: 1.5,
-                                      fontSize: 13,
-                                      color: Colors.black.withOpacity(0.5),
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
+                                              'I allow to submit ID proof to update profile info',
+                                              overflow: TextOverflow.clip,
+                                              style: GoogleFonts.nunito(
+                                                height: 1.5,
+                                                fontSize: 13,
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
                                           ],
                                         ),
                                         Visibility(
@@ -583,7 +603,7 @@ class LoginSignUp extends StatelessWidget {
                                           child: Row(
                                             children: [
                                               const Text(
-                                                'Proof',
+                                                'ID Proof',
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w500,
@@ -591,13 +611,14 @@ class LoginSignUp extends StatelessWidget {
                                                 ),
                                               ),
                                               Text(
-                                    '*',
-                                    style: GoogleFonts.nunito(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.red.withOpacity(0.6),
-                                    ),
-                                  ),
+                                                '*',
+                                                style: GoogleFonts.nunito(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.red
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -636,7 +657,7 @@ class LoginSignUp extends StatelessWidget {
                                                       .selectedIDProof
                                                       .value
                                                       .isNotEmpty
-                                                  ? Text(authController
+                                                  ?Text(authController
                                                       .selectedIDProof.value)
                                                   : Text(
                                                       "Tap to select the ID proof",
@@ -650,35 +671,38 @@ class LoginSignUp extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 10),
                                         Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'By continuing, you agree to ',
-                            style: GoogleFonts.nunito(
-                              fontSize: 12,
-                              color: Colors.black.withOpacity(0.5),
-                              fontWeight: FontWeight.w500,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: 'Terms & Conditions',
-                                style: GoogleFonts.nunito(
-                                  fontSize: 12,
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                   
-                                  },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: RichText(
+                                              text: TextSpan(
+                                                text:
+                                                    'By continuing, you agree to ',
+                                                style: GoogleFonts.nunito(
+                                                  fontSize: 12,
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                                children: [
+                                                  TextSpan(
+                                                    text: 'Terms & Conditions',
+                                                    style: GoogleFonts.nunito(
+                                                      fontSize: 12,
+                                                      color: Colors.blue,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () {},
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                         const SizedBox(
                                           height: 16,
                                         ),
@@ -689,27 +713,32 @@ class LoginSignUp extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: <Widget>[
-                                               Row(
+                                              Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
                                                   Text(
-                                  'Get updates on ',
-                                  style: GoogleFonts.nunito(
-                                    fontSize: 13,
-                                    color: Colors.black.withOpacity(0.5),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
+                                                    'Get updates on ',
+                                                    style: GoogleFonts.nunito(
+                                                      fontSize: 13,
+                                                      color: Colors.black
+                                                          .withOpacity(0.5),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
                                                   Icon(
                                                       FontAwesomeIcons.whatsapp,
                                                       color: Colors.green),
                                                   Text(
-                                  ' WhatsApp',
-                                  style: GoogleFonts.nunito(
-                                    fontSize: 13,
-                                    color: Colors.black.withOpacity(0.5),
-                                    fontWeight: FontWeight.w500,
-                                  ),),
+                                                    ' WhatsApp',
+                                                    style: GoogleFonts.nunito(
+                                                      fontSize: 13,
+                                                      color: Colors.black
+                                                          .withOpacity(0.5),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
 
@@ -742,8 +771,7 @@ class LoginSignUp extends StatelessWidget {
                                         ),
                                         InkWell(
                                           onTap: () {
-
-                                             authController.signIn();
+                                            authController.signIn(context);
                                           },
                                           child: Container(
                                             height: 48,

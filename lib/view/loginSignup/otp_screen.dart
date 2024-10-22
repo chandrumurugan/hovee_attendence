@@ -28,7 +28,7 @@ class _OtpScreenState extends State<OtpScreen> {
     authController.otpController.clear();
   }
 
-   @override
+  @override
   void dispose() {
     authController.otpController.clear();
     super.dispose();
@@ -268,42 +268,53 @@ class _OtpScreenState extends State<OtpScreen> {
                               children: [
                                 InkWell(
                                   onTap: () async {
-                                    var valiue = await authController.otp();
-                                    if (valiue == 200) {
+                                    var value = await authController.otp(context);
+                                    if (value == 200) {
+                                      // Determine the success message based on whether the user is logging in or registering
+                                      String title1 = authController
+                                                  .currentTabIndex.value ==
+                                              0
+                                          ? 'Logged in'
+                                          : 'Registered';
+                                      String title2 = authController
+                                                  .currentTabIndex.value ==
+                                              0
+                                          ? 'successfully!'
+                                          : 'successfully!';
+
                                       showModalBottomSheet(
-                                          isDismissible: false,
-                                          enableDrag: false,
-                                          context: context,
-                                          backgroundColor: Colors.transparent,
-                                          builder: (context) {
-                                            return CustomDialogBox(
-                                                title1: 'Logged in',
-                                                title2: 'successfully !',
-                                                subtitle: 'subtitle',
-                                                btnName: 'Ok',
-                                                onTap: () {
-                                                  Get.offAll(
-                                                      () => RoleSelection());
-                                                },
-                                                icon: Icon(
-                                                  Icons.check,
-                                                  color: Colors.white,
-                                                ),
-                                                color: Color(0xFF833AB4),
-                                                singleBtn: true);
-                                          });
+                                        isDismissible: false,
+                                        enableDrag: false,
+                                        context: context,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) {
+                                          return CustomDialogBox(
+                                            title1: title1,
+                                            title2: title2,
+                                            subtitle: 'subtitle',
+                                            btnName: 'Ok',
+                                            onTap: () {
+                                              // Navigate to the appropriate screen after successful login or registration
+                                              Get.offAll(() => RoleSelection());
+                                            },
+                                            icon: Icon(
+                                              Icons.check,
+                                              color: Colors.white,
+                                            ),
+                                            color: Color(0xFF833AB4),
+                                            singleBtn: true,
+                                          );
+                                        },
+                                      );
                                     }
                                   },
                                   child: Container(
                                     height: 48,
-                                    // width: 168,
                                     padding: const EdgeInsets.symmetric(
-                                      horizontal: 40,
-                                    ),
+                                        horizontal: 40),
                                     decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(8),
-                                      ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
                                       gradient: LinearGradient(
                                         colors: [
                                           Color(0xFFC13584),
@@ -385,4 +396,3 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 }
-

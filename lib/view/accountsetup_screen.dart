@@ -64,9 +64,6 @@ class AccountSetup extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -77,7 +74,7 @@ class AccountSetup extends StatelessWidget {
                           fontSize: 24),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
                   ],
                 ),
@@ -111,6 +108,7 @@ class AccountSetup extends StatelessWidget {
                           height: 10,
                         ),
                         TabBar(
+                          //isScrollable: true, // Allow tabs to be scrollable to show the full text
                           dragStartBehavior: DragStartBehavior.down,
                           controller: accountController.tabController,
                           onTap: (int index) {
@@ -130,11 +128,11 @@ class AccountSetup extends StatelessWidget {
                           ],
                           unselectedLabelColor: Colors.grey,
                           unselectedLabelStyle: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
                           labelStyle: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
                           ),
@@ -157,13 +155,26 @@ class AccountSetup extends StatelessWidget {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      const Text(
-                                        'Name',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Name',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 5,
@@ -182,13 +193,14 @@ class AccountSetup extends StatelessWidget {
                                                   hintText: 'First',
                                                   keyboardType:
                                                       TextInputType.name,
-                                                  inputFormatter:
-                                                      FilteringTextInputFormatter
-                                                          .allow(
-                                                    RegExp(
-                                                      r"[a-zA-Z0-9\s@&_,-\.']",
+                                                  inputFormatter: [
+                                                    FilteringTextInputFormatter
+                                                        .allow(
+                                                      RegExp(
+                                                        r"[a-zA-Z0-9\s@&_,-\.']",
+                                                      ),
                                                     ),
-                                                  ),
+                                                  ],
                                                   controller: accountController
                                                       .firstNameController),
                                             ),
@@ -205,13 +217,14 @@ class AccountSetup extends StatelessWidget {
                                                 hintText: 'Last',
                                                 keyboardType:
                                                     TextInputType.name,
-                                                inputFormatter:
-                                                    FilteringTextInputFormatter
-                                                        .allow(
-                                                  RegExp(
-                                                    r"[a-zA-Z0-9\s@&_,-\.']",
+                                                inputFormatter: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(
+                                                    RegExp(
+                                                      r"[a-zA-Z0-9\s@&_,-\.']",
+                                                    ),
                                                   ),
-                                                ),
+                                                ],
                                                 controller: accountController
                                                     .lastNameController,
                                               ),
@@ -222,13 +235,26 @@ class AccountSetup extends StatelessWidget {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      const Text(
-                                        'Email',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Email',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 10,
@@ -236,12 +262,13 @@ class AccountSetup extends StatelessWidget {
                                       InputTextField(
                                           suffix: false,
                                           readonly: false,
-                                          inputFormatter:
-                                              FilteringTextInputFormatter.allow(
-                                            RegExp(
-                                              r"[a-zA-Z0-9@&_,-\.']",
+                                          inputFormatter: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(
+                                                r"[a-zA-Z0-9@&_,-\.']",
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                           hintText: 'Enter your email',
                                           keyboardType:
                                               TextInputType.emailAddress,
@@ -250,13 +277,26 @@ class AccountSetup extends StatelessWidget {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      const Text(
-                                        'Date of birth',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Date of birth',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 5,
@@ -278,13 +318,26 @@ class AccountSetup extends StatelessWidget {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      const Text(
-                                        'Phone number',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Phone number',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 5,
@@ -294,24 +347,38 @@ class AccountSetup extends StatelessWidget {
                                           readonly: false,
                                           hintText: 'Enter your phone number',
                                           keyboardType: TextInputType.phone,
-                                          inputFormatter:
-                                              FilteringTextInputFormatter.allow(
-                                            RegExp(
-                                              r"[0-9]",
+                                          inputFormatter: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(r"[0-9]"),
                                             ),
-                                          ),
+                                            LengthLimitingTextInputFormatter(
+                                                10), // Restrict to 10 digits
+                                          ],
                                           controller:
                                               accountController.phController),
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      const Text(
-                                        'Pincode',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Pincode',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 5,
@@ -320,12 +387,14 @@ class AccountSetup extends StatelessWidget {
                                         suffix: false,
                                         readonly: false,
                                         hintText: 'Enter your pincode',
-                                        inputFormatter:
-                                            FilteringTextInputFormatter.allow(
-                                          RegExp(
-                                            r"[0-9]",
+                                        inputFormatter: [
+                                          FilteringTextInputFormatter.allow(
+                                            RegExp(
+                                              r"[0-9]",
+                                            ),
                                           ),
-                                        ),
+                                          LengthLimitingTextInputFormatter(6),
+                                        ],
                                         keyboardType: TextInputType.number,
                                         controller:
                                             accountController.pincodeController,
@@ -333,13 +402,26 @@ class AccountSetup extends StatelessWidget {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      const Text(
-                                        'Proof',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'ID Proof',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 5,
@@ -380,7 +462,8 @@ class AccountSetup extends StatelessWidget {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          accountController.storePersonalInfo();
+                                          accountController.storePersonalInfo(
+                                              context, roleId, roleTypeId);
                                         },
                                         child: Container(
                                           height: 48,
@@ -441,13 +524,26 @@ class AccountSetup extends StatelessWidget {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      const Text(
-                                        'Address1',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Address1',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 10,
@@ -462,13 +558,26 @@ class AccountSetup extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      const Text(
-                                        'Address2',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Address2',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 10,
@@ -483,13 +592,26 @@ class AccountSetup extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      const Text(
-                                        'City',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'City',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 10,
@@ -504,13 +626,26 @@ class AccountSetup extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      const Text(
-                                        'State',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'State',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 10,
@@ -525,13 +660,26 @@ class AccountSetup extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      const Text(
-                                        'Country',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Country',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 10,
@@ -547,13 +695,26 @@ class AccountSetup extends StatelessWidget {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      const Text(
-                                        'Pincode',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Pincode',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 10,
@@ -565,13 +726,22 @@ class AccountSetup extends StatelessWidget {
                                         keyboardType: TextInputType.number,
                                         controller: accountController
                                             .pincodesController,
+                                        inputFormatter: [
+                                          FilteringTextInputFormatter.allow(
+                                            RegExp(
+                                              r"[0-9]",
+                                            ),
+                                          ),
+                                          LengthLimitingTextInputFormatter(6),
+                                        ],
                                       ),
-                                       const SizedBox(
+                                      const SizedBox(
                                         height: 16,
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          accountController.storeAddressInfo(context);
+                                          accountController
+                                              .storeAddressInfo(context);
                                         },
                                         child: Container(
                                           height: 48,
@@ -675,10 +845,10 @@ class AccountSetup extends StatelessWidget {
                                                   ))
                                               .toList(),
                                         ),
-                                            InkWell(
+                                      InkWell(
                                         onTap: () {
-                                            accountController
-                                              .storeEducationInfo(context,roleId,roleTypeId);
+                                          accountController.storeEducationInfo(
+                                              context, roleId, roleTypeId);
                                         },
                                         child: Container(
                                           height: 48,
@@ -718,15 +888,15 @@ class AccountSetup extends StatelessWidget {
                                                     ),
                                         ),
                                       ),
-                                       const SizedBox(
+                                      const SizedBox(
                                         height: 16,
                                       ),
                                       // SingleButton(
                                       //   btnName: 'Add',
                                       //   onTap: () {
-                                          // accountController
-                                          //     .storeEducationInfo(context);
-                                       
+                                      // accountController
+                                      //     .storeEducationInfo(context);
+
                                       //   },
                                       // )
                                     ],
@@ -757,7 +927,9 @@ class AccountSetup extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-             Text(
+          Row(
+            children: [
+              Text(
                 title,
                 style: TextStyle(
                   fontSize: 14,
@@ -765,9 +937,19 @@ class AccountSetup extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-              const SizedBox(
-                height: 5,
+              Text(
+                '*',
+                style: GoogleFonts.nunito(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.red.withOpacity(0.6),
+                ),
               ),
+            ],
+          ),
+          const SizedBox(
+            height: 5,
+          ),
           // Padding(
           //   padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
           //   child: Text(
@@ -779,14 +961,11 @@ class AccountSetup extends StatelessWidget {
           Container(
             // margin: EdgeInsets.all(20),
             width: double.infinity,
-            height: 150,
-            
-           
+            height: 120,
+
             decoration: BoxDecoration(
-               color: Color(0xFFBA0161).withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12),
-      
-      
+              color: Color(0xFFBA0161).withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
             ),
             // child: DottedBorder(
             // borderType: BorderType.RRect,
@@ -796,9 +975,10 @@ class AccountSetup extends StatelessWidget {
             // dashPattern: const [5, 5],
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppConstants.secondaryColor,style: BorderStyle.solid)
-              ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                      color: AppConstants.secondaryColor,
+                      style: BorderStyle.solid)),
               child: GestureDetector(
                 onTap: () async {
                   await accountController.pickFile(type);
@@ -806,7 +986,8 @@ class AccountSetup extends StatelessWidget {
                 child: SizedBox.expand(
                   child: FittedBox(
                     child: (type == 'resume' &&
-                                accountController.resumePath.value.isNotEmpty) ||
+                                accountController
+                                    .resumePath.value.isNotEmpty) ||
                             (type == 'education' &&
                                 accountController
                                     .educationCertPath.value.isNotEmpty) ||
@@ -818,20 +999,28 @@ class AccountSetup extends StatelessWidget {
                               (type == 'resume'
                                   ? accountController.resumePath.value
                                   : type == 'education'
-                                      ? accountController.educationCertPath.value
-                                      : accountController.experienceCertPath.value),
+                                      ? accountController
+                                          .educationCertPath.value
+                                      : accountController
+                                          .experienceCertPath.value),
                             ),
                             fit: BoxFit.cover,
                           )
                         : Column(
-                          children: [
-                            const Icon(
+                            children: [
+                              const Icon(
                                 Icons.image_outlined,
                                 color: Color(0xFFC13584),
                               ),
-                              Text("Attachment",style: GoogleFonts.nunito(fontSize: 10,fontWeight: FontWeight.w600,color: Colors.black.withOpacity(0.5)),)
-                          ],
-                        ),
+                              Text(
+                                "Attachment",
+                                style: GoogleFonts.nunito(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black.withOpacity(0.5)),
+                              )
+                            ],
+                          ),
                   ),
                 ),
               ),
@@ -849,19 +1038,31 @@ class AccountSetup extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Highest Qualification',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
+            Row(
+              children: [
+                const Text(
+                  'Highest Qualification',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  '*',
+                  style: GoogleFonts.nunito(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red.withOpacity(0.6),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 5,
             ),
             CommonDropdownInputField(
-              title: 'Highest Qualification',
+              title: 'Highest qualification',
               controllerValue: accountController.highestQualification,
               selectedValue: accountController.highestQualification,
               items: accountController.qualifications,
@@ -875,19 +1076,31 @@ class AccountSetup extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Teaching Skill Set',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
+            Row(
+              children: [
+                const Text(
+                  'Teaching Skill Set',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  '*',
+                  style: GoogleFonts.nunito(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red.withOpacity(0.6),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 5,
             ),
             CommonDropdownInputField(
-              title: 'Teaching Skill Set',
+              title: 'Teaching skill set',
               controllerValue: accountController.teachingSkills,
               selectedValue: accountController.teachingSkills,
               items: accountController.skills,
@@ -901,19 +1114,31 @@ class AccountSetup extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Working Technology',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
+            Row(
+              children: [
+                const Text(
+                  'Work Type',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  '*',
+                  style: GoogleFonts.nunito(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red.withOpacity(0.6),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 5,
             ),
             CommonDropdownInputField(
-              title: 'Working Technology',
+              title: 'Work type',
               controllerValue: accountController.workingTech,
               selectedValue: accountController.workingTech,
               items: accountController.techs,
@@ -927,19 +1152,31 @@ class AccountSetup extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Teaching Experience',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              ),
+            Row(
+              children: [
+                const Text(
+                  'Teaching Experience',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  '*',
+                  style: GoogleFonts.nunito(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red.withOpacity(0.6),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 5,
             ),
             CommonDropdownInputField(
-              title: 'Teaching Experience',
+              title: 'Teaching experience',
               controllerValue: accountController.teachingExperience,
               selectedValue: accountController.teachingExperience,
               items: accountController.techsExperience,

@@ -1,12 +1,10 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 
 class ModalService {
-  static void openIDProofModalSheet(BuildContext context, SplashController splashController,dynamic authController) {
+  static void openIDProofModalSheet(BuildContext context, SplashController splashController, dynamic authController) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -17,8 +15,9 @@ class ModalService {
           // Return a ListView of ID Proofs with Radio Buttons
           return SizedBox(
             height: 250, // Set a fixed height for the modal sheet
-            child: ListView.builder(
+            child: ListView.separated(
               itemCount: idProofs.length,
+              separatorBuilder: (context, index) =>  Container(), // Add a separator between items
               itemBuilder: (context, index) {
                 return RadioListTile<String>(
                   title: Text(idProofs[index].label!), // Display the ID Proof name
@@ -37,6 +36,4 @@ class ModalService {
       },
     );
   }
-
-
 }

@@ -40,44 +40,53 @@ class CommonDropdownInputField extends StatelessWidget {
     }); 
   } 
  
-  void _showDropdown(BuildContext context) { 
-    showModalBottomSheet( 
-      context: context, 
-      builder: (BuildContext context) { 
-        return Container( 
-          height: 300, // Adjust height as needed 
-          padding: const EdgeInsets.all(10), 
-          child: Column( 
-            children: [ 
-              Text("Select $title", style: TextStyle(fontWeight: FontWeight.bold)), 
-              Expanded( 
-                child: ListView.builder( 
-                  itemCount: items.length, 
-                  itemBuilder: (context, index) { 
-                    final isSelected = selectedValue.value == items[index]; 
-                    return ListTile( 
-                      title: Text( 
-                        items[index], 
-                        style: TextStyle( 
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, 
-                          color: isSelected ? Colors.blue : Colors.black, 
-                        ), 
-                      ), 
-                      tileColor: isSelected ? const Color.fromARGB(255, 253, 253, 253) : null, 
-                      onTap: () { 
-                        selectedValue.value = items[index]; 
-                        controllerValue.value = items[index]; // Update controller value 
-                        onChanged(items[index]); 
-                        Navigator.of(context).pop(); 
-                      }, 
-                    ); 
-                  }, 
-                ), 
-              ), 
-            ], 
-          ), 
-        ); 
-      }, 
-    ); 
-  } 
+ void _showDropdown(BuildContext context) {
+  // Define a fixed height for each item and the maximum height
+  const double itemHeight = 56.0; // Height for each RadioListTile
+  const double maxHeight = 400.0; // Maximum height of the bottom sheet
+
+  // Calculate the height based on the number of items
+  final double sheetHeight = (items.length * itemHeight).clamp(0, maxHeight);
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true, // Allow the sheet to be scrollable if needed
+    builder: (BuildContext context) {
+      return Container(
+        height: 220, // Set dynamic height based on item count
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Text("Select $title", style: TextStyle(fontWeight: FontWeight.bold)),
+            Expanded(
+              child: ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  return Obx(() {
+                    final isSelected = selectedValue.value == items[index]; // Check if the item is selected
+                    return RadioListTile<String>(
+                      title: Text(items[index]),
+                      value: items[index],
+                      groupValue: selectedValue.value, // Track the selected item
+                      onChanged: (value) {
+                        selectedValue.value = value!; // Update the selected value
+                        controllerValue.value = value; // Update controller value
+                        onChanged(value); // Call the onChanged callback
+                        Navigator.of(context).pop(); // Close the bottom sheet
+                      },
+                    );
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+
+
+  
 }

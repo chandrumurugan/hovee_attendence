@@ -50,7 +50,7 @@ class WebService {
         return LoginModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        Get.snackbar("Error", "${result["message"]}");
+        Get.snackbar("${result["message"]}");
         print("Failed to load login");
         return null;
       }
@@ -93,7 +93,7 @@ class WebService {
         return RegisterModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        Get.snackbar("Error", "${result["message"]}");
+        Get.snackbar("${result["message"]}");
 
         return null;
       }
@@ -124,7 +124,7 @@ class WebService {
         return OtpModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        Get.snackbar("", "${result["message"]}");
+        Get.snackbar("${result["message"]}");
 
         return null;
       }
@@ -224,14 +224,15 @@ class WebService {
     required Map<dynamic, dynamic> personalInfo,
     required Map<dynamic, dynamic> addressInfo,
     required Map<dynamic, dynamic> educationInfo,
-    required String roleId,
-     required String roleTypeId,
+    // required String roleId,
+    //  required String roleTypeId,
     String resumePath = '',
     String educationCertPath = '',
     String experienceCertPath = '',
   }) async {
     var headers = {
-      'Authorization': token, // Pass the token for authorization
+      'Authorization': 'Bearer $token', // Pass the token for authorization
+      'Content-Type': 'application/json'
     };
 
     var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
@@ -240,29 +241,33 @@ class WebService {
     request.fields['personal_info'] = jsonEncode(personalInfo);
 
     // Add address info
-    request.fields['permanent_address'] = jsonEncode([addressInfo]);
+    request.fields['permanent_address'] = jsonEncode(addressInfo);
 
     // Add education info
-    request.fields['education_info'] = jsonEncode([educationInfo]);
+     request.fields['education_info'] = jsonEncode(educationInfo);
 
     // Add other fields
     request.fields['type'] = 'N';
-    request.fields['rolesId'] = roleId;
-    request.fields['rolesTypeId'] = roleTypeId;
+    //  request.fields['id_proof'] = '';
+    //  request.fields['resume'] = '';
+    //  request.fields['education_certificate'] = '';
+    //  request.fields['experience_certificate'] = '';
+    //  request.fields['rolesId'] = roleId;
+    //  request.fields['rolesTypeId'] = roleTypeId;
    request.headers.addAll(headers);
    Logger().i(request.fields);
  
 
     // Add files (if present)
-    if (resumePath.isNotEmpty) {
-      request.files.add(await http.MultipartFile.fromPath('resume', resumePath));
-    }
-    if (educationCertPath.isNotEmpty) {
-      request.files.add(await http.MultipartFile.fromPath('education_certificate', educationCertPath));
-    }
-    if (experienceCertPath.isNotEmpty) {
-      request.files.add(await http.MultipartFile.fromPath('experience_certificate', experienceCertPath));
-    }
+    // if (resumePath.isNotEmpty) {
+    //   request.files.add(await http.MultipartFile.fromPath('resume', resumePath));
+    // }
+    // if (educationCertPath.isNotEmpty) {
+    //   request.files.add(await http.MultipartFile.fromPath('education_certificate', educationCertPath));
+    // }
+    // if (experienceCertPath.isNotEmpty) {
+    //   request.files.add(await http.MultipartFile.fromPath('experience_certificate', experienceCertPath));
+    // }
         Logger().i(request.headers);
 
     // Send the request

@@ -6,6 +6,7 @@ import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/loginSignup/otp_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:get_storage/get_storage.dart';
@@ -49,54 +50,59 @@ class AuthControllers extends GetxController
   int get timerValue => _start.value; // Getter for timer value
   bool get isTimerRunning => _isTimerRunning.value; // Getter for timer state
 
-  bool validateFields() {
+  bool validateFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'First name cannot be empty');
+      SnackBarUtils.showErrorSnackBar(context,'Please enter the first name.');
       return false;
     }
     if (lastNameController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'Last name cannot be empty');
+      SnackBarUtils.showErrorSnackBar(context,'Please enter the last name.');
       return false;
     }
     if (emailController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'Email cannot be empty');
+     SnackBarUtils.showErrorSnackBar(context,'Please enter the email.');
       return false;
     }
     // Email format validation
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text)) {
-      Get.snackbar('Validation Error', 'Invalid email fomat');
+      SnackBarUtils.showErrorSnackBar(context,'Invalid email format');
       return false;
     }
 
     if (dobController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'DOB cannot be empty');
+     SnackBarUtils.showErrorSnackBar(context,'Please select the DOB.');
       return false;
     }
 
     if (phController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'Phone number cannot be empty');
+      SnackBarUtils.showErrorSnackBar(context,'Please enter the mobile number.');
       return false;
     }
     // Phone number format validation (10 digits)
     if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
-      Get.snackbar('Validation Error', 'Invalid number');
+      SnackBarUtils.showErrorSnackBar(context,'Invalid mobile number');
       return false;
     }
 
     if (pincodeController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'Pincode cannot be empty');
+      SnackBarUtils.showErrorSnackBar(context,'Please enter the pincode.');
       return false;
     }
 
+    if (pincodeController.text.length != 6) {
+    SnackBarUtils.showErrorSnackBar(context,'Invalid pincode.');
+    return false;
+  }
+
     if (!acceptedTerms.value) {
-      Get.snackbar(
-          'Validation Error', 'Please accept the terms and conditions');
+     SnackBarUtils.showErrorSnackBar(context,
+          'Please accept the checkbox to proceed');
       return false;
     }
 
     if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'Please select the Id proof');
+      SnackBarUtils.showErrorSnackBar(context,'Please select the Id proof');
       return false;
     }
 
@@ -104,20 +110,20 @@ class AuthControllers extends GetxController
     return true;
   }
 
-  bool validateLogin() {
+  bool validateLogin(BuildContext context) {
     String input = logInController.text.trim();
 
     if (input.isEmpty) {
-      Get.snackbar(
-          'Validation Error', 'Phone number or Email ID cannot be empty.');
+     SnackBarUtils.showErrorSnackBar(context,
+          'Please enter the phone number / email ID');
       return false;
     }
 
     // Check if the input is a phone number (10 digits)
     if (RegExp(r'^[0-9]+$').hasMatch(input)) {
       if (input.length != 10) {
-        Get.snackbar(
-            'Validation Error', 'Phone number must be exactly 10 digits.');
+       SnackBarUtils.showErrorSnackBar(context,
+          'Invalid Phone number');
         return false;
       }
       return true; // It's a valid phone number
@@ -125,7 +131,7 @@ class AuthControllers extends GetxController
 
     // Check if the input is a valid email format
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input)) {
-      Get.snackbar('Validation Error', 'Please enter a valid email address.');
+      SnackBarUtils.showErrorSnackBar(context,'Invalid email address.');
       return false;
     }
 
@@ -133,16 +139,16 @@ class AuthControllers extends GetxController
     return true;
   }
 
-  bool validateOtp() {
+  bool validateOtp(BuildContext context) {
     if (otpController.text.isEmpty) {
-      Get.snackbar('Validation Error', 'Please enter the OTP');
+     SnackBarUtils.showErrorSnackBar(context, 'Please enter the OTP');
       return false;
     }
     return true;
   }
 
-  void logIn(String identifiers) async {
-    if (validateLogin()) {
+  void logIn(String identifiers,BuildContext context) async {
+    if (validateLogin(context)) {
       isLoading.value = true;
       try {
         var response = await WebService.login(identifiers);
@@ -160,8 +166,8 @@ class AuthControllers extends GetxController
     }
   }
 
-  void signIn() async {
-    if (validateFields()) {
+  void signIn(BuildContext context) async {
+    if (validateFields(context)) {
       isLoading.value = true;
       try {
         var response = await WebService.Register(
@@ -187,8 +193,8 @@ class AuthControllers extends GetxController
     }
   }
 
-  Future<int?> otp() async {
-    if (validateOtp()) {
+  Future<int?> otp(BuildContext context) async {
+    if (validateOtp(context)) {
       isLoading.value = true;
       try {
         // Logger().i("moving to otp ===>$");
