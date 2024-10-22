@@ -151,7 +151,7 @@ class AuthControllers extends GetxController
     if (validateLogin(context)) {
       isLoading.value = true;
       try {
-        var response = await WebService.login(identifiers);
+        var response = await WebService.login(identifiers,context);
         if (response != null) {
           loginResponse.value = response;
           isLoading.value = false;
@@ -171,6 +171,7 @@ class AuthControllers extends GetxController
       isLoading.value = true;
       try {
         var response = await WebService.Register(
+          context: context,
             firstName: firstNameController.text,
             lastName: lastNameController.text,
             email: emailController.text,
@@ -202,7 +203,7 @@ class AuthControllers extends GetxController
             otpController.text,
             currentTabIndex.value == 0
                 ? loginResponse.value.accountVerificationToken!
-                : registerResponse.value.data!.accountVerificationToken!);
+                : registerResponse.value.data!.accountVerificationToken!,context);
         if (response != null) {
           Logger().i(response.data);
           otpResponse.value = response!;

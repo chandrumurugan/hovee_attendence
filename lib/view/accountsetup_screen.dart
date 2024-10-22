@@ -15,15 +15,18 @@ import 'package:hovee_attendence/utils/customDropDownInputField.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
+import 'package:path/path.dart' as path;
 
 class AccountSetup extends StatelessWidget {
   final String roleId;
-  final String roleTypeId;
-
+  final String roleTypeId; final String selectedRoleTypeName;
+  final String selectedRole;
   AccountSetup({
     super.key,
     required this.roleId,
     required this.roleTypeId,
+     required this.selectedRoleTypeName,
+    required this. selectedRole
   });
   final authController = Get.find<AuthControllers>();
   AccountSetupController accountController = Get.put(AccountSetupController());
@@ -93,7 +96,11 @@ class AccountSetup extends StatelessWidget {
                 color: Colors.white,
                 child: Obx(() {
                   return Container(
-                    height: accountController.currentTabIndex.value == 0
+                    height: selectedRole=='Tutee'?
+                    accountController.currentTabIndex.value == 2
+                        ? MediaQuery.of(context).size.height * 0.5
+                        : MediaQuery.of(context).size.height * 0.7
+                        :accountController.currentTabIndex.value == 2
                         ? MediaQuery.of(context).size.height * 0.7
                         : MediaQuery.of(context).size.height * 0.7,
                     width: MediaQuery.sizeOf(context).width,
@@ -115,16 +122,18 @@ class AccountSetup extends StatelessWidget {
                             accountController.currentTabIndex.value = index;
                             accountController.isLoading.value = false;
                           },
-                          tabs: const [
+                          tabs: 
+                           [
                             Tab(
                               text: 'Personal info',
                             ),
                             Tab(
                               text: 'Address info',
                             ),
+                            selectedRoleTypeName!='I Run an Institute'?
                             Tab(
                               text: 'Education info',
-                            ),
+                            ):Container(),
                           ],
                           unselectedLabelColor: Colors.grey,
                           unselectedLabelStyle: const TextStyle(
@@ -510,7 +519,7 @@ class AccountSetup extends StatelessWidget {
                                   ),
                                 ),
                               ),
-
+                               
                               //address info
                               Container(
                                 padding:
@@ -741,7 +750,7 @@ class AccountSetup extends StatelessWidget {
                                       InkWell(
                                         onTap: () {
                                           accountController
-                                              .storeAddressInfo(context);
+                                              .storeAddressInfo(context,selectedRoleTypeName,roleId,roleTypeId);
                                         },
                                         child: Container(
                                           height: 48,
@@ -788,7 +797,9 @@ class AccountSetup extends StatelessWidget {
                                   ),
                                 ),
                               ),
-
+                              selectedRoleTypeName=='I Run an Institute' && selectedRoleTypeName==""?
+                              Container()
+                             : selectedRoleTypeName!='I Run an Institute' && selectedRoleTypeName!=""?
                               Container(
                                 padding: EdgeInsets.symmetric(horizontal: 12),
                                 child: SingleChildScrollView(
@@ -805,14 +816,7 @@ class AccountSetup extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            const Text(
-                                              'Additional Info',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black,
-                                              ),
-                                            ),
+                                            
                                             const SizedBox(
                                               height: 5,
                                             ),
@@ -902,7 +906,188 @@ class AccountSetup extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                              )
+                              ):
+                              selectedRole=='Tutee'?
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 12),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Name',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      InputTextField(
+                                          suffix: false,
+                                          readonly: false,
+                                          inputFormatter: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(
+                                                r"[a-zA-Z0-9@&_,-\.']",
+                                              ),
+                                            ),
+                                          ],
+                                          hintText: 'Enter your email',
+                                          keyboardType:
+                                              TextInputType.emailAddress,
+                                          controller: accountController
+                                              .emailController),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                       Row(
+                                        children: [
+                                          const Text(
+                                            'Email',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      InputTextField(
+                                          suffix: false,
+                                          readonly: false,
+                                          inputFormatter: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(
+                                                r"[a-zA-Z0-9@&_,-\.']",
+                                              ),
+                                            ),
+                                          ],
+                                          hintText: 'Enter your email',
+                                          keyboardType:
+                                              TextInputType.emailAddress,
+                                          controller: accountController
+                                              .emailController),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                       Row(
+                                        children: [
+                                          const Text(
+                                            'Phone number',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            '*',
+                                            style: GoogleFonts.nunito(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  Colors.red.withOpacity(0.6),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      InputTextField(
+                                          suffix: false,
+                                          readonly: false,
+                                          inputFormatter: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(
+                                                r"[a-zA-Z0-9@&_,-\.']",
+                                              ),
+                                            ),
+                                          ],
+                                          hintText: 'Enter your email',
+                                          keyboardType:
+                                              TextInputType.emailAddress,
+                                          controller: accountController
+                                              .emailController),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                         
+                                        },
+                                        child: Container(
+                                          height: 48,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 40,
+                                            vertical: 12,
+                                          ),
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8),
+                                            ),
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Color(0xFFC13584),
+                                                Color(0xFF833AB4)
+                                              ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                            ),
+                                          ),
+                                          child:
+                                              accountController.isLoading.value
+                                                  ? const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    )
+                                                  : const Center(
+                                                      child: Text(
+                                                        'Next',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ):Container()
                             ],
                           ),
                         )
@@ -921,22 +1106,134 @@ class AccountSetup extends StatelessWidget {
     );
   }
 
+  // Widget _buildFileUploadSection(String title, String type) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(bottom: 10),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Row(
+  //           children: [
+  //             Text(
+  //               title,
+  //               style: TextStyle(
+  //                 fontSize: 14,
+  //                 fontWeight: FontWeight.w500,
+  //                 color: Colors.black,
+  //               ),
+  //             ),
+  //             Text(
+  //               '*',
+  //               style: GoogleFonts.nunito(
+  //                 fontSize: 18,
+  //                 fontWeight: FontWeight.w600,
+  //                 color: Colors.red.withOpacity(0.6),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //         const SizedBox(
+  //           height: 5,
+  //         ),
+  //         // Padding(
+  //         //   padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+  //         //   child: Text(
+  //         //     title,
+  //         //     style: GoogleFonts.nunito(
+  //         //         fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
+  //         //   ),
+  //         // ),
+  //         Container(
+  //           // margin: EdgeInsets.all(20),
+  //           width: double.infinity,
+  //           height: 120,
+
+  //           decoration: BoxDecoration(
+  //             color: Color(0xFFBA0161).withOpacity(0.2),
+  //             borderRadius: BorderRadius.circular(12),
+  //           ),
+  //           // child: DottedBorder(
+  //           // borderType: BorderType.RRect,
+  //           // radius: const Radius.circular(12),
+  //           // color: Color(0xFFC13584),
+  //           // strokeWidth: 1,
+  //           // dashPattern: const [5, 5],
+  //           child: Container(
+  //             decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(12),
+  //                 border: Border.all(
+  //                     color: AppConstants.secondaryColor,
+  //                     style: BorderStyle.solid)),
+  //             child: GestureDetector(
+  //               onTap: () async {
+  //                 await accountController.pickFile(type);
+  //               },
+  //               child: SizedBox.expand(
+  //                 child: FittedBox(
+  //                   child: (type == 'resume' &&
+  //                               accountController
+  //                                   .resumePath.value.isNotEmpty) ||
+  //                           (type == 'education' &&
+  //                               accountController
+  //                                   .educationCertPath.value.isNotEmpty) ||
+  //                           (type == 'experience' &&
+  //                               accountController
+  //                                   .experienceCertPath.value.isNotEmpty)
+  //                       ? Image.file(
+  //                           File(
+  //                             (type == 'resume'
+  //                                 ? accountController.resumePath.value
+  //                                 : type == 'education'
+  //                                     ? accountController
+  //                                         .educationCertPath.value
+  //                                     : accountController
+  //                                         .experienceCertPath.value),
+  //                           ),
+  //                           fit: BoxFit.cover,
+  //                         )
+  //                       : Column(
+  //                           children: [
+  //                             const Icon(
+  //                               Icons.image_outlined,
+  //                               color: Color(0xFFC13584),
+  //                             ),
+  //                             Text(
+  //                               "Attachment",
+  //                               style: GoogleFonts.nunito(
+  //                                   fontSize: 10,
+  //                                   fontWeight: FontWeight.w600,
+  //                                   color: Colors.black.withOpacity(0.5)),
+  //                             )
+  //                           ],
+  //                         ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
   Widget _buildFileUploadSection(String title, String type) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
               ),
+            ),
+            // Display the asterisk (*) only for types other than 'education'
+            if (type != 'education')
               Text(
                 '*',
                 style: GoogleFonts.nunito(
@@ -945,91 +1242,50 @@ class AccountSetup extends StatelessWidget {
                   color: Colors.red.withOpacity(0.6),
                 ),
               ),
-            ],
+          ],
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+    
+        InkWell(
+  onTap: () {
+    print("Greeting values==");
+    accountController.pickFile(type);
+  },
+  child: Container(
+    height: 55,
+    alignment: Alignment.centerLeft,
+    padding: const EdgeInsets.only(top: 10, bottom: 10, left: 12),
+    decoration: BoxDecoration(
+      color: Colors.grey[200],
+      borderRadius: BorderRadius.circular(15),
+    ),
+    child: (type == 'resume' && accountController.resumePath.value.isNotEmpty) ||
+          (type == 'education' && accountController.educationCertPath.value.isNotEmpty) ||
+          (type == 'experience' && accountController.experienceCertPath.value.isNotEmpty)
+      ? Text(
+          path.basename(
+            type == 'resume'
+              ? accountController.resumePath.value
+              : type == 'education'
+                ? accountController.educationCertPath.value
+                : accountController.experienceCertPath.value,
           ),
-          const SizedBox(
-            height: 5,
-          ),
-          // Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-          //   child: Text(
-          //     title,
-          //     style: GoogleFonts.nunito(
-          //         fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
-          //   ),
-          // ),
-          Container(
-            // margin: EdgeInsets.all(20),
-            width: double.infinity,
-            height: 120,
+        )
+      : Text(
+          "Select",
+          style: TextStyle(color: Colors.grey[400], fontWeight: FontWeight.w400),
+        ),
+  ),
+),
 
-            decoration: BoxDecoration(
-              color: Color(0xFFBA0161).withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            // child: DottedBorder(
-            // borderType: BorderType.RRect,
-            // radius: const Radius.circular(12),
-            // color: Color(0xFFC13584),
-            // strokeWidth: 1,
-            // dashPattern: const [5, 5],
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                      color: AppConstants.secondaryColor,
-                      style: BorderStyle.solid)),
-              child: GestureDetector(
-                onTap: () async {
-                  await accountController.pickFile(type);
-                },
-                child: SizedBox.expand(
-                  child: FittedBox(
-                    child: (type == 'resume' &&
-                                accountController
-                                    .resumePath.value.isNotEmpty) ||
-                            (type == 'education' &&
-                                accountController
-                                    .educationCertPath.value.isNotEmpty) ||
-                            (type == 'experience' &&
-                                accountController
-                                    .experienceCertPath.value.isNotEmpty)
-                        ? Image.file(
-                            File(
-                              (type == 'resume'
-                                  ? accountController.resumePath.value
-                                  : type == 'education'
-                                      ? accountController
-                                          .educationCertPath.value
-                                      : accountController
-                                          .experienceCertPath.value),
-                            ),
-                            fit: BoxFit.cover,
-                          )
-                        : Column(
-                            children: [
-                              const Icon(
-                                Icons.image_outlined,
-                                color: Color(0xFFC13584),
-                              ),
-                              Text(
-                                "Attachment",
-                                style: GoogleFonts.nunito(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black.withOpacity(0.5)),
-                              )
-                            ],
-                          ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+      
+      ],
+    ),
+  );
+}
+
 
   List<Widget> _buildDropdowns() {
     return [
@@ -1147,6 +1403,7 @@ class AccountSetup extends StatelessWidget {
           ],
         ),
       ),
+    
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Column(

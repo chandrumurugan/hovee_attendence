@@ -45,13 +45,10 @@ class CommonInputField extends StatelessWidget {
         obscureText: obscureText,
         inputFormatters: inputFormatters,
         decoration: InputDecoration(
-          // labelText: label,
-            filled: true,
-          fillColor: Colors.grey[200],
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14.0),
-            borderSide: BorderSide.none,
-          ),
+          labelText: label,
+          border: OutlineInputBorder(),
+          prefixText: prefixText,
+          suffixText: suffixText,
         ),
       ),
     );

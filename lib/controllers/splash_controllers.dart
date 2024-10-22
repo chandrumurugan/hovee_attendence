@@ -15,27 +15,30 @@ import 'package:logger/logger.dart';
 
 class SplashController extends GetxController {
   var showSecondImage = false.obs;
-    var appConfig = AppConfig().obs;
-     final box = GetStorage();
-
+  var appConfig = AppConfig().obs;
+  final box = GetStorage();
 
   @override
   void onInit() {
     super.onInit();
- 
+
     Future.delayed(const Duration(seconds: 1), () {
       showSecondImage.value = true;
     });
     fetchAppConfig();
-  
   }
 
-    Future<void> fetchAppConfig() async {
+  Future<void> fetchAppConfig() async {
     try {
       var response = await WebService.fetchAppConfig();
       if (response != null) {
         appConfig.value = response;
-          checkUserLoggedIn();
+        final storage = GetStorage();
+      storage.write('qualifications', response.data!.highestQualification.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
+      storage.write('skills', response.data!.teachingSkill.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
+      storage.write('techs', response.data!.batchMode.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
+      storage.write('techsExperience', response.data!.workExperience.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
+        checkUserLoggedIn();
         Logger().i('AppConfig loaded successfully');
       } else {
         Logger().e('Failed to load AppConfig');
@@ -49,19 +52,13 @@ class SplashController extends GetxController {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('user_token');
-      Future.delayed(const Duration(
-        seconds: 2
-      ));
+      Future.delayed(const Duration(seconds: 2));
       String isLoggedIn = box.read('Token') ?? "";
-      if(isLoggedIn.isNotEmpty){
-           Get.off(() =>  TutorHome());
-      }else{
-           Get.off(() => const LoginSignUp());
+      if (isLoggedIn.isNotEmpty) {
+        Get.off(() => TutorHome());
+      } else {
+        Get.off(() => const LoginSignUp());
       }
-     
-     
-
-      
 
       // if (token != null && token.trim().isNotEmpty) {
       //   bool response = await WebService.validateToken();

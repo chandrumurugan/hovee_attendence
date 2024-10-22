@@ -8,6 +8,7 @@ import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 class AccountSetupController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -60,21 +61,14 @@ class AccountSetupController extends GetxController
   var educationInfo = {}.obs;
   final WebService webService = Get.put(WebService());
 
-  final List<String> qualifications = [
-    'PhD',
-    'Masters',
-    'Bachelors',
-    'Diploma'
+   List<String> qualifications = [
+  
   ];
-  final List<String> skills = [
-    'CBSE(1-5)',
-    'CBSE(1-7)',
-    'CBSE(1-9)',
-    'CBSE(1-10)',
-    "CBSE(1-12)"
+   List<String> skills = [
+  
   ];
-  final List<String> techs = ['Full Time', 'Part Time'];
-  final List<String> techsExperience = ['1yr', '3yrs', '5yrs', '7yrs'];
+   List<String> techs = [];
+   List<String> techsExperience = [];
   @override
   void onInit() {
     // TODO: implement onInit
@@ -82,6 +76,7 @@ class AccountSetupController extends GetxController
     authControllers = Get.find<AuthControllers>();
     tabController = TabController(length: 3, vsync: this);
     _populateFieldsFromAuth();
+     _loadDropdownData();
   }
 
   void _populateFieldsFromAuth() {
@@ -98,30 +93,39 @@ class AccountSetupController extends GetxController
     selectedIDProof.value = authControllers.otpResponse.value.data!.idProof!;
     idProofController.text = authControllers.otpResponse.value.data!.idProof!;
   }
+  
+  void _loadDropdownData() {
+  // Load data from GetStorage into lists
+ qualifications = GetStorage().read<List<String>>('qualifications') ?? [];
+ skills = GetStorage().read<List<String>>('skills') ?? [];
+ techs = GetStorage().read<List<String>>('techs') ?? [];
+ techsExperience = GetStorage().read<List<String>>('techsExperience') ?? [];
+
+  }
 
   bool validateAddressInfo(BuildContext context) {
     if (address1Controller.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter address1 field");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter address1");
       return false;
     }
     if (address2Controller.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter address2 field");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter address2");
       return false;
     }
     if (cityController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter city field");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter city");
       return false;
     }
     if (stateController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter state field");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter state");
       return false;
     }
     if (countryController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter country field");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter country");
       return false;
     }
     if (pincodesController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter pincode field");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter pincode");
       return false;
     }
 
@@ -201,10 +205,11 @@ class AccountSetupController extends GetxController
         'rolesTypeId':roleTypeId,
       };
       tabController.animateTo(1);
+      
     }
   }
 
-  void storeAddressInfo(BuildContext context) {
+  void storeAddressInfo(BuildContext context,String selectedRoleTypeName,String roleId, String roleTypeId) {
     if (validateAddressInfo(context)) {
       addressInfo.value = {
         "door_no": address1Controller.text,
@@ -215,7 +220,9 @@ class AccountSetupController extends GetxController
         "pincode": pincodesController.text,
         "phone_number": phController.text,
       };
-      tabController.animateTo(2);
+       selectedRoleTypeName=='I Run an Institute'?
+      submitAccountSetup(roleId, roleTypeId):Container();
+     selectedRoleTypeName!='I Run an Institute'? tabController.animateTo(2):Container();
     }
   }
 
@@ -241,11 +248,6 @@ class AccountSetupController extends GetxController
     if (teachingExperience.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
           context, 'Please select teaching experience.');
-      return false;
-    }
-    if (additionalInfo.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(
-          context, 'Please provide additional info.');
       return false;
     }
     if (resumePath.value.isEmpty) {
@@ -287,20 +289,28 @@ class AccountSetupController extends GetxController
   void setAdditionalInfo(String value) => additionalInfo.value = value;
 
   Future<void> pickFile(String type) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? file = await picker.pickImage(source: ImageSource.gallery);
-    if (file != null) {
-       Logger().i(file.path);
-      if (type == 'resume') {
-       
-        resumePath.value = file.path;
-      } else if (type == 'education') {
-        educationCertPath.value = file.path;
-      } else if (type == 'experience') {
-        experienceCertPath.value = file.path;
-      }
+  final ImagePicker picker = ImagePicker();
+  final XFile? file = await picker.pickImage(source: ImageSource.gallery);
+  if (file != null) {
+    Logger().i(file.path);
+
+    // Extracting filename and extension
+    String filename = path.basename(file.path); // e.g., "1000000018.jpg"
+    String fileExtension = path.extension(file.path); // e.g., ".jpg"
+    
+    Logger().i("Filename: $filename");
+    Logger().i("File Extension: $fileExtension");
+
+    if (type == 'resume') {
+      resumePath.value = file.path;
+    } else if (type == 'education') {
+      educationCertPath.value = file.path;
+    } else if (type == 'experience') {
+      experienceCertPath.value = file.path;
     }
   }
+}
+
 
   Future<void> submitAccountSetup(String roleId, String roleTypeId) async {
     final box = GetStorage(); // Get an instance of GetStorage

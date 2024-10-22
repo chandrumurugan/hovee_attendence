@@ -48,6 +48,7 @@ dependencies:
   syncfusion_flutter_charts: ^27.1.53
   top_snackbar_flutter: ^3.1.0
   image_picker: ^1.1.2
+  path:
 
 dev_dependencies:
   flutter_test:

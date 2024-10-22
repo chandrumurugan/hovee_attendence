@@ -17,7 +17,7 @@ class RoleSelection extends StatefulWidget {
 class _RoleSelectionState extends State<RoleSelection> {
   final RoleController roleController = Get.put(RoleController());
 
-  String? selectedRoleId, selectedRole;
+  String? selectedRoleId, selectedRole,selectedRoleTypeName;
   String? selectedRoleTypeId;
   List<Role>? roles;
   List<RoleType> roleTypes = [];
@@ -79,13 +79,32 @@ class _RoleSelectionState extends State<RoleSelection> {
                       //   'assets/appConstantImg/colorlogoword.png',
                       //   height: 30,
                       // ),
-                      const Text(
-                        'hovee',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 24),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Stack(
+                                  alignment: Alignment.centerLeft,
+                                  children: [
+                                    const Text(
+                                      'hovee',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 28,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom:22, // Adjust this value as needed
+                                      left: 70, // Align with the start of "hovee"
+                                      child: Text(
+                              'e-attendance',
+                              style: GoogleFonts.nunito(
+                                  fontSize: 18.0, color: Color(0xffFFA012)),
+                            ),
+                                    ),
+                                  ],
+                                ),
                       ),
+           
                       const Text(
                         'Select your role',
                         style: TextStyle(
@@ -114,7 +133,8 @@ class _RoleSelectionState extends State<RoleSelection> {
                                     selectedRoleId = role.id;
                                     roleTypes = role.roleTypes;
                                     selectedRoleTypeId =
-                                        null; // Reset selected role type
+                                        null; 
+                                        selectedRoleTypeName = null;// Reset selected role type
                                     selectedRole = role.roleName;
                                   });
                                 },
@@ -173,12 +193,14 @@ class _RoleSelectionState extends State<RoleSelection> {
                               itemBuilder: (context, index) {
                                 var roleType = roleTypes[index];
                                 bool isSelected =
-                                    selectedRoleTypeId == roleType.id;
+                                    selectedRoleTypeId == roleType.id&&
+                                  selectedRoleTypeName == roleType.roleTypeName;
 
                                 return GestureDetector(
                                   onTap: () {
                                     setState(() {
                                       selectedRoleTypeId = roleType.id;
+                                      selectedRoleTypeName = roleType.roleTypeName;
                                     });
                                   },
                                   child: Padding(
@@ -242,7 +264,9 @@ class _RoleSelectionState extends State<RoleSelection> {
                           // If we reach here, either a role is selected and it's not 'tutor', or it's 'tuttee' (which doesn't require a role type)
                           Get.to(() => AccountSetup(
                               roleId: selectedRoleId!,
-                              roleTypeId: selectedRoleTypeId ?? ''));
+                              roleTypeId: selectedRoleTypeId ?? '',
+                              selectedRoleTypeName: selectedRoleTypeName?? '',
+                              selectedRole: selectedRole?? '',));
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

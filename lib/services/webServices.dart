@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/config/appConfig.dart';
@@ -9,6 +10,7 @@ import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
+import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -35,7 +37,7 @@ class WebService {
     }
   }
 
-  static Future<LoginModal?> login(String identifiers) async {
+  static Future<LoginModal?> login(String identifiers,BuildContext context) async {
     try {
       var headers = {'Content-Type': 'application/json'};
       var data = {"identifier": identifiers};
@@ -50,7 +52,7 @@ class WebService {
         return LoginModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        Get.snackbar("${result["message"]}");
+        SnackBarUtils.showErrorSnackBar(context,"${result["message"]}");
         print("Failed to load login");
         return null;
       }
@@ -61,13 +63,15 @@ class WebService {
   }
 
   static Future<RegisterModal?> Register(
-      {required String firstName,
+      {required BuildContext context,
+        required String firstName,
       required String lastName,
       required String email,
       required String dob,
       required String phNo,
       required String pincode,
-      required String idProof}) async {
+      required String idProof,
+      }) async {
     try {
       DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
       String formattedDate1 = DateFormat('dd/MM/yyyy').format(parsedDate1);
@@ -93,7 +97,7 @@ class WebService {
         return RegisterModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        Get.snackbar("${result["message"]}");
+        SnackBarUtils.showErrorSnackBar(context,"${result["message"]}");
 
         return null;
       }
@@ -104,7 +108,7 @@ class WebService {
   }
 
   static Future<OtpModal?> otp(
-      String otp, String accountverificationtoken) async {
+      String otp, String accountverificationtoken,BuildContext context) async {
     try {
       var headers = {'Content-Type': 'application/json'};
 
@@ -124,7 +128,7 @@ class WebService {
         return OtpModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        Get.snackbar("${result["message"]}");
+        SnackBarUtils.showErrorSnackBar(context,"${result["message"]}");
 
         return null;
       }
