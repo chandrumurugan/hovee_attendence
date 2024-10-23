@@ -67,12 +67,24 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
   ];
    List<String> techs = [];
    List<String> techsExperience = [];
+
+   List<String> qualificationsProfile = ['School','College'];
+   List<String> classProfile = ['Class 1','Class 2','Class 3','Class 4','Class 5'];
+
+   var qualificationsProfile1 = ''.obs;
+  var classProfile1 = ''.obs;
+
+   
     void setHighestQualification(String value) =>
       highestQualification.value = value;
   //void setTeachingSkills(String value) => teachingSkills.value = value;
   void setWorkingTech(String value) => QualificationClass.value = value;
   void setTeachingExperience(String value) => board.value = value;
   void setAdditionalInfo(String value) => organizationName.value = value;
+   void setHighestQualificationProfile(String value) =>
+      qualificationsProfile1.value = value;
+       void setHighestQualificationClassProfile(String value) =>
+      classProfile1.value = value;
 
   Future<void> pickFile(String type) async {
     final ImagePicker picker = ImagePicker();

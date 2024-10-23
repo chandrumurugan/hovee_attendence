@@ -74,10 +74,10 @@ class AccountSetupController extends GetxController
   var tuteEducationInfo = {}.obs;
   final WebService webService = Get.put(WebService());
 
-   List<String> qualifications = [];
-   List<String> skills = [];
-   List<String> techs = [];
-   List<String> techsExperience = [];
+   List<String> qualifications = ['PG','UG'];
+   List<String> skills = ['Primary(1st-5th)','Secondary(6th-10th)','Higher Secondary(11th-12th)'];
+   List<String> techs = ['Full Time,Part Time'];
+   List<String> techsExperience = ['1-3 years','3-5 years','5-10 years','10+ years'];
   @override
   void onInit() {
     // TODO: implement onInit
@@ -85,7 +85,7 @@ class AccountSetupController extends GetxController
     authControllers = Get.find<AuthControllers>();
     tabController = TabController(length: 3, vsync: this);
     _populateFieldsFromAuth();
-     _loadDropdownData();
+     //_loadDropdownData();
   }
 
   void _populateFieldsFromAuth() {

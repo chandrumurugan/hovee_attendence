@@ -1730,30 +1730,33 @@ class UserProfile extends StatelessWidget {
           Positioned(
             top: MediaQuery.of(context).size.height *
                 0.14, // Adjust as per your design
-            left: (MediaQuery.of(context).size.width / 2) - 30,
-            child:  Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // Adjust as per your design
-                      Text(
-                    '${accountController.userProfileResponse.value.data!.rolesId!.roleName!}',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+            left: (MediaQuery.of(context).size.width / 2) - 50,
+            child:  Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    // Adjust as per your design
+                        Text(
+                      '${accountController.userProfileResponse.value.data!.rolesId!.roleName!}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-              
-                  Text(
-                    '${accountController.userProfileResponse.value.data!.wowId!}',
-                    style: TextStyle(
-                      color: AppConstants. secondaryColor,
-                      fontSize: 16,
+                
+                    Text(
+                      '${accountController.userProfileResponse.value.data!.wowId!}',
+                      style: TextStyle(
+                        color: AppConstants. secondaryColor,
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                  
-                ],
-              ),
+                    
+                  ],
+                ),
+            ),
            
             // ),
           ),
@@ -3500,7 +3503,7 @@ class UserProfile extends StatelessWidget {
             // ),
             InkWell(
                                             onTap: () {
-                                            
+                                               
                                             },
                                             child: Container(
                                               height: 55,
@@ -3741,6 +3744,7 @@ class UserProfile extends StatelessWidget {
       ),
     ];
   }
+  
 }
 
 class HemisphereClipper extends CustomClipper<Path> {
