@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
+import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
+import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
@@ -39,6 +42,13 @@ class AccountSetupController extends GetxController
   final pincodesController = TextEditingController();
   final additionalInfoController = TextEditingController();
 
+  //tutee
+    final tuteQualificationController = TextEditingController();
+      final tuteclassController = TextEditingController();
+        final tuteeboardController = TextEditingController();
+          final tuteorganizationController = TextEditingController();
+
+
   //education info
   // Dropdown values
   var highestQualification = ''.obs;
@@ -60,6 +70,8 @@ class AccountSetupController extends GetxController
   var personalInfo = {}.obs;
   var addressInfo = {}.obs;
   var educationInfo = {}.obs;
+
+  var tuteEducationInfo = {}.obs;
   final WebService webService = Get.put(WebService());
 
    List<String> qualifications = [
@@ -222,7 +234,7 @@ class AccountSetupController extends GetxController
         "phone_number": phController.text,
       };
        selectedRoleTypeName=='I Run an Institute'?
-      submitAccountSetup(roleId, roleTypeId):Container();
+      submitAccountSetup(roleId, roleTypeId,context):Container();
      selectedRoleTypeName!='I Run an Institute'? tabController.animateTo(2):Container();
     }
   }
@@ -262,6 +274,32 @@ class AccountSetupController extends GetxController
     }
     return true;
   }
+  bool validateTuteEducationInfo(BuildContext context){
+    if(tuteQualificationController.text.isEmpty){
+       SnackBarUtils.showErrorSnackBar(
+          context, "Please enter highest qualification.");
+          return false;
+
+    }
+    if(tuteclassController.text.isEmpty){
+       SnackBarUtils.showErrorSnackBar(
+          context, "Please enter class.");
+          return false;
+
+    }
+    if(tuteeboardController.text.isEmpty){
+        SnackBarUtils.showErrorSnackBar(
+          context, "Please enter board.");
+          return false;
+
+    }
+    if(tuteorganizationController.text.isEmpty){
+        SnackBarUtils.showErrorSnackBar(
+          context, "Please enter organization name.");
+          return false;
+    }
+    return true;
+  }
 
   void storeEducationInfo(
       BuildContext context, String roleId, String roleTypeId) {
@@ -273,9 +311,59 @@ class AccountSetupController extends GetxController
         "teaching_experience": teachingExperience.value,
         "additional_info": additionalInfo.value,
       };
-      submitAccountSetup(roleId, roleTypeId);
+      submitAccountSetup(roleId, roleTypeId,context);
     }
   }
+
+  void storeTuteeeducationInfo(BuildContext context, String roleId, String roleTypeId){
+    if(validateTuteEducationInfo(context)){
+      tuteEducationInfo.value = { "highest_qualification": tuteQualificationController.text, 
+    "select_class": tuteclassController.text, 
+    "select_board": tuteeboardController.text, 
+    "organization_name": tuteorganizationController.text
+};
+submitTuteeAccountSetup(roleId);
+    }
+  }
+
+  Future<void> submitTuteeAccountSetup(String roleId,)async{
+     final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+
+    isLoading.value = true;
+    try {
+      http.StreamedResponse response =  await webService.submitTuteeAccountSetup(
+        token: token, // Add the actual token here
+        personalInfo: personalInfo.value,
+        addressInfo: addressInfo.value,
+        educationInfo: tuteEducationInfo.value,
+        // resumePath: '',
+        // educationCertPath: '',
+        // experienceCertPath: '',
+        // roleId:roleId ,
+        // roleTypeId: roleTypeId
+      );
+            if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        print(responseBody);
+        Get.offAll(()=>const TuteeHome());
+        // Handle success (e.g., show a success message)
+      } else {
+        print(response.statusCode);
+        // Handle failure (e.g., show an error message)
+      }
+       
+    } catch (e) {
+      print(e); 
+    }
+    finally {
+      isLoading.value = false;
+    }
+
+  }
+
+
 
   void setHighestQualification(String value) =>
       highestQualification.value = value;
@@ -308,7 +396,7 @@ class AccountSetupController extends GetxController
 }
 
 
-  Future<void> submitAccountSetup(String roleId, String roleTypeId) async {
+  Future<void> submitAccountSetup(String roleId, String roleTypeId,BuildContext context) async {
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
@@ -332,6 +420,7 @@ class AccountSetupController extends GetxController
       if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
         print(responseBody);
+        SnackBarUtils.showSuccessSnackBar(context, "Account setup successfully completed.");
         Get.offAll(()=>TutorHome());
         // Handle success (e.g., show a success message)
       } else {
@@ -344,5 +433,40 @@ class AccountSetupController extends GetxController
     } finally {
       isLoading.value = false;
     }
+  }
+
+      Future<bool> handleBackButton(BuildContext context) async {
+    return await showExitPopup(context) ?? false;
+  }
+
+  // Exit confirmation dialog logic
+  Future<bool?> showExitPopup(BuildContext context) {
+    return Get.dialog<bool>(
+      AlertDialog(
+        title: Text('Exit App'),
+        content: Text('Are you sure you want to go back ?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // If "No" is pressed, just close the dialog
+              Get.back(result: false);
+             
+            },
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () {
+              // If "Yes" is pressed, close the app
+              Get.back(result: true);
+              Future.delayed(Duration(milliseconds: 300), () {
+                 Get.offAll(()=>LoginSignUp());
+                // SystemNavigator.pop();
+              });
+            },
+            child: Text('Yes'),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -38,7 +38,8 @@ class WebService {
     }
   }
 
-  static Future<LoginModal?> login(String identifiers,BuildContext context) async {
+  static Future<LoginModal?> login(
+      String identifiers, BuildContext context) async {
     try {
       var headers = {'Content-Type': 'application/json'};
       var data = {"identifier": identifiers};
@@ -53,7 +54,7 @@ class WebService {
         return LoginModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showErrorSnackBar(context,"${result["message"]}");
+        SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
         print("Failed to load login");
         return null;
       }
@@ -63,16 +64,16 @@ class WebService {
     }
   }
 
-  static Future<RegisterModal?> Register(
-      {required BuildContext context,
-        required String firstName,
-      required String lastName,
-      required String email,
-      required String dob,
-      required String phNo,
-      required String pincode,
-      required String idProof,
-      }) async {
+  static Future<RegisterModal?> Register({
+    required BuildContext context,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String dob,
+    required String phNo,
+    required String pincode,
+    required String idProof,
+  }) async {
     try {
       DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
       String formattedDate1 = DateFormat('dd/MM/yyyy').format(parsedDate1);
@@ -98,7 +99,7 @@ class WebService {
         return RegisterModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showErrorSnackBar(context,"${result["message"]}");
+        SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
 
         return null;
       }
@@ -109,7 +110,7 @@ class WebService {
   }
 
   static Future<OtpModal?> otp(
-      String otp, String accountverificationtoken,BuildContext context) async {
+      String otp, String accountverificationtoken, BuildContext context) async {
     try {
       var headers = {'Content-Type': 'application/json'};
 
@@ -129,12 +130,37 @@ class WebService {
         return OtpModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showErrorSnackBar(context,"${result["message"]}");
+        SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
 
         return null;
       }
     } catch (e) {
       print("Error in fetching login: $e");
+      return null;
+    }
+  }
+
+  static Future<LoginModal?> resendOtp(
+      {required BuildContext context, required String accountToken}) async {
+    try {
+      var headers = {'Content-Type': 'application/json'};
+      var data = {"account_verification_token": accountToken};
+      var url = Uri.parse("${baseUrl}user/resendOtp");
+
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
+      Logger().i(response.body);
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return LoginModal.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
+        SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+        print("Failed to load login");
+        return null;
+      }
+    } catch (e) {
+      print(e);
       return null;
     }
   }
@@ -285,7 +311,7 @@ class WebService {
 
     final token = box.read('Token') ?? '';
     try {
-      var headers = { 'Authorization': "Bearer $token"};
+      var headers = {'Authorization': "Bearer $token"};
       var url = Uri.parse("${baseUrl}user/getUserProfile");
       var response = await http.post(url, headers: headers);
 
@@ -299,7 +325,34 @@ class WebService {
       }
     } catch (e) {
       print(e);
-        return null;
+      return null;
     }
+  }
+
+  Future<http.StreamedResponse> submitTuteeAccountSetup({
+    required String token,
+    required Map<dynamic, dynamic> personalInfo,
+    required Map<dynamic, dynamic> addressInfo,
+    required Map<dynamic, dynamic> educationInfo,
+  }) async {
+    var headers = {
+      'Authorization': 'Bearer $token', // Pass the token for authorization
+      'Content-Type': 'application/json'
+    };
+
+    var request =
+        http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
+
+    // Add personal info
+    request.fields['personal_info'] = jsonEncode(personalInfo);
+
+    // Add address info
+    request.fields['permanent_address'] = jsonEncode(addressInfo);
+
+    // Add education info
+    request.fields['education_info'] = jsonEncode(educationInfo);
+    request.fields['type'] = 'N';
+    request.headers.addAll(headers);
+    return await request.send();
   }
 }

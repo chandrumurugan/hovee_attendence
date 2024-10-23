@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
@@ -41,6 +42,7 @@ class AuthControllers extends GetxController
   var loginResponse = LoginModal().obs;
   var registerResponse = RegisterModal().obs;
   var otpResponse = OtpModal().obs;
+  RxBool isOtpResent = false.obs;
 
   var _start = 30.obs; // Reactive variable to hold the timer value
   var _isTimerRunning =
@@ -52,57 +54,58 @@ class AuthControllers extends GetxController
 
   bool validateFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please enter the first name.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the first name.');
       return false;
     }
     if (lastNameController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please enter the last name.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the last name.');
       return false;
     }
     if (emailController.text.isEmpty) {
-     SnackBarUtils.showErrorSnackBar(context,'Please enter the email.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the email.');
       return false;
     }
     // Email format validation
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text)) {
-      SnackBarUtils.showErrorSnackBar(context,'Invalid email format');
+      SnackBarUtils.showErrorSnackBar(context, 'Invalid email format');
       return false;
     }
 
     if (dobController.text.isEmpty) {
-     SnackBarUtils.showErrorSnackBar(context,'Please select the DOB.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please select the DOB.');
       return false;
     }
 
     if (phController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please enter the mobile number.');
+      SnackBarUtils.showErrorSnackBar(
+          context, 'Please enter the mobile number.');
       return false;
     }
     // Phone number format validation (10 digits)
     if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
-      SnackBarUtils.showErrorSnackBar(context,'Invalid mobile number');
+      SnackBarUtils.showErrorSnackBar(context, 'Invalid mobile number');
       return false;
     }
 
     if (pincodeController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please enter the pincode.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the pincode.');
       return false;
     }
 
     if (pincodeController.text.length != 6) {
-    SnackBarUtils.showErrorSnackBar(context,'Invalid pincode.');
-    return false;
-  }
+      SnackBarUtils.showErrorSnackBar(context, 'Invalid pincode.');
+      return false;
+    }
 
     if (!acceptedTerms.value) {
-     SnackBarUtils.showErrorSnackBar(context,
-          'Please accept the checkbox to proceed');
+      SnackBarUtils.showErrorSnackBar(
+          context, 'Please accept the checkbox to proceed');
       return false;
     }
 
     if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please select the Id proof');
+      SnackBarUtils.showErrorSnackBar(context, 'Please select the Id proof');
       return false;
     }
 
@@ -114,16 +117,15 @@ class AuthControllers extends GetxController
     String input = logInController.text.trim();
 
     if (input.isEmpty) {
-     SnackBarUtils.showErrorSnackBar(context,
-          'Please enter the phone number / email ID');
+      SnackBarUtils.showErrorSnackBar(
+          context, 'Please enter the phone number / email ID');
       return false;
     }
 
     // Check if the input is a phone number (10 digits)
     if (RegExp(r'^[0-9]+$').hasMatch(input)) {
       if (input.length != 10) {
-       SnackBarUtils.showErrorSnackBar(context,
-          'Invalid Phone number');
+        SnackBarUtils.showErrorSnackBar(context, 'Invalid Phone number');
         return false;
       }
       return true; // It's a valid phone number
@@ -131,7 +133,7 @@ class AuthControllers extends GetxController
 
     // Check if the input is a valid email format
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input)) {
-      SnackBarUtils.showErrorSnackBar(context,'Invalid email address.');
+      SnackBarUtils.showErrorSnackBar(context, 'Invalid email address.');
       return false;
     }
 
@@ -141,17 +143,17 @@ class AuthControllers extends GetxController
 
   bool validateOtp(BuildContext context) {
     if (otpController.text.isEmpty) {
-     SnackBarUtils.showErrorSnackBar(context, 'Please enter the OTP');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the OTP');
       return false;
     }
     return true;
   }
 
-  void logIn(String identifiers,BuildContext context) async {
+  void logIn(String identifiers, BuildContext context) async {
     if (validateLogin(context)) {
       isLoading.value = true;
       try {
-        var response = await WebService.login(identifiers,context);
+        var response = await WebService.login(identifiers, context);
         if (response != null) {
           loginResponse.value = response;
           isLoading.value = false;
@@ -171,7 +173,7 @@ class AuthControllers extends GetxController
       isLoading.value = true;
       try {
         var response = await WebService.Register(
-          context: context,
+            context: context,
             firstName: firstNameController.text,
             lastName: lastNameController.text,
             email: emailController.text,
@@ -194,23 +196,25 @@ class AuthControllers extends GetxController
     }
   }
 
-  Future<int?> otp(BuildContext context) async {
+  Future<OtpModal?> otp(BuildContext context) async {
     if (validateOtp(context)) {
       isLoading.value = true;
       try {
         // Logger().i("moving to otp ===>$");
         var response = await WebService.otp(
             otpController.text,
-            currentTabIndex.value == 0
+           
+            currentTabIndex.value == 0 ||  isOtpResent.value 
                 ? loginResponse.value.accountVerificationToken!
-                : registerResponse.value.data!.accountVerificationToken!,context);
+                : registerResponse.value.data!.accountVerificationToken!,
+            context);
         if (response != null) {
           Logger().i(response.data);
           otpResponse.value = response!;
           box.write('Token', response.token);
 
           isLoading.value = false;
-          return response.statusCode;
+          return response;
         } else {
           isLoading.value = false;
           return null;
@@ -242,15 +246,45 @@ class AuthControllers extends GetxController
   }
 
   // Function to resend OTP
-  Future<void> resendOtp() async {
+  Future<void> resendOtp(BuildContext context) async {
     // Add your resend OTP logic here
     // After successful resend, restart the timer
-    startTimer();
+   
+    try {
+      var response = await WebService.resendOtp(
+        context: context,
+        accountToken: currentTabIndex.value == 0
+            ? loginResponse.value.accountVerificationToken!
+            : registerResponse.value.data!.accountVerificationToken!,
+      );
+      if (response != null) {
+        isOtpResent(true);
+        loginResponse.value = response;
+        isLoading.value = false;
+         startTimer();
+        // Get.to(() => OtpScreen());
+      } else {
+        Logger().e('Failed to load AppConfig');
+        isLoading.value = false;
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
   void onClose() {
     _timer?.cancel(); // Cancel timer when controller is closed
+    logInController.dispose();
+    phController.dispose();
+     firstNameController.dispose();
+      lastNameController.dispose();
+       emailController.dispose();
+        dobController.dispose();
+         pincodeController.dispose();
+          otpController.dispose();
+           focusNode.dispose();
+            idProofController.dispose();
     super.onClose();
   }
 
@@ -260,5 +294,9 @@ class AuthControllers extends GetxController
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
   }
+
+
+
+
   
 }

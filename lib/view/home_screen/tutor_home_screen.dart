@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/view/batch_screen.dart';
 import 'package:hovee_attendence/view/course_screen.dart';
@@ -213,6 +214,7 @@ class HomePageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final authController = Get.find<AuthControllers>();
     return Container(
         padding: const EdgeInsets.fromLTRB(20, 5, 20, 40),
         decoration: const BoxDecoration(
@@ -252,7 +254,7 @@ class HomePageHeader extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Text('Jessica',
+                         Text('${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}',
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 24.0,
@@ -304,7 +306,7 @@ class HomePageHeader extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Text('Hov ID : TS90013435267',
+                         Text('hov ID : ${authController.otpResponse.value.data!.wowId!}',
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 13.0,

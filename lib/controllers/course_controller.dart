@@ -23,7 +23,7 @@ class CourseController extends GetxController {
     }
   } catch (e) {
     print('Error: $e');
-    Get.snackbar('Failed to fetch course');
+    // Get.snackbar('Failed to fetch course');
   } finally {
     isLoading(false);
   }

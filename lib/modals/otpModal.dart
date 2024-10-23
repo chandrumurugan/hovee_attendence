@@ -54,6 +54,7 @@ class Data {
         required this.idProofUrl,
         required this.profileFilename,
         required this.profileUrl,
+         required this.roles,
     });
 
     final String? id;
@@ -74,6 +75,7 @@ class Data {
     final String? idProofUrl;
     final String? profileFilename;
     final String? profileUrl;
+     final Roles? roles;
 
     factory Data.fromJson(Map<String, dynamic> json){ 
         return Data(
@@ -95,6 +97,26 @@ class Data {
             idProofUrl: json["id_proof_url"],
             profileFilename: json["profile_filename"],
             profileUrl: json["profile_url"],
+                        roles: json["roles"] == null ? null : Roles.fromJson(json["roles"]),
+
+        );
+    }
+
+}
+
+class Roles {
+    Roles({
+        required this.roleName,
+        required this.roleTypeName,
+    });
+
+    final String roleName;
+    final String roleTypeName;
+
+    factory Roles.fromJson(Map<String, dynamic> json){ 
+        return Roles(
+            roleName: json["roleName"] ?? "",
+            roleTypeName: json["roleTypeName"] ?? "",
         );
     }
 

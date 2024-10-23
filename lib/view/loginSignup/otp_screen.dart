@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/dashBoard.dart';
+import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/roleSelection.dart';
 import 'package:pinput/pinput.dart';
@@ -269,8 +270,9 @@ class _OtpScreenState extends State<OtpScreen> {
                               children: [
                                 InkWell(
                                   onTap: () async {
-                                    var value = await authController.otp(context);
-                                    if (value == 200) {
+                                    var value =
+                                        await authController.otp(context);
+                                    if (value!.statusCode == 200) {
                                       // Determine the success message based on whether the user is logging in or registering
                                       String title1 = authController
                                                   .currentTabIndex.value ==
@@ -295,9 +297,27 @@ class _OtpScreenState extends State<OtpScreen> {
                                             subtitle: 'subtitle',
                                             btnName: 'Ok',
                                             onTap: () {
-                                              authController.currentTabIndex == 0 ? Get.offAll(() =>  TutorHome()) :
-                                              // Navigate to the appropriate screen after successful login or registration
-                                              Get.offAll(() => const RoleSelection());
+                                              if (value.accountSetup!) {
+                                                //  authController.currentTabIndex == 0 ?
+
+                                                if (value.data!.roles!
+                                                        .roleName ==
+                                                    "Tutor") {
+                                                  Get.offAll(() => TutorHome());
+                                                } else if (value.data!.roles!
+                                                        .roleName ==
+                                                    "Tutee") {
+                                                  //Tutee
+                                                  Get.offAll(() => TuteeHome());
+                                                }
+
+                                                //  :
+
+                                                // Get.offAll(() => const RoleSelection());
+                                              } else {
+                                                Get.offAll(() =>
+                                                    const RoleSelection());
+                                              }
                                             },
                                             icon: const Icon(
                                               Icons.check,
@@ -345,8 +365,10 @@ class _OtpScreenState extends State<OtpScreen> {
                                     }),
                                   ),
                                 ),
-                                Text(
-                                    "${authController.currentTabIndex == 0 ? authController.loginResponse.value.otp : authController.registerResponse.value.data!.otp!}"),
+                                Obx(() {
+                                  return Text(
+                                      "${authController.currentTabIndex == 0 || authController.isOtpResent.value ? authController.loginResponse.value.otp : authController.registerResponse.value.data!.otp!}");
+                                }),
                               ],
                             ),
                           ],
@@ -373,7 +395,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                   )
                                 : TextButton(
                                     onPressed: () {
-                                      authController.resendOtp();
+                                      authController.resendOtp(context);
                                     },
                                     child: Text(
                                       'Didn\'t receive OTP? Resend OTP',

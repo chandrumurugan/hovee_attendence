@@ -56,7 +56,7 @@ class SplashController extends GetxController {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('user_token');
-      Future.delayed(const Duration(seconds: 2));
+      Future.delayed(const Duration(seconds: 5));
       String isLoggedIn = box.read('Token') ?? "";
       if(isLoggedIn.isNotEmpty){
            Get.offAll(() =>  TutorHome());

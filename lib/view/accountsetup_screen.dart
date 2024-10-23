@@ -35,169 +35,197 @@ class AccountSetup extends StatelessWidget {
   Widget build(BuildContext context) {
     final splashController = Get.find<SplashController>();
 
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBarHeader(
-        needGoBack: true,
-        navigateTo: () {
-          Navigator.pop(context);
-        },
-      ),
-      body: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                width: MediaQuery.sizeOf(context).width,
-                height: MediaQuery.sizeOf(context).height * 0.25,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/image 194.png'),
-                      fit: BoxFit.cover),
-                  gradient: LinearGradient(
-                    colors: [Color(0xFFC13584), Color(0xFF833AB4)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+    return WillPopScope(
+      onWillPop: ()async{
+         return await accountController.handleBackButton(context);
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBarHeader(
+          needGoBack: true,
+          navigateTo: () {
+            Navigator.pop(context);
+          },
+        ),
+        body: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  width: MediaQuery.sizeOf(context).width,
+                  height: MediaQuery.sizeOf(context).height * 0.25,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/image 194.png'),
+                        fit: BoxFit.cover),
+                    gradient: LinearGradient(
+                      colors: [Color(0xFFC13584), Color(0xFF833AB4)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Account setup',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 24),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                    ],
                   ),
                 ),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Account setup',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 24),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Card(
-                elevation: 10,
-                shadowColor: Colors.black,
-                surfaceTintColor: Colors.white,
-                color: Colors.white,
-                child: Obx(() {
-                  return Container(
-                    height: selectedRole == 'Tutee'
-                        ? accountController.currentTabIndex.value == 2
-                            ? MediaQuery.of(context).size.height * 0.5
-                            : MediaQuery.of(context).size.height * 0.7
-                        : accountController.currentTabIndex.value == 2
-                            ? MediaQuery.of(context).size.height * 0.7
-                            : MediaQuery.of(context).size.height * 0.7,
-                    width: MediaQuery.sizeOf(context).width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TabBar(
-                          dragStartBehavior: DragStartBehavior.down,
-                          controller: accountController.tabController,
-                          onTap: (int index) {
-                            accountController.currentTabIndex.value = index;
-                            accountController.isLoading.value = false;
-                          },
-                          tabs: [
-                            Tab(
-                              text: 'Personal info',
-                            ),
-                            Tab(
-                              text: 'Address info',
-                            ),
-                            if (selectedRoleTypeName != 'I Run an Institute')
-                              Tab(
-                                text: 'Education info',
-                              ),
-                          ],
-                          unselectedLabelColor: Colors.grey,
-                          unselectedLabelStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+              ],
+            ),
+            Padding(
+              padding:
+                  EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Card(
+                  elevation: 10,
+                  shadowColor: Colors.black,
+                  surfaceTintColor: Colors.white,
+                  color: Colors.white,
+                  child: Obx(() {
+                    return Container(
+                      height: selectedRole == 'Tutee'
+                          ? accountController.currentTabIndex.value == 2
+                              ? MediaQuery.of(context).size.height * 0.5
+                              : MediaQuery.of(context).size.height * 0.7
+                          : accountController.currentTabIndex.value == 2
+                              ? MediaQuery.of(context).size.height * 0.7
+                              : MediaQuery.of(context).size.height * 0.7,
+                      width: MediaQuery.sizeOf(context).width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 10,
                           ),
-                          labelStyle: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Expanded(
-                          child: TabBarView(
+                          TabBar(
+                            dragStartBehavior: DragStartBehavior.down,
                             controller: accountController.tabController,
-                            children: [
-                              //personal info
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Name',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            color: Colors.grey.shade200),
-                                        child: Row(
+                            onTap: (int index) {
+                              accountController.currentTabIndex.value = index;
+                              accountController.isLoading.value = false;
+                            },
+                            tabs: [
+                              const Tab(
+                                text: 'Personal info',
+                              ),
+                              const Tab(
+                                text: 'Address info',
+                              ),
+                              if (selectedRoleTypeName != 'I Run an Institute')
+                                const Tab(
+                                  text: 'Education info',
+                                ),
+                            ],
+                            unselectedLabelColor: Colors.grey,
+                            unselectedLabelStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            labelStyle: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Expanded(
+                            child: TabBarView(
+                              controller: accountController.tabController,
+                              children: [
+                                //personal info
+                                Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 12),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
                                           children: [
-                                            Expanded(
-                                              child: InputTextField(
+                                            const Text(
+                                              'Name',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              color: Colors.grey.shade200),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: InputTextField(
+                                                    suffix: false,
+                                                    readonly: false,
+                                                    hintText: 'First',
+                                                    keyboardType:
+                                                        TextInputType.name,
+                                                    inputFormatter: [
+                                                      FilteringTextInputFormatter
+                                                          .allow(
+                                                        RegExp(
+                                                          r"[a-zA-Z0-9\s@&_,-\.']",
+                                                        ),
+                                                      ),
+                                                    ],
+                                                    controller: accountController
+                                                        .firstNameController),
+                                              ),
+                                              Container(
+                                                height: 30,
+                                                width: 1,
+                                                color:
+                                                    Colors.black.withOpacity(0.2),
+                                              ),
+                                              Expanded(
+                                                child: InputTextField(
                                                   suffix: false,
                                                   readonly: false,
-                                                  hintText: 'First',
+                                                  hintText: 'Last',
                                                   keyboardType:
                                                       TextInputType.name,
                                                   inputFormatter: [
@@ -209,631 +237,750 @@ class AccountSetup extends StatelessWidget {
                                                     ),
                                                   ],
                                                   controller: accountController
-                                                      .firstNameController),
+                                                      .lastNameController,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Email',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
                                             ),
-                                            Container(
-                                              height: 30,
-                                              width: 1,
-                                              color:
-                                                  Colors.black.withOpacity(0.2),
-                                            ),
-                                            Expanded(
-                                              child: InputTextField(
-                                                suffix: false,
-                                                readonly: false,
-                                                hintText: 'Last',
-                                                keyboardType:
-                                                    TextInputType.name,
-                                                inputFormatter: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(
-                                                    RegExp(
-                                                      r"[a-zA-Z0-9\s@&_,-\.']",
-                                                    ),
-                                                  ),
-                                                ],
-                                                controller: accountController
-                                                    .lastNameController,
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Email',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        InputTextField(
+                                            suffix: false,
+                                            readonly: false,
+                                            inputFormatter: [
+                                              FilteringTextInputFormatter.allow(
+                                                RegExp(
+                                                  r"[a-zA-Z0-9@&_,-\.']",
+                                                ),
+                                              ),
+                                            ],
+                                            hintText: 'Enter your email',
+                                            keyboardType:
+                                                TextInputType.emailAddress,
+                                            controller: accountController
+                                                .emailController),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Date of birth',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      InputTextField(
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        InputTextField(
+                                            suffix: true,
+                                            readonly: true,
+                                            isDate: true,
+                                            hintText: 'Enter your dob',
+                                            initialDate: DateTime.now().subtract(
+                                              const Duration(days: 365 * 18),
+                                            ),
+                                            lastDate: DateTime.now().subtract(
+                                              const Duration(days: 365 * 18),
+                                            ),
+                                            keyboardType: TextInputType.datetime,
+                                            controller:
+                                                accountController.dobController),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Phone number',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        InputTextField(
+                                            suffix: false,
+                                            readonly: false,
+                                            hintText: 'Enter your phone number',
+                                            keyboardType: TextInputType.phone,
+                                            inputFormatter: [
+                                              FilteringTextInputFormatter.allow(
+                                                RegExp(r"[0-9]"),
+                                              ),
+                                              LengthLimitingTextInputFormatter(
+                                                  10), // Restrict to 10 digits
+                                            ],
+                                            controller:
+                                                accountController.phController),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Pincode',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        InputTextField(
                                           suffix: false,
                                           readonly: false,
+                                          hintText: 'Enter your pincode',
                                           inputFormatter: [
                                             FilteringTextInputFormatter.allow(
                                               RegExp(
-                                                r"[a-zA-Z0-9@&_,-\.']",
+                                                r"[0-9]",
+                                              ),
+                                            ),
+                                            LengthLimitingTextInputFormatter(6),
+                                          ],
+                                          keyboardType: TextInputType.number,
+                                          controller:
+                                              accountController.pincodeController,
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'ID Proof',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
                                               ),
                                             ),
                                           ],
-                                          hintText: 'Enter your email',
-                                          keyboardType:
-                                              TextInputType.emailAddress,
-                                          controller: accountController
-                                              .emailController),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Date of birth',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            print("gretting values==");
+                                            ModalService.openIDProofModalSheet(
+                                                context,
+                                                splashController,
+                                                accountController);
+                                          },
+                                          child: Container(
+                                            height: 55,
+                                            alignment: Alignment.centerLeft,
+                                            padding: const EdgeInsets.only(
+                                                top: 10, bottom: 10, left: 12),
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[200],
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: accountController
+                                                    .selectedIDProof
+                                                    .value
+                                                    .isNotEmpty
+                                                ? Text(accountController
+                                                    .selectedIDProof.value)
+                                                : Text(
+                                                    "Tap to select the ID proof",
+                                                    style: TextStyle(
+                                                        color: Colors.grey[400],
+                                                        fontWeight:
+                                                            FontWeight.w400)),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            accountController.storePersonalInfo(
+                                                context, roleId, roleTypeId);
+                                          },
+                                          child: Container(
+                                            height: 48,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 40,
+                                              vertical: 12,
                                             ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8),
+                                              ),
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color(0xFFC13584),
+                                                  Color(0xFF833AB4)
+                                                ],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                              ),
                                             ),
+                                            child:
+                                                accountController.isLoading.value
+                                                    ? const Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      )
+                                                    : const Center(
+                                                        child: Text(
+                                                          'Next',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
                                           ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      InputTextField(
-                                          suffix: true,
-                                          readonly: true,
-                                          isDate: true,
-                                          hintText: 'Enter your dob',
-                                          initialDate: DateTime.now().subtract(
-                                            const Duration(days: 365 * 18),
-                                          ),
-                                          lastDate: DateTime.now().subtract(
-                                            const Duration(days: 365 * 18),
-                                          ),
-                                          keyboardType: TextInputType.datetime,
-                                          controller:
-                                              accountController.dobController),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Phone number',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
+                                        ),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+      
+                                //address info
+                                Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 12),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Door no',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      InputTextField(
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        InputTextField(
+                                            suffix: false,
+                                            readonly: false,
+                                            hintText: 'Enter your door no',
+                                            keyboardType: TextInputType.name,
+                                            controller: accountController
+                                                .address1Controller),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Street',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        InputTextField(
+                                            suffix: false,
+                                            readonly: false,
+                                            hintText: 'Enter your street',
+                                            keyboardType: TextInputType.name,
+                                            controller: accountController
+                                                .address2Controller),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'City',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        InputTextField(
+                                            suffix: false,
+                                            readonly: false,
+                                            hintText: 'Enter your city',
+                                            keyboardType: TextInputType.name,
+                                            controller:
+                                                accountController.cityController),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'State',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        InputTextField(
+                                            suffix: false,
+                                            readonly: false,
+                                            hintText: 'Enter your state',
+                                            keyboardType: TextInputType.text,
+                                            controller: accountController
+                                                .stateController),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Country',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        InputTextField(
                                           suffix: false,
                                           readonly: false,
-                                          hintText: 'Enter your phone number',
-                                          keyboardType: TextInputType.phone,
+                                          hintText: 'Enter your country',
+                                          keyboardType: TextInputType.name,
+                                          controller:
+                                              accountController.countryController,
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Pincode',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              '*',
+                                              style: GoogleFonts.nunito(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        InputTextField(
+                                          suffix: false,
+                                          readonly: false,
+                                          hintText: 'Enter pincode',
+                                          keyboardType: TextInputType.number,
+                                          controller: accountController
+                                              .pincodesController,
                                           inputFormatter: [
                                             FilteringTextInputFormatter.allow(
-                                              RegExp(r"[0-9]"),
+                                              RegExp(
+                                                r"[0-9]",
+                                              ),
                                             ),
-                                            LengthLimitingTextInputFormatter(
-                                                10), // Restrict to 10 digits
+                                            LengthLimitingTextInputFormatter(6),
                                           ],
-                                          controller:
-                                              accountController.phController),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Pincode',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      InputTextField(
-                                        suffix: false,
-                                        readonly: false,
-                                        hintText: 'Enter your pincode',
-                                        inputFormatter: [
-                                          FilteringTextInputFormatter.allow(
-                                            RegExp(
-                                              r"[0-9]",
-                                            ),
-                                          ),
-                                          LengthLimitingTextInputFormatter(6),
-                                        ],
-                                        keyboardType: TextInputType.number,
-                                        controller:
-                                            accountController.pincodeController,
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'ID Proof',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          print("gretting values==");
-                                          ModalService.openIDProofModalSheet(
-                                              context,
-                                              splashController,
-                                              accountController);
-                                        },
-                                        child: Container(
-                                          height: 55,
-                                          alignment: Alignment.centerLeft,
-                                          padding: const EdgeInsets.only(
-                                              top: 10, bottom: 10, left: 12),
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey[200],
-                                              borderRadius:
-                                                  BorderRadius.circular(15)),
-                                          child: accountController
-                                                  .selectedIDProof
-                                                  .value
-                                                  .isNotEmpty
-                                              ? Text(accountController
-                                                  .selectedIDProof.value)
-                                              : Text(
-                                                  "Tap to select the ID proof",
-                                                  style: TextStyle(
-                                                      color: Colors.grey[400],
-                                                      fontWeight:
-                                                          FontWeight.w400)),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          accountController.storePersonalInfo(
-                                              context, roleId, roleTypeId);
-                                        },
-                                        child: Container(
-                                          height: 48,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 40,
-                                            vertical: 12,
-                                          ),
-                                          decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(8),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            accountController.storeAddressInfo(
+                                                context,
+                                                selectedRoleTypeName,
+                                                roleId,
+                                                roleTypeId);
+                                          },
+                                          child: Container(
+                                            height: 48,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 40,
+                                              vertical: 12,
                                             ),
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Color(0xFFC13584),
-                                                Color(0xFF833AB4)
-                                              ],
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
+                                            decoration: const BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8),
+                                              ),
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color(0xFFC13584),
+                                                  Color(0xFF833AB4)
+                                                ],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                              ),
                                             ),
-                                          ),
-                                          child:
-                                              accountController.isLoading.value
-                                                  ? const Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
-                                                    )
-                                                  : const Center(
-                                                      child: Text(
-                                                        'Next',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.white,
+                                            child:
+                                                accountController.isLoading.value
+                                                    ? const Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      )
+                                                    : const Center(
+                                                        child: Text(
+                                                          'Next',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: Colors.white,
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                    ],
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-
-                              //address info
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Door no',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      InputTextField(
-                                          suffix: false,
-                                          readonly: false,
-                                          hintText: 'Enter your doorno',
-                                          keyboardType: TextInputType.name,
-                                          controller: accountController
-                                              .address1Controller),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Street',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      InputTextField(
-                                          suffix: false,
-                                          readonly: false,
-                                          hintText: 'Enter your street',
-                                          keyboardType: TextInputType.name,
-                                          controller: accountController
-                                              .address2Controller),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'City',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      InputTextField(
-                                          suffix: false,
-                                          readonly: false,
-                                          hintText: 'Enter your city',
-                                          keyboardType: TextInputType.name,
-                                          controller:
-                                              accountController.cityController),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'State',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      InputTextField(
-                                          suffix: false,
-                                          readonly: false,
-                                          hintText: 'Enter your state',
-                                          keyboardType: TextInputType.text,
-                                          controller: accountController
-                                              .stateController),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Country',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      InputTextField(
-                                        suffix: false,
-                                        readonly: false,
-                                        hintText: 'Enter your country',
-                                        keyboardType: TextInputType.name,
-                                        controller:
-                                            accountController.countryController,
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Pincode',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          Text(
-                                            '*',
-                                            style: GoogleFonts.nunito(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.red.withOpacity(0.6),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      InputTextField(
-                                        suffix: false,
-                                        readonly: false,
-                                        hintText: 'Enter pincode',
-                                        keyboardType: TextInputType.number,
-                                        controller: accountController
-                                            .pincodesController,
-                                        inputFormatter: [
-                                          FilteringTextInputFormatter.allow(
-                                            RegExp(
-                                              r"[0-9]",
-                                            ),
-                                          ),
-                                          LengthLimitingTextInputFormatter(6),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          accountController.storeAddressInfo(
-                                              context,
-                                              selectedRoleTypeName,
-                                              roleId,
-                                              roleTypeId);
-                                        },
-                                        child: Container(
-                                          height: 48,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 40,
-                                            vertical: 12,
-                                          ),
-                                          decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(8),
-                                            ),
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Color(0xFFC13584),
-                                                Color(0xFF833AB4)
-                                              ],
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                            ),
-                                          ),
-                                          child:
-                                              accountController.isLoading.value
-                                                  ? const Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
-                                                    )
-                                                  : const Center(
-                                                      child: Text(
-                                                        'Next',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.white,
+                                selectedRoleTypeName == 'I Run an Institute' &&
+                                        selectedRoleTypeName == ""
+                                    ? Container()
+                                    : selectedRoleTypeName !=
+                                                'I Run an Institute' &&
+                                            selectedRoleTypeName != ""
+                                        ? Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12),
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  ..._buildDropdowns(),
+                                                  Padding(
+                                                    padding: const EdgeInsets.symmetric(
+                                                        vertical: 10),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        const Text(
+                                                          'Additional Info',
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        InputTextField(
+                                                            suffix: false,
+                                                            readonly: false,
+                                                            hintText:
+                                                                'Enter here',
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .name,
+                                                            controller:
+                                                                accountController
+                                                                    .additionalInfoController),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  _buildFileUploadSection(
+                                                      'Attach Resume', 'resume'),
+                                                  _buildFileUploadSection(
+                                                      'Attach Education Certificate',
+                                                      'education'),
+                                                  _buildFileUploadSection(
+                                                      'Attach Experience Certificate',
+                                                      'experience'),
+                                                  if (accountController
+                                                      .validationMessages
+                                                      .isNotEmpty)
+                                                    Column(
+                                                      children: accountController
+                                                          .validationMessages
+                                                          .map((msg) => Text(
+                                                                msg,
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .red),
+                                                              ))
+                                                          .toList(),
+                                                    ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      accountController
+                                                          .storeEducationInfo(
+                                                              context,
+                                                              roleId,
+                                                              roleTypeId);
+                                                    },
+                                                    child: Container(
+                                                      height: 48,
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 40,
+                                                        vertical: 12,
+                                                      ),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(8),
+                                                        ),
+                                                        gradient: LinearGradient(
+                                                          colors: [
+                                                            Color(0xFFC13584),
+                                                            Color(0xFF833AB4)
+                                                          ],
+                                                          begin:
+                                                              Alignment.topCenter,
+                                                          end: Alignment
+                                                              .bottomCenter,
                                                         ),
                                                       ),
+                                                      child: accountController
+                                                              .isLoading.value
+                                                          ? const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            )
+                                                          : const Center(
+                                                              child: Text(
+                                                                'Next',
+                                                                style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ),
+                                                            ),
                                                     ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              selectedRoleTypeName == 'I Run an Institute' &&
-                                      selectedRoleTypeName == ""
-                                  ? Container()
-                                  : selectedRoleTypeName !=
-                                              'I Run an Institute' &&
-                                          selectedRoleTypeName != ""
-                                      ? Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 12),
-                                          child: SingleChildScrollView(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                ..._buildDropdowns(),
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 10),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 16,
+                                                  ),
+                                                  // SingleButton(
+                                                  //   btnName: 'Add',
+                                                  //   onTap: () {
+                                                  // accountController
+                                                  //     .storeEducationInfo(context);
+      
+                                                  //   },
+                                                  // )
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        : selectedRole == 'Tutee'
+                                            ? Container(
+                                                padding: const EdgeInsets.symmetric(
+                                                    horizontal: 12),
+                                                child: SingleChildScrollView(
                                                   child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                        CrossAxisAlignment.start,
                                                     children: [
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      const Text(
-                                                        'Additional Info',
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: Colors.black,
-                                                        ),
+                                                      Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Highest Qualification',
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            '*',
+                                                            style: GoogleFonts
+                                                                .nunito(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                              color: Colors.red
+                                                                  .withOpacity(
+                                                                      0.6),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                       const SizedBox(
                                                         height: 10,
@@ -841,339 +988,249 @@ class AccountSetup extends StatelessWidget {
                                                       InputTextField(
                                                           suffix: false,
                                                           readonly: false,
+                                                          inputFormatter: [
+                                                            FilteringTextInputFormatter
+                                                                .allow(
+                                                              RegExp(
+                                                                r"[a-zA-Z0-9@&_,-\.']",
+                                                              ),
+                                                            ),
+                                                          ],
                                                           hintText:
-                                                              'Enter here',
+                                                              'Enter your qualification',
                                                           keyboardType:
                                                               TextInputType
-                                                                  .name,
+                                                                  .emailAddress,
                                                           controller:
                                                               accountController
-                                                                  .additionalInfoController),
+                                                                  .tuteQualificationController),
+                                                      const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Class',
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            '*',
+                                                            style: GoogleFonts
+                                                                .nunito(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                              color: Colors.red
+                                                                  .withOpacity(
+                                                                      0.6),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      InputTextField(
+                                                          suffix: false,
+                                                          readonly: false,
+                                                          inputFormatter: [
+                                                            FilteringTextInputFormatter
+                                                                .allow(
+                                                              RegExp(
+                                                                r"[a-zA-Z0-9@&_,-\.']",
+                                                              ),
+                                                            ),
+                                                          ],
+                                                          hintText:
+                                                              'Enter your class',
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .emailAddress,
+                                                          controller:
+                                                              accountController
+                                                                  .tuteclassController),
+                                                      const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Board',
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            '*',
+                                                            style: GoogleFonts
+                                                                .nunito(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                              color: Colors.red
+                                                                  .withOpacity(
+                                                                      0.6),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      InputTextField(
+                                                          suffix: false,
+                                                          readonly: false,
+                                                          inputFormatter: [
+                                                            FilteringTextInputFormatter
+                                                                .allow(
+                                                              RegExp(
+                                                                r"[a-zA-Z0-9@&_,-\.']",
+                                                              ),
+                                                            ),
+                                                          ],
+                                                          hintText:
+                                                              'Enter your board',
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .emailAddress,
+                                                          controller:
+                                                              accountController
+                                                                  .tuteeboardController),
+                                                                      const SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Organization name',
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              color: Colors.black,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            '*',
+                                                            style: GoogleFonts
+                                                                .nunito(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight.w600,
+                                                              color: Colors.red
+                                                                  .withOpacity(
+                                                                      0.6),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      InputTextField(
+                                                          suffix: false,
+                                                          readonly: false,
+                                                          inputFormatter: [
+                                                            FilteringTextInputFormatter
+                                                                .allow(
+                                                              RegExp(
+                                                                r"[a-zA-Z0-9@&_,-\.']",
+                                                              ),
+                                                            ),
+                                                          ],
+                                                          hintText:
+                                                              'Enter your organization name',
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .emailAddress,
+                                                          controller:
+                                                              accountController
+                                                                  .tuteorganizationController),
+                                                      const SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          accountController.storeTuteeeducationInfo(context, roleId, roleTypeId);
+                                                        },
+                                                        child: Container(
+                                                          height: 48,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                            horizontal: 40,
+                                                            vertical: 12,
+                                                          ),
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                              Radius.circular(8),
+                                                            ),
+                                                            gradient:
+                                                                LinearGradient(
+                                                              colors: [
+                                                                Color(0xFFC13584),
+                                                                Color(0xFF833AB4)
+                                                              ],
+                                                              begin: Alignment
+                                                                  .topCenter,
+                                                              end: Alignment
+                                                                  .bottomCenter,
+                                                            ),
+                                                          ),
+                                                          child:
+                                                              accountController
+                                                                      .isLoading
+                                                                      .value
+                                                                  ? const Center(
+                                                                      child:
+                                                                          CircularProgressIndicator(),
+                                                                    )
+                                                                  : const Center(
+                                                                      child: Text(
+                                                                        'Submit',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                          color: Colors
+                                                                              .white,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                        ),
+                                                      ),
                                                     ],
                                                   ),
                                                 ),
-                                                _buildFileUploadSection(
-                                                    'Attach Resume', 'resume'),
-                                                _buildFileUploadSection(
-                                                    'Attach Education Certificate',
-                                                    'education'),
-                                                _buildFileUploadSection(
-                                                    'Attach Experience Certificate',
-                                                    'experience'),
-                                                if (accountController
-                                                    .validationMessages
-                                                    .isNotEmpty)
-                                                  Column(
-                                                    children: accountController
-                                                        .validationMessages
-                                                        .map((msg) => Text(
-                                                              msg,
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .red),
-                                                            ))
-                                                        .toList(),
-                                                  ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    accountController
-                                                        .storeEducationInfo(
-                                                            context,
-                                                            roleId,
-                                                            roleTypeId);
-                                                  },
-                                                  child: Container(
-                                                    height: 48,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 40,
-                                                      vertical: 12,
-                                                    ),
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(8),
-                                                      ),
-                                                      gradient: LinearGradient(
-                                                        colors: [
-                                                          Color(0xFFC13584),
-                                                          Color(0xFF833AB4)
-                                                        ],
-                                                        begin:
-                                                            Alignment.topCenter,
-                                                        end: Alignment
-                                                            .bottomCenter,
-                                                      ),
-                                                    ),
-                                                    child: accountController
-                                                            .isLoading.value
-                                                        ? const Center(
-                                                            child:
-                                                                CircularProgressIndicator(),
-                                                          )
-                                                        : const Center(
-                                                            child: Text(
-                                                              'Next',
-                                                              style: TextStyle(
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 16,
-                                                ),
-                                                // SingleButton(
-                                                //   btnName: 'Add',
-                                                //   onTap: () {
-                                                // accountController
-                                                //     .storeEducationInfo(context);
-
-                                                //   },
-                                                // )
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      : selectedRole == 'Tutee'
-                                          ? Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 12),
-                                              child: SingleChildScrollView(
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        const Text(
-                                                          'Name',
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '*',
-                                                          style: GoogleFonts
-                                                              .nunito(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Colors.red
-                                                                .withOpacity(
-                                                                    0.6),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    InputTextField(
-                                                        suffix: false,
-                                                        readonly: false,
-                                                        inputFormatter: [
-                                                          FilteringTextInputFormatter
-                                                              .allow(
-                                                            RegExp(
-                                                              r"[a-zA-Z0-9@&_,-\.']",
-                                                            ),
-                                                          ),
-                                                        ],
-                                                        hintText:
-                                                            'Enter your email',
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .emailAddress,
-                                                        controller:
-                                                            accountController
-                                                                .emailController),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        const Text(
-                                                          'Email',
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '*',
-                                                          style: GoogleFonts
-                                                              .nunito(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Colors.red
-                                                                .withOpacity(
-                                                                    0.6),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    InputTextField(
-                                                        suffix: false,
-                                                        readonly: false,
-                                                        inputFormatter: [
-                                                          FilteringTextInputFormatter
-                                                              .allow(
-                                                            RegExp(
-                                                              r"[a-zA-Z0-9@&_,-\.']",
-                                                            ),
-                                                          ),
-                                                        ],
-                                                        hintText:
-                                                            'Enter your email',
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .emailAddress,
-                                                        controller:
-                                                            accountController
-                                                                .emailController),
-                                                    const SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        const Text(
-                                                          'Phone number',
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '*',
-                                                          style: GoogleFonts
-                                                              .nunito(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Colors.red
-                                                                .withOpacity(
-                                                                    0.6),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    InputTextField(
-                                                        suffix: false,
-                                                        readonly: false,
-                                                        inputFormatter: [
-                                                          FilteringTextInputFormatter
-                                                              .allow(
-                                                            RegExp(
-                                                              r"[a-zA-Z0-9@&_,-\.']",
-                                                            ),
-                                                          ),
-                                                        ],
-                                                        hintText:
-                                                            'Enter your email',
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .emailAddress,
-                                                        controller:
-                                                            accountController
-                                                                .emailController),
-                                                    const SizedBox(
-                                                      height: 15,
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {},
-                                                      child: Container(
-                                                        height: 48,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                          horizontal: 40,
-                                                          vertical: 12,
-                                                        ),
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(8),
-                                                          ),
-                                                          gradient:
-                                                              LinearGradient(
-                                                            colors: [
-                                                              Color(0xFFC13584),
-                                                              Color(0xFF833AB4)
-                                                            ],
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter,
-                                                          ),
-                                                        ),
-                                                        child:
-                                                            accountController
-                                                                    .isLoading
-                                                                    .value
-                                                                ? const Center(
-                                                                    child:
-                                                                        CircularProgressIndicator(),
-                                                                  )
-                                                                : const Center(
-                                                                    child: Text(
-                                                                      'Next',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.w600,
-                                                                        color: Colors
-                                                                            .white,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                          : Container()
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                }),
+                                              )
+                                            : Container()
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }),
+                ),
               ),
-            ),
-          )
-          // Obx((){
-          //   return  ;
-          // })
-        ],
+            )
+            // Obx((){
+            //   return  ;
+            // })
+          ],
+        ),
       ),
     );
   }
@@ -1298,7 +1355,7 @@ class AccountSetup extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: Colors.black,

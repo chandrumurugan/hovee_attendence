@@ -42,25 +42,27 @@ class UserProfile extends StatelessWidget {
               height: 150,
               width: MediaQuery.sizeOf(context).width,
               color: Colors.purple,
-              child: const Column(
+              child:  Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   // Adjust as per your design
-                  Text(
-                    'John Deo,',
+                      Text(
+                    '${accountController.userProfileResponse.value.data!.rolesId!.roleName!}',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+              
                   Text(
-                    'Wow ID: TS91000145269',
+                    'hov ID: ${accountController.userProfileResponse.value.data!.wowId!}',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                     ),
                   ),
+                  
                 ],
               ),
             ),

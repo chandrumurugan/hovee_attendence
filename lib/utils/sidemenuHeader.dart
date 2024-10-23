@@ -3,9 +3,11 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 
 class SidemenuHeader extends StatelessWidget {
@@ -24,6 +26,7 @@ class SidemenuHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authController = Get.find<AuthControllers>();
     return Container(
       key: sidemenuKey,
       height: 200,
@@ -76,7 +79,7 @@ class SidemenuHeader extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                userName,
+                "${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}",
                 style: GoogleFonts.nunito(
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -95,7 +98,7 @@ class SidemenuHeader extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    'hov ID : ${wowID}',
+                    'hov ID : ${authController.otpResponse.value.data!.wowId}',
                     style: GoogleFonts.nunito(
                         fontWeight: FontWeight.w400,
                         color: Colors.white,

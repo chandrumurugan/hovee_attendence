@@ -19,7 +19,7 @@ class BatchController extends GetxController {
         batchList.value = batchResponse.data!;
       }
     } catch (e) {
-      Get.snackbar('Failed to fetch batches');
+      // Get.snackbar('Failed to fetch batches');
     } finally {
       isLoading(false);
     }
