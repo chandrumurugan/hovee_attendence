@@ -18,7 +18,7 @@ class TutorHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: controller.tutorScaffoldKey,
-       drawer: const SideMenu(isGuest: false),
+      drawer: const SideMenu(isGuest: false),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 5,
@@ -214,7 +214,7 @@ class HomePageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final authController = Get.find<AuthControllers>();
+    final authController = Get.find<AuthControllers>();
     return Container(
         padding: const EdgeInsets.fromLTRB(20, 5, 20, 40),
         decoration: const BoxDecoration(
@@ -248,13 +248,20 @@ class HomePageHeader extends StatelessWidget {
                       children: [
                         const CircleAvatar(
                           radius: 25,
-                          backgroundImage: AssetImage(
-                              'assets/tutorHomeImg/Rectangle 18373.png'),
+                          // Optional: Set a background color
+                          //backgroundColor: Colors.grey[200],
+                          child: Icon(
+                            Icons
+                                .person, // Correct usage: provide IconData directly
+                            size: 36, // Adjust the icon size as needed
+                            color: Colors.black, // Set the icon color
+                          ),
                         ),
                         const SizedBox(
                           width: 10,
                         ),
-                         Text('${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}',
+                        Text(
+                            '${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}',
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 24.0,
@@ -306,7 +313,8 @@ class HomePageHeader extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                         Text('hov ID : ${authController.otpResponse.value.data!.wowId!}',
+                        Text(
+                            'hov ID : ${authController.otpResponse.value.data!.wowId!}',
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 13.0,

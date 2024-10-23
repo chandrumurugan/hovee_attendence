@@ -129,56 +129,87 @@ class UserData {
 }
 
 class QualificationDetail {
-    QualificationDetail({
-        required this.id,
-        required this.highestQualification,
-        required this.userId,
-        required this.teachingSkillSet,
-        required this.workingTech,
-        required this.additionalInfo,
-        required this.attachResume,
-        required this.attachEducationCertificate,
-        required this.attachExperienceCertificate,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.v,
-        required this.teachingexperience
-    });
+  QualificationDetail({
+    required this.id,
+    required this.highestQualification,
+    this.selectBoard,
+    this.selectClass,
+    required this.organizationName,
+    required this.userId,
+    required this.teachingSkillSet,
+    required this.workingTech,
+    required this.additionalInfo,
+    required this.attachResume,
+    required this.attachEducationCertificate,
+    required this.attachExperienceCertificate,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.teachingexperience,
+    this.iV,
+  });
 
-    final String? id;
-    final String? highestQualification;
-    final String? userId;
-    final String? teachingSkillSet;
-    final String? workingTech;
-    final String? additionalInfo;
-    final String? attachResume;
-    final String? attachEducationCertificate;
-    final String? attachExperienceCertificate;
-    final String? teachingexperience;
-    final DateTime? createdAt;
-    final DateTime? updatedAt;
-    final int? v;
+  final String? id;
+  final String? highestQualification;
+  String? selectBoard;
+  String? selectClass;
+  final String? organizationName;
+  final String? userId;
+  final String? teachingSkillSet;
+  final String? workingTech;
+  final String? additionalInfo;
+  final String? attachResume;
+  final String? attachEducationCertificate;
+  final String? attachExperienceCertificate;
+  final String? teachingexperience;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  int? iV;
 
-    factory QualificationDetail.fromJson(Map<String, dynamic> json){ 
-        return QualificationDetail(
-            id: json["_id"],
-            highestQualification: json["highest_qualification"],
-            userId: json["userId"],
-            teachingSkillSet: json["teaching_skill_set"],
-            workingTech: json["working_tech"],
-            additionalInfo: json["additional_info"],
-            attachResume: json["attach_resume"],
-            attachEducationCertificate: json["attach_education_certificate"],
-            attachExperienceCertificate: json["attach_experience_certificate"],
-            createdAt: DateTime.tryParse(json["created_at"] ?? ""),
-            updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
-            teachingexperience: json["teaching_experience"] ,
-            v: json["__v"],
+  factory QualificationDetail.fromJson(Map<String, dynamic> json) {
+    return QualificationDetail(
+      id: json["_id"],
+      highestQualification: json["highest_qualification"],
+      selectBoard: json['select_board'], // Use ':' to assign values
+      selectClass: json['select_class'], // Use ':' to assign values
+      organizationName: json['organization_name'],
+      userId: json["userId"],
+      teachingSkillSet: json["teaching_skill_set"],
+      workingTech: json["working_tech"],
+      additionalInfo: json["additional_info"],
+      attachResume: json["attach_resume"],
+      attachEducationCertificate: json["attach_education_certificate"],
+      attachExperienceCertificate: json["attach_experience_certificate"],
+      createdAt: DateTime.tryParse(json["created_at"] ?? ""),
+      updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
+      teachingexperience: json["teaching_experience"],
+      iV: json['__v'], // Use ':' to assign values
+    );
+  }
 
-        );
-    }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['_id'] = this.id;
+    data['highest_qualification'] = this.highestQualification;
+    data['select_board'] = this.selectBoard;
+    data['select_class'] = this.selectClass;
+    data['organization_name'] = this.organizationName;
+    data['userId'] = this.userId;
+    data['teaching_skill_set'] = this.teachingSkillSet;
+    data['working_tech'] = this.workingTech;
+    data['additional_info'] = this.additionalInfo;
+    data['attach_resume'] = this.attachResume;
+    data['attach_education_certificate'] = this.attachEducationCertificate;
+    data['attach_experience_certificate'] = this.attachExperienceCertificate;
+    data['teaching_experience'] = this.teachingexperience;
+    data['created_at'] = this.createdAt?.toIso8601String(); // Convert DateTime to string
+    data['updated_at'] = this.updatedAt?.toIso8601String(); // Convert DateTime to string
+    data['__v'] = this.iV;
 
+    return data;
+  }
 }
+
+
 
 class RolesId {
     RolesId({

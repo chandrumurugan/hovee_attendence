@@ -5,11 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/widget/addteacher_dropdown.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
+import 'package:intl/intl.dart';
 
 class UserProfile extends StatelessWidget {
   UserProfile({super.key});
@@ -17,6 +19,9 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    accountController.dobController.text = DateFormat('dd/MM/yyyy').format(
+      DateTime.now().subtract(const Duration(days: 365 * 18)),
+    );
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBarHeader(
@@ -36,32 +41,31 @@ class UserProfile extends StatelessWidget {
        }
         return  Stack(
         children: [
+         
           ClipPath(
             clipper: HemisphereClipper(),
             child: Container(
               height: 150,
               width: MediaQuery.sizeOf(context).width,
               color: Colors.purple,
-              child:  Column(
+              child:  const Column(
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Adjust as per your design
-                      Text(
-                    '${accountController.userProfileResponse.value.data!.rolesId!.roleName!}',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-              
-                  Text(
-                    'hov ID: ${accountController.userProfileResponse.value.data!.wowId!}',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                    ),
-                  ),
+                   SizedBox(height: 10,),
+                       CircleAvatar(
+  radius: 42,
+  // Optional: Set a background color
+  //backgroundColor: Colors.grey[200],
+  child: Icon(
+    Icons.person, // Correct usage: provide IconData directly
+    size: 36, // Adjust the icon size as needed
+    color: Colors.black, // Set the icon color
+  ),
+)
+
+
                   
                 ],
               ),
@@ -105,10 +109,10 @@ class UserProfile extends StatelessWidget {
                               text: 'Personal info',
                             ),
                             Tab(
-                              text: 'Address info',
+                              text: 'Address',
                             ),
                             Tab(
-                              text: 'Education info',
+                              text: 'Education',
                             ),
                           ],
                           unselectedLabelColor: Colors.grey,
@@ -120,6 +124,7 @@ class UserProfile extends StatelessWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
+                            
                           ),
                         ),
                            const SizedBox(height: 20),
@@ -514,7 +519,7 @@ class UserProfile extends StatelessWidget {
                                       Row(
                                         children: [
                                           const Text(
-                                            'Address1',
+                                            'Door no',
                                             style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
@@ -538,7 +543,7 @@ class UserProfile extends StatelessWidget {
                                       InputTextField(
                                           suffix: false,
                                           readonly: false,
-                                          hintText: 'Enter your address',
+                                          hintText: 'Enter your door no',
                                           keyboardType: TextInputType.name,
                                           controller: accountController
                                               .address1Controller),
@@ -548,7 +553,7 @@ class UserProfile extends StatelessWidget {
                                       Row(
                                         children: [
                                           const Text(
-                                            'Address2',
+                                            'Street/area',
                                             style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w500,
@@ -785,33 +790,34 @@ class UserProfile extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       ..._buildDropdowns(),
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              'Additional Info',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            CommonInputField(
-                                              label: 'Additional Info',
-                                              controllerValue: accountController
-                                                  .additionalInfo,
-                                              onTap: () {},
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      // Padding(
+                                      //   padding:
+                                      //       EdgeInsets.symmetric(vertical: 10),
+                                      //   child: Column(
+                                      //     crossAxisAlignment:
+                                      //         CrossAxisAlignment.start,
+                                      //     children: [
+                                      //       const Text(
+                                      //         'Additional Info',
+                                      //         style: TextStyle(
+                                      //           fontSize: 14,
+                                      //           fontWeight: FontWeight.w500,
+                                      //           color: Colors.black,
+                                      //         ),
+                                      //       ),
+                                      //       const SizedBox(
+                                      //         height: 5,
+                                      //       ),
+                                      //       CommonInputField(
+                                      //         title: 'Additional Info',
+                                      //         controllerValue: accountController
+                                      //             .additionalInfo,
+                                      //             selectedValue: accountController.additionalInfo,
+                                      //         onTap: () {},
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
                                       // _buildFileUploadSection(
                                       //     'Attach Resume', 'resume'),
                                       // _buildFileUploadSection(
@@ -1722,14 +1728,33 @@ class UserProfile extends StatelessWidget {
           ),
           Positioned(
             top: MediaQuery.of(context).size.height *
-                0.08, // Adjust as per your design
-            left: (MediaQuery.of(context).size.width / 2) - 50,
-            child: const CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage(
-                'assets/sidemenu/Ellipse 261.png', // Replace with your image URL
+                0.14, // Adjust as per your design
+            left: (MediaQuery.of(context).size.width / 2) - 30,
+            child:  Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // Adjust as per your design
+                      Text(
+                    '${accountController.userProfileResponse.value.data!.rolesId!.roleName!}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+              
+                  Text(
+                    '${accountController.userProfileResponse.value.data!.wowId!}',
+                    style: TextStyle(
+                      color: AppConstants. secondaryColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                  
+                ],
               ),
-            ),
+           
+            // ),
           ),
         ],
       );
@@ -3465,13 +3490,44 @@ class UserProfile extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            CommonDropdownInputField(
-              title: 'Highest qualification',
-              controllerValue: accountController.highestQualification,
-              selectedValue: accountController.highestQualification,
-              items: accountController.qualifications,
-              onChanged: accountController.setHighestQualification,
-            ),
+            // CommonDropdownInputField(
+            //   title: 'Highest qualification',
+            //   controllerValue: accountController.highestQualification,
+            //   selectedValue: accountController.highestQualification,
+            //   items: accountController.qualifications,
+            //   onChanged: accountController.setHighestQualification,
+            // ),
+            InkWell(
+                                            onTap: () {
+                                            
+                                            },
+                                            child: Container(
+                                              height: 55,
+                                              alignment: Alignment.centerLeft,
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  bottom: 10,
+                                                  left: 12),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey[200],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              child: accountController
+                                                      .highestQualification
+                                                      .value
+                                                      .isNotEmpty
+                                                  ? Text(accountController
+                                                      .highestQualification.value)
+                                                  : Text(
+                                                      "Tap to select the ID proof",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.grey[400],
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                            ),
+                                          ),
           ],
         ),
       ),
@@ -3483,7 +3539,7 @@ class UserProfile extends StatelessWidget {
             Row(
               children: [
                 const Text(
-                  'Teaching Skill Set',
+                  'Class',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -3503,13 +3559,44 @@ class UserProfile extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            CommonDropdownInputField(
-              title: 'Teaching skill set',
-              controllerValue: accountController.teachingSkills,
-              selectedValue: accountController.teachingSkills,
-              items: accountController.skills,
-              onChanged: accountController.setTeachingSkills,
-            ),
+            // CommonDropdownInputField(
+            //   title: 'Teaching skill set',
+            //   controllerValue: accountController.teachingSkills,
+            //   selectedValue: accountController.teachingSkills,
+            //   items: accountController.skills,
+            //   onChanged: accountController.setTeachingSkills,
+            // ),
+            InkWell(
+                                            onTap: () {
+                                            
+                                            },
+                                            child: Container(
+                                              height: 55,
+                                              alignment: Alignment.centerLeft,
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  bottom: 10,
+                                                  left: 12),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey[200],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              child: accountController
+                                                      .QualificationClass
+                                                      .value
+                                                      .isNotEmpty
+                                                  ? Text(accountController
+                                                      .QualificationClass.value)
+                                                  : Text(
+                                                      "Tap to select the ID proof",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.grey[400],
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                            ),
+                                          ),
           ],
         ),
       ),
@@ -3521,7 +3608,7 @@ class UserProfile extends StatelessWidget {
             Row(
               children: [
                 const Text(
-                  'Work Type',
+                  'Board',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -3541,13 +3628,44 @@ class UserProfile extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            CommonDropdownInputField(
-              title: 'Work type',
-              controllerValue: accountController.workingTech,
-              selectedValue: accountController.workingTech,
-              items: accountController.techs,
-              onChanged: accountController.setWorkingTech,
-            ),
+            // CommonDropdownInputField(
+            //   title: 'Work type',
+            //   controllerValue: accountController.workingTech,
+            //   selectedValue: accountController.workingTech,
+            //   items: accountController.techs,
+            //   onChanged: accountController.setWorkingTech,
+            // ),
+             InkWell(
+                                            onTap: () {
+                                            
+                                            },
+                                            child: Container(
+                                              height: 55,
+                                              alignment: Alignment.centerLeft,
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  bottom: 10,
+                                                  left: 12),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey[200],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              child: accountController
+                                                      .board
+                                                      .value
+                                                      .isNotEmpty
+                                                  ? Text(accountController
+                                                      .board.value)
+                                                  : Text(
+                                                      "Tap to select the ID proof",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.grey[400],
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                            ),
+                                          ),
           ],
         ),
       ),
@@ -3559,7 +3677,7 @@ class UserProfile extends StatelessWidget {
             Row(
               children: [
                 const Text(
-                  'Teaching Experience',
+                  'Organation name',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -3579,13 +3697,44 @@ class UserProfile extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            CommonDropdownInputField(
-              title: 'Teaching experience',
-              controllerValue: accountController.teachingExperience,
-              selectedValue: accountController.teachingExperience,
-              items: accountController.techsExperience,
-              onChanged: accountController.setTeachingExperience,
-            ),
+            // CommonDropdownInputField(
+            //   title: 'Teaching experience',
+            //   controllerValue: accountController.teachingExperience,
+            //   selectedValue: accountController.teachingExperience,
+            //   items: accountController.techsExperience,
+            //   onChanged: accountController.setTeachingExperience,
+            // ),
+             InkWell(
+                                            onTap: () {
+                                            
+                                            },
+                                            child: Container(
+                                              height: 55,
+                                              alignment: Alignment.centerLeft,
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  bottom: 10,
+                                                  left: 12),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey[200],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              child: accountController
+                                                      .organizationName
+                                                      .value
+                                                      .isNotEmpty
+                                                  ? Text(accountController
+                                                      .organizationName.value)
+                                                  : Text(
+                                                      "Tap to select the ID proof",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.grey[400],
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                            ),
+                                          ),
           ],
         ),
       ),

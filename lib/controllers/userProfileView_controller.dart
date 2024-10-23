@@ -45,9 +45,9 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
     //education info
   // Dropdown values
   var highestQualification = ''.obs;
-  var teachingSkills = ''.obs;
-  var workingTech = ''.obs;
-  var teachingExperience = ''.obs;
+  var QualificationClass = ''.obs;
+  var board = ''.obs;
+  var organizationName = ''.obs;
 
   // Additional info text field
   var additionalInfo = ''.obs;
@@ -61,27 +61,18 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
   // Validation messages
   var validationMessages = <String>[].obs;
 
-    final List<String> qualifications = [
-    'PhD',
-    'Masters',
-    'Bachelors',
-    'Diploma'
+     List<String> qualifications = [
   ];
-  final List<String> skills = [
-    'CBSE(1-5)',
-    'CBSE(1-7)',
-    'CBSE(1-9)',
-    'CBSE(1-10)',
-    "CBSE(1-12)"
+   List<String> skills = [
   ];
-  final List<String> techs = ['Full Time', 'Part Time'];
-  final List<String> techsExperience = ['1yr', '3yrs', '5yrs', '7yrs'];
+   List<String> techs = [];
+   List<String> techsExperience = [];
     void setHighestQualification(String value) =>
       highestQualification.value = value;
-  void setTeachingSkills(String value) => teachingSkills.value = value;
-  void setWorkingTech(String value) => workingTech.value = value;
-  void setTeachingExperience(String value) => teachingExperience.value = value;
-  void setAdditionalInfo(String value) => additionalInfo.value = value;
+  //void setTeachingSkills(String value) => teachingSkills.value = value;
+  void setWorkingTech(String value) => QualificationClass.value = value;
+  void setTeachingExperience(String value) => board.value = value;
+  void setAdditionalInfo(String value) => organizationName.value = value;
 
   Future<void> pickFile(String type) async {
     final ImagePicker picker = ImagePicker();
@@ -108,8 +99,17 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
        tabController = TabController(length: 3, vsync: this);
         Logger().i(token.read('Token') ?? "");
        fetchUserProfiles();
-   
+      _loadDropdownData();
 
+
+  }
+
+  void _loadDropdownData() {
+  // Load data from GetStorage into lists
+ qualifications = GetStorage().read<List<String>>('qualifications') ?? [];
+ skills = GetStorage().read<List<String>>('skills') ?? [];
+ techs = GetStorage().read<List<String>>('techs') ?? [];
+ techsExperience = GetStorage().read<List<String>>('techsExperience') ?? [];
 
   }
 
@@ -158,9 +158,9 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
 
   //  education info
     highestQualification.value = userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].highestQualification ?? "" : "";
-    teachingSkills.value =  userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].teachingSkillSet ?? "" : "";
-    workingTech.value =  userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].workingTech ?? "" : "";
-    teachingExperience.value = userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].workingTech ?? "" : "";
+    QualificationClass.value =  userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].selectClass ?? "" : "";
+    board.value =  userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].selectBoard ?? "" : "";
+    organizationName.value = userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].organizationName ?? "" : "";
     additionalInfo.value =  userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].additionalInfo ?? "" : "";
 
 

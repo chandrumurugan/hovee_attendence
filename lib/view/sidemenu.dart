@@ -46,7 +46,8 @@ class SideMenu extends StatelessWidget {
                   'assets/sidemenu/viewprofile.png',
                   height: 25,
                 ),
-                title: const Text('View profile'),
+                title:  Text('View profile',style: GoogleFonts.nunito(
+                      fontSize: 16, fontWeight: FontWeight.w600),),
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
             if (!isGuest)
@@ -61,7 +62,8 @@ class SideMenu extends StatelessWidget {
                   'assets/sidemenu/mypayment.png',
                   height: 25,
                 ),
-                title: const Text('My payment'),
+                title:  Text('My payment',style: GoogleFonts.nunito(
+                      fontSize: 16, fontWeight: FontWeight.w600),),
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
             ListTile(
@@ -80,7 +82,8 @@ class SideMenu extends StatelessWidget {
                 'assets/sidemenu/userManual.png',
                 height: 25,
               ),
-              title: const Text('How it works'),
+              title:  Text('How it works',style: GoogleFonts.nunito(
+                      fontSize: 16, fontWeight: FontWeight.w600),),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
             const Divider(
@@ -103,7 +106,8 @@ class SideMenu extends StatelessWidget {
                 'assets/sidemenu/privacy.png',
                 height: 25,
               ),
-              title: const Text('Privacy'),
+              title:  Text('Privacy',style: GoogleFonts.nunito(
+                      fontSize: 16, fontWeight: FontWeight.w600),),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
             ListTile(
@@ -122,7 +126,8 @@ class SideMenu extends StatelessWidget {
                 'assets/sidemenu/terms&condition.png',
                 height: 25,
               ),
-              title: const Text('Terms & conditions'),
+              title:  Text('Terms & conditions',style: GoogleFonts.nunito(
+                      fontSize: 16, fontWeight: FontWeight.w600),),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
             ListTile(
@@ -141,7 +146,8 @@ class SideMenu extends StatelessWidget {
                 'assets/sidemenu/aboutus.png',
                 height: 25,
               ),
-              title: const Text('About us'),
+              title:  Text('About us',style: GoogleFonts.nunito(
+                      fontSize: 16, fontWeight: FontWeight.w600),),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
             const Divider(
@@ -164,7 +170,8 @@ class SideMenu extends StatelessWidget {
                 'assets/sidemenu/help&support.png',
                 height: 25,
               ),
-              title: const Text('Help & support'),
+              title:  Text('Help & support',style: GoogleFonts.nunito(
+                      fontSize: 16, fontWeight: FontWeight.w600),),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
             ListTile(
@@ -173,7 +180,8 @@ class SideMenu extends StatelessWidget {
                 'assets/sidemenu/notification.png',
                 height: 25,
               ),
-              title: const Text('Notification'),
+              title:  Text('Notification',style: GoogleFonts.nunito(
+                      fontSize: 16, fontWeight: FontWeight.w600),),
               trailing: Switch(
                   activeTrackColor: const Color(0xFFC13584),
                   value: notification,

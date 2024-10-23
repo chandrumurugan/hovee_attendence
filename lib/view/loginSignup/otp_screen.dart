@@ -57,7 +57,8 @@ class _OtpScreenState extends State<OtpScreen> {
         needGoBack: false,
         navigateTo: () {},
       ),
-      body: Stack(
+      body: 
+      Stack(
         children: [
           SingleChildScrollView(
             child: Column(
@@ -151,10 +152,12 @@ class _OtpScreenState extends State<OtpScreen> {
                       TabBar(
                         dragStartBehavior: DragStartBehavior.down,
                         controller: authController.tabController,
-                        onTap: (int index) {
-                          authController.currentTabIndex.value = index;
-                          authController.isLoading.value = false;
-                        },
+                        // onTap: (int index) {
+                        //  if (index != authController.tabController.index) {
+                        //     authController.currentTabIndex.value = index;
+                        //     authController.isLoading.value = false;
+                        //   }
+                        // },
                         tabs: const [
                           Tab(
                             text: 'Login',
@@ -173,6 +176,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
                         ),
+                        physics: NeverScrollableScrollPhysics(),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(

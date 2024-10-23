@@ -270,6 +270,13 @@ class _RoleSelectionState extends State<RoleSelection> {
                                   'Please select a role type for tutor.');
                               return; // Exit early if tutor is selected but no role type is selected
                             }
+
+                             if (selectedRole == 'Tutor' &&
+                                selectedRoleTypeName == 'I am a Individual Tutor') {
+                              SnackBarUtils.showErrorSnackBar(context,
+                                  'Feature under development');
+                              return; // Exit early if tutor is selected but no role type is selected
+                            }
       
                             // If we reach here, either a role is selected and it's not 'tutor', or it's 'tuttee' (which doesn't require a role type)
                             Get.to(() => AccountSetup(

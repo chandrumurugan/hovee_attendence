@@ -79,11 +79,6 @@ void _loadDropdownData() {
       SnackBarUtils.showErrorSnackBar(context, 'Fees is required');
       return false;
     }
-    if (monthController.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Month is required');
-      return false;
-    }
-
     return true;
   }
 
@@ -132,7 +127,7 @@ void _loadDropdownData() {
 
         if (response != null && response.success == true) {
           SnackBarUtils.showSuccessSnackBar(context, 'Batch added successfully');
-          Get.back();
+         Get.to(() => TutorBatchList());
         } else {
           SnackBarUtils.showErrorSnackBar(context, response?.message ?? 'Failed to add batch');
         }
@@ -144,8 +139,15 @@ void _loadDropdownData() {
     }
   }
 
+  
+
+
   void setTeacher(String value) => batchTeacherController.value = value;
      void setBatchModes(String value) =>
       modeController.value = value;
   void setBatchDays(String value) => batchDaysController.value = value;
+  void setStartTiming(String value) =>
+      batchTimingController.value = value;
+  void setEndingTiming(String value) => batchTimingEndController.value = value;
+  
 }

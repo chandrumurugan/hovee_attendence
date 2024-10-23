@@ -314,7 +314,7 @@ class WebService {
       var headers = {'Authorization': "Bearer $token"};
       var url = Uri.parse("${baseUrl}user/getUserProfile");
       var response = await http.post(url, headers: headers);
-
+      print(token);
       Logger().i(response.headers);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);

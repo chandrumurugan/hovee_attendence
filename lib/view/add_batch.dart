@@ -60,8 +60,10 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: CommonInputField(
-                label: 'Branch short name',
+                title: 'Branch short name',
                 controllerValue: controller.branchShortNameController,
+                selectedValue: controller.branchShortNameController,
+                keyboardType: TextInputType.text,
                 onTap: () {},
               ),
             ),
@@ -69,8 +71,10 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: CommonInputField(
-                label: 'Batch name',
+                title: 'Batch name',
                 controllerValue: controller.batchNameController,
+                 selectedValue: controller.batchNameController,
+                 keyboardType: TextInputType.text,
                 onTap: () {},
               ),
             ),
@@ -85,32 +89,45 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                 onChanged: controller.setTeacher,
               ),
             ),
+Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+  child: CommonInputField(
+    title: 'Batch Timing Start',
+    controllerValue: controller.batchTimingController,
+    selectedValue: controller.batchTimingController, // Make the field read-only to prevent manual input
+    //suffixIcon: Icon(Icons.arrow_drop_down), // Add dropdown icon
+    onChanged: controller.setStartTiming,
+    onTap: () async {
+      // Show time picker and pass the current context
+      print("start time");
+      await _showTimePicker(context, isStartTime: true);
+    },
+  ),
+),
+Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+  child: CommonInputField(
+    title: 'Batch Timing End',
+    controllerValue: controller.batchTimingEndController,
+ // Make the field read-only to prevent manual input
+    //suffixIcon: Icon(Icons.arrow_drop_down), // Add dropdown icon
+    selectedValue: controller.batchTimingEndController,
+    onChanged: controller.setEndingTiming,
+    onTap: () async {
+      // Show time picker and pass the current context
+      await _showTimePicker(context, isStartTime: false);
+    },
+  ),
+),
+
+
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: CommonInputField(
-                label: 'Batch Timing Start',
-                controllerValue: controller.batchTimingController,
-                readOnly: false, // Makes it read-only, enabling time selection
-                onTap: () {}, // Call selectTime with isStartTime
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: CommonInputField(
-                label: 'Batch Timing End',
-                controllerValue: controller.batchTimingEndController,
-                readOnly: false, // Makes it read-only, enabling time selection
-                onTap: () {}, // Call selectTime with isStartTime
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: CommonInputField(
-                label: 'Maximum slots',
+                title: 'Maximum slots',
                 controllerValue: controller.maxSlotsController,
+                selectedValue: controller.maxSlotsController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly
@@ -144,22 +161,16 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: CommonInputField(
-                label: 'Fees',
+                title: 'Fees',
                 controllerValue: controller.feesController,
+                selectedValue: controller.feesController,
+                keyboardType: TextInputType.text,
                 onTap: () {},
                 prefixText: '₹ ', // Add the rupee symbol as prefix
                 suffixText: '/month', // Add "/month" as suffix
               ),
             ),
-            // Padding(
-            //   padding:
-            //       const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-            //   child: CommonInputField(
-            //     label: 'Month',
-            //     controllerValue: controller.monthController,
-            //     onTap: () {},
-            //   ),
-            // ),
+
             Obx(() {
               if (controller.validationMessages.isNotEmpty) {
                 return Column(
@@ -185,4 +196,23 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
       ),
     );
   }
+
+Future<void> _showTimePicker(BuildContext context, {required bool isStartTime}) async {
+  // Show the time picker dialog
+  TimeOfDay? pickedTime = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.now(),
+  );
+
+  if (pickedTime != null) {
+    // Update the appropriate controller based on isStartTime
+    if (isStartTime) {
+      controller.batchTimingController.value = pickedTime.format(context);
+    } else {
+      controller.batchTimingEndController.value = pickedTime.format(context);
+    }
+  }
+}
+
+
 }

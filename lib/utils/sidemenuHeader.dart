@@ -29,7 +29,7 @@ class SidemenuHeader extends StatelessWidget {
     final authController = Get.find<AuthControllers>();
     return Container(
       key: sidemenuKey,
-      height: 200,
+      height: 170,
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.sizeOf(context).width * 0.05,
       ),
@@ -62,13 +62,15 @@ class SidemenuHeader extends StatelessWidget {
               // //   height: 30,
               // // ),
               CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                  radius: 45,
-                  backgroundImage: AssetImage("assets/sidemenu/Ellipse 261.png"),
-                ),
-              )
+  radius: 42,
+  // Optional: Set a background color
+  //backgroundColor: Colors.grey[200],
+  child: Icon(
+    Icons.person, // Correct usage: provide IconData directly
+    size: 36, // Adjust the icon size as needed
+    color: Colors.black, // Set the icon color
+  ),
+)
             ],
           ),
           Column(

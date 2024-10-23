@@ -127,14 +127,14 @@ class AccountSetup extends StatelessWidget {
                             },
                             tabs: [
                               const Tab(
-                                text: 'Personal info',
+                                text: 'Personal\ninfo',
                               ),
                               const Tab(
-                                text: 'Address info',
+                                text: 'Address\ninfo',
                               ),
                               if (selectedRoleTypeName != 'I Run an Institute')
                                 const Tab(
-                                  text: 'Education info',
+                                  text: 'Education\ninfo',
                                 ),
                             ],
                             unselectedLabelColor: Colors.grey,

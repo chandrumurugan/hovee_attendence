@@ -252,7 +252,8 @@ class LoginSignUp extends StatelessWidget {
                                             onTap: () async {
                                               authController.logIn(
                                                   authController
-                                                      .logInController.text,context);
+                                                      .logInController.text,
+                                                  context);
                                             },
                                             child: Container(
                                               height: 48,
@@ -425,7 +426,7 @@ class LoginSignUp extends StatelessWidget {
                                                 ),
                                               ),
                                             ],
-                                            hintText: 'Enter here email',
+                                            hintText: 'Enter your email',
                                             keyboardType:
                                                 TextInputType.emailAddress,
                                             controller:
@@ -551,10 +552,8 @@ class LoginSignUp extends StatelessWidget {
                                               RegExp(
                                                 r"[0-9]",
                                               ),
-                                              
                                             ),
-                                            LengthLimitingTextInputFormatter(
-                                                6),
+                                            LengthLimitingTextInputFormatter(6),
                                           ],
                                           keyboardType: TextInputType.number,
                                           controller:
@@ -564,55 +563,42 @@ class LoginSignUp extends StatelessWidget {
                                           height: 5,
                                         ),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Expanded(
-                                              child: CheckboxListTile.adaptive(  value: authController
+                                              child: CheckboxListTile.adaptive(
+                                                value: authController
                                                     .acceptedTerms.value,
-                                                 contentPadding: const EdgeInsets.symmetric(horizontal: 0), 
-                                                
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 0),
                                                 onChanged: (bool? newValue) {
-                                                  authController.acceptedTerms
-                                                      .value = newValue ?? false;},
-                                                      controlAffinity: ListTileControlAffinity.leading,
-                                                      // contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                                                      
-                                                      
-                                                      title:  Text(
-                                                'I allow to submit ID proof to update profile info',
-                                                overflow: TextOverflow.clip,
-                                                style: GoogleFonts.nunito(
-                                                  height: 1.5,
-                                                  fontSize: 13,
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  fontWeight: FontWeight.w500,
+                                                  authController
+                                                          .acceptedTerms.value =
+                                                      newValue ?? false;
+                                                },
+                                                controlAffinity:
+                                                    ListTileControlAffinity
+                                                        .leading,
+                                                dense:
+                                                    true, // Makes the CheckboxListTile more compact
+                                                visualDensity: VisualDensity
+                                                    .compact, // Further reduces spacing
+                                                title: Text(
+                                                  'I consent to submit ID proof for profile updates',
+                                                  overflow: TextOverflow.clip,
+                                                  style: GoogleFonts.nunito(
+                                                    height: 1.5,
+                                                    fontSize: 13,
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
-                                              ) ,),
+                                              ),
+                                              
                                             ),
-                                            // Checkbox(
-                                            //   value: authController
-                                            //       .acceptedTerms.value,
-                                            //   onChanged: (bool? newValue) {
-                                            //     authController.acceptedTerms
-                                            //         .value = newValue ?? false;
-                                            //     // setState(() {
-                                            //     //   _acceptedTerms =
-                                            //     //       newValue!;
-                                            //     // });
-                                            //   },
-                                            // ),
-                                            // Text(
-                                            //   'I allow to submit ID proof to update profile info',
-                                            //   overflow: TextOverflow.clip,
-                                            //   style: GoogleFonts.nunito(
-                                            //     height: 1.5,
-                                            //     fontSize: 13,
-                                            //     color: Colors.black
-                                            //         .withOpacity(0.5),
-                                            //     fontWeight: FontWeight.w500,
-                                            //   ),
-                                            // ),
                                           ],
                                         ),
                                         Visibility(
@@ -682,7 +668,7 @@ class LoginSignUp extends StatelessWidget {
                                                       .selectedIDProof
                                                       .value
                                                       .isNotEmpty
-                                                  ?Text(authController
+                                                  ? Text(authController
                                                       .selectedIDProof.value)
                                                   : Text(
                                                       "Tap to select the ID proof",
