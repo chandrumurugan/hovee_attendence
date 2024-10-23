@@ -273,7 +273,7 @@ class _RoleSelectionState extends State<RoleSelection> {
                             }
 
                              if (selectedRole == 'Tutor' &&
-                                selectedRoleTypeName == 'I am a Individual Tutor') {
+                                selectedRoleTypeName == 'I Run an Institute') {
                               SnackBarUtils.showErrorSnackBar(context,
                                   'Feature under development');
                               return; // Exit early if tutor is selected but no role type is selected

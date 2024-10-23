@@ -64,6 +64,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                 controllerValue: controller.branchShortNameController,
                 selectedValue: controller.branchShortNameController,
                 keyboardType: TextInputType.text,
+                 hintText: 'Enter your here...',
                 onTap: () {},
               ),
             ),
@@ -75,6 +76,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                 controllerValue: controller.batchNameController,
                  selectedValue: controller.batchNameController,
                  keyboardType: TextInputType.text,
+                  hintText: 'Enter your here...',
                 onTap: () {},
               ),
             ),
@@ -126,6 +128,7 @@ Padding(
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: CommonInputField(
                 title: 'Maximum slots',
+                 hintText: 'Enter your here...',
                 controllerValue: controller.maxSlotsController,
                 selectedValue: controller.maxSlotsController,
                 keyboardType: TextInputType.number,
@@ -155,6 +158,7 @@ Padding(
                 selectedValue: controller.modeController,
                 items: controller.batchModes,
                 onChanged: controller.setBatchModes,
+                
               ),
             ),
             Padding(
@@ -162,6 +166,7 @@ Padding(
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: CommonInputField(
                 title: 'Fees',
+                hintText: 'Enter your here...',
                 controllerValue: controller.feesController,
                 selectedValue: controller.feesController,
                 keyboardType: TextInputType.text,

@@ -21,6 +21,11 @@ class CommonDropdownInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+        // Determine the text to show in the TextField
+      String displayText = selectedValue.value.isEmpty
+          ? 'Select' // Show "Tap to select [title]" if nothing is selected
+          : selectedValue.value;    // Show the selected value otherwise
+
       return TextField(
         decoration: InputDecoration(
            //labelText: title,
@@ -36,7 +41,7 @@ class CommonDropdownInputField extends StatelessWidget {
         onTap: () {
           _showDropdown(context);
         },
-        controller: TextEditingController(text: selectedValue.value),
+        controller: TextEditingController(text: displayText),
       );
     });
   }

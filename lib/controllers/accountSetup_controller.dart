@@ -74,12 +74,8 @@ class AccountSetupController extends GetxController
   var tuteEducationInfo = {}.obs;
   final WebService webService = Get.put(WebService());
 
-   List<String> qualifications = [
-  
-  ];
-   List<String> skills = [
-  
-  ];
+   List<String> qualifications = [];
+   List<String> skills = [];
    List<String> techs = [];
    List<String> techsExperience = [];
   @override

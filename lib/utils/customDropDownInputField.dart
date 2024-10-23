@@ -55,7 +55,7 @@ class CommonDropdownInputField extends StatelessWidget {
       isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
-          height: sheetHeight,
+          height: 160,
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
