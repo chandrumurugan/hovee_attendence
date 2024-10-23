@@ -6,11 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
+import 'package:hovee_attendence/utils/keyboardUtils.dart';
 
 class LoginSignUp extends StatelessWidget {
   const LoginSignUp({super.key});
@@ -182,6 +184,8 @@ class LoginSignUp extends StatelessWidget {
                           onTap: (int index) {
                             authController.currentTabIndex.value = index;
                             authController.isLoading.value = false;
+                            KeyboardUtil.hideKeyboard(context);
+                            
                           },
                           tabs: const [
                             Tab(
@@ -238,7 +242,7 @@ class LoginSignUp extends StatelessWidget {
                                             ),
                                           ),
                                         ],
-                                        hintText: 'Phone number / Email ID',
+                                        hintText: 'Enter here...',
                                         keyboardType: TextInputType.name,
                                         controller:
                                             authController.logInController,
@@ -426,7 +430,7 @@ class LoginSignUp extends StatelessWidget {
                                                 ),
                                               ),
                                             ],
-                                            hintText: 'Enter your email',
+                                            hintText: 'Enter here...',
                                             keyboardType:
                                                 TextInputType.emailAddress,
                                             controller:
@@ -462,7 +466,7 @@ class LoginSignUp extends StatelessWidget {
                                             suffix: true,
                                             readonly: true,
                                             isDate: true,
-                                            hintText: 'Select your dob',
+                                            hintText: 'Select',
                                             initialDate:
                                                 DateTime.now().subtract(
                                               const Duration(days: 365 * 18),
@@ -504,7 +508,7 @@ class LoginSignUp extends StatelessWidget {
                                         InputTextField(
                                           suffix: false,
                                           readonly: false,
-                                          hintText: 'Enter your phone number',
+                                          hintText: 'Enter here...',
                                           keyboardType: TextInputType.phone,
                                           inputFormatter: [
                                             FilteringTextInputFormatter.allow(
@@ -546,7 +550,7 @@ class LoginSignUp extends StatelessWidget {
                                         InputTextField(
                                           suffix: false,
                                           readonly: false,
-                                          hintText: 'Enter your pincode',
+                                          hintText: 'Enter here...',
                                           inputFormatter: [
                                             FilteringTextInputFormatter.allow(
                                               RegExp(
@@ -570,9 +574,8 @@ class LoginSignUp extends StatelessWidget {
                                               child: CheckboxListTile.adaptive(
                                                 value: authController
                                                     .acceptedTerms.value,
-                                                contentPadding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 0),
+                                                 contentPadding: const EdgeInsets.symmetric(horizontal: 0), 
+                                                activeColor: AppConstants.secondaryColor,
                                                 onChanged: (bool? newValue) {
                                                   authController
                                                           .acceptedTerms.value =

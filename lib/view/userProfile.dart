@@ -107,6 +107,7 @@ class UserProfile extends StatelessWidget {
                           tabs: const [
                             Tab(
                               text: 'Personal info',
+                              // child: Text("Personal info",style: GoogleFonts.nunito(color: Colors.black),textAlign: TextAlign.center,),
                             ),
                             Tab(
                               text: 'Address',

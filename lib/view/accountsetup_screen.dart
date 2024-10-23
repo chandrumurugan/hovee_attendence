@@ -13,6 +13,7 @@ import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDropDownInputField.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
+import 'package:hovee_attendence/utils/keyboardUtils.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
 import 'package:path/path.dart' as path;
@@ -37,14 +38,15 @@ class AccountSetup extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: ()async{
-         return await accountController.handleBackButton(context);
+         return await ModalService.handleBackButtonN(context);
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBarHeader(
           needGoBack: true,
-          navigateTo: () {
-            Navigator.pop(context);
+          navigateTo: () async{
+          bool isBack =   await ModalService.handleBackButtonN(context);
+            // Navigator.pop(context);
           },
         ),
         body: Stack(
@@ -102,7 +104,7 @@ class AccountSetup extends StatelessWidget {
                     return Container(
                       height: selectedRole == 'Tutee'
                           ? accountController.currentTabIndex.value == 2
-                              ? MediaQuery.of(context).size.height * 0.5
+                              ? MediaQuery.of(context).size.height * 0.55
                               : MediaQuery.of(context).size.height * 0.7
                           : accountController.currentTabIndex.value == 2
                               ? MediaQuery.of(context).size.height * 0.7
@@ -124,6 +126,7 @@ class AccountSetup extends StatelessWidget {
                             onTap: (int index) {
                               accountController.currentTabIndex.value = index;
                               accountController.isLoading.value = false;
+                              KeyboardUtil.hideKeyboard(context);
                             },
                             tabs: [
                               const Tab(
@@ -280,7 +283,7 @@ class AccountSetup extends StatelessWidget {
                                                 ),
                                               ),
                                             ],
-                                            hintText: 'Enter your email',
+                                            hintText: 'Enter here...',
                                             keyboardType:
                                                 TextInputType.emailAddress,
                                             controller: accountController
@@ -316,7 +319,7 @@ class AccountSetup extends StatelessWidget {
                                             suffix: true,
                                             readonly: true,
                                             isDate: true,
-                                            hintText: 'Enter your dob',
+                                            hintText: 'Select',
                                             initialDate: DateTime.now().subtract(
                                               const Duration(days: 365 * 18),
                                             ),
@@ -356,7 +359,7 @@ class AccountSetup extends StatelessWidget {
                                         InputTextField(
                                             suffix: false,
                                             readonly: false,
-                                            hintText: 'Enter your phone number',
+                                            hintText: 'Enter here...',
                                             keyboardType: TextInputType.phone,
                                             inputFormatter: [
                                               FilteringTextInputFormatter.allow(
@@ -397,7 +400,7 @@ class AccountSetup extends StatelessWidget {
                                         InputTextField(
                                           suffix: false,
                                           readonly: false,
-                                          hintText: 'Enter your pincode',
+                                          hintText: 'Enter here...',
                                           inputFormatter: [
                                             FilteringTextInputFormatter.allow(
                                               RegExp(
@@ -562,7 +565,7 @@ class AccountSetup extends StatelessWidget {
                                         InputTextField(
                                             suffix: false,
                                             readonly: false,
-                                            hintText: 'Enter your door no',
+                                            hintText: 'Enter here...',
                                             keyboardType: TextInputType.name,
                                             controller: accountController
                                                 .address1Controller),
@@ -572,7 +575,7 @@ class AccountSetup extends StatelessWidget {
                                         Row(
                                           children: [
                                             const Text(
-                                              'Street',
+                                              'Street & Area',
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w500,
@@ -596,7 +599,7 @@ class AccountSetup extends StatelessWidget {
                                         InputTextField(
                                             suffix: false,
                                             readonly: false,
-                                            hintText: 'Enter your street',
+                                            hintText: 'Enter here...',
                                             keyboardType: TextInputType.name,
                                             controller: accountController
                                                 .address2Controller),
@@ -630,7 +633,7 @@ class AccountSetup extends StatelessWidget {
                                         InputTextField(
                                             suffix: false,
                                             readonly: false,
-                                            hintText: 'Enter your city',
+                                            hintText: 'Enter here...',
                                             keyboardType: TextInputType.name,
                                             controller:
                                                 accountController.cityController),
@@ -664,7 +667,7 @@ class AccountSetup extends StatelessWidget {
                                         InputTextField(
                                             suffix: false,
                                             readonly: false,
-                                            hintText: 'Enter your state',
+                                            hintText: 'Enter here...',
                                             keyboardType: TextInputType.text,
                                             controller: accountController
                                                 .stateController),
@@ -698,7 +701,7 @@ class AccountSetup extends StatelessWidget {
                                         InputTextField(
                                           suffix: false,
                                           readonly: false,
-                                          hintText: 'Enter your country',
+                                          hintText: 'Enter here...',
                                           keyboardType: TextInputType.name,
                                           controller:
                                               accountController.countryController,
@@ -733,7 +736,7 @@ class AccountSetup extends StatelessWidget {
                                         InputTextField(
                                           suffix: false,
                                           readonly: false,
-                                          hintText: 'Enter pincode',
+                                          hintText: 'Enter here...',
                                           keyboardType: TextInputType.number,
                                           controller: accountController
                                               .pincodesController,
@@ -846,7 +849,7 @@ class AccountSetup extends StatelessWidget {
                                                             suffix: false,
                                                             readonly: false,
                                                             hintText:
-                                                                'Enter here',
+                                                                'Enter here...',
                                                             keyboardType:
                                                                 TextInputType
                                                                     .name,
@@ -1010,7 +1013,7 @@ class AccountSetup extends StatelessWidget {
                                                       Row(
                                                         children: [
                                                           const Text(
-                                                            'Class',
+                                                            'Class/Specialization',
                                                             style: TextStyle(
                                                               fontSize: 14,
                                                               fontWeight:
@@ -1054,63 +1057,63 @@ class AccountSetup extends StatelessWidget {
                                                           controller:
                                                               accountController
                                                                   .tuteclassController),
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          const Text(
-                                                            'Board',
-                                                            style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight.w500,
-                                                              color: Colors.black,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            '*',
-                                                            style: GoogleFonts
-                                                                .nunito(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight.w600,
-                                                              color: Colors.red
-                                                                  .withOpacity(
-                                                                      0.6),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      InputTextField(
-                                                          suffix: false,
-                                                          readonly: false,
-                                                          inputFormatter: [
-                                                            FilteringTextInputFormatter
-                                                                .allow(
-                                                              RegExp(
-                                                                r"[a-zA-Z0-9@&_,-\.']",
-                                                              ),
-                                                            ),
-                                                          ],
-                                                          hintText:
-                                                              'Enter your board',
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .emailAddress,
-                                                          controller:
-                                                              accountController
-                                                                  .tuteeboardController),
+                                                      // const SizedBox(
+                                                      //   height: 5,
+                                                      // ),
+                                                      // Row(
+                                                      //   children: [
+                                                      //     const Text(
+                                                      //       'Board',
+                                                      //       style: TextStyle(
+                                                      //         fontSize: 14,
+                                                      //         fontWeight:
+                                                      //             FontWeight.w500,
+                                                      //         color: Colors.black,
+                                                      //       ),
+                                                      //     ),
+                                                      //     Text(
+                                                      //       '*',
+                                                      //       style: GoogleFonts
+                                                      //           .nunito(
+                                                      //         fontSize: 18,
+                                                      //         fontWeight:
+                                                      //             FontWeight.w600,
+                                                      //         color: Colors.red
+                                                      //             .withOpacity(
+                                                      //                 0.6),
+                                                      //       ),
+                                                      //     ),
+                                                      //   ],
+                                                      // ),
+                                                      // const SizedBox(
+                                                      //   height: 10,
+                                                      // ),
+                                                      // InputTextField(
+                                                      //     suffix: false,
+                                                      //     readonly: false,
+                                                      //     inputFormatter: [
+                                                      //       FilteringTextInputFormatter
+                                                      //           .allow(
+                                                      //         RegExp(
+                                                      //           r"[a-zA-Z0-9@&_,-\.']",
+                                                      //         ),
+                                                      //       ),
+                                                      //     ],
+                                                      //     hintText:
+                                                      //         'Enter your board',
+                                                      //     keyboardType:
+                                                      //         TextInputType
+                                                      //             .emailAddress,
+                                                      //     controller:
+                                                      //         accountController
+                                                      //             .tuteeboardController),
                                                                       const SizedBox(
                                                         height: 5,
                                                       ),
                                                       Row(
                                                         children: [
                                                           const Text(
-                                                            'Organization name',
+                                                            'Name of school/college/other',
                                                             style: TextStyle(
                                                               fontSize: 14,
                                                               fontWeight:

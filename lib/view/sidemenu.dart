@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
+import 'package:hovee_attendence/controllers/auth_controllers.dart';
+import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/utils/sidemenuHeader.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 
-
 class SideMenu extends StatelessWidget {
-    final bool isGuest;
-  const SideMenu({super.key,required this.isGuest});
-  
+  final bool isGuest;
+  const SideMenu({super.key, required this.isGuest});
 
   @override
   Widget build(BuildContext context) {
     var box = GetStorage();
-    
-      bool notification = true;
+
+    bool notification = true;
     return SizedBox(
       width: MediaQuery.sizeOf(context).width * 0.9,
       child: Scaffold(
@@ -35,8 +36,8 @@ class SideMenu extends StatelessWidget {
             if (!isGuest)
               ListTile(
                 onTap: () {
-                  Get.to(()=> UserProfile());
-                  
+                  Get.to(() => UserProfile());
+
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(
@@ -193,11 +194,13 @@ class SideMenu extends StatelessWidget {
             ),
             if (!isGuest)
               ListTile(
-                onTap: () {
+                onTap: () async {
                   // _logoutPopup(context);
-                  box.remove("Token");
-                  Get.offAll(()=>const LoginSignUp());
-
+                  bool islogut = await ModalService.handleBackButton(context);
+                  if (islogut) {
+                    box.remove("Token");
+                    Get.offAll(() => const LoginSignUp());
+                  } else {}
                 },
                 leading: const Icon(
                   Icons.logout_rounded,

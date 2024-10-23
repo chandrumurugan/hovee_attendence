@@ -9,6 +9,7 @@ import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/view/batch_screen.dart';
 import 'package:hovee_attendence/view/course_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
+import 'package:hovee_attendence/view/userProfile.dart';
 
 class TutorHome extends StatelessWidget {
   TutorHome({super.key});
@@ -101,9 +102,14 @@ class TutorHome extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const HomePageHeader(
-                    title: 'Attendance Monitoring',
-                    userType: "Tutor",
+                  InkWell(
+                    onTap: (){
+                      Get.to(()=>UserProfile());
+                    },
+                    child: const HomePageHeader(
+                      title: 'Attendance Monitoring',
+                      userType: "Tutor",
+                    ),
                   ),
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.18,
@@ -260,8 +266,8 @@ class HomePageHeader extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        Text(
-                            '${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}',
+                        
+                         Text('${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}',
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 24.0,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
+import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 
 class ModalService {
   static void openIDProofModalSheet(BuildContext context,
@@ -56,6 +58,75 @@ class ModalService {
           );
         });
       },
+    );
+  }
+  static    Future<bool> handleBackButtonN(BuildContext context) async {
+    return await showExitPopupN(context) ?? false;
+  }
+
+  // Exit confirmation dialog logic
+ static Future<bool?> showExitPopupN(BuildContext context) {
+    return Get.dialog<bool>(
+      AlertDialog(
+        title: Text('Exit'),
+        content: Text('Are you sure you want to go back ?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // If "No" is pressed, just close the dialog
+              Get.back(result: false);
+             
+            },
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () {
+              // If "Yes" is pressed, close the app
+              Get.back(result: true);
+              Future.delayed(Duration(milliseconds: 300), () {
+                 Get.offAll(()=>LoginSignUp());
+                // SystemNavigator.pop();
+              });
+            },
+            child: Text('Yes'),
+          ),
+        ],
+      ),
+    );
+  }
+
+ static   Future<bool> handleBackButton(BuildContext context) async {
+    return await showExitPopup(context) ?? false;
+  }
+
+  // Exit confirmation dialog logic
+ static Future<bool?> showExitPopup(BuildContext context) {
+    return Get.dialog<bool>(
+      AlertDialog(
+        title: Text('Logout'),
+        content: Text('Do you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // If "No" is pressed, just close the dialog
+              Get.back(result: false);
+             
+            },
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () {
+              // If "Yes" is pressed, close the app
+              Get.back(result: true);
+              Future.delayed(Duration(milliseconds: 300), () {
+                 Get.offAll(()=>LoginSignUp());
+                // SystemNavigator.pop();
+              });
+            },
+            child: Text('Yes'),
+          ),
+        ],
+      ),
     );
   }
 }

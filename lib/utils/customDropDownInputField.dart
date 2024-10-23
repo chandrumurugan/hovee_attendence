@@ -47,7 +47,8 @@ class CommonDropdownInputField extends StatelessWidget {
   void _showDropdown(BuildContext context) {
     const double itemHeight = 56.0; // Height for each RadioListTile
     const double maxHeight = 400.0; // Maximum height of the bottom sheet
-    final double sheetHeight = (items.length * itemHeight).clamp(0, maxHeight);
+    const double minHeight = 100.0;
+    final double sheetHeight = (items.length * itemHeight).clamp(minHeight, maxHeight);
 
     showModalBottomSheet(
       context: context,

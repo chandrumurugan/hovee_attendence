@@ -5,6 +5,7 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
+import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:hovee_attendence/widget/subjectContainer.dart';
 
 class TuteeHome extends StatelessWidget {
@@ -101,9 +102,14 @@ class TuteeHome extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const HomePageHeader(
-                    title: 'Attendance Monitoring',
-                    userType: "Tutee",
+                  InkWell(
+                    onTap: (){
+                       Get.to(()=>UserProfile());
+                    },
+                    child: const HomePageHeader(
+                      title: 'Attendance Monitoring',
+                      userType: "Tutee",
+                    ),
                   ),
                   SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.02,

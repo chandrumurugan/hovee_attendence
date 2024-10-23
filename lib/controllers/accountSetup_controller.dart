@@ -118,27 +118,27 @@ class AccountSetupController extends GetxController
 
   bool validateAddressInfo(BuildContext context) {
     if (address1Controller.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter door no");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter the door no");
       return false;
     }
     if (address2Controller.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter street");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter the street & area");
       return false;
     }
     if (cityController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter city");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter the city");
       return false;
     }
     if (stateController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter state");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter the state");
       return false;
     }
     if (countryController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter country");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter the country");
       return false;
     }
     if (pincodesController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter pincode");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter the pincode");
       return false;
     }
 
@@ -283,19 +283,19 @@ class AccountSetupController extends GetxController
     }
     if(tuteclassController.text.isEmpty){
        SnackBarUtils.showErrorSnackBar(
-          context, "Please enter class.");
+          context, "Please enter the class/specialization.");
           return false;
 
     }
-    if(tuteeboardController.text.isEmpty){
-        SnackBarUtils.showErrorSnackBar(
-          context, "Please enter board.");
-          return false;
+    // if(tuteeboardController.text.isEmpty){
+    //     SnackBarUtils.showErrorSnackBar(
+    //       context, "Please enter board.");
+    //       return false;
 
-    }
+    // }
     if(tuteorganizationController.text.isEmpty){
         SnackBarUtils.showErrorSnackBar(
-          context, "Please enter organization name.");
+          context, "Please enter the school/college/other.");
           return false;
     }
     return true;
@@ -319,14 +319,14 @@ class AccountSetupController extends GetxController
     if(validateTuteEducationInfo(context)){
       tuteEducationInfo.value = { "highest_qualification": tuteQualificationController.text, 
     "select_class": tuteclassController.text, 
-    "select_board": tuteeboardController.text, 
+    // "select_board": tuteeboardController.text, 
     "organization_name": tuteorganizationController.text
 };
-submitTuteeAccountSetup(roleId);
+submitTuteeAccountSetup(roleId,context);
     }
   }
 
-  Future<void> submitTuteeAccountSetup(String roleId,)async{
+  Future<void> submitTuteeAccountSetup(String roleId,BuildContext context)async{
      final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
@@ -347,6 +347,7 @@ submitTuteeAccountSetup(roleId);
             if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
         print(responseBody);
+         SnackBarUtils.showSuccessSnackBar(context, "Account setup successfully completed.");
         Get.offAll(()=>const TuteeHome());
         // Handle success (e.g., show a success message)
       } else {
@@ -435,38 +436,5 @@ submitTuteeAccountSetup(roleId);
     }
   }
 
-      Future<bool> handleBackButton(BuildContext context) async {
-    return await showExitPopup(context) ?? false;
-  }
-
-  // Exit confirmation dialog logic
-  Future<bool?> showExitPopup(BuildContext context) {
-    return Get.dialog<bool>(
-      AlertDialog(
-        title: Text('Exit App'),
-        content: Text('Are you sure you want to go back ?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              // If "No" is pressed, just close the dialog
-              Get.back(result: false);
-             
-            },
-            child: Text('No'),
-          ),
-          TextButton(
-            onPressed: () {
-              // If "Yes" is pressed, close the app
-              Get.back(result: true);
-              Future.delayed(Duration(milliseconds: 300), () {
-                 Get.offAll(()=>LoginSignUp());
-                // SystemNavigator.pop();
-              });
-            },
-            child: Text('Yes'),
-          ),
-        ],
-      ),
-    );
-  }
+  
 }

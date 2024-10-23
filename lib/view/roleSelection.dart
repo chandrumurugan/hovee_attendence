@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/role_controller.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
+import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/accountsetup_screen.dart';
@@ -18,7 +19,7 @@ class RoleSelection extends StatefulWidget {
 
 class _RoleSelectionState extends State<RoleSelection> {
   final RoleController roleController = Get.put(RoleController());
-   final splashController = Get.find<AccountSetupController>();
+ 
 
   String? selectedRoleId, selectedRole, selectedRoleTypeName;
   String? selectedRoleTypeId;
@@ -56,7 +57,7 @@ class _RoleSelectionState extends State<RoleSelection> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: ()async{
-        return await splashController.handleBackButton(context);
+        return await ModalService.handleBackButtonN(context);
       },
       child: Scaffold(
         body: _isLoading

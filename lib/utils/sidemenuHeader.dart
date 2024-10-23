@@ -80,6 +80,7 @@ class SidemenuHeader extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
+              if(authController.otpResponse.value != null)
               Text(
                 "${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}",
                 style: GoogleFonts.nunito(
@@ -99,6 +100,7 @@ class SidemenuHeader extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
+                    if(authController.otpResponse.value != null)
                   Text(
                     'hov ID : ${authController.otpResponse.value.data!.wowId}',
                     style: GoogleFonts.nunito(
