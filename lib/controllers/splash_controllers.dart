@@ -36,8 +36,12 @@ class SplashController extends GetxController {
         final storage = GetStorage();
       storage.write('qualifications', response.data!.highestQualification.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
       storage.write('skills', response.data!.teachingSkill.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
-      storage.write('techs', response.data!.batchMode.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
+      storage.write('techs', response.data!.teaching.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
       storage.write('techsExperience', response.data!.workExperience.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
+      storage.write('batchDays', response.data!.batchDays.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
+      storage.write('batchModes', response.data!.batchMode.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
+      storage.write('idProof', response.data!.idProof.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
+      storage.write('studenTeacher', response.data!.studentCategory.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
         checkUserLoggedIn();
         Logger().i('AppConfig loaded successfully');
       } else {

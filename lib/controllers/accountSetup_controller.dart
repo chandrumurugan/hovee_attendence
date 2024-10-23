@@ -37,6 +37,7 @@ class AccountSetupController extends GetxController
   final stateController = TextEditingController();
   final countryController = TextEditingController();
   final pincodesController = TextEditingController();
+  final additionalInfoController = TextEditingController();
 
   //education info
   // Dropdown values
@@ -105,11 +106,11 @@ class AccountSetupController extends GetxController
 
   bool validateAddressInfo(BuildContext context) {
     if (address1Controller.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter address1");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter door no");
       return false;
     }
     if (address2Controller.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter address2");
+      SnackBarUtils.showErrorSnackBar(context, "Please enter street");
       return false;
     }
     if (cityController.text.isEmpty) {
@@ -252,11 +253,6 @@ class AccountSetupController extends GetxController
     }
     if (resumePath.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(context, 'Please upload a resume.');
-      return false;
-    }
-    if (educationCertPath.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(
-          context, 'Please upload an education certificate.');
       return false;
     }
     if (experienceCertPath.value.isEmpty) {

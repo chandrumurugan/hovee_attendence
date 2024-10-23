@@ -121,10 +121,12 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: CommonInputField(
-                label: 'Batch days',
+              child: CommonDropdownInputField(
+                title: 'Batch days',
                 controllerValue: controller.batchDaysController,
-                onTap: () {},
+                selectedValue: controller.batchDaysController,
+                items: controller.batchDays,
+                onChanged: controller.setBatchDays,
               ),
             ),
             Padding(
@@ -134,8 +136,8 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                 title: 'Mode',
                 controllerValue: controller.modeController,
                 selectedValue: controller.modeController,
-                items: controller.modes,
-                onChanged: controller.setMode,
+                items: controller.batchModes,
+                onChanged: controller.setBatchModes,
               ),
             ),
             Padding(

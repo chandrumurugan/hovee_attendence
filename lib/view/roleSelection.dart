@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/role_controller.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/accountsetup_screen.dart';
 import 'package:hovee_attendence/view/dashBoard.dart';
 
@@ -17,7 +18,7 @@ class RoleSelection extends StatefulWidget {
 class _RoleSelectionState extends State<RoleSelection> {
   final RoleController roleController = Get.put(RoleController());
 
-  String? selectedRoleId, selectedRole,selectedRoleTypeName;
+  String? selectedRoleId, selectedRole, selectedRoleTypeName;
   String? selectedRoleTypeId;
   List<Role>? roles;
   List<RoleType> roleTypes = [];
@@ -82,29 +83,29 @@ class _RoleSelectionState extends State<RoleSelection> {
                       SizedBox(
                         width: double.infinity,
                         child: Stack(
-                                  alignment: Alignment.centerLeft,
-                                  children: [
-                                    const Text(
-                                      'hovee',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 28,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom:22, // Adjust this value as needed
-                                      left: 70, // Align with the start of "hovee"
-                                      child: Text(
-                              'e-attendance',
-                              style: GoogleFonts.nunito(
-                                  fontSize: 18.0, color: Color(0xffFFA012)),
+                          alignment: Alignment.centerLeft,
+                          children: [
+                            const Text(
+                              'hovee',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 28,
+                              ),
                             ),
-                                    ),
-                                  ],
-                                ),
+                            Positioned(
+                              bottom: 22, // Adjust this value as needed
+                              left: 70, // Align with the start of "hovee"
+                              child: Text(
+                                'e-attendance',
+                                style: GoogleFonts.nunito(
+                                    fontSize: 18.0, color: Color(0xffFFA012)),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-           
+
                       const Text(
                         'Select your role',
                         style: TextStyle(
@@ -132,9 +133,9 @@ class _RoleSelectionState extends State<RoleSelection> {
                                   setState(() {
                                     selectedRoleId = role.id;
                                     roleTypes = role.roleTypes;
-                                    selectedRoleTypeId =
-                                        null; 
-                                        selectedRoleTypeName = null;// Reset selected role type
+                                    selectedRoleTypeId = null;
+                                    selectedRoleTypeName =
+                                        null; // Reset selected role type
                                     selectedRole = role.roleName;
                                   });
                                 },
@@ -193,14 +194,16 @@ class _RoleSelectionState extends State<RoleSelection> {
                               itemBuilder: (context, index) {
                                 var roleType = roleTypes[index];
                                 bool isSelected =
-                                    selectedRoleTypeId == roleType.id&&
-                                  selectedRoleTypeName == roleType.roleTypeName;
+                                    selectedRoleTypeId == roleType.id &&
+                                        selectedRoleTypeName ==
+                                            roleType.roleTypeName;
 
                                 return GestureDetector(
                                   onTap: () {
                                     setState(() {
                                       selectedRoleTypeId = roleType.id;
-                                      selectedRoleTypeName = roleType.roleTypeName;
+                                      selectedRoleTypeName =
+                                          roleType.roleTypeName;
                                     });
                                   },
                                   child: Padding(
@@ -249,24 +252,27 @@ class _RoleSelectionState extends State<RoleSelection> {
                         onTap: () {
                           // Check if selectedRoleId is null
                           if (selectedRoleId == null) {
-                            Get.snackbar('Please select a role.');
+                            SnackBarUtils.showErrorSnackBar(
+                                context, 'Please select a role.');
                             return; // Exit early if no role is selected
                           }
 
                           // Check if the selected role is 'tutor' and ensure a role type is selected
                           if (selectedRole == 'Tutor' &&
                               selectedRoleTypeId == null) {
-                            Get.snackbar(
+                            SnackBarUtils.showErrorSnackBar(context,
                                 'Please select a role type for tutor.');
                             return; // Exit early if tutor is selected but no role type is selected
                           }
 
                           // If we reach here, either a role is selected and it's not 'tutor', or it's 'tuttee' (which doesn't require a role type)
                           Get.to(() => AccountSetup(
-                              roleId: selectedRoleId!,
-                              roleTypeId: selectedRoleTypeId ?? '',
-                              selectedRoleTypeName: selectedRoleTypeName?? '',
-                              selectedRole: selectedRole?? '',));
+                                roleId: selectedRoleId!,
+                                roleTypeId: selectedRoleTypeId ?? '',
+                                selectedRoleTypeName:
+                                    selectedRoleTypeName ?? '',
+                                selectedRole: selectedRole ?? '',
+                              ));
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

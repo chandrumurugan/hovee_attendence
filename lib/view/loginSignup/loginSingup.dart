@@ -425,7 +425,7 @@ class LoginSignUp extends StatelessWidget {
                                                 ),
                                               ),
                                             ],
-                                            hintText: 'Enter here',
+                                            hintText: 'Enter here email',
                                             keyboardType:
                                                 TextInputType.emailAddress,
                                             controller:

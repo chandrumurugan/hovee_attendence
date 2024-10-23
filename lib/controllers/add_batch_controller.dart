@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
@@ -23,16 +24,22 @@ class TutorAddBatchController extends GetxController {
   var validationMessages = <String>[].obs;
   var isLoading = false.obs;
 
-   final List<String> modes = ['Online', 'Offline',];
-
-    void setMode(String value) => modeController.value = value;
-
-    final List<String> teacher = ['Online', 'Offline',];
-
-    void setTeacher(String value) => batchTeacherController.value = value;
-
+    final List<String> teacher = ['Rahul', 'Rabbin','akalaya','annai'];
+     List<String> batchDays = [];
+   List<String> batchModes = [];
     
+ @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+     _loadDropdownData();
+  }
 
+void _loadDropdownData() {
+  // Load data from GetStorage into lists
+ batchDays = GetStorage().read<List<String>>('batchDays') ?? [];
+ batchModes = GetStorage().read<List<String>>('batchModes') ?? [];
+  }
   bool validateFields(BuildContext context) {
     validationMessages.clear();
 
@@ -136,4 +143,9 @@ class TutorAddBatchController extends GetxController {
       }
     }
   }
+
+  void setTeacher(String value) => batchTeacherController.value = value;
+     void setBatchModes(String value) =>
+      modeController.value = value;
+  void setBatchDays(String value) => batchDaysController.value = value;
 }
