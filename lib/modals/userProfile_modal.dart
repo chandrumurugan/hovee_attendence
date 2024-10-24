@@ -218,7 +218,7 @@ class RolesId {
         required this.isActive,
         required this.isDelete,
         required this.roleTypes,
-        required this.createdAt,
+        // required this.createdAt,
         required this.updatedAt,
     });
 
@@ -227,7 +227,7 @@ class RolesId {
     final int? isActive;
     final int? isDelete;
     final List<RoleType> roleTypes;
-    final DateTime? createdAt;
+    // final DateTime? createdAt;
     final DateTime? updatedAt;
 
     factory RolesId.fromJson(Map<String, dynamic> json){ 
@@ -237,7 +237,7 @@ class RolesId {
             isActive: json["is_active"],
             isDelete: json["is_delete"],
             roleTypes: json["roleTypes"] == null ? [] : List<RoleType>.from(json["roleTypes"]!.map((x) => RoleType.fromJson(x))),
-            createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+            // createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
             updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
         );
     }

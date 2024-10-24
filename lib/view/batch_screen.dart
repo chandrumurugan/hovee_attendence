@@ -1,30 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/widget/batch_list_container.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 
-
-class TutorBatchList extends StatefulWidget {
-  const TutorBatchList({super.key});
-
-  @override
-  State<TutorBatchList> createState() => _TutorBatchListState();
-}
-
-class _TutorBatchListState extends State<TutorBatchList> {
-  final BatchController batchController = Get.put(BatchController());
-
-  @override
-  void initState() {
-    super.initState();
-    // Replace 'YOUR_AUTH_TOKEN' with the actual token
-    batchController.fetchBatchList(
-    );
-  }
-
+class TutorBatchList extends StatelessWidget {
+   TutorBatchList({super.key});
+ final BatchController batchController = Get.put(BatchController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(

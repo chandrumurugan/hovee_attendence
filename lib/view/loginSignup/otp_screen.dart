@@ -114,6 +114,38 @@ class _OtpScreenState extends State<OtpScreen> {
                     children: [
                       Visibility(
                         visible: authController.tabController.index == 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: 150,
+                                color: Colors.grey.shade400,
+                                height: 2,
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                child: Text(
+                                  'OR',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 150,
+                                color: Colors.grey.shade400,
+                                height: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30,),
+                      Visibility(
+                        visible: authController.tabController.index == 0,
                         child: Image.asset(
                           'assets/appConstantImg/loginSignupI/image 203.png',
                           height: 150,

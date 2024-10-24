@@ -8,12 +8,12 @@ class TutorHomeController extends GetxController{
     GlobalKey<ScaffoldState> tutorScaffoldKey = GlobalKey<ScaffoldState>();
 
        final List<Map<String, dynamic>> monitor = [
-    {
-      'title': 'Institute',
-      'image': 'assets/tutorHomeImg/leave 1.png',
-      'desc': 'Lorem Ipsum is simply dummy ',
-      'color': const Color.fromRGBO(240, 119, 33, 1)
-    },
+    // {
+    //   'title': 'Institute',
+    //   'image': 'assets/tutorHomeImg/leave 1.png',
+    //   'desc': 'Lorem Ipsum is simply dummy ',
+    //   'color': const Color.fromRGBO(240, 119, 33, 1)
+    // },
     {
       'title': 'Teacher',
       'image': 'assets/tutorHomeImg/teacher (2) 1.png',

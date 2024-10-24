@@ -83,11 +83,11 @@ class SubjectContainer extends StatelessWidget {
                     height: 15,
                   ),
                   Text(
-                    'Live',
+                    '.Live',
                     style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.amber),
+                        color: Colors.green),
                   ),
                 ],
               ),

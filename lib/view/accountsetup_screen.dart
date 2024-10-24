@@ -135,9 +135,9 @@ class AccountSetup extends StatelessWidget {
                               const Tab(
                                 text: 'Address',
                               ),
-                              if (selectedRoleTypeName != 'I Run an Institute')
-                                const Tab(
-                                  text: 'Education',
+                              if (selectedRoleTypeName != 'Institute')
+                                 Tab(
+                                  text: selectedRole == 'Tutee' ?'Education':'Professional',
                                 ),
                             ],
                             unselectedLabelColor: Colors.grey,
@@ -476,6 +476,7 @@ class AccountSetup extends StatelessWidget {
                                         ),
                                         InkWell(
                                           onTap: () {
+                                            KeyboardUtil.hideKeyboard(context);
                                             accountController.storePersonalInfo(
                                                 context, roleId, roleTypeId);
                                           },
@@ -567,6 +568,14 @@ class AccountSetup extends StatelessWidget {
                                             readonly: false,
                                             hintText: 'Enter here...',
                                             keyboardType: TextInputType.name,
+                                            inputFormatter: [
+                                              FilteringTextInputFormatter
+                                                          .allow(
+                                                        RegExp(
+                                                          r"[a-zA-Z0-9\s@&_,-\./']",
+                                                        ),
+                                                      ),
+                                            ],
                                             controller: accountController
                                                 .address1Controller),
                                         const SizedBox(
@@ -601,6 +610,11 @@ class AccountSetup extends StatelessWidget {
                                             readonly: false,
                                             hintText: 'Enter here...',
                                             keyboardType: TextInputType.name,
+                                            inputFormatter: [
+                                               FilteringTextInputFormatter.allow(
+      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+    ),
+                                            ],
                                             controller: accountController
                                                 .address2Controller),
                                         const SizedBox(
@@ -635,6 +649,11 @@ class AccountSetup extends StatelessWidget {
                                             readonly: false,
                                             hintText: 'Enter here...',
                                             keyboardType: TextInputType.name,
+                                            inputFormatter: [
+                                               FilteringTextInputFormatter.allow(
+      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+    ),
+                                            ],
                                             controller:
                                                 accountController.cityController),
                                         const SizedBox(
@@ -669,6 +688,11 @@ class AccountSetup extends StatelessWidget {
                                             readonly: false,
                                             hintText: 'Enter here...',
                                             keyboardType: TextInputType.text,
+                                            inputFormatter: [
+                                              FilteringTextInputFormatter.allow(
+      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+    ),
+                                            ],
                                             controller: accountController
                                                 .stateController),
                                         const SizedBox(
@@ -703,6 +727,11 @@ class AccountSetup extends StatelessWidget {
                                           readonly: false,
                                           hintText: 'Enter here...',
                                           keyboardType: TextInputType.name,
+                                          inputFormatter: [
+                                            FilteringTextInputFormatter.allow(
+      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+    ),
+                                          ],
                                           controller:
                                               accountController.countryController,
                                         ),
@@ -754,6 +783,7 @@ class AccountSetup extends StatelessWidget {
                                         ),
                                         InkWell(
                                           onTap: () {
+                                             KeyboardUtil.hideKeyboard(context);
                                             accountController.storeAddressInfo(
                                                 context,
                                                 selectedRoleTypeName,
@@ -805,11 +835,11 @@ class AccountSetup extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                selectedRoleTypeName == 'I Run an Institute' &&
+                                selectedRoleTypeName == 'Institute' &&
                                         selectedRoleTypeName == ""
                                     ? Container()
                                     : selectedRoleTypeName !=
-                                                'I Run an Institute' &&
+                                                'Institute' &&
                                             selectedRoleTypeName != ""
                                         ? Container(
                                             padding: const EdgeInsets.symmetric(
@@ -834,7 +864,7 @@ class AccountSetup extends StatelessWidget {
                                                           height: 5,
                                                         ),
                                                         const Text(
-                                                          'Additional Info',
+                                                          'Additional info',
                                                           style: TextStyle(
                                                             fontSize: 14,
                                                             fontWeight:
@@ -853,6 +883,11 @@ class AccountSetup extends StatelessWidget {
                                                             keyboardType:
                                                                 TextInputType
                                                                     .name,
+                                                                    inputFormatter: [
+                                                                       FilteringTextInputFormatter.allow(
+      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+    ),
+                                                                    ],
                                                             controller:
                                                                 accountController
                                                                     .additionalInfoController),
@@ -860,12 +895,12 @@ class AccountSetup extends StatelessWidget {
                                                     ),
                                                   ),
                                                   _buildFileUploadSection(
-                                                      'Attach Resume', 'resume'),
+                                                      'Attach resume', 'resume'),
                                                   _buildFileUploadSection(
-                                                      'Attach Education Certificate',
+                                                      'Attach education certificate',
                                                       'education'),
                                                   _buildFileUploadSection(
-                                                      'Attach Experience Certificate',
+                                                      'Attach experience certificate',
                                                       'experience'),
                                                   if (accountController
                                                       .validationMessages
@@ -883,6 +918,7 @@ class AccountSetup extends StatelessWidget {
                                                     ),
                                                   InkWell(
                                                     onTap: () {
+                                                       KeyboardUtil.hideKeyboard(context);
                                                       accountController
                                                           .storeEducationInfo(
                                                               context,
@@ -963,7 +999,7 @@ class AccountSetup extends StatelessWidget {
                                                       Row(
                                                         children: [
                                                           const Text(
-                                                            'Highest Qualification',
+                                                            'Highest qualification',
                                                             style: TextStyle(
                                                               fontSize: 14,
                                                               fontWeight:
@@ -988,25 +1024,32 @@ class AccountSetup extends StatelessWidget {
                                                       const SizedBox(
                                                         height: 10,
                                                       ),
-                                                      InputTextField(
-                                                          suffix: false,
-                                                          readonly: false,
-                                                          inputFormatter: [
-                                                            FilteringTextInputFormatter
-                                                                .allow(
-                                                              RegExp(
-                                                                r"[a-zA-Z0-9@&_,-\.']",
-                                                              ),
-                                                            ),
-                                                          ],
-                                                          hintText:
-                                                              'Enter your qualification',
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .emailAddress,
-                                                          controller:
-                                                              accountController
-                                                                  .tuteQualificationController),
+                                                      // InputTextField(
+                                                      //     suffix: false,
+                                                      //     readonly: false,
+                                                      //     inputFormatter: [
+                                                      //       FilteringTextInputFormatter
+                                                      //           .allow(
+                                                      //         RegExp(
+                                                      //           r"[a-zA-Z0-9@&_,-\.']",
+                                                      //         ),
+                                                      //       ),
+                                                      //     ],
+                                                      //     hintText:
+                                                      //         'Select',
+                                                      //     keyboardType:
+                                                      //         TextInputType
+                                                      //             .emailAddress,
+                                                      //     controller:
+                                                      //         accountController
+                                                      //             .tuteQualificationController),
+                                                                   CommonDropdownInputField(
+              title: 'Highest qualification',
+              controllerValue: accountController.tuteeHighestQualification,
+              selectedValue: accountController.tuteeHighestQualification,
+              items: accountController.tuteeQualifications,
+              onChanged: accountController.setTuteeHighestQualification,
+            ),
                                                       const SizedBox(
                                                         height: 5,
                                                       ),
@@ -1038,25 +1081,32 @@ class AccountSetup extends StatelessWidget {
                                                       const SizedBox(
                                                         height: 10,
                                                       ),
-                                                      InputTextField(
-                                                          suffix: false,
-                                                          readonly: false,
-                                                          inputFormatter: [
-                                                            FilteringTextInputFormatter
-                                                                .allow(
-                                                              RegExp(
-                                                                r"[a-zA-Z0-9@&_,-\.']",
-                                                              ),
-                                                            ),
-                                                          ],
-                                                          hintText:
-                                                              'Enter your class',
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .emailAddress,
-                                                          controller:
-                                                              accountController
-                                                                  .tuteclassController),
+                                                      // InputTextField(
+                                                      //     suffix: false,
+                                                      //     readonly: false,
+                                                      //     inputFormatter: [
+                                                      //       FilteringTextInputFormatter
+                                                      //           .allow(
+                                                      //         RegExp(
+                                                      //           r"[a-zA-Z0-9@&_,-\.']",
+                                                      //         ),
+                                                      //       ),
+                                                      //     ],
+                                                      //     hintText:
+                                                      //         'Select',
+                                                      //     keyboardType:
+                                                      //         TextInputType
+                                                      //             .emailAddress,
+                                                      //     controller:
+                                                      //         accountController
+                                                      //             .tuteclassController),
+                                                      CommonDropdownInputField(
+              title: 'Class/Specialization',
+              controllerValue: accountController.tuteeSpeciallization,
+              selectedValue: accountController.tuteeSpeciallization,
+              items: accountController.tuteeSpeciallizationClass,
+              onChanged: accountController.setTuteeSpeciallization,
+            ),
                                                       // const SizedBox(
                                                       //   height: 5,
                                                       // ),
@@ -1113,7 +1163,7 @@ class AccountSetup extends StatelessWidget {
                                                       Row(
                                                         children: [
                                                           const Text(
-                                                            'Name of school/college/other',
+                                                            'Name of school/college',
                                                             style: TextStyle(
                                                               fontSize: 14,
                                                               fontWeight:
@@ -1142,15 +1192,12 @@ class AccountSetup extends StatelessWidget {
                                                           suffix: false,
                                                           readonly: false,
                                                           inputFormatter: [
-                                                            FilteringTextInputFormatter
-                                                                .allow(
-                                                              RegExp(
-                                                                r"[a-zA-Z0-9@&_,-\.']",
-                                                              ),
-                                                            ),
+                                                            FilteringTextInputFormatter.allow(
+      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+    ),
                                                           ],
                                                           hintText:
-                                                              'Enter your organization name',
+                                                              'Enter here...',
                                                           keyboardType:
                                                               TextInputType
                                                                   .emailAddress,
@@ -1161,7 +1208,9 @@ class AccountSetup extends StatelessWidget {
                                                         height: 15,
                                                       ),
                                                       InkWell(
+                                                        
                                                         onTap: () {
+                                                           KeyboardUtil.hideKeyboard(context);
                                                           accountController.storeTuteeeducationInfo(context, roleId, roleTypeId);
                                                         },
                                                         child: Container(
@@ -1381,6 +1430,7 @@ class AccountSetup extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
+              
               print("Greeting values==");
               accountController.pickFile(type);
             },
@@ -1409,7 +1459,7 @@ class AccountSetup extends StatelessWidget {
                       ),
                     )
                   : Text(
-                      "Select",
+                      "Upload document",
                       style: TextStyle(
                           color: Colors.grey[400], fontWeight: FontWeight.w400),
                     ),
@@ -1430,7 +1480,7 @@ class AccountSetup extends StatelessWidget {
             Row(
               children: [
                 const Text(
-                  'Highest Qualification',
+                  'Highest qualification',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -1468,7 +1518,7 @@ class AccountSetup extends StatelessWidget {
             Row(
               children: [
                 const Text(
-                  'Teaching Skill Set',
+                  'Teaching skill set',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -1506,7 +1556,7 @@ class AccountSetup extends StatelessWidget {
             Row(
               children: [
                 const Text(
-                  'Work Type',
+                  'Work type',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -1544,7 +1594,7 @@ class AccountSetup extends StatelessWidget {
             Row(
               children: [
                 const Text(
-                  'Teaching Experience',
+                  'Teaching experience',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,

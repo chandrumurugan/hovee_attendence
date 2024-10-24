@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class CommonInputField extends StatelessWidget {
-  final String title; // Title of the input field
+ // final String title; // Title of the input field
   final RxString controllerValue; // Reactive controller value
   final RxString selectedValue; // Selected value to display
   final Function(String)? onChanged; // Function called on text change
@@ -13,12 +13,13 @@ class CommonInputField extends StatelessWidget {
   final String? suffixText; // Suffix text
   final String? prefixText; // Prefix text
   final String? hintText; // Hint text to display when field is empty
-
+  final TextEditingController? controller;
   CommonInputField({
     Key? key,
-    required this.title,
+    //required this.title,
     required this.controllerValue,
     required this.selectedValue,
+    required this.controller,
     this.onChanged,
     required this.onTap,
     this.keyboardType,
@@ -31,12 +32,19 @@ class CommonInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      final textEditingController =
+        TextEditingController(text: controllerValue.value);
+
+    // Update the controller value when the text changes
+    textEditingController.addListener(() {
+      controllerValue.value = textEditingController.text;
+    });
       return TextField(
         keyboardType: keyboardType,
         inputFormatters: inputFormatters,
         decoration: InputDecoration(
           hintText: hintText, // Set the hint text here
-          // labelText: title, // Optional: Use title as label text
+          //labelText: title, // Optional: Use title as label text
           prefixText: prefixText,
           suffixText: suffixText,
           filled: true,
@@ -46,11 +54,11 @@ class CommonInputField extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
         ),
-        readOnly: true,
+        readOnly: false,
         onTap: () {
           onTap();
         },
-        controller: TextEditingController(text: selectedValue.value),
+      controller: controller,
       );
     });
   }

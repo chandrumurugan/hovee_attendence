@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
@@ -188,6 +189,11 @@ class TuteeHome extends StatelessWidget {
                     },
                     itemCount: controller.tuteeMonitorList.length,
                   ),
+                   Positioned(
+                left: 20,
+                right: 20,
+                top: MediaQuery.sizeOf(context).height * 0.16,
+                child: const LineChartSample(userType: 'Tutee',)),
                 ],
               ),
             )

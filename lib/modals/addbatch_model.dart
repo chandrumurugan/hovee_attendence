@@ -2,7 +2,7 @@ class AddBatchDataModel {
   int? statusCode;
   bool? success;
   String? message;
-  Data? data;
+  Data1? data;
 
   AddBatchDataModel({this.statusCode, this.success, this.message, this.data});
 
@@ -10,7 +10,7 @@ class AddBatchDataModel {
     statusCode = json['statusCode'];
     success = json['success'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new Data1.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -25,7 +25,7 @@ class AddBatchDataModel {
   }
 }
 
-class Data {
+class Data1 {
   String? batchName;
   String? batchTeacher;
   String? batchTimingStart;
@@ -42,7 +42,7 @@ class Data {
   String? updatedAt;
   int? iV;
 
-  Data(
+  Data1(
       {this.batchName,
       this.batchTeacher,
       this.batchTimingStart,
@@ -59,7 +59,7 @@ class Data {
       this.updatedAt,
       this.iV});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Data1.fromJson(Map<String, dynamic> json) {
     batchName = json['batch_name'];
     batchTeacher = json['batch_teacher'];
     batchTimingStart = json['batch_timing_start'];

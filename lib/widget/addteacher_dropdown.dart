@@ -7,7 +7,7 @@ class CommonDropdownInputField extends StatelessWidget {
   final RxString selectedValue;
   final List<String> items;
   final Function(String) onChanged;
-  final bool onTap;
+  final bool ?onTap;
   
 
   CommonDropdownInputField({
@@ -17,7 +17,7 @@ class CommonDropdownInputField extends StatelessWidget {
     required this.selectedValue,
     required this.items,
     required this.onChanged,
-  required  this.onTap
+    this.onTap
   }) : super(key: key);
 
   @override
@@ -42,9 +42,9 @@ class CommonDropdownInputField extends StatelessWidget {
         ),
         readOnly: true,
         onTap: () {
-          if(onTap ){
+         
            _showDropdown(context);   
-          }
+          
             
           
         

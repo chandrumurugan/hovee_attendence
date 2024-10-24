@@ -55,6 +55,11 @@ class AccountSetupController extends GetxController
   var teachingSkills = ''.obs;
   var workingTech = ''.obs;
   var teachingExperience = ''.obs;
+   var teachingSkills1 = ''.obs;
+ //education info
+  // Dropdown values tutee
+  var tuteeHighestQualification = ''.obs;
+  var tuteeSpeciallization = ''.obs;
 
   // Additional info text field
   var additionalInfo = ''.obs;
@@ -74,10 +79,13 @@ class AccountSetupController extends GetxController
   var tuteEducationInfo = {}.obs;
   final WebService webService = Get.put(WebService());
 
-   List<String> qualifications = ['PG','UG'];
-   List<String> skills = ['Primary(1st-5th)','Secondary(6th-10th)','Higher Secondary(11th-12th)'];
-   List<String> techs = ["Full Time","Part Time"];
+   List<String> qualifications = ['Post graduate','Under graduate'];
+   //List<String> skills = ['Primary(1st-5th)','Secondary(6th-10th)','Higher Secondary(11th-12th)'];
+   List<String> techs = ['Full Time','Part Time'];
    List<String> techsExperience = ['1-3 years','3-5 years','5-10 years','10+ years'];
+   List<String> tuteeQualifications = ['School','College','Others'];
+   List<String> tuteeSpeciallizationClass = ['Pre-school','Primary','Seconday','Higher secondary','Engineering','Arts','Medical'];
+   List<String> skills = ['Pre-school ','Primary ','Seconday','College ','University'];
   @override
   void onInit() {
     // TODO: implement onInit
@@ -252,35 +260,35 @@ class AccountSetupController extends GetxController
     }
     if (workingTech.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
-          context, 'Please select a working technology.');
+          context, 'Please select a work type.');
       return false;
     }
     if (teachingExperience.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
-          context, 'Please select teaching experience.');
+          context, 'Please select your teaching experience.');
       return false;
     }
     if (resumePath.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Please upload a resume.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please attach  a resume.');
       return false;
     }
     if (experienceCertPath.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
-          context, 'Please upload an experience certificate.');
+          context, 'Please attach a experience certificate.');
       return false;
     }
     return true;
   }
   bool validateTuteEducationInfo(BuildContext context){
-    if(tuteQualificationController.text.isEmpty){
+    if(tuteeHighestQualification.value.isEmpty){
        SnackBarUtils.showErrorSnackBar(
-          context, "Please enter highest qualification.");
+          context, "Please select highest qualification.");
           return false;
 
     }
-    if(tuteclassController.text.isEmpty){
+    if(tuteeSpeciallization.value.isEmpty){
        SnackBarUtils.showErrorSnackBar(
-          context, "Please enter the class/specialization.");
+          context, "Please select class/specialization.");
           return false;
 
     }
@@ -300,27 +308,35 @@ class AccountSetupController extends GetxController
 
   void storeEducationInfo(
       BuildContext context, String roleId, String roleTypeId) {
-    if (validateFields(context)) {
+        if (!validateAllTabs(context)) {
+          
+        }else{
+      if (validateFields(context)) {
       educationInfo.value = {
         "highest_qualification": highestQualification.value,
         "teaching_skill_set": teachingSkills.value,
         "working_tech": workingTech.value,
         "teaching_experience": teachingExperience.value,
-        "additional_info": additionalInfo.value,
+        "additional_info": additionalInfoController.text,
       };
       submitAccountSetup(roleId, roleTypeId,context);
     }
+        }
   }
 
   void storeTuteeeducationInfo(BuildContext context, String roleId, String roleTypeId){
+     if (!validateAllTabs1(context)) {
+          
+        }else{
     if(validateTuteEducationInfo(context)){
-      tuteEducationInfo.value = { "highest_qualification": tuteQualificationController.text, 
-    "select_class": tuteclassController.text, 
+      tuteEducationInfo.value = { "highest_qualification": tuteeHighestQualification.value, 
+    "select_class": tuteeSpeciallization.value,
     // "select_board": tuteeboardController.text, 
     "organization_name": tuteorganizationController.text
 };
 submitTuteeAccountSetup(roleId,context);
     }
+        }
   }
 
   Future<void> submitTuteeAccountSetup(String roleId,BuildContext context)async{
@@ -370,6 +386,11 @@ submitTuteeAccountSetup(roleId,context);
   void setWorkingTech(String value) => workingTech.value = value;
   void setTeachingExperience(String value) => teachingExperience.value = value;
   void setAdditionalInfo(String value) => additionalInfo.value = value;
+  void setTuteeHighestQualification(String value) =>
+      tuteeHighestQualification.value = value;
+ void setTuteeSpeciallization(String value) =>
+      tuteeSpeciallization.value = value;
+      
 
   Future<void> pickFile(String type) async {
   final ImagePicker picker = ImagePicker();
@@ -434,5 +455,56 @@ submitTuteeAccountSetup(roleId,context);
     }
   }
 
+  bool validateAllTabs(BuildContext context) {
+  // Validate Personal Info
+  if (!validatePersonalFields(context)) {
+    // Navigate to the personal info tab
+    validatePersonalFields(context);
+    return false;
+  }
   
+  // Validate Address Info
+  if (!validateAddressInfo(context)) {
+    // Navigate to the address tab
+    validateAddressInfo(context);
+    return false;
+  }
+
+  // Validate Education Info (both general and tutee education info)
+  if (!validateFields(context)) {
+    // Navigate to the education tab
+    tabController.animateTo(2);
+    return false;
+  }
+
+  // All validations passed
+  return true;
+}
+
+  bool validateAllTabs1(BuildContext context) {
+  // Validate Personal Info
+  if (!validatePersonalFields(context)) {
+    // Navigate to the personal info tab
+    validatePersonalFields(context);
+    return false;
+  }
+  
+  // Validate Address Info
+  if (!validateAddressInfo(context)) {
+    // Navigate to the address tab
+    validateAddressInfo(context);
+    return false;
+  }
+
+  // Validate Education Info (both general and tutee education info)
+  if (!validateTuteEducationInfo(context)) {
+    // Navigate to the education tab
+    tabController.animateTo(2);
+    return false;
+  }
+
+  // All validations passed
+  return true;
+}
+
 }

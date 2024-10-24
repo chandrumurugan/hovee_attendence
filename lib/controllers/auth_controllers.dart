@@ -79,7 +79,7 @@ class AuthControllers extends GetxController
 
     if (phController.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
-          context, 'Please enter the mobile number.');
+          context, 'Please enter the phone number.');
       return false;
     }
     // Phone number format validation (10 digits)
@@ -157,6 +157,7 @@ class AuthControllers extends GetxController
         if (response != null) {
           loginResponse.value = response;
           isLoading.value = false;
+            logInController.clear();
           Get.to(() => OtpScreen());
         } else {
           Logger().e('Failed to load AppConfig');
@@ -184,6 +185,17 @@ class AuthControllers extends GetxController
 
         if (response != null) {
           registerResponse.value = response;
+              phController.clear();
+     firstNameController.clear();
+      lastNameController.clear();
+       emailController.clear();
+        dobController.clear();
+         pincodeController.clear();
+          otpController.clear();
+            idProofController.clear();
+            acceptedTerms.value=false;
+            selectedIDProof.value='';
+        
           isLoading.value = false;
           Get.to(() => OtpScreen());
         } else {

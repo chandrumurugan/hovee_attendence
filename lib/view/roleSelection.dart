@@ -101,7 +101,7 @@ class _RoleSelectionState extends State<RoleSelection> {
                                 ),
                               ),
                               Positioned(
-                                bottom: 22, // Adjust this value as needed
+                                bottom: 18, // Adjust this value as needed
                                 left: 70, // Align with the start of "hovee"
                                 child: Text(
                                   'e-attendance',
@@ -268,12 +268,12 @@ class _RoleSelectionState extends State<RoleSelection> {
                             if (selectedRole == 'Tutor' &&
                                 selectedRoleTypeId == null) {
                               SnackBarUtils.showErrorSnackBar(context,
-                                  'Please select a role type for tutor.');
+                                  'Please select the role type.');
                               return; // Exit early if tutor is selected but no role type is selected
                             }
-
+      
                              if (selectedRole == 'Tutor' &&
-                                selectedRoleTypeName == 'I Run an Institute') {
+                                selectedRoleTypeName == 'Institute') {
                               SnackBarUtils.showErrorSnackBar(context,
                                   'Feature under development');
                               return; // Exit early if tutor is selected but no role type is selected

@@ -37,4 +37,11 @@ class CourseController extends GetxController {
   void navigateBack() {
     Get.back();
   }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    fetchCourseList();
+  }
 }

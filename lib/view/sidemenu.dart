@@ -196,13 +196,16 @@ class SideMenu extends StatelessWidget {
                   }),
             ),
             if (!isGuest)
-              ListTile(
+            Obx((){
+              var logout=authController.currentTabIndex.value;
+              return ListTile(
                 onTap: () async {
                   // _logoutPopup(context);
                   bool islogut = await ModalService.handleBackButton(context);
                   if (islogut) {
                     box.remove("Token");
                     authController!.tabController!.animateTo(0);
+                    authController.currentTabIndex.value == 0;
                     Get.offAll(() => const LoginSignUp());
 
                   } else {}
@@ -225,7 +228,9 @@ class SideMenu extends StatelessWidget {
                 //         notification = value;
                 //       });
                 //     }),
-              ),
+              );
+            })
+              ,
           ],
         ),
       )),

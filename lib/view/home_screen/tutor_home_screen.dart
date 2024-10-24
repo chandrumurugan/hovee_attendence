@@ -202,8 +202,8 @@ class TutorHome extends StatelessWidget {
             Positioned(
                 left: 20,
                 right: 20,
-                top: MediaQuery.sizeOf(context).height * 0.16,
-                child: const LineChartSample()),
+                top: MediaQuery.sizeOf(context).height * 0.18,
+                child: const LineChartSample(userType: 'Tutor',)),
           ],
         ),
       ),
@@ -253,7 +253,7 @@ class HomePageHeader extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const CircleAvatar(
-                          radius: 25,
+                          radius: 35,
                           // Optional: Set a background color
                           //backgroundColor: Colors.grey[200],
                           child: Icon(
@@ -320,7 +320,7 @@ class HomePageHeader extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                            'hov ID : ${authController.otpResponse.value.data!.wowId!}',
+                            '${authController.otpResponse.value.data!.wowId!}',
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 13.0,
