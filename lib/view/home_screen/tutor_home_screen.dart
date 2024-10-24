@@ -267,21 +267,28 @@ class HomePageHeader extends StatelessWidget {
                           width: 10,
                         ),
                         
-                         Text('${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 24.0,
-                              color: Colors.white,
-                            )),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text("${userType}",
+                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Text('${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 24.0,
+                                  color: Colors.white,
+                                )),
+                                  Text("${userType}",
                             style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 20.0,
                               color: Colors.amber,
                             )),
+
+                           ],
+                         ),
+                        // const SizedBox(
+                        //   width: 10,
+                        // ),
+                      
                       ],
                     ),
                     const SizedBox(

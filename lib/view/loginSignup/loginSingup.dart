@@ -182,7 +182,10 @@ class LoginSignUp extends StatelessWidget {
                           dragStartBehavior: DragStartBehavior.down,
                           controller: authController.tabController,
                           onTap: (int index) {
-                         
+                            if(index == 1){
+                               authController.tabController.animateTo(1); 
+                            }
+                           
                             authController.currentTabIndex.value = index;
                             authController.isLoading.value = false;
                             KeyboardUtil.hideKeyboard(context);
