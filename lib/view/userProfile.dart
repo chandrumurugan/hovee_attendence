@@ -105,7 +105,7 @@ class UserProfile extends StatelessWidget {
                             accountController.currentTabIndex.value = index;
                             accountController.isLoading.value = false;
                           },
-                          tabs: const [
+                          tabs:  [
                             Tab(
                               text: 'Personal info',
                               // child: Text("Personal info",style: GoogleFonts.nunito(color: Colors.black),textAlign: TextAlign.center,),
@@ -114,7 +114,7 @@ class UserProfile extends StatelessWidget {
                               text: 'Address',
                             ),
                             Tab(
-                              text: 'Professional',
+                              text: accountController.userProfileResponse.value.data!.rolesId!.roleName! == 'Tutee' ?'Education':'Professional',
                             ),
                           ],
                           unselectedLabelColor: Colors.grey,

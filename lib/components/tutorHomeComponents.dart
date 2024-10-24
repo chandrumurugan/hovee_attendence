@@ -398,7 +398,7 @@ class LineChartSample extends StatefulWidget {
 class _LineChartSampleState extends State<LineChartSample> {
   String? _selectedBatch; // Initial value
   List<String> _batches = ['Batch 1', 'Batch 2', 'Batch 3'];
-   List<String> _class = ['Class 1', 'Class 2', 'Class 3'];
+   List<String> _class = ['Maths', 'English', 'Science'];
 
   @override
   Widget build(BuildContext context) {
@@ -438,7 +438,7 @@ class _LineChartSampleState extends State<LineChartSample> {
                   children: [
                     DropdownButton<String>(
                       value: _selectedBatch,
-                      hint: widget.userType!='Tutee'? Text('Class'):Text('Batch'),
+                      hint: widget.userType =='Tutee'? Text('Class'):Text('Batch'),
                       icon: const Icon(Icons.arrow_drop_down),
                       iconSize: 24,
                       elevation: 16,

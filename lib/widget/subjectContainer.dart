@@ -82,12 +82,20 @@ class SubjectContainer extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  Text(
-                    '.Live',
-                    style: GoogleFonts.nunito(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green),
+                  Row(
+                    children: [
+                   
+                      Text(
+                        'Live',
+                        style: GoogleFonts.nunito(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green),
+                      ),
+                      SizedBox(width: 2,),
+                        CircleAvatar(radius: 3,backgroundColor: Colors.green,),
+                    
+                    ],
                   ),
                 ],
               ),
