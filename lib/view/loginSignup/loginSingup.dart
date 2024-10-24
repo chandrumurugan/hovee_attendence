@@ -164,7 +164,7 @@ class LoginSignUp extends StatelessWidget {
                 color: Colors.white,
                 child: Obx(() {
                   return Container(
-                    height: authController.currentTabIndex.value == 0
+                    height: authController.currentTabIndex.value == 0 || authController.tabController.index == 0
                         ? 250
                         : MediaQuery.of(context).size.height * 0.7,
                     width: MediaQuery.sizeOf(context).width,
