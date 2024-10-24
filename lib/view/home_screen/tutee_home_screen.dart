@@ -103,6 +103,7 @@ class TuteeHome extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                
                   InkWell(
                     onTap: (){
                        Get.to(()=>UserProfile());
@@ -113,7 +114,7 @@ class TuteeHome extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.02,
+                    height: MediaQuery.sizeOf(context).height * 0.16,
                   ),
                   const Text(
                     'My Classes',
@@ -189,14 +190,15 @@ class TuteeHome extends StatelessWidget {
                     },
                     itemCount: controller.tuteeMonitorList.length,
                   ),
-                   Positioned(
-                left: 20,
-                right: 20,
-                top: MediaQuery.sizeOf(context).height * 0.16,
-                child: const LineChartSample(userType: 'Tutee',)),
+                  
                 ],
               ),
-            )
+            ),
+             Positioned(
+                left: 20,
+                right: 20,
+                top: MediaQuery.sizeOf(context).height * 0.165,
+                child: const LineChartSample(userType: 'Tutee',)),
           ],
         ),
       ),

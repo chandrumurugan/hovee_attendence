@@ -182,9 +182,11 @@ class LoginSignUp extends StatelessWidget {
                           dragStartBehavior: DragStartBehavior.down,
                           controller: authController.tabController,
                           onTap: (int index) {
+                         
                             authController.currentTabIndex.value = index;
                             authController.isLoading.value = false;
                             KeyboardUtil.hideKeyboard(context);
+                            
                           },
                           tabs: const [
                             Tab(
@@ -257,7 +259,6 @@ class LoginSignUp extends StatelessWidget {
                                                   authController
                                                       .logInController.text,
                                                   context);
-                                                // authController.onClose();
                                             },
                                             child: Container(
                                               height: 48,
@@ -574,11 +575,8 @@ class LoginSignUp extends StatelessWidget {
                                               child: CheckboxListTile.adaptive(
                                                 value: authController
                                                     .acceptedTerms.value,
-                                                contentPadding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 0),
-                                                activeColor:
-                                                    AppConstants.secondaryColor,
+                                                 contentPadding: const EdgeInsets.symmetric(horizontal: 0), 
+                                                activeColor: AppConstants.secondaryColor,
                                                 onChanged: (bool? newValue) {
                                                   authController
                                                           .acceptedTerms.value =
@@ -603,6 +601,7 @@ class LoginSignUp extends StatelessWidget {
                                                   ),
                                                 ),
                                               ),
+                                              
                                             ),
                                           ],
                                         ),
@@ -646,63 +645,45 @@ class LoginSignUp extends StatelessWidget {
                                           ),
                                         ),
                                         Visibility(
-                                            visible: authController
-                                                .acceptedTerms.value,
-                                            child: InkWell(
-                                              onTap: () {
-                                                print("Greeting values==");
-                                                ModalService
-                                                    .openIDProofModalSheet(
-                                                        context,
-                                                        splashController,
-                                                        authController);
-                                              },
-                                              child: Container(
-                                                height: 55,
-                                                alignment: Alignment.centerLeft,
-                                                padding: const EdgeInsets.only(
-                                                    top: 10,
-                                                    bottom: 10,
-                                                    left: 12,
-                                                    right: 12),
-                                                decoration: BoxDecoration(
+                                          visible: authController
+                                              .acceptedTerms.value,
+                                          child: InkWell(
+                                            onTap: () {
+                                              print("gretting values==");
+                                              ModalService
+                                                  .openIDProofModalSheet(
+                                                      context,
+                                                      splashController,
+                                                      authController);
+                                            },
+                                            child: Container(
+                                              height: 55,
+                                              alignment: Alignment.centerLeft,
+                                              padding: const EdgeInsets.only(
+                                                  top: 10,
+                                                  bottom: 10,
+                                                  left: 12),
+                                              decoration: BoxDecoration(
                                                   color: Colors.grey[200],
                                                   borderRadius:
-                                                      BorderRadius.circular(15),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Expanded(
-                                                      child: authController
-                                                              .selectedIDProof
-                                                              .value
-                                                              .isNotEmpty
-                                                          ? Text(authController
-                                                              .selectedIDProof
-                                                              .value)
-                                                          : Text(
-                                                              "Select",
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .grey[400],
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                              ),
-                                                            ),
-                                                    ),
-                                                    Icon(
-                                                      Icons
-                                                          .keyboard_arrow_down, // Dropdown arrow icon
-                                                      color: Colors.grey[400],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            )),
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              child: authController
+                                                      .selectedIDProof
+                                                      .value
+                                                      .isNotEmpty
+                                                  ? Text(authController
+                                                      .selectedIDProof.value)
+                                                  : Text(
+                                                      "Tap to select the ID proof",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.grey[400],
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                            ),
+                                          ),
+                                        ),
                                         const SizedBox(height: 10),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
