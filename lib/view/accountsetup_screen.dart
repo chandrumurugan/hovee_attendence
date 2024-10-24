@@ -124,6 +124,9 @@ class AccountSetup extends StatelessWidget {
                             dragStartBehavior: DragStartBehavior.down,
                             controller: accountController.tabController,
                             onTap: (int index) {
+                              if(index == 0){
+                                accountController.storePersonalInfo(context, roleId, roleTypeId);
+                              }
                               accountController.currentTabIndex.value = index;
                               accountController.isLoading.value = false;
                               KeyboardUtil.hideKeyboard(context);

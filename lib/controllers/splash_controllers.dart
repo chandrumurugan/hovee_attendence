@@ -42,7 +42,10 @@ class SplashController extends GetxController {
       storage.write('batchModes', response.data!.batchMode.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
       storage.write('idProof', response.data!.idProof.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
       storage.write('studenTeacher', response.data!.studentCategory.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
-        checkUserLoggedIn();
+         Future.delayed(const Duration(seconds: 2), () {
+        checkUserLoggedIn(); // Navigate after 2 seconds
+      });
+        // checkUserLoggedIn();
         Logger().i('AppConfig loaded successfully');
       } else {
         Logger().e('Failed to load AppConfig');
