@@ -76,7 +76,7 @@ class AccountSetupController extends GetxController
 
    List<String> qualifications = ['PG','UG'];
    List<String> skills = ['Primary(1st-5th)','Secondary(6th-10th)','Higher Secondary(11th-12th)'];
-   List<String> techs = ['Full Time,Part Time'];
+   List<String> techs = ["Full Time","Part Time"];
    List<String> techsExperience = ['1-3 years','3-5 years','5-10 years','10+ years'];
   @override
   void onInit() {
@@ -214,6 +214,7 @@ class AccountSetupController extends GetxController
         'rolesTypeId':roleTypeId,
       };
       tabController.animateTo(1);
+      Logger().i(personalInfo.value);
       
     }
   }
@@ -326,6 +327,7 @@ submitTuteeAccountSetup(roleId,context);
      final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
+    Logger().i(personalInfo.value);
 
     isLoading.value = true;
     try {

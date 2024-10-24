@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,10 +12,12 @@ import 'package:hovee_attendence/view/userProfile.dart';
 
 class SideMenu extends StatelessWidget {
   final bool isGuest;
-  const SideMenu({super.key, required this.isGuest});
+   SideMenu({super.key, required this.isGuest});
+  
 
   @override
   Widget build(BuildContext context) {
+      final AuthControllers authController = Get.put(AuthControllers());
     var box = GetStorage();
 
     bool notification = true;
@@ -199,7 +202,9 @@ class SideMenu extends StatelessWidget {
                   bool islogut = await ModalService.handleBackButton(context);
                   if (islogut) {
                     box.remove("Token");
+                    authController!.tabController!.animateTo(0);
                     Get.offAll(() => const LoginSignUp());
+
                   } else {}
                 },
                 leading: const Icon(

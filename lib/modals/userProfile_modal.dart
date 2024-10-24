@@ -169,13 +169,13 @@ class QualificationDetail {
     return QualificationDetail(
       id: json["_id"],
       highestQualification: json["highest_qualification"],
-      selectBoard: json['select_board'], // Use ':' to assign values
-      selectClass: json['select_class'], // Use ':' to assign values
-      organizationName: json['organization_name'],
-      userId: json["userId"],
-      teachingSkillSet: json["teaching_skill_set"],
-      workingTech: json["working_tech"],
-      additionalInfo: json["additional_info"],
+      selectBoard: json['select_board'] ?? "", // Use ':' to assign values
+      selectClass: json['select_class'] ?? "", // Use ':' to assign values
+      organizationName: json['organization_name'] ?? "",
+      userId: json["userId"] ?? "",
+      teachingSkillSet: json["teaching_skill_set"] ?? "",
+      workingTech: json["working_tech"] ?? "",
+      additionalInfo: json["additional_info"] ?? "",
       attachResume: json["attach_resume"],
       attachEducationCertificate: json["attach_education_certificate"],
       attachExperienceCertificate: json["attach_experience_certificate"],

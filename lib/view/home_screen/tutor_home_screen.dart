@@ -19,7 +19,7 @@ class TutorHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: controller.tutorScaffoldKey,
-      drawer: const SideMenu(isGuest: false),
+      drawer:  SideMenu(isGuest: false),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 5,
@@ -117,7 +117,7 @@ class TutorHome extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Text(
-                      'Attendance Report',
+                      'Daily Attendance',
                       style: GoogleFonts.nunito(
                           fontSize: 18, fontWeight: FontWeight.w700),
                     ),

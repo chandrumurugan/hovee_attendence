@@ -30,6 +30,7 @@ class SidemenuHeader extends StatelessWidget {
     return Container(
       key: sidemenuKey,
       height: 170,
+      width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.sizeOf(context).width * 0.05,
       ),
@@ -73,6 +74,7 @@ class SidemenuHeader extends StatelessWidget {
 )
             ],
           ),
+          SizedBox(width: 5,),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,15 +100,21 @@ class SidemenuHeader extends StatelessWidget {
                     color: Colors.white,
                   ),
                   const SizedBox(
-                    width: 10,
+                    width: 5,
                   ),
                     if(authController.otpResponse.value != null)
-                  Text(
-                    'hov ID : ${authController.otpResponse.value.data!.wowId}',
-                    style: GoogleFonts.nunito(
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white,
-                        fontSize: 16),
+                  Container(
+                    //color: Colors.amberAccent,
+                    width: 180,
+                    // width: MediaQuery.of(context).size.width * 0.02,
+                    child: Text(
+                      '${authController.otpResponse.value.data!.wowId}',
+                      overflow: TextOverflow.clip,
+                      style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                          fontSize: 16),
+                    ),
                   ),
                 ],
               ),

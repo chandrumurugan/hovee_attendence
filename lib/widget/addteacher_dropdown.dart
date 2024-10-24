@@ -7,6 +7,7 @@ class CommonDropdownInputField extends StatelessWidget {
   final RxString selectedValue;
   final List<String> items;
   final Function(String) onChanged;
+  final bool onTap;
   
 
   CommonDropdownInputField({
@@ -16,6 +17,7 @@ class CommonDropdownInputField extends StatelessWidget {
     required this.selectedValue,
     required this.items,
     required this.onChanged,
+  required  this.onTap
   }) : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class CommonDropdownInputField extends StatelessWidget {
           : selectedValue.value;    // Show the selected value otherwise
 
       return TextField(
+        
         decoration: InputDecoration(
            //labelText: title,
           suffixIcon: Icon(Icons.keyboard_arrow_down), // Down arrow icon
@@ -39,7 +42,12 @@ class CommonDropdownInputField extends StatelessWidget {
         ),
         readOnly: true,
         onTap: () {
-          _showDropdown(context);
+          if(onTap ){
+           _showDropdown(context);   
+          }
+            
+          
+        
         },
         controller: TextEditingController(text: displayText),
       );

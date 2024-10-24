@@ -49,6 +49,11 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
   var board = ''.obs;
   var organizationName = ''.obs;
 
+   var highestQualifications = ''.obs;
+  var teachingSkills = ''.obs;
+  var workingTech = ''.obs;
+  var teachingExperience = ''.obs;
+
   // Additional info text field
   var additionalInfo = ''.obs;
 
@@ -85,6 +90,13 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
       qualificationsProfile1.value = value;
        void setHighestQualificationClassProfile(String value) =>
       classProfile1.value = value;
+
+     void setHighestQualifications(String value) =>
+      highestQualification.value = value;
+  void setTeachingSkills(String value) => teachingSkills.value = value;
+  void setWorkingTechs(String value) => workingTech.value = value;
+  void setTeachingExperiences(String value) => teachingExperience.value = value;
+  void setAdditionalInfos(String value) => additionalInfo.value = value;
 
   Future<void> pickFile(String type) async {
     final ImagePicker picker = ImagePicker();
@@ -169,10 +181,17 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
 
 
   //  education info
-    highestQualification.value = userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].highestQualification ?? "" : "";
+    highestQualifications.value = userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].highestQualification ?? "" : "";
     QualificationClass.value =  userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].selectClass ?? "" : "";
     board.value =  userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].selectBoard ?? "" : "";
     organizationName.value = userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].organizationName ?? "" : "";
+    additionalInfo.value =  userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].additionalInfo ?? "" : "";
+
+
+      highestQualification.value = userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].highestQualification ?? "" : "";
+    teachingSkills.value =  userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].teachingSkillSet ?? "" : "";
+    workingTech.value =  userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].workingTech ?? "" : "";
+    teachingExperience.value = userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].teachingexperience ?? "" : "";
     additionalInfo.value =  userdata.qualificationDetails.isNotEmpty ? userdata.qualificationDetails[0].additionalInfo ?? "" : "";
 
 

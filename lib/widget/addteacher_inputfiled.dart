@@ -36,7 +36,7 @@ class CommonInputField extends StatelessWidget {
         inputFormatters: inputFormatters,
         decoration: InputDecoration(
           hintText: hintText, // Set the hint text here
-          labelText: title, // Optional: Use title as label text
+          // labelText: title, // Optional: Use title as label text
           prefixText: prefixText,
           suffixText: suffixText,
           filled: true,

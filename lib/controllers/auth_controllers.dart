@@ -288,6 +288,7 @@ class AuthControllers extends GetxController
     super.onClose();
   }
 
+
   @override
   void onInit() {
     // TODO: implement onInit

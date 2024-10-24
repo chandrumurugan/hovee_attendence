@@ -88,7 +88,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                 controllerValue: controller.batchTeacherController,
                 selectedValue: controller.batchTeacherController,
                 items: controller.teacher,
-                onChanged: controller.setTeacher,
+                onChanged: controller.setTeacher, onTap: true,
               ),
             ),
 Padding(
@@ -146,7 +146,7 @@ Padding(
                 controllerValue: controller.batchDaysController,
                 selectedValue: controller.batchDaysController,
                 items: controller.batchDays,
-                onChanged: controller.setBatchDays,
+                onChanged: controller.setBatchDays, onTap: true,
               ),
             ),
             Padding(
@@ -157,7 +157,7 @@ Padding(
                 controllerValue: controller.modeController,
                 selectedValue: controller.modeController,
                 items: controller.batchModes,
-                onChanged: controller.setBatchModes,
+                onChanged: controller.setBatchModes, onTap: true,
                 
               ),
             ),

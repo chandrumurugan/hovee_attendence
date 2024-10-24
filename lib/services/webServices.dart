@@ -339,6 +339,7 @@ class WebService {
       'Authorization': 'Bearer $token', // Pass the token for authorization
       'Content-Type': 'application/json'
     };
+    Logger().i(personalInfo);
 
     var request =
         http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
