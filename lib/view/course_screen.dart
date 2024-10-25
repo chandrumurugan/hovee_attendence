@@ -72,12 +72,18 @@ class _TutorCourseListState extends State<TutorCourseList> {
                       // const SizedBox(
                       //   height: 10,
                       // ),
-                      Text(
-                        'Lorem ipsum is simply dummy text\n of the printing industry',
-                        style: GoogleFonts.nunito(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14),
+                      Container(
+                        padding: EdgeInsets.only(right: 15),
+                        width: MediaQuery.of(context).size.width* 0.9,
+                        child: Text(
+                          'Add your courses here to showcase your expertise and connect with eager learners',
+                          maxLines: 2,
+                          overflow: TextOverflow.clip,
+                          style: GoogleFonts.nunito(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14),
+                        ),
                       ),
                     ],
                   ),

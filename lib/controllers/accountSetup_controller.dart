@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
+import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
@@ -79,13 +80,14 @@ class AccountSetupController extends GetxController
   var tuteEducationInfo = {}.obs;
   final WebService webService = Get.put(WebService());
 
-   List<String> qualifications = ['Post graduate','Under graduate'];
+   List<String> qualifications = [];
    //List<String> skills = ['Primary(1st-5th)','Secondary(6th-10th)','Higher Secondary(11th-12th)'];
-   List<String> techs = ['Full Time','Part Time'];
-   List<String> techsExperience = ['1-3 years','3-5 years','5-10 years','10+ years'];
-   List<String> tuteeQualifications = ['School','College','Others'];
-   List<String> tuteeSpeciallizationClass = ['Pre-school','Primary','Seconday','Higher secondary','Engineering','Arts','Medical'];
-   List<String> skills = ['Pre-school ','Primary ','Seconday','College ','University'];
+   List<String> techs = [];
+   List<String> techsExperience = [];
+   List<String> tuteeQualifications = [];
+   List<String> tuteeSpeciallizationClass = [];
+   List<String> skills = [];
+    final box = GetStorage();
   @override
   void onInit() {
     // TODO: implement onInit
@@ -93,7 +95,8 @@ class AccountSetupController extends GetxController
     authControllers = Get.find<AuthControllers>();
     tabController = TabController(length: 3, vsync: this);
     _populateFieldsFromAuth();
-     //_loadDropdownData();
+     loadAppConfigData();
+   //qualifications=  getQualifications();
   }
 
   void _populateFieldsFromAuth() {
@@ -110,14 +113,23 @@ class AccountSetupController extends GetxController
     selectedIDProof.value = authControllers.otpResponse.value.data!.idProof!;
     idProofController.text = authControllers.otpResponse.value.data!.idProof!;
   }
-  
-  void _loadDropdownData() {
-  // Load data from GetStorage into lists
- qualifications = GetStorage().read<List<String>>('qualifications') ?? [];
- skills = GetStorage().read<List<String>>('skills') ?? [];
- techs = GetStorage().read<List<String>>('techs') ?? [];
- techsExperience = GetStorage().read<List<String>>('techsExperience') ?? [];
 
+  
+   void loadAppConfigData() {
+    // Retrieve the data from GetStorage
+    var storedConfig = box.read('appConfigData');
+    if (storedConfig != null) {
+      // You can access the data and map it to the lists as needed
+      // Example of parsing the stored config
+      qualifications = List<String>.from(storedConfig['qualifications'] ?? []);
+      techs = List<String>.from(storedConfig['techs'] ?? []);
+      techsExperience = List<String>.from(storedConfig['techsExperience'] ?? []);
+      tuteeQualifications =
+          List<String>.from(storedConfig['tuteeQualifications'] ?? []);
+      tuteeSpeciallizationClass =
+          List<String>.from(storedConfig['tuteeSpeciallizationClass'] ?? []);
+      skills = List<String>.from(storedConfig['skills'] ?? []);
+    }
   }
 
   bool validateAddressInfo(BuildContext context) {

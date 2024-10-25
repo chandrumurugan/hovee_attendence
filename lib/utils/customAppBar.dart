@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hovee_attendence/widget/gifController.dart';
 
 class AppBarHeader extends StatelessWidget implements PreferredSizeWidget {
   final bool needGoBack;
@@ -23,19 +24,20 @@ class AppBarHeader extends StatelessWidget implements PreferredSizeWidget {
           : null,
       elevation: 5,
       shadowColor: Colors.grey.shade100,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            'assets/appConstantImg/app_icon.svg',
-            height: 40,
-          ),
-          Image.asset(
-            'assets/appConstantImg/colorlogoword.png',
-            height: 30,
-          ),
-        ],
-      ),
+      title: LogoGif(),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     SvgPicture.asset(
+      //       'assets/appConstantImg/app_icon.svg',
+      //       height: 40,
+      //     ),
+          // Image.asset(
+          //   'assets/appConstantImg/colorlogoword.png',
+          //   height: 30,
+          // ),
+      //   ],
+      // ),
       centerTitle: true,
       surfaceTintColor: Colors.white,
       backgroundColor: Colors.white,

@@ -17,31 +17,34 @@ class SplashController extends GetxController {
   var showSecondImage = false.obs;
   var appConfig = AppConfig().obs;
   final box = GetStorage();
-
+ final int _steps = 100; 
+ var progressValue = 0.0.obs;
+  final Duration _loadingDuration =
+      const Duration(seconds: 3);
   @override
   void onInit() {
     super.onInit();
 
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       showSecondImage.value = true;
     });
-    fetchAppConfig();
+   fetchAppConfig();
   }
 
   Future<void> fetchAppConfig() async {
+    final stepDuration = _loadingDuration ~/ _steps;
     try {
       var response = await WebService.fetchAppConfig();
       if (response != null) {
         appConfig.value = response;
-        final storage = GetStorage();
-      storage.write('qualifications', response.data!.highestQualification.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
-      storage.write('skills', response.data!.teachingSkill.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
-      storage.write('techs', response.data!.teaching.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
-      storage.write('techsExperience', response.data!.workExperience.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
-      storage.write('batchDays', response.data!.batchDays.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
-      storage.write('batchModes', response.data!.batchMode.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
-      storage.write('idProof', response.data!.idProof.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
-      storage.write('studenTeacher', response.data!.studentCategory.map((e) => e.label).where((label) => label != null).map((label) => label!).toList());
+        // Store the response data in GetStorage
+        box.write('appConfigData', response.toJson());
+      for (int i = 0; i <= _steps; i++) {
+     
+        progressValue.value = i / _steps; // Update progress value for each step
+    
+      await Future.delayed(stepDuration);
+    }
          Future.delayed(const Duration(seconds: 2), () {
         checkUserLoggedIn(); // Navigate after 2 seconds
       });

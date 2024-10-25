@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
+import 'package:hovee_attendence/widget/gifController.dart';
 import 'package:hovee_attendence/widget/subjectContainer.dart';
 
 class TuteeHome extends StatelessWidget {
@@ -47,14 +48,15 @@ class TuteeHome extends StatelessWidget {
                 const SizedBox(
                   width: 30,
                 ),
-                SvgPicture.asset(
-                  'assets/appbar/hovee_attendance_app_icon_.svg',
-                  height: 40,
-                ),
-                Image.asset(
-                  'assets/appConstantImg/colorlogoword.png',
-                  height: 30,
-                ),
+                LogoGif()
+                // SvgPicture.asset(
+                //   'assets/appbar/hovee_attendance_app_icon_.svg',
+                //   height: 40,
+                // ),
+                // Image.asset(
+                //   'assets/appConstantImg/colorlogoword.png',
+                //   height: 30,
+                // ),
               ],
             ),
             Container(
@@ -169,7 +171,7 @@ class TuteeHome extends StatelessWidget {
                               children: [
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 15),
+                                      horizontal: 20, vertical: 10),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
                                       color: controller.tuteeMonitorList[index]
@@ -197,7 +199,7 @@ class TuteeHome extends StatelessWidget {
              Positioned(
                 left: 20,
                 right: 20,
-                top: MediaQuery.sizeOf(context).height * 0.165,
+                top: MediaQuery.sizeOf(context).height * 0.18,
                 child: const LineChartSample(userType: 'Tutee',)),
           ],
         ),

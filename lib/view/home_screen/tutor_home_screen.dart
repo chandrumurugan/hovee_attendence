@@ -10,6 +10,7 @@ import 'package:hovee_attendence/view/batch_screen.dart';
 import 'package:hovee_attendence/view/course_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
+import 'package:hovee_attendence/widget/gifController.dart';
 
 class TutorHome extends StatelessWidget {
   TutorHome({super.key});
@@ -46,14 +47,15 @@ class TutorHome extends StatelessWidget {
                 const SizedBox(
                   width: 30,
                 ),
-                SvgPicture.asset(
-                  'assets/appbar/hovee_attendance_app_icon_.svg',
-                  height: 40,
-                ),
-                Image.asset(
-                  'assets/appConstantImg/colorlogoword.png',
-                  height: 30,
-                ),
+                LogoGif()
+                // SvgPicture.asset(
+                //   'assets/appbar/hovee_attendance_app_icon_.svg',
+                //   height: 40,
+                // ),
+                // Image.asset(
+                //   'assets/appConstantImg/colorlogoword.png',
+                //   height: 30,
+                // ),
               ],
             ),
             Container(
@@ -70,9 +72,9 @@ class TutorHome extends StatelessWidget {
                     color: Colors.black.withOpacity(0.4),
                     height: 30,
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  // const SizedBox(
+                  //   width: 05,
+                  // ),
                   InkWell(
                     onTap: () {
                       // Navigator.push(
@@ -177,7 +179,7 @@ class TutorHome extends StatelessWidget {
                               children: [
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 18),
+                                      horizontal: 20, vertical: 10),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
                                       color: item['color']),

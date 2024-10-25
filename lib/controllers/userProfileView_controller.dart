@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
@@ -17,7 +18,7 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
 
 
  final box = GetStorage();
-
+   late AuthControllers authControllers;
   late TabController tabController;
   var currentTabIndex = 0.obs;
     RxBool isLoading = false.obs;
@@ -120,6 +121,7 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+     authControllers = Get.find<AuthControllers>();
        tabController = TabController(length: 3, vsync: this);
         Logger().i(token.read('Token') ?? "");
        fetchUserProfiles();
@@ -166,7 +168,8 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
     lastNameController.text = userdata.lastName ?? "";
     emailController.text = userdata.email ?? "";
     dobController.text = userdata.dob ?? "";
-    pincodeController.text = userdata.pincode.toString() ?? "";
+    pincodeController.text =
+        authControllers.otpResponse.value.data!.pincode!.toString();
     selectedIDProof.value = userdata.idProofLabel ?? "";
 
     //adddress

@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
@@ -32,11 +28,12 @@ class SidemenuHeader extends StatelessWidget {
       height: 170,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.sizeOf(context).width * 0.05,
+        horizontal: MediaQuery.sizeOf(context).width * 0.025,
       ),
       decoration: const BoxDecoration(
         image: DecorationImage(
-            image: AssetImage('assets/tutorHomeImg/Homepage_bg_banner (1).png')),
+            image:
+                AssetImage('assets/tutorHomeImg/Homepage_bg_banner (1).png')),
         gradient: LinearGradient(
           colors: [AppConstants.primaryColor, AppConstants.secondaryColor],
           begin: Alignment.topCenter,
@@ -63,18 +60,20 @@ class SidemenuHeader extends StatelessWidget {
               // //   height: 30,
               // // ),
               CircleAvatar(
-  radius: 42,
-  // Optional: Set a background color
-  //backgroundColor: Colors.grey[200],
-  child: Icon(
-    Icons.person, // Correct usage: provide IconData directly
-    size: 36, // Adjust the icon size as needed
-    color: Colors.black, // Set the icon color
-  ),
-)
+                radius: 42,
+                // Optional: Set a background color
+                //backgroundColor: Colors.grey[200],
+                child: Icon(
+                  Icons.person, // Correct usage: provide IconData directly
+                  size: 36, // Adjust the icon size as needed
+                  color: Colors.black, // Set the icon color
+                ),
+              )
             ],
           ),
-          SizedBox(width: 5,),
+          SizedBox(
+            width: 5,
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,14 +81,14 @@ class SidemenuHeader extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              if(authController.otpResponse.value != null)
-              Text(
-                "${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}",
-                style: GoogleFonts.nunito(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    fontSize: 20),
-              ),
+              if (authController.otpResponse.value != null)
+                Text(
+                  "${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}",
+                  style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 20),
+                ),
               const SizedBox(
                 height: 10,
               ),
@@ -102,20 +101,20 @@ class SidemenuHeader extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                    if(authController.otpResponse.value != null)
-                  Container(
-                    //color: Colors.amberAccent,
-                    width: 180,
-                    // width: MediaQuery.of(context).size.width * 0.02,
-                    child: Text(
-                      '${authController.otpResponse.value.data!.wowId}',
-                      overflow: TextOverflow.clip,
-                      style: GoogleFonts.nunito(
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                          fontSize: 16),
+                  if (authController.otpResponse.value != null)
+                    Container(
+                      //color: Colors.amberAccent,
+                      width: 180,
+                      // width: MediaQuery.of(context).size.width * 0.02,
+                      child: Text(
+                        '${authController.otpResponse.value.data!.wowId}',
+                        overflow: TextOverflow.clip,
+                        style: GoogleFonts.nunito(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                            fontSize: 16),
+                      ),
                     ),
-                  ),
                 ],
               ),
               const SizedBox(
@@ -144,8 +143,7 @@ class SidemenuHeader extends StatelessWidget {
                   if (isGuest)
                     InkWell(
                         onTap: () {
-                          Get.offAll(()=>const LoginSignUp());
-                         
+                          Get.offAll(() => const LoginSignUp());
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

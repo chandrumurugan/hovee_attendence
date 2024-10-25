@@ -60,12 +60,18 @@ class TutorBatchList extends StatelessWidget {
                           fontSize: 22,
                         ),
                       ),
-                      Text(
-                        'Lorem ipsum is simply dummy text\n of the printing industry',
-                        style: GoogleFonts.nunito(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14,
+                      Container(
+                        padding: EdgeInsets.only(right: 15),
+                        width: MediaQuery.of(context).size.width*0.6,
+                        child: Text(
+                          'Streamline Your Tutoring: Set Up and Manage Your Batches Easily!',
+                          overflow: TextOverflow.clip,
+                          maxLines: 2,
+                          style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                     ],

@@ -124,7 +124,7 @@ class AccountSetup extends StatelessWidget {
                             dragStartBehavior: DragStartBehavior.down,
                             controller: accountController.tabController,
                             onTap: (int index) {
-                              if(index == 0){
+                              if(index == 1){
                                 accountController.storePersonalInfo(context, roleId, roleTypeId);
                               }
                               accountController.currentTabIndex.value = index;
