@@ -24,7 +24,7 @@ class AttendanceCourseListScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
            SearchfiltertabBar(
-            title: 'Course List',
+            title: 'My Classes',
             searchOnTap: () {},
             filterOnTap: () {},
           ),

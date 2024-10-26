@@ -39,7 +39,7 @@ class SplashController extends GetxController {
         appConfig.value = response;
        // Store the response data in GetStorage
       final storage = GetStorage();
-      storage.write('appConfig', response);
+      storage.write('appConfig', response.toJson());
       for (int i = 0; i <= _steps; i++) {
      
         progressValue.value = i / _steps; // Update progress value for each step

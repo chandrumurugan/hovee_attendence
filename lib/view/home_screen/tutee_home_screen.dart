@@ -117,14 +117,32 @@ class TuteeHome extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.16,
+                    height: MediaQuery.sizeOf(context).height * 0.18,
                   ),
-                  const Text(
-                    'My Classes',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'My Classes',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                       InkWell(
+                        onTap: (){
+                          Get.to(() =>
+                                AttendanceCourseListScreen()); 
+                        },
+                         child: const Text(
+                          'See All',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                                               ),
+                       ),
+                    ],
                   ),
                   const SubjectContainer(),
                   const SizedBox(
@@ -154,13 +172,7 @@ class TuteeHome extends StatelessWidget {
                       final item = controller.tuteeMonitorList[index];
                       return InkWell(
                         onTap: () {
-                         if (item['title'] == 'Attendance') {
-                            Get.to(() =>
-                                AttendanceCourseListScreen()); // Navigate to the batch screen
-                          }else {
-                            // Handle other cases or do nothing
-                            print('Unknown screen');
-                          }
+                         
                         },
                         child: Card(
                           elevation: 10,

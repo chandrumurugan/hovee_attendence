@@ -311,7 +311,7 @@ class AuthControllers extends GetxController
     // TODO: implement onInit
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
-   
+    getForLaterUse();
   }
 
 Future<void> saveForLaterUse() async {

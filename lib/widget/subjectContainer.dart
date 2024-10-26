@@ -1,8 +1,12 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/punch_controller.dart';
+import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
+import 'package:hovee_attendence/view/punch_view.dart';
 
 class SubjectContainer extends StatelessWidget {
   const SubjectContainer({super.key});
@@ -64,11 +68,8 @@ class SubjectContainer extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) =>
-                      //              PunchView()));
+                     Get.to(() =>
+                                PunchView(className: '12th std',)); 
                     },
                     child: const CircleAvatar(
                       radius: 25,
@@ -84,17 +85,15 @@ class SubjectContainer extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                   
+                     CircleAvatar(radius: 3,backgroundColor: Colors.green,),
+                     SizedBox(width: 2,),
                       Text(
-                        'Live',
+                        'LIVE',
                         style: GoogleFonts.nunito(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.green),
                       ),
-                      SizedBox(width: 2,),
-                        CircleAvatar(radius: 3,backgroundColor: Colors.green,),
-                    
                     ],
                   ),
                 ],
