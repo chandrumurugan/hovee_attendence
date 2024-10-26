@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/config/appConfig.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
@@ -25,7 +26,7 @@ class WebService {
       var url = Uri.parse("${baseUrl}home/appConfig");
       var response = await http.post(url);
 
-      if (response.statusCode == 200) {
+      if (response. statusCode == 200) {
         var data = jsonDecode(response.body);
         return AppConfig.fromJson(data);
       } else {
@@ -355,5 +356,26 @@ class WebService {
     request.fields['type'] = 'N';
     request.headers.addAll(headers);
     return await request.send();
+  }
+
+    static Future<getAddendanceCourseList> fetchAttendanceCourseList() async {
+    final url = Uri.parse('${baseUrl}attendane/getAddendanceCourseList');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return getAddendanceCourseList.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load attendanceCourse list');
+    }
   }
 }

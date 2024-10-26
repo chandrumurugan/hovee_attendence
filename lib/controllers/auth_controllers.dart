@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
@@ -11,6 +12,7 @@ import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/loginSignup/otp_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthControllers extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -51,6 +53,8 @@ class AuthControllers extends GetxController
 
   int get timerValue => _start.value; // Getter for timer value
   bool get isTimerRunning => _isTimerRunning.value; // Getter for timer state
+
+  RxBool isChecked = false.obs;
 
   bool validateFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
@@ -157,7 +161,8 @@ class AuthControllers extends GetxController
         if (response != null) {
           loginResponse.value = response;
           isLoading.value = false;
-            logInController.clear();
+            // logInController.clear();
+            isChecked.value=false;
           Get.to(() => OtpScreen());
         } else {
           Logger().e('Failed to load AppConfig');
@@ -306,10 +311,26 @@ class AuthControllers extends GetxController
     // TODO: implement onInit
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
+   
   }
 
+Future<void> saveForLaterUse() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (isChecked.value) {
+      await prefs.setString(
+          'rememberUserNo',logInController.text);
+    }
+  }
 
+  Future<void> removeLaterUse() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    await prefs.setString('rememberUserNo', "");
+  }
 
+Future<void> getForLaterUse() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    logInController.text= prefs.getString('rememberUserNo')??''; 
+  }
   
 }

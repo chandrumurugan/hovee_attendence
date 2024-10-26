@@ -86,7 +86,7 @@ class LoginSignUp extends StatelessWidget {
                         Visibility(
                           visible: authController.tabController.index == 0,
                           child: Padding(
-                            padding: const EdgeInsets.all(15.0),
+                            padding: const EdgeInsets.all(25.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -166,7 +166,7 @@ class LoginSignUp extends StatelessWidget {
                   child: Obx(() {
                     return Container(
                       height: authController.currentTabIndex.value == 0 || authController.tabController.index == 0
-                          ? 250
+                          ? 265
                           : MediaQuery.of(context).size.height * 0.7,
                       width: MediaQuery.sizeOf(context).width,
                       decoration: BoxDecoration(
@@ -252,9 +252,45 @@ class LoginSignUp extends StatelessWidget {
                                           controller:
                                               authController.logInController,
                                         ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
+                                        // const SizedBox(
+                                        //   height: 20,
+                                        // ),
+                                            Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            color: Colors.white,
+                            width: 30,
+                            child: Checkbox(
+                              value: authController.isChecked.value,
+                              checkColor: Colors.white,
+                              activeColor: AppConstants.secondaryColor,
+                              onChanged: (bool? value) {
+                                
+                                  authController.isChecked.value = value!;
+                                  if (authController.isChecked.value) {
+                                   authController.saveForLaterUse();
+                                  } else {
+                                    print("getting true");
+                                    authController.removeLaterUse();
+                                  }
+                               
+                              },
+                            ),
+                          ),
+                          SizedBox(width: 0),
+                          Text(
+                            "Remember me",
+                            style: GoogleFonts.nunito(
+                              fontSize: 12.0,
+                              color: Colors.black.withOpacity(0.6),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                                         Row(
                                           children: [
                                             InkWell(

@@ -1,7 +1,9 @@
 // controllers/batch_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
+import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
@@ -11,7 +13,7 @@ import 'package:intl/intl.dart';
 
 
 class BatchController extends GetxController {
-  var batchList = <Data>[].obs;
+  var batchList = [].obs;
   var isLoading = true.obs;
 
   var branchShortNameController = ''.obs;
@@ -47,8 +49,9 @@ class BatchController extends GetxController {
   var validationMessages = <String>[].obs;
   
     final List<String> teacher = ['Rahul', 'Rabbin','akalaya','annai'];
-     List<String> batchDays = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
-   List<String> batchModes = ['Online','Offline'];
+     List<String> batchDays = [];
+   List<String> batchModes = [];
+   
 
   // Method to fetch batch list
   void fetchBatchList() async {
@@ -78,7 +81,11 @@ class BatchController extends GetxController {
     super.onInit();
     print("object");
     fetchBatchList();
+    batchDays=getBatchDays();
+    batchModes=getBatchModes();
   }
+
+  
 
   bool validateFields(BuildContext context) {
     validationMessages.clear();
@@ -186,6 +193,32 @@ class BatchController extends GetxController {
       }
     }
   
+}
+
+
+List<String> getBatchDays() {
+  final storage = GetStorage();
+  final appConfigDataBatchdays = storage.read('appConfig');
+
+  if (appConfigDataBatchdays != null) {
+    final appConfig = AppConfig.fromJson(appConfigDataBatchdays);
+    if (appConfig.data != null) {
+      return appConfig.data!.batchDays!.map((item) => item.label ?? '').toList();
+    }
+  }
+  return [];
+}
+ List<String> getBatchModes() {
+  final storage = GetStorage();
+  final appConfigDataBatchmodes = storage.read('appConfig');
+
+  if (appConfigDataBatchmodes != null) {
+    final appConfig = AppConfig.fromJson(appConfigDataBatchmodes);
+    if (appConfig.data != null) {
+      return appConfig.data!.batchMode!.map((item) => item.label ?? '').toList();
+    }
+  }
+  return [];
 }
 
 

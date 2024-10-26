@@ -1,246 +1,275 @@
 class AppConfig {
-  AppConfig({
-    this.statusCode,
-    this.success,
-    this.data,
-  });
+  int? statusCode;
+  bool? success;
+  Data? data;
 
-  final int? statusCode;
-  final bool? success;
-  final Data? data;
+  AppConfig({this.statusCode, this.success, this.data});
 
-  factory AppConfig.fromJson(Map<String, dynamic> json) {
-    return AppConfig(
-      statusCode: json["statusCode"],
-      success: json["success"],
-      data: json["data"] == null ? null : Data.fromJson(json["data"]),
-    );
+  AppConfig.fromJson(Map<String, dynamic> json) {
+    statusCode = json['statusCode'];
+    success = json['success'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "statusCode": statusCode,
-      "success": success,
-      "data": data?.toJson(),
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['statusCode'] = this.statusCode;
+    data['success'] = this.success;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
   }
 }
 
 class Data {
-  Data({
-    required this.idProof,
-    required this.teaching,
-    required this.workExperience,
-    required this.teachingSkill,
-    required this.highestQualification,
-    required this.batchMode,
-    required this.batchDays,
-    required this.studentCategory,
-  });
+  List<IDProof>? iDProof;
+  List<IDProof>? teaching;
+  List<IDProof>? workExperience;
+  List<IDProof>? highestQualification;
+  List<IDProof>? batchMode;
+  List<IDProof>? batchDays;
+  List<StudentCategory>? studentCategory;
+  List<IDProof>? tuteeHighestQualification;
+  List<IDProof>? teachingSkill;
 
-  final List<BatchDay> idProof;
-  final List<BatchDay> teaching;
-  final List<BatchDay> workExperience;
-  final List<BatchDay> teachingSkill;
-  final List<BatchDay> highestQualification;
-  final List<BatchDay> batchMode;
-  final List<BatchDay> batchDays;
-  final List<StudentCategory> studentCategory;
+  Data(
+      {this.iDProof,
+      this.teaching,
+      this.workExperience,
+      this.highestQualification,
+      this.batchMode,
+      this.batchDays,
+      this.studentCategory,
+      this.tuteeHighestQualification,
+      this.teachingSkill});
 
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return Data(
-      idProof: json["ID_Proof"] == null
-          ? []
-          : List<BatchDay>.from(
-              json["ID_Proof"]!.map((x) => BatchDay.fromJson(x))),
-      teaching: json["Teaching "] == null
-          ? []
-          : List<BatchDay>.from(
-              json["Teaching "]!.map((x) => BatchDay.fromJson(x))),
-      workExperience: json["Work_Experience  "] == null
-          ? []
-          : List<BatchDay>.from(
-              json["Work_Experience  "].map((x) => BatchDay.fromJson(x))),
-      teachingSkill: json["Teaching_Skill"] == null
-          ? []
-          : List<BatchDay>.from(
-              json["Teaching_Skill"].map((x) => BatchDay.fromJson(x))),
-      highestQualification: json["Highest_Qualification"] == null
-          ? []
-          : List<BatchDay>.from(
-              json["Highest_Qualification"].map((x) => BatchDay.fromJson(x))),
-      batchMode: json["Batch_Mode"] == null
-          ? []
-          : List<BatchDay>.from(
-              json["Batch_Mode"].map((x) => BatchDay.fromJson(x))),
-      batchDays: json["Batch_Days"] == null
-          ? []
-          : List<BatchDay>.from(
-              json["Batch_Days"].map((x) => BatchDay.fromJson(x))),
-      studentCategory: json["Student_Category"] == null
-          ? []
-          : List<StudentCategory>.from(
-              json["Student_Category"].map((x) => StudentCategory.fromJson(x))),
-    );
+  Data.fromJson(Map<String, dynamic> json) {
+    if (json['ID_Proof'] != null) {
+      iDProof = <IDProof>[];
+      json['ID_Proof'].forEach((v) {
+        iDProof!.add(new IDProof.fromJson(v));
+      });
+    }
+    if (json['Teaching'] != null) {
+      teaching = <IDProof>[];
+      json['Teaching'].forEach((v) {
+        teaching!.add(new IDProof.fromJson(v));
+      });
+    }
+    if (json['Work_Experience'] != null) {
+      workExperience = <IDProof>[];
+      json['Work_Experience'].forEach((v) {
+        workExperience!.add(new IDProof.fromJson(v));
+      });
+    }
+    if (json['Highest_Qualification'] != null) {
+      highestQualification = <IDProof>[];
+      json['Highest_Qualification'].forEach((v) {
+        highestQualification!.add(new IDProof.fromJson(v));
+      });
+    }
+    if (json['Batch_Mode'] != null) {
+      batchMode = <IDProof>[];
+      json['Batch_Mode'].forEach((v) {
+        batchMode!.add(new IDProof.fromJson(v));
+      });
+    }
+    if (json['Batch_Days'] != null) {
+      batchDays = <IDProof>[];
+      json['Batch_Days'].forEach((v) {
+        batchDays!.add(new IDProof.fromJson(v));
+      });
+    }
+    if (json['Student_Category'] != null) {
+      studentCategory = <StudentCategory>[];
+      json['Student_Category'].forEach((v) {
+        studentCategory!.add(new StudentCategory.fromJson(v));
+      });
+    }
+    if (json['Tutee_Highest_Qualification'] != null) {
+      tuteeHighestQualification = <IDProof>[];
+      json['Tutee_Highest_Qualification'].forEach((v) {
+        tuteeHighestQualification!
+            .add(new IDProof.fromJson(v));
+      });
+    }
+    if (json['Teaching_Skill'] != null) {
+      teachingSkill = <IDProof>[];
+      json['Teaching_Skill'].forEach((v) {
+        teachingSkill!.add(new IDProof.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "ID_Proof": idProof.map((x) => x.toJson()).toList(),
-      "Teaching ": teaching.map((x) => x.toJson()).toList(),
-      "Work_Experience  ": workExperience.map((x) => x.toJson()).toList(),
-      "Teaching_Skill": teachingSkill.map((x) => x.toJson()).toList(),
-      "Highest_Qualification": highestQualification.map((x) => x.toJson()).toList(),
-      "Batch_Mode": batchMode.map((x) => x.toJson()).toList(),
-      "Batch_Days": batchDays.map((x) => x.toJson()).toList(),
-      "Student_Category": studentCategory.map((x) => x.toJson()).toList(),
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.iDProof != null) {
+      data['ID_Proof'] = this.iDProof!.map((v) => v.toJson()).toList();
+    }
+    if (this.teaching != null) {
+      data['Teaching'] = this.teaching!.map((v) => v.toJson()).toList();
+    }
+    if (this.workExperience != null) {
+      data['Work_Experience'] =
+          this.workExperience!.map((v) => v.toJson()).toList();
+    }
+    if (this.highestQualification != null) {
+      data['Highest_Qualification'] =
+          this.highestQualification!.map((v) => v.toJson()).toList();
+    }
+    if (this.batchMode != null) {
+      data['Batch_Mode'] = this.batchMode!.map((v) => v.toJson()).toList();
+    }
+    if (this.batchDays != null) {
+      data['Batch_Days'] = this.batchDays!.map((v) => v.toJson()).toList();
+    }
+    if (this.studentCategory != null) {
+      data['Student_Category'] =
+          this.studentCategory!.map((v) => v.toJson()).toList();
+    }
+    if (this.tuteeHighestQualification != null) {
+      data['Tutee_Highest_Qualification'] =
+          this.tuteeHighestQualification!.map((v) => v.toJson()).toList();
+    }
+    if (this.teachingSkill != null) {
+      data['Teaching_Skill'] =
+          this.teachingSkill!.map((v) => v.toJson()).toList();
+    }
+    return data;
   }
 }
 
-class BatchDay {
-  BatchDay({
-    required this.id,
-    required this.label,
-  });
+class IDProof {
+  String? id;
+  String? label;
 
-  final String? id;
-  final String? label;
+  IDProof({this.id, this.label});
 
-  factory BatchDay.fromJson(Map<String, dynamic> json) {
-    return BatchDay(
-      id: json["id"],
-      label: json["label"],
-    );
+  IDProof.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    label = json['label'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "label": label,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['label'] = this.label;
+    return data;
   }
 }
 
 class StudentCategory {
-  StudentCategory({
-    required this.id,
-    required this.label,
-  });
+  String? id;
+  Label? label;
 
-  final String? id;
-  final Label? label;
+  StudentCategory({this.id, this.label});
 
-  factory StudentCategory.fromJson(Map<String, dynamic> json) {
-    return StudentCategory(
-      id: json["id"],
-      label: json["label"] == null ? null : Label.fromJson(json["label"]),
-    );
+  StudentCategory.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    label = json['label'] != null ? new Label.fromJson(json['label']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "label": label?.toJson(),
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    if (this.label != null) {
+      data['label'] = this.label!.toJson();
+    }
+    return data;
   }
 }
 
 class Label {
-  Label({
-    required this.categoryName,
-    required this.labelData,
-  });
+  String? categoryName;
+  List<LabelData>? labelData;
 
-  final String? categoryName;
-  final List<LabelDatum> labelData;
+  Label({this.categoryName, this.labelData});
 
-  factory Label.fromJson(Map<String, dynamic> json) {
-    return Label(
-      categoryName: json["category_name"],
-      labelData: json["labelData"] == null
-          ? []
-          : List<LabelDatum>.from(
-              json["labelData"]!.map((x) => LabelDatum.fromJson(x))),
-    );
+  Label.fromJson(Map<String, dynamic> json) {
+    categoryName = json['category_name'];
+    if (json['labelData'] != null) {
+      labelData = <LabelData>[];
+      json['labelData'].forEach((v) {
+        labelData!.add(new LabelData.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "category_name": categoryName,
-      "labelData": labelData.map((x) => x.toJson()).toList(),
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['category_name'] = this.categoryName;
+    if (this.labelData != null) {
+      data['labelData'] = this.labelData!.map((v) => v.toJson()).toList();
+    }
+    return data;
   }
 }
 
-class LabelDatum {
-  LabelDatum({
-    required this.board,
-    required this.classes,
-  });
+class LabelData {
+  String? board;
+  List<Classes>? classes;
 
-  final String? board;
-  final List<Class> classes;
+  LabelData({this.board, this.classes});
 
-  factory LabelDatum.fromJson(Map<String, dynamic> json) {
-    return LabelDatum(
-      board: json["board"],
-      classes: json["classes"] == null
-          ? []
-          : List<Class>.from(json["classes"]!.map((x) => Class.fromJson(x))),
-    );
+  LabelData.fromJson(Map<String, dynamic> json) {
+    board = json['board'];
+    if (json['classes'] != null) {
+      classes = <Classes>[];
+      json['classes'].forEach((v) {
+        classes!.add(new Classes.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "board": board,
-      "classes": classes.map((x) => x.toJson()).toList(),
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['board'] = this.board;
+    if (this.classes != null) {
+      data['classes'] = this.classes!.map((v) => v.toJson()).toList();
+    }
+    return data;
   }
 }
 
-class Class {
-  Class({
-    required this.className,
-    required this.subjects,
-  });
+class Classes {
+  String? className;
+  List<Subjects>? subjects;
 
-  final String? className;
-  final List<Subject> subjects;
+  Classes({this.className, this.subjects});
 
-  factory Class.fromJson(Map<String, dynamic> json) {
-    return Class(
-      className: json["class_name"],
-      subjects: json["subjects"] == null
-          ? []
-          : List<Subject>.from(json["subjects"]!.map((x) => Subject.fromJson(x))),
-    );
+  Classes.fromJson(Map<String, dynamic> json) {
+    className = json['class_name'];
+    if (json['subjects'] != null) {
+      subjects = <Subjects>[];
+      json['subjects'].forEach((v) {
+        subjects!.add(new Subjects.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "class_name": className,
-      "subjects": subjects.map((x) => x.toJson()).toList(),
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['class_name'] = this.className;
+    if (this.subjects != null) {
+      data['subjects'] = this.subjects!.map((v) => v.toJson()).toList();
+    }
+    return data;
   }
 }
 
-class Subject {
-  Subject({
-    required this.name,
-  });
+class Subjects {
+  String? name;
 
-  final String? name;
+  Subjects({this.name});
 
-  factory Subject.fromJson(Map<String, dynamic> json) {
-    return Subject(
-      name: json["name"],
-    );
+  Subjects.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "name": name,
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    return data;
   }
 }

@@ -1,0 +1,109 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
+
+class AttendancecourselistContainer extends StatelessWidget {
+  final Data attendanceCourse;
+   AttendancecourselistContainer({super.key, required this.attendanceCourse, required });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
+      child: Card(
+        elevation: 10,
+        shadowColor: Colors.grey,
+        surfaceTintColor: Colors.white,
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/tuteeHomeImg/image 193.png',
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    attendanceCourse.course!.subject!,
+                    style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    attendanceCourse.course!.className!,
+                    style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    attendanceCourse.course!.courseCode!,
+                    style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
+             Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) =>
+                      //              PunchView()));
+                    },
+                    child: const CircleAvatar(
+                      radius: 25,
+                      backgroundColor: AppConstants.primaryColor,
+                      child: Text(
+                        'Punch',
+                        style: TextStyle(fontSize: 11, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                   
+                      Text(
+                        'Live',
+                        style: GoogleFonts.nunito(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green),
+                      ),
+                      SizedBox(width: 2,),
+                        CircleAvatar(radius: 3,backgroundColor: Colors.green,),
+                    
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+}

@@ -95,8 +95,13 @@ class AccountSetupController extends GetxController
     authControllers = Get.find<AuthControllers>();
     tabController = TabController(length: 3, vsync: this);
     _populateFieldsFromAuth();
-     loadAppConfigData();
-   //qualifications=  getQualifications();
+     //loadAppConfigData();
+   qualifications=  getQualifications();
+   techs=  getTechs();
+   techsExperience= getTechsExperiencechs();
+   tuteeQualifications =getTuteeQualifications();
+   skills =getSkills();
+   tuteeSpeciallizationClass =getSkills();
   }
 
   void _populateFieldsFromAuth() {
@@ -114,23 +119,91 @@ class AccountSetupController extends GetxController
     idProofController.text = authControllers.otpResponse.value.data!.idProof!;
   }
 
-  
-   void loadAppConfigData() {
-    // Retrieve the data from GetStorage
-    var storedConfig = box.read('appConfigData');
-    if (storedConfig != null) {
-      // You can access the data and map it to the lists as needed
-      // Example of parsing the stored config
-      qualifications = List<String>.from(storedConfig['qualifications'] ?? []);
-      techs = List<String>.from(storedConfig['techs'] ?? []);
-      techsExperience = List<String>.from(storedConfig['techsExperience'] ?? []);
-      tuteeQualifications =
-          List<String>.from(storedConfig['tuteeQualifications'] ?? []);
-      tuteeSpeciallizationClass =
-          List<String>.from(storedConfig['tuteeSpeciallizationClass'] ?? []);
-      skills = List<String>.from(storedConfig['skills'] ?? []);
+  List<String> getQualifications() {
+  final storage = GetStorage();
+  final appConfigData = storage.read('appConfig');
+
+  if (appConfigData != null) {
+    final appConfig = AppConfig.fromJson(appConfigData);
+    if (appConfig.data != null) {
+      return appConfig.data!.highestQualification!.map((item) => item.label ?? '').toList();
     }
   }
+  return [];
+}
+ List<String> getTechs() {
+  final storage = GetStorage();
+  final appConfigDatatechs = storage.read('appConfig');
+
+  if (appConfigDatatechs != null) {
+    final appConfig = AppConfig.fromJson(appConfigDatatechs);
+    if (appConfig.data != null) {
+      return appConfig.data!.teaching!.map((item) => item.label ?? '').toList();
+    }
+  }
+  return [];
+}
+
+ List<String> getTechsExperiencechs() {
+  final storage = GetStorage();
+  final appConfigDatatechsExperience = storage.read('appConfig');
+
+  if (appConfigDatatechsExperience != null) {
+    final appConfig = AppConfig.fromJson(appConfigDatatechsExperience);
+    if (appConfig.data != null) {
+      return appConfig.data!.workExperience!.map((item) => item.label ?? '').toList();
+    }
+  }
+  return [];
+}
+
+ List<String> getTuteeQualifications() {
+  final storage = GetStorage();
+  final appConfigDataTuteeQualifications = storage.read('appConfig');
+
+  if (appConfigDataTuteeQualifications != null) {
+    final appConfig = AppConfig.fromJson(appConfigDataTuteeQualifications);
+    if (appConfig.data != null) {
+      return appConfig.data!.tuteeHighestQualification!.map((item) => item.label ?? '').toList();
+    }
+  }
+  return [];
+}
+
+ 
+
+ List<String> getSkills() {
+  final storage = GetStorage();
+  final appConfigDataSkills = storage.read('appConfig');
+
+  if (appConfigDataSkills != null) {
+    final appConfig = AppConfig.fromJson(appConfigDataSkills);
+    if (appConfig.data != null) {
+      return appConfig.data!.teachingSkill!.map((item) => item.label ?? '').toList();
+    }
+  }
+  return [];
+}
+
+
+
+  
+  //  void loadAppConfigData() {
+  //   // Retrieve the data from GetStorage
+  //   var storedConfig = box.read('appConfigData');
+  //   if (storedConfig != null) {
+  //     // You can access the data and map it to the lists as needed
+  //     // Example of parsing the stored config
+  //     qualifications = List<String>.from(storedConfig['qualifications'] ?? []);
+  //     techs = List<String>.from(storedConfig['techs'] ?? []);
+  //     techsExperience = List<String>.from(storedConfig['techsExperience'] ?? []);
+  //     tuteeQualifications =
+  //         List<String>.from(storedConfig['tuteeQualifications'] ?? []);
+  //     tuteeSpeciallizationClass =
+  //         List<String>.from(storedConfig['tuteeSpeciallizationClass'] ?? []);
+  //     skills = List<String>.from(storedConfig['skills'] ?? []);
+  //   }
+  // }
 
   bool validateAddressInfo(BuildContext context) {
     if (address1Controller.text.isEmpty) {

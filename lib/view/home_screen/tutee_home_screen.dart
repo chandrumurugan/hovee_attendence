@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
+import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
@@ -150,12 +151,16 @@ class TuteeHome extends StatelessWidget {
                             crossAxisSpacing: 10 // Number of columns
                             ),
                     itemBuilder: (context, int index) {
+                      final item = controller.tuteeMonitorList[index];
                       return InkWell(
                         onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => _widgets[index]));
+                         if (item['title'] == 'Attendance') {
+                            Get.to(() =>
+                                AttendanceCourseListScreen()); // Navigate to the batch screen
+                          }else {
+                            // Handle other cases or do nothing
+                            print('Unknown screen');
+                          }
                         },
                         child: Card(
                           elevation: 10,

@@ -13,7 +13,7 @@ class ModalService {
       builder: (BuildContext context) {
         return Obx(() {
           // Check if the ID Proofs are available in appConfig
-          var idProofs = splashController.appConfig.value.data?.idProof ?? [];
+          var idProofs = splashController.appConfig.value.data?.iDProof ?? [];
           const double itemHeight = 56.0; // Height for each RadioListTile
           const double maxHeight = 400.0; // Maximum height of the bottom sheet
           final double sheetHeight =
