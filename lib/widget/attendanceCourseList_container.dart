@@ -68,7 +68,7 @@ class AttendancecourselistContainer extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      Get.to(() => PunchView(className: attendanceCourse.course!.className!,));
+                      Get.to(() => PunchView(className: attendanceCourse.course!.className!, courseId:attendanceCourse.course!.sId!, batchId:attendanceCourse.batch!.sId!, batchStartTime: attendanceCourse.batch!.batchTimingStart!, batchEndTime: attendanceCourse.batch!.batchTimingEnd!,));
                     },
                     child: const CircleAvatar(
                       radius: 25,

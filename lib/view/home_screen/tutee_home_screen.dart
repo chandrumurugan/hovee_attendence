@@ -144,7 +144,7 @@ class TuteeHome extends StatelessWidget {
                        ),
                     ],
                   ),
-                  const SubjectContainer(),
+                   SubjectContainer(),
                   const SizedBox(
                     height: 10,
                   ),

@@ -13,16 +13,19 @@ import 'package:hovee_attendence/widget/space.dart';
 import 'package:intl/intl.dart';
 
 class PunchView extends StatelessWidget {
-   PunchView({super.key, required this.className});
+  PunchView({super.key, required this.className, required this.courseId, required this.batchId, required this.batchStartTime, required this.batchEndTime});
   final PunchController _controller = Get.put(PunchController());
-   final String className;
+  final String className;
+ final String courseId;final String batchId;
+ final String batchStartTime;
+ final String batchEndTime;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
-           Get.back();
+          Get.back();
         },
       ),
       body: Column(
@@ -49,8 +52,11 @@ class PunchView extends StatelessWidget {
                               Circle(
                                 circleId: const CircleId("circle_1"),
                                 center: LatLng(
-                                   _controller.targetLat, _controller.targetLong), // Specific location
-                                radius: _controller.punchable_distance_in_meters,
+                                    _controller.targetLat,
+                                    _controller
+                                        .targetLong), // Specific location
+                                radius:
+                                    _controller.punchable_distance_in_meters,
                                 fillColor: Colors.blue.withOpacity(0.5),
                                 strokeColor: Colors.blue,
                                 strokeWidth: 2,
@@ -73,7 +79,7 @@ class PunchView extends StatelessWidget {
             height: 180,
             padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 bottomInfo(
                   className,
@@ -97,7 +103,15 @@ class PunchView extends StatelessWidget {
           borderRadius: 50,
           onTapped: () {
             Future.delayed(const Duration(milliseconds: 200), () {
-              _controller.checkDistanceFromSpecificLocation();
+              _controller.checkDistanceFromSpecificLocation(context, courseId, batchId,batchStartTime,batchEndTime);
+              // Call addPunchIn or addPunchOut based on the punch state
+              // if (_controller.punchedIn.value) {
+              //   // User is punched in, call addPunchOut
+              //   _controller.addPunchOut(context, courseId, batchId);
+              // } else {
+              //   // User is not punched in, call addPunchIn
+              //  _controller.addPunchIn(context, courseId, batchId);
+              // }
             });
           },
           widget: Container(
@@ -105,7 +119,7 @@ class PunchView extends StatelessWidget {
             width: 90,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(45),
-              color: AppConstants. secondaryColor,
+              color: AppConstants.secondaryColor,
             ),
             child: Center(
               child: Container(
@@ -113,12 +127,14 @@ class PunchView extends StatelessWidget {
                 width: 75,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(38),
-                  color:AppConstants. primaryColor,
+                  color: AppConstants.primaryColor,
                 ),
                 child: Obx(
                   () => Center(
                     child: regularText(
-                      text: _controller.punchedIn.value ? 'Punch Out' : 'Punch In',
+                      text: _controller.punchedIn.value
+                          ? 'Punch Out'
+                          : 'Punch In',
                       fontSize: 12,
                       color: Colors.white,
                     ),
