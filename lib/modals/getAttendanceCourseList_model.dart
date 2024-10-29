@@ -93,19 +93,53 @@ class Course {
 
 class Batch {
   String? sId;
+  String? batchName;
   String? batchTeacher;
+  String? batchMaximumSlots;
+  String? batchTimingStart;
+  String? batchTimingEnd;
+  String? batchDays;
+  String? batchMode;
+  String? batchCode;
+  String? fees;
 
-  Batch({this.sId, this.batchTeacher});
+  Batch(
+      {this.sId,
+      this.batchName,
+      this.batchTeacher,
+      this.batchMaximumSlots,
+      this.batchTimingStart,
+      this.batchTimingEnd,
+      this.batchDays,
+      this.batchMode,
+      this.batchCode,
+      this.fees});
 
   Batch.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
+    batchName = json['batch_name'];
     batchTeacher = json['batch_teacher'];
+    batchMaximumSlots = json['batch_maximum_slots'];
+    batchTimingStart = json['batch_timing_start'];
+    batchTimingEnd = json['batch_timing_end'];
+    batchDays = json['batch_days'];
+    batchMode = json['batch_mode'];
+    batchCode = json['batch_code'];
+    fees = json['fees'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
+    data['batch_name'] = this.batchName;
     data['batch_teacher'] = this.batchTeacher;
+    data['batch_maximum_slots'] = this.batchMaximumSlots;
+    data['batch_timing_start'] = this.batchTimingStart;
+    data['batch_timing_end'] = this.batchTimingEnd;
+    data['batch_days'] = this.batchDays;
+    data['batch_mode'] = this.batchMode;
+    data['batch_code'] = this.batchCode;
+    data['fees'] = this.fees;
     return data;
   }
 }

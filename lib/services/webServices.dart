@@ -436,56 +436,56 @@ class WebService {
     }
   }
 
-  // static Future<getGroupedEnrollmentByBatch?> fetchGroupedEnrollmentByBatch() async {
-  //   final url = Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByBatch');
-  //   final box = GetStorage(); // Get an instance of GetStorage
-  //   // Retrieve the token from storage
-  //   final token = box.read('Token') ?? '';
-  //   print(token);
-  //   final response = await http.post(
-  //     url, // Replace with the actual API URL
-  //     headers: {
-  //       'Authorization': 'Bearer $token', // Add the authorization token here
-  //       'Content-Type': 'application/json',
-  //     },
-  //   );
+  static Future<getGroupedEnrollmentByBatch?> fetchGroupedEnrollmentByBatch() async {
+    final url = Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByBatch');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+   Logger().i(response.statusCode);
+    if (response.statusCode == 200) {
+      var result =jsonDecode(response.body);
+      return getGroupedEnrollmentByBatch.fromJson(result);
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+       // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+       return null;
+    }
+  }
 
-  //   if (response.statusCode == 200) {
-  //     var result =jsonDecode(response.body);
-  //     return getGroupedEnrollmentByBatch.fromJson(result);
-  //   } else {
-  //     Map<String, dynamic> result = jsonDecode(response.body);
-  //      // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
-  //      return null;
-  //   }
-  // }
+  static Future<getGroupedEnrollmentByAttendanceModel?> fetchGroupedEnrollmentByBatchList(String batchId, String selectedDate) async {
+    final url = Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByAttendance');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
+     var data = {
+        "date": selectedDate,
+        "batchId": batchId
+      };
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+      body:json.encode(data), 
+    );
 
-  // static Future<getGroupedEnrollmentByAttendance?> fetchGroupedEnrollmentByBatchList(String batchId) async {
-  //   final url = Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByAttendance');
-  //   final box = GetStorage(); // Get an instance of GetStorage
-  //   // Retrieve the token from storage
-  //   final token = box.read('Token') ?? '';
-  //   print(token);
-  //    var data = {
-  //       "date": '',
-  //       "batchId": batchId
-  //     };
-  //   final response = await http.post(
-  //     url, // Replace with the actual API URL
-  //     headers: {
-  //       'Authorization': 'Bearer $token', // Add the authorization token here
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body:json.encode(data), 
-  //   );
-
-  //   if (response.statusCode == 200) {
-  //     var result =jsonDecode(response.body);
-  //     return getGroupedEnrollmentByAttendance.fromJson(result);
-  //   } else {
-  //     Map<String, dynamic> result = jsonDecode(response.body);
-  //      // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
-  //      return null;
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      var result =jsonDecode(response.body);
+      return getGroupedEnrollmentByAttendanceModel.fromJson(result);
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+       // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+       return null;
+    }
+  }
 }
