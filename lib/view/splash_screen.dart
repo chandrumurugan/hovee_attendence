@@ -30,10 +30,10 @@ class SplashScreen extends StatelessWidget {
               //   children: [
               //     ClipRRect(
               //       borderRadius: BorderRadius.circular(12.0),
-              //       child: SvgPicture.asset(
-              //         'assets/appConstantImg/app_icon.svg',
-              //         height: 50,
-              //       ),
+                    // child: SvgPicture.asset(
+                    //   'assets/appConstantImg/app_icon.svg',
+                    //   height: 50,
+                    // ),
               //     ),
               //     const SizedBox(width: 6),
               //     Obx(() {

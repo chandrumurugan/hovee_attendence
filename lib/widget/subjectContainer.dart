@@ -9,6 +9,7 @@ import 'package:hovee_attendence/controllers/punch_controller.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/punch_view.dart';
 import 'package:hovee_attendence/widget/attendanceCourseList_container.dart';
+import 'package:logger/web.dart';
 
 class SubjectContainer extends StatelessWidget {
    SubjectContainer({super.key});
@@ -124,12 +125,19 @@ class SubjectContainer extends StatelessWidget {
               ),
             );
           } else {
+            Logger().i("getting values for tyhe api");
             // Display the list of batches
             return ListView.builder(
-              itemCount: attendanceCourseListController.attendanceCourseList.length-1,
+              padding: EdgeInsets.zero,
+              scrollDirection: Axis.horizontal,
+              itemCount: attendanceCourseListController.attendanceCourseList.length,
               itemBuilder: (context, index) {
+                print("gettiunhs calye123456==>${attendanceCourseListController.attendanceCourseList.length}");
                 final attendanceCourse = attendanceCourseListController.attendanceCourseList[index];
-                return AttendancecourselistContainer(attendanceCourse: attendanceCourse);
+                return SizedBox(
+                  
+                  width: MediaQuery.of(context).size.width,
+                  child: AttendancecourselistContainer(attendanceCourse: attendanceCourse));
               },
             );
           }

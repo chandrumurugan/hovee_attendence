@@ -23,6 +23,7 @@ class PunchController extends GetxController {
 double targetLat = 13.046720258037634;
 double targetLong = 80.21353338187131;
   var isLoading = true.obs;
+  var buttonLoader = false.obs;
   void setMapController(GoogleMapController controller) {
     _mapController = controller;
   }
@@ -144,6 +145,11 @@ double targetLong = 80.21353338187131;
 
   Future<void> checkDistanceFromSpecificLocation(
     BuildContext context, String courseId, String batchId, String batchTimingStart, String batchTimingEnd) async {
+        buttonLoader(true);
+
+      
+
+        print("getingbv  vakluyeuwkgqie====>");
   // Get user's current location
   Position position = await Geolocator.getCurrentPosition(
     desiredAccuracy: LocationAccuracy.high,
@@ -169,24 +175,30 @@ double targetLong = 80.21353338187131;
   // Check if current time is within 30 minutes before the batch start time
   bool isWithinPunchInWindow = now.isAfter(batchStartTime.subtract(Duration(minutes: 30))) &&
       now.isBefore(batchEndTime);
+       
 
   // Check if distance is within the threshold
   if (distanceInMeters <= thresholdInMeters) {
     if (isWithinPunchInWindow) {
+    
       if (!punchedIn.value) {
         // Within punchable range, call the API to punch in
+     
         final getAttendancePunchInModel? response =
             await WebService.getAttendancePunchIn(courseId, batchId,context);
 
         if (response != null && response.success == true) {
           // API call was successful, update state and show success message
           punchedIn.value = true;
+            buttonLoader(false);
           showAnimatedDialog(
               'You have successfully punched In', "assets/images/success_punching.png");
           SnackBarUtils.showSuccessSnackBar(context, response.message ?? '');
         } else {
+        
           // Show error if the API call failed
           punchedIn.value = false;
+            buttonLoader(false);
           SnackBarUtils.showErrorSnackBar(context, response?.message ?? 'Failed to punch in');
         }
       } else {
@@ -196,20 +208,24 @@ double targetLong = 80.21353338187131;
         if (response != null && response.success == true) {
           // API call was successful, update state and show success message
            punchedIn.value = false;
+           buttonLoader(false);
           showAnimatedDialog(
               'You have successfully punched Out', "assets/images/success_punching.png");
           SnackBarUtils.showSuccessSnackBar(context, response.message ?? '');
         } else {
           // Show error if the API call failed
+            buttonLoader(false);
           SnackBarUtils.showErrorSnackBar(context, response?.message ?? 'Failed to punch in');
         }
       }
     } else {
+        buttonLoader(false);
       SnackBarUtils.showErrorSnackBar(context, 
           'You can only punch in within 30 minutes of the batch start time: ${batchTimingStart}.');
     }
   } else {
     print("User is outside 500 meters of the specific location.");
+      buttonLoader(false);
     showAnimatedDialog(
         'You are away from the office', "assets/images/error_punching.png");
   }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/course_controller.dart';
+import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/widget/course_list_container.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
@@ -28,6 +29,10 @@ class _TutorCourseListState extends State<TutorCourseList> {
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
+      appBar: AppBarHeader(needGoBack:true, navigateTo: (){
+         courseController.navigateBack();
+
+      }),
       body: Column(
         children: [
           // Header Section
@@ -50,11 +55,11 @@ class _TutorCourseListState extends State<TutorCourseList> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      IconButton(
-                          onPressed: () {
-                            courseController.navigateBack();
-                          },
-                          icon: Icon(Icons.arrow_back, color: Colors.white)),
+                      // IconButton(
+                      //     onPressed: () {
+                      //       courseController.navigateBack();
+                      //     },
+                      //     icon: Icon(Icons.arrow_back, color: Colors.white)),
                       Image.asset(
                         'assets/headerIcons/tutorCourseicon.png',
                         height: 35,

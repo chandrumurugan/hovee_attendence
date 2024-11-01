@@ -47,39 +47,39 @@ class TutorAttendanceScreen extends StatelessWidget {
                     children: [
                       const SizedBox(height: 10),
                       Obx(() {
-  if (controller.batches.isEmpty) {
-    return CircularProgressIndicator(); // Show loading indicator if no batches are fetched
-  }
-  return DropdownButtonFormField<Data1>(
-    dropdownColor: AppConstants.primaryColor,
-    style: GoogleFonts.nunito(
-      fontSize: 19,
-      fontWeight: FontWeight.w400,
-      color: Colors.white,
-    ),
-    decoration: InputDecoration(
-      labelText: 'Batch',
-      labelStyle: GoogleFonts.nunito(
-        fontSize: 15,
-        fontWeight: FontWeight.w400,
-        color: Colors.white,
-      ),
-    ),
-    value: controller.selectedBatchIN.value,
-    items: controller.batchList.map((Data1 batch) {
-      return DropdownMenuItem<Data1>(
-        value: batch,
-        child: Text(batch.batchName!),
-      );
-    }).toList(),
-    onChanged: (newBatch) {
-      if (newBatch != null) {
-        controller.selectBatch(newBatch);
-        // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!); // Replace with your actual method to fetch batch-related data
-      }
-    },
-  );
-}),
+                        if (controller.batchList.isEmpty) {
+                          return CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                        }
+                        return DropdownButtonFormField<Data1>(
+                          dropdownColor: AppConstants.primaryColor,
+                          style: GoogleFonts.nunito(
+                            fontSize: 19,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: 'Batch',
+                            labelStyle: GoogleFonts.nunito(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                          ),
+                          value: controller.selectedBatchIN.value,
+                          items: controller.batchList.map((Data1 batch) {
+                            return DropdownMenuItem<Data1>(
+                              value: batch,
+                              child: Text(batch.batchName!),
+                            );
+                          }).toList(),
+                          onChanged: (newBatch) {
+                            if (newBatch != null) {
+                              controller.selectBatch(newBatch);
+                              controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!); // Replace with your actual method to fetch batch-related data
+                            }
+                          },
+                        );
+                      }),
 
                       // Obx(() {
                       //   if (controller.isLoading.value) {
@@ -87,7 +87,7 @@ class TutorAttendanceScreen extends StatelessWidget {
                       //   }
                       //   return DropdownButtonFormField<String>(
                       //     dropdownColor:AppConstants.primaryColor,
-                       
+
                       //     style: GoogleFonts.nunito(
                       //         fontSize: 19,
                       //         fontWeight: FontWeight.w400,
@@ -135,98 +135,105 @@ class TutorAttendanceScreen extends StatelessWidget {
                       Obx(() => Container(
                             color: Colors.white,
                             child: TableCalendar(
-  headerVisible: false,
-  daysOfWeekVisible: true,
-  rowHeight: 40,
-  firstDay: DateTime.utc(2020, 1, 1),
-  lastDay: DateTime.utc(2030, 12, 31),
-  focusedDay: controller.focusedDay.value,
-  calendarFormat: CalendarFormat.month,
-  selectedDayPredicate: (day) {
-    return day == controller.selectedDay.value;
-  },
-  onDaySelected: (selectedDay, focusedDay) {
-    controller.selectedDay.value = selectedDay;
-    controller.focusedDay.value = focusedDay;
-     controller.fetchGroupedEnrollmentByBatchList(
-                                controller.selectedBatchId!, controller .selectedDate1!);
-  },
-  onPageChanged: (focusedDay) {
-    controller.onMonthChange(focusedDay);
-  },
-  calendarBuilders: CalendarBuilders(
-    dowBuilder: (context, day) {
-      if (day.weekday == DateTime.sunday) {
-        return const Center(
-          child: Text(
-            'Sun',
-            style: TextStyle(color: Colors.red),
-          ),
-        );
-      }
-      return null;
-    },
-    defaultBuilder: (context, day, focusedDay) {
-      final attendance = controller.attendanceData[day];
-      Color? bgColor;
-      Color textColor = Colors.black;
+                              headerVisible: false,
+                              daysOfWeekVisible: true,
+                              rowHeight: 40,
+                              firstDay: DateTime.utc(2020, 1, 1),
+                              lastDay: DateTime.utc(2030, 12, 31),
+                              focusedDay: controller.focusedDay.value,
+                              calendarFormat: CalendarFormat.month,
+                              selectedDayPredicate: (day) {
+                                return day == controller.selectedDay.value;
+                              },
+                              onDaySelected: (selectedDay, focusedDay) {
+                                controller.selectedDay.value = selectedDay;
+                                controller.focusedDay.value = focusedDay;
+                                controller.fetchGroupedEnrollmentByBatchList(
+                                    controller.selectedBatchId!,
+                                    controller.selectedDate1!);
+                              },
+                              onPageChanged: (focusedDay) {
+                                controller.onMonthChange(focusedDay);
+                              },
+                              calendarBuilders: CalendarBuilders(
+                                dowBuilder: (context, day) {
+                                  if (day.weekday == DateTime.sunday) {
+                                    return const Center(
+                                      child: Text(
+                                        'Sun',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    );
+                                  }
+                                  return null;
+                                },
+                                defaultBuilder: (context, day, focusedDay) {
+                                  final attendance =
+                                      controller.attendanceData[day];
+                                  Color? bgColor;
+                                  Color textColor = Colors.black;
 
-      // Define the batch start and end dates
-      final startDate = controller.selectedBatchStartDate;
-      final endDate = controller.selectedBatchEndDate;
+                                  // Define the batch start and end dates
+                                  final startDate =
+                                      controller.selectedBatchStartDate;
+                                  final endDate =
+                                      controller.selectedBatchEndDate;
 
-      // Highlight the start and end dates, and shade dates in between
-      if (startDate != null && endDate != null) {
-        if (day.isAtSameMomentAs(startDate)) {
-          bgColor = Colors.green; // Color for the start date
-        } else if (day.isAtSameMomentAs(endDate)) {
-          bgColor = Colors.red; // Color for the end date
-        } else if (day.isAfter(startDate) && day.isBefore(endDate)) {
-          bgColor = Colors.yellow.withOpacity(0.3); // Color for dates between
-        }
-      }
+                                  // Highlight the start and end dates, and shade dates in between
+                                  if (startDate != null && endDate != null) {
+                                    if (day.isAtSameMomentAs(startDate)) {
+                                      bgColor = Colors
+                                          .green; // Color for the start date
+                                    } else if (day.isAtSameMomentAs(endDate)) {
+                                      bgColor =
+                                          Colors.red; // Color for the end date
+                                    } else if (day.isAfter(startDate) &&
+                                        day.isBefore(endDate)) {
+                                      bgColor = Colors.yellow.withOpacity(
+                                          0.3); // Color for dates between
+                                    }
+                                  }
 
-      // Attendance-based coloring
-      if (attendance != null) {
-        switch (attendance) {
-          case 'Present':
-            bgColor = Colors.green;
-            break;
-          case 'Leave':
-            bgColor = Colors.red;
-            break;
-          case 'Absent':
-            bgColor = Colors.orange;
-            break;
-          case 'Holiday':
-            bgColor = Colors.blue;
-            break;
-          case 'Miss punch':
-            bgColor = Colors.brown;
-            break;
-          case 'Leave Approved Pending':
-            bgColor = Colors.purple;
-            break;
-        }
-      }
+                                  // Attendance-based coloring
+                                  if (attendance != null) {
+                                    switch (attendance) {
+                                      case 'Present':
+                                        bgColor = Colors.green;
+                                        break;
+                                      case 'Leave':
+                                        bgColor = Colors.red;
+                                        break;
+                                      case 'Absent':
+                                        bgColor = Colors.orange;
+                                        break;
+                                      case 'Holiday':
+                                        bgColor = Colors.blue;
+                                        break;
+                                      case 'Miss punch':
+                                        bgColor = Colors.brown;
+                                        break;
+                                      case 'Leave Approved Pending':
+                                        bgColor = Colors.purple;
+                                        break;
+                                    }
+                                  }
 
-      return Container(
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        margin: const EdgeInsets.all(4.0),
-        child: Center(
-          child: Text(
-            '${day.day}',
-            style: TextStyle(color: textColor),
-          ),
-        ),
-      );
-    },
-  ),
-),
-
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: bgColor,
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    margin: const EdgeInsets.all(4.0),
+                                    child: Center(
+                                      child: Text(
+                                        '${day.day}',
+                                        style: TextStyle(color: textColor),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           )),
                     ],
                   ),
@@ -289,11 +296,13 @@ class TutorAttendanceScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final students = controller.data!.attendanceDetails![index];
                     DateTime dateTime = DateTime.parse(students.punchInTime!);
-  // Format it to "hh:mm:ss a"
-  String formattedTime = DateFormat('hh:mm:ss a').format(dateTime);
-  DateTime dateTime1= DateTime.parse(students.punchOutTime!);
-  // Format it to "hh:mm:ss a"
-  String formattedTime1 = DateFormat('hh:mm:ss a').format(dateTime1);
+                    // Format it to "hh:mm:ss a"
+                    String formattedTime =
+                        DateFormat('hh:mm:ss a').format(dateTime);
+                    DateTime dateTime1 = DateTime.parse(students.punchOutTime!);
+                    // Format it to "hh:mm:ss a"
+                    String formattedTime1 =
+                        DateFormat('hh:mm:ss a').format(dateTime1);
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 15.0, vertical: 5),
@@ -301,7 +310,7 @@ class TutorAttendanceScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                           students.studentName!,
+                            students.studentName!,
                             style: GoogleFonts.nunito(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -317,7 +326,7 @@ class TutorAttendanceScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                           formattedTime1,
+                            formattedTime1,
                             style: GoogleFonts.nunito(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -342,4 +351,4 @@ class TutorAttendanceScreen extends StatelessWidget {
       ),
     );
   }
-} 
+}

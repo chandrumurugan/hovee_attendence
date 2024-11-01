@@ -6,6 +6,7 @@ import 'package:hovee_attendence/controllers/dashBoard_controllers.dart';
 import 'package:hovee_attendence/controllers/role_controller.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
+import 'package:hovee_attendence/controllers/tutorsStudentAttendanceList.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/view/splash_screen.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,9 @@ class MyBindings extends Bindings {
           Get.lazyPut<RoleController>(() => RoleController());//AccountSetupController
             Get.lazyPut<AccountSetupController>(() => AccountSetupController());//UserProfileController
              Get.lazyPut<UserProfileController>(() => UserProfileController());
+             Get.lazyPut<StudentAttendanceController>(() => StudentAttendanceController());
+             //StudentAttendanceController
+
   }
 }
 

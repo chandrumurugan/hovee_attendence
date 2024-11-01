@@ -44,7 +44,7 @@ class _LogoGifState extends State<LogoGif> with TickerProviderStateMixin {
       duration: const Duration(seconds: 3),
       autostart: Autostart.no,
       placeholder: (context) => const Image(
-        image: AssetImage('assets/appConstantImg/colorlogoword.png'),
+        image: AssetImage('assets/appConstantImg/att_final.png'),
         //height: 40,
         width: 130,
       ),

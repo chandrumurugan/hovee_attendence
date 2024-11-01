@@ -57,7 +57,7 @@ class SideMenu extends StatelessWidget {
             if (!isGuest)
               const Divider(
                 height: 3,
-                thickness: 5,
+                thickness: 2,
               ),
             if (!isGuest)
               ListTile(
@@ -92,7 +92,7 @@ class SideMenu extends StatelessWidget {
             ),
             const Divider(
               height: 3,
-              thickness: 5,
+              thickness: 2,
             ),
             ListTile(
               onTap: () {
@@ -156,7 +156,7 @@ class SideMenu extends StatelessWidget {
             ),
             const Divider(
               height: 3,
-              thickness: 5,
+              thickness: 2,
             ),
             ListTile(
               onTap: () {
