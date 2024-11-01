@@ -256,11 +256,11 @@ class StudentAttendanceList extends StatelessWidget {
                        itemBuilder: (context, index) {
                          final attendance = controller.data!.attendanceDetails![index];
                  
-                         DateTime dateTime1 = DateTime.parse(attendance.punchInTime!);
-                         DateTime dateTime2 = DateTime.parse(attendance.punchOutTime!);
+                      //    DateTime dateTime1 = DateTime.parse(attendance.punchInTime!);
+                      //    DateTime dateTime2 = DateTime.parse(attendance.punchOutTime!);
                  
-                         String punchINTime = DateFormat("hh:mm a").format(dateTime1);
-                         String punchOUTTime = DateFormat("hh:mm a").format(dateTime2);
+                      //    String punchINTime = DateFormat("hh:mm a").format(dateTime1);
+                      //    String punchOUTTime = DateFormat("hh:mm a").format(dateTime2);
                        DateTime dateTime = DateFormat("dd/MM/yyyy").parse(controller.data!.date!);
                        String formattedDate = DateFormat("ddMMMyy").format(dateTime);
                  
@@ -279,12 +279,12 @@ class StudentAttendanceList extends StatelessWidget {
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Colors.black)),
-                  Text(punchINTime,
+                  Text(attendance.punchInTime ?? "-",
                       style: GoogleFonts.nunito(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Colors.black)),
-                  Text(punchOUTTime,
+                  Text(attendance.punchOutTime ?? "-",
                       style: GoogleFonts.nunito(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,

@@ -161,7 +161,7 @@ class AuthControllers extends GetxController
         if (response != null) {
           loginResponse.value = response;
           isLoading.value = false;
-            // logInController.clear();
+            logInController.clear();
             isChecked.value=false;
           Get.to(() => OtpScreen());
         } else {
