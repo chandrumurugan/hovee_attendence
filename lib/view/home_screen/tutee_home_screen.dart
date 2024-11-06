@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
+import 'package:hovee_attendence/view/Tutee/tutee_courseList.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 import 'package:hovee_attendence/widget/subjectContainer.dart';
+import 'package:logger/logger.dart';
 
 class TuteeHome extends StatelessWidget {
   const TuteeHome({super.key});
@@ -172,6 +175,11 @@ class TuteeHome extends StatelessWidget {
                       final item = controller.tuteeMonitorList[index];
                       return InkWell(
                         onTap: () {
+                          if(index == 2){
+                            var box = GetStorage();
+                            Logger().i("${box.read('Token')}");
+                            Get.to(()=>const GetTopicsCourses());
+                          }
                          
                         },
                         child: Card(

@@ -14,6 +14,7 @@ import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
+import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'dart:convert';
@@ -29,7 +30,7 @@ class WebService {
       var url = Uri.parse("${baseUrl}home/appConfig");
       var response = await http.post(url);
 
-      if (response. statusCode == 200) {
+      if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         return AppConfig.fromJson(data);
       } else {
@@ -219,6 +220,56 @@ class WebService {
     }
   }
 
+  static Future<List<String>> fetchCoursecategory() async {
+    final url = Uri.parse('${baseUrl}tutee/getClassTuteeList');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+
+    final reponse = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+    if (reponse.statusCode == 200) {
+      Map<String, dynamic> result = json.decode(reponse.body);
+      return List<String>.from(result["data"]);
+    } else {
+      return [];
+      //  throw Exception('Failed to fetch course category list');
+    }
+  }
+
+  static Future<SingleCourseCategoryList?> singleCourseListfetch(
+      String type) async {
+    final url = Uri.parse('${baseUrl}tutee/getClassTuteeFilterList');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+    var data = {"type": type};
+    try {
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return SingleCourseCategoryList.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
+        // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+        return null;
+      }
+    } catch (e) {
+      print("Error in fetching Punch In: $e");
+      return null;
+    }
+  }
+
   static Future<List<Role>?> getRoles() async {
     try {
       var url = Uri.parse("${baseUrl}roles/getRoles");
@@ -361,7 +412,7 @@ class WebService {
     return await request.send();
   }
 
-    static Future<getAddendanceCourseList> fetchAttendanceCourseList() async {
+  static Future<getAddendanceCourseList> fetchAttendanceCourseList() async {
     final url = Uri.parse('${baseUrl}attendane/getAddendanceCourseList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
@@ -382,61 +433,64 @@ class WebService {
     }
   }
 
-  static Future<getAttendancePunchInModel?> getAttendancePunchIn(String courseId, String batchId,BuildContext context) async {
+  static Future<getAttendancePunchInModel?> getAttendancePunchIn(
+      String courseId, String batchId, BuildContext context) async {
     final url = Uri.parse('${baseUrl}attendane/punchIn');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
     print(token);
-    var headers = {'Authorization': 'Bearer $token','Content-Type': 'application/json'};
-    var data = {
-        "courseId": courseId,
-        "batchId": batchId
-      };
-       try {
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+    var data = {"courseId": courseId, "batchId": batchId};
+    try {
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
-    if (response.statusCode == 200) {
-      var result =jsonDecode(response.body);
-      return getAttendancePunchInModel.fromJson(result);
-    } else {
-      Map<String, dynamic> result = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return getAttendancePunchInModel.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
         SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
-       return null;
-    }
-       }
-       catch (e) {
+        return null;
+      }
+    } catch (e) {
       print("Error in fetching Punch In: $e");
       return null;
     }
   }
 
-  static Future<getAttendancePunchInModel?> getAttendancePunchOut(BuildContext context) async {
+  static Future<getAttendancePunchInModel?> getAttendancePunchOut(
+      BuildContext context) async {
     final url = Uri.parse('${baseUrl}attendane/punchOut');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
     print(token);
-    var headers = {'Authorization': 'Bearer $token','Content-Type': 'application/json'};
-       try {
-      var response =
-          await http.post(url,headers: headers);
-    if (response.statusCode == 200) {
-      var result =jsonDecode(response.body);
-      return getAttendancePunchInModel.fromJson(result);
-    } else {
-      Map<String, dynamic> result = jsonDecode(response.body);
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+    try {
+      var response = await http.post(url, headers: headers);
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return getAttendancePunchInModel.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
         SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
-       return null;
-    }
-       }
-       catch (e) {
+        return null;
+      }
+    } catch (e) {
       print("Error in fetching Punch In: $e");
       return null;
     }
   }
 
-  static Future<getGroupedEnrollmentByBatch?> fetchGroupedEnrollmentByBatch() async {
+  static Future<getGroupedEnrollmentByBatch?>
+      fetchGroupedEnrollmentByBatch() async {
     final url = Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByBatch');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
@@ -449,43 +503,43 @@ class WebService {
         'Content-Type': 'application/json',
       },
     );
-   Logger().i(response.statusCode);
+    Logger().i(response.statusCode);
     if (response.statusCode == 200) {
-      var result =jsonDecode(response.body);
+      var result = jsonDecode(response.body);
       return getGroupedEnrollmentByBatch.fromJson(result);
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
-       // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
-       return null;
+      // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+      return null;
     }
   }
 
-  static Future<getGroupedEnrollmentByAttendanceModel?> fetchGroupedEnrollmentByBatchList(String batchId, String selectedDate) async {
-    final url = Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByAttendance');
+  static Future<getGroupedEnrollmentByAttendanceModel?>
+      fetchGroupedEnrollmentByBatchList(
+          String batchId, String selectedDate) async {
+    final url =
+        Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByAttendance');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
     print(token);
-     var data = {
-        "date": selectedDate,
-        "batchId": batchId
-      };
+    var data = {"date": selectedDate, "batchId": batchId};
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
         'Authorization': 'Bearer $token', // Add the authorization token here
         'Content-Type': 'application/json',
       },
-      body:json.encode(data), 
+      body: json.encode(data),
     );
 
     if (response.statusCode == 200) {
-      var result =jsonDecode(response.body);
+      var result = jsonDecode(response.body);
       return getGroupedEnrollmentByAttendanceModel.fromJson(result);
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
-       // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
-       return null;
+      // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+      return null;
     }
   }
 }

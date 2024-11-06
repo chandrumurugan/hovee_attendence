@@ -28,6 +28,12 @@ class TuteeHomeController extends GetxController{
       'desc': 'Lorem Ipsum is simply dummy ',
       'color': const Color.fromRGBO(186, 1, 97, 1)
     },
+     {
+      'title': 'Courses',
+      'image': 'assets/tutorHomeImg/online-learning (2) 1 (1).png',
+      'desc': 'Lorem Ipsum is simply dummy',
+      'color': const Color.fromRGBO(126, 113, 255, 1).withOpacity(0.7)
+    },
     {
       'title': 'MSP',
       'image': 'assets/tuteeHomeImg/teacher (1) 1.png',

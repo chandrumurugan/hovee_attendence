@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
+import 'package:hovee_attendence/controllers/addEnquery_controller.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/dashBoard_controllers.dart';
 import 'package:hovee_attendence/controllers/role_controller.dart';
@@ -24,7 +25,8 @@ class MyBindings extends Bindings {
             Get.lazyPut<AccountSetupController>(() => AccountSetupController());//UserProfileController
              Get.lazyPut<UserProfileController>(() => UserProfileController());
              Get.lazyPut<StudentAttendanceController>(() => StudentAttendanceController());
-             //StudentAttendanceController
+             //AddEnqueryController
+                Get.lazyPut<AddEnqueryController>(() => AddEnqueryController());
 
   }
 }
