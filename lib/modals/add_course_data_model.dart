@@ -1,33 +1,31 @@
-class GetCourseDataModel {
+class AddCourseDataModel {
   int? statusCode;
+  bool? success;
   String? message;
-  List<Data1>? data;
+  Data? data;
 
-  GetCourseDataModel({this.statusCode, this.message, this.data});
+  AddCourseDataModel({this.statusCode, this.success, this.message, this.data});
 
-  GetCourseDataModel.fromJson(Map<String, dynamic> json) {
+  AddCourseDataModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
+    success = json['success'];
     message = json['message'];
-    if (json['data'] != null) {
-      data = <Data1>[];
-      json['data'].forEach((v) {
-        data!.add(new Data1.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['statusCode'] = this.statusCode;
+    data['success'] = this.success;
     data['message'] = this.message;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class Data1 {
+class Data {
   String? batchName;
   String? categories;
   String? board;
@@ -44,7 +42,7 @@ class Data1 {
   String? updatedAt;
   int? iV;
 
-  Data1(
+  Data(
       {this.batchName,
       this.categories,
       this.board,
@@ -61,7 +59,7 @@ class Data1 {
       this.updatedAt,
       this.iV});
 
-  Data1.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     batchName = json['batch_name'];
     categories = json['categories'];
     board = json['board'];

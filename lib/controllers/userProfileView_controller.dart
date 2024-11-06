@@ -140,12 +140,20 @@ class UserProfileController extends GetxController with GetSingleTickerProviderS
   }
 
   void fetchUserProfiles()async{
+    final storage = GetStorage();
     isLoading(true);
     try {
     UserProfileM? fetchProfile = await WebService.fetchUserProfile();
       if(fetchProfile != null){
         userProfileResponse.value = fetchProfile;
         _populateFieldsFromResponse(fetchProfile.data!);
+        // Store relevant fields in GetStorage
+      storage.write('doorNo', fetchProfile.data!.doorNo);
+      storage.write('street', fetchProfile.data!.street);
+      storage.write('city', fetchProfile.data!.city);
+      storage.write('state', fetchProfile.data!.state);
+      storage.write('country', fetchProfile.data!.country);
+      storage.write('pincode', fetchProfile.data!.pincode);
          isLoading(false);
     
       

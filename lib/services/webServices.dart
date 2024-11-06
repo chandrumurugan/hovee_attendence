@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/config/appConfig.dart';
+import 'package:hovee_attendence/modals/addClassData_model.dart';
+import 'package:hovee_attendence/modals/add_course_data_model.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
@@ -9,6 +11,7 @@ import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
+import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
@@ -486,6 +489,135 @@ class WebService {
       Map<String, dynamic> result = jsonDecode(response.body);
        // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
        return null;
+    }
+  }
+
+  static Future<AddCourseDataModel?> addCourse(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}course/addCourses"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return AddCourseDataModel.fromJson(json.decode(response.body));
+      } else {
+        print('Failed to add course: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error adding course: $e');
+      return null;
+    }
+  }
+
+   static Future<AddClassDataModel?> addClass(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}tutor/addTuitionClass"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return AddClassDataModel.fromJson(json.decode(response.body));
+      } else {
+        print('Failed to add batch: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error adding batch: $e');
+      return null;
+    }
+  }
+
+   static Future<getTuitionCourseListModel> fetchClassesList( Map<String, dynamic> batchData) async {
+    final url = Uri.parse('${baseUrl}tutor/getTuitionClasses');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(batchData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return getTuitionCourseListModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load batch list');
+    }
+  }
+
+    static Future<getTuitionCourseListModel> fetchTuitionCourseList() async {
+    final url = Uri.parse('$baseUrl/tutor/getTuitionCourseList');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return getTuitionCourseListModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load course list');
+    }
+  }
+
+    static Future<AddClassDataModel?> updateClass(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}tutor/addTuitionClass"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return AddClassDataModel.fromJson(json.decode(response.body));
+      } else {
+        print('Failed to add batch: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error adding batch: $e');
+      return null;
     }
   }
 }

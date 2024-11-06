@@ -413,6 +413,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                   .shrink(); // If no validation errors, return empty widget
             }),
             SingleButton(
+              
               btnName: 'Add',
               onTap: () {
                 controller.addBatch(context);

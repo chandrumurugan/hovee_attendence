@@ -1,7 +1,7 @@
 class getBatchListModel {
   int? statusCode;
   String? message;
-  List<Data>? data;
+  List<Data2>? data;
 
   getBatchListModel({this.statusCode, this.message, this.data});
 
@@ -9,9 +9,9 @@ class getBatchListModel {
     statusCode = json['statusCode'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <Data2>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new Data2.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class getBatchListModel {
   }
 }
 
-class Data {
+class Data2 {
   String? sId;
   String? batchName;
   String? batchTeacher;
@@ -39,7 +39,7 @@ class Data {
   String? month;
   String? createdAt;
 
-  Data(
+  Data2(
       {this.sId,
       this.batchName,
       this.batchTeacher,
@@ -51,7 +51,7 @@ class Data {
       this.month,
       this.createdAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Data2.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     batchName = json['batch_name'];
     batchTeacher = json['batch_teacher'];

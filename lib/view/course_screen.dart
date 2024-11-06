@@ -131,7 +131,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
                           subjectCode: course.courseCode!,
                           std: course.className!,
                           medium: course.board!,
-                          group: course.categories!,
+                          group: course.categories ?? '',         
                           groupcode: course.courseCode!);
                     },
                     separatorBuilder: (context, int index) {
@@ -149,7 +149,9 @@ class _TutorCourseListState extends State<TutorCourseList> {
       bottomNavigationBar: SingleCustomButtom(
         btnName: 'Add',
         isPadded: false,
-        onTap: () {},
+        onTap: () {
+          courseController.navigateToAddCourseScreen();
+        },
       ),
     );
   }

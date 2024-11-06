@@ -7,8 +7,10 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
+import 'package:hovee_attendence/view/add_class_screen.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/batch_screen.dart';
+import 'package:hovee_attendence/view/class_screen.dart';
 import 'package:hovee_attendence/view/course_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/tutor_attendance_screen.dart';
@@ -167,8 +169,12 @@ class TutorHome extends StatelessWidget {
                                 } else if (item['title'] == 'Attendance') {
                             Get.to(() => StudentAttendanceList()); // Navigate to the course screen
 
+                            }  else if (item['title'] == 'Classes') {
+                            Get.to(() => TutorClassList()); // Navigate to the course screen
+
                                 
-                          } else {
+                          }  
+                           else {
                             // Handle other cases or do nothing
                             print('Unknown screen');
                           }
