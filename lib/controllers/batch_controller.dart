@@ -51,21 +51,44 @@ class BatchController extends GetxController {
     final List<String> teacher = ['Rahul', 'Rabbin','akalaya','annai'];
      List<String> batchDays = [];
    List<String> batchModes = [];
-   
+ Map<String, String> batchIdMap = {};
+  List<String> batchName1 = [];
 
+  var selectedCourseDetails = Data2().obs; // Observable to store selected course details
+  var courseList1 = <Data2>[].obs;
   // Method to fetch batch list
   void fetchBatchList() async {
-    try {
-      isLoading(true);
-      var batchResponse = await WebService.fetchBatchList();
-      if (batchResponse.data != null) {
-        batchList.value = batchResponse.data!;
-      }
-    } catch (e) {
-      // Get.snackbar('Failed to fetch batches');
-    } finally {
-      isLoading(false);
+  try {
+    isLoading(true);
+    var batchResponse = await WebService.fetchBatchList();
+    if (batchResponse.data != null) {
+      batchList.value = batchResponse.data!;
+
+      // Extract only batch names for the dropdown
+      batchName1 = batchResponse.data!.map((batch) => batch.batchName ?? '').toList();
+
+      // Map batch names to their IDs for later retrieval
+      batchIdMap = {
+        for (var batch in batchResponse.data!) batch.batchName ?? '': batch.sId ?? ''
+      };
+
+      // Store data in GetStorage if needed
+      final storage = GetStorage();
+      storage.write('batchList', batchResponse.data!.map((e) => e.toJson()).toList());
     }
+  } catch (e) {
+    // Handle errors if needed
+  } finally {
+    isLoading(false);
+  }
+}
+
+ void fetchBatchDetails(String batchName) {
+    var batch = batchList.firstWhere(
+      (c) => c.batchName == batchName,
+      orElse: () => Data2(),
+    );
+    selectedCourseDetails.value = batch; // Update selected course details
   }
 
   void navigateToAddBatchScreen() {

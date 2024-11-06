@@ -3,7 +3,7 @@ import '../modals/getbatchlist_model.dart';
 
 
 class BatchListConatiner extends StatelessWidget {
-  final Data batch;
+  final Data2 batch;
 
   const BatchListConatiner({super.key, required this.batch});
 

@@ -116,13 +116,14 @@ class CourseListContainer extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                         group!=null?
                         Text(
-                          group,
+                           group,  
                           style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w400,
                               fontSize: 15),
-                        ),
+                        ):Container(),
                         Text(
                           groupcode,
                           style: const TextStyle(
