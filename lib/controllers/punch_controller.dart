@@ -1,4 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -27,6 +33,8 @@ double targetLong = 80.21353338187131;
   void setMapController(GoogleMapController controller) {
     _mapController = controller;
   }
+  var targetLocation = Rxn<LatLng>();
+
 
   @override
   void onInit() {
@@ -53,15 +61,28 @@ double targetLong = 80.21353338187131;
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       currentLocation.value = LatLng(position.latitude, position.longitude);
+      targetLocation.value = LatLng(targetLat, targetLong);
+
       Get.log("currentLocation.value ${currentLocation.value}");
       markers.add(Marker(
         markerId: const MarkerId("currentLocation"),
         position: currentLocation.value!,
-        icon: await const WidgetToIcon().toBitmapDescriptor(
-          logicalSize: const Size(150, 150),
-          imageSize: const Size(400, 400),
-        ),
+        icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,size: Size.square(10.0)), "assets/appbar/currentLocationIcon.png",),
+        // icon: await const WidgetToIcon().toBitmapDescriptor(
+        //   logicalSize: const Size(150, 150),
+        //   imageSize: const Size(400, 400),
+        // ),
         infoWindow: const InfoWindow(title: "Current Location"),
+      ));
+       markers.add(Marker(
+        markerId: const MarkerId("targetLocation"),
+        position: targetLocation.value!,
+        icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,size: Size.square(10.0)), "assets/appbar/targetLocationIcon.png"),
+        // icon: await const WidgetToIcon().toBitmapDescriptor(
+        //   logicalSize: const Size(150, 150),
+        //   imageSize: const Size(400, 400),
+        // ),
+        infoWindow: const InfoWindow(title: "Target Location"),
       ));
       _mapController
           ?.animateCamera(CameraUpdate.newLatLng(currentLocation.value!));
@@ -72,6 +93,47 @@ double targetLong = 80.21353338187131;
       // Handle error fetching location
     }
   }
+
+  // Future<void> _getCurrentLocation() async {
+  //   try {
+  //     Position position = await Geolocator.getCurrentPosition(
+  //         desiredAccuracy: LocationAccuracy.high);
+  //     currentLocation.value = LatLng(position.latitude, position.longitude);
+
+  //     // Add custom marker for the current location
+  //     BitmapDescriptor currentLocationIcon = await _getCustomMarker(
+  //       Icons.person_pin_circle,
+  //       Colors.blue,
+  //     );
+
+  //     markers.add(Marker(
+  //       markerId: const MarkerId("currentLocation"),
+  //       position: currentLocation.value!,
+  //       icon: currentLocationIcon,
+  //       infoWindow: const InfoWindow(title: "Current Location"),
+  //     ));
+
+  //     // Add custom marker for target location
+  //     BitmapDescriptor targetLocationIcon = await _getCustomMarker(
+  //       Icons.location_on,
+  //       Colors.red,
+  //     );
+
+  //     markers.add(Marker(
+  //       markerId: const MarkerId("targetLocation"),
+  //       position: LatLng(targetLat, targetLong),
+  //       icon: targetLocationIcon,
+  //       infoWindow: const InfoWindow(title: "Target Location"),
+  //     ));
+
+  //     _mapController?.animateCamera(CameraUpdate.newLatLng(currentLocation.value!));
+
+  //     await _fetchAddress();
+  //   } catch (e) {
+  //     print('Error fetching location: $e');
+  //     // Handle error fetching location
+  //   }
+  // }
 
   Future<void> _fetchAddress() async {
     try {
@@ -173,7 +235,7 @@ double targetLong = 80.21353338187131;
    print('hi rahul $batchStartTime');
    print('hi ragul$batchEndTime');
   // Check if current time is within 30 minutes before the batch start time
-  bool isWithinPunchInWindow = now.isAfter(batchStartTime.subtract(Duration(minutes: 30))) &&
+  bool isWithinPunchInWindow = now.isAfter(batchStartTime.subtract(const Duration(minutes: 30))) &&
       now.isBefore(batchEndTime);
        
 
@@ -299,4 +361,6 @@ void addPunchOut(BuildContext context,String courseId, String batchId) async {
     
   
 }
+
+
 }

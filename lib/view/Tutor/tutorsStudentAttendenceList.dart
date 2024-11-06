@@ -11,6 +11,7 @@ import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class StudentAttendanceList extends StatelessWidget {
   StudentAttendanceList({super.key});
@@ -55,13 +56,15 @@ class StudentAttendanceList extends StatelessWidget {
                         }
                         return DropdownButtonFormField<Data1>(
                           dropdownColor: AppConstants.primaryColor,
-                          icon: const Icon(Icons.arrow_drop_down_circle_rounded,color: Colors.white,),
+                          icon: const Icon(
+                            Icons.arrow_drop_down_circle_rounded,
+                            color: Colors.white,
+                          ),
                           style: GoogleFonts.nunito(
                             fontSize: 19,
                             fontWeight: FontWeight.w400,
                             color: Colors.white,
                           ),
-                          
                           decoration: InputDecoration(
                             suffixIconColor: Colors.white,
                             alignLabelWithHint: true,
@@ -94,223 +97,279 @@ class StudentAttendanceList extends StatelessWidget {
                       //   height: 20,
                       // ),
                       //tabl
-                    
                     ],
                   ),
                 ),
               ),
             ),
-        
-           
-              // const SizedBox(height: 10,),
-              Obx(() {
-                        // Only show the calendar if a batch is selected
-                        // if (controller.selectedBatchStartDate.value != null &&
-                        //     controller.selectedBatchEndDate.value != null) {
-                          return Container(
-                            height: MediaQuery.of(context).size.height * 0.45,
-                            margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 0),
-                            // padding: EdgeInsets.symmetric(vertical: 30),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.black)
-                            ),
-                            child: TableCalendar(
-                              firstDay: DateTime(2024, 1, 1),
-                              lastDay: DateTime(2024, 12, 31),
-                              focusedDay:
-                                  controller.selectedBatchStartDate.value!,
-                              rangeStartDay:
-                                  controller.selectedBatchStartDate.value,
-                              rangeEndDay:
-                                  controller.selectedBatchEndDate.value,
-                              calendarFormat: CalendarFormat.month,
-                              startingDayOfWeek: StartingDayOfWeek.monday,
-                              headerStyle: const HeaderStyle(
-                                formatButtonVisible: false,
-                                titleCentered: true,
+
+            // const SizedBox(height: 10,),
+            Obx(() {
+              // Only show the calendar if a batch is selected
+              // if (controller.selectedBatchStartDate.value != null &&
+              //     controller.selectedBatchEndDate.value != null) {
+              return Container(
+                height: MediaQuery.of(context).size.height * 0.45,
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                // padding: EdgeInsets.symmetric(vertical: 30),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.black)),
+                child: TableCalendar(
+                  firstDay: DateTime(2024, 1, 1),
+                  lastDay: DateTime(2024, 12, 31),
+                  focusedDay: controller.selectedBatchStartDate.value!,
+                  rangeStartDay: controller.selectedBatchStartDate.value,
+                  rangeEndDay: controller.selectedBatchEndDate.value,
+                  calendarFormat: CalendarFormat.month,
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  headerStyle: const HeaderStyle(
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                  ),
+                  calendarStyle: const CalendarStyle(
+                    rangeHighlightColor: AppConstants.primaryColor,
+                    withinRangeTextStyle: TextStyle(color: Colors.white),
+                    selectedDecoration: BoxDecoration(
+                      color:
+                          Colors.blue, // Customize the color for selected date
+                      shape: BoxShape.circle,
+                    ),
+                    // outsideRangeTextStyle: TextStyle(color: Colors.grey),
+                  ),
+                  selectedDayPredicate: (day) {
+                    return isSameDay(controller.selectedDay.value, day);
+                  },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    controller.onDateSelected(selectedDay);
+                    controller.setFocusedDay(focusedDay);
+                  },
+                  onPageChanged: (focusedDay) {
+                    controller.setFocusedDay(focusedDay);
+                  },
+                ),
+              );
+              // } else {
+              //   return const SizedBox
+              //       .shrink(); // Hide calendar if no dates selected
+              // }
+            }),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Card(
+                color: Colors.white,
+                elevation: 10,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12)),
+                  height: 150,
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SfCircularChart(
+                        // title: ChartTitle(text: 'Attendance Tracker'),
+                        legend: const Legend(
+                          isVisible: true,
+                          iconHeight: 20,
+                          iconWidth: 20,
+                          overflowMode: LegendItemOverflowMode.scroll,
+                        ),
+                        tooltipBehavior: TooltipBehavior(enable: true),
+                        series: <RadialBarSeries<AttendanceData, String>>[
+                          RadialBarSeries<AttendanceData, String>(
+                            animationDuration: 0,
+                            maximumValue: 100,
+                            radius: '100%',
+                            gap: '10%',
+                            innerRadius: '30%',
+                            dataSource: <AttendanceData>[
+                              AttendanceData(
+                                category: 'Present',
+                                percentage: 80,
+                                pointColor:
+                                    const Color.fromRGBO(0, 201, 230, 1.0),
                               ),
-                              calendarStyle: const CalendarStyle(
-                                rangeHighlightColor: AppConstants.primaryColor,
-                                withinRangeTextStyle:
-                                    TextStyle(color: Colors.white),
-                                selectedDecoration: BoxDecoration(
-                                  color: Colors
-                                      .blue, // Customize the color for selected date
-                                  shape: BoxShape.circle,
-                                ),
-                                // outsideRangeTextStyle: TextStyle(color: Colors.grey),
+                              AttendanceData(
+                                category: 'Absent',
+                                percentage: 15,
+                                pointColor:
+                                    const Color.fromRGBO(63, 224, 0, 1.0),
                               ),
-                              selectedDayPredicate: (day) {
-                                return isSameDay(
-                                    controller.selectedDay.value, day);
-                              },
-                              onDaySelected: (selectedDay, focusedDay) {
-                                controller.onDateSelected(selectedDay);
-                                controller.setFocusedDay(focusedDay);
-                              },
-                              onPageChanged: (focusedDay) {
-                                controller.setFocusedDay(focusedDay);
-                              },
-                            ),
-                          );
-                        // } else {
-                        //   return const SizedBox
-                        //       .shrink(); // Hide calendar if no dates selected
-                        // }
-                      }),
-            //           SizedBox(height: 10,),
-            //               Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 12),
-            //   child: Card(
-            //     color: Colors.white,elevation: 10,
-            //     child: Container(
-            //       decoration: BoxDecoration(
-            //         color: Colors.white,
-
-
-
-            
-            //         borderRadius: BorderRadius.circular(12)
-            //       ),
-            //       height: 150,width: MediaQuery.of(context).size.width,
-            //       child: Row(
-            //         mainAxisAlignment: MainAxisAlignment.start,
-            //         children: [ 
-            //           SfCircularChart(
-            //             series: <CircularSeries>[
-            //                 // Renders radial bar chart
-            //                 RadialBarSeries<ChartData, String>(
-            //                     dataSource: chartData,
-            //                     xValueMapper: (ChartData data, _) => data.x,
-            //                     yValueMapper: (ChartData data, _) => data.y
-            //                 )
-            //             ]
-            //         )
-            //         ],
-            //       ),
-                           
-                
-            //     ),
-            //   ),
-            // ),
-             SizedBox(height: 10,),
+                              AttendanceData(
+                                category: 'Late',
+                                percentage: 5,
+                                pointColor:
+                                    const Color.fromRGBO(226, 1, 26, 1.0),
+                              ),
+                            ],
+                            cornerStyle: CornerStyle.bothCurve,
+                            xValueMapper: (AttendanceData data, _) =>
+                                data.category,
+                            yValueMapper: (AttendanceData data, _) =>
+                                data.percentage,
+                            pointColorMapper: (AttendanceData data, _) =>
+                                data.pointColor,
+                            dataLabelMapper: (AttendanceData data, _) =>
+                                '${data.percentage}%',
+                            dataLabelSettings:
+                                const DataLabelSettings(isVisible: false),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
             SearchfiltertabBar(
               title: 'Student List',
               searchOnTap: () {},
               filterOnTap: () {},
             ),
-               
-           
-             Padding(
-               padding: const EdgeInsets.symmetric(horizontal: 12),
-               child: Container(
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Container(
                 // padding: EdgeInsets.symmetric(horizontal: 12),
                 // decoration: BoxDecoration(
                 //   borderRadius: BorderRadius.circular(12),
                 //   border: Border.all(color: Colors.black),
                 // ),
-                 child: Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                     Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Name',
-                          style: GoogleFonts.nunito(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black)),
-                               Text('Date',
-                          style: GoogleFonts.nunito(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black)),
-                      Text('Time in',
-                          style: GoogleFonts.nunito(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black)),
-                      Text('Time out',
-                          style: GoogleFonts.nunito(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black)),
-                    ],
-                  ),
-                             ),
-                             const Divider(),
-                  Obx(() {
-                   // Check if attendance data is available and load it dynamically
-                   if (controller.isLoadingList.value) {
-                     return const CircularProgressIndicator();
-                   } else if (controller.data?.attendanceDetails != null &&
-                       controller.data!.attendanceDetails!.isNotEmpty) {
-                     return ListView.separated(
-                       shrinkWrap: true,
-                       physics: const NeverScrollableScrollPhysics(),
-                       itemCount: controller.data!.attendanceDetails!.length,
-                       itemBuilder: (context, index) {
-                         final attendance = controller.data!.attendanceDetails![index];
-                 
-                      //    DateTime dateTime1 = DateTime.parse(attendance.punchInTime!);
-                      //    DateTime dateTime2 = DateTime.parse(attendance.punchOutTime!);
-                 
-                      //    String punchINTime = DateFormat("hh:mm a").format(dateTime1);
-                      //    String punchOUTTime = DateFormat("hh:mm a").format(dateTime2);
-                       DateTime dateTime = DateFormat("dd/MM/yyyy").parse(controller.data!.date!);
-                       String formattedDate = DateFormat("ddMMMyy").format(dateTime);
-                 
-                         return Padding(
-                           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
-                           child: Row(
-                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                             children: [
-                  Text(attendance.studentName ?? '',
-                      style: GoogleFonts.nunito(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black)),
-                            Text(formattedDate,
-                      style: GoogleFonts.nunito(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black)),
-                  Text(attendance.punchInTime ?? "-",
-                      style: GoogleFonts.nunito(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black)),
-                  Text(attendance.punchOutTime ?? "-",
-                      style: GoogleFonts.nunito(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black)),
-                             ],
-                           ),
-                         );
-                       },
-                       separatorBuilder: (context, index) {
-                         return const Divider(); // Divider between items except the last one
-                       },
-                     );
-                   } else {
-                     return const Text('No attendance data available for the selected date.');
-                   }
-                 }),
-                 
-                  ],
-                 ),
-               ),
-             ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Name',
+                              style: GoogleFonts.nunito(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black)),
+                          //      Text('Date',
+                          // style: GoogleFonts.nunito(
+                          //     fontSize: 17,
+                          //     fontWeight: FontWeight.w700,
+                          //     color: Colors.black)),
+                          Text('Time in',
+                              style: GoogleFonts.nunito(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black)),
+                          Text('Time out',
+                              style: GoogleFonts.nunito(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black)),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    Obx(() {
+                      // Check if attendance data is available and load it dynamically
+                      if (controller.isLoadingList.value) {
+                        return const CircularProgressIndicator();
+                      } else if (controller.data?.attendanceDetails != null &&
+                          controller.data!.attendanceDetails!.isNotEmpty) {
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: controller.data!.attendanceDetails!.length,
+                          itemBuilder: (context, index) {
+                            final attendance =
+                                controller.data!.attendanceDetails![index];
 
-              //  const ChartApp(),
-         
-              // const SizedBox(height: 10,),
-           
+                            //    DateTime dateTime1 = DateTime.parse(attendance.punchInTime!);
+                            //    DateTime dateTime2 = DateTime.parse(attendance.punchOutTime!);
+
+                            //    String punchINTime = DateFormat("hh:mm a").format(dateTime1);
+                            //    String punchOUTTime = DateFormat("hh:mm a").format(dateTime2);
+                            //  DateTime dateTime = DateFormat("dd/MM/yyyy").parse(controller.data!.date!);
+                            //  String formattedDate = DateFormat("ddMMMyy").format(dateTime);
+
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15.0, vertical: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(attendance.studentName ?? '',
+                                      style: GoogleFonts.nunito(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black)),
+                                  //       Text(formattedDate,
+                                  // style: GoogleFonts.nunito(
+                                  //     fontSize: 16,
+                                  //     fontWeight: FontWeight.w500,
+                                  //     color: Colors.black)),
+                                  attendance.punchInTime != null
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 20),
+                                          child: Image.asset(
+                                            "assets/appbar/check.png",
+                                            height: 30,
+                                            width: 30,
+                                          ),
+                                        )
+                                      : const Text("-"),
+                                  // Text(attendance.punchInTime ?? "-",
+                                  //     style: GoogleFonts.nunito(
+                                  //         fontSize: 16,
+                                  //         fontWeight: FontWeight.w500,
+                                  //         color: Colors.black)),
+                                  attendance.punchOutTime != null
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 20),
+                                          child: Image.asset(
+                                            "assets/appbar/check.png",
+                                            height: 30,
+                                            width: 30,
+                                          ),
+                                        )
+                                      : const Text("-"),
+                                  // Text(attendance.punchOutTime ?? "-",
+                                  //     style: GoogleFonts.nunito(
+                                  //         fontSize: 16,
+                                  //         fontWeight: FontWeight.w500,
+                                  //         color: Colors.black)),
+                                ],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const Divider(); // Divider between items except the last one
+                          },
+                        );
+                      } else {
+                        return const Text(
+                            'No attendance data available for the selected date.');
+                      }
+                    }),
+                  ],
+                ),
+              ),
+            ),
+
+            //  const ChartApp(),
+
+            // const SizedBox(height: 10,),
+
             // Obx(() {
             //   // Check if attendance data is available and load it dynamically
             //   if (controller.isLoadingList.value) {
@@ -361,15 +420,11 @@ class StudentAttendanceList extends StatelessWidget {
             //         'No attendance data available for the selected date.');
             //   }
             // }),
-          
-
           ],
         ),
       ),
     );
   }
-
-  
 }
 
 class _ChartShaderData {
@@ -380,4 +435,16 @@ class _ChartShaderData {
   final num y;
 
   final String text;
+}
+
+class AttendanceData {
+  AttendanceData({
+    required this.category,
+    required this.percentage,
+    required this.pointColor,
+  });
+
+  final String category;
+  final double percentage;
+  final Color pointColor;
 }
