@@ -20,6 +20,23 @@ class StudentAttendanceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        List<AttendanceData> attendanceData = [
+      AttendanceData(
+        category: 'Present',
+        percentage: 80,
+        pointColor: Color.fromRGBO(0, 201, 230, 1.0),
+      ),
+      AttendanceData(
+        category: 'Absent',
+        percentage: 15,
+        pointColor: Color.fromRGBO(63, 224, 0, 1.0),
+      ),
+      AttendanceData(
+        category: 'Late',
+        percentage: 5,
+        pointColor: Color.fromRGBO(226, 1, 26, 1.0),
+      ),
+    ];
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
@@ -31,83 +48,100 @@ class StudentAttendanceList extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(0),
-              child: Card(
-                elevation: 10,
-                shadowColor: Colors.grey.shade100,
-                surfaceTintColor: Colors.white,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                  width: MediaQuery.sizeOf(context).width,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    image: DecorationImage(
-                        image: AssetImage('assets/Course_BG_Banner.png'),
-                        fit: BoxFit.cover),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Card(
+                      elevation: 10,
+                      shadowColor: Colors.grey.shade100,
+                      surfaceTintColor: Colors.white,
+                      child: Container(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        width: MediaQuery.sizeOf(context).width * 0.7,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          image: DecorationImage(
+                              image: AssetImage('assets/Course_BG_Banner.png'),
+                              fit: BoxFit.cover),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // const SizedBox(height: 10),
+                            Obx(() {
+                              if (controller.batchList.isEmpty) {
+                                return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                              }
+                              return DropdownButtonFormField<Data1>(
+                                dropdownColor: AppConstants.primaryColor,
+                                icon: const Icon(
+                                  Icons.arrow_drop_down_circle_rounded,
+                                  color: Colors.white,
+                                ),
+                                style: GoogleFonts.nunito(
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                                decoration: InputDecoration(
+                                  suffixIconColor: Colors.white,
+                                  alignLabelWithHint: true,
+                                  border: InputBorder.none,
+                                  labelText: 'Select batch',
+                                  labelStyle: GoogleFonts.nunito(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                value: controller.selectedBatchIN.value,
+                                items: controller.batchList.map((Data1 batch) {
+                                  return DropdownMenuItem<Data1>(
+                                    value: batch,
+                                    child: Text(batch.batchName!),
+                                  );
+                                }).toList(),
+                                onChanged: (newBatch) {
+                                  if (newBatch != null) {
+                                    controller.selectBatch(newBatch);
+                                     controller.isBatchSelected.value = true;
+                                    // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
+                                    // Replace with your actual method to fetch batch-related data
+                                  }
+                                },
+                              );
+                            }),
+                  
+                            // const SizedBox(
+                            //   height: 20,
+                            // ),
+                            //tabl
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // const SizedBox(height: 10),
-                      Obx(() {
-                        if (controller.batchList.isEmpty) {
-                          return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
-                        }
-                        return DropdownButtonFormField<Data1>(
-                          dropdownColor: AppConstants.primaryColor,
-                          icon: const Icon(
-                            Icons.arrow_drop_down_circle_rounded,
-                            color: Colors.white,
-                          ),
-                          style: GoogleFonts.nunito(
-                            fontSize: 19,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
-                          ),
-                          decoration: InputDecoration(
-                            suffixIconColor: Colors.white,
-                            alignLabelWithHint: true,
-                            border: InputBorder.none,
-                            labelText: 'Select batch',
-                            labelStyle: GoogleFonts.nunito(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white,
-                            ),
-                          ),
-                          value: controller.selectedBatchIN.value,
-                          items: controller.batchList.map((Data1 batch) {
-                            return DropdownMenuItem<Data1>(
-                              value: batch,
-                              child: Text(batch.batchName!),
-                            );
-                          }).toList(),
-                          onChanged: (newBatch) {
-                            if (newBatch != null) {
-                              controller.selectBatch(newBatch);
-                               controller.isBatchSelected.value = true;
-                              // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
-                              // Replace with your actual method to fetch batch-related data
-                            }
-                          },
-                        );
-                      }),
+              
+              // Obx((){})
+                  Container(
+                    color: AppConstants.secondaryColor,height: 70,width: 80,
+                    child: Center(child: IconButton(onPressed: (){
+                         controller.isBatchSelected.value = !controller.isBatchSelected.value;
 
-                      // const SizedBox(
-                      //   height: 20,
-                      // ),
-                      //tabl
-                    ],
-                  ),
-                ),
+                    }, icon: const Icon(Icons.calendar_month_outlined,size: 30,color: Colors.white,))))
+                ],
               ),
             ),
 
             // const SizedBox(height: 10,),
             Obx(() {
               if (!controller.isBatchSelected.value) {
-              return SizedBox.shrink(); // Hide calendar if no batch is selected
+              return const SizedBox.shrink(); // Hide calendar if no batch is selected
             }
               return Container(
                 height: MediaQuery.of(context).size.height * 0.45,
@@ -151,7 +185,7 @@ class StudentAttendanceList extends StatelessWidget {
                 ),
               );
             }),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(
@@ -176,7 +210,7 @@ class StudentAttendanceList extends StatelessWidget {
                           iconWidth: 20,
                           overflowMode: LegendItemOverflowMode.scroll,
                         ),
-                        tooltipBehavior: TooltipBehavior(enable: true),
+                        tooltipBehavior: TooltipBehavior(enable: false),
                         series: <RadialBarSeries<AttendanceData, String>>[
                           RadialBarSeries<AttendanceData, String>(
                             animationDuration: 0,
@@ -184,26 +218,27 @@ class StudentAttendanceList extends StatelessWidget {
                             radius: '100%',
                             gap: '10%',
                             innerRadius: '30%',
-                            dataSource: <AttendanceData>[
-                              AttendanceData(
-                                category: 'Present',
-                                percentage: 80,
-                                pointColor:
-                                    const Color.fromRGBO(0, 201, 230, 1.0),
-                              ),
-                              AttendanceData(
-                                category: 'Absent',
-                                percentage: 15,
-                                pointColor:
-                                    const Color.fromRGBO(63, 224, 0, 1.0),
-                              ),
-                              AttendanceData(
-                                category: 'Late',
-                                percentage: 5,
-                                pointColor:
-                                    const Color.fromRGBO(226, 1, 26, 1.0),
-                              ),
-                            ],
+                            dataSource:  attendanceData,
+                            // dataSource: <AttendanceData>[
+                            //   AttendanceData(
+                            //     category: 'Present',
+                            //     percentage: 80,
+                            //     pointColor:
+                            //         const Color.fromRGBO(0, 201, 230, 1.0),
+                            //   ),
+                            //   AttendanceData(
+                            //     category: 'Absent',
+                            //     percentage: 15,
+                            //     pointColor:
+                            //         const Color.fromRGBO(63, 224, 0, 1.0),
+                            //   ),
+                            //   AttendanceData(
+                            //     category: 'Late',
+                            //     percentage: 5,
+                            //     pointColor:
+                            //         const Color.fromRGBO(226, 1, 26, 1.0),
+                            //   ),
+                            // ],
                             cornerStyle: CornerStyle.bothCurve,
                             xValueMapper: (AttendanceData data, _) =>
                                 data.category,
@@ -214,7 +249,7 @@ class StudentAttendanceList extends StatelessWidget {
                             dataLabelMapper: (AttendanceData data, _) =>
                                 '${data.percentage}%',
                             dataLabelSettings:
-                                const DataLabelSettings(isVisible: false),
+                                const DataLabelSettings(isVisible: false,labelIntersectAction: LabelIntersectAction.hide,alignment: ChartAlignment.near),
                           ),
                         ],
                       )
@@ -223,7 +258,7 @@ class StudentAttendanceList extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SearchfiltertabBar(
@@ -444,4 +479,62 @@ class AttendanceData {
   final String category;
   final double percentage;
   final Color pointColor;
+}
+
+
+class AttendanceRowChart extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    List<AttendanceData> attendanceData = [
+      AttendanceData(
+        category: 'Present',
+        percentage: 80,
+        pointColor: Color.fromRGBO(0, 201, 230, 1.0),
+      ),
+      AttendanceData(
+        category: 'Absent',
+        percentage: 15,
+        pointColor: Color.fromRGBO(63, 224, 0, 1.0),
+      ),
+      AttendanceData(
+        category: 'Late',
+        percentage: 5,
+        pointColor: Color.fromRGBO(226, 1, 26, 1.0),
+      ),
+    ];
+
+    return Column(
+      children: attendanceData.map((data) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              data.category,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            Expanded(
+              child: SfCircularChart(
+                series: <RadialBarSeries<AttendanceData, String>>[
+                  RadialBarSeries<AttendanceData, String>(
+                    dataSource: [data],
+                    maximumValue: 100,
+                    radius: '60%',
+                    innerRadius: '70%',
+                    cornerStyle: CornerStyle.bothCurve,
+                    xValueMapper: (AttendanceData data, _) => data.category,
+                    yValueMapper: (AttendanceData data, _) => data.percentage,
+                    pointColorMapper: (AttendanceData data, _) =>
+                        data.pointColor,
+                    dataLabelMapper: (AttendanceData data, _) =>
+                        '${data.percentage}%',
+                    dataLabelSettings: DataLabelSettings(isVisible: true),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      }).toList(),
+    );
+  }
 }
