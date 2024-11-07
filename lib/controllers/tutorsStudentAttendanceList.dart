@@ -20,6 +20,8 @@ class StudentAttendanceController extends GetxController {
 
       Data? data;
 
+      var isBatchSelected = false.obs;
+
   @override
   void onInit() {
     // TODO: implement onInit

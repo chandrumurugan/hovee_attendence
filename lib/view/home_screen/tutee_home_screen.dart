@@ -180,6 +180,9 @@ class TuteeHome extends StatelessWidget {
                             Logger().i("${box.read('Token')}");
                             Get.to(()=>const GetTopicsCourses());
                           }
+                          if(index == 1){
+                            Get.to(()=>const GetTopicsCourses());
+                          }
                          
                         },
                         child: Card(

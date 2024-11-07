@@ -16,6 +16,7 @@ import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/widget/widget_to_icon.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:widget_to_marker/widget_to_marker.dart';
 
 class PunchController extends GetxController {
@@ -39,28 +40,36 @@ double targetLong = 80.21353338187131;
   @override
   void onInit() {
     super.onInit();
-    _checkPermissions();
+    _getCurrentLocation();
   }
 
-  Future<void> _checkPermissions() async {
-    var status = await Permission.location.status;
-    if (status.isGranted) {
-      _getCurrentLocation();
-    } else {
-      var result = await Permission.location.request();
-      if (result.isGranted) {
-        _getCurrentLocation();
-      } else {
-        // Handle the case when the user denies the permission
-      }
-    }
-  }
+  // Future<void> _checkPermissions() async {
+  //   var status = await Permission.location.status;
+  //   if (status.isGranted) {
+  //     _getCurrentLocation();
+  //   } else {
+  //     var result = await Permission.location.request();
+  //     if (result.isGranted) {
+  //       _getCurrentLocation();
+  //     } else {
+  //       // Handle the case when the user denies the permission
+  //     }
+  //   }
+  // }
 
   Future<void> _getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      currentLocation.value = LatLng(position.latitude, position.longitude);
+   final prefs = await SharedPreferences.getInstance();
+
+// Retrieve latitude and longitude, providing default values if null
+double latitude = prefs.getDouble('latitude') ?? 0.0;
+double longitude = prefs.getDouble('longitude') ?? 0.0;
+
+// Update the current location with non-nullable values
+currentLocation.value = LatLng(latitude, longitude);
+
+Get.log("Latitude: $latitude, Longitude: $longitude");
+
       targetLocation.value = LatLng(targetLat, targetLong);
 
       Get.log("currentLocation.value ${currentLocation.value}");

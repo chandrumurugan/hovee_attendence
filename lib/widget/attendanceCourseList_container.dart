@@ -6,6 +6,7 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/punch_view.dart';
+import 'package:hovee_attendence/view/qrscanner_screen.dart';
 
 class AttendancecourselistContainer extends StatelessWidget {
   final Data attendanceCourse;
@@ -49,18 +50,12 @@ class AttendancecourselistContainer extends StatelessWidget {
                   //       fontWeight: FontWeight.bold,
                   //       color: Colors.black),
                   // ),
-                  SizedBox(
-                    height: 10,
-                  ),
                   Text(
                    " ${attendanceCourse.course!.className!} - ${ attendanceCourse.course!.subject!} ",
                     style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
-                  ),
-                  SizedBox(
-                    height: 10,
                   ),
                   Text(
                    " ${attendanceCourse.batch!.batchTimingStart} - ${attendanceCourse.batch!.batchTimingEnd}",
@@ -76,7 +71,8 @@ class AttendancecourselistContainer extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      Get.to(() => PunchView(className: attendanceCourse.course!.className!, courseId:attendanceCourse.course!.sId!, batchId:attendanceCourse.batch!.sId!, batchStartTime: attendanceCourse.batch!.batchTimingStart!, batchEndTime: attendanceCourse.batch!.batchTimingEnd!, subjectName: attendanceCourse.course!.subject!, courseCode: attendanceCourse.course!.courseCode!,));
+                      Get.to(() =>QRScannerScreen());
+                      //Get.to(() => PunchView(className: attendanceCourse.course!.className!, courseId:attendanceCourse.course!.sId!, batchId:attendanceCourse.batch!.sId!, batchStartTime: attendanceCourse.batch!.batchTimingStart!, batchEndTime: attendanceCourse.batch!.batchTimingEnd!, subjectName: attendanceCourse.course!.subject!, courseCode: attendanceCourse.course!.courseCode!,));
                     },
                     child: const CircleAvatar(
                       radius: 25,

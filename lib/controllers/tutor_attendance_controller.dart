@@ -59,6 +59,8 @@ class TutorAttendanceController extends GetxController {
  final Map<String, String> batchNameToIdMap1 = {};
   DateTime? selectedBatchStartDate,selectedBatchEndDate; // Add this property
   String? selectedDate1,selectedBatchId;
+
+  var isBatchSelected = false.obs;
   @override
   void onInit() {
     super.onInit();

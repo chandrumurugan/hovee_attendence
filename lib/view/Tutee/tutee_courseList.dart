@@ -4,9 +4,11 @@ import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/addEnquery_controller.dart';
+import 'package:hovee_attendence/controllers/courseDetails_controller.dart';
 import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/view/Tutee/tutee_courseDetails.dart';
 import 'package:hovee_attendence/widget/course_list_container.dart';
 
 class GetTopicsCourses extends StatefulWidget {
@@ -19,16 +21,19 @@ class GetTopicsCourses extends StatefulWidget {
 class _GetTopicsCoursesState extends State<GetTopicsCourses> {
   bool isLoadingcategory = false;
   List<String> categories = [];
-  int selectedIndex = -1;
+  int selectedIndex = 0;
 
   List<Map<String, String>> filteredList = [];
   bool isLoadingcategoryList = false;
+
+   final CourseDetailController controller = Get.put(CourseDetailController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchCourseCategory();
+    filteredfetchList('All');
   }
 
   void fetchCourseCategory() async {
@@ -161,21 +166,28 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                             // shrinkWrap: true,
                             itemCount: filteredList.length,
                             itemBuilder: (context, index) {
-                              return CourseListContainer(
-                                  image: "",
-                                  subject: filteredList[index]["subject"]!, //
-                                  subjectCode:
-                                      "₹ ${filteredList[index]["fees"]!}",
-                                  std: filteredList[index]["className"]!,
-                                  medium: filteredList[index]["batch_mode"]!,
-                                  group: filteredList[index]["course_code"]!,
-                                  groupcode:
-                                      "${filteredList[index]["batch_timing_start"]!}-${filteredList[index]["batch_timing_end"]!}",
-                                  arrowIcon: true);
+                              return GestureDetector(
+                                onTap: (){
+                                 controller.getClassTuteeById(context,filteredList[index]["className"]!,filteredList[index]["subject"]!,filteredList[index]["TutorId"]!);
+                                },
+                                child: CourseListContainer(
+                                    image: "",
+                                    subject: filteredList[index]["subject"]!, //
+                                    subjectCode:
+                                        "₹ ${filteredList[index]["fees"]!}",
+                                    std: filteredList[index]["className"]!,
+                                    medium: filteredList[index]["batch_mode"]!,
+                                    group: filteredList[index]["course_code"]!,
+                                    groupcode:
+                                        "${filteredList[index]["batch_timing_start"]!}-${filteredList[index]["batch_timing_end"]!}",
+                                    arrowIcon: true),
+                              );
                             }))
           ],
         ),
       ),
     );
   }
+
+ 
 }

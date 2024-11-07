@@ -86,6 +86,7 @@ class StudentAttendanceList extends StatelessWidget {
                           onChanged: (newBatch) {
                             if (newBatch != null) {
                               controller.selectBatch(newBatch);
+                               controller.isBatchSelected.value = true;
                               // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
                               // Replace with your actual method to fetch batch-related data
                             }
@@ -105,9 +106,9 @@ class StudentAttendanceList extends StatelessWidget {
 
             // const SizedBox(height: 10,),
             Obx(() {
-              // Only show the calendar if a batch is selected
-              // if (controller.selectedBatchStartDate.value != null &&
-              //     controller.selectedBatchEndDate.value != null) {
+              if (!controller.isBatchSelected.value) {
+              return SizedBox.shrink(); // Hide calendar if no batch is selected
+            }
               return Container(
                 height: MediaQuery.of(context).size.height * 0.45,
                 margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
@@ -149,10 +150,6 @@ class StudentAttendanceList extends StatelessWidget {
                   },
                 ),
               );
-              // } else {
-              //   return const SizedBox
-              //       .shrink(); // Hide calendar if no dates selected
-              // }
             }),
             SizedBox(
               height: 10,

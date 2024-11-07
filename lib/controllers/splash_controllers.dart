@@ -1,11 +1,14 @@
 // controllers/splash_controller.dart
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logger/logger.dart';
 
@@ -21,6 +24,7 @@ class SplashController extends GetxController {
  var progressValue = 0.0.obs;
   final Duration _loadingDuration =
       const Duration(seconds: 3);
+       var currentLocation = Rxn<LatLng>();
   @override
   void onInit() {
     super.onInit();
@@ -28,6 +32,7 @@ class SplashController extends GetxController {
     Future.delayed(const Duration(seconds: 2), () {
       showSecondImage.value = true;
     });
+     _checkPermissions();
    fetchAppConfig();
   }
 
@@ -93,6 +98,35 @@ class SplashController extends GetxController {
       // }
     } catch (e) {
       Logger().e(e);
+    }
+  }
+
+    Future<void> _checkPermissions() async {
+    var status = await Permission.location.status;
+    if (status.isGranted) {
+      _getCurrentLocation();
+    } else {
+      var result = await Permission.location.request();
+      if (result.isGranted) {
+        _getCurrentLocation();
+      } else {
+        // Handle the case when the user denies the permission
+      }
+    }
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      currentLocation.value = LatLng(position.latitude, position.longitude);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setDouble('latitude', position.latitude);
+      await prefs.setDouble('longitude', position.longitude);
+       Get.log("Latitude: ${position.latitude}, Longitude: ${position.longitude}");
+    } catch (e) {
+      print('Error fetching location: $e');
+      // Handle error fetching location
     }
   }
 }

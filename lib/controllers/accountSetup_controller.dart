@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountSetupController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -44,11 +45,10 @@ class AccountSetupController extends GetxController
   final additionalInfoController = TextEditingController();
 
   //tutee
-    final tuteQualificationController = TextEditingController();
-      final tuteclassController = TextEditingController();
-        final tuteeboardController = TextEditingController();
-          final tuteorganizationController = TextEditingController();
-
+  final tuteQualificationController = TextEditingController();
+  final tuteclassController = TextEditingController();
+  final tuteeboardController = TextEditingController();
+  final tuteorganizationController = TextEditingController();
 
   //education info
   // Dropdown values
@@ -56,8 +56,8 @@ class AccountSetupController extends GetxController
   var teachingSkills = ''.obs;
   var workingTech = ''.obs;
   var teachingExperience = ''.obs;
-   var teachingSkills1 = ''.obs;
- //education info
+  var teachingSkills1 = ''.obs;
+  //education info
   // Dropdown values tutee
   var tuteeHighestQualification = ''.obs;
   var tuteeSpeciallization = ''.obs;
@@ -80,14 +80,15 @@ class AccountSetupController extends GetxController
   var tuteEducationInfo = {}.obs;
   final WebService webService = Get.put(WebService());
 
-   List<String> qualifications = [];
-   //List<String> skills = ['Primary(1st-5th)','Secondary(6th-10th)','Higher Secondary(11th-12th)'];
-   List<String> techs = [];
-   List<String> techsExperience = [];
-   List<String> tuteeQualifications = [];
-   List<String> tuteeSpeciallizationClass = [];
-   List<String> skills = [];
-    final box = GetStorage();
+  List<String> qualifications = [];
+  //List<String> skills = ['Primary(1st-5th)','Secondary(6th-10th)','Higher Secondary(11th-12th)'];
+  List<String> techs = [];
+  List<String> techsExperience = [];
+  List<String> tuteeQualifications = [];
+  List<String> tuteeSpeciallizationClass = [];
+  List<String> skills = [];
+  final box = GetStorage();
+  double? latitude, longitude;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -95,13 +96,13 @@ class AccountSetupController extends GetxController
     authControllers = Get.find<AuthControllers>();
     tabController = TabController(length: 3, vsync: this);
     _populateFieldsFromAuth();
-     //loadAppConfigData();
-   qualifications=  getQualifications();
-   techs=  getTechs();
-   techsExperience= getTechsExperiencechs();
-   tuteeQualifications =getTuteeQualifications();
-   skills =getSkills();
-   tuteeSpeciallizationClass =getSkills();
+    //loadAppConfigData();
+    qualifications = getQualifications();
+    techs = getTechs();
+    techsExperience = getTechsExperiencechs();
+    tuteeQualifications = getTuteeQualifications();
+    skills = getSkills();
+    tuteeSpeciallizationClass = getSkills();
   }
 
   void _populateFieldsFromAuth() {
@@ -120,74 +121,80 @@ class AccountSetupController extends GetxController
   }
 
   List<String> getQualifications() {
-  final storage = GetStorage();
-  final appConfigData = storage.read('appConfig');
+    final storage = GetStorage();
+    final appConfigData = storage.read('appConfig');
 
-  if (appConfigData != null) {
-    final appConfig = AppConfig.fromJson(appConfigData);
-    if (appConfig.data != null) {
-      return appConfig.data!.highestQualification!.map((item) => item.label ?? '').toList();
+    if (appConfigData != null) {
+      final appConfig = AppConfig.fromJson(appConfigData);
+      if (appConfig.data != null) {
+        return appConfig.data!.highestQualification!
+            .map((item) => item.label ?? '')
+            .toList();
+      }
     }
+    return [];
   }
-  return [];
-}
- List<String> getTechs() {
-  final storage = GetStorage();
-  final appConfigDatatechs = storage.read('appConfig');
 
-  if (appConfigDatatechs != null) {
-    final appConfig = AppConfig.fromJson(appConfigDatatechs);
-    if (appConfig.data != null) {
-      return appConfig.data!.teaching!.map((item) => item.label ?? '').toList();
+  List<String> getTechs() {
+    final storage = GetStorage();
+    final appConfigDatatechs = storage.read('appConfig');
+
+    if (appConfigDatatechs != null) {
+      final appConfig = AppConfig.fromJson(appConfigDatatechs);
+      if (appConfig.data != null) {
+        return appConfig.data!.teaching!
+            .map((item) => item.label ?? '')
+            .toList();
+      }
     }
+    return [];
   }
-  return [];
-}
 
- List<String> getTechsExperiencechs() {
-  final storage = GetStorage();
-  final appConfigDatatechsExperience = storage.read('appConfig');
+  List<String> getTechsExperiencechs() {
+    final storage = GetStorage();
+    final appConfigDatatechsExperience = storage.read('appConfig');
 
-  if (appConfigDatatechsExperience != null) {
-    final appConfig = AppConfig.fromJson(appConfigDatatechsExperience);
-    if (appConfig.data != null) {
-      return appConfig.data!.workExperience!.map((item) => item.label ?? '').toList();
+    if (appConfigDatatechsExperience != null) {
+      final appConfig = AppConfig.fromJson(appConfigDatatechsExperience);
+      if (appConfig.data != null) {
+        return appConfig.data!.workExperience!
+            .map((item) => item.label ?? '')
+            .toList();
+      }
     }
+    return [];
   }
-  return [];
-}
 
- List<String> getTuteeQualifications() {
-  final storage = GetStorage();
-  final appConfigDataTuteeQualifications = storage.read('appConfig');
+  List<String> getTuteeQualifications() {
+    final storage = GetStorage();
+    final appConfigDataTuteeQualifications = storage.read('appConfig');
 
-  if (appConfigDataTuteeQualifications != null) {
-    final appConfig = AppConfig.fromJson(appConfigDataTuteeQualifications);
-    if (appConfig.data != null) {
-      return appConfig.data!.tuteeHighestQualification!.map((item) => item.label ?? '').toList();
+    if (appConfigDataTuteeQualifications != null) {
+      final appConfig = AppConfig.fromJson(appConfigDataTuteeQualifications);
+      if (appConfig.data != null) {
+        return appConfig.data!.tuteeHighestQualification!
+            .map((item) => item.label ?? '')
+            .toList();
+      }
     }
+    return [];
   }
-  return [];
-}
 
- 
+  List<String> getSkills() {
+    final storage = GetStorage();
+    final appConfigDataSkills = storage.read('appConfig');
 
- List<String> getSkills() {
-  final storage = GetStorage();
-  final appConfigDataSkills = storage.read('appConfig');
-
-  if (appConfigDataSkills != null) {
-    final appConfig = AppConfig.fromJson(appConfigDataSkills);
-    if (appConfig.data != null) {
-      return appConfig.data!.teachingSkill!.map((item) => item.label ?? '').toList();
+    if (appConfigDataSkills != null) {
+      final appConfig = AppConfig.fromJson(appConfigDataSkills);
+      if (appConfig.data != null) {
+        return appConfig.data!.teachingSkill!
+            .map((item) => item.label ?? '')
+            .toList();
+      }
     }
+    return [];
   }
-  return [];
-}
 
-
-
-  
   //  void loadAppConfigData() {
   //   // Retrieve the data from GetStorage
   //   var storedConfig = box.read('appConfigData');
@@ -211,7 +218,8 @@ class AccountSetupController extends GetxController
       return false;
     }
     if (address2Controller.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please enter the street & area");
+      SnackBarUtils.showErrorSnackBar(
+          context, "Please enter the street & area");
       return false;
     }
     if (cityController.text.isEmpty) {
@@ -232,57 +240,58 @@ class AccountSetupController extends GetxController
     }
 
     if (pincodesController.text.length != 6) {
-    SnackBarUtils.showErrorSnackBar(context,'Invalid pincode.');
-    return false;
-  }
+      SnackBarUtils.showErrorSnackBar(context, 'Invalid pincode.');
+      return false;
+    }
     return true;
   }
 
   bool validatePersonalFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
-     SnackBarUtils.showErrorSnackBar(context,'Please enter the first name.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the first name.');
       return false;
     }
     if (lastNameController.text.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please enter the last name.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the last name.');
       return false;
     }
     if (emailController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please enter the email.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the email.');
       return false;
     }
     // Email format validation
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text)) {
-      SnackBarUtils.showErrorSnackBar(context,'Invalid email format');
+      SnackBarUtils.showErrorSnackBar(context, 'Invalid email format');
       return false;
     }
     if (dobController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please select the DOB.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please select the DOB.');
       return false;
     }
 
     if (phController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please enter the mobile number.');
+      SnackBarUtils.showErrorSnackBar(
+          context, 'Please enter the mobile number.');
       return false;
     }
-     if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
-       SnackBarUtils.showErrorSnackBar(context,'Invalid mobile number');
+    if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
+      SnackBarUtils.showErrorSnackBar(context, 'Invalid mobile number');
       return false;
     }
 
     if (pincodeController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please enter the pincode.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the pincode.');
       return false;
     }
 
-     if (pincodeController.text.length != 6) {
-    SnackBarUtils.showErrorSnackBar(context,'Invalid pincode.');
-    return false;
-  }
+    if (pincodeController.text.length != 6) {
+      SnackBarUtils.showErrorSnackBar(context, 'Invalid pincode.');
+      return false;
+    }
 
     if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please select the Id proof');
+      SnackBarUtils.showErrorSnackBar(context, 'Please select the Id proof');
       return false;
     }
 
@@ -290,7 +299,8 @@ class AccountSetupController extends GetxController
     return true;
   }
 
-  void storePersonalInfo( BuildContext context, String roleId, String roleTypeId) {
+  Future<void> storePersonalInfo(
+      BuildContext context, String roleId, String roleTypeId) async {
     if (validatePersonalFields(context)) {
       print("moving to persojnla info");
 
@@ -303,16 +313,16 @@ class AccountSetupController extends GetxController
         "pincode": pincodeController.text,
         "user_type": 2,
         "id_proof_label": idProofController.text,
-        'rolesId':roleId,
-        'rolesTypeId':roleTypeId,
+        'rolesId': roleId,
+        'rolesTypeId': roleTypeId,
       };
       tabController.animateTo(1);
       Logger().i(personalInfo.value);
-      
     }
   }
 
-  void storeAddressInfo(BuildContext context,String selectedRoleTypeName,String roleId, String roleTypeId) {
+  void storeAddressInfo(BuildContext context, String selectedRoleTypeName,
+      String roleId, String roleTypeId) {
     if (validateAddressInfo(context)) {
       addressInfo.value = {
         "door_no": address1Controller.text,
@@ -323,9 +333,12 @@ class AccountSetupController extends GetxController
         "pincode": pincodesController.text,
         "phone_number": phController.text,
       };
-       selectedRoleTypeName=='I Run an Institute'?
-      submitAccountSetup(roleId, roleTypeId,context):Container();
-     selectedRoleTypeName!='I Run an Institute'? tabController.animateTo(2):Container();
+      selectedRoleTypeName == 'I Run an Institute'
+          ? submitAccountSetup(roleId, roleTypeId, context)
+          : Container();
+      selectedRoleTypeName != 'I Run an Institute'
+          ? tabController.animateTo(2)
+          : Container();
     }
   }
 
@@ -344,8 +357,7 @@ class AccountSetupController extends GetxController
       return false;
     }
     if (workingTech.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(
-          context, 'Please select a work type.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please select a work type.');
       return false;
     }
     if (teachingExperience.value.isEmpty) {
@@ -364,18 +376,17 @@ class AccountSetupController extends GetxController
     }
     return true;
   }
-  bool validateTuteEducationInfo(BuildContext context){
-    if(tuteeHighestQualification.value.isEmpty){
-       SnackBarUtils.showErrorSnackBar(
+
+  bool validateTuteEducationInfo(BuildContext context) {
+    if (tuteeHighestQualification.value.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
           context, "Please select highest qualification.");
-          return false;
-
+      return false;
     }
-    if(tuteeSpeciallization.value.isEmpty){
-       SnackBarUtils.showErrorSnackBar(
+    if (tuteeSpeciallization.value.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
           context, "Please select class/specialization.");
-          return false;
-
+      return false;
     }
     // if(tuteeboardController.text.isEmpty){
     //     SnackBarUtils.showErrorSnackBar(
@@ -383,87 +394,89 @@ class AccountSetupController extends GetxController
     //       return false;
 
     // }
-    if(tuteorganizationController.text.isEmpty){
-        SnackBarUtils.showErrorSnackBar(
+    if (tuteorganizationController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
           context, "Please enter the school/college/other.");
-          return false;
+      return false;
     }
     return true;
   }
 
   void storeEducationInfo(
       BuildContext context, String roleId, String roleTypeId) {
-        if (!validateAllTabs(context)) {
-          
-        }else{
+    if (!validateAllTabs(context)) {
+    } else {
       if (validateFields(context)) {
-      educationInfo.value = {
-        "highest_qualification": highestQualification.value,
-        "teaching_skill_set": teachingSkills.value,
-        "working_tech": workingTech.value,
-        "teaching_experience": teachingExperience.value,
-        "additional_info": additionalInfoController.text,
-      };
-      submitAccountSetup(roleId, roleTypeId,context);
+        educationInfo.value = {
+          "highest_qualification": highestQualification.value,
+          "teaching_skill_set": teachingSkills.value,
+          "working_tech": workingTech.value,
+          "teaching_experience": teachingExperience.value,
+          "additional_info": additionalInfoController.text,
+        };
+        submitAccountSetup(roleId, roleTypeId, context);
+      }
     }
-        }
   }
 
-  void storeTuteeeducationInfo(BuildContext context, String roleId, String roleTypeId){
-     if (!validateAllTabs1(context)) {
-          
-        }else{
-    if(validateTuteEducationInfo(context)){
-      tuteEducationInfo.value = { "highest_qualification": tuteeHighestQualification.value, 
-    "select_class": tuteeSpeciallization.value,
-    // "select_board": tuteeboardController.text, 
-    "organization_name": tuteorganizationController.text
-};
-submitTuteeAccountSetup(roleId,context);
+  void storeTuteeeducationInfo(
+      BuildContext context, String roleId, String roleTypeId) {
+    if (!validateAllTabs1(context)) {
+    } else {
+      if (validateTuteEducationInfo(context)) {
+        tuteEducationInfo.value = {
+          "highest_qualification": tuteeHighestQualification.value,
+          "select_class": tuteeSpeciallization.value,
+          // "select_board": tuteeboardController.text,
+          "organization_name": tuteorganizationController.text
+        };
+        submitTuteeAccountSetup(roleId, context);
+      }
     }
-        }
   }
 
-  Future<void> submitTuteeAccountSetup(String roleId,BuildContext context)async{
-     final box = GetStorage(); // Get an instance of GetStorage
+  Future<void> submitTuteeAccountSetup(
+      String roleId, BuildContext context) async {
+    final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
     Logger().i(personalInfo.value);
-
+     final prefs = await SharedPreferences.getInstance();
+    Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
+    latitude = prefs.getDouble('latitude');
+    longitude = prefs.getDouble('longitude');
     isLoading.value = true;
     try {
-      http.StreamedResponse response =  await webService.submitTuteeAccountSetup(
+      http.StreamedResponse response = await webService.submitTuteeAccountSetup(
         token: token, // Add the actual token here
         personalInfo: personalInfo.value,
         addressInfo: addressInfo.value,
         educationInfo: tuteEducationInfo.value,
+         latitude: latitude.toString(),
+          longitude: longitude.toString()
         // resumePath: '',
         // educationCertPath: '',
         // experienceCertPath: '',
         // roleId:roleId ,
         // roleTypeId: roleTypeId
       );
-            if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
         print(responseBody);
-         SnackBarUtils.showSuccessSnackBar(context, "Account setup successfully completed.");
-        Get.offAll(()=>const TuteeHome());
+        SnackBarUtils.showSuccessSnackBar(
+            context, "Account setup successfully completed.");
+        Get.offAll(() => const TuteeHome());
         // Handle success (e.g., show a success message)
       } else {
         print(response.statusCode);
         // Handle failure (e.g., show an error message)
       }
-       
     } catch (e) {
-      print(e); 
-    }
-    finally {
+      print(e);
+    } finally {
       isLoading.value = false;
     }
-
   }
-
-
 
   void setHighestQualification(String value) =>
       highestQualification.value = value;
@@ -473,60 +486,62 @@ submitTuteeAccountSetup(roleId,context);
   void setAdditionalInfo(String value) => additionalInfo.value = value;
   void setTuteeHighestQualification(String value) =>
       tuteeHighestQualification.value = value;
- void setTuteeSpeciallization(String value) =>
+  void setTuteeSpeciallization(String value) =>
       tuteeSpeciallization.value = value;
-      
 
   Future<void> pickFile(String type) async {
-  final ImagePicker picker = ImagePicker();
-  final XFile? file = await picker.pickImage(source: ImageSource.gallery);
-  if (file != null) {
-    Logger().i(file.path);
+    final ImagePicker picker = ImagePicker();
+    final XFile? file = await picker.pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      Logger().i(file.path);
 
-    // Extracting filename and extension
-    String filename = path.basename(file.path); // e.g., "1000000018.jpg"
-    String fileExtension = path.extension(file.path); // e.g., ".jpg"
-    
-    Logger().i("Filename: $filename");
-    Logger().i("File Extension: $fileExtension");
+      // Extracting filename and extension
+      String filename = path.basename(file.path); // e.g., "1000000018.jpg"
+      String fileExtension = path.extension(file.path); // e.g., ".jpg"
 
-    if (type == 'resume') {
-      resumePath.value = file.path;
-    } else if (type == 'education') {
-      educationCertPath.value = file.path;
-    } else if (type == 'experience') {
-      experienceCertPath.value = file.path;
+      Logger().i("Filename: $filename");
+      Logger().i("File Extension: $fileExtension");
+
+      if (type == 'resume') {
+        resumePath.value = file.path;
+      } else if (type == 'education') {
+        educationCertPath.value = file.path;
+      } else if (type == 'experience') {
+        experienceCertPath.value = file.path;
+      }
     }
   }
-}
 
-
-  Future<void> submitAccountSetup(String roleId, String roleTypeId,BuildContext context) async {
+  Future<void> submitAccountSetup(
+      String roleId, String roleTypeId, BuildContext context) async {
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
-
+    final prefs = await SharedPreferences.getInstance();
+    Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
+    latitude = prefs.getDouble('latitude');
+    longitude = prefs.getDouble('longitude');
     isLoading.value = true;
     try {
       // Call the API using the WebService
       http.StreamedResponse response = await webService.submitAccountSetup(
-        token: token, // Add the actual token here
-        personalInfo: personalInfo.value,
-        addressInfo: addressInfo.value,
-        educationInfo: educationInfo.value,
-        resumePath: '',
-        educationCertPath: '',
-        experienceCertPath: '',
-        // roleId:roleId ,
-        // roleTypeId: roleTypeId
-      );
+          token: token, // Add the actual token here
+          personalInfo: personalInfo.value,
+          addressInfo: addressInfo.value,
+          educationInfo: educationInfo.value,
+          resumePath: '',
+          educationCertPath: '',
+          experienceCertPath: '',
+          latitude: latitude.toString(),
+          longitude: longitude.toString());
 
       // Handle the response
       if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
         print(responseBody);
-        SnackBarUtils.showSuccessSnackBar(context, "Account setup successfully completed.");
-        Get.offAll(()=>TutorHome());
+        SnackBarUtils.showSuccessSnackBar(
+            context, "Account setup successfully completed.");
+        Get.offAll(() => TutorHome());
         // Handle success (e.g., show a success message)
       } else {
         print(response.statusCode);
@@ -541,55 +556,54 @@ submitTuteeAccountSetup(roleId,context);
   }
 
   bool validateAllTabs(BuildContext context) {
-  // Validate Personal Info
-  if (!validatePersonalFields(context)) {
-    // Navigate to the personal info tab
-    validatePersonalFields(context);
-    return false;
-  }
-  
-  // Validate Address Info
-  if (!validateAddressInfo(context)) {
-    // Navigate to the address tab
-    validateAddressInfo(context);
-    return false;
-  }
+    // Validate Personal Info
+    if (!validatePersonalFields(context)) {
+      // Navigate to the personal info tab
+      validatePersonalFields(context);
+      return false;
+    }
 
-  // Validate Education Info (both general and tutee education info)
-  if (!validateFields(context)) {
-    // Navigate to the education tab
-    tabController.animateTo(2);
-    return false;
-  }
+    // Validate Address Info
+    if (!validateAddressInfo(context)) {
+      // Navigate to the address tab
+      validateAddressInfo(context);
+      return false;
+    }
 
-  // All validations passed
-  return true;
-}
+    // Validate Education Info (both general and tutee education info)
+    if (!validateFields(context)) {
+      // Navigate to the education tab
+      tabController.animateTo(2);
+      return false;
+    }
+
+    // All validations passed
+    return true;
+  }
 
   bool validateAllTabs1(BuildContext context) {
-  // Validate Personal Info
-  if (!validatePersonalFields(context)) {
-    // Navigate to the personal info tab
-    validatePersonalFields(context);
-    return false;
-  }
-  
-  // Validate Address Info
-  if (!validateAddressInfo(context)) {
-    // Navigate to the address tab
-    validateAddressInfo(context);
-    return false;
-  }
+    // Validate Personal Info
+    if (!validatePersonalFields(context)) {
+      // Navigate to the personal info tab
+      validatePersonalFields(context);
+      return false;
+    }
 
-  // Validate Education Info (both general and tutee education info)
-  if (!validateTuteEducationInfo(context)) {
-    // Navigate to the education tab
-    tabController.animateTo(2);
-    return false;
+    // Validate Address Info
+    if (!validateAddressInfo(context)) {
+      // Navigate to the address tab
+      validateAddressInfo(context);
+      return false;
+    }
+
+    // Validate Education Info (both general and tutee education info)
+    if (!validateTuteEducationInfo(context)) {
+      // Navigate to the education tab
+      tabController.animateTo(2);
+      return false;
+    }
+
+    // All validations passed
+    return true;
   }
-
-  // All validations passed
-  return true;
-}
-
 }

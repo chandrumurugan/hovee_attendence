@@ -8,9 +8,11 @@ import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
+import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
+import 'package:hovee_attendence/modals/getQrcode_model.dart';
 import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
@@ -18,6 +20,7 @@ import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
 import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
+import 'package:hovee_attendence/modals/submitEnquirModel.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'dart:convert';
@@ -319,6 +322,7 @@ class WebService {
     String resumePath = '',
     String educationCertPath = '',
     String experienceCertPath = '',
+   required String latitude,required String longitude,
   }) async {
     var headers = {
       'Authorization': 'Bearer $token', // Pass the token for authorization
@@ -345,6 +349,8 @@ class WebService {
     //  request.fields['experience_certificate'] = '';
     //  request.fields['rolesId'] = roleId;
     //  request.fields['rolesTypeId'] = roleTypeId;
+     request.fields['latitude'] = latitude;
+      request.fields['longitude'] = longitude;
     request.headers.addAll(headers);
     Logger().i(request.fields);
 
@@ -392,6 +398,7 @@ class WebService {
     required Map<dynamic, dynamic> personalInfo,
     required Map<dynamic, dynamic> addressInfo,
     required Map<dynamic, dynamic> educationInfo,
+    required String latitude,required String longitude,
   }) async {
     var headers = {
       'Authorization': 'Bearer $token', // Pass the token for authorization
@@ -411,6 +418,8 @@ class WebService {
     // Add education info
     request.fields['education_info'] = jsonEncode(educationInfo);
     request.fields['type'] = 'N';
+     request.fields['latitude'] = latitude;
+      request.fields['longitude'] = longitude;
     request.headers.addAll(headers);
     return await request.send();
   }
@@ -672,6 +681,85 @@ class WebService {
     } catch (e) {
       print('Error adding batch: $e');
       return null;
+    }
+  }
+
+   static Future<getClassTuteeByIdModel?> getClassTuteeById(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}tutee/getClassTuteeById"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return getClassTuteeByIdModel.fromJson(json.decode(response.body));
+      } else {
+        print('Failed to add batch: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error adding batch: $e');
+      return null;
+    }
+  }
+
+   static Future<submitEnquiryModel?> addEnquirs(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}attendane/submitEnquiry"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return submitEnquiryModel.fromJson(json.decode(response.body));
+      } else {
+        print('Failed to add batch: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error adding batch: $e');
+      return null;
+    }
+  }
+
+  static Future<getQrcodeModel> fetchQrCode() async {
+    final url = Uri.parse('${baseUrl}home/getQrcode');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return getQrcodeModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load attendanceCourse list');
     }
   }
 }

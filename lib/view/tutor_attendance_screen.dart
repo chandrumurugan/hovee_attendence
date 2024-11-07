@@ -80,54 +80,6 @@ class TutorAttendanceScreen extends StatelessWidget {
                           },
                         );
                       }),
-
-                      // Obx(() {
-                      //   if (controller.isLoading.value) {
-                      //     return CircularProgressIndicator(); // Show loading indicator while loading
-                      //   }
-                      //   return DropdownButtonFormField<String>(
-                      //     dropdownColor:AppConstants.primaryColor,
-
-                      //     style: GoogleFonts.nunito(
-                      //         fontSize: 19,
-                      //         fontWeight: FontWeight.w400,
-                      //         color: Colors.white),
-                      //     decoration: InputDecoration(
-                      //       // suffixIcon: const Icon(
-                      //       //   Icons.keyboard_arrow_down,
-                      //       //   color: Colors.white,
-                      //       // ),
-                      //       labelText: 'Batch',
-                      //       labelStyle: GoogleFonts.nunito(
-                      //           fontSize: 15,
-                      //           fontWeight: FontWeight.w400,
-                      //           color: Colors.white),
-                      //     ),
-                      //     value: controller.selectedBatch.value,
-                      //     items: controller.batches.reversed.map((String value) {
-                      //       print("object");
-                      //       return DropdownMenuItem<String>(
-                      //         value: value,
-                      //         child: Text(value,),
-                      //       );
-                      //     }).toList(),
-                      //     onChanged: (newValue) {
-                      //       controller.selectedBatch.value = newValue!;
-                      //       controller.selectedBatchId =
-                      //           controller.batchNameToIdMap[newValue] ?? '';
-                      //       controller .selectedDate1 =
-                      //           controller.batchNameToIdMap1[newValue] ?? '';
-                      //       print(controller.selectedBatchId);
-                      //       print(controller.selectedBatch.value);
-                      //       print(controller .selectedDate1);
-                      //       controller.selectedBatchStartDate =
-                      //           DateFormat('dd/MM/yyyy').parse(controller .selectedDate1!);
-                      //            print('Hi rahul $controller .selectedDate1!');
-                      //       controller.fetchGroupedEnrollmentByBatchList(
-                      //           controller.selectedBatchId!, controller .selectedDate1!);
-                      //     },
-                      //   );
-                      // }),
                       const SizedBox(height: 10),
                       SizedBox(
                         height: 10,
