@@ -27,15 +27,15 @@ class PunchController extends GetxController {
   GoogleMapController? get mapController => _mapController;
   final punchedIn = false.obs;
   double punchable_distance_in_meters = 500;
-double targetLat = 13.046720258037634;
-double targetLong = 80.21353338187131;
+
   var isLoading = true.obs;
   var buttonLoader = false.obs;
   void setMapController(GoogleMapController controller) {
     _mapController = controller;
   }
   var targetLocation = Rxn<LatLng>();
-
+  double? targetLat;
+   double? targetLong;
 
   @override
   void onInit() {
@@ -70,13 +70,18 @@ currentLocation.value = LatLng(latitude, longitude);
 
 Get.log("Latitude: $latitude, Longitude: $longitude");
 
-      targetLocation.value = LatLng(targetLat, targetLong);
+    targetLat = prefs.getDouble('target_lat') ?? 0.0;
+    targetLong =prefs.getDouble('target_long') ?? 0.0;
+
+
+      targetLocation.value = LatLng(targetLat!, targetLong!);
 
       Get.log("currentLocation.value ${currentLocation.value}");
+       Get.log("targetLocation.value ${targetLocation.value}");
       markers.add(Marker(
         markerId: const MarkerId("currentLocation"),
         position: currentLocation.value!,
-        icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,size: Size.square(10.0)), "assets/appbar/currentLocationIcon.png",),
+        icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,), "assets/appbar/placeholder (1).png",),
         // icon: await const WidgetToIcon().toBitmapDescriptor(
         //   logicalSize: const Size(150, 150),
         //   imageSize: const Size(400, 400),
@@ -86,7 +91,7 @@ Get.log("Latitude: $latitude, Longitude: $longitude");
        markers.add(Marker(
         markerId: const MarkerId("targetLocation"),
         position: targetLocation.value!,
-        icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,size: Size.square(10.0)), "assets/appbar/targetLocationIcon.png"),
+        icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,size: Size.square(10.0)), "assets/appbar/location-mark (1).png"),
         // icon: await const WidgetToIcon().toBitmapDescriptor(
         //   logicalSize: const Size(150, 150),
         //   imageSize: const Size(400, 400),
@@ -230,8 +235,8 @@ Get.log("Latitude: $latitude, Longitude: $longitude");
   double distanceInMeters = await Geolocator.distanceBetween(
     position.latitude,
     position.longitude,
-    targetLat,
-    targetLong,
+    targetLat!,
+    targetLong!,
   );
 
   // Define threshold distance

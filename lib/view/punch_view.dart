@@ -65,9 +65,9 @@ class PunchView extends StatelessWidget {
                                   Circle(
                                     circleId: const CircleId("circle_1"),
                                     center: LatLng(
-                                        _controller.targetLat,
+                                        _controller.targetLat!,
                                         _controller
-                                            .targetLong), // Specific location
+                                            .targetLong!), // Specific location
                                     radius: _controller
                                         .punchable_distance_in_meters,
                                     fillColor: Colors.blue.withOpacity(0.5),

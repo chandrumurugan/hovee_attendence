@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -16,6 +19,7 @@ import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/tutor_attendance_screen.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
+import 'package:share_plus/share_plus.dart';
 
 class TutorHome extends StatelessWidget {
   TutorHome({super.key});
@@ -80,21 +84,30 @@ class TutorHome extends StatelessWidget {
                   // const SizedBox(
                   //   width: 05,
                   // ),
-                  InkWell(
-                    onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => const ChatScreen()));
-                    },
-                    child: Icon(
-                      Icons.message,
-                      color: Colors.black.withOpacity(0.4),
-                    ),
-                  )
+                  // InkWell(
+                  //   onTap: () {
+                  //     // Navigator.push(
+                  //     //     context,
+                  //     //     MaterialPageRoute(
+                  //     //         builder: (context) => const ChatScreen()));
+                  //   },
+                  //   child: Icon(
+                  //     Icons.message,
+                  //     color: Colors.black.withOpacity(0.4),
+                  //   ),
+                  // )
+                  
                 ],
               ),
             ),
+            IconButton(
+                onPressed: () {
+                  _showQrCodeBottomSheet(
+                context,
+                 controller.qrcodeImageData!
+               );
+                },
+                icon: Icon(Icons.qr_code))
           ],
         ),
         centerTitle: false,
@@ -223,6 +236,43 @@ class TutorHome extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showQrCodeBottomSheet(BuildContext context, Uint8List qrCodeUrl) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      builder: (context) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 16),
+              Image.memory(qrCodeUrl!),
+              // CachedNetworkImage(
+              //   imageUrl: qrCodeUrl,
+              //   placeholder: (context, url) => CircularProgressIndicator(),
+              //   errorWidget: (context, url, error) => Icon(Icons.error),
+              //   width: 200,
+              //   height: 200,
+              // ),
+              SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Share.share(qrCodeUrl.toString(), subject: 'QR Code');
+                },
+                icon: Icon(Icons.share),
+                label: Text('Share'),
+              ),
+              SizedBox(height: 16),
+              SizedBox(height: 16),
+              SizedBox(height: 16),
+            ],
+          ),
+        );
+      },
     );
   }
 }

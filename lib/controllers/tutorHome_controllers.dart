@@ -1,7 +1,12 @@
 
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hovee_attendence/modals/getQrcode_model.dart';
+import 'package:hovee_attendence/services/webServices.dart';
 import 'package:logger/logger.dart';
 
 class TutorHomeController extends GetxController{
@@ -73,11 +78,54 @@ class TutorHomeController extends GetxController{
   ];
   var token = GetStorage();
 
+   var isLoading = true.obs;
+
+    var  qrcodeImage;
+
+    Uint8List? qrcodeImageData;
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     Logger().i(token.read('Token') ?? "");
-
+    fetchQrCodeImage();
   }
+
+ 
+
+void fetchQrCodeImage() async {
+  try {
+    isLoading(true);
+    var qrcodeResponse = await WebService.fetchQrCode();
+    print("API Response: ${qrcodeResponse.data}");
+
+    if (qrcodeResponse.data != null) {
+      qrcodeImage = qrcodeResponse.data!.qrCode;
+      try{
+        qrcodeImage = qrcodeImage.replaceFirst(RegExp(r'data:image\/\w+;base64,'), '');
+
+      if (qrcodeImage.isNotEmpty) {
+        // Decode the base64 string to Uint8List
+        qrcodeImageData = base64Decode(qrcodeImage);
+        print("Decoded QR Code Image Data: $qrcodeImageData");
+      } else {
+        print("Error: Base64 QR Code string is empty.");
+      }
+      }
+      catch(e){
+        print("123456667777==>$e");
+      }
+      // Remove potential metadata prefix
+      
+    } else {
+      print("Error: qrcodeResponse.data is null.");
+    }
+  } catch (e) {
+    print("Exception caught: $e");
+  } finally {
+    isLoading(false);
+  }
+}
+
 }
