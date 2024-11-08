@@ -1,54 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:hovee_attendence/controllers/punch_controller.dart';
 import 'package:hovee_attendence/view/punch_view.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QRScannerScreen extends StatefulWidget {
-    final String className;
-  final String courseId;
-  final String batchId;
-  final String batchStartTime;
-  final String batchEndTime;
-  final String subjectName;
-  final String courseCode;
 
-  const QRScannerScreen({super.key, required this.className, required this.courseId, required this.batchId, required this.batchStartTime, required this.batchEndTime, required this.subjectName, required this.courseCode});
+
+  const QRScannerScreen({
+    super.key, 
+  });
+
   @override
   _QRScannerScreenState createState() => _QRScannerScreenState();
 }
 
 class _QRScannerScreenState extends State<QRScannerScreen> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  QRViewController? controller;
-  
+  final PunchController _controller = Get.put(PunchController());
+  void _onBarcodeScanned(String? scannedData) async {
+    if (scannedData == null) return;
 
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
+    // Extract latitude and longitude
+    final latitude = _extractCoordinate(scannedData, 'latitude');
+    final longitude = _extractCoordinate(scannedData, 'longitude');
 
-  void _onQRViewCreated(QRViewController qrController) {
-    setState(() {
-      controller = qrController;
-    });
-    controller?.scannedDataStream.listen((scanData) async {
-      controller?.pauseCamera();
-      final code = scanData.code;
-      
-      // Extract latitude and longitude
-      final latitude = _extractCoordinate(code!, 'latitude');
-      final longitude = _extractCoordinate(code!, 'longitude');
-
-      // Store in SharedPreferences
-      if (latitude != null && longitude != null) {
-        await _saveCoordinatesToPreferences(latitude, longitude);
-      }
-
-      Get.off(() =>PunchView(className: widget.className, courseId: widget.courseId, batchId: widget.batchId, batchStartTime: widget.batchStartTime, batchEndTime: widget.batchEndTime, subjectName: widget.subjectName, courseCode: widget.courseCode,));// Return the scanned data
-    });
+    // Store in SharedPreferences
+    if (latitude != null && longitude != null) {
+      await _saveCoordinatesToPreferences(latitude, longitude);
+    }
+     _controller.hasScanned.value = true;
+    Get.back(result: _controller.hasScanned.value);
+    
   }
 
   double? _extractCoordinate(String code, String type) {
@@ -71,9 +54,10 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('QR Code Scanner')),
-      body: QRView(
-        key: qrKey,
-        onQRViewCreated: _onQRViewCreated,
+      body: AiBarcodeScanner(
+        onDetect: (po){
+           _onBarcodeScanned(po.barcodes.first.rawValue!);
+        },
       ),
     );
   }

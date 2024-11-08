@@ -28,8 +28,8 @@ class CourseController extends GetxController {
 
   List<String> batchName = [];
    List<String> board = [];
-    List<String> classList = [];
-    List<String> subject = [];
+   RxList<String> classList = <String>[].obs;
+   RxList<String> subject = <String>[].obs;
    var appConfig = AppConfig().obs;
 
     final remarks = TextEditingController();
@@ -152,34 +152,33 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
 
   void updateClassList(String board) {
     boardController.value = board;
-    classList = appConfig.value.data?.studentCategory
-        ?.expand((category) => category.label?.labelData ?? [])
-        .where((labelData) => labelData.board == board)
-        .expand((labelData) => labelData.classes ?? [])
-        .map((classItem) => classItem.className ?? '')
-        .where((className) => className.isNotEmpty)
-        .toSet() // Removes duplicates
-        .cast<String>() // Ensures all items are strings
-        .toList() ?? [];
-        update();
-        print(classList);
+    classList.value = appConfig.value.data?.studentCategory
+            ?.expand((category) => category.label?.labelData ?? [])
+            .where((labelData) => labelData.board == board)
+            .expand((labelData) => labelData.classes ?? [])
+            .map((classItem) => classItem.className ?? '')
+            .where((className) => className.isNotEmpty)
+            .toSet() // Removes duplicates
+            .cast<String>() // Ensures all items are strings
+            .toList() ?? [];
+    print(classList);
   }
 
   void updateSubjectList(String className) {
     classController.value = className;
-    subject = appConfig.value.data?.studentCategory
-        ?.expand((category) => category.label?.labelData ?? [])
-        .expand((labelData) => labelData.classes ?? [])
-        .where((classItem) => classItem.className == className)
-        .expand((classItem) => classItem.subjects ?? [])
-        .map((subject) => subject.name ?? '')
-        .where((subjectName) => subjectName.isNotEmpty)
-        .toSet() // Removes duplicates
-        .cast<String>() // Ensures all items are strings
-        .toList() ?? [];
-         update();
-         print(subject);
+    subject.value = appConfig.value.data?.studentCategory
+            ?.expand((category) => category.label?.labelData ?? [])
+            .expand((labelData) => labelData.classes ?? [])
+            .where((classItem) => classItem.className == className)
+            .expand((classItem) => classItem.subjects ?? [])
+            .map((subject) => subject.name ?? '')
+            .where((subjectName) => subjectName.isNotEmpty)
+            .toSet()
+            .cast<String>()
+            .toList() ?? [];
+    print(subject);
   }
+  
    bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (batchNameController.value.isEmpty) {

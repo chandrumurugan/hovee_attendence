@@ -8,11 +8,13 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/punch_controller.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/view/qrscanner_screen.dart';
 import 'package:hovee_attendence/widget/addres_indicator.dart';
 import 'package:hovee_attendence/widget/button_splash.dart';
 import 'package:hovee_attendence/widget/custom_texts.dart';
 import 'package:hovee_attendence/widget/space.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 class PunchView extends StatelessWidget {
   PunchView(
@@ -46,49 +48,53 @@ class PunchView extends StatelessWidget {
               Expanded(
                 child: SizedBox(
                   child: Obx(
-                    () => _controller.currentLocation.value == null
-                        ? const Center(child: CircularProgressIndicator())
-                        : Stack(
-                            children: [
-                              GoogleMap(
-                                onMapCreated: (controller) {
-                                  _controller.setMapController(controller);
-                                },
-                                initialCameraPosition: CameraPosition(
-                                  target: _controller.currentLocation.value!,
-                                  zoom: 14.0,
-                                ),
-                                markers: _controller.markers.value,
-                                myLocationEnabled: false,
-                                myLocationButtonEnabled: true,
-                                circles: {
-                                  Circle(
-                                    circleId: const CircleId("circle_1"),
-                                    center: LatLng(
-                                        _controller.targetLat!,
-                                        _controller
-                                            .targetLong!), // Specific location
-                                    radius: _controller
-                                        .punchable_distance_in_meters,
-                                    fillColor: Colors.blue.withOpacity(0.5),
-                                    strokeColor: Colors.blue,
-                                    strokeWidth: 2,
-                                  ),
-                                },
-                              ),
-                              _controller.currentAddress.value
-                                          .toString()
-                                          .trim() ==
-                                      ""
-                                  ? SizedBox()
-                                  : AddressIndicator(
-                                      address:
-                                          _controller.currentAddress.value ??
-                                              "",
-                                    ),
-                            ],
-                          ),
+  () => _controller.currentLocation.value == null
+      ? const Center(child: CircularProgressIndicator())
+      : Stack(
+          children: [
+            GoogleMap(
+              onMapCreated: (controller) {
+                _controller.setMapController(controller);
+                Future.delayed(const Duration(milliseconds: 100), () async {
+                  try {
+                    await _controller.mapController?.animateCamera(
+                      CameraUpdate.newLatLng(_controller.currentLocation.value!),
+                    );
+                  } catch (e) {
+                    print('Error animating camera: $e');
+                    Logger().i('Error animating camera: $e');
+                  }
+                });
+              },
+              initialCameraPosition: CameraPosition(
+                target: _controller.currentLocation.value!,
+                zoom: 14.0,
+              ),
+              markers: _controller.markers.value,
+              myLocationEnabled: false,
+              myLocationButtonEnabled: true,
+              circles: {
+                Circle(
+                  circleId: const CircleId("circle_1"),
+                  center: LatLng(
+                    _controller.targetLat!,
+                    _controller.targetLong!,
                   ),
+                  radius: _controller.punchable_distance_in_meters,
+                  fillColor: Colors.blue.withOpacity(0.5),
+                  strokeColor: Colors.blue,
+                  strokeWidth: 2,
+                ),
+              },
+            ),
+            _controller.currentAddress.value.toString().trim() == ""
+                ? SizedBox()
+                : AddressIndicator(
+                    address: _controller.currentAddress.value ?? "",
+                  ),
+          ],
+        ),
+),
                 ),
               ),
               Container(
@@ -158,19 +164,24 @@ class PunchView extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 120),
         child: ButtonSplashEffect(
           borderRadius: 50,
-          onTapped: () {
-            Future.delayed(const Duration(milliseconds: 200), () {
-              _controller.checkDistanceFromSpecificLocation(
-                  context, courseId, batchId, batchStartTime, batchEndTime);
-              // Call addPunchIn or addPunchOut based on the punch state
-              // if (_controller.punchedIn.value) {
-              //   // User is punched in, call addPunchOut
-              //   _controller.addPunchOut(context, courseId, batchId);
-              // } else {
-              //   // User is not punched in, call addPunchIn
-              //  _controller.addPunchIn(context, courseId, batchId);
-              // }
-            });
+          onTapped: ()async {
+             if (_controller.hasScanned.value) {
+          // Punch in/out action
+          Future.delayed(const Duration(milliseconds: 200), () {
+            _controller.checkDistanceFromSpecificLocation(
+              context, courseId, batchId, batchStartTime, batchEndTime);
+          });
+        } else {
+        
+        var isBack = await Get.to(() =>QRScannerScreen()) as bool;
+         Logger().i(isBack);
+         print("hi rahul $isBack");
+         _controller.getCurrentLocation();
+          //  if(_controller.hasScanned.value){
+          
+          // }
+        
+        }
           },
           widget: Container(
             height: 90,
@@ -189,16 +200,20 @@ class PunchView extends StatelessWidget {
                 ),
                 child: Obx(
                   () => Center(
-                    child:
-                        // _controller.buttonLoader.value ? CircularProgressIndicator():
-
-                        regularText(
+                    child: _controller.hasScanned.value
+                        
+                          ? regularText(
                       text: _controller.punchedIn.value
                           ? 'Punch Out'
                           : 'Punch In',
                       fontSize: 12,
                       color: Colors.white,
-                    ),
+                    )
+                  : Icon(
+                      Icons.qr_code,
+                      size: 40,
+                      color: Colors.white,
+                    ), // 
                   ),
                 ),
               ),
@@ -255,3 +270,20 @@ class PunchView extends StatelessWidget {
     );
   }
 }
+
+
+class MarkerWidget extends StatelessWidget {
+  final String imagePath;
+  
+  const MarkerWidget({super.key, required this.imagePath});
+  
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(
+      imagePath,
+      height: 150,
+      width: 150,
+    );
+  }
+}
+
