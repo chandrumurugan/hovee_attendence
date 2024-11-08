@@ -20,7 +20,7 @@ class StudentAttendanceList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        List<AttendanceData> attendanceData = [
+    List<AttendanceData> attendanceData = [
       AttendanceData(
         category: 'Present',
         percentage: 80,
@@ -60,8 +60,8 @@ class StudentAttendanceList extends StatelessWidget {
                       shadowColor: Colors.grey.shade100,
                       surfaceTintColor: Colors.white,
                       child: Container(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 10),
                         width: MediaQuery.sizeOf(context).width * 0.7,
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -109,14 +109,14 @@ class StudentAttendanceList extends StatelessWidget {
                                 onChanged: (newBatch) {
                                   if (newBatch != null) {
                                     controller.selectBatch(newBatch);
-                                     controller.isBatchSelected.value = true;
+                                    controller.isBatchSelected.value = true;
                                     // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
                                     // Replace with your actual method to fetch batch-related data
                                   }
                                 },
                               );
                             }),
-                  
+
                             // const SizedBox(
                             //   height: 20,
                             // ),
@@ -126,14 +126,23 @@ class StudentAttendanceList extends StatelessWidget {
                       ),
                     ),
                   ),
-              
-              // Obx((){})
-                  Container(
-                    color: AppConstants.secondaryColor,height: 70,width: 80,
-                    child: Center(child: IconButton(onPressed: (){
-                         controller.isBatchSelected.value = !controller.isBatchSelected.value;
 
-                    }, icon: const Icon(Icons.calendar_month_outlined,size: 30,color: Colors.white,))))
+                  // Obx((){})
+                  Container(
+                      color: AppConstants.secondaryColor,
+                      height: 70,
+                      width: 80,
+                      child: Center(
+                          child: IconButton(
+                              onPressed: () {
+                                controller.isBatchSelected.value =
+                                    !controller.isBatchSelected.value;
+                              },
+                              icon: const Icon(
+                                Icons.calendar_month_outlined,
+                                size: 30,
+                                color: Colors.white,
+                              ))))
                 ],
               ),
             ),
@@ -141,8 +150,9 @@ class StudentAttendanceList extends StatelessWidget {
             // const SizedBox(height: 10,),
             Obx(() {
               if (!controller.isBatchSelected.value) {
-              return const SizedBox.shrink(); // Hide calendar if no batch is selected
-            }
+                return const SizedBox
+                    .shrink(); // Hide calendar if no batch is selected
+              }
               return Container(
                 height: MediaQuery.of(context).size.height * 0.45,
                 margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
@@ -195,69 +205,110 @@ class StudentAttendanceList extends StatelessWidget {
                 elevation: 10,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12)),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   height: 150,
                   width: MediaQuery.of(context).size.width,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      SfCircularChart(
-                        // title: ChartTitle(text: 'Attendance Tracker'),
-                        legend: const Legend(
-                          isVisible: true,
-                          iconHeight: 20,
-                          iconWidth: 20,
-                          overflowMode: LegendItemOverflowMode.scroll,
-                        ),
-                        tooltipBehavior: TooltipBehavior(enable: false),
-                        series: <RadialBarSeries<AttendanceData, String>>[
-                          RadialBarSeries<AttendanceData, String>(
-                            animationDuration: 0,
-                            maximumValue: 100,
-                            radius: '100%',
-                            gap: '10%',
-                            innerRadius: '30%',
-                            dataSource:  attendanceData,
-                            // dataSource: <AttendanceData>[
-                            //   AttendanceData(
-                            //     category: 'Present',
-                            //     percentage: 80,
-                            //     pointColor:
-                            //         const Color.fromRGBO(0, 201, 230, 1.0),
-                            //   ),
-                            //   AttendanceData(
-                            //     category: 'Absent',
-                            //     percentage: 15,
-                            //     pointColor:
-                            //         const Color.fromRGBO(63, 224, 0, 1.0),
-                            //   ),
-                            //   AttendanceData(
-                            //     category: 'Late',
-                            //     percentage: 5,
-                            //     pointColor:
-                            //         const Color.fromRGBO(226, 1, 26, 1.0),
-                            //   ),
-                            // ],
-                            cornerStyle: CornerStyle.bothCurve,
-                            xValueMapper: (AttendanceData data, _) =>
-                                data.category,
-                            yValueMapper: (AttendanceData data, _) =>
-                                data.percentage,
-                            pointColorMapper: (AttendanceData data, _) =>
-                                data.pointColor,
-                            dataLabelMapper: (AttendanceData data, _) =>
-                                '${data.percentage}%',
-                            dataLabelSettings:
-                                const DataLabelSettings(isVisible: false,labelIntersectAction: LabelIntersectAction.hide,alignment: ChartAlignment.near),
+                      // Wrap only the Circular Chart in Obx to react to changes in attendanceData
+                      Obx(() {
+                        if (controller.isLoadingList.value) {
+                          return SizedBox.shrink();
+                        }
+                        return SizedBox(
+                          width: 130,
+                          child: SfCircularChart(
+                            centerX: "50%",
+                            legend: const Legend(
+                              isVisible: false,
+                              iconHeight: 20,
+                              iconWidth: 20,
+                              overflowMode: LegendItemOverflowMode.scroll,
+                            ),
+                            tooltipBehavior: TooltipBehavior(enable: false),
+                            series: <RadialBarSeries<AttendanceData, String>>[
+                              RadialBarSeries<AttendanceData, String>(
+                                animationDuration: 0,
+                                maximumValue: 100,
+                                radius: '100%',
+                                gap: '10%',
+                                innerRadius: '30%',
+                                dataSource: controller.attendanceData.isNotEmpty
+                                    ? controller.attendanceData
+                                    : controller.defaultData,
+                                cornerStyle: CornerStyle.bothCurve,
+                                xValueMapper: (AttendanceData data, _) =>
+                                    data.category,
+                                yValueMapper: (AttendanceData data, _) =>
+                                    data.percentage,
+                                pointColorMapper: (AttendanceData data, _) =>
+                                    data.pointColor,
+                                dataLabelMapper: (AttendanceData data, _) =>
+                                    '${data.percentage}%',
+                                dataLabelSettings: const DataLabelSettings(
+                                  isVisible: false,
+                                  labelIntersectAction:
+                                      LabelIntersectAction.hide,
+                                  alignment: ChartAlignment.near,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      )
+                        );
+                      }),
+
+                      // Wrap the bar chart section in a separate Obx to react to changes in controller.data
+                      Expanded(
+                        child: Obx(() {
+                          if (controller.isLoadingList.value) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                barChart(
+                                  color: Color(0xff014EA9),
+                                  count:
+                                      '${controller.data?.statusCounts?.totalStudents ?? 0}',
+                                  title: 'All',
+                                ),
+                                barChart(
+                                  color: Color(0xffF07721),
+                                  count:
+                                      '${controller.data?.statusCounts?.present ?? 0}',
+                                  title: 'Present',
+                                ),
+                                barChart(
+                                  color: Color(0xffAD0F60),
+                                  count:
+                                      '${controller.data?.statusCounts?.absent ?? 0}',
+                                  title: 'Absent',
+                                ),
+                                barChart(
+                                  color: Color(0xff2E5BB5),
+                                  count:
+                                      '${controller.data?.statusCounts?.partialAttendance ?? 0}',
+                                  title: 'P.Attend',
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
+      
+
             const SizedBox(
               height: 10,
             ),
@@ -457,16 +508,29 @@ class StudentAttendanceList extends StatelessWidget {
       ),
     );
   }
-}
 
-class _ChartShaderData {
-  _ChartShaderData(this.x, this.y, this.text);
-
-  final String x;
-
-  final num y;
-
-  final String text;
+  Widget barChart(
+      {required String count, required String title, required Color color}) {
+    return Column(
+      children: [
+        Text(
+          count,
+          style: GoogleFonts.nunito(
+              color: color, fontWeight: FontWeight.w400, fontSize: 20),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          title,
+          style: GoogleFonts.nunito(
+              color: Color(0xff828282),
+              fontWeight: FontWeight.w400,
+              fontSize: 12),
+        )
+      ],
+    );
+  }
 }
 
 class AttendanceData {
@@ -479,62 +543,4 @@ class AttendanceData {
   final String category;
   final double percentage;
   final Color pointColor;
-}
-
-
-class AttendanceRowChart extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    List<AttendanceData> attendanceData = [
-      AttendanceData(
-        category: 'Present',
-        percentage: 80,
-        pointColor: Color.fromRGBO(0, 201, 230, 1.0),
-      ),
-      AttendanceData(
-        category: 'Absent',
-        percentage: 15,
-        pointColor: Color.fromRGBO(63, 224, 0, 1.0),
-      ),
-      AttendanceData(
-        category: 'Late',
-        percentage: 5,
-        pointColor: Color.fromRGBO(226, 1, 26, 1.0),
-      ),
-    ];
-
-    return Column(
-      children: attendanceData.map((data) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              data.category,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            Expanded(
-              child: SfCircularChart(
-                series: <RadialBarSeries<AttendanceData, String>>[
-                  RadialBarSeries<AttendanceData, String>(
-                    dataSource: [data],
-                    maximumValue: 100,
-                    radius: '60%',
-                    innerRadius: '70%',
-                    cornerStyle: CornerStyle.bothCurve,
-                    xValueMapper: (AttendanceData data, _) => data.category,
-                    yValueMapper: (AttendanceData data, _) => data.percentage,
-                    pointColorMapper: (AttendanceData data, _) =>
-                        data.pointColor,
-                    dataLabelMapper: (AttendanceData data, _) =>
-                        '${data.percentage}%',
-                    dataLabelSettings: DataLabelSettings(isVisible: true),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      }).toList(),
-    );
-  }
 }

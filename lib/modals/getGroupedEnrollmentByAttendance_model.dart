@@ -22,15 +22,16 @@ class getGroupedEnrollmentByAttendanceModel {
 class Data {
   String? batchId;
   String? date;
-  int? presentStudents;
+   StatusCounts? statusCounts;
   List<AttendanceDetails>? attendanceDetails;
 
-  Data({this.batchId, this.date, this.presentStudents, this.attendanceDetails});
+  Data({this.batchId, this.date, this.statusCounts, this.attendanceDetails});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json,) {
     batchId = json['batchId'];
     date = json['date'];
-    presentStudents = json['presentStudents'];
+    statusCounts = json["statusCounts"];
+   
     if (json['attendanceDetails'] != null) {
       attendanceDetails = <AttendanceDetails>[];
       json['attendanceDetails'].forEach((v) {
@@ -43,7 +44,7 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['batchId'] = this.batchId;
     data['date'] = this.date;
-    data['presentStudents'] = this.presentStudents;
+    // data['presentStudents'] = this.presentStudents;
     if (this.attendanceDetails != null) {
       data['attendanceDetails'] =
           this.attendanceDetails!.map((v) => v.toJson()).toList();
@@ -71,7 +72,7 @@ class AttendanceDetails {
     punchInTime = json['punchInTime'];
     punchOutTime = json['punchOutTime'];
     attendanceStatus = json['attendanceStatus'];
-    studentName=json['studentName'];
+    studentName = json['studentName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -82,5 +83,31 @@ class AttendanceDetails {
     data['attendanceStatus'] = this.attendanceStatus;
     data['studentName'] = this.studentName;
     return data;
+  }
+}
+
+class StatusCounts {
+  StatusCounts({
+    required this.present,
+    required this.absent,
+    required this.leave,
+    required this.partialAttendance,
+    required this.totalStudents,
+  });
+
+  final int present;
+  final int absent;
+  final int leave;
+  final int partialAttendance;
+  final int totalStudents;
+
+  factory StatusCounts.fromJson(Map<String, dynamic> json) {
+    return StatusCounts(
+      present: json["Present"] ?? 0,
+      absent: json["Absent"] ?? 0,
+      leave: json["Leave"] ?? 0,
+      partialAttendance: json["Partial Attendance"] ?? 0,
+      totalStudents: json["totalStudents"] ?? 0,
+    );
   }
 }
