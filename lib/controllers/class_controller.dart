@@ -10,6 +10,7 @@ import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_class_screen.dart';
+import 'package:hovee_attendence/view/class_screen.dart';
 
 class ClassController extends GetxController  with GetTickerProviderStateMixin {
   var courseCodeController = ''.obs;
@@ -157,13 +158,11 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
             await WebService.updateClass(batchData);
 
         if (response != null && response.success == true) {
-          courseCodeController.close();
-          batchNameController1.clear();
-
           SnackBarUtils.showSuccessSnackBar(
               context, 'Class update successfully');
-          Get.back();
-          onInit();
+      String currentType = tabController.index == 0 ? "Draft" : "Public";
+        fetchClassesList(currentType);
+              //Get.off(()=>TutorClassList());
         } else {
           SnackBarUtils.showErrorSnackBar(
               context, response?.message ?? 'Failed to update Class');

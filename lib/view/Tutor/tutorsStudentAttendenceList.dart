@@ -128,21 +128,27 @@ class StudentAttendanceList extends StatelessWidget {
                   ),
 
                   // Obx((){})
-                  Container(
-                      color: AppConstants.secondaryColor,
-                      height: 70,
-                      width: 80,
-                      child: Center(
-                          child: IconButton(
-                              onPressed: () {
-                                controller.isBatchSelected.value =
-                                    !controller.isBatchSelected.value;
-                              },
-                              icon: const Icon(
-                                Icons.calendar_month_outlined,
-                                size: 30,
-                                color: Colors.white,
-                              ))))
+                  ClipRRect(
+  borderRadius: BorderRadius.circular(10), // Set the desired radius
+  child: Container(
+    color: AppConstants.secondaryColor,
+    height: 70,
+    width: 80,
+    child: Center(
+      child: IconButton(
+        onPressed: () {
+          controller.isBatchSelected.value = !controller.isBatchSelected.value;
+        },
+        icon: const Icon(
+          Icons.calendar_month_outlined,
+          size: 30,
+          color: Colors.white,
+        ),
+      ),
+    ),
+  ),
+)
+
                 ],
               ),
             ),

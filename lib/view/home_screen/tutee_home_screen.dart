@@ -5,7 +5,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
+import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
 import 'package:hovee_attendence/view/Tutee/tutee_courseList.dart';
+import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
@@ -182,6 +184,9 @@ class TuteeHome extends StatelessWidget {
                           }
                           if(index == 1){
                             Get.to(()=>const GetTopicsCourses());
+                          }
+                           if(index == 0){
+                            Get.to(()=> TuteeAttendanceList());
                           }
                          
                         },

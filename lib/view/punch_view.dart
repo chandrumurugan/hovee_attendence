@@ -99,7 +99,7 @@ class PunchView extends StatelessWidget {
               ),
               Container(
                 height: 180,
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 6),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -109,6 +109,7 @@ class PunchView extends StatelessWidget {
                       DateFormat('ha, dd MMM yyyy').format(
                         DateTime.now(),
                       ),
+                    
                     ),
                     space(h: 12),
                     // bottomInfo(
@@ -210,7 +211,7 @@ class PunchView extends StatelessWidget {
                       color: Colors.white,
                     )
                   : Icon(
-                      Icons.qr_code,
+                      Icons.qr_code_scanner,
                       size: 40,
                       color: Colors.white,
                     ), // 
@@ -225,7 +226,7 @@ class PunchView extends StatelessWidget {
     );
   }
 
-  bottomInfo(String title, String value) {
+  bottomInfo(String title, String value,) {
     return Row(
       children: [
         Container(
@@ -238,12 +239,10 @@ class PunchView extends StatelessWidget {
           child: Container(
             // color: Colors.amber,
             //     height: 40,width: 40,
-            margin: EdgeInsets.symmetric(vertical: 12,horizontal: 12),
-            child: SvgPicture.asset(
-                    
-                        'assets/appConstantImg/app_icon.svg',
-                      // fit: BoxFit.contain,
-                      ),
+            margin: EdgeInsets.symmetric(vertical: 1,horizontal: 1),
+            child:  Image.asset(
+                'assets/tuteeHomeImg/image 193.png',
+              ),
           ),
         ),
         Expanded(

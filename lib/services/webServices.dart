@@ -10,6 +10,7 @@ import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
+import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/modals/getQrcode_model.dart';
@@ -760,6 +761,35 @@ class WebService {
       return getQrcodeModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load attendanceCourse list');
+    }
+  }
+
+   static Future<getGroupedEnrollmentByAttendanceTutee?>
+      fetchTutteAttendanceList(
+          String batchId, String selectedDate) async {
+    final url =
+        Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByAttendanceTutee');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
+    var data = {"date": selectedDate, "batchId": batchId};
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(data),
+    );
+
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body);
+      return getGroupedEnrollmentByAttendanceTutee.fromJson(result);
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+      return null;
     }
   }
 }

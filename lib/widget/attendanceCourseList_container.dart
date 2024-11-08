@@ -78,7 +78,7 @@ class AttendancecourselistContainer extends StatelessWidget {
                       radius: 25,
                       backgroundColor: AppConstants.primaryColor,
                       child: Text(
-                        'Punch',
+                        'Start',
                         style: TextStyle(fontSize: 11, color: Colors.white),
                       ),
                     ),

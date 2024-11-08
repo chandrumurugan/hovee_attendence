@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
@@ -21,6 +22,7 @@ class StudentAttendanceController extends GetxController {
     var selectedDay = DateTime.now().obs;
 
       Data? data;
+      TuteeData? dataTutee;
 
       var isBatchSelected = false.obs;
        var attendanceData = <AttendanceData>[].obs;
@@ -78,6 +80,7 @@ class StudentAttendanceController extends GetxController {
     // Parse dates
   selectedBatchStartDate.value = DateFormat('dd/MM/yyyy').parse(batch.startDate!);
     selectedBatchEndDate.value = DateFormat('dd/MM/yyyy').parse(batch.endDate!);
+    fetchTutteAttendanceList(selectedBatchIN.value!.batchId!,'');
   }
 
     void setFocusedDay(DateTime date) {
@@ -98,6 +101,30 @@ class StudentAttendanceController extends GetxController {
                     AttendanceData(category: "Partial\nAttendance", percentage: data!.statusCounts!.partialAttendance!.toDouble(), pointColor: Color(0xff2E5BB5)),
 
             ];
+        }
+   
+
+    } catch (e) {
+      print(e); 
+    } finally{
+       isLoadingList(false);
+    }
+
+  }
+
+  void fetchTutteAttendanceList(String batchId,String selectedDate)async{
+    try {
+      isLoadingList(true);
+         var groupedEnrollmentByBatchResponse = await WebService.fetchTutteAttendanceList(batchId,selectedDate);
+        if (groupedEnrollmentByBatchResponse?.data != null){
+            dataTutee = groupedEnrollmentByBatchResponse!.data;
+            // attendanceData.value = [
+            //   AttendanceData(category: "All", percentage: data!.statusCounts!.totalStudents!.toDouble(), pointColor: const Color(0xff014EA9)),
+            //     AttendanceData(category: "Present", percentage: data!.statusCounts!.present!.toDouble(), pointColor: const Color(0xffF07721)),
+            //       AttendanceData(category: "Absent", percentage: data!.statusCounts!.totalStudents!.toDouble(), pointColor: const Color(0xffAD0F60)),
+            //         AttendanceData(category: "Partial\nAttendance", percentage: data!.statusCounts!.partialAttendance!.toDouble(), pointColor: Color(0xff2E5BB5)),
+
+            // ];
         }
    
 

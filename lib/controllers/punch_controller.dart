@@ -13,6 +13,7 @@ import 'package:hovee_attendence/constants/common_function.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
+import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
 import 'package:hovee_attendence/view/punch_view.dart';
 import 'package:hovee_attendence/widget/widget_to_icon.dart';
 import 'package:intl/intl.dart';
@@ -306,6 +307,7 @@ class PunchController extends GetxController {
             showAnimatedDialog('You have successfully punched Out',
                 "assets/images/success_punching.png");
             SnackBarUtils.showSuccessSnackBar(context, response.message ?? '');
+             Get.off(()=> TuteeAttendanceList());
           } else {
             // Show error if the API call failed
             buttonLoader(false);
