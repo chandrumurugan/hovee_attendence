@@ -10,6 +10,7 @@ import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
+import 'package:hovee_attendence/modals/getEnquireList_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
@@ -22,6 +23,7 @@ import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
 import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
 import 'package:hovee_attendence/modals/submitEnquirModel.dart';
+import 'package:hovee_attendence/modals/updateEnquire_model.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'dart:convert';
@@ -792,4 +794,55 @@ class WebService {
       return null;
     }
   }
+
+  // static Future<getEnquiryListModel> fetchEnquireList( Map<String, dynamic> batchData) async {
+  //   final url = Uri.parse('${baseUrl}attendane/getEnquiryList');
+  //   final box = GetStorage(); // Get an instance of GetStorage
+  //   // Retrieve the token from storage
+  //   final token = box.read('Token') ?? '';
+  //   print(token);
+  //   final response = await http.post(
+  //     url, // Replace with the actual API URL
+  //     body: json.encode(batchData),
+  //     headers: {
+  //       'Authorization': 'Bearer $token', // Add the authorization token here
+  //       'Content-Type': 'application/json',
+  //     },
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     return getEnquiryListModel.fromJson(json.decode(response.body));
+  //   } else {
+  //     throw Exception('Failed to load Enquir list');
+  //   }
+  // }
+
+  // static Future<updateEnquiryStatusModel?> updateEnquire(
+  //     Map<String, dynamic> batchData) async {
+  //   final url = Uri.parse(
+  //       "${baseUrl}attendane/updateEnquiryStatus"); // Replace with the actual endpoint
+  //   final box = GetStorage(); // Get an instance of GetStorage
+  //   // Retrieve the token from storage
+  //   final token = box.read('Token') ?? '';
+  //   try {
+  //     final response = await http.post(
+  //       url,
+  //       body: json.encode(batchData),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': 'Bearer $token',
+  //       },
+  //     );
+  //     print(response.body);
+  //     if (response.statusCode == 200) {
+  //       return updateEnquiryStatusModel.fromJson(json.decode(response.body));
+  //     } else {
+  //       print('Failed to update Enquire: ${response.statusCode}');
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     print('Error updating Enquire: $e');
+  //     return null;
+  //   }
+  // }
 }

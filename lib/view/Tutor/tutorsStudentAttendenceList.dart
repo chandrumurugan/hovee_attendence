@@ -46,6 +46,7 @@ class StudentAttendanceList extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
+         crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -203,6 +204,17 @@ class StudentAttendanceList extends StatelessWidget {
             }),
             const SizedBox(
               height: 10,
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: Text(
+                'Attendance wheel',
+                style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -411,8 +423,8 @@ class StudentAttendanceList extends StatelessWidget {
                                               const EdgeInsets.only(right: 20),
                                           child: Image.asset(
                                             "assets/appbar/check.png",
-                                            height: 30,
-                                            width: 30,
+                                            height: 25,
+                                            width: 25,
                                           ),
                                         )
                                       : const Text("-"),
@@ -427,8 +439,8 @@ class StudentAttendanceList extends StatelessWidget {
                                               const EdgeInsets.only(right: 20),
                                           child: Image.asset(
                                             "assets/appbar/check.png",
-                                            height: 30,
-                                            width: 30,
+                                            height: 25,
+                                            width: 25,
                                           ),
                                         )
                                       : const Text("-"),

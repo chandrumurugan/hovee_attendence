@@ -184,7 +184,7 @@ class TuteeAttendanceList extends StatelessWidget {
                                 children: [
                                   Text(attendance.studentName ?? '',
                                       style: GoogleFonts.nunito(
-                                          fontSize: 16,
+                                          fontSize: 18,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.black)),
                                   attendance.punchInTime != null
@@ -193,8 +193,8 @@ class TuteeAttendanceList extends StatelessWidget {
                                               const EdgeInsets.only(right: 20),
                                           child: Image.asset(
                                             "assets/appbar/check.png",
-                                            height: 30,
-                                            width: 30,
+                                            height: 25,
+                                            width: 25,
                                           ),
                                         )
                                       : const Text("-"),
@@ -204,8 +204,8 @@ class TuteeAttendanceList extends StatelessWidget {
                                               const EdgeInsets.only(right: 20),
                                           child: Image.asset(
                                             "assets/appbar/check.png",
-                                            height: 30,
-                                            width: 30,
+                                            height: 25,
+                                            width: 25,
                                           ),
                                         )
                                       : const Text("-"),

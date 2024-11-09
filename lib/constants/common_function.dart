@@ -34,9 +34,10 @@ void showAnimatedDialog(String msg, String imageString) {
       ),
     ),
   );
-
+   
   // Hide the dialog after 2 seconds
   Future.delayed(const Duration(milliseconds: 1500), () {
-    Get.back();
+    //Get.back();
+    
   });
 }

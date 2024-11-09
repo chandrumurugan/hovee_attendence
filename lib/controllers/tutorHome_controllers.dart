@@ -75,6 +75,12 @@ class TutorHomeController extends GetxController{
       'desc': 'Lorem Ipsum is simply dummy ',
       'color': const Color.fromARGB(255, 240, 75, 226)
     },
+    {
+      'title': 'Enquiries',
+      'image': 'assets/tuteeHomeImg/online-learning (1) 1.png',
+      'desc': 'Lorem Ipsum is simply dummy ',
+      'color': const Color.fromRGBO(81, 2, 112, 1)
+    },
   ];
   var token = GetStorage();
 

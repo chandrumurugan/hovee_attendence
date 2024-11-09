@@ -1,3 +1,4 @@
+import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,7 @@ import 'package:hovee_attendence/widget/custom_texts.dart';
 import 'package:hovee_attendence/widget/space.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PunchView extends StatelessWidget {
   PunchView(
@@ -55,7 +57,7 @@ class PunchView extends StatelessWidget {
             GoogleMap(
               onMapCreated: (controller) {
                 _controller.setMapController(controller);
-                Future.delayed(const Duration(milliseconds: 100), () async {
+                Future.delayed(const Duration(milliseconds: 200), () async {
                   try {
                     await _controller.mapController?.animateCamera(
                       CameraUpdate.newLatLng(_controller.currentLocation.value!),
@@ -165,25 +167,29 @@ class PunchView extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 120),
         child: ButtonSplashEffect(
           borderRadius: 50,
-          onTapped: ()async {
-             if (_controller.hasScanned.value) {
-          // Punch in/out action
-          Future.delayed(const Duration(milliseconds: 200), () {
-            _controller.checkDistanceFromSpecificLocation(
-              context, courseId, batchId, batchStartTime, batchEndTime);
-          });
-        } else {
-        
-        var isBack = await Get.to(() =>QRScannerScreen()) as bool;
-         Logger().i(isBack);
-         print("hi rahul $isBack");
-         _controller.getCurrentLocation();
-          //  if(_controller.hasScanned.value){
-          
-          // }
-        
-        }
-          },
+         onTapped: () async {
+  if (_controller.hasScanned.value) {
+    // Punch in/out action
+    Future.delayed(const Duration(milliseconds: 200), () {
+      _controller.checkDistanceFromSpecificLocation(
+          context, courseId, batchId, batchStartTime, batchEndTime);
+    });
+  } else {
+    // Call the QR scanner function and await result
+    await showQRScannerScreen(context);
+
+    // Check if the scan was successful
+    if (_controller.hasScanned.value) {
+      Logger().i("Scan successful");
+      print("hi rahul: Scan successful");
+      _controller.getCurrentLocation();
+    } else {
+      Logger().i("Scan not completed");
+      print("hi rahul: Scan not completed");
+    }
+  }
+},
+
           widget: Container(
             height: 90,
             width: 90,
@@ -268,6 +274,54 @@ class PunchView extends StatelessWidget {
       ],
     );
   }
+
+  Future<void> showQRScannerScreen(BuildContext context) async {
+  await showDialog(
+    context: context,
+    builder: (context) {
+      return Scaffold(
+        appBar: AppBar(title: Text('QR Code Scanner')),
+        body: AiBarcodeScanner(
+          onDetect: (po) {
+            _onBarcodeScanned(po.barcodes.first.rawValue);
+          },
+        ),
+      );
+    },
+  );
+}
+
+void _onBarcodeScanned(String? scannedData) async {
+  if (scannedData == null) return;
+
+  // Extract latitude and longitude
+  final latitude = _extractCoordinate(scannedData, 'latitude');
+  final longitude = _extractCoordinate(scannedData, 'longitude');
+
+  // Store in SharedPreferences
+  if (latitude != null && longitude != null) {
+    await _saveCoordinatesToPreferences(latitude, longitude);
+  }
+
+  _controller.hasScanned.value = true;
+  Get.back(result: _controller.hasScanned.value);
+}
+
+double? _extractCoordinate(String code, String type) {
+  final regex = RegExp('$type=([0-9.]+)');
+  final match = regex.firstMatch(code);
+  if (match != null) {
+    return double.tryParse(match.group(1)!);
+  }
+  return null;
+}
+
+Future<void> _saveCoordinatesToPreferences(double latitude, double longitude) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setDouble('target_lat', latitude);
+  await prefs.setDouble('target_long', longitude);
+  print('Latitude and Longitude saved: $latitude, $longitude');
+}
 }
 
 
@@ -278,7 +332,7 @@ class MarkerWidget extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
+    return SvgPicture.asset(
       imagePath,
       height: 150,
       width: 150,

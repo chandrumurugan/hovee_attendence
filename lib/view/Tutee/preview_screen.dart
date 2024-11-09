@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/courseDetails_controller.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
@@ -14,7 +15,7 @@ class PreviewScreen extends StatelessWidget {
   final Data1? data;
    PreviewScreen({super.key, this.data});
 
-
+   
 final CourseDetailController controller = Get.put(CourseDetailController());
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,7 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                                 fontSize: 16),
                           ),
                           Text(
-                           controller.username!,
+                           controller.username!?? '',
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,

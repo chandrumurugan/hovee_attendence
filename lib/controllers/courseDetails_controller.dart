@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/addClassData_model.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/modals/submitEnquirModel.dart';
@@ -15,9 +16,11 @@ class CourseDetailController extends GetxController {
   var isLoading = true.obs;
   var classesList = [].obs;
   String? username, email, phoneNumber, organizationName;
-
+ final UserProfileController controller =
+      Get.put(UserProfileController());
   void getClassTuteeById(BuildContext context, String className, String subject,
       String TutorId) async {
+       controller. fetchUserProfiles();
     isLoading.value = true;
     final storage = GetStorage();
     username = storage.read('firstName');

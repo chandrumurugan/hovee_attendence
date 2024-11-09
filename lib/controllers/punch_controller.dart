@@ -96,7 +96,7 @@ class PunchController extends GetxController {
         // icon: await  icon,
         //fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,), "assets/appbar/placeholder (1).png",),
         icon: await const MarkerWidget(
-          imagePath: 'assets/appbar/placeholder (1).png',
+          imagePath: 'assets/appbar/Tutee Location Icon.svg',
         ).toBitmapDescriptor(
           logicalSize: const Size(150, 150),
           imageSize: const Size(400, 400),
@@ -108,7 +108,7 @@ class PunchController extends GetxController {
         position: targetLocation.value!,
         // icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,size: Size.square(10.0)), "assets/appbar/location-mark (1).png"),
         icon: await const MarkerWidget(
-                imagePath: 'assets/appbar/location-mark (1).png')
+                imagePath: 'assets/appbar/Tutor Location Icon.svg')
             .toBitmapDescriptor(
           logicalSize: const Size(150, 150),
           imageSize: const Size(400, 400),
@@ -294,7 +294,7 @@ class PunchController extends GetxController {
             punchedIn.value = false;
             buttonLoader(false);
             SnackBarUtils.showErrorSnackBar(
-                context, response?.message ?? 'Failed to punch in');
+                context, response!.message!);
           }
         } else {
           final getAttendancePunchInModel? response =
@@ -305,14 +305,16 @@ class PunchController extends GetxController {
             punchedIn.value = false;
             buttonLoader(false);
             showAnimatedDialog('You have successfully punched Out',
-                "assets/images/success_punching.png");
-            SnackBarUtils.showSuccessSnackBar(context, response.message ?? '');
-             Get.off(()=> TuteeAttendanceList());
+                "assets/images/success_punching.png",);
+                
+           // SnackBarUtils.showSuccessSnackBar(context, response.message ?? '');
+            
+             Get.to(()=> TuteeAttendanceList());
           } else {
             // Show error if the API call failed
             buttonLoader(false);
             SnackBarUtils.showErrorSnackBar(
-                context, response?.message ?? 'Failed to punch in');
+                context, response!.message!);
           }
         }
       } else {
@@ -368,7 +370,7 @@ class PunchController extends GetxController {
         onInit(); // Refresh data
       } else {
         SnackBarUtils.showErrorSnackBar(
-            context, response?.message ?? 'Failed to punch in');
+            context, response!.message!);
       }
     } catch (e) {
       SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
