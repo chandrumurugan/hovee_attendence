@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/utils/sidemenuHeader.dart';
+import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 

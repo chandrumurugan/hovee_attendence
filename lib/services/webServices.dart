@@ -795,54 +795,54 @@ class WebService {
     }
   }
 
-  // static Future<getEnquiryListModel> fetchEnquireList( Map<String, dynamic> batchData) async {
-  //   final url = Uri.parse('${baseUrl}attendane/getEnquiryList');
-  //   final box = GetStorage(); // Get an instance of GetStorage
-  //   // Retrieve the token from storage
-  //   final token = box.read('Token') ?? '';
-  //   print(token);
-  //   final response = await http.post(
-  //     url, // Replace with the actual API URL
-  //     body: json.encode(batchData),
-  //     headers: {
-  //       'Authorization': 'Bearer $token', // Add the authorization token here
-  //       'Content-Type': 'application/json',
-  //     },
-  //   );
+  static Future<getEnquiryListModel> fetchEnquireList( Map<String, dynamic> batchData) async {
+    final url = Uri.parse('${baseUrl}attendane/getEnquiryList');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(batchData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
 
-  //   if (response.statusCode == 200) {
-  //     return getEnquiryListModel.fromJson(json.decode(response.body));
-  //   } else {
-  //     throw Exception('Failed to load Enquir list');
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      return getEnquiryListModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Enquir list');
+    }
+  }
 
-  // static Future<updateEnquiryStatusModel?> updateEnquire(
-  //     Map<String, dynamic> batchData) async {
-  //   final url = Uri.parse(
-  //       "${baseUrl}attendane/updateEnquiryStatus"); // Replace with the actual endpoint
-  //   final box = GetStorage(); // Get an instance of GetStorage
-  //   // Retrieve the token from storage
-  //   final token = box.read('Token') ?? '';
-  //   try {
-  //     final response = await http.post(
-  //       url,
-  //       body: json.encode(batchData),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Bearer $token',
-  //       },
-  //     );
-  //     print(response.body);
-  //     if (response.statusCode == 200) {
-  //       return updateEnquiryStatusModel.fromJson(json.decode(response.body));
-  //     } else {
-  //       print('Failed to update Enquire: ${response.statusCode}');
-  //       return null;
-  //     }
-  //   } catch (e) {
-  //     print('Error updating Enquire: $e');
-  //     return null;
-  //   }
-  // }
+  static Future<updateEnquiryStatusModel?> updateEnquire(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}attendane/updateEnquiryStatus"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return updateEnquiryStatusModel.fromJson(json.decode(response.body));
+      } else {
+        print('Failed to update Enquire: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error updating Enquire: $e');
+      return null;
+    }
+  }
 }

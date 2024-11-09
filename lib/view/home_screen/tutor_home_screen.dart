@@ -9,6 +9,7 @@ import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
+import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
 import 'package:hovee_attendence/view/add_class_screen.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
@@ -184,6 +185,11 @@ class TutorHome extends StatelessWidget {
 
                             }  else if (item['title'] == 'Classes') {
                             Get.to(() => TutorClassList()); // Navigate to the course screen
+
+                                
+                          }  
+                          else if (item['title'] == 'Enquiries') {
+                            Get.to(() => Tutorenquirlist(type: 'Tutor',)); // Navigate to the course screen
 
                                 
                           }  

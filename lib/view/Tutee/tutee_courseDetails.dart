@@ -30,7 +30,7 @@ class CourseDetailScreen extends StatelessWidget {
             },
             btnName2: "Enquire Now",
             onTap2: () {
-              Get.to(PreviewScreen(
+              Get.off(PreviewScreen(
                 data: data,
               ));
             }),

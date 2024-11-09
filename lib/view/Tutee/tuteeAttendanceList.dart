@@ -6,12 +6,13 @@ import 'package:hovee_attendence/controllers/tutorsStudentAttendanceList.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
-
-
+import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class TuteeAttendanceList extends StatelessWidget {
-   TuteeAttendanceList({super.key});
- final StudentAttendanceController controller =
+  TuteeAttendanceList({super.key});
+  final StudentAttendanceController controller =
       Get.put(StudentAttendanceController());
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,7 @@ class TuteeAttendanceList extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -40,7 +42,7 @@ class TuteeAttendanceList extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 10),
-                        width: MediaQuery.sizeOf(context).width * 0.9,
+                        width: MediaQuery.sizeOf(context).width * 0.7,
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
                           image: DecorationImage(
@@ -104,12 +106,203 @@ class TuteeAttendanceList extends StatelessWidget {
                       ),
                     ),
                   ),
+
+                  // Obx((){})
+                  ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(10), // Set the desired radius
+                    child: Container(
+                      color: AppConstants.secondaryColor,
+                      height: 70,
+                      width: 80,
+                      child: Center(
+                        child: IconButton(
+                          onPressed: () {
+                            controller.isBatchSelected.value =
+                                !controller.isBatchSelected.value;
+                          },
+                          icon: const Icon(
+                            Icons.calendar_month_outlined,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
+            Obx(() {
+              if (!controller.isBatchSelected.value) {
+                return const SizedBox
+                    .shrink(); // Hide calendar if no batch is selected
+              }
+              return Container(
+                height: MediaQuery.of(context).size.height * 0.45,
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                // padding: EdgeInsets.symmetric(vertical: 30),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.black)),
+                child: TableCalendar(
+                  firstDay: DateTime(2024, 1, 1),
+                  lastDay: DateTime(2024, 12, 31),
+                  focusedDay: controller.selectedBatchStartDate.value!,
+                  rangeStartDay: controller.selectedBatchStartDate.value,
+                  rangeEndDay: controller.selectedBatchEndDate.value,
+                  calendarFormat: CalendarFormat.month,
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  headerStyle: const HeaderStyle(
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                  ),
+                  calendarStyle: const CalendarStyle(
+                    rangeHighlightColor: AppConstants.primaryColor,
+                    withinRangeTextStyle: TextStyle(color: Colors.white),
+                    selectedDecoration: BoxDecoration(
+                      color:
+                          Colors.blue, // Customize the color for selected date
+                      shape: BoxShape.circle,
+                    ),
+                    // outsideRangeTextStyle: TextStyle(color: Colors.grey),
+                  ),
+                  selectedDayPredicate: (day) {
+                    return isSameDay(controller.selectedDay.value, day);
+                  },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    controller.onDateSelected(selectedDay);
+                    controller.setFocusedDay(focusedDay);
+                  },
+                  onPageChanged: (focusedDay) {
+                    controller.setFocusedDay(focusedDay);
+                  },
+                ),
+              );
+            }),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: Text(
+                'Attendance wheel',
+                style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Card(
+                color: Colors.white,
+                elevation: 10,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  height: 150,
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      // Wrap only the Circular Chart in Obx to react to changes in attendanceData
+                      Obx(() {
+                        if (controller.isLoadingList.value) {
+                          return SizedBox.shrink();
+                        }
+                        return SizedBox(
+                          width: 130,
+                          child: SfCircularChart(
+                            centerX: "50%",
+                            legend: const Legend(
+                              isVisible: false,
+                              iconHeight: 20,
+                              iconWidth: 20,
+                              overflowMode: LegendItemOverflowMode.scroll,
+                            ),
+                            tooltipBehavior: TooltipBehavior(enable: false),
+                            series: <RadialBarSeries<AttendanceData, String>>[
+                              RadialBarSeries<AttendanceData, String>(
+                                animationDuration: 0,
+                                maximumValue: 100,
+                                radius: '100%',
+                                gap: '10%',
+                                innerRadius: '30%',
+                                dataSource: controller.attendanceData.isNotEmpty
+                                    ? controller.attendanceData
+                                    : controller.defaultData,
+                                cornerStyle: CornerStyle.bothCurve,
+                                xValueMapper: (AttendanceData data, _) =>
+                                    data.category,
+                                yValueMapper: (AttendanceData data, _) =>
+                                    data.percentage,
+                                pointColorMapper: (AttendanceData data, _) =>
+                                    data.pointColor,
+                                dataLabelMapper: (AttendanceData data, _) =>
+                                    '${data.percentage}%',
+                                dataLabelSettings: const DataLabelSettings(
+                                  isVisible: false,
+                                  labelIntersectAction:
+                                      LabelIntersectAction.hide,
+                                  alignment: ChartAlignment.near,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
 
-          
-
+                      // Wrap the bar chart section in a separate Obx to react to changes in controller.data
+                      Expanded(
+                        child: Obx(() {
+                          if (controller.isLoadingList.value) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                barChart(
+                                  color: Color(0xff014EA9),
+                                  count:
+                                      '${controller.data?.statusCounts?.totalStudents ?? 0}',
+                                  title: 'All',
+                                ),
+                                barChart(
+                                  color: Color(0xffF07721),
+                                  count:
+                                      '${controller.data?.statusCounts?.present ?? 0}',
+                                  title: 'Present',
+                                ),
+                                barChart(
+                                  color: Color(0xffAD0F60),
+                                  count:
+                                      '${controller.data?.statusCounts?.absent ?? 0}',
+                                  title: 'Absent',
+                                ),
+                                barChart(
+                                  color: Color(0xff2E5BB5),
+                                  count:
+                                      '${controller.data?.statusCounts?.partialAttendance ?? 0}',
+                                  title: 'P.Attend',
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             const SizedBox(
               height: 10,
             ),
@@ -118,7 +311,6 @@ class TuteeAttendanceList extends StatelessWidget {
               searchOnTap: () {},
               filterOnTap: () {},
             ),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Container(
@@ -164,12 +356,14 @@ class TuteeAttendanceList extends StatelessWidget {
                       // Check if attendance data is available and load it dynamically
                       if (controller.isLoadingList.value) {
                         return const CircularProgressIndicator();
-                      } else if (controller.dataTutee?.attendanceDetails != null &&
+                      } else if (controller.dataTutee?.attendanceDetails !=
+                              null &&
                           controller.dataTutee!.attendanceDetails!.isNotEmpty) {
                         return ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: controller.dataTutee!.attendanceDetails!.length,
+                          itemCount:
+                              controller.dataTutee!.attendanceDetails!.length,
                           itemBuilder: (context, index) {
                             final attendance =
                                 controller.dataTutee!.attendanceDetails![index];
@@ -231,4 +425,28 @@ class TuteeAttendanceList extends StatelessWidget {
       ),
     );
   }
+
+   Widget barChart(
+      {required String count, required String title, required Color color}) {
+    return Column(
+      children: [
+        Text(
+          count,
+          style: GoogleFonts.nunito(
+              color: color, fontWeight: FontWeight.w400, fontSize: 20),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          title,
+          style: GoogleFonts.nunito(
+              color: Color(0xff828282),
+              fontWeight: FontWeight.w400,
+              fontSize: 12),
+        )
+      ],
+    );
+  }
 }
+

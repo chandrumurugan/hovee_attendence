@@ -73,8 +73,8 @@ class CourseDetailController extends GetxController {
 
       if (response != null && response.statusCode == 200) {
         SnackBarUtils.showSuccessSnackBar(
-            context, 'Enquiry added successfully');
-
+            context, response.message!);
+          Get.back();
         // Show the modal bottom sheet
         showModalBottomSheet(
           isDismissible: false,
@@ -105,7 +105,7 @@ class CourseDetailController extends GetxController {
         onInit();
       } else {
         SnackBarUtils.showErrorSnackBar(
-            context, response?.message ?? 'Failed to Enquire');
+            context, response?.message ?? 'Failed to retrieve enquir details');
       }
     } catch (e) {
       SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
