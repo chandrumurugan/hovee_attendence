@@ -15,6 +15,7 @@ class EnquirDetailController extends GetxController
   var isLoading = true.obs;
 
   var enquirList = <Data>[].obs;
+  
 
   @override
   void onInit() {

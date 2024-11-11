@@ -11,11 +11,13 @@ import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
+import 'package:hovee_attendence/view/notification_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 import 'package:hovee_attendence/widget/subjectContainer.dart';
 import 'package:logger/logger.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TuteeHome extends StatelessWidget {
   const TuteeHome({super.key});
@@ -75,10 +77,15 @@ class TuteeHome extends StatelessWidget {
                 // mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Image.asset(
-                    'assets/appbar/bell 5.png',
-                    color: Colors.black.withOpacity(0.4),
-                    height: 30,
+                  InkWell(
+                    onTap: (){
+                      Get.to(()=> NotificationScreen());
+                    },
+                    child: Image.asset(
+                      'assets/appbar/bell 5.png',
+                      color: Colors.black.withOpacity(0.4),
+                      height: 30,
+                    ),
                   ),
                   const SizedBox(
                     width: 10,
@@ -234,7 +241,31 @@ class TuteeHome extends StatelessWidget {
                 left: 20,
                 right: 20,
                 top: MediaQuery.sizeOf(context).height * 0.18,
-                child: const LineChartSample(userType: 'Tutee',)),
+                child: 
+                const LineChartSample(userType: 'Tutee',)),
+      //           FutureBuilder<List<ChartData>>(
+      //   future: futureChartData,
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return Center(child: CircularProgressIndicator());
+      //     } else if (snapshot.hasError) {
+      //       return Center(child: Text('Error: ${snapshot.error}'));
+      //     } else {
+      //       final List<ChartData> chartData = snapshot.data!;
+      //       return SfCartesianChart(
+      //         primaryXAxis: CategoryAxis(),
+      //         series: <ChartSeries>[
+      //           LineSeries<ChartData, String>(
+      //             dataSource: chartData,
+      //             xValueMapper: (ChartData data, _) => data.x,
+      //             yValueMapper: (ChartData data, _) => data.y,
+      //           )
+      //         ],
+      //       );
+      //     }
+      //   },
+      // ),
+            // )
           ],
         ),
       ),

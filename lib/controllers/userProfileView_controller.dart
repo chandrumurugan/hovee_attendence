@@ -156,6 +156,7 @@ class UserProfileController extends GetxController
         storage.write('email', fetchProfile.data!.email);
         storage.write('phoneNumber', fetchProfile.data!.phoneNumber);
         storage.write('organizationNames', organizationName);
+        storage.write('role', fetchProfile.data!.rolesId!.roleName!);
         isLoading(false);
       } else {
         // SnackBarUtils.showErrorSnackBar(context, message)

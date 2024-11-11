@@ -9,6 +9,7 @@ import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/view/Tutee/tutee_courseDetails.dart';
+import 'package:hovee_attendence/widget/cateory_widget.dart';
 import 'package:hovee_attendence/widget/course_list_container.dart';
 
 class GetTopicsCourses extends StatefulWidget {
@@ -98,63 +99,18 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                   fontSize: 16),
             ),
             const SizedBox(height: 10),
-            SizedBox(
-              height: 42,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  bool isSelected = selectedIndex == index;
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedIndex = index;
-                      });
+                      CategoryList(
+            categories: categories,
+            selectedIndex: selectedIndex,
+            onCategorySelected: (index) {
+              setState(() {
+                selectedIndex = index;
+              });
+              filteredfetchList(categories[index]);
+            },
+            primaryColor: AppConstants.primaryColor, // Example primary color
+          ),
 
-                      filteredfetchList(categories[index]);
-                      // controller.updateSelectedIndex(index);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? AppConstants.primaryColor
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black
-                                .withOpacity(0.1), // Shadow color with opacity
-                            offset: Offset(
-                                0, 4), // X and Y shadow offset (0px, 4px)
-                            blurRadius: 24, // Blur radius
-                            spreadRadius: 0, // Spread radius
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          categories[index],
-                          style: GoogleFonts.nunito(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: isSelected
-                                ? Colors.white
-                                : Colors.black.withOpacity(0.5),
-                          ),
-                          // style: TextStyle(
-                          //   color: isSelected ? Colors.white : Colors.black,
-                          //   fontWeight: FontWeight.bold,
-                          // ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
             SizedBox(height: 10,),
             Expanded(
                 child: isLoadingcategoryList

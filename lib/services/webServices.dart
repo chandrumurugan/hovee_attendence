@@ -14,9 +14,11 @@ import 'package:hovee_attendence/modals/getEnquireList_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
+import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getQrcode_model.dart';
 import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
+import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
@@ -843,6 +845,73 @@ class WebService {
     } catch (e) {
       print('Error updating Enquire: $e');
       return null;
+    }
+  }
+
+   static Future<List<String>> fetchNotificationsType() async {
+    final url = Uri.parse('${baseUrl}home/getNotificationsType');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+
+    final reponse = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+    if (reponse.statusCode == 200) {
+      Map<String, dynamic> result = json.decode(reponse.body);
+      return List<String>.from(result["data"]);
+    } else {
+      return [];
+      //  throw Exception('Failed to fetch course category list');
+    }
+  }
+
+  static Future<getNotificationsModel> getNotifications( Map<String, dynamic> notificationData) async {
+    final url = Uri.parse('${baseUrl}home/getNotifications');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(notificationData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return getNotificationsModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Notification list');
+    }
+  }
+
+
+  static Future<getMarkNotificationAsReadModel> FetchMarkedNotification( Map<String, dynamic> notificationData) async {
+    final url = Uri.parse('${baseUrl}home/markNotificationAsRead');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(notificationData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return getMarkNotificationAsReadModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Notification list');
     }
   }
 }
