@@ -24,17 +24,17 @@ class StudentAttendanceList extends StatelessWidget {
       AttendanceData(
         category: 'Present',
         percentage: 80,
-        pointColor: Color.fromRGBO(0, 201, 230, 1.0),
+        pointColor: const Color.fromRGBO(0, 201, 230, 1.0),
       ),
       AttendanceData(
         category: 'Absent',
         percentage: 15,
-        pointColor: Color.fromRGBO(63, 224, 0, 1.0),
+        pointColor: const Color.fromRGBO(63, 224, 0, 1.0),
       ),
       AttendanceData(
         category: 'Late',
         percentage: 5,
-        pointColor: Color.fromRGBO(226, 1, 26, 1.0),
+        pointColor: const Color.fromRGBO(226, 1, 26, 1.0),
       ),
     ];
     return Scaffold(
@@ -235,7 +235,7 @@ class StudentAttendanceList extends StatelessWidget {
                       // Wrap only the Circular Chart in Obx to react to changes in attendanceData
                       Obx(() {
                         if (controller.isLoadingList.value) {
-                          return SizedBox.shrink();
+                          return const SizedBox.shrink();
                         }
                         return SizedBox(
                           width: 130,
@@ -283,7 +283,7 @@ class StudentAttendanceList extends StatelessWidget {
                       Expanded(
                         child: Obx(() {
                           if (controller.isLoadingList.value) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
                           return Padding(
                             padding: const EdgeInsets.only(top: 40),
@@ -292,25 +292,25 @@ class StudentAttendanceList extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 barChart(
-                                  color: Color(0xff014EA9),
+                                  color: const Color(0xff014EA9),
                                   count:
                                       '${controller.data?.statusCounts?.totalStudents ?? 0}',
                                   title: 'All',
                                 ),
                                 barChart(
-                                  color: Color(0xffF07721),
+                                  color: const Color(0xffF07721),
                                   count:
                                       '${controller.data?.statusCounts?.present ?? 0}',
                                   title: 'Present',
                                 ),
                                 barChart(
-                                  color: Color(0xffAD0F60),
+                                  color: const Color(0xffAD0F60),
                                   count:
                                       '${controller.data?.statusCounts?.absent ?? 0}',
                                   title: 'Absent',
                                 ),
                                 barChart(
-                                  color: Color(0xff2E5BB5),
+                                  color: const Color(0xff2E5BB5),
                                   count:
                                       '${controller.data?.statusCounts?.partialAttendance ?? 0}',
                                   title: 'P.Attend',
@@ -536,13 +536,13 @@ class StudentAttendanceList extends StatelessWidget {
           style: GoogleFonts.nunito(
               color: color, fontWeight: FontWeight.w400, fontSize: 20),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Text(
           title,
           style: GoogleFonts.nunito(
-              color: Color(0xff828282),
+              color: const Color(0xff828282),
               fontWeight: FontWeight.w400,
               fontSize: 12),
         )
