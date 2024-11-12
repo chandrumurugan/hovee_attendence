@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/config/appConfig.dart';
 import 'package:hovee_attendence/modals/addClassData_model.dart';
+import 'package:hovee_attendence/modals/addEnrollmentData_model.dart';
 import 'package:hovee_attendence/modals/add_course_data_model.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
@@ -11,6 +12,7 @@ import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
 import 'package:hovee_attendence/modals/getEnquireList_model.dart';
+import 'package:hovee_attendence/modals/getEnrollment_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
@@ -912,6 +914,79 @@ class WebService {
       return getMarkNotificationAsReadModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load Notification list');
+    }
+  }
+
+  static Future<addEnrollmentDataModel> addEnrollment( Map<String, dynamic> enrollmentData) async {
+    final url = Uri.parse('${baseUrl}attendane/submitEnrollment');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(enrollmentData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return addEnrollmentDataModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Notification list');
+    }
+  }
+
+   static Future<getEnrollmentModel> getEnrollment( Map<String, dynamic> batchData) async {
+    final url = Uri.parse('${baseUrl}attendane/getEnrollment');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    print(token);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(batchData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return getEnrollmentModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Enquir list');
+    }
+  }
+
+  static Future<updateEnquiryStatusModel?> updateEnrollment(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}attendane/updateEnrollment"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return updateEnquiryStatusModel.fromJson(json.decode(response.body));
+      } else {
+        print('Failed to update Enrollment: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error updating Enrollment: $e');
+      return null;
     }
   }
 }

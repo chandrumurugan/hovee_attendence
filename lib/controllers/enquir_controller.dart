@@ -15,6 +15,9 @@ class EnquirDetailController extends GetxController
   var isLoading = true.obs;
 
   var enquirList = <Data>[].obs;
+
+ 
+          // final tuteeController = TextEditingController();
   
 
   @override

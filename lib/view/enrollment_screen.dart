@@ -1,40 +1,36 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hovee_attendence/controllers/enquir_controller.dart';
+import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
-import 'package:hovee_attendence/view/add_enrollment_screen.dart';
-import 'package:hovee_attendence/widget/single_button.dart';
-import 'package:hovee_attendence/widget/single_custom_button.dart';
 
-class Tutorenquirlist extends StatelessWidget {
+class EnrollmentScreen extends StatelessWidget {
   final String type;
-  
-  Tutorenquirlist({super.key,required this.type});
-
-  final EnquirDetailController classController =
-      Get.put(EnquirDetailController());
+   EnrollmentScreen({super.key, required this.type});
+  final EnrollmentController controller = Get.put(EnrollmentController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
-            classController.navigateBack();
+           Navigator.pop(context);
           }),
       body: Column(
         children: [
           // Search and Filter Section
           SearchfiltertabBar(
-            title: 'Enquir List',
+            title: 'Enrollment List',
             searchOnTap: () {},
             filterOnTap: () {},
           ),
           //Tabs for Active and Inactive
           TabBar(
-            controller: classController.tabController,
+            controller: controller.tabController,
             tabs: [
               Tab(text: 'Pending'),
               Tab(text: 'Apporoved'),
@@ -44,9 +40,9 @@ class Tutorenquirlist extends StatelessWidget {
           //Display List based on the selected tab
           Expanded(
   child: Obx(() {
-    if (classController.isLoading.value) {
+    if (controller.isLoading.value) {
       return Center(child: CircularProgressIndicator());
-    } else if (classController.enquirList.isEmpty) {
+    } else if (controller.enrollmentList.isEmpty) {
       // Display "No data found" when the list is empty
       return Center(
         child: Text(
@@ -59,9 +55,9 @@ class Tutorenquirlist extends StatelessWidget {
       );
     } else {
       return ListView.builder(
-        itemCount: classController.enquirList.length,
+        itemCount: controller.enrollmentList.length,
         itemBuilder: (context, index) {
-          final tutionCourseDetailsList = classController.enquirList[index];
+           final enrollmentList = controller.enrollmentList[index];
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
             child: Card(
@@ -89,11 +85,10 @@ class Tutorenquirlist extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildRow('Student name', tutionCourseDetailsList.studentName),
-                              _buildRow('Course code', tutionCourseDetailsList.courseCode),
-                              _buildRow('CourseName', tutionCourseDetailsList.courseName),
-                              _buildRow('Subject', tutionCourseDetailsList.subject),
-                              _buildRow('Date', tutionCourseDetailsList.batchDays),
+                              _buildRow('Tutee name', enrollmentList.tutorName),
+                              _buildRow('Start Date', enrollmentList.startDate),
+                              _buildRow('End Date', enrollmentList.endDate),
+                              _buildRow('Status', enrollmentList.status),
                             ],
                           ),
                         ),
@@ -101,16 +96,16 @@ class Tutorenquirlist extends StatelessWidget {
                     ),
                     SizedBox(height: 5,),
                     // Display "Accept" and "Reject" buttons outside the column
-                    if ((classController.selectedTabIndex.value == 0 && type == 'Tutor') )
+                    if ((controller.selectedTabIndex.value == 0 && type == 'Tutee') )
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Expanded(
                             child: InkWell(
         onTap: () {
-         classController.updateEnquire(tutionCourseDetailsList.enquiryId!,'Approved');
+        controller.updateEnrollment(enrollmentList.sId!,'Approved');
         },
-        child: Container(
+        child: Container( 
           width: double.infinity,
           padding: 
                const EdgeInsets.symmetric(vertical: 10),   
@@ -136,7 +131,7 @@ class Tutorenquirlist extends StatelessWidget {
                          Expanded(
                            child: InkWell(
         onTap: () {
-          classController.updateEnquire(tutionCourseDetailsList.enquiryId!,'Rejected');
+controller.updateEnrollment(enrollmentList.sId!!,'Rejected');
         },
         child: Container(
           width: double.infinity,
@@ -159,41 +154,6 @@ class Tutorenquirlist extends StatelessWidget {
         ),
       ),
                          ),
-                        ],
-                      ),
-                       if ((classController.selectedTabIndex.value == 1 && type == 'Tutor') )
-                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: InkWell(
-        onTap: () {
-         Get.to(() => AddEnrollmentScreen(tuteename:tutionCourseDetailsList.studentName! , batchname: tutionCourseDetailsList.courseName!, classname: tutionCourseDetailsList.className!, subject: tutionCourseDetailsList.subject!, board: tutionCourseDetailsList.board!, batchStartingTime: tutionCourseDetailsList.batchTimingStart!, batchEndingTime:tutionCourseDetailsList.batchTimingEnd!, tutorname: tutionCourseDetailsList.tutorName!, courseCodeName: tutionCourseDetailsList.courseCode!, fees: tutionCourseDetailsList.fees!, tutorId:tutionCourseDetailsList.tutorId!, tuteeId:tutionCourseDetailsList.studentId!, courseId:tutionCourseDetailsList.courseId!, batchId:tutionCourseDetailsList.batchId!, enrollmentType:tutionCourseDetailsList.enquiryType!, type: type,)); 
-        },
-        child: Container(
-          width: double.infinity,
-          padding: 
-               const EdgeInsets.symmetric(vertical: 10),   
-          decoration: BoxDecoration(
-              borderRadius:
-                  BorderRadius.circular(8),
-               gradient: LinearGradient(
-                colors: [Color(0xFFBA0161), Color(0xFF510270)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),),
-          child: 
-          Text( "Start Enroll",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.nunito(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                  color: Colors.white)),
-        ),
-      ),
-                          ),
-                          const SizedBox(width: 10), // Spacing between buttons
-                         
                         ],
                       ),
                   ],

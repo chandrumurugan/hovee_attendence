@@ -16,6 +16,7 @@ import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/batch_screen.dart';
 import 'package:hovee_attendence/view/class_screen.dart';
 import 'package:hovee_attendence/view/course_screen.dart';
+import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/tutor_attendance_screen.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
@@ -189,10 +190,16 @@ class TutorHome extends StatelessWidget {
                                 
                           }  
                           else if (item['title'] == 'Enquiries') {
-                            Get.to(() => Tutorenquirlist(type: 'Tutor',)); // Navigate to the course screen
+                            Get.to(() => Tutorenquirlist(type: 'Tutor',));  Get.to(() => Tutorenquirlist(type: 'Tutor',)); // Navigate to the course screen
 
                                 
                           }  
+ else if (item['title'] == 'Enrollment') {
+                           Get.to(()=> EnrollmentScreen(type: 'Tutor',)); // Navigate to the course screen
+
+                                
+                          }  
+                           
                            else {
                             // Handle other cases or do nothing
                             print('Unknown screen');
