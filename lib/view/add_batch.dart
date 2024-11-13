@@ -27,7 +27,9 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
+          controller.onInit();
           Navigator.pop(context);
+          
         },
       ),
       body: SingleChildScrollView(
@@ -57,45 +59,45 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                     color: Colors.black),
               ),
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      const Text(
-                        'Batch short name',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        '*',
-                        style: GoogleFonts.nunito(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.red.withOpacity(0.6),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CommonInputField(
-                    // title: 'Branch short name',
-                    controllerValue: controller.branchShortNameController,
-                    selectedValue: controller.branchShortNameController,
-                    keyboardType: TextInputType.text,
-                    hintText: 'Enter here...',
-                    onTap: () {}, controller: controller.branchShortName,
-                  ),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding:
+            //       const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+            //   child: Column(
+            //     children: [
+            //       Row(
+            //         children: [
+            //           const Text(
+            //             'Batch short name',
+            //             style: TextStyle(
+            //               fontSize: 14,
+            //               fontWeight: FontWeight.w500,
+            //               color: Colors.black,
+            //             ),
+            //           ),
+            //           Text(
+            //             '*',
+            //             style: GoogleFonts.nunito(
+            //               fontSize: 18,
+            //               fontWeight: FontWeight.w600,
+            //               color: Colors.red.withOpacity(0.6),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //       const SizedBox(
+            //         height: 10,
+            //       ),
+            //       CommonInputField(
+            //         // title: 'Branch short name',
+            //         controllerValue: controller.branchShortNameController,
+            //         selectedValue: controller.branchShortNameController,
+            //         keyboardType: TextInputType.text,
+            //         hintText: 'Enter here...',
+            //         onTap: () {}, controller: controller.branchShortName,
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
@@ -390,10 +392,17 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                     hintText: 'Enter here...',
                     controllerValue: controller.feesController,
                     selectedValue: controller.feesController,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.phone,
                     onTap: () {},
                     prefixText: '₹ ', // Add the rupee symbol as prefix
-                    suffixText: '/month', controller: controller.fees, // Add "/month" as suffix
+                    suffixText: '/month', controller: controller.fees,
+                     inputFormatters: [
+                                              FilteringTextInputFormatter.allow(
+                                                RegExp(r"[0-9]"),
+                                              ),
+                                              LengthLimitingTextInputFormatter(
+                                                  10), // Restrict to 10 digits
+                                            ], // Add "/month" as suffix
                   ),
                 ],
               ),

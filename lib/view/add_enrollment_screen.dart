@@ -42,7 +42,8 @@ class AddEnrollmentScreen extends StatelessWidget {
       required this.tuteeId,
       required this.courseId,
       required this.batchId,
-      required this.enrollmentType, required this.type});
+      required this.enrollmentType,
+      required this.type});
   final EnrollmentController controller = Get.put(EnrollmentController());
   @override
   Widget build(BuildContext context) {
@@ -143,18 +144,18 @@ class AddEnrollmentScreen extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: InputTextField(
-                  suffix: true,
-                  readonly: true,
-                  isDate: true,
-                  hintText: 'Select',
-                  initialDate: DateTime.now().subtract(
-                    const Duration(days: 365 * 18),
-                  ),
-                  lastDate: DateTime.now().subtract(
-                    const Duration(days: 365 * 18),
-                  ),
-                  keyboardType: TextInputType.datetime,
-                  controller: controller.startDateController),
+                suffix: true,
+                readonly: true,
+                isDate: true,
+                hintText: 'Select',
+                initialDate: DateTime.now(),
+                firstDate:
+                    DateTime.now(), // Sets the minimum selectable date to today
+                lastDate:
+                    DateTime(2100), // You can set this to a far future date
+                keyboardType: TextInputType.datetime,
+                controller: controller.startDateController,
+              ),
             ),
             const SizedBox(
               height: 5,
@@ -194,12 +195,11 @@ class AddEnrollmentScreen extends StatelessWidget {
                   readonly: true,
                   isDate: true,
                   hintText: 'Select',
-                  initialDate: DateTime.now().subtract(
-                    const Duration(days: 365 * 18),
-                  ),
-                  lastDate: DateTime.now().subtract(
-                    const Duration(days: 365 * 18),
-                  ),
+                 initialDate: DateTime.now(),
+                firstDate:
+                    DateTime.now(), // Sets the minimum selectable date to today
+                lastDate:
+                    DateTime(2100),
                   keyboardType: TextInputType.datetime,
                   controller: controller.endDateController),
             ),
@@ -584,7 +584,8 @@ class AddEnrollmentScreen extends StatelessWidget {
         btnName: 'Submit',
         isPadded: false,
         onTap: () {
-          controller.addEnrollment(context,tutorId,tuteeId,courseId,batchId,tuteename,type);
+          controller.addEnrollment(
+              context, tutorId, tuteeId, courseId, batchId, tuteename, type);
         },
       ),
     );

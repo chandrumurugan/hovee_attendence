@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
@@ -6,6 +7,8 @@ import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
+import 'package:hovee_attendence/view/enrollment_screen.dart';
+import 'package:logger/logger.dart';
 
 class NotificationController extends GetxController {
   var isLoading = false.obs;
@@ -19,12 +22,16 @@ class NotificationController extends GetxController {
 
        String? role;
 
+     final otpController = TextEditingController();
+  final focusNode = FocusNode();
+
+  var savedOtp;
+
   @override
   void onInit() {
     super.onInit();
     // Initialize TabController with three tabs
     fetchNotificationsType();
-    
   }
 
   void fetchNotificationsType() async {
@@ -58,26 +65,50 @@ class NotificationController extends GetxController {
     }
   }
 
-    void fetchMarkedNotification(String notificationId,String type,String msgtype) async {
-    isLoading(true);
-    var batchData = {"notificationId": notificationId,};
-    var response = await WebService.FetchMarkedNotification(batchData);
-    if (response != null && response.statusCode == 200) {
-      notificationData.value =response.data!;
-      isLoading(false);
-      if(msgtype=='Enquiry'){
-         Get.to(()=> Tutorenquirlist(type:role!));
-      }
-      
+  void fetchMarkedNotification(String notificationId, String type, String msgtype) async {
+  isLoading(true);
+  var batchData = {"notificationId": notificationId};
+  var response = await WebService.FetchMarkedNotification(batchData);
+  final storage = GetStorage();
+
+  if (response != null && response.statusCode == 200) {
+    notificationData.value = response.data!;
+
+    // Extract only the code using a regular expression
+    final message = notificationData.value!.message ?? "";
+    final regex = RegExp(r'\b\d{6}\b'); // Matches a 6-digit number
+    final match = regex.firstMatch(message);
+
+    if (match != null) {
+      otpController.text = match.group(0)!; // Store only the code in otpController
+      storage.write('otpCode', otpController.text); // Store OTP in GetStorage
+      print("Stored OTP: ${otpController.text}");
     } else {
-      notificationList.clear();
-      isLoading(false);
+      otpController.text = ""; // Handle if code is not found
     }
+
+    isLoading(false);
+
+    if (msgtype == 'Enquiry') {
+      Get.off(() => Tutorenquirlist(type: role!));
+    } else {
+      Get.off(() => EnrollmentScreen(type: role!));
+    }
+  } else {
+    notificationList.clear();
+    isLoading(false);
   }
+}
+
 
 
     void setSelectedIndex(int index) {
     selectedIndex.value = index; // Update selected index
   }
+
+//   void initializeOtpField() {
+  
+// }
+
 
 }

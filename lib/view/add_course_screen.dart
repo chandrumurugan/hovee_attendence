@@ -20,11 +20,13 @@ class TutorAddCourseScreen extends StatelessWidget {
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
+          courseController.onInit();
           Navigator.pop(context);
         },
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
                 height: MediaQuery.sizeOf(context).height * 0.12,
@@ -236,45 +238,45 @@ class TutorAddCourseScreen extends StatelessWidget {
             ],
           ),
         ),
-            Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        const Text(
-                          'Remarks',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Text(
-                          '*',
-                          style: GoogleFonts.nunito(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.red.withOpacity(0.6),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    CommonInputField(
-                      // title: 'Branch short name',
-                      controllerValue: courseController.remarksController,
-                      selectedValue: courseController.remarksController,
-                      keyboardType: TextInputType.text,
-                      hintText: 'Enter here...',
-                      onTap: () {}, controller: courseController.remarks,
-                    ),
-                  ],
-                ),
-              ),
+            // Padding(
+            //     padding:
+            //         const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+            //     child: Column(
+            //       children: [
+            //         Row(
+            //           children: [
+            //             const Text(
+            //               'Remarks',
+            //               style: TextStyle(
+            //                 fontSize: 14,
+            //                 fontWeight: FontWeight.w500,
+            //                 color: Colors.black,
+            //               ),
+            //             ),
+            //             Text(
+            //               '*',
+            //               style: GoogleFonts.nunito(
+            //                 fontSize: 18,
+            //                 fontWeight: FontWeight.w600,
+            //                 color: Colors.red.withOpacity(0.6),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //         const SizedBox(
+            //           height: 10,
+            //         ),
+            //         CommonInputField(
+            //           // title: 'Branch short name',
+            //           controllerValue: courseController.remarksController,
+            //           selectedValue: courseController.remarksController,
+            //           keyboardType: TextInputType.text,
+            //           hintText: 'Enter here...',
+            //           onTap: () {}, controller: courseController.remarks,
+            //         ),
+            //       ],
+            //     ),
+            //   ),
               Obx(() {
                 if (courseController.validationMessages.isNotEmpty) {
                   return Column(

@@ -96,7 +96,7 @@ class PunchController extends GetxController {
         // icon: await  icon,
         //fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,), "assets/appbar/placeholder (1).png",),
         icon: await const MarkerWidget(
-          imagePath: 'assets/appbar/Tutee Location Icon.svg',
+          imagePath: 'assets/appbar/Tutee Location Icon (1) (1).svg',
         ).toBitmapDescriptor(
           logicalSize: const Size(150, 150),
           imageSize: const Size(400, 400),
@@ -108,7 +108,7 @@ class PunchController extends GetxController {
         position: targetLocation.value!,
         // icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,size: Size.square(10.0)), "assets/appbar/location-mark (1).png"),
         icon: await const MarkerWidget(
-                imagePath: 'assets/appbar/Tutor Location Icon.svg')
+                imagePath: 'assets/appbar/Tutor Location Icon (2).svg')
             .toBitmapDescriptor(
           logicalSize: const Size(150, 150),
           imageSize: const Size(400, 400),

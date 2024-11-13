@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:hovee_attendence/controllers/attendance_controller.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getEnquireList_model.dart';
 import 'package:hovee_attendence/modals/updateEnquire_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
@@ -15,7 +17,8 @@ class EnquirDetailController extends GetxController
   var isLoading = true.obs;
 
   var enquirList = <Data>[].obs;
-
+   final AttendanceCourseListController controller =
+      Get.put(AttendanceCourseListController());
  
           // final tuteeController = TextEditingController();
   
@@ -33,7 +36,7 @@ class EnquirDetailController extends GetxController
       if (tabController.index == 0) {
         type = "Pending";
       } else if (tabController.index == 1) {
-        type = "Approved";
+        type = "Accepted";
       } else {
         type = "Rejected";
       }
@@ -107,6 +110,7 @@ class EnquirDetailController extends GetxController
         Get.snackbar('Update enquire successfully');
         fetchEnquirList('Pending');
               //Get.off(()=>TutorClassList());
+              controller.onInit();
         } else {
           // SnackBarUtils.showErrorSnackBar(
           //     context, response?.message ?? 'Failed to update Enquire');

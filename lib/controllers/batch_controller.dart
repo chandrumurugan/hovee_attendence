@@ -106,6 +106,7 @@ class BatchController extends GetxController {
     fetchBatchList();
     batchDays=getBatchDays();
     batchModes=getBatchModes();
+    _clearData();
   }
 
   
@@ -114,10 +115,10 @@ class BatchController extends GetxController {
     validationMessages.clear();
 
          print("gettings12345678====>${branchShortName.text}");
-    if (branchShortName.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Branch short name is required');
-      return false;
-    }
+    // if (branchShortName.text.isEmpty) {
+    //   SnackBarUtils.showErrorSnackBar(context, 'Branch short name is required');
+    //   return false;
+    // }
     if (batchName.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(context, 'Batch name is required');
       return false;
@@ -185,7 +186,8 @@ class BatchController extends GetxController {
       isLoading.value = true;
       try {
         var batchData = {
-          'branch_short_name': branchShortName.text,
+          // 'branch_short_name': branchShortName.text,
+          'branch_short_name':'',
           'batch_name': batchName.text,
           'batch_teacher': batchTeacherController.value,
           'batch_timing_start': batchTiming.text,
@@ -203,6 +205,7 @@ class BatchController extends GetxController {
         final AddBatchDataModel? response = await WebService.addBatch(batchData);
 
         if (response != null && response.success == true) {
+          _clearData();
           SnackBarUtils.showSuccessSnackBar(context, 'Batch added successfully');
            Get.back();
            onInit();
@@ -252,4 +255,15 @@ List<String> getBatchDays() {
   void setStartTiming(String value) =>
       batchTimingController.value = value;
   void setEndingTiming(String value) => batchTimingEndController.value = value;
+
+    void _clearData(){
+         batchName.clear();
+         batchTeacherController.value = '';
+          batchTiming.clear();
+          batchTimingEnd.clear();
+          maxSlots.clear();
+         batchDaysController.value = '';
+        modeController.value = '';
+          fees.clear();
+    }
 }

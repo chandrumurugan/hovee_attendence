@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:hovee_attendence/controllers/attendance_controller.dart';
 import 'package:hovee_attendence/modals/addEnrollmentData_model.dart';
 import 'package:hovee_attendence/modals/updateEnquire_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
@@ -37,6 +38,11 @@ class EnrollmentController extends GetxController  with GetSingleTickerProviderS
 
   var enrollmentList = [].obs;
 
+  final otpController = TextEditingController();
+  final focusNode = FocusNode();
+
+  final AttendanceCourseListController attendanceCourseListController = Get.put(AttendanceCourseListController());
+
    @override
   void onInit() {
     super.onInit();
@@ -61,6 +67,7 @@ class EnrollmentController extends GetxController  with GetSingleTickerProviderS
 
     // Initially load "Pending" list
     fetchEnrollmentList("Pending");
+     attendanceCourseListController.fetchAttendanceCourseList();
   }
 
 
@@ -96,7 +103,7 @@ if (validateFields(context)) {
 
         if (response != null && response.statusCode == 200) {
           SnackBarUtils.showSuccessSnackBar(context, 'Enrollment added successfully');
-           Get.to(()=> EnrollmentScreen(type: entrollmentType,));
+           Get.off(()=> EnrollmentScreen(type: entrollmentType,));
           
         } else {
           SnackBarUtils.showErrorSnackBar(context, response?.message ?? 'Failed to add Enrollment');
@@ -127,12 +134,13 @@ if (validateFields(context)) {
     }
   }
 
-  void updateEnrollment(String enrollmentId,String type ) async {
+  void updateEnrollment(String enrollmentId,String type,code) async {
       isLoading.value = true;
       try {
         var batchData = {
         "status":type,
-        "enrollmentId": enrollmentId
+        "enrollmentId": enrollmentId,
+        "code":code
       };
 
         final updateEnquiryStatusModel? response =

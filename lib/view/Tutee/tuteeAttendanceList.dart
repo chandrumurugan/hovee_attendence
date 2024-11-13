@@ -7,6 +7,7 @@ import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
+import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -20,7 +21,7 @@ class TuteeAttendanceList extends StatelessWidget {
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
-          Get.back();
+         Get.offAll(TuteeHome());
         },
       ),
       body: SingleChildScrollView(
@@ -306,11 +307,11 @@ class TuteeAttendanceList extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            SearchfiltertabBar(
-              title: 'Student List',
-              searchOnTap: () {},
-              filterOnTap: () {},
-            ),
+            // SearchfiltertabBar(
+            //   title: 'Attendance List',
+            //   searchOnTap: () {},
+            //   filterOnTap: () {},
+            // ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Container(
@@ -356,17 +357,17 @@ class TuteeAttendanceList extends StatelessWidget {
                       // Check if attendance data is available and load it dynamically
                       if (controller.isLoadingList.value) {
                         return const CircularProgressIndicator();
-                      } else if (controller.dataTutee?.attendanceDetails !=
+                      } else if (controller.data?.attendanceDetails !=
                               null &&
-                          controller.dataTutee!.attendanceDetails!.isNotEmpty) {
+                          controller.data!.attendanceDetails!.isNotEmpty) {
                         return ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount:
-                              controller.dataTutee!.attendanceDetails!.length,
+                              controller.data!.attendanceDetails!.length,
                           itemBuilder: (context, index) {
                             final attendance =
-                                controller.dataTutee!.attendanceDetails![index];
+                                controller.data!.attendanceDetails![index];
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(
@@ -385,22 +386,26 @@ class TuteeAttendanceList extends StatelessWidget {
                                       ? Padding(
                                           padding:
                                               const EdgeInsets.only(right: 20),
-                                          child: Image.asset(
-                                            "assets/appbar/check.png",
-                                            height: 25,
-                                            width: 25,
-                                          ),
+                                          child:
+                                          //  Image.asset(
+                                          //   "assets/appbar/check.png",
+                                          //   height: 25,
+                                          //   width: 25,
+                                          // ),
+                                          Text(attendance.punchInTime!)
                                         )
                                       : const Text("-"),
                                   attendance.punchOutTime != null
                                       ? Padding(
                                           padding:
                                               const EdgeInsets.only(right: 20),
-                                          child: Image.asset(
-                                            "assets/appbar/check.png",
-                                            height: 25,
-                                            width: 25,
-                                          ),
+                                          child: 
+                                          // Image.asset(
+                                          //   "assets/appbar/check.png",
+                                          //   height: 25,
+                                          //   width: 25,
+                                          // ),
+                                           Text(attendance.punchOutTime!)
                                         )
                                       : const Text("-"),
                                 ],

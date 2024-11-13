@@ -55,6 +55,7 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
     });
     fetchClassesList("Draft");
      fetchCourseList();
+     _clearData();
   }
  
  // Update the fetchCourseList method to populate courseCode list
@@ -105,8 +106,7 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
             await WebService.addClass(batchData);
 
         if (response != null && response.success == true) {
-          courseCodeController.close();
-          batchNameController1.clear();
+         _clearData();
 
           SnackBarUtils.showSuccessSnackBar(
               context, 'Class added successfully');
@@ -201,4 +201,9 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
     tabController.dispose();
     super.onClose();
   }
+
+   void _clearData(){
+         batchNameController1.clear();
+        courseCodeController.value='';
+    }
 }

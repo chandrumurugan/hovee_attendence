@@ -95,6 +95,7 @@ class CourseController extends GetxController {
     super.onInit();
     fetchCourseList();
     fetchAppConfig();
+    _clearData();
   }
 
    void setBoard(String value) {
@@ -199,10 +200,10 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
       SnackBarUtils.showErrorSnackBar(context, 'Subject is required');
       return false;
     }
-    if (remarks.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Batch timing End is required');
-      return false;
-    }
+    // if (remarks.text.isEmpty) {
+    //   SnackBarUtils.showErrorSnackBar(context, 'Batch timing End is required');
+    //   return false;
+    // }
      return true;
    }
 
@@ -215,7 +216,7 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
           'board': boardController.value,
           'class_name': classController.value,
           'subject': subjectController.value,
-          'remarks': remarks.text,
+          'remarks': '',
            'course_image':'',
           'courseId':'',
              "type": "N",
@@ -226,6 +227,7 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
         final AddCourseDataModel? response = await WebService.addCourse(batchData);
 
         if (response != null && response.success == true) {
+          _clearData();
           SnackBarUtils.showSuccessSnackBar(context, 'Course added successfully');
            Get.back();
            onInit();
@@ -240,5 +242,13 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
     }
   
 }
+
+
+  void _clearData(){
+         batchNameController.value = '';
+          boardController.value = '';
+          classController.value = '';
+          subjectController.value = '';
+    }
 
 }

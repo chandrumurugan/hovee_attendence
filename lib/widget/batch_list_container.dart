@@ -43,7 +43,7 @@ class BatchListConatiner extends StatelessWidget {
                const SizedBox(
                     height: 10,
                   ),
-              _buildRow('Fees', batch.fees),
+               _buildRow('Fees', '${batch.fees}'),
               Divider(),
               TextButton(
                 onPressed: () {
@@ -66,19 +66,28 @@ class BatchListConatiner extends StatelessWidget {
   }
 
   Widget _buildRow(String title, String? value) {
+    // Display rupee symbol and unit specifically for "Fees"
+    final displayValue = title == 'Fees' ? '₹ ${value ?? 'N/A'} /month' : value ?? 'N/A';
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title,style:  TextStyle(
-                            color: Colors.black.withOpacity(0.4),
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14),),
-        Text(value ?? 'N/A', style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14),
-                      ),
-                      
+        Text(
+          title,
+          style: TextStyle(
+            color: Colors.black.withOpacity(0.4),
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+          ),
+        ),
+        Text(
+          displayValue,
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+          ),
+        ),
       ],
     );
   }

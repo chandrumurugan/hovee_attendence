@@ -3,12 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hovee_attendence/services/webServices.dart';
 import 'package:logger/logger.dart';
 
 class TuteeHomeController extends GetxController{
    GlobalKey<ScaffoldState> tuteeScaffoldKey = GlobalKey<ScaffoldState>();
-
-
+    var attendanceCourseList = [].obs;
+  var isLoading = true.obs;
    final List<Map<String, dynamic>> tuteeMonitorList = [
     // {
     //   'title': 'Enquiries',
@@ -72,4 +73,25 @@ class TuteeHomeController extends GetxController{
     },
   ];
 
+  
+   @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    fetchAttendanceCourseList();
+  }
+
+    void fetchAttendanceCourseList() async {
+    try {
+      isLoading(true);
+      var attendanceCourseResponse = await WebService.fetchAttendanceCourseList();
+      if (attendanceCourseResponse.data != null) {
+        attendanceCourseList.value = attendanceCourseResponse.data!;
+      }
+    } catch (e) {
+      // Get.snackbar('Failed to fetch batches');
+    } finally {
+      isLoading(false);
+    }
+  }
 }

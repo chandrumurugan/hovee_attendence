@@ -41,6 +41,7 @@ class PunchView extends StatelessWidget {
         needGoBack: true,
         navigateTo: () {
           Get.back();
+          print("object");
         },
       ),
       body: Stack(

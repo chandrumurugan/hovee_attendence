@@ -118,6 +118,7 @@ class StudentAttendanceController extends GetxController {
          var groupedEnrollmentByBatchResponse = await WebService.fetchTutteAttendanceList(batchId,selectedDate);
         if (groupedEnrollmentByBatchResponse?.data != null){
             dataTutee = groupedEnrollmentByBatchResponse!.data;
+            print(dataTutee);
             // attendanceData.value = [
             //   AttendanceData(category: "All", percentage: data!.statusCounts!.totalStudents!.toDouble(), pointColor: const Color(0xff014EA9)),
             //     AttendanceData(category: "Present", percentage: data!.statusCounts!.present!.toDouble(), pointColor: const Color(0xffF07721)),

@@ -112,166 +112,174 @@ class TuteeHome extends StatelessWidget {
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                
-                  InkWell(
-                    onTap: (){
-                       Get.to(()=>UserProfile());
-                    },
-                    child: const HomePageHeader(
-                      title: 'Attendance Monitoring',
-                      userType: "Tutee",
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.18,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'My Classes',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black),
+      body: Obx(
+        () {
+        if (controller.isLoading.value) {
+        // Call your refresh logic here, e.g., re-fetch data
+        // Reset the refresh state
+        return Center(child: CircularProgressIndicator());
+      } return  SingleChildScrollView(
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  
+                    InkWell(
+                      onTap: (){
+                         Get.to(()=>UserProfile());
+                      },
+                      child: const HomePageHeader(
+                        title: 'Attendance Monitoring',
+                        userType: "Tutee",
                       ),
-                       InkWell(
-                        onTap: (){
-                          Get.to(() =>
-                                AttendanceCourseListScreen()); 
-                        },
-                         child: const Text(
-                          'See All',
+                    ),
+                    SizedBox(
+                      height: MediaQuery.sizeOf(context).height * 0.18,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'My Classes',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: Colors.black),
-                                               ),
-                       ),
-                    ],
-                  ),
-                   SubjectContainer(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    'My Listings',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 1.0,
-                            crossAxisCount: 3,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10 // Number of columns
-                            ),
-                    itemBuilder: (context, int index) {
-                      final item = controller.tuteeMonitorList[index];
-                      return InkWell(
-                        onTap: () {
-                          if(index == 2){
-                            var box = GetStorage();
-                            Logger().i("${box.read('Token')}");
-                            Get.to(()=>const GetTopicsCourses());
-                          }
-                          if(index == 7){
-                            Get.to(()=> Tutorenquirlist(type: 'Tutee',));
-                          }
-                          if(index == 8){
-                            Get.to(()=> EnrollmentScreen(type: 'Tutee',));
-                          }
-                           if(index == 0){
-                            Get.to(()=> TuteeAttendanceList());
-                          }
-                         
-                        },
-                        child: Card(
-                          elevation: 10,
-                          shadowColor: Colors.grey,
-                          surfaceTintColor: Colors.white,
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: const Color.fromRGBO(246, 244, 254, 1)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: controller.tuteeMonitorList[index]
-                                          ['color']),
-                                  child: Image.asset(
-                                    controller.tuteeMonitorList[index]['image'],
-                                    color: Colors.white,
-                                    height: 30,
+                        ),
+                         InkWell(
+                          onTap: (){
+                            Get.to(() =>
+                                  AttendanceCourseListScreen()); 
+                          },
+                           child: const Text(
+                            'See All',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black),
+                                                 ),
+                         ),
+                      ],
+                    ),
+                     SubjectContainer(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      'My Listings',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio: 1.0,
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10 // Number of columns
+                              ),
+                      itemBuilder: (context, int index) {
+                        final item = controller.tuteeMonitorList[index];
+                        return InkWell(
+                          onTap: () {
+                            if(index == 2){
+                              var box = GetStorage();
+                              Logger().i("${box.read('Token')}");
+                              Get.to(()=>const GetTopicsCourses());
+                            }
+                            if(index == 7){
+                              Get.to(()=> Tutorenquirlist(type: 'Tutee',));
+                            }
+                            if(index == 8){
+                              Get.to(()=> EnrollmentScreen(type: 'Tutee',));
+                            }
+                             if(index == 0){
+                              Get.to(()=> TuteeAttendanceList());
+                            }
+                           
+                          },
+                          child: Card(
+                            elevation: 10,
+                            shadowColor: Colors.grey,
+                            surfaceTintColor: Colors.white,
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: const Color.fromRGBO(246, 244, 254, 1)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: controller.tuteeMonitorList[index]
+                                            ['color']),
+                                    child: Image.asset(
+                                      controller.tuteeMonitorList[index]['image'],
+                                      color: Colors.white,
+                                      height: 30,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                    controller.tuteeMonitorList[index]['title'])
-                              ],
+                                  Text(
+                                      controller.tuteeMonitorList[index]['title'])
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                    itemCount: controller.tuteeMonitorList.length,
-                  ),
-                  
-                ],
+                        );
+                      },
+                      itemCount: controller.tuteeMonitorList.length,
+                    ),
+                    
+                  ],
+                ),
               ),
-            ),
-             Positioned(
-                left: 20,
-                right: 20,
-                top: MediaQuery.sizeOf(context).height * 0.18,
-                child: 
-                const LineChartSample(userType: 'Tutee',)),
-      //           FutureBuilder<List<ChartData>>(
-      //   future: futureChartData,
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return Center(child: CircularProgressIndicator());
-      //     } else if (snapshot.hasError) {
-      //       return Center(child: Text('Error: ${snapshot.error}'));
-      //     } else {
-      //       final List<ChartData> chartData = snapshot.data!;
-      //       return SfCartesianChart(
-      //         primaryXAxis: CategoryAxis(),
-      //         series: <ChartSeries>[
-      //           LineSeries<ChartData, String>(
-      //             dataSource: chartData,
-      //             xValueMapper: (ChartData data, _) => data.x,
-      //             yValueMapper: (ChartData data, _) => data.y,
-      //           )
-      //         ],
-      //       );
-      //     }
-      //   },
-      // ),
-            // )
-          ],
-        ),
+               Positioned(
+                  left: 20,
+                  right: 20,
+                  top: MediaQuery.sizeOf(context).height * 0.18,
+                  child: 
+                  const LineChartSample(userType: 'Tutee',)),
+        //           FutureBuilder<List<ChartData>>(
+        //   future: futureChartData,
+        //   builder: (context, snapshot) {
+        //     if (snapshot.connectionState == ConnectionState.waiting) {
+        //       return Center(child: CircularProgressIndicator());
+        //     } else if (snapshot.hasError) {
+        //       return Center(child: Text('Error: ${snapshot.error}'));
+        //     } else {
+        //       final List<ChartData> chartData = snapshot.data!;
+        //       return SfCartesianChart(
+        //         primaryXAxis: CategoryAxis(),
+        //         series: <ChartSeries>[
+        //           LineSeries<ChartData, String>(
+        //             dataSource: chartData,
+        //             xValueMapper: (ChartData data, _) => data.x,
+        //             yValueMapper: (ChartData data, _) => data.y,
+        //           )
+        //         ],
+        //       );
+        //     }
+        //   },
+        // ),
+              // )
+            ],
+          ),
+        );
+        }
       ),
     );
   }

@@ -3,13 +3,15 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/attendance_controller.dart';
+import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/widget/attendanceCourseList_container.dart';
 
 class AttendanceCourseListScreen extends StatelessWidget {
    AttendanceCourseListScreen({super.key});
-   final AttendanceCourseListController attendanceCourseListController = Get.put(AttendanceCourseListController());
+   //final AttendanceCourseListController attendanceCourseListController = Get.put(AttendanceCourseListController());
+    final TuteeHomeController attendanceCourseListController = Get.put(TuteeHomeController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,6 +20,7 @@ class AttendanceCourseListScreen extends StatelessWidget {
         needGoBack: true,
         navigateTo: () {
            Get.back();
+           attendanceCourseListController.onInit();
         },
       ),
       body: Column(

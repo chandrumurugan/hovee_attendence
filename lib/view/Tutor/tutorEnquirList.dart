@@ -28,7 +28,7 @@ class Tutorenquirlist extends StatelessWidget {
         children: [
           // Search and Filter Section
           SearchfiltertabBar(
-            title: 'Enquir List',
+            title: 'Enquiry list',
             searchOnTap: () {},
             filterOnTap: () {},
           ),
@@ -37,8 +37,8 @@ class Tutorenquirlist extends StatelessWidget {
             controller: classController.tabController,
             tabs: [
               Tab(text: 'Pending'),
-              Tab(text: 'Apporoved'),
-              Tab(text: 'Reject'),
+              Tab(text: 'Accepted'),
+              Tab(text: 'Rejected'),
             ],
           ),
           //Display List based on the selected tab
@@ -168,7 +168,7 @@ class Tutorenquirlist extends StatelessWidget {
                           Expanded(
                             child: InkWell(
         onTap: () {
-         Get.to(() => AddEnrollmentScreen(tuteename:tutionCourseDetailsList.studentName! , batchname: tutionCourseDetailsList.courseName!, classname: tutionCourseDetailsList.className!, subject: tutionCourseDetailsList.subject!, board: tutionCourseDetailsList.board!, batchStartingTime: tutionCourseDetailsList.batchTimingStart!, batchEndingTime:tutionCourseDetailsList.batchTimingEnd!, tutorname: tutionCourseDetailsList.tutorName!, courseCodeName: tutionCourseDetailsList.courseCode!, fees: tutionCourseDetailsList.fees!, tutorId:tutionCourseDetailsList.tutorId!, tuteeId:tutionCourseDetailsList.studentId!, courseId:tutionCourseDetailsList.courseId!, batchId:tutionCourseDetailsList.batchId!, enrollmentType:tutionCourseDetailsList.enquiryType!, type: type,)); 
+         Get.off(() => AddEnrollmentScreen(tuteename:tutionCourseDetailsList.studentName! , batchname: tutionCourseDetailsList.courseName!, classname: tutionCourseDetailsList.className!, subject: tutionCourseDetailsList.subject!, board: tutionCourseDetailsList.board!, batchStartingTime: tutionCourseDetailsList.batchTimingStart!, batchEndingTime:tutionCourseDetailsList.batchTimingEnd!, tutorname: tutionCourseDetailsList.tutorName!, courseCodeName: tutionCourseDetailsList.courseCode!, fees: tutionCourseDetailsList.fees!, tutorId:tutionCourseDetailsList.tutorId!, tuteeId:tutionCourseDetailsList.studentId!, courseId:tutionCourseDetailsList.courseId!, batchId:tutionCourseDetailsList.batchId!, enrollmentType:tutionCourseDetailsList.enquiryType!, type: type,)); 
         },
         child: Container(
           width: double.infinity,

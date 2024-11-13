@@ -28,6 +28,7 @@ class _TutorClassFormState extends State<TutorClassForm> {
       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
+            controller.onInit();
             Navigator.pop(context);
           }),
       body: SingleChildScrollView(

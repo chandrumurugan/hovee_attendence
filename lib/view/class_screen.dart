@@ -93,7 +93,7 @@ class TutorClassList extends StatelessWidget {
           TabBar(
             controller: classController.tabController,
             tabs: [
-              Tab(text: 'Darft'),
+              Tab(text: 'Draft'),
               Tab(text: 'Ready to public'),
             ],
           ),
