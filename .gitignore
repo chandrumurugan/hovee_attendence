@@ -87,3 +87,7 @@ linux/flutter/ephemeral/
 windows/flutter/
 macos/Flutter/
 linux/flutter/
+*.lock
+*.swift
+*.cmake
+*.cc
