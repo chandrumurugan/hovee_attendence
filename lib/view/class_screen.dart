@@ -101,7 +101,7 @@ class TutorClassList extends StatelessWidget {
           TabBar(
             controller: classController.tabController,
             tabs: [
-              Tab(text: 'Draft'),
+              Tab(text: 'Pending'),
               Tab(text: 'Live'),
             ],
           ),
@@ -146,7 +146,7 @@ class TutorClassList extends StatelessWidget {
                               // Display the button only if selectedTabIndex is 0 (Draft tab)
                               if (classController.selectedTabIndex.value == 0)
                                 SingleButton(
-                                  btnName: 'Go- Live',
+                                  btnName: 'Go live',
                                   onTap: () {
                                     classController.updateClass(
                                       context,
