@@ -243,12 +243,12 @@ class LoginSignUp extends StatelessWidget {
                                           inputFormatter: [
                                             FilteringTextInputFormatter.allow(
                                               RegExp(
-                                                r"[a-zA-Z0-9\s@&_,-\.']",
+                                                r"[a-zA-Z0-9\s@&_,-\/.']",
                                               ),
                                             ),
                                           ],
                                           hintText: 'Enter here...',
-                                          keyboardType: TextInputType.name,
+                                          keyboardType: TextInputType.emailAddress,
                                           controller:
                                               authController.logInController,
                                         ),
@@ -399,7 +399,7 @@ class LoginSignUp extends StatelessWidget {
                                                         FilteringTextInputFormatter
                                                             .allow(
                                                           RegExp(
-                                                            r"[a-zA-Z0-9\s@&_,-\.']",
+                                                            r"[a-zA-Z0-9\s@&_,-\/.']",
                                                           ),
                                                         ),
                                                       ],
@@ -423,7 +423,7 @@ class LoginSignUp extends StatelessWidget {
                                                       FilteringTextInputFormatter
                                                           .allow(
                                                         RegExp(
-                                                          r"[a-zA-Z0-9\s@&_,-\.']",
+                                                          r"[a-zA-Z0-9\s@&_,-\/.']",
                                                         ),
                                                       ),
                                                     ],
@@ -467,7 +467,7 @@ class LoginSignUp extends StatelessWidget {
                                               inputFormatter: [
                                                 FilteringTextInputFormatter.allow(
                                                   RegExp(
-                                                    r"[a-zA-Z0-9@&_,-\.']",
+                                                    r"[a-zA-Z0-9@&_,-\/.']",
                                                   ),
                                                 ),
                                               ],
@@ -550,7 +550,7 @@ class LoginSignUp extends StatelessWidget {
                                             suffix: false,
                                             readonly: false,
                                             hintText: 'Enter here...',
-                                            keyboardType: TextInputType.phone,
+                                            keyboardType: TextInputType.number,
                                             inputFormatter: [
                                               FilteringTextInputFormatter.allow(
                                                 RegExp(r"[0-9]"),

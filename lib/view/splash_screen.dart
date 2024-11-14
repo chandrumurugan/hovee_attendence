@@ -15,10 +15,10 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [ 
-       Column(
+       const Column(
         crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
                Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                  children: [

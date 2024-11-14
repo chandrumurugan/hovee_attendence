@@ -32,7 +32,8 @@ class SplashController extends GetxController {
     Future.delayed(const Duration(seconds: 2), () {
       showSecondImage.value = true;
     });
-     _checkPermissions();
+    _getCurrentLocation();
+    //  _checkPermissions();
    fetchAppConfig();
   }
 
@@ -101,24 +102,28 @@ class SplashController extends GetxController {
     }
   }
 
-    Future<void> _checkPermissions() async {
-    var status = await Permission.location.status;
-    if (status.isGranted) {
-      _getCurrentLocation();
-    } else {
-      var result = await Permission.location.request();
-      if (result.isGranted) {
-        _getCurrentLocation();
-      } else {
-        // Handle the case when the user denies the permission
-      }
-    }
-  }
+  //   Future<void> _checkPermissions() async {
+  //   var status = await Permission.location.status;
+  //   if (status.isGranted) {
+  //     _getCurrentLocation();
+  //   } else {
+  //     var result = await Permission.location.request();
+  //     if (result.isGranted) {
+  //       _getCurrentLocation();
+  //     } else {
+  //       // Handle the case when the user denies the permission
+  //     }
+  //   }
+  // }
 
   Future<void> _getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+      
+
+        Position position = await _determinePosition();
+
+      // Position position = await Geolocator.getCurrentPosition(
+      //     desiredAccuracy: LocationAccuracy.high);
       currentLocation.value = LatLng(position.latitude, position.longitude);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setDouble('latitude', position.latitude);
@@ -128,5 +133,35 @@ class SplashController extends GetxController {
       print('Error fetching location: $e');
       // Handle error fetching location
     }
+  }
+
+   Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      bool locationServiceRequest = await Geolocator.openLocationSettings();
+      if (!locationServiceRequest) {
+        throw 'Location services are disabled.';
+      }
+      // Wait for the user to enable location services
+      await Future.delayed(Duration(seconds: 1));
+      // throw 'Location services are disabled.';
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        throw 'Location permissions are denied';
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw 'Location permissions are permanently denied, we cannot request permissions.';
+    }
+
+    return await Geolocator.getCurrentPosition();
   }
 }

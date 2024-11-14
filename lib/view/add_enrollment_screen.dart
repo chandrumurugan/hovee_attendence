@@ -102,7 +102,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
-                        r"[a-zA-Z0-9@&_,-\.']",
+                        r"[a-zA-Z0-9@&_,-\/.']",
                       ),
                     ),
                   ],
@@ -242,7 +242,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
-                        r"[a-zA-Z0-9@&_,-\.']",
+                        r"[a-zA-Z0-9@&_,-\/.']",
                       ),
                     ),
                   ],
@@ -292,7 +292,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
-                        r"[a-zA-Z0-9@&_,-\.']",
+                        r"[a-zA-Z0-9@&_,-\/.']",
                       ),
                     ),
                   ],
@@ -339,7 +339,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
-                        r"[a-zA-Z0-9@&_,-\.']",
+                        r"[a-zA-Z0-9@&_,-\/.']",
                       ),
                     ),
                   ],
@@ -386,7 +386,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
-                        r"[a-zA-Z0-9@&_,-\.']",
+                        r"[a-zA-Z0-9@&_,-\/.']",
                       ),
                     ),
                   ],
@@ -433,7 +433,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
-                        r"[a-zA-Z0-9@&_,-\.']",
+                        r"[a-zA-Z0-9@&_,-\/.']",
                       ),
                     ),
                   ],
@@ -480,7 +480,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
-                        r"[a-zA-Z0-9@&_,-\.']",
+                        r"[a-zA-Z0-9@&_,-\/.']",
                       ),
                     ),
                   ],
@@ -527,7 +527,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
-                        r"[a-zA-Z0-9@&_,-\.']",
+                        r"[a-zA-Z0-9@&_,-\/.']",
                       ),
                     ),
                   ],
@@ -566,7 +566,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
-                        r"[a-zA-Z0-9@&_,-\.']",
+                        r"[a-zA-Z0-9@&_,-\/.']",
                       ),
                     ),
                   ],

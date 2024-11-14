@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hovee_attendence/utils/keyBoardActiontils.dart';
 import 'package:intl/intl.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 
 class InputTextField extends StatefulWidget {
   final String hintText;
@@ -38,76 +40,81 @@ class InputTextField extends StatefulWidget {
 }
 
 class _InputTextFieldState extends State<InputTextField> {
+   FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 54,
-      child: TextFormField(
-        readOnly: widget.readonly ?? false,
-        controller: widget.controller,
-        keyboardType: widget.keyboardType,
-        inputFormatters: widget.inputFormatter ?? [], // Update here
-        onChanged: widget.onChanged,
-        decoration: InputDecoration(
-           prefixText: widget.prefixText,
-          suffixText: widget.suffixText,
-          suffixIcon: widget.suffix == true
-              ? IconButton(
-                  onPressed: () async {
-                    if (widget.isDate == true) {
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: widget.initialDate ?? DateTime.now(),
-                        firstDate: widget.firstDate ?? DateTime(1900),
-                        lastDate: widget.lastDate ?? DateTime.now(),
-                      );
-
-                      if (pickedDate != null) {
-                        String formattedDate =
-                            DateFormat('dd-MM-yyyy').format(pickedDate);
-                        setState(() {
-                          widget.controller.text = formattedDate;
-                        });
-                      }
-                    } else {
-                      TimeOfDay? pickedTime = await showTimePicker(
-                        initialEntryMode: TimePickerEntryMode.dial,
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      );
-
-                      if (pickedTime != null) {
-                        DateTime now = DateTime.now();
-                        DateTime selectedTime = DateTime(
-                          now.year,
-                          now.month,
-                          now.day,
-                          pickedTime.hour,
-                          pickedTime.minute,
+      child: KeyboardActions(
+         disableScroll: true,
+         config: KeyboardActionsUtils.getKeyboardActionsConfig(_focusNode,widget.keyboardType),
+        child: TextFormField(
+          focusNode: _focusNode,
+          textInputAction: TextInputAction.done,
+          readOnly: widget.readonly ?? false,
+          controller: widget.controller,
+          keyboardType: widget.keyboardType,
+          inputFormatters: widget.inputFormatter ?? [], // Update here
+          onChanged: widget.onChanged,
+          decoration: InputDecoration(
+            suffixIcon: widget.suffix == true
+                ? IconButton(
+                    onPressed: () async {
+                      if (widget.isDate == true) {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: widget.initialDate ?? DateTime.now(),
+                          firstDate: widget.firstDate ?? DateTime(1900),
+                          lastDate: widget.lastDate ?? DateTime.now(),
                         );
-                        String formattedTime =
-                            DateFormat('hh:mm a').format(selectedTime);
-                        setState(() {
-                          widget.controller.text = formattedTime;
-                        });
+        
+                        if (pickedDate != null) {
+                          String formattedDate =
+                              DateFormat('dd-MM-yyyy').format(pickedDate);
+                          setState(() {
+                            widget.controller.text = formattedDate;
+                          });
+                        }
+                      } else {
+                        TimeOfDay? pickedTime = await showTimePicker(
+                          initialEntryMode: TimePickerEntryMode.dial,
+                          context: context,
+                          initialTime: TimeOfDay.now(),
+                        );
+        
+                        if (pickedTime != null) {
+                          DateTime now = DateTime.now();
+                          DateTime selectedTime = DateTime(
+                            now.year,
+                            now.month,
+                            now.day,
+                            pickedTime.hour,
+                            pickedTime.minute,
+                          );
+                          String formattedTime =
+                              DateFormat('hh:mm a').format(selectedTime);
+                          setState(() {
+                            widget.controller.text = formattedTime;
+                          });
+                        }
                       }
-                    }
-                  },
-                  icon: Icon(
-                    widget.isDate == true ? Icons.calendar_month : Icons.timer,
-                  ),
-                )
-              : null,
-          hintStyle: TextStyle(
-            color: Colors.grey[400],
-            fontWeight: FontWeight.w400,
-          ),
-          hintText: widget.hintText,
-          filled: true,
-          fillColor: Colors.grey[200],
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14.0),
-            borderSide: BorderSide.none,
+                    },
+                    icon: Icon(
+                      widget.isDate == true ? Icons.calendar_month : Icons.timer,
+                    ),
+                  )
+                : null,
+            hintStyle: TextStyle(
+              color: Colors.grey[400],
+              fontWeight: FontWeight.w400,
+            ),
+            hintText: widget.hintText,
+            filled: true,
+            fillColor: Colors.grey[200],
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14.0),
+              borderSide: BorderSide.none,
+            ),
           ),
         ),
       ),

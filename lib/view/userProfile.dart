@@ -191,7 +191,7 @@ class UserProfile extends StatelessWidget {
                                                     FilteringTextInputFormatter
                                                         .allow(
                                                       RegExp(
-                                                        r"[a-zA-Z0-9\s@&_,-\.']",
+                                                        r"[a-zA-Z0-9\s@&_,-\/.']",
                                                       ),
                                                     ),
                                                   ],
@@ -215,7 +215,7 @@ class UserProfile extends StatelessWidget {
                                                   FilteringTextInputFormatter
                                                       .allow(
                                                     RegExp(
-                                                      r"[a-zA-Z0-9\s@&_,-\.']",
+                                                      r"[a-zA-Z0-9\s@&_,-\/.']",
                                                     ),
                                                   ),
                                                 ],
@@ -259,7 +259,7 @@ class UserProfile extends StatelessWidget {
                                           inputFormatter: [
                                             FilteringTextInputFormatter.allow(
                                               RegExp(
-                                                r"[a-zA-Z0-9@&_,-\.']",
+                                                r"[a-zA-Z0-9@&_,-\/.']",
                                               ),
                                             ),
                                           ],
