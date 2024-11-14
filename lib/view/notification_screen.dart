@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
+import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/widget/cateory_widget.dart';
@@ -13,6 +14,7 @@ import 'package:hovee_attendence/widget/cateory_widget.dart';
 class NotificationScreen extends StatelessWidget {
   NotificationScreen({super.key});
   final NotificationController controller = Get.put(NotificationController());
+   final TuteeHomeController attendanceCourseListController = Get.put(TuteeHomeController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +22,7 @@ class NotificationScreen extends StatelessWidget {
           needGoBack: true,
           navigateTo: () {
             Get.back();
+             attendanceCourseListController.onInit();
           }),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
@@ -8,8 +9,9 @@ import 'package:hovee_attendence/widget/batch_list_container.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class TutorBatchList extends StatelessWidget {
-   TutorBatchList({super.key});
- final BatchController batchController = Get.put(BatchController());
+  TutorBatchList({super.key});
+  final BatchController batchController = Get.put(BatchController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,12 +39,11 @@ class TutorBatchList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Aligning the back arrow with the other elements in the column
                       Row(
                         children: [
                           IconButton(
                             onPressed: () {
-                             batchController.navigateBack();
+                              batchController.navigateBack();
                             },
                             icon: Icon(Icons.arrow_back, color: Colors.white),
                           ),
@@ -62,7 +63,7 @@ class TutorBatchList extends StatelessWidget {
                       ),
                       Container(
                         padding: EdgeInsets.only(right: 15),
-                        width: MediaQuery.of(context).size.width*0.6,
+                        width: MediaQuery.of(context).size.width * 0.6,
                         child: Text(
                           'Streamline Your Tutoring: Set Up and Manage Your Batches Easily!',
                           overflow: TextOverflow.clip,
@@ -77,7 +78,8 @@ class TutorBatchList extends StatelessWidget {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 25, right: 10, bottom: 10),
+                    padding:
+                        const EdgeInsets.only(top: 25, right: 10, bottom: 10),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       decoration: const BoxDecoration(
@@ -87,14 +89,14 @@ class TutorBatchList extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
-                            '58',
-                            style: GoogleFonts.nunito(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
+                          Obx(() => Text(
+                                '${batchController.totalCount.value}',
+                                style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              )),
                           Text(
                             'Total',
                             style: GoogleFonts.nunito(
@@ -103,14 +105,14 @@ class TutorBatchList extends StatelessWidget {
                               fontSize: 14,
                             ),
                           ),
-                          Text(
-                            '42',
-                            style: GoogleFonts.nunito(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
+                          Obx(() => Text(
+                                '${batchController.activeCount.value}',
+                                style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              )),
                           Text(
                             'Active',
                             style: GoogleFonts.nunito(
@@ -119,14 +121,14 @@ class TutorBatchList extends StatelessWidget {
                               fontSize: 14,
                             ),
                           ),
-                          Text(
-                            '16',
-                            style: GoogleFonts.nunito(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14,
-                            ),
-                          ),
+                          Obx(() => Text(
+                                '${batchController.inactiveCount.value}',
+                                style: GoogleFonts.nunito(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              )),
                           Text(
                             'Inactive',
                             style: GoogleFonts.nunito(
@@ -138,7 +140,7 @@ class TutorBatchList extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -147,15 +149,19 @@ class TutorBatchList extends StatelessWidget {
           // Search and Filter Section
           SearchfiltertabBar(
             title: 'Batch List',
-            searchOnTap: () {},
-            filterOnTap: () {},
+            onSearchChanged: (searchTerm) {
+              // Trigger the search functionality by passing the search term
+              batchController.fetchBatchList(searchTerm: searchTerm);
+            },
+            filterOnTap: () {
+              // Implement filter logic here if needed
+            },
           ),
           Expanded(
             child: Obx(() {
               if (batchController.isLoading.value) {
                 return Center(child: CircularProgressIndicator());
               } else if (batchController.batchList.isEmpty) {
-                // Display "No data found" when the list is empty
                 return Center(
                   child: Text(
                     'No list found',
@@ -166,7 +172,6 @@ class TutorBatchList extends StatelessWidget {
                   ),
                 );
               } else {
-                // Display the list of batches
                 return ListView.builder(
                   itemCount: batchController.batchList.length,
                   itemBuilder: (context, index) {
@@ -179,12 +184,11 @@ class TutorBatchList extends StatelessWidget {
           )
         ],
       ),
-      // Bottom Button
       bottomNavigationBar: SingleCustomButtom(
         btnName: 'Add',
         isPadded: false,
         onTap: () {
-         batchController.navigateToAddBatchScreen();
+          batchController.navigateToAddBatchScreen();
         },
       ),
     );

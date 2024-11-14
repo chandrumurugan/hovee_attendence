@@ -572,6 +572,8 @@ class AddEnrollmentScreen extends StatelessWidget {
                   ],
                   hintText: 'Enter here...',
                   keyboardType: TextInputType.emailAddress,
+                   prefixText: '₹ ', // Add the rupee symbol as prefix
+                    suffixText: '/month',
                   controller: controller.feesController),
             ),
             const SizedBox(

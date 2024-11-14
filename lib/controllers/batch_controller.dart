@@ -56,13 +56,53 @@ class BatchController extends GetxController {
 
   var selectedCourseDetails = Data2().obs; // Observable to store selected course details
   var courseList1 = <Data2>[].obs;
+
+  var totalCount = 0.obs;
+  var activeCount = 0.obs;
+  var inactiveCount = 0.obs;
+
+  var filteredBatchList = [].obs; // Filtered list for display
+  var searchKey = ''.obs;
+
   // Method to fetch batch list
-  void fetchBatchList() async {
+//   void fetchBatchList() async {
+//   try {
+//     isLoading(true);
+//     var batchResponse = await WebService.fetchBatchList();
+//     if (batchResponse.data != null) {
+//       batchList.value = batchResponse.data!;
+//        totalCount.value = batchResponse.totalBatches ?? 0;
+//         activeCount.value = batchResponse.activeBatches ?? 0;
+//         inactiveCount.value = batchResponse.inactiveBatches ?? 0;
+//       // Extract only batch names for the dropdown
+//       batchName1 = batchResponse.data!.map((batch) => batch.batchName ?? '').toList();
+
+//       // Map batch names to their IDs for later retrieval
+//       batchIdMap = {
+//         for (var batch in batchResponse.data!) batch.batchName ?? '': batch.sId ?? ''
+//       };
+
+//       // Store data in GetStorage if needed
+//       final storage = GetStorage();
+//       storage.write('batchList', batchResponse.data!.map((e) => e.toJson()).toList());
+//     }
+//   } catch (e) {
+//     // Handle errors if needed
+//   } finally {
+//     isLoading(false);
+//   }
+// }
+
+void fetchBatchList({String searchTerm = ''}) async {
   try {
     isLoading(true);
-    var batchResponse = await WebService.fetchBatchList();
+    var batchResponse = await WebService.fetchBatchList(searchTerm);  // Pass the searchTerm to the API
+
     if (batchResponse.data != null) {
       batchList.value = batchResponse.data!;
+      totalCount.value = batchResponse.totalBatches ?? 0;
+      activeCount.value = batchResponse.activeBatches ?? 0;
+      inactiveCount.value = batchResponse.inactiveBatches ?? 0;
 
       // Extract only batch names for the dropdown
       batchName1 = batchResponse.data!.map((batch) => batch.batchName ?? '').toList();
@@ -82,6 +122,7 @@ class BatchController extends GetxController {
     isLoading(false);
   }
 }
+
 
  void fetchBatchDetails(String batchName) {
     var batch = batchList.firstWhere(
@@ -266,4 +307,19 @@ List<String> getBatchDays() {
         modeController.value = '';
           fees.clear();
     }
+
+    void filterBatchList() {
+    if (searchKey.value.isEmpty) {
+      // If search key is empty, show all batches
+      filteredBatchList.assignAll(batchList);
+    } else {
+      // Filter batch list based on search key
+     filteredBatchList.assignAll(
+      batchList.where((batch) => 
+        (batch.batchName?.toLowerCase().contains(searchKey.value.toLowerCase()) ?? false) ||
+        (batch.batchTeacher?.toLowerCase().contains(searchKey.value.toLowerCase()) ?? false)
+      ).toList(),
+    );
+    }
+  }
 }

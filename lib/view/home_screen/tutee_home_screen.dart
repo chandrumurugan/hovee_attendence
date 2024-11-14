@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
@@ -136,9 +137,19 @@ class TuteeHome extends StatelessWidget {
                         userType: "Tutee",
                       ),
                     ),
-                    SizedBox(
-                      height: MediaQuery.sizeOf(context).height * 0.18,
+                    // SizedBox(
+                    //   height: MediaQuery.sizeOf(context).height * 0.8,
+                    // ),
+                    Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(
+                      'Daily Attendance',
+                      style: GoogleFonts.nunito(
+                          fontSize: 18, fontWeight: FontWeight.w700),
                     ),
+                  ),
+                  const ChartApp(),
+                  SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -192,15 +203,15 @@ class TuteeHome extends StatelessWidget {
                         final item = controller.tuteeMonitorList[index];
                         return InkWell(
                           onTap: () {
-                            if(index == 2){
+                            if(index == 1){
                               var box = GetStorage();
                               Logger().i("${box.read('Token')}");
                               Get.to(()=>const GetTopicsCourses());
                             }
-                            if(index == 7){
+                            if(index == 2){
                               Get.to(()=> Tutorenquirlist(type: 'Tutee',));
                             }
-                            if(index == 8){
+                            if(index == 3){
                               Get.to(()=> EnrollmentScreen(type: 'Tutee',));
                             }
                              if(index == 0){
@@ -247,12 +258,12 @@ class TuteeHome extends StatelessWidget {
                   ],
                 ),
               ),
-               Positioned(
-                  left: 20,
-                  right: 20,
-                  top: MediaQuery.sizeOf(context).height * 0.18,
-                  child: 
-                  const LineChartSample(userType: 'Tutee',)),
+              //  Positioned(
+              //     left: 20,
+              //     right: 20,
+              //     top: MediaQuery.sizeOf(context).height * 0.18,
+              //     child: 
+              //     const LineChartSample(userType: 'Tutee',)),
         //           FutureBuilder<List<ChartData>>(
         //   future: futureChartData,
         //   builder: (context, snapshot) {

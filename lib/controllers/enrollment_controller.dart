@@ -102,7 +102,7 @@ if (validateFields(context)) {
         final addEnrollmentDataModel? response = await WebService.addEnrollment(data);
 
         if (response != null && response.statusCode == 200) {
-          SnackBarUtils.showSuccessSnackBar(context, 'Enrollment added successfully');
+          SnackBarUtils.showSuccessSnackBar(context, 'Enrollment submitted successfully');
            Get.off(()=> EnrollmentScreen(type: entrollmentType,));
           
         } else {
@@ -149,7 +149,7 @@ if (validateFields(context)) {
         if (response != null && response.statusCode == 200) {
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
-        Get.snackbar('Update enrollment successfully');
+        Get.snackbar('Enrollment Accepted successfully');
         fetchEnrollmentList('Pending');
               //Get.off(()=>TutorClassList());
         } else {

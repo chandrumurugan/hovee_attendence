@@ -202,6 +202,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                     //suffixIcon: Icon(Icons.arrow_drop_down), // Add dropdown icon
                     onChanged: controller.setStartTiming,
                     hintText: 'Select',
+                     readonly: true,
                     onTap: () async {
                       // Show time picker and pass the current context
                       print("start time");
@@ -244,6 +245,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                     selectedValue: controller.batchTimingEndController,
                     onChanged: controller.setEndingTiming,
                     hintText: 'Select',
+                    readonly: true,
                     onTap: () async {
                       // Show time picker and pass the current context
                    await _showTimePicker(context, isStartTime: false);

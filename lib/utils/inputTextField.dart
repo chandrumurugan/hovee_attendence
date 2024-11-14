@@ -14,6 +14,8 @@ class InputTextField extends StatefulWidget {
   final DateTime? firstDate;
   final DateTime? lastDate;
   final DateTime? initialDate;
+   final String? suffixText; // Suffix text
+  final String? prefixText;
   final Function(String)? onChanged;
 
   const InputTextField({
@@ -28,7 +30,7 @@ class InputTextField extends StatefulWidget {
     this.firstDate,
     this.lastDate,
     this.initialDate,
-    this.onChanged,
+    this.onChanged, this.suffixText, this.prefixText,
   });
 
   @override
@@ -47,6 +49,8 @@ class _InputTextFieldState extends State<InputTextField> {
         inputFormatters: widget.inputFormatter ?? [], // Update here
         onChanged: widget.onChanged,
         decoration: InputDecoration(
+           prefixText: widget.prefixText,
+          suffixText: widget.suffixText,
           suffixIcon: widget.suffix == true
               ? IconButton(
                   onPressed: () async {

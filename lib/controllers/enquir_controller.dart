@@ -107,7 +107,7 @@ class EnquirDetailController extends GetxController
         if (response != null && response.statusCode == 200) {
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
-        Get.snackbar('Update enquire successfully');
+        Get.snackbar('Enquire accepted successfully');
         fetchEnquirList('Pending');
               //Get.off(()=>TutorClassList());
               controller.onInit();

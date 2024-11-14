@@ -8,6 +8,7 @@ import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -177,6 +178,11 @@ class TuteeAttendanceList extends StatelessWidget {
                   },
                   onPageChanged: (focusedDay) {
                     controller.setFocusedDay(focusedDay);
+                    controller.onMonthSelected(focusedDay);
+                     // Format the month as an abbreviation (e.g., "Nov" for November)
+     
+      // Send the  month to the API
+     // controller.sendMonthToApi(monthAbbreviation);
                   },
                 ),
               );
@@ -329,7 +335,7 @@ class TuteeAttendanceList extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Name',
+                          Text('Date',
                               style: GoogleFonts.nunito(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w700,
@@ -377,9 +383,9 @@ class TuteeAttendanceList extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(attendance.studentName ?? '',
+                                  Text(attendance.createdAt!,
                                       style: GoogleFonts.nunito(
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.black)),
                                   attendance.punchInTime != null
@@ -387,12 +393,12 @@ class TuteeAttendanceList extends StatelessWidget {
                                           padding:
                                               const EdgeInsets.only(right: 20),
                                           child:
-                                          //  Image.asset(
-                                          //   "assets/appbar/check.png",
-                                          //   height: 25,
-                                          //   width: 25,
-                                          // ),
-                                          Text(attendance.punchInTime!)
+                                           Image.asset(
+                                            "assets/appbar/check.png",
+                                            height: 25,
+                                            width: 25,
+                                          ),
+                                          //Text(attendance.punchInTime!)
                                         )
                                       : const Text("-"),
                                   attendance.punchOutTime != null
@@ -400,12 +406,12 @@ class TuteeAttendanceList extends StatelessWidget {
                                           padding:
                                               const EdgeInsets.only(right: 20),
                                           child: 
-                                          // Image.asset(
-                                          //   "assets/appbar/check.png",
-                                          //   height: 25,
-                                          //   width: 25,
-                                          // ),
-                                           Text(attendance.punchOutTime!)
+                                          Image.asset(
+                                            "assets/appbar/check.png",
+                                            height: 25,
+                                            width: 25,
+                                          ),
+                                          // Text(attendance.punchOutTime!)
                                         )
                                       : const Text("-"),
                                 ],

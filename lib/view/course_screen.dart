@@ -37,7 +37,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
         children: [
           // Header Section
           Container(
-            height: 200,
+            height: 150,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(0)),
               image: DecorationImage(
@@ -74,9 +74,9 @@ class _TutorCourseListState extends State<TutorCourseList> {
                             fontWeight: FontWeight.w400,
                             fontSize: 22),
                       ),
-                      // const SizedBox(
-                      //   height: 10,
-                      // ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Container(
                         padding: EdgeInsets.only(right: 15),
                         width: MediaQuery.of(context).size.width* 0.9,
@@ -99,10 +99,12 @@ class _TutorCourseListState extends State<TutorCourseList> {
           // Search and Filter Section
           SearchfiltertabBar(
             title: 'Course List',
-            searchOnTap: () {},
-            filterOnTap: () {},
+            onSearchChanged: (searchTerm) {
+              courseController.fetchCourseList(searchTerm: searchTerm);
+            },
+            filterOnTap: () {
+            },
           ),
-          // Course List Section
           Expanded(
             child: Obx(() {
               if (courseController.isLoading.value) {

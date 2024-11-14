@@ -66,6 +66,14 @@ class StudentAttendanceController extends GetxController {
       if (response != null && response.data != null) {
         batchList.clear();
         batchList.addAll(response.data!);
+        // Set the first item as the default value
+      if (batchList.isNotEmpty) {
+        selectedBatchIN.value = batchList.first;
+        isBatchSelected.value = true;
+        print(selectedBatchIN.value);
+        String currentMonth = DateFormat('MMM').format(DateTime.now());
+         fetchStudentsList(selectedBatchIN.value!.batchId!, '', currentMonth);
+      }
         Logger().i(batchList.length);
         isLoading(false);
       }
@@ -80,7 +88,8 @@ class StudentAttendanceController extends GetxController {
     // Parse dates
   selectedBatchStartDate.value = DateFormat('dd/MM/yyyy').parse(batch.startDate!);
     selectedBatchEndDate.value = DateFormat('dd/MM/yyyy').parse(batch.endDate!);
-    fetchTutteAttendanceList(selectedBatchIN.value!.batchId!,'');
+    
+   // fetchTutteAttendanceList(selectedBatchIN.value!.batchId!,);
   }
 
     void setFocusedDay(DateTime date) {
@@ -88,10 +97,10 @@ class StudentAttendanceController extends GetxController {
   }
 
 
-  void fetchStudentsList(String batchId,String selectedDate)async{
+  void fetchStudentsList(String batchId,String selectedDate,selectedMonth)async{
     try {
       isLoadingList(true);
-         var groupedEnrollmentByBatchResponse = await WebService.fetchGroupedEnrollmentByBatchList(batchId,selectedDate);
+         var groupedEnrollmentByBatchResponse = await WebService.fetchGroupedEnrollmentByBatchList(batchId,selectedDate,selectedMonth);
         if (groupedEnrollmentByBatchResponse!.data != null){
             data   = groupedEnrollmentByBatchResponse.data!;
             attendanceData.value = [
@@ -112,10 +121,10 @@ class StudentAttendanceController extends GetxController {
 
   }
 
-  void fetchTutteAttendanceList(String batchId,String selectedDate)async{
+  void fetchTutteAttendanceList(String batchId,String selectedDate,selectedMonth)async{
     try {
       isLoadingList(true);
-         var groupedEnrollmentByBatchResponse = await WebService.fetchTutteAttendanceList(batchId,selectedDate);
+         var groupedEnrollmentByBatchResponse = await WebService.fetchTutteAttendanceList(batchId,selectedDate,selectedMonth);
         if (groupedEnrollmentByBatchResponse?.data != null){
             dataTutee = groupedEnrollmentByBatchResponse!.data;
             print(dataTutee);
@@ -141,13 +150,24 @@ class StudentAttendanceController extends GetxController {
   // Format the selected date as required by the API, e.g., '01/11/2024'
   String formattedDate = DateFormat('dd/MM/yyyy').format(date);
    selectedDay.value = date;
-  
+   String monthAbbreviation = DateFormat('MMM').format(date);
+           print(monthAbbreviation);
   // Check if a batch is selected and fetch attendance
   if (selectedBatchIN.value != null) {
-    fetchStudentsList(selectedBatchIN.value!.batchId!, formattedDate);
+    fetchStudentsList(selectedBatchIN.value!.batchId!, formattedDate,monthAbbreviation);
   }
 }
 
-
+ void onMonthSelected(DateTime date) {
+  // Format the selected date as required by the API, e.g., '01/11/2024'
+  String monthAbbreviation = DateFormat('MMM').format(date);
+           print(monthAbbreviation);
+   String formattedDate = DateFormat('dd/MM/yyyy').format(date);
+   selectedDay.value = date;
+  // Check if a batch is selected and fetch attendance
+  if (selectedBatchIN.value != null) {
+    fetchStudentsList(selectedBatchIN.value!.batchId!,formattedDate, monthAbbreviation);
+  }
+}
 
 }

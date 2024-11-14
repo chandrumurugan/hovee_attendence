@@ -14,6 +14,7 @@ class CommonInputField extends StatelessWidget {
   final String? prefixText; // Prefix text
   final String? hintText; // Hint text to display when field is empty
   final TextEditingController? controller;
+   final bool? readonly;
   CommonInputField({
     Key? key,
     //required this.title,
@@ -26,7 +27,7 @@ class CommonInputField extends StatelessWidget {
     this.inputFormatters,
     this.prefixText,
     this.suffixText,
-    this.hintText, // Add hintText parameter
+    this.hintText, this.readonly, // Add hintText parameter
   }) : super(key: key);
 
   @override
@@ -54,7 +55,7 @@ class CommonInputField extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
         ),
-        readOnly: false,
+        readOnly: readonly ?? false,
         onTap: () {
           onTap();
         },

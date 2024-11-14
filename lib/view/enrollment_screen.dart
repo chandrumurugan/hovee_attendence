@@ -8,6 +8,7 @@ import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
+import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:pinput/pinput.dart';
 
 class EnrollmentScreen extends StatelessWidget {
@@ -30,11 +31,20 @@ class EnrollmentScreen extends StatelessWidget {
       body: Column(
         children: [
           // Search and Filter Section
-          SearchfiltertabBar(
+           SearchfiltertabBar(
             title: 'Enrollment List',
-            searchOnTap: () {},
-            filterOnTap: () {},
+            onSearchChanged: (searchTerm) {
+            },
+            filterOnTap: () {
+              // Implement filter logic here if needed
+            },
           ),
+           
+          // SearchfiltertabBar(
+          //   title: 'Enrollment List',
+          //   searchOnTap: () {},
+          //   filterOnTap: () {},
+          // ),
           // Tabs for Active and Inactive
           TabBar(
             controller: controller.tabController,
@@ -124,7 +134,7 @@ class EnrollmentScreen extends StatelessWidget {
                                             ),
                                           ),
                                           child: Text(
-                                            "Accept",
+                                            "Submit",
                                             textAlign: TextAlign.center,
                                             style: GoogleFonts.nunito(
                                                 fontWeight: FontWeight.w500,
@@ -297,7 +307,7 @@ void _showOtpDialog(BuildContext context, String enrollmentId) {
                 controller.updateEnrollment(enrollmentId, 'Approved', otp);
               controller. otpController.clear(); // Clear the OTP field
     GetStorage().remove('otpCode');
-                Get.back();
+                 Get.offAll(TuteeHome());
               } else {
                 Get.snackbar('Please enter OTP');
               }

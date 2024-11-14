@@ -42,14 +42,51 @@ class CourseController extends GetxController {
   var courseList1 = <Data1>[].obs;
 
   final BatchController controller = Get.put(BatchController());
+
+  var filteredCourseList = [].obs; // Filtered list for display
+  var searchKey = ''.obs;
   // Method to fetch batch list
-  void fetchCourseList() async {
+//   void fetchCourseList() async {
+//   try {
+//     isLoading(true);
+//     var courseResponse = await WebService.fetchCourseList();
+//     if (courseResponse.data != null) {
+//       print('Course data fetched: ${courseResponse.data}');
+//       courseList.value = courseResponse.data!;
+      
+//       // Extract the course codes into a List<String>
+//       // Extract the course codes into a List<String>
+//         courseCodes.value = courseResponse.data!
+//             .map((course) => course.courseCode ?? '') // Handle null values for courseCode
+//             .where((code) => code.isNotEmpty) // Filter out empty codes
+//             .toList();
+//       // Store the complete course data and courseCode list in GetStorage
+//       final storage = GetStorage();
+//       storage.write('courseList',courseResponse.data!.map((batch) => batch.courseCode ?? '').toList());
+//       storage.write('courseCode', courseCodes);
+
+//     } else {
+//       print('Course data is null');
+//     }
+//   } catch (e) {
+//     print('Error: $e');
+//     // Get.snackbar('Failed to fetch course');
+//   } finally {
+//     isLoading(false);
+//   }
+// }
+
+
+
+
+  void fetchCourseList({String searchTerm = ''}) async {
   try {
     isLoading(true);
-    var courseResponse = await WebService.fetchCourseList();
+    var courseResponse = await WebService.fetchCourseList(searchTerm);
     if (courseResponse.data != null) {
       print('Course data fetched: ${courseResponse.data}');
       courseList.value = courseResponse.data!;
+      
       // Extract the course codes into a List<String>
       // Extract the course codes into a List<String>
         courseCodes.value = courseResponse.data!
@@ -71,6 +108,7 @@ class CourseController extends GetxController {
     isLoading(false);
   }
 }
+
 
 
  void fetchCourseDetails(String courseCode) {
@@ -250,5 +288,23 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
           classController.value = '';
           subjectController.value = '';
     }
+
+    
+  //   void filterCourseList() {
+  //   if (searchKey.value.isEmpty) {
+  //     // If search key is empty, show all batches
+  //     filteredCourseList.assignAll(courseList);
+  //   } else {
+  //     // Filter batch list based on search key
+  //    filteredCourseList.assignAll(
+  //     courseList.where((course) => 
+  //       (course.subject?.toLowerCase().contains(searchKey.value.toLowerCase()) ?? false) ||
+  //       (course.board?.toLowerCase().contains(searchKey.value.toLowerCase()) ?? false) ||
+  //       (course.courseCode?.toLowerCase().contains(searchKey.value.toLowerCase()) ?? false)
+  //     ).toList(),
+  //   );
+    
+  //   }
+  // }
 
 }

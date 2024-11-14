@@ -73,7 +73,7 @@ class CourseDetailController extends GetxController {
 
       if (response != null && response.statusCode == 200) {
         SnackBarUtils.showSuccessSnackBar(
-            context, response.message!);
+            context, 'Enquiry submited successfully');
           Get.back();
         // Show the modal bottom sheet
         showModalBottomSheet(

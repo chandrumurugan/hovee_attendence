@@ -189,10 +189,10 @@ void fetchGroupedEnrollmentByBatch() async {
   }
 
 
-   void fetchGroupedEnrollmentByBatchList(String batchId,String selectedDate ) async {
+   void fetchGroupedEnrollmentByBatchList(String batchId,String selectedDate,selectedMonth ) async {
     try {
       isLoading(true);
-      var groupedEnrollmentByBatchResponse = await WebService.fetchGroupedEnrollmentByBatchList(batchId,selectedDate);
+      var groupedEnrollmentByBatchResponse = await WebService.fetchGroupedEnrollmentByBatchList(batchId,selectedDate,selectedMonth);
       if (groupedEnrollmentByBatchResponse!.data != null) {
         data = groupedEnrollmentByBatchResponse.data!;
         

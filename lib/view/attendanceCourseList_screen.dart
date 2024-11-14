@@ -26,11 +26,30 @@ class AttendanceCourseListScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           SearchfiltertabBar(
-            title: 'My Classes',
-            searchOnTap: () {},
-            filterOnTap: () {},
-          ),
+          // SearchfiltertabBar(
+          //   title: 'My Classes',
+          //   onSearchChanged: (searchTerm) {
+          //   },
+          //   filterOnTap: () {
+          //     // Implement filter logic here if needed
+          //   },
+          // ),
+           Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+                child: Text(
+                  'My Classes',
+                  style: GoogleFonts.nunito(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
+              ),
+          //  SearchfiltertabBar(
+          //   title: 'My Classes',
+          //   searchOnTap: () {},
+          //   filterOnTap: () {},
+          // ),
            Expanded(
             child: Obx(() {
               if (attendanceCourseListController.isLoading.value) {

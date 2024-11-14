@@ -29,10 +29,12 @@ class Tutorenquirlist extends StatelessWidget {
           // Search and Filter Section
           SearchfiltertabBar(
             title: 'Enquiry list',
-            searchOnTap: () {},
-            filterOnTap: () {},
+            onSearchChanged: (searchTerm) {
+            },
+            filterOnTap: () {
+              // Implement filter logic here if needed
+            },
           ),
-          //Tabs for Active and Inactive
           TabBar(
             controller: classController.tabController,
             tabs: [
@@ -108,7 +110,7 @@ class Tutorenquirlist extends StatelessWidget {
                           Expanded(
                             child: InkWell(
         onTap: () {
-         classController.updateEnquire(tutionCourseDetailsList.enquiryId!,'Approved');
+         _showConfirmationDialog(context, tutionCourseDetailsList);
         },
         child: Container(
           width: double.infinity,
@@ -136,7 +138,7 @@ class Tutorenquirlist extends StatelessWidget {
                          Expanded(
                            child: InkWell(
         onTap: () {
-          classController.updateEnquire(tutionCourseDetailsList.enquiryId!,'Rejected');
+            _showConfirmationDialog1(context, tutionCourseDetailsList);
         },
         child: Container(
           width: double.infinity,
@@ -229,6 +231,67 @@ class Tutorenquirlist extends StatelessWidget {
               color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
         ),
       ],
+    );
+  }
+
+  // Display the confirmation dialog
+  void _showConfirmationDialog(
+      BuildContext context, dynamic tutionCourseDetailsList) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Are you sure?'),
+          content: Text('Do you want to accept with this Enquiry?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Close the dialog when 'No' is clicked
+                Navigator.of(context).pop();
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Call the updateClass method when 'Yes' is clicked
+               classController.updateEnquire(tutionCourseDetailsList.enquiryId!,'Approved');
+                Navigator.of(context).pop(); // Close the dialog after update
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+   void _showConfirmationDialog1(
+      BuildContext context, dynamic tutionCourseDetailsList) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Are you sure?'),
+          content: Text('Do you want to reject with this Enquiry?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Close the dialog when 'No' is clicked
+                Navigator.of(context).pop();
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Call the updateClass method when 'Yes' is clicked
+               classController.updateEnquire(tutionCourseDetailsList.enquiryId!,'Rejected');
+                Navigator.of(context).pop(); // Close the dialog after update
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

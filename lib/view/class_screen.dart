@@ -24,7 +24,7 @@ class TutorClassList extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            height: 200,
+            height: 150,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(0)),
               image: DecorationImage(
@@ -85,16 +85,24 @@ class TutorClassList extends StatelessWidget {
           ),
           // Search and Filter Section
           SearchfiltertabBar(
-            title: 'Classes List',
-            searchOnTap: () {},
-            filterOnTap: () {},
+            title: 'Class List',
+            onSearchChanged: (searchTerm) {
+            },
+            filterOnTap: () {
+              // Implement filter logic here if needed
+            },
           ),
+          // SearchfiltertabBar(
+          //   title: 'Classes List',
+          //   searchOnTap: () {},
+          //   filterOnTap: () {},
+          // ),
           //Tabs for Active and Inactive
           TabBar(
             controller: classController.tabController,
             tabs: [
               Tab(text: 'Draft'),
-              Tab(text: 'Ready to public'),
+              Tab(text: 'Live'),
             ],
           ),
           //Display List based on the selected tab
@@ -138,7 +146,7 @@ class TutorClassList extends StatelessWidget {
                               // Display the button only if selectedTabIndex is 0 (Draft tab)
                               if (classController.selectedTabIndex.value == 0)
                                 SingleButton(
-                                  btnName: 'Approved',
+                                  btnName: 'Go- Live',
                                   onTap: () {
                                     classController.updateClass(
                                       context,

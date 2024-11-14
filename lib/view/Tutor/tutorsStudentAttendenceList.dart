@@ -198,6 +198,7 @@ class StudentAttendanceList extends StatelessWidget {
                   },
                   onPageChanged: (focusedDay) {
                     controller.setFocusedDay(focusedDay);
+                    controller.onMonthSelected(focusedDay);
                   },
                 ),
               );
@@ -330,12 +331,18 @@ class StudentAttendanceList extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            SearchfiltertabBar(
-              title: 'Student List',
-              searchOnTap: () {},
-              filterOnTap: () {},
+             Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: Text(
+                'Student list',
+                style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
             ),
-
+           
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Container(
@@ -407,7 +414,7 @@ class StudentAttendanceList extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(attendance.studentName ?? '',
+                                  Text(attendance.studentName!,
                                       style: GoogleFonts.nunito(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,

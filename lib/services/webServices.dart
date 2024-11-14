@@ -212,14 +212,16 @@ class WebService {
     }
   }
 
-  static Future<getBatchListModel> fetchBatchList() async {
+  static Future<getBatchListModel> fetchBatchList(String searchitems) async {
     final url = Uri.parse('${baseUrl}batch/getBatchList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
     print(token);
+    var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
+      body: jsonEncode(data),
       headers: {
         'Authorization': 'Bearer $token', // Add the authorization token here
         'Content-Type': 'application/json',
@@ -299,13 +301,15 @@ class WebService {
     }
   }
 
-  static Future<GetCourseDataModel> fetchCourseList() async {
+  static Future<GetCourseDataModel> fetchCourseList(String searchitems) async {
     final url = Uri.parse('$baseUrl/course/getCourse');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
+     var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
+       body: jsonEncode(data),
       headers: {
         'Authorization': 'Bearer $token', // Add the authorization token here
         'Content-Type': 'application/json',
@@ -535,14 +539,14 @@ class WebService {
 
   static Future<getGroupedEnrollmentByAttendanceModel?>
       fetchGroupedEnrollmentByBatchList(
-          String batchId, String selectedDate) async {
+          String batchId, String selectedDate,selectedMonth) async {
     final url =
         Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByAttendance');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
     print(token);
-    var data = {"date": selectedDate, "batchId": batchId};
+    var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth};
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -772,14 +776,14 @@ class WebService {
 
    static Future<getGroupedEnrollmentByAttendanceTutee?>
       fetchTutteAttendanceList(
-          String batchId, String selectedDate) async {
+          String batchId, String selectedDate,selectedMonth) async {
     final url =
         Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByAttendanceTutee');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
     print(token);
-    var data = {"date": selectedDate, "batchId": batchId};
+    var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth};
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {

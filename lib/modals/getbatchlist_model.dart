@@ -2,8 +2,13 @@ class getBatchListModel {
   int? statusCode;
   String? message;
   List<Data2>? data;
+  int? totalBatches;
+  int? activeBatches;
+  int? inactiveBatches;
 
-  getBatchListModel({this.statusCode, this.message, this.data});
+  getBatchListModel({this.statusCode, this.message, this.data,this.totalBatches,
+      this.activeBatches,
+      this.inactiveBatches});
 
   getBatchListModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
@@ -14,6 +19,9 @@ class getBatchListModel {
         data!.add(new Data2.fromJson(v));
       });
     }
+    totalBatches = json['totalBatches'];
+    activeBatches = json['activeBatches'];
+    inactiveBatches = json['inactiveBatches'];
   }
 
   Map<String, dynamic> toJson() {
@@ -23,6 +31,9 @@ class getBatchListModel {
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
+    data['totalBatches'] = this.totalBatches;
+    data['activeBatches'] = this.activeBatches;
+    data['inactiveBatches'] = this.inactiveBatches;
     return data;
   }
 }

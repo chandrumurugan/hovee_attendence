@@ -22,14 +22,21 @@ class getGroupedEnrollmentByAttendanceModel {
 class Data {
   String? batchId;
   String? date;
+  String? month;
   StatusCounts? statusCounts;
   List<AttendanceDetails>? attendanceDetails;
 
-  Data({this.batchId, this.date, this.statusCounts, this.attendanceDetails});
+  Data(
+      {this.batchId,
+      this.date,
+      this.month,
+      this.statusCounts,
+      this.attendanceDetails});
 
   Data.fromJson(Map<String, dynamic> json) {
     batchId = json['batchId'];
     date = json['date'];
+    month = json['month'];
     statusCounts = json['statusCounts'] != null
         ? new StatusCounts.fromJson(json['statusCounts'])
         : null;
@@ -45,6 +52,7 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['batchId'] = this.batchId;
     data['date'] = this.date;
+    data['month'] = this.month;
     if (this.statusCounts != null) {
       data['statusCounts'] = this.statusCounts!.toJson();
     }
@@ -95,13 +103,17 @@ class AttendanceDetails {
   String? punchInTime;
   String? punchOutTime;
   String? attendanceStatus;
+  String? createdAt;
+  String? updatedAt;
 
   AttendanceDetails(
       {this.studentId,
       this.studentName,
       this.punchInTime,
       this.punchOutTime,
-      this.attendanceStatus});
+      this.attendanceStatus,
+      this.createdAt,
+      this.updatedAt});
 
   AttendanceDetails.fromJson(Map<String, dynamic> json) {
     studentId = json['studentId'];
@@ -109,6 +121,8 @@ class AttendanceDetails {
     punchInTime = json['punchInTime'];
     punchOutTime = json['punchOutTime'];
     attendanceStatus = json['attendanceStatus'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
@@ -118,6 +132,8 @@ class AttendanceDetails {
     data['punchInTime'] = this.punchInTime;
     data['punchOutTime'] = this.punchOutTime;
     data['attendanceStatus'] = this.attendanceStatus;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
     return data;
   }
 }
