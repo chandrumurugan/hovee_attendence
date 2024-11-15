@@ -286,9 +286,9 @@ class PunchController extends GetxController {
             // API call was successful, update state and show success message
             punchedIn.value = true;
             buttonLoader(false);
-            showAnimatedDialog('You have successfully punched In',
-                "assets/images/success_punching.png");
-            SnackBarUtils.showSuccessSnackBar(context, response.message ?? '');
+            showAnimatedDialog('Punched in successfully!',
+                "assets/images/success_punching.png",context);
+           // SnackBarUtils.showSuccessSnackBar(context, 'Attendance successfully marked');
           } else {
             // Show error if the API call failed
             punchedIn.value = false;
@@ -304,12 +304,13 @@ class PunchController extends GetxController {
             // API call was successful, update state and show success message
             punchedIn.value = false;
             buttonLoader(false);
-            showAnimatedDialog('You have successfully punched Out',
-                "assets/images/success_punching.png",);
+            showAnimatedDialog('Punched out successfully!',
+                "assets/images/success_punching.png",context);
                 
-           // SnackBarUtils.showSuccessSnackBar(context, response.message ?? '');
-            
-             Get.to(()=> TuteeAttendanceList());
+          // After the dialog is dismissed, navigate to the next page
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      Get.to(() => TuteeAttendanceList(type: 'Tutee'));
+    });
           } else {
             // Show error if the API call failed
             buttonLoader(false);
@@ -326,7 +327,7 @@ class PunchController extends GetxController {
       print("User is outside 500 meters of the specific location.");
       buttonLoader(false);
       showAnimatedDialog(
-          'You are away from the office', "assets/images/error_punching.png");
+          'You are away from the office', "assets/images/error_punching.png",context);
     }
   }
 
@@ -360,7 +361,7 @@ class PunchController extends GetxController {
       if (response != null && response.success == true) {
         // Show success dialog when API response is successful
         showAnimatedDialog('You have successfully punched In',
-            "assets/images/success_punching.png");
+            "assets/images/success_punching.png",context);
 
         // Change the punchedIn value to true
         punchedIn.value = false;

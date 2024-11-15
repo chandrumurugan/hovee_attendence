@@ -182,7 +182,7 @@ class TutorHome extends StatelessWidget {
                                 TutorCourseList()); // Navigate to the course screen
 
                                 } else if (item['title'] == 'Attendance') {
-                            Get.to(() => StudentAttendanceList()); // Navigate to the course screen
+                            Get.to(() => StudentAttendanceList(type: 'Tutor',)); // Navigate to the course screen
 
                             }  else if (item['title'] == 'Classes') {
                             Get.to(() => TutorClassList()); // Navigate to the course screen

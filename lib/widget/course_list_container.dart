@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/courseDetails_controller.dart';
 
 class CourseListContainer extends StatelessWidget {
   final String image;
@@ -11,7 +14,9 @@ class CourseListContainer extends StatelessWidget {
   final String group;
   final bool arrowIcon;
   final String groupcode;
-  const CourseListContainer(
+ final String className;
+ final String tutorId;
+   CourseListContainer(
       {super.key,
       required this.image,
       required this.subject,
@@ -20,8 +25,10 @@ class CourseListContainer extends StatelessWidget {
       required this.medium,
       required this.group,
       required this.groupcode,
-      required this.arrowIcon});
+      required this.arrowIcon, required this.className, required this.tutorId});
 
+
+final CourseDetailController controller = Get.put(CourseDetailController());
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -138,7 +145,11 @@ class CourseListContainer extends StatelessWidget {
                       children: [
                         arrowIcon
                             ? IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  // Navigate to course details screen
+                                 controller. getClassTuteeById(
+                                     context,className,subject,tutorId);
+                                },
                                 icon: const Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   size: 20,

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/class_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
@@ -84,19 +85,12 @@ class TutorClassList extends StatelessWidget {
             ),
           ),
           // Search and Filter Section
-          SearchfiltertabBar(
-            title: 'Class List',
-            onSearchChanged: (searchTerm) {
-            },
-            filterOnTap: () {
-              // Implement filter logic here if needed
-            },
-          ),
-          // SearchfiltertabBar(
-          //   title: 'Classes List',
-          //   searchOnTap: () {},
-          //   filterOnTap: () {},
-          // ),
+           SearchfiltertabBar(
+              title: 'Class List',
+              onSearchChanged: (searchTerm) {
+              },
+              filterOnTap: () {},
+            ),
           //Tabs for Active and Inactive
           TabBar(
             controller: classController.tabController,
@@ -107,7 +101,21 @@ class TutorClassList extends StatelessWidget {
           ),
           //Display List based on the selected tab
           Expanded(
-            child: Obx(() => ListView.builder(
+            child: Obx((){
+              if (classController.isLoading.value) {
+                return Center(child: CircularProgressIndicator());
+              } else if (classController.classesList.isEmpty) {
+                return Center(
+                  child: Text(
+                    'No data found',
+                    style: GoogleFonts.nunito(
+                      color: Colors.black54,
+                      fontSize: 16,
+                    ),
+                  ),
+                );
+              } else {
+            return  ListView.builder(
                   itemCount: classController.classesList.length,
                   itemBuilder: (context, index) {
                     final tutionCourseDetailsList =
@@ -148,14 +156,15 @@ class TutorClassList extends StatelessWidget {
                                 SingleButton(
                                   btnName: 'Go live',
                                   onTap: () {
-                                    classController.updateClass(
-                                      context,
-                                      tutionCourseDetailsList.courseCode!,
-                                      tutionCourseDetailsList.courseId!,
-                                      tutionCourseDetailsList.batchId!,
-                                      tutionCourseDetailsList.batchName!,
-                                      tutionCourseDetailsList.sId,
-                                    );
+                                    //  classController.updateClass(
+                                    //   context,
+                                    //   tutionCourseDetailsList.courseCode!,
+                                    //   tutionCourseDetailsList.courseId!,
+                                    //   tutionCourseDetailsList.batchId!,
+                                    //   tutionCourseDetailsList.batchName!,
+                                    //   tutionCourseDetailsList.sId,
+                                    // );
+                                    _showConfirmationDialog(context,tutionCourseDetailsList);
                                   },
                                 ),
                             ],
@@ -164,7 +173,9 @@ class TutorClassList extends StatelessWidget {
                       ),
                     );
                   },
-                )),
+                );
+              }
+  }),
           )
         ],
       ),
@@ -197,4 +208,43 @@ class TutorClassList extends StatelessWidget {
       ],
     );
   }
+
+  void _showConfirmationDialog(BuildContext context, dynamic tutionCourseDetailsList) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return CustomDialogBox(
+        title1: 'Do you want to make this class live?',
+        title2: '',
+        subtitle: 'Do you want to live this class?',
+         icon: const Icon(
+                                                      Icons.help_outline,
+                                                      color: Colors.white,
+                                                    ),
+       color:  Color(0xFF833AB4), // Set the primary color
+        color1: const Color(0xFF833AB4), // Optional gradient color
+        singleBtn: false, // Show both 'Yes' and 'No' buttons
+        btnName: 'No',
+        onTap: () {
+          // Call the updateClass method when 'Yes' is clicked
+         // Close the dialog after update
+         Navigator.of(context).pop();
+        },
+        btnName2: 'Yes',
+        onTap2: () {
+          // Close the dialog when 'No' is clicked
+           classController.updateClass(
+                                      context,
+                                      tutionCourseDetailsList.courseCode!,
+                                      tutionCourseDetailsList.courseId!,
+                                      tutionCourseDetailsList.batchId!,
+                                      tutionCourseDetailsList.batchName!,
+                                      tutionCourseDetailsList.sId,
+                                    );
+          Navigator.of(context).pop();
+        },
+      );
+    },
+  );
+}
 }

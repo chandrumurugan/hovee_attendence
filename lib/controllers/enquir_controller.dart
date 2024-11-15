@@ -66,33 +66,6 @@ class EnquirDetailController extends GetxController
     }
   }
 
-  // void updateEnquire(BuildContext context, String enquiryId,String type ) async {
-  //   isLoading.value = true;
-  //   try {
-      // var batchData = {
-      //   "status":type,
-      //   "enquiryId": enquiryId
-      // };
-
-  //     final updateEnquiryStatusModel? response =
-  //         await WebService.updateEnquire(batchData);
-
-  //     if (response != null && response.statusCode == 200) {
-  //       // SnackBarUtils.showSuccessSnackBar(
-  //       //       context, 'Class update successfully');
-  //       //Get.off(()=>TutorClassList());
-  //       fetchEnquirList("Pending");
-  //     } else {
-  //       SnackBarUtils.showErrorSnackBar(
-  //           context, response?.message ?? 'Failed to update Class');
-  //     }
-  //   } catch (e) {
-  //     SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
-
   void updateEnquire(String enquiryId,String type ) async {
       isLoading.value = true;
       try {
@@ -107,7 +80,7 @@ class EnquirDetailController extends GetxController
         if (response != null && response.statusCode == 200) {
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
-        Get.snackbar('Enquire accepted successfully');
+        Get.snackbar('Enquiry accepted successfully');
         fetchEnquirList('Pending');
               //Get.off(()=>TutorClassList());
               controller.onInit();

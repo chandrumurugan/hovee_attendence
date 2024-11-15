@@ -10,8 +10,9 @@ import 'package:hovee_attendence/view/qrscanner_screen.dart';
 
 class AttendancecourselistContainer extends StatelessWidget {
   final Data attendanceCourse;
-   
-   AttendancecourselistContainer({super.key, required this.attendanceCourse, required });
+
+  AttendancecourselistContainer(
+      {super.key, required this.attendanceCourse, required});
 
   @override
   Widget build(BuildContext context) {
@@ -37,29 +38,25 @@ class AttendancecourselistContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                    Text(
+                  Text(
                     attendanceCourse.course!.courseCode!,
                     style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
-                  // Text(
-                  //   attendanceCourse.course!.subject!,
-                  //   style: GoogleFonts.nunito(
-                  //       fontSize: 14,
-                  //       fontWeight: FontWeight.bold,
-                  //       color: Colors.black),
-                  // ),
                   Text(
-                   " ${attendanceCourse.course!.className!} - ${ attendanceCourse.course!.subject!} ",
+                    " ${attendanceCourse.course!.className!} - ${attendanceCourse.course!.subject!}",
+                    maxLines: 2, // Restrict to one line
+                    overflow: TextOverflow
+                        .ellipsis, // Add ellipsis if the text overflows
                     style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
                   Text(
-                   " ${attendanceCourse.batch!.batchTimingStart} - ${attendanceCourse.batch!.batchTimingEnd}",
+                    " ${attendanceCourse.batch!.batchTimingStart} - ${attendanceCourse.batch!.batchTimingEnd}",
                     style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -67,13 +64,23 @@ class AttendancecourselistContainer extends StatelessWidget {
                   ),
                 ],
               ),
-             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
                     onTap: () {
                       //Get.to(() =>QRScannerScreen(className: attendanceCourse.course!.className!, courseId:attendanceCourse.course!.sId!, batchId:attendanceCourse.batch!.sId!, batchStartTime: attendanceCourse.batch!.batchTimingStart!, batchEndTime: attendanceCourse.batch!.batchTimingEnd!, subjectName: attendanceCourse.course!.subject!, courseCode: attendanceCourse.course!.courseCode!,));
-                      Get.to(()=>PunchView(className: attendanceCourse.course!.className!, courseId:attendanceCourse.course!.sId!, batchId:attendanceCourse.batch!.sId!, batchStartTime: attendanceCourse.batch!.batchTimingStart!, batchEndTime: attendanceCourse.batch!.batchTimingEnd!, subjectName: attendanceCourse.course!.subject!, courseCode: attendanceCourse.course!.courseCode!,));
+                      Get.to(() => PunchView(
+                            className: attendanceCourse.course!.className!,
+                            courseId: attendanceCourse.course!.sId!,
+                            batchId: attendanceCourse.batch!.sId!,
+                            batchStartTime:
+                                attendanceCourse.batch!.batchTimingStart!,
+                            batchEndTime:
+                                attendanceCourse.batch!.batchTimingEnd!,
+                            subjectName: attendanceCourse.course!.subject!,
+                            courseCode: attendanceCourse.course!.courseCode!,
+                          ));
                     },
                     child: const CircleAvatar(
                       radius: 25,
@@ -89,8 +96,13 @@ class AttendancecourselistContainer extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                     CircleAvatar(radius: 3,backgroundColor: Colors.green,),
-                     SizedBox(width: 2,),
+                      CircleAvatar(
+                        radius: 3,
+                        backgroundColor: Colors.green,
+                      ),
+                      SizedBox(
+                        width: 2,
+                      ),
                       Text(
                         'LIVE',
                         style: GoogleFonts.nunito(
@@ -98,9 +110,6 @@ class AttendancecourselistContainer extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: Colors.green),
                       ),
-                      
-                        
-                    
                     ],
                   ),
                 ],
@@ -111,5 +120,4 @@ class AttendancecourselistContainer extends StatelessWidget {
       ),
     );
   }
-
 }

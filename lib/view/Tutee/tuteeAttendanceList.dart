@@ -13,9 +13,11 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class TuteeAttendanceList extends StatelessWidget {
-  TuteeAttendanceList({super.key});
-  final StudentAttendanceController controller =
-      Get.put(StudentAttendanceController());
+ final String type;
+  final StudentAttendanceController controller;
+
+  TuteeAttendanceList({super.key, required this.type})
+      : controller = Get.put(StudentAttendanceController(type));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,12 +175,12 @@ class TuteeAttendanceList extends StatelessWidget {
                     return isSameDay(controller.selectedDay.value, day);
                   },
                   onDaySelected: (selectedDay, focusedDay) {
-                    controller.onDateSelected(selectedDay);
+                    controller.onDateSelectedTutee(selectedDay);
                     controller.setFocusedDay(focusedDay);
                   },
                   onPageChanged: (focusedDay) {
                     controller.setFocusedDay(focusedDay);
-                    controller.onMonthSelected(focusedDay);
+                    controller.onMonthSelectedTutee(focusedDay);
                      // Format the month as an abbreviation (e.g., "Nov" for November)
      
       // Send the  month to the API
@@ -318,6 +320,17 @@ class TuteeAttendanceList extends StatelessWidget {
             //   searchOnTap: () {},
             //   filterOnTap: () {},
             // ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: Text(
+                'Attendance List',
+                style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
+            ),
            Padding(
   padding: const EdgeInsets.symmetric(horizontal: 12),
   child: Container(
@@ -331,7 +344,7 @@ class TuteeAttendanceList extends StatelessWidget {
             children: [
               // Column headers
               Expanded(
-                child: Text('Name',
+                child: Text('Date',
                     style: GoogleFonts.nunito(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
@@ -359,15 +372,15 @@ class TuteeAttendanceList extends StatelessWidget {
           // Check if attendance data is available and load it dynamically
           if (controller.isLoadingList.value) {
             return const CircularProgressIndicator();
-          } else if (controller.data?.attendanceDetails != null &&
-              controller.data!.attendanceDetails!.isNotEmpty) {
+          } else if (controller.dataTutee?.attendanceDetails != null &&
+              controller.dataTutee!.attendanceDetails!.isNotEmpty) {
             return ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: controller.data!.attendanceDetails!.length,
+              itemCount: controller.dataTutee!.attendanceDetails!.length,
               itemBuilder: (context, index) {
                 final attendance =
-                    controller.data!.attendanceDetails![index];
+                    controller.dataTutee!.attendanceDetails![index];
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(
@@ -378,7 +391,7 @@ class TuteeAttendanceList extends StatelessWidget {
                     children: [
                       // Name
                       Expanded(
-                        child: Text(attendance.studentName ?? '',
+                        child: Text(attendance.punchInDate ?? '',
                             style: GoogleFonts.nunito(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -395,7 +408,7 @@ class TuteeAttendanceList extends StatelessWidget {
                                   width: 25,
                                 ),
                               )
-                            : const Text("-"),
+                            : const Text(" - "),
                       ),
                       // Time Out
                       Expanded(
@@ -408,7 +421,7 @@ class TuteeAttendanceList extends StatelessWidget {
                                   width: 25,
                                 ),
                               )
-                            : const Text("-"),
+                            : const Text(" - "),
                       ),
                     ],
                   ),

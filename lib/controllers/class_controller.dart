@@ -41,24 +41,83 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
 
   final CourseController courseController = Get.put(CourseController());
   final BatchController controller = Get.put(BatchController());
-  
+
  @override
   void onInit() {
     super.onInit();
-    // Initialize TabController with two tabs
+    // Initialize TabController with three tabs
     tabController = TabController(length: 2, vsync: this);
     tabController.addListener(() {
       selectedTabIndex.value = tabController.index;
+      print("hi rahul ${selectedTabIndex.value}");
       // Update type based on the selected tab index
-      String type = tabController.index == 0 ? "Draft" : "Public";
+      String type;
+      if (tabController.index == 0) {
+        type = "Draft";
+      } else  {
+        type = "Public";
+      }
+
+      // Fetch the list based on the selected type
       fetchClassesList(type);
     });
+
+    // Initially load "Pending" list
     fetchClassesList("Draft");
-     fetchCourseList();
+    fetchCourseList();
      _clearData();
   }
- 
- // Update the fetchCourseList method to populate courseCode list
+
+ void fetchClassesList(String type) async {
+    try {
+      var batchData = {
+        "type": type,
+      };
+      isLoading(true);
+      var classesResponse = await WebService.fetchClassesList(batchData);
+      if (classesResponse.data != null) {
+        classesList.value = classesResponse.data!;
+      }
+    } catch (e) {
+      // Handle errors if needed
+    } finally {
+      isLoading(false);
+    }
+  }
+
+
+  void  updateClass(BuildContext context,String courseCode,courseId,batchId,batchName,tuitionId ) async  {
+      isLoading.value = true;
+      try {
+        var batchData = {
+          "type": "U",
+          "tuitionId": tuitionId,
+          "course_code": courseCode,
+          "courseId": courseId,
+          "batchId": batchId,
+          "batch_name": batchName,
+          "status": "Public"
+        };
+        final AddClassDataModel? response =
+            await WebService.updateClass(batchData);
+
+        if (response != null && response.statusCode == 200) {
+        Get.snackbar('Class update successfully');
+       // onInit();
+       
+         String currentType = selectedTabIndex.value == 0 ? "Draft" : "Public";
+        fetchClassesList(currentType);
+        } else {
+         Get.snackbar(response?.message ?? 'Failed to update Enquire');
+        }
+      } catch (e) {
+        //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+      } finally {
+        isLoading.value = false;
+      }
+   
+  }
+//  // Update the fetchCourseList method to populate courseCode list
   void fetchCourseList() async {
     try {
       isLoading(true);
@@ -111,7 +170,8 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
           SnackBarUtils.showSuccessSnackBar(
               context, 'Class added successfully');
           Get.back();
-          onInit();
+          //onInit();
+           fetchClassesList("Draft");
         } else {
           SnackBarUtils.showErrorSnackBar(
               context, response?.message ?? 'Failed to add Class');
@@ -123,58 +183,6 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
       }
     }
   }
-
- void fetchClassesList(String type) async {
-    try {
-      var batchData = {
-        "type": type,
-      };
-      isLoading(true);
-      var classesResponse = await WebService.fetchClassesList(batchData);
-      if (classesResponse.data != null) {
-        classesList.value = classesResponse.data!;
-      }
-    } catch (e) {
-      // Handle errors if needed
-    } finally {
-      isLoading(false);
-    }
-  }
-
-   void updateClass(BuildContext context,String courseCode,courseId,batchId,batchName,tuitionId ) async {
-      isLoading.value = true;
-      try {
-        var batchData = {
-          "type": "U",
-          "tuitionId": tuitionId,
-          "course_code": courseCode,
-          "courseId": courseId,
-          "batchId": batchId,
-          "batch_name": batchName,
-          "status": "Public"
-        };
-
-        final AddClassDataModel? response =
-            await WebService.updateClass(batchData);
-
-        if (response != null && response.success == true) {
-          SnackBarUtils.showSuccessSnackBar(
-              context, 'Class update successfully');
-      String currentType = tabController.index == 0 ? "Draft" : "Public";
-        fetchClassesList(currentType);
-              //Get.off(()=>TutorClassList());
-        } else {
-          SnackBarUtils.showErrorSnackBar(
-              context, response?.message ?? 'Failed to update Class');
-        }
-      } catch (e) {
-        SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
-      } finally {
-        isLoading.value = false;
-      }
-   
-  }
-
 
   void navigateBack() {
     Get.back();

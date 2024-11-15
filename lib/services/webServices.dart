@@ -546,7 +546,8 @@ class WebService {
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
     print(token);
-    var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth};
+    var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth,"fromDate":'',
+    "toDate":''};
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -783,7 +784,8 @@ class WebService {
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
     print(token);
-    var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth};
+    var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth,"fromDate":'',
+    "toDate":''};
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {

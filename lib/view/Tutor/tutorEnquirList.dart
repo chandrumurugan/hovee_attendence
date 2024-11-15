@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/enquir_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/add_enrollment_screen.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
@@ -25,16 +26,28 @@ class Tutorenquirlist extends StatelessWidget {
             classController.navigateBack();
           }),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Search and Filter Section
-          SearchfiltertabBar(
-            title: 'Enquiry list',
-            onSearchChanged: (searchTerm) {
-            },
-            filterOnTap: () {
-              // Implement filter logic here if needed
-            },
-          ),
+          // SearchfiltertabBar(
+          //   title: 'Enquiry list',
+          //   onSearchChanged: (searchTerm) {
+          //   },
+          //   filterOnTap: () {
+          //     // Implement filter logic here if needed
+          //   },
+          // ),
+          Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: Text(
+                'Enquiry list',
+                style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
+            ),
           TabBar(
             controller: classController.tabController,
             tabs: [
@@ -235,63 +248,119 @@ class Tutorenquirlist extends StatelessWidget {
   }
 
   // Display the confirmation dialog
-  void _showConfirmationDialog(
-      BuildContext context, dynamic tutionCourseDetailsList) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Are you sure?'),
-          content: Text('Do you want to accept with this Enquiry?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // Close the dialog when 'No' is clicked
-                Navigator.of(context).pop();
-              },
-              child: Text('No'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Call the updateClass method when 'Yes' is clicked
-               classController.updateEnquire(tutionCourseDetailsList.enquiryId!,'Approved');
-                Navigator.of(context).pop(); // Close the dialog after update
-              },
-              child: Text('Yes'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showConfirmationDialog(
+  //     BuildContext context, dynamic tutionCourseDetailsList) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: Text('Are you sure?'),
+  //         content: Text('Do you want to accept with this Enquiry?'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               // Close the dialog when 'No' is clicked
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: Text('No'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               // Call the updateClass method when 'Yes' is clicked
+  //              classController.updateEnquire(tutionCourseDetailsList.enquiryId!,'Approved');
+  //               Navigator.of(context).pop(); // Close the dialog after update
+  //             },
+  //             child: Text('Yes'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
-   void _showConfirmationDialog1(
-      BuildContext context, dynamic tutionCourseDetailsList) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Are you sure?'),
-          content: Text('Do you want to reject with this Enquiry?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // Close the dialog when 'No' is clicked
-                Navigator.of(context).pop();
-              },
-              child: Text('No'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Call the updateClass method when 'Yes' is clicked
-               classController.updateEnquire(tutionCourseDetailsList.enquiryId!,'Rejected');
-                Navigator.of(context).pop(); // Close the dialog after update
-              },
-              child: Text('Yes'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  void _showConfirmationDialog(BuildContext context, dynamic tutionCourseDetailsList) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return CustomDialogBox(
+        title1: 'Would you like to accept this enquiry?',
+        title2: '',
+        subtitle: 'Do you want to accept this Enquiry?',
+        icon: Icon(Icons.help_outline, color: Colors.white),
+         color:  Color(0xFF833AB4), // Set the primary color
+        color1: const Color(0xFF833AB4), // Optional gradient color
+        singleBtn: false, // Show both 'Yes' and 'No' buttons
+        btnName: 'No',
+        onTap: () {
+          // Call the updateClass method when 'Yes' is clicked
+         Navigator.of(context).pop();
+        },
+        btnName2: 'Yes',
+        onTap2: () {
+          // Close the dialog when 'No' is clicked
+          classController.updateEnquire(tutionCourseDetailsList.enquiryId!, 'Approved');
+          Navigator.of(context).pop(); // Close the dialog after update
+        },
+      );
+    },
+  );
+}
+
+ void _showConfirmationDialog1(BuildContext context, dynamic tutionCourseDetailsList) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return CustomDialogBox(
+        title1: 'Would you like to reject this enquiry?',
+        title2: '',
+        subtitle: 'Do you want to reject this Enquiry?',
+        icon: Icon(Icons.help_outline, color: Colors.white),
+        color:  Color(0xFF833AB4), // Set the primary color
+        color1: const Color(0xFF833AB4), // Optional gradient color
+        singleBtn: false, // Show both 'Yes' and 'No' buttons
+        btnName: 'No',
+        onTap: () {
+          // Call the updateClass method when 'Yes' is clicked
+         Navigator.of(context).pop();
+        },
+        btnName2: 'Yes',
+        onTap2: () {
+          // Close the dialog when 'No' is clicked
+          classController.updateEnquire(tutionCourseDetailsList.enquiryId!, 'Rejected');
+          Navigator.of(context).pop(); // Close the dialog after update
+        },
+      );
+    },
+  );
+}
+
+  //  void _showConfirmationDialog1(
+  //     BuildContext context, dynamic tutionCourseDetailsList) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: Text('Are you sure?'),
+  //         content: Text('Do you want to reject with this Enquiry?'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               // Close the dialog when 'No' is clicked
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: Text('No'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               // Call the updateClass method when 'Yes' is clicked
+  //              classController.updateEnquire(tutionCourseDetailsList.enquiryId!,'Rejected');
+  //               Navigator.of(context).pop(); // Close the dialog after update
+  //             },
+  //             child: Text('Yes'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }

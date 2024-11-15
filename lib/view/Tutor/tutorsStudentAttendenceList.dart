@@ -14,9 +14,10 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class StudentAttendanceList extends StatelessWidget {
-  StudentAttendanceList({super.key});
-  final StudentAttendanceController controller =
-      Get.put(StudentAttendanceController());
+   final String type;
+  final StudentAttendanceController controller;
+ StudentAttendanceList({super.key, required this.type})
+      : controller = Get.put(StudentAttendanceController(type));
 
   @override
   Widget build(BuildContext context) {
@@ -193,12 +194,12 @@ class StudentAttendanceList extends StatelessWidget {
                     return isSameDay(controller.selectedDay.value, day);
                   },
                   onDaySelected: (selectedDay, focusedDay) {
-                    controller.onDateSelected(selectedDay);
+                    controller.onDateSelectedTutor(selectedDay);
                     controller.setFocusedDay(focusedDay);
                   },
                   onPageChanged: (focusedDay) {
                     controller.setFocusedDay(focusedDay);
-                    controller.onMonthSelected(focusedDay);
+                    controller.onMonthSelectedTutor(focusedDay);
                   },
                 ),
               );

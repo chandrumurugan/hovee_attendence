@@ -1,5 +1,5 @@
 class getGroupedEnrollmentByAttendanceModel {
-  int? statusCode;
+ int? statusCode;
   Data? data;
 
   getGroupedEnrollmentByAttendanceModel({this.statusCode, this.data});
@@ -103,8 +103,7 @@ class AttendanceDetails {
   String? punchInTime;
   String? punchOutTime;
   String? attendanceStatus;
-  String? createdAt;
-  String? updatedAt;
+  String? punchInDate;
 
   AttendanceDetails(
       {this.studentId,
@@ -112,8 +111,7 @@ class AttendanceDetails {
       this.punchInTime,
       this.punchOutTime,
       this.attendanceStatus,
-      this.createdAt,
-      this.updatedAt});
+      this.punchInDate});
 
   AttendanceDetails.fromJson(Map<String, dynamic> json) {
     studentId = json['studentId'];
@@ -121,8 +119,7 @@ class AttendanceDetails {
     punchInTime = json['punchInTime'];
     punchOutTime = json['punchOutTime'];
     attendanceStatus = json['attendanceStatus'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
+    punchInDate = json['punchInDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -132,8 +129,7 @@ class AttendanceDetails {
     data['punchInTime'] = this.punchInTime;
     data['punchOutTime'] = this.punchOutTime;
     data['attendanceStatus'] = this.attendanceStatus;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
+    data['punchInDate'] = this.punchInDate;
     return data;
   }
 }

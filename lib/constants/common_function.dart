@@ -25,7 +25,7 @@ MaterialColor createMaterialColor(Color color) {
   return MaterialColor(color.value, swatch);
 }
 
-void showAnimatedDialog(String msg, String imageString) {
+void showAnimatedDialog(String msg, String imageString,BuildContext context) {
   Get.dialog(
     Center(
       child: AnimatedDialog(
@@ -38,6 +38,7 @@ void showAnimatedDialog(String msg, String imageString) {
   // Hide the dialog after 2 seconds
   Future.delayed(const Duration(milliseconds: 1500), () {
     //Get.back();
+    Navigator.of(context).pop();
     
   });
 }

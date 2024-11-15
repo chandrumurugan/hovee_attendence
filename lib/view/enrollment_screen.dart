@@ -29,22 +29,34 @@ class EnrollmentScreen extends StatelessWidget {
             Navigator.pop(context);
           }),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Search and Filter Section
-           SearchfiltertabBar(
-            title: 'Enrollment List',
-            onSearchChanged: (searchTerm) {
-            },
-            filterOnTap: () {
-              // Implement filter logic here if needed
-            },
-          ),
+          //  SearchfiltertabBar(
+          //   title: 'Enrollment List',
+          //   onSearchChanged: (searchTerm) {
+          //   },
+          //   filterOnTap: () {
+          //     // Implement filter logic here if needed
+          //   },
+          // ),
            
           // SearchfiltertabBar(
           //   title: 'Enrollment List',
           //   searchOnTap: () {},
           //   filterOnTap: () {},
           // ),
+           Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: Text(
+                'Enrollment List',
+                style: GoogleFonts.nunito(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              ),
+            ),
           // Tabs for Active and Inactive
           TabBar(
             controller: controller.tabController,

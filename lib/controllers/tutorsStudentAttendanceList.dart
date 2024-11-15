@@ -49,6 +49,9 @@ class StudentAttendanceController extends GetxController {
     ),
   ];
 
+   String? type;
+    StudentAttendanceController(this.type);
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -72,7 +75,10 @@ class StudentAttendanceController extends GetxController {
         isBatchSelected.value = true;
         print(selectedBatchIN.value);
         String currentMonth = DateFormat('MMM').format(DateTime.now());
+        if(type=='Tutor'){
          fetchStudentsList(selectedBatchIN.value!.batchId!, '', currentMonth);
+        }
+         fetchTutteAttendanceList(selectedBatchIN.value!.batchId!, '', currentMonth);
       }
         Logger().i(batchList.length);
         isLoading(false);
@@ -146,7 +152,7 @@ class StudentAttendanceController extends GetxController {
 
   }
 
-  void onDateSelected(DateTime date) {
+  void onDateSelectedTutor(DateTime date) {
   // Format the selected date as required by the API, e.g., '01/11/2024'
   String formattedDate = DateFormat('dd/MM/yyyy').format(date);
    selectedDay.value = date;
@@ -158,7 +164,7 @@ class StudentAttendanceController extends GetxController {
   }
 }
 
- void onMonthSelected(DateTime date) {
+ void onMonthSelectedTutor(DateTime date) {
   // Format the selected date as required by the API, e.g., '01/11/2024'
   String monthAbbreviation = DateFormat('MMM').format(date);
            print(monthAbbreviation);
@@ -167,6 +173,30 @@ class StudentAttendanceController extends GetxController {
   // Check if a batch is selected and fetch attendance
   if (selectedBatchIN.value != null) {
     fetchStudentsList(selectedBatchIN.value!.batchId!,formattedDate, monthAbbreviation);
+  }
+}
+
+ void onDateSelectedTutee(DateTime date) {
+  // Format the selected date as required by the API, e.g., '01/11/2024'
+  String formattedDate = DateFormat('dd/MM/yyyy').format(date);
+   selectedDay.value = date;
+   String monthAbbreviation = DateFormat('MMM').format(date);
+           print(monthAbbreviation);
+  // Check if a batch is selected and fetch attendance
+  if (selectedBatchIN.value != null) {
+    fetchTutteAttendanceList(selectedBatchIN.value!.batchId!, formattedDate,monthAbbreviation);
+  }
+}
+
+ void onMonthSelectedTutee(DateTime date) {
+  // Format the selected date as required by the API, e.g., '01/11/2024'
+  String monthAbbreviation = DateFormat('MMM').format(date);
+           print(monthAbbreviation);
+   String formattedDate = DateFormat('dd/MM/yyyy').format(date);
+   selectedDay.value = date;
+  // Check if a batch is selected and fetch attendance
+  if (selectedBatchIN.value != null) {
+    fetchTutteAttendanceList(selectedBatchIN.value!.batchId!,formattedDate, monthAbbreviation);
   }
 }
 

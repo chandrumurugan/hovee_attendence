@@ -136,7 +136,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                                     group: filteredList[index]["course_code"]!,
                                     groupcode:
                                         "${filteredList[index]["batch_timing_start"]!}-${filteredList[index]["batch_timing_end"]!}",
-                                    arrowIcon: true),
+                                    arrowIcon: true, className: filteredList[index]["className"]!, tutorId: filteredList[index]["TutorId"]!,),
                               );
                             }))
           ],

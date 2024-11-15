@@ -134,7 +134,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
                           std: course.className!,
                           medium: course.board!,
                           group: course.categories ?? '',         
-                          groupcode: course.courseCode!);
+                          groupcode: course.courseCode!, className: '', tutorId: '',);
                     },
                     separatorBuilder: (context, int index) {
                       return const SizedBox(
