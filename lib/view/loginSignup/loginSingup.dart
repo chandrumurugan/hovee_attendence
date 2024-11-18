@@ -855,7 +855,7 @@ class LoginSignUp extends StatelessWidget {
                                                         )
                                                       : const Center(
                                                           child: Text(
-                                                            'Sign In',
+                                                            'Submit',
                                                             style: TextStyle(
                                                               fontSize: 16,
                                                               fontWeight:

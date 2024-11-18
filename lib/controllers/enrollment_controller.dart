@@ -7,6 +7,7 @@ import 'package:hovee_attendence/modals/updateEnquire_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
+import 'package:logger/logger.dart';
 
 class EnrollmentController extends GetxController  with GetSingleTickerProviderStateMixin {
 
@@ -48,27 +49,57 @@ class EnrollmentController extends GetxController  with GetSingleTickerProviderS
     super.onInit();
     // Initialize TabController with three tabs
     tabController = TabController(length: 3, vsync: this);
-    tabController.addListener(() {
-      selectedTabIndex.value = tabController.index;
-
-      // Update type based on the selected tab index
-      String type;
-      if (tabController.index == 0) {
-        type = "Pending";
-      } else if (tabController.index == 1) {
-        type = "Approved";
-      } else {
-        type = "Rejected";
-      }
-
-      // Fetch the list based on the selected type
-      fetchEnrollmentList(type);
-    });
-
-    // Initially load "Pending" list
     fetchEnrollmentList("Pending");
      attendanceCourseListController.fetchAttendanceCourseList();
+    // tabController.addListener(() {
+    //   selectedTabIndex.value = tabController.index;
+
+    //   // Update type based on the selected tab index
+    //   String type;
+    //   if (tabController.index == 0) {
+    //     type = "Pending";
+    //   } else if (tabController.index == 1) {
+    //     type = "Approved";
+    //   } else {
+    //     type = "Rejected";
+    //   }
+
+    //   // Fetch the list based on the selected type
+    //   fetchEnrollmentList(type);
+    // });
+
+    // // Initially load "Pending" list
+    // fetchEnrollmentList("Pending");
+    //  attendanceCourseListController.fetchAttendanceCourseList();
   }
+
+    void handleTabChange(int index) {
+    // Determine the type based on the selected tab index
+    String type = _getTypeFromIndex(index);
+     selectedTabIndex.value = index;
+
+    // Fetch the list for the selected type
+    fetchEnrollmentList(type);
+
+    // Animate to the appropriate tab
+    tabController.animateTo(index);
+  }
+
+    String _getTypeFromIndex(int index) {
+    switch (index) {
+      case 0:
+        return "Pending";
+      case 1:
+        return "Accepted";
+      case 2:
+        return "Rejected";
+      default:
+        return "Pending";
+    }
+  }
+
+
+
 
 
   bool validateFields(BuildContext context) {
@@ -124,7 +155,9 @@ if (validateFields(context)) {
       };
       isLoading(true);
       var classesResponse = await WebService.getEnrollment(batchData);
-      if (classesResponse.data != null) {
+       Logger().i("getting values==>${classesResponse!.data!.length}");
+      if (classesResponse!.data != null) {
+       
         enrollmentList.value = classesResponse.data!;
       }
     } catch (e) {

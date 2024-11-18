@@ -147,8 +147,8 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                             ? IconButton(
                                 onPressed: () {
                                   // Navigate to course details screen
-                                 controller. getClassTuteeById(
-                                     context,className,subject,tutorId);
+                                //  controller. getClassTuteeById(
+                                //      context,className,subject,tutorId);
                                 },
                                 icon: const Icon(
                                   Icons.arrow_forward_ios_rounded,

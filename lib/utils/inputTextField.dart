@@ -40,7 +40,7 @@ class InputTextField extends StatefulWidget {
 }
 
 class _InputTextFieldState extends State<InputTextField> {
-   FocusNode _focusNode = FocusNode();
+   final FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -57,6 +57,8 @@ class _InputTextFieldState extends State<InputTextField> {
           inputFormatters: widget.inputFormatter ?? [], // Update here
           onChanged: widget.onChanged,
           decoration: InputDecoration(
+            suffixText: widget.suffixText ?? "",
+            prefixText: widget.prefixText ?? "",
             suffixIcon: widget.suffix == true
                 ? IconButton(
                     onPressed: () async {

@@ -1,11 +1,9 @@
-import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
@@ -14,8 +12,6 @@ import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDropDownInputField.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/utils/keyboardUtils.dart';
-import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
-import 'package:hovee_attendence/widget/single_button.dart';
 import 'package:path/path.dart' as path;
 
 class AccountSetup extends StatelessWidget {

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/role_controller.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/accountsetup_screen.dart';
-import 'package:hovee_attendence/view/dashBoard.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 
 class RoleSelection extends StatefulWidget {
@@ -63,37 +60,28 @@ class _RoleSelectionState extends State<RoleSelection> {
       },
       child: SafeArea(
         child: Scaffold(
+          appBar: AppBar(
+            title: const LogoGif() ,
+            centerTitle: true,
+          ),
           body: _isLoading
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      // Container(
+                      //           padding: const EdgeInsets.symmetric(
+                      //               horizontal: 40, vertical: 8),
+                      //           decoration: const BoxDecoration(
+                      //             borderRadius: BorderRadius.all(Radius.circular(1)),
+                      //             color: Colors.white,
+                      //           ),
+                      //           child:const LogoGif()
+               
+                      //         ),   
                       Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 8),
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(1)),
-                                  color: Colors.white,
-                                ),
-                                child:LogoGif()
-                                
-                      //            Row(
-                      //   mainAxisAlignment: MainAxisAlignment.start,
-                      //   children: [
-                      //     SvgPicture.asset(
-                      //       'assets/appConstantImg/app_icon.svg',
-                      //       height: 40,
-                      //     ),
-                      //     Image.asset(
-                      //       'assets/appConstantImg/colorlogoword.png',
-                      //       height: 30,
-                      //     ),
-                      //   ],
-                      // ),
-                              ),   
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.5,
+                        // height: MediaQuery.of(context).size.height * 0.5,
                         //padding: const EdgeInsets.all(20),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: const BoxDecoration(
@@ -110,55 +98,22 @@ class _RoleSelectionState extends State<RoleSelection> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            // Image.asset(
-                            //   'assets/appConstantImg/colorlogoword.png',
-                            //   height: 30,
-                            // ),
-                            // SizedBox(
-                            //   width: double.infinity,
-                            //   child: Stack(
-                            //     alignment: Alignment.centerLeft,
-                            //     children: [
-                            //       const Text(
-                            //         'hovee',
-                            //         style: TextStyle(
-                            //           color: Colors.white,
-                            //           fontWeight: FontWeight.w400,
-                            //           fontSize: 28,
-                            //         ),
-                            //       ),
-                            //       Positioned(
-                            //         bottom: 18, // Adjust this value as needed
-                            //         left: 70, // Align with the start of "hovee"
-                            //         child: Text(
-                            //           'e-attendance',
-                            //           style: GoogleFonts.nunito(
-                            //               fontSize: 18.0, color: Color(0xffFFA012)),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            // Container(
-                               
-                            //     padding: const EdgeInsets.symmetric(
-                            //         horizontal: 40, vertical: 8),
-                            //     decoration: const BoxDecoration(
-                            //       borderRadius: BorderRadius.all(Radius.circular(18)),
-                            //       color: Colors.white,
-                            //     ),
-                            //     child: LogoGif()
-                            //   ),
-                        
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                              child: const Text(
+                            const SizedBox(
+                              height: 30,
+                            ),
+                         
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Text(
                                 'Select your role',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400,
                                     fontSize: 24),
                               ),
+                            ),
+                              const SizedBox(
+                              height: 30,
                             ),
                             // Roles ListView.builder
                             Padding(
@@ -301,6 +256,10 @@ class _RoleSelectionState extends State<RoleSelection> {
                                 ),
                               ),
                             // Get It Button
+
+                              const SizedBox(
+                              height: 30,
+                            ),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20),
                               child: InkWell(
@@ -353,6 +312,9 @@ class _RoleSelectionState extends State<RoleSelection> {
                                   ),
                                 ),
                               ),
+                            ),
+                              const SizedBox(
+                              height: 30,
                             ),
                           ],
                         ),

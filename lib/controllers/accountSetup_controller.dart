@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
@@ -8,12 +7,12 @@ import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
-import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geocoding/geocoding.dart';
 
 class AccountSetupController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -96,6 +95,7 @@ class AccountSetupController extends GetxController
     authControllers = Get.find<AuthControllers>();
     tabController = TabController(length: 3, vsync: this);
     _populateFieldsFromAuth();
+    _populateAddressFromLocation();
     //loadAppConfigData();
     qualifications = getQualifications();
     techs = getTechs();
@@ -103,6 +103,30 @@ class AccountSetupController extends GetxController
     tuteeQualifications = getTuteeQualifications();
     skills = getSkills();
     tuteeSpeciallizationClass = getSkills();
+  }
+
+  void _populateAddressFromLocation() async {
+    final prefs = await SharedPreferences.getInstance();
+    Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
+    latitude = prefs.getDouble('latitude');
+    longitude = prefs.getDouble('longitude');
+    try {
+      List<Placemark>? placemarks =
+          await placemarkFromCoordinates(latitude ?? 0.0, longitude ?? 0.0);
+      if (placemarks != null && placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+
+        address1Controller.text = place.subThoroughfare ?? "";
+        address2Controller.text =
+            place.thoroughfare ?? "" + "" + place.subLocality! ?? "";
+        cityController.text = place.locality ?? "";
+        stateController.text = place.administrativeArea ?? "";
+        countryController.text = place.country ?? "";
+        pincodesController.text = place.postalCode ?? "";
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   void _populateFieldsFromAuth() {
@@ -441,25 +465,25 @@ class AccountSetupController extends GetxController
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
     Logger().i(personalInfo.value);
-     final prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
     latitude = prefs.getDouble('latitude');
     longitude = prefs.getDouble('longitude');
     isLoading.value = true;
     try {
       http.StreamedResponse response = await webService.submitTuteeAccountSetup(
-        token: token, // Add the actual token here
-        personalInfo: personalInfo.value,
-        addressInfo: addressInfo.value,
-        educationInfo: tuteEducationInfo.value,
-         latitude: latitude.toString(),
+          token: token, // Add the actual token here
+          personalInfo: personalInfo.value,
+          addressInfo: addressInfo.value,
+          educationInfo: tuteEducationInfo.value,
+          latitude: latitude.toString(),
           longitude: longitude.toString()
-        // resumePath: '',
-        // educationCertPath: '',
-        // experienceCertPath: '',
-        // roleId:roleId ,
-        // roleTypeId: roleTypeId
-      );
+          // resumePath: '',
+          // educationCertPath: '',
+          // experienceCertPath: '',
+          // roleId:roleId ,
+          // roleTypeId: roleTypeId
+          );
       if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
         print(responseBody);

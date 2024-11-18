@@ -88,6 +88,6 @@ windows/flutter/
 macos/Flutter/
 linux/flutter/
 *.lock
-*.swift
+# *.swift
 *.cmake
 *.cc

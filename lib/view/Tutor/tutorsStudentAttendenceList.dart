@@ -371,12 +371,12 @@ class StudentAttendanceList extends StatelessWidget {
                           //     fontSize: 17,
                           //     fontWeight: FontWeight.w700,
                           //     color: Colors.black)),
-                          Text('Time in',
+                          Text('Punch in',
                               style: GoogleFonts.nunito(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.black)),
-                          Text('Time out',
+                          Text('Punch out',
                               style: GoogleFonts.nunito(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w700,

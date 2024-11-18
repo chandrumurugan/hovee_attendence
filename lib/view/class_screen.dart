@@ -149,7 +149,7 @@ class TutorClassList extends StatelessWidget {
                                   'Subject', tutionCourseDetailsList.subject),
 
                               _buildRow(
-                                  'Status', tutionCourseDetailsList.status),
+                                  'Status', tutionCourseDetailsList.status == "Public" ? "Live" : "Pending"),
 
                               // Display the button only if selectedTabIndex is 0 (Draft tab)
                               if (classController.selectedTabIndex.value == 0)
@@ -241,6 +241,7 @@ class TutorClassList extends StatelessWidget {
                                       tutionCourseDetailsList.batchName!,
                                       tutionCourseDetailsList.sId,
                                     );
+                                    classController.tabController.animateTo(1);
           Navigator.of(context).pop();
         },
       );

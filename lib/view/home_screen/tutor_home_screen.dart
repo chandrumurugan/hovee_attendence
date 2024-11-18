@@ -58,7 +58,7 @@ class TutorHome extends StatelessWidget {
                 const SizedBox(
                   width: 30,
                 ),
-                LogoGif()
+                const LogoGif()
                 // SvgPicture.asset(
                 //   'assets/appbar/hovee_attendance_app_icon_.svg',
                 //   height: 40,
@@ -109,7 +109,7 @@ class TutorHome extends StatelessWidget {
                  controller.qrcodeImageData!
                );
                 },
-                icon: Icon(Icons.qr_code))
+                icon: const Icon(Icons.qr_code))
           ],
         ),
         centerTitle: false,
@@ -179,7 +179,7 @@ class TutorHome extends StatelessWidget {
                                 TutorBatchList()); // Navigate to the batch screen
                           } else if (item['title'] == 'Courses') {
                             Get.to(() =>
-                                TutorCourseList()); // Navigate to the course screen
+                                const TutorCourseList()); // Navigate to the course screen
 
                                 } else if (item['title'] == 'Attendance') {
                             Get.to(() => StudentAttendanceList(type: 'Tutor',)); // Navigate to the course screen
@@ -262,7 +262,7 @@ class TutorHome extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Image.memory(qrCodeUrl!),
               // CachedNetworkImage(
               //   imageUrl: qrCodeUrl,
@@ -271,17 +271,17 @@ class TutorHome extends StatelessWidget {
               //   width: 200,
               //   height: 200,
               // ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: () {
                   Share.share(qrCodeUrl.toString(), subject: 'QR Code');
                 },
-                icon: Icon(Icons.share),
-                label: Text('Share'),
+                icon: const Icon(Icons.share),
+                label: const Text('Share'),
               ),
-              SizedBox(height: 16),
-              SizedBox(height: 16),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
+              const SizedBox(height: 16),
+              const SizedBox(height: 16),
             ],
           ),
         );
@@ -350,7 +350,7 @@ class HomePageHeader extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                            children: [
                              Text('${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 24.0,
                                   color: Colors.white,
@@ -407,7 +407,7 @@ class HomePageHeader extends StatelessWidget {
                         ),
                         Text(
                             '${authController.otpResponse.value.data!.wowId!}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 13.0,
                               color: Colors.white,
@@ -429,6 +429,7 @@ class HomePageHeader extends StatelessWidget {
                     color: Colors.white),
               ),
             ),
+            if(userType == "Tutor")
             const SizedBox(
               height: 20,
             ),

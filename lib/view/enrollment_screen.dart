@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -7,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
-import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:pinput/pinput.dart';
 
@@ -60,11 +58,14 @@ class EnrollmentScreen extends StatelessWidget {
           // Tabs for Active and Inactive
           TabBar(
             controller: controller.tabController,
-            tabs: [
+            tabs: const [
               Tab(text: 'Pending'),
               Tab(text: 'Accepted'),
               Tab(text: 'Rejected'),
             ],
+            onTap: (value) {
+              controller.handleTabChange(value);
+            },
           ),
           // Display List based on the selected tab
           Expanded(
@@ -124,7 +125,7 @@ class EnrollmentScreen extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height: 5),
-                              // Display "Accept" and "Reject" buttons outside the column
+                              // Display "Accept" and "Reject" buttons outide the column
                               if ((controller.selectedTabIndex.value == 0 && type == 'Tutee'))
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -132,7 +133,7 @@ class EnrollmentScreen extends StatelessWidget {
                                     Expanded(
                                       child: InkWell(
                                         onTap: () {
-                                          _showOtpDialog(context, enrollmentList.sId!);
+                                          _showOtpDialog(context,enrollmentList.id! );//enrollmentList.id!
                                         },
                                         child: Container(
                                           width: double.infinity,
@@ -140,7 +141,7 @@ class EnrollmentScreen extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(8),
                                             gradient: LinearGradient(
-                                              colors: [Color(0xFFBA0161), Color(0xFF510270)],
+                                              colors: const [Color(0xFFBA0161), Color(0xFF510270)],
                                               begin: Alignment.topCenter,
                                               end: Alignment.bottomCenter,
                                             ),
@@ -160,7 +161,7 @@ class EnrollmentScreen extends StatelessWidget {
                                     Expanded(
                                       child: InkWell(
                                         onTap: () {
-                                          controller.updateEnrollment(enrollmentList.sId!, 'Rejected',enrollmentList.sId!);
+                                          controller.updateEnrollment(enrollmentList.id!, 'Rejected',enrollmentList.id!);
                                         },
                                         child: Container(
                                           width: double.infinity,
@@ -168,7 +169,7 @@ class EnrollmentScreen extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(8),
                                             gradient: LinearGradient(
-                                              colors: [Color(0xFFBA0161), Color(0xFF510270)],
+                                              colors: const [Color(0xFFBA0161), Color(0xFF510270)],
                                               begin: Alignment.topCenter,
                                               end: Alignment.bottomCenter,
                                             ),
@@ -327,7 +328,7 @@ void _showOtpDialog(BuildContext context, String enrollmentId) {
             child: Ink(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Color(0xFFBA0161), Color(0xFF510270)],
+                  colors: const [Color(0xFFBA0161), Color(0xFF510270)],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                 ),

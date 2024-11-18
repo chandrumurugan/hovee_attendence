@@ -945,8 +945,9 @@ class WebService {
     }
   }
 
-   static Future<getEnrollmentModel> getEnrollment( Map<String, dynamic> batchData) async {
-    final url = Uri.parse('${baseUrl}attendane/getEnrollment');
+   static Future<GetEnrollmentModel?> getEnrollment( Map<String, dynamic> batchData) async {
+    try {
+       final url = Uri.parse('${baseUrl}attendane/getEnrollment');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     final token = box.read('Token') ?? '';
@@ -959,12 +960,21 @@ class WebService {
         'Content-Type': 'application/json',
       },
     );
+    Logger().i(token);
+
+    Logger().i(response.body);
 
     if (response.statusCode == 200) {
-      return getEnrollmentModel.fromJson(json.decode(response.body));
+      return GetEnrollmentModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load Enquir list');
+    } 
+    } catch (e) {
+     
+      print(e); 
+       return null;
     }
+   
   }
 
   static Future<updateEnquiryStatusModel?> updateEnrollment(

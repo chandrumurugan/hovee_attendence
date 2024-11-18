@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hovee_attendence/controllers/attendance_controller.dart';
-import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getEnquireList_model.dart';
 import 'package:hovee_attendence/modals/updateEnquire_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
-import 'package:hovee_attendence/utils/snackbar_utils.dart';
 
 class EnquirDetailController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -26,45 +23,71 @@ class EnquirDetailController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    // Initialize TabController with three tabs
+
     tabController = TabController(length: 3, vsync: this);
-    tabController.addListener(() {
-      selectedTabIndex.value = tabController.index;
-
-      // Update type based on the selected tab index
-      String type;
-      if (tabController.index == 0) {
-        type = "Pending";
-      } else if (tabController.index == 1) {
-        type = "Accepted";
-      } else {
-        type = "Rejected";
-      }
-
-      // Fetch the list based on the selected type
-      fetchEnquirList(type);
-    });
 
     // Initially load "Pending" list
     fetchEnquirList("Pending");
   }
 
-  void fetchEnquirList(String type) async {
+    void handleTabChange(int index) {
+    // Determine the type based on the selected tab index
+    String type = _getTypeFromIndex(index);
+     selectedTabIndex.value = index;
+
+    // Fetch the list for the selected type
+    fetchEnquirList(type);
+
+    // Animate to the appropriate tab
+    tabController.animateTo(index);
+  }
+
+  String _getTypeFromIndex(int index) {
+    switch (index) {
+      case 0:
+        return "Pending";
+      case 1:
+        return "Approved";
+      case 2:
+        return "Rejected";
+      default:
+        return "Pending";
+    }
+  }
+
+   void fetchEnquirList(String type) async {
     try {
-      var batchData = {
-        "status": type,
-      };
       isLoading(true);
+
+      var batchData = {"status": type};
       var classesResponse = await WebService.fetchEnquireList(batchData);
+
       if (classesResponse.data != null) {
         enquirList.value = classesResponse.data!;
       }
     } catch (e) {
-      // Handle errors if needed
+      // Handle errors
     } finally {
       isLoading(false);
     }
   }
+
+  // void fetchEnquirList(String type) async {
+  //   try {
+  //     var batchData = {
+  //       "status": type,
+  //     };
+  //     isLoading(true);
+  //     var classesResponse = await WebService.fetchEnquireList(batchData);
+  //     if (classesResponse.data != null) {
+  //       enquirList.value = classesResponse.data!;
+  //     }
+  //   } catch (e) {
+  //     // Handle errors if needed
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
 
   void updateEnquire(String enquiryId,String type ) async {
       isLoading.value = true;

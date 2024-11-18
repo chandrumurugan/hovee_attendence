@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:hovee_attendence/utils/keyBoardActiontils.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CommonInputField extends StatelessWidget {
  // final String title; // Title of the input field
@@ -29,7 +31,7 @@ class CommonInputField extends StatelessWidget {
     this.suffixText,
     this.hintText, this.readonly, // Add hintText parameter
   }) : super(key: key);
-
+   final FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -40,26 +42,31 @@ class CommonInputField extends StatelessWidget {
     textEditingController.addListener(() {
       controllerValue.value = textEditingController.text;
     });
-      return TextField(
-        keyboardType: keyboardType,
-        inputFormatters: inputFormatters,
-        decoration: InputDecoration(
-          hintText: hintText, // Set the hint text here
-          //labelText: title, // Optional: Use title as label text
-          prefixText: prefixText,
-          suffixText: suffixText,
-          filled: true,
-          fillColor: Colors.grey[200],
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14.0),
-            borderSide: BorderSide.none,
+      return KeyboardActions(
+          disableScroll: true,
+         config: KeyboardActionsUtils.getKeyboardActionsConfig(_focusNode,keyboardType ?? TextInputType.name),
+        child: TextField(
+          keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
+          focusNode: _focusNode,
+          decoration: InputDecoration(
+            hintText: hintText, // Set the hint text here
+            //labelText: title, // Optional: Use title as label text
+            prefixText: prefixText,
+            suffixText: suffixText,
+            filled: true,
+            fillColor: Colors.grey[200],
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(14.0),
+              borderSide: BorderSide.none,
+            ),
           ),
+          readOnly: readonly ?? false,
+          onTap: () {
+            onTap();
+          },
+        controller: controller,
         ),
-        readOnly: readonly ?? false,
-        onTap: () {
-          onTap();
-        },
-      controller: controller,
       );
     });
   }

@@ -17,7 +17,7 @@ class SnackBarUtils {
   static void showSuccessSnackBar(BuildContext context, String message) {
     showTopSnackBar(
       Overlay.of(context),
-      CustomSnackBar.success(message: message),
+      CustomSnackBar.success(message: message,backgroundColor: Color.fromRGBO(186, 1, 97, 1),),
     );
   }
 

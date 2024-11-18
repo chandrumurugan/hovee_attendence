@@ -351,14 +351,14 @@ class TuteeAttendanceList extends StatelessWidget {
                         color: Colors.black)),
               ),
               Expanded(
-                child: Text('Time In',
+                child: Text('Punch In',
                     style: GoogleFonts.nunito(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                         color: Colors.black)),
               ),
               Expanded(
-                child: Text('Time Out',
+                child: Text('Punch Out',
                     style: GoogleFonts.nunito(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,

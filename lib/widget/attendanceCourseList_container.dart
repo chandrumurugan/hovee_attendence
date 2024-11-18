@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
-import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/punch_view.dart';
-import 'package:hovee_attendence/view/qrscanner_screen.dart';
 
 class AttendancecourselistContainer extends StatelessWidget {
   final Data attendanceCourse;
@@ -45,18 +42,22 @@ class AttendancecourselistContainer extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
-                  Text(
-                    " ${attendanceCourse.course!.className!} - ${attendanceCourse.course!.subject!}",
-                    maxLines: 2, // Restrict to one line
-                    overflow: TextOverflow
-                        .ellipsis, // Add ellipsis if the text overflows
-                    style: GoogleFonts.nunito(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                  SizedBox(
+                       width: MediaQuery.of(context).size.width * 0.4,
+                    child: Text(
+                      "${attendanceCourse.course!.className!} - ${attendanceCourse.course!.subject!}",
+                      maxLines: 2, // Restrict to one line
+                      overflow: TextOverflow
+                          .ellipsis, // Add ellipsis if the text overflows
+                      style: GoogleFonts.nunito(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
                   ),
                   Text(
-                    " ${attendanceCourse.batch!.batchTimingStart} - ${attendanceCourse.batch!.batchTimingEnd}",
+                    "${attendanceCourse.batch!.batchTimingStart} - ${attendanceCourse.batch!.batchTimingEnd}",
+                    
                     style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
