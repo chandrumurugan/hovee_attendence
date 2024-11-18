@@ -281,25 +281,25 @@ class TuteeAttendanceList extends StatelessWidget {
                                 barChart(
                                   color: Color(0xff014EA9),
                                   count:
-                                      '${controller.data?.statusCounts?.totalStudents ?? 0}',
+                                      '${controller.dataTutee?.statusCounts?.totalStudents ?? 0}',
                                   title: 'All',
                                 ),
                                 barChart(
                                   color: Color(0xffF07721),
                                   count:
-                                      '${controller.data?.statusCounts?.present ?? 0}',
+                                      '${controller.dataTutee?.statusCounts?.present ?? 0}',
                                   title: 'Present',
                                 ),
                                 barChart(
                                   color: Color(0xffAD0F60),
                                   count:
-                                      '${controller.data?.statusCounts?.absent ?? 0}',
+                                      '${controller.dataTutee?.statusCounts?.absent ?? 0}',
                                   title: 'Absent',
                                 ),
                                 barChart(
                                   color: Color(0xff2E5BB5),
                                   count:
-                                      '${controller.data?.statusCounts?.partialAttendance ?? 0}',
+                                      '${controller.dataTutee?.statusCounts?.partialAttendance ?? 0}',
                                   title: 'P.Attend',
                                 ),
                               ],

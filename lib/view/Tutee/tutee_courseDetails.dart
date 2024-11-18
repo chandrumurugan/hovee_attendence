@@ -32,6 +32,7 @@ class CourseDetailScreen extends StatelessWidget {
             onTap2: () {
               Get.off(PreviewScreen(
                 data: data,
+                type: 'Course',
               ));
             }),
         body: SingleChildScrollView(

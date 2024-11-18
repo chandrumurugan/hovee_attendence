@@ -15,18 +15,32 @@ import 'package:url_launcher/url_launcher.dart';
 class CourseDetailController extends GetxController {
   var isLoading = true.obs;
   var classesList = [].obs;
-  String? username, email, phoneNumber, organizationName;
+  String? username, email, phoneNumber, organizationName,storedAddress ;
  final UserProfileController controller =
       Get.put(UserProfileController());
-  void getClassTuteeById(BuildContext context, String className, String subject,
-      String TutorId) async {
-       controller. fetchUserProfiles();
-    isLoading.value = true;
-    final storage = GetStorage();
-    username = storage.read('firstName');
+
+      @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    fetchUserDeatils();
+  }
+   void fetchUserDeatils(){
+         controller. fetchUserProfiles();
+          final storage = GetStorage();
+          username = storage.read('firstName');
     email = storage.read('email');
     phoneNumber = storage.read('phoneNumber');
     organizationName = storage.read('organizationNames');
+    storedAddress = storage.read('address');
+    }
+  
+  void getClassTuteeById(BuildContext context, String className, String subject,
+      String TutorId) async {
+     
+    isLoading.value = true;
+   
+   
     try {
       var batchData = {
         'className': className,

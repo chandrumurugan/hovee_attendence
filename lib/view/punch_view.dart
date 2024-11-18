@@ -93,6 +93,7 @@ class PunchView extends StatelessWidget {
             _controller.currentAddress.value.toString().trim() == ""
                 ? SizedBox()
                 : AddressIndicator(
+                   name: _controller.name ?? '',
                     address: _controller.currentAddress.value ?? "",
                   ),
           ],

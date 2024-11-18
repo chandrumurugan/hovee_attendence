@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/view/enrollment_preview_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:pinput/pinput.dart';
 
@@ -88,106 +89,114 @@ class EnrollmentScreen extends StatelessWidget {
                   itemCount: controller.enrollmentList.length,
                   itemBuilder: (context, index) {
                     final enrollmentList = controller.enrollmentList[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                      child: Card(
-                        elevation: 10,
-                        shadowColor: Colors.black,
-                        surfaceTintColor: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundColor: Colors.grey,
-                                    child: Icon(
-                                      Icons.person,
-                                      color: Colors.white,
-                                      size: 30,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        _buildRow('Tutee name', enrollmentList.tutorName),
-                                        _buildRow('Start Date', enrollmentList.startDate),
-                                        _buildRow('End Date', enrollmentList.endDate),
-                                        _buildRow('Status', enrollmentList.status),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 5),
-                              // Display "Accept" and "Reject" buttons outide the column
-                              if ((controller.selectedTabIndex.value == 0 && type == 'Tutee'))
+                    return GestureDetector(
+                      onTap: (){
+                        Get.to(EnRollmentPreviewScreen(
+                data: enrollmentList,
+                type: 'Enquire',
+              ));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                        child: Card(
+                          elevation: 10,
+                          shadowColor: Colors.black,
+                          surfaceTintColor: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: () {
-                                          _showOtpDialog(context,enrollmentList.id! );//enrollmentList.id!
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          padding: const EdgeInsets.symmetric(vertical: 10),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(8),
-                                            gradient: LinearGradient(
-                                              colors: const [Color(0xFFBA0161), Color(0xFF510270)],
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                            ),
-                                          ),
-                                          child: Text(
-                                            "Submit",
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.nunito(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 20,
-                                                color: Colors.white),
-                                          ),
-                                        ),
+                                    CircleAvatar(
+                                      radius: 30,
+                                      backgroundColor: Colors.grey,
+                                      child: Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                        size: 30,
                                       ),
                                     ),
                                     const SizedBox(width: 10),
                                     Expanded(
-                                      child: InkWell(
-                                        onTap: () {
-                                          controller.updateEnrollment(enrollmentList.id!, 'Rejected',enrollmentList.id!);
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          padding: const EdgeInsets.symmetric(vertical: 10),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(8),
-                                            gradient: LinearGradient(
-                                              colors: const [Color(0xFFBA0161), Color(0xFF510270)],
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                            ),
-                                          ),
-                                          child: Text(
-                                            "Reject",
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.nunito(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 20,
-                                                color: Colors.white),
-                                          ),
-                                        ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          _buildRow('Tutee name', enrollmentList.tutorName),
+                                          _buildRow('Start Date', enrollmentList.startDate),
+                                          _buildRow('End Date', enrollmentList.endDate),
+                                          _buildRow('Status', enrollmentList.status),
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
-                            ],
+                                SizedBox(height: 5),
+                                // Display "Accept" and "Reject" buttons outide the column
+                                if ((controller.selectedTabIndex.value == 0 && type == 'Tutee'))
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () {
+                                            _showOtpDialog(context,enrollmentList.id! );//enrollmentList.id!
+                                          },
+                                          child: Container(
+                                            width: double.infinity,
+                                            padding: const EdgeInsets.symmetric(vertical: 10),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(8),
+                                              gradient: LinearGradient(
+                                                colors: const [Color(0xFFBA0161), Color(0xFF510270)],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              "Submit",
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.nunito(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 20,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () {
+                                            controller.updateEnrollment(enrollmentList.id!, 'Rejected',enrollmentList.id!);
+                                          },
+                                          child: Container(
+                                            width: double.infinity,
+                                            padding: const EdgeInsets.symmetric(vertical: 10),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(8),
+                                              gradient: LinearGradient(
+                                                colors: const [Color(0xFFBA0161), Color(0xFF510270)],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              "Reject",
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.nunito(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 20,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

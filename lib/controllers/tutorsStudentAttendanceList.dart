@@ -134,13 +134,13 @@ class StudentAttendanceController extends GetxController {
         if (groupedEnrollmentByBatchResponse?.data != null){
             dataTutee = groupedEnrollmentByBatchResponse!.data;
             print(dataTutee);
-            // attendanceData.value = [
-            //   AttendanceData(category: "All", percentage: data!.statusCounts!.totalStudents!.toDouble(), pointColor: const Color(0xff014EA9)),
-            //     AttendanceData(category: "Present", percentage: data!.statusCounts!.present!.toDouble(), pointColor: const Color(0xffF07721)),
-            //       AttendanceData(category: "Absent", percentage: data!.statusCounts!.totalStudents!.toDouble(), pointColor: const Color(0xffAD0F60)),
-            //         AttendanceData(category: "Partial\nAttendance", percentage: data!.statusCounts!.partialAttendance!.toDouble(), pointColor: Color(0xff2E5BB5)),
+            attendanceData.value = [
+              AttendanceData(category: "All", percentage: dataTutee!.statusCounts!.totalStudents!.toDouble(), pointColor: const Color(0xff014EA9)),
+                AttendanceData(category: "Present", percentage: dataTutee!.statusCounts!.present!.toDouble(), pointColor: const Color(0xffF07721)),
+                  AttendanceData(category: "Absent", percentage: dataTutee!.statusCounts!.totalStudents!.toDouble(), pointColor: const Color(0xffAD0F60)),
+                    AttendanceData(category: "Partial\nAttendance", percentage: dataTutee!.statusCounts!.partialAttendance!.toDouble(), pointColor: Color(0xff2E5BB5)),
 
-            // ];
+            ];
         }
    
 

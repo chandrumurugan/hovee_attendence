@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hovee_attendence/constants/common_function.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
@@ -52,7 +54,9 @@ class PunchController extends GetxController {
   );
 
   var hasScanned = false.obs;
-
+  String? name;
+  UserProfileController accountController = Get.put(UserProfileController());
+   
   @override
   void onInit() {
     super.onInit();
@@ -73,7 +77,7 @@ class PunchController extends GetxController {
     try {
       print("object");
       final prefs = await SharedPreferences.getInstance();
-
+      final storage = GetStorage();
 // Retrieve latitude and longitude, providing default values if null
       double latitude = prefs.getDouble('latitude') ?? 0.0;
       double longitude = prefs.getDouble('longitude') ?? 0.0;
@@ -90,13 +94,15 @@ class PunchController extends GetxController {
 
       Get.log("currentLocation.value ${currentLocation.value}");
       Get.log("targetLocation.value ${targetLocation.value}");
+       
+     name = storage.read('firstName');
       markers.add(Marker(
         markerId: const MarkerId("currentLocation"),
         position: currentLocation.value!,
         // icon: await  icon,
         //fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,), "assets/appbar/placeholder (1).png",),
         icon: await const MarkerWidget(
-          imagePath: 'assets/appbar/Tutee Location Icon (1) (1).svg',
+          imagePath: 'assets/appbar/Tutee Location Icon.svg',
         ).toBitmapDescriptor(
           logicalSize: const Size(150, 150),
           imageSize: const Size(400, 400),
@@ -108,7 +114,7 @@ class PunchController extends GetxController {
         position: targetLocation.value!,
         // icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,size: Size.square(10.0)), "assets/appbar/location-mark (1).png"),
         icon: await const MarkerWidget(
-                imagePath: 'assets/appbar/Tutor Location Icon (2).svg')
+                imagePath: 'assets/appbar/Tutor Location Icon (1).svg')
             .toBitmapDescriptor(
           logicalSize: const Size(150, 150),
           imageSize: const Size(400, 400),

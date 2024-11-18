@@ -152,11 +152,21 @@ class UserProfileController extends GetxController
         storage.write('country', fetchProfile.data!.country);
         storage.write('pincode', fetchProfile.data!.pincode);
         storage.write('id', fetchProfile.data!.id);
-        storage.write('firstName', fetchProfile.data!.firstName);
+         String name = "${fetchProfile.data!.firstName} "
+    "${fetchProfile.data!.lastName}";
+     storage.write('firstName', name);
         storage.write('email', fetchProfile.data!.email);
         storage.write('phoneNumber', fetchProfile.data!.phoneNumber);
         storage.write('organizationNames', organizationName);
         storage.write('role', fetchProfile.data!.rolesId!.roleName!);
+        String address = "${fetchProfile.data!.doorNo}, "
+    "${fetchProfile.data!.street}, "
+    "${fetchProfile.data!.city}, "
+    "${fetchProfile.data!.state}, "
+    "${fetchProfile.data!.country} - "
+    "${fetchProfile.data!.pincode}";
+    storage.write('address', address);
+
         isLoading(false);
       } else {
         // SnackBarUtils.showErrorSnackBar(context, message)

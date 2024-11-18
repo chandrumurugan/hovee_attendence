@@ -10,10 +10,12 @@ import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 import 'package:hovee_attendence/widgets/preview_header.dart';
-
+import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 class PreviewScreen extends StatelessWidget {
-  final Data1? data;
-   PreviewScreen({super.key, this.data});
+ final dynamic data;
+ final String type;
+
+  PreviewScreen({super.key, required this.data, required this.type});
 
    
 final CourseDetailController controller = Get.put(CourseDetailController());
@@ -30,20 +32,20 @@ final CourseDetailController controller = Get.put(CourseDetailController());
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const PreviewHeader(
+             PreviewHeader(
               bgImage:
                   'assets/bgImage/teacherModel-removebg-preview-removebg-preview.jpg',
-              title: 'Maths',
-              subtitle: 'John Tution Centre',
+              title: data!.subject!,
+              subtitle: data!.courseCode!,
               ratingCount: '4.8',
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Text(
-                'Preview Details',
+                'Tutee Preview Details',
                 style: GoogleFonts.nunito(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
             ),
@@ -295,37 +297,37 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                     ),
                   )
           ,
-          Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 20),
-                      decoration: BoxDecoration(
-                          color: 
+          // Padding(
+          //           padding: const EdgeInsets.symmetric(horizontal: 14.0),
+          //           child: Container(
+          //             padding: const EdgeInsets.symmetric(
+          //                 horizontal: 10, vertical: 20),
+          //             decoration: BoxDecoration(
+          //                 color: 
                              
-                               Colors.white),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Board",
-                            style: GoogleFonts.nunito(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16),
-                          ),
-                          Text(
-                            data!.board!,
-                            style: GoogleFonts.nunito(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-          ,
+          //                      Colors.white),
+          //             child: Row(
+          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //               children: [
+          //                 Text(
+          //                   "Board",
+          //                   style: GoogleFonts.nunito(
+          //                       color: Colors.black,
+          //                       fontWeight: FontWeight.w400,
+          //                       fontSize: 16),
+          //                 ),
+          //                 Text(
+          //                   data!.board!,
+          //                   style: GoogleFonts.nunito(
+          //                       color: Colors.black,
+          //                       fontWeight: FontWeight.w400,
+          //                       fontSize: 16),
+          //                 )
+          //               ],
+          //             ),
+          //           ),
+          //         )
+          // ,
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -357,7 +359,7 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                   ),
                   Expanded(
                     child: Text(
-                     data!.address!,
+                     controller.storedAddress!??'',
                       style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -367,24 +369,212 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                   ),
                 ],
               ),
-            )
+            ),
+             SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(
+                'Tution Details',
+                style: GoogleFonts.nunito(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              ),
+            ),
+            SizedBox(height: 8,),
+            Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 20),
+                      decoration: BoxDecoration(
+                          color: 
+                             
+                               Colors.grey.shade300),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Subject",
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          ),
+                          Text(
+                           data!.subject?? '',
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+          ,
+          Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 20),
+                      decoration: BoxDecoration(
+                          color: 
+                             
+                               Colors.white),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Class",
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          ),
+                          Text(
+                            data!.className!??'',
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+          ,
+          Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 20),
+                      decoration: BoxDecoration(
+                          color: 
+                             
+                               Colors.grey.shade300),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Board",
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          ),
+                          Text(
+                         data!.board!??'',
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          )
+                        ],
+                      ),
+                    ),
+          ),
+          Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 20),
+                      decoration: BoxDecoration(
+                          color: 
+                             
+                               Colors.white),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Batch days",
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          ),
+                          Text(
+  type == 'Course'
+      ? (data!.workingDays?.join(', ') ?? '')
+      : (data!.batchDays  ?? ''),
+  style: GoogleFonts.nunito(
+    color: Colors.black,
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+  ),
+)
+
+                        ],
+                      ),
+                    ),
+                  )
+          ,
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Location',
+                style: GoogleFonts.nunito(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Container(
+                        height: 44,
+                        width: 47,
+                        decoration: BoxDecoration(
+                            color: Color(0xffD9D9D9).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(8)),
+                            child: Icon(Icons.location_on,size: 40,color: Colors.red,),
+                      ),
+                    ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Text(
+                      '',
+                     //data!.address??'',
+                      style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
        
       ),
-       bottomNavigationBar: SingleCustomButtom(
-        btnName: 'Submit',
-        isPadded: false,
-        onTap: () {
+       bottomNavigationBar: type == 'Course'
+      ? SingleCustomButtom(
+          btnName: 'Submit',
+          isPadded: false,
+          onTap: () {
             final storage = GetStorage();
-          final studentId= storage.read('id');
-          print(data!.courseId!);
-          print(studentId);
-          print(data!.tutorId!);
-          controller.addEnquirs(context, data!.courseId!,studentId, data!.tutorId!);
-          
-        },
-      ),
+            final studentId = storage.read('id');
+            print(data!.courseId!);
+            print(studentId);
+            print(data!.tutorId!);
+            controller.addEnquirs(
+              context,
+              data!.courseId!,
+              studentId,
+              data!.tutorId!,
+            );
+          },
+        )
+      : null,
     );
     
   }
