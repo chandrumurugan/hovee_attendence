@@ -244,8 +244,8 @@ class TutorClassList extends StatelessWidget {
                                       tutionCourseDetailsList.batchName!,
                                       tutionCourseDetailsList.sId,
                                     );
-                                    classController.tabController.animateTo(1);
-                                    classController.handleTabChange(1);
+                                    // classController.tabController.animateTo(1);
+                                    // classController.handleTabChange(1);
           Navigator.of(context).pop();
         },
       );

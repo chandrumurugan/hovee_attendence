@@ -87,7 +87,7 @@ class CourseDetailController extends GetxController {
           await WebService.addEnquirs(batchData);
 
       if (response != null && response.statusCode == 200) {
-         Get.snackbar('Enquiry submited successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+         Get.snackbar('Enquiry submitted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
         // SnackBarUtils.showSuccessSnackBar(
         //     context, 'Enquiry submited successfully');
           //Get.back();
@@ -121,7 +121,7 @@ class CourseDetailController extends GetxController {
         // onInit();
          Get.off(() => Tutorenquirlist(type: 'Tutee',)); 
       } else {
-       Get.snackbar('Enquiry already submitted',backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+       Get.snackbar('Enquiry already submitted',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
       }
     } catch (e) {
       SnackBarUtils.showErrorSnackBar(context, 'Error: $e');

@@ -184,8 +184,9 @@ class CourseListContainer extends StatelessWidget {
                             ? IconButton(
                                 onPressed: () {
                                   // Navigate to course details screen
+                                  type=='Tutee'?
                                    controller. getClassTuteeById(
-                                       context,className,subject,tutorId,tutorname);
+                                       context,className,subject,tutorId,tutorname):Container();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_forward_ios_rounded,

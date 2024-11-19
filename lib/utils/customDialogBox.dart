@@ -71,7 +71,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                             text: " ${widget.title1}",
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
-                                fontSize: 24,
+                                fontSize: 22,
                                 fontWeight: FontWeight.w400),
                           ),
                           TextSpan(

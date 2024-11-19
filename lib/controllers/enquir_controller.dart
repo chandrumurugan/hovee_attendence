@@ -41,7 +41,7 @@ class EnquirDetailController extends GetxController
     // Animate to the appropriate tab
     tabController.animateTo(index);
 
-    fetchEnquirList(type);
+    //fetchEnquirList(type);
   }
 
   String _getTypeFromIndex(int index) {
@@ -105,7 +105,7 @@ class EnquirDetailController extends GetxController
         if (response != null && response.statusCode == 200) {
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
-        Get.snackbar('Enquiry accepted successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+        Get.snackbar('Enquiry accepted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
         // fetchEnquirList('Pending');
         //       //Get.off(()=>TutorClassList());
         //       controller.onInit();

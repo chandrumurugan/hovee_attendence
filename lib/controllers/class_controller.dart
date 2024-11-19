@@ -126,9 +126,10 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
             await WebService.updateClass(batchData);
 
         if (response != null && response.statusCode == 200) {
-       Get.snackbar('Your class is now live',backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+       Get.snackbar('Your class is now live',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
        // onInit();
-       
+          tabController.animateTo(1);
+                                    handleTabChange(1);
         //  String currentType = selectedTabIndex.value == 0 ? "Draft" : "Public";
         // fetchClassesList(currentType);
         } else {

@@ -332,7 +332,7 @@ void _showOtpDialog(BuildContext context, String enrollmentId) {
     GetStorage().remove('otpCode');
                  Get.offAll(TuteeHome());
               } else {
-                Get.snackbar('Please enter OTP');
+                Get.snackbar('Please enter OTP',colorText: Colors.white);
               }
             },
             child: Ink(
