@@ -93,97 +93,128 @@
 // }
 
 class GetEnrollmentModel {
-    GetEnrollmentModel({
-        required this.statusCode,
-        required this.message,
-        required this.data,
-    });
+  int? statusCode;
+  String? message;
+  List<Data>? data;
 
-    final int statusCode;
-    final String message;
-    final List<Datum> data;
+  GetEnrollmentModel({this.statusCode, this.message, this.data});
 
-    factory GetEnrollmentModel.fromJson(Map<String, dynamic> json){ 
-        return GetEnrollmentModel(
-            statusCode: json["statusCode"] ?? 0,
-            message: json["message"] ?? "",
-            data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
-        );
+  GetEnrollmentModel.fromJson(Map<String, dynamic> json) {
+    statusCode = json['statusCode'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(new Data.fromJson(v));
+      });
     }
+  }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['statusCode'] = this.statusCode;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
-class Datum {
-    Datum({
-        required this.id,
-        required this.tutorId,
-        required this.studentId,
-        required this.courseId,
-        required this.batchId,
-        required this.rollNumber,
-        required this.startDate,
-        required this.endDate,
-        required this.tutorName,
-        required this.enquiryCode,
-        required this.status,
-        required this.entrollmentType,
-        required this.createdAt,
-        required this.v,
-    });
+class Data {
+  String? sId;
+  TutorId? tutorId;
+  TutorId? studentId;
+  String? courseId;
+  String? batchId;
+  String? rollNumber;
+  String? startDate;
+  String? endDate;
+  String? tutorName;
+  String? enquiryCode;
+  String? status;
+  String? entrollmentType;
+  String? createdAt;
+  int? iV;
 
-    final String id;
-    final Id? tutorId;
-    final Id? studentId;
-    final String courseId;
-    final String batchId;
-    final String rollNumber;
-    final String startDate;
-    final String endDate;
-    final String tutorName;
-    final String enquiryCode;
-    final String status;
-    final String entrollmentType;
-    final DateTime? createdAt;
-    final int v;
+  Data(
+      {this.sId,
+      this.tutorId,
+      this.studentId,
+      this.courseId,
+      this.batchId,
+      this.rollNumber,
+      this.startDate,
+      this.endDate,
+      this.tutorName,
+      this.enquiryCode,
+      this.status,
+      this.entrollmentType,
+      this.createdAt,
+      this.iV});
 
-    factory Datum.fromJson(Map<String, dynamic> json){ 
-        return Datum(
-            id: json["_id"] ?? "",
-            tutorId: json["tutorId"] == null ? null : Id.fromJson(json["tutorId"]),
-            studentId: json["studentId"] == null ? null : Id.fromJson(json["studentId"]),
-            courseId: json["courseId"] ?? "",
-            batchId: json["batchId"] ?? "",
-            rollNumber: json["rollNumber"] ?? "",
-            startDate: json["startDate"] ?? "",
-            endDate: json["endDate"] ?? "",
-            tutorName: json["tutorName"] ?? "",
-            enquiryCode: json["enquiryCode"] ?? "",
-            status: json["status"] ?? "",
-            entrollmentType: json["entrollmentType"] ?? "",
-            createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
-            v: json["__v"] ?? 0,
-        );
+  Data.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    tutorId =
+        json['tutorId'] != null ? new TutorId.fromJson(json['tutorId']) : null;
+    studentId = json['studentId'] != null
+        ? new TutorId.fromJson(json['studentId'])
+        : null;
+    courseId = json['courseId'];
+    batchId = json['batchId'];
+    rollNumber = json['rollNumber'];
+    startDate = json['startDate'];
+    endDate = json['endDate'];
+    tutorName = json['tutorName'];
+    enquiryCode = json['enquiryCode'];
+    status = json['status'];
+    entrollmentType = json['entrollmentType'];
+    createdAt = json['createdAt'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    if (this.tutorId != null) {
+      data['tutorId'] = this.tutorId!.toJson();
     }
-
+    if (this.studentId != null) {
+      data['studentId'] = this.studentId!.toJson();
+    }
+    data['courseId'] = this.courseId;
+    data['batchId'] = this.batchId;
+    data['rollNumber'] = this.rollNumber;
+    data['startDate'] = this.startDate;
+    data['endDate'] = this.endDate;
+    data['tutorName'] = this.tutorName;
+    data['enquiryCode'] = this.enquiryCode;
+    data['status'] = this.status;
+    data['entrollmentType'] = this.entrollmentType;
+    data['createdAt'] = this.createdAt;
+    data['__v'] = this.iV;
+    return data;
+  }
 }
 
-class Id {
-    Id({
-        required this.id,
-        required this.firstName,
-        required this.lastName,
-    });
+class TutorId {
+  String? sId;
+  String? firstName;
+  String? lastName;
 
-    final String id;
-    final String firstName;
-    final String lastName;
+  TutorId({this.sId, this.firstName, this.lastName});
 
-    factory Id.fromJson(Map<String, dynamic> json){ 
-        return Id(
-            id: json["_id"] ?? "",
-            firstName: json["first_name"] ?? "",
-            lastName: json["last_name"] ?? "",
-        );
-    }
+  TutorId.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+  }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['first_name'] = this.firstName;
+    data['last_name'] = this.lastName;
+    return data;
+  }
 }

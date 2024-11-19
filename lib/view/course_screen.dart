@@ -9,7 +9,8 @@ import 'package:hovee_attendence/widget/course_list_container.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class TutorCourseList extends StatefulWidget {
-  const TutorCourseList({super.key});
+   final String type;
+  const TutorCourseList({super.key, required this.type});
 
   @override
   State<TutorCourseList> createState() => _TutorCourseListState();
@@ -134,7 +135,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
                           std: course.className!,
                           medium: course.board!,
                           group: course.categories ?? '',         
-                          groupcode: course.courseCode!, className: '', tutorId: '',);
+                          groupcode: course.courseCode!, className: '', tutorId: '', batchname: course.batchName!, tutorname:'', type: widget.type,);
                     },
                     separatorBuilder: (context, int index) {
                       return const SizedBox(

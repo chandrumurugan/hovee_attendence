@@ -44,6 +44,8 @@ class Data {
   String? studentId;
   String? tutorId;
   String? studentName;
+  String? studentAddress;
+  String? tutorAddress;
   String? tutorName;
   String? enquiryMessage;
   String? enquiryType;
@@ -67,6 +69,8 @@ class Data {
       this.studentId,
       this.tutorId,
       this.studentName,
+      this.studentAddress,
+      this.tutorAddress,
       this.tutorName,
       this.enquiryMessage,
       this.enquiryType,
@@ -90,6 +94,8 @@ class Data {
     studentId = json['studentId'];
     tutorId = json['tutorId'];
     studentName = json['studentName'];
+    studentAddress = json['studentAddress'];
+    tutorAddress = json['tutorAddress'];
     tutorName = json['tutorName'];
     enquiryMessage = json['enquiryMessage'];
     enquiryType = json['enquiryType'];
@@ -115,6 +121,8 @@ class Data {
     data['studentId'] = this.studentId;
     data['tutorId'] = this.tutorId;
     data['studentName'] = this.studentName;
+    data['studentAddress'] = this.studentAddress;
+    data['tutorAddress'] = this.tutorAddress;
     data['tutorName'] = this.tutorName;
     data['enquiryMessage'] = this.enquiryMessage;
     data['enquiryType'] = this.enquiryType;

@@ -91,10 +91,10 @@ class EnrollmentScreen extends StatelessWidget {
                     final enrollmentList = controller.enrollmentList[index];
                     return GestureDetector(
                       onTap: (){
-                        Get.to(EnRollmentPreviewScreen(
-                data: enrollmentList,
-                type: 'Enquire',
-              ));
+              //           Get.to(EnRollmentPreviewScreen(
+              //   data: enrollmentList,
+              //   type: 'Enquire',
+              // ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
@@ -123,10 +123,11 @@ class EnrollmentScreen extends StatelessWidget {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          _buildRow('Tutee name', enrollmentList.tutorName),
+                                          _buildRow('Tutee name',  '${enrollmentList.studentId.firstName} ${enrollmentList.studentId.lastName}',),
                                           _buildRow('Start Date', enrollmentList.startDate),
                                           _buildRow('End Date', enrollmentList.endDate),
-                                          _buildRow('Status', enrollmentList.status),
+                                           _buildRow('Tutor name', '${enrollmentList.tutorId.firstName} ${enrollmentList.tutorId.lastName}',),
+                                         _buildRow('Status', enrollmentList.status == 'Approved' ? 'Accepted' : enrollmentList.status),
                                         ],
                                       ),
                                     ),
@@ -141,7 +142,7 @@ class EnrollmentScreen extends StatelessWidget {
                                       Expanded(
                                         child: InkWell(
                                           onTap: () {
-                                            _showOtpDialog(context,enrollmentList.id! );//enrollmentList.id!
+                                            _showOtpDialog(context,enrollmentList.sId! );//enrollmentList.id!
                                           },
                                           child: Container(
                                             width: double.infinity,
@@ -169,7 +170,7 @@ class EnrollmentScreen extends StatelessWidget {
                                       Expanded(
                                         child: InkWell(
                                           onTap: () {
-                                            controller.updateEnrollment(enrollmentList.id!, 'Rejected',enrollmentList.id!);
+                                            controller.updateEnrollment(enrollmentList.sId!, 'Rejected',enrollmentList.enquiryCode!);
                                           },
                                           child: Container(
                                             width: double.infinity,
@@ -376,7 +377,7 @@ void _showOtpDialog(BuildContext context, String enrollmentId) {
         ),
         Text(
           value ?? '',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
         ),
       ],
     );

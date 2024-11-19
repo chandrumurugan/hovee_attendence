@@ -50,6 +50,7 @@ class StudentAttendanceController extends GetxController {
   ];
 
    String? type;
+    var isCalendarVisible = false.obs;
     StudentAttendanceController(this.type);
 
   @override

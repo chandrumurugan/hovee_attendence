@@ -133,11 +133,11 @@ if (validateFields(context)) {
         final addEnrollmentDataModel? response = await WebService.addEnrollment(data);
 
         if (response != null && response.statusCode == 200) {
-          SnackBarUtils.showSuccessSnackBar(context, 'Enrollment submitted successfully');
+           Get.snackbar( 'Enrollment submitted successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1));
            Get.off(()=> EnrollmentScreen(type: entrollmentType,));
           
         } else {
-          SnackBarUtils.showErrorSnackBar(context, response?.message ?? 'Failed to add Enrollment');
+          Get.snackbar( response?.message ?? 'Failed to add Enrollment',backgroundColor: Color.fromRGBO(186, 1, 97, 1));
         }
       } catch (e) {
         SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
@@ -182,7 +182,7 @@ if (validateFields(context)) {
         if (response != null && response.statusCode == 200) {
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
-        Get.snackbar('Enrollment Accepted successfully');
+        Get.snackbar('You are enrolled successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1));
         fetchEnrollmentList('Pending');
               //Get.off(()=>TutorClassList());
         } else {

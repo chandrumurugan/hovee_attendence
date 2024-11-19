@@ -56,6 +56,7 @@ class PunchController extends GetxController {
   var hasScanned = false.obs;
   String? name;
   UserProfileController accountController = Get.put(UserProfileController());
+   var draggablePosition = Rx<Offset>(Offset(50, 50));
    
   @override
   void onInit() {
@@ -102,7 +103,7 @@ class PunchController extends GetxController {
         // icon: await  icon,
         //fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,), "assets/appbar/placeholder (1).png",),
         icon: await const MarkerWidget(
-          imagePath: 'assets/appbar/Tutee Location Icon.svg',
+          imagePath: 'assets/appbar/Tutee_Location_updated_01.svg',
         ).toBitmapDescriptor(
           logicalSize: const Size(150, 150),
           imageSize: const Size(400, 400),
@@ -114,7 +115,7 @@ class PunchController extends GetxController {
         position: targetLocation.value!,
         // icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,size: Size.square(10.0)), "assets/appbar/location-mark (1).png"),
         icon: await const MarkerWidget(
-                imagePath: 'assets/appbar/Tutor Location Icon (1).svg')
+                imagePath: 'assets/appbar/Tutor_location_icon_updated_03.svg')
             .toBitmapDescriptor(
           logicalSize: const Size(150, 150),
           imageSize: const Size(400, 400),
@@ -406,5 +407,9 @@ class PunchController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+   void updateDraggablePosition(Offset delta) {
+    draggablePosition.value += delta;
   }
 }

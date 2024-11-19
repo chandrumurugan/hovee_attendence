@@ -87,6 +87,7 @@ class Tutorenquirlist extends StatelessWidget {
                          Get.to(PreviewScreen(
                 data: tutionCourseDetailsList,
                 type: 'Enquire',
+                tutorname: tutionCourseDetailsList.tutorName!,
               ));
                       },
                       child: Padding(
@@ -123,17 +124,17 @@ class Tutorenquirlist extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           _buildRow(
-                                              'Student name',
+                                              'Tutee name',
                                               tutionCourseDetailsList
                                                   .studentName),
                                           _buildRow('Course code',
                                               tutionCourseDetailsList.courseCode),
-                                          _buildRow('CourseName',
+                                          _buildRow('Batch name',
                                               tutionCourseDetailsList.courseName),
                                           _buildRow('Subject',
                                               tutionCourseDetailsList.subject),
-                                          _buildRow('Date',
-                                              tutionCourseDetailsList.batchDays),
+                                          _buildRow('Tutor name',
+                                              tutionCourseDetailsList.tutorName ),
                                         ],
                                       ),
                                     ),
@@ -326,7 +327,7 @@ class Tutorenquirlist extends StatelessWidget {
         Text(
           value ?? '',
           style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
+              color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
         ),
       ],
     );
@@ -387,6 +388,7 @@ class Tutorenquirlist extends StatelessWidget {
             classController.updateEnquire(
                 tutionCourseDetailsList.enquiryId!, 'Approved');
                 classController.tabController.animateTo(1);
+                classController.handleTabChange(1);
             Navigator.of(context).pop(); // Close the dialog after update
           },
         );

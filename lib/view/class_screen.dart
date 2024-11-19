@@ -98,6 +98,9 @@ class TutorClassList extends StatelessWidget {
               Tab(text: 'Pending'),
               Tab(text: 'Live'),
             ],
+            onTap: (value) {
+               classController.handleTabChange(value);
+            }
           ),
           //Display List based on the selected tab
           Expanded(
@@ -242,6 +245,7 @@ class TutorClassList extends StatelessWidget {
                                       tutionCourseDetailsList.sId,
                                     );
                                     classController.tabController.animateTo(1);
+                                    classController.handleTabChange(1);
           Navigator.of(context).pop();
         },
       );

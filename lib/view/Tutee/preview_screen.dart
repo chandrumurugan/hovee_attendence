@@ -14,8 +14,8 @@ import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 class PreviewScreen extends StatelessWidget {
  final dynamic data;
  final String type;
-
-  PreviewScreen({super.key, required this.data, required this.type});
+  final String tutorname;
+  PreviewScreen({super.key, required this.data, required this.type, required this.tutorname});
 
    
 final CourseDetailController controller = Get.put(CourseDetailController());
@@ -36,7 +36,7 @@ final CourseDetailController controller = Get.put(CourseDetailController());
               bgImage:
                   'assets/bgImage/teacherModel-removebg-preview-removebg-preview.jpg',
               title: data!.subject!,
-              subtitle: data!.courseCode!,
+              subtitle: tutorname,
               ratingCount: '4.8',
             ),
             Padding(
@@ -539,9 +539,16 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                     width: 10,
                   ),
                   Expanded(
-                    child: Text(
-                      '',
-                     //data!.address??'',
+                    child: type=="Course"?
+                    Text(
+                     data!.address ??'',
+                      style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ):Text(
+                     data!.tutorAddress ??'',
                       style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -566,16 +573,54 @@ final CourseDetailController controller = Get.put(CourseDetailController());
             print(data!.courseId!);
             print(studentId);
             print(data!.tutorId!);
-            controller.addEnquirs(
-              context,
-              data!.courseId!,
-              studentId,
-              data!.tutorId!,
-            );
+            // controller.addEnquirs(
+            //   context,
+            //   data!.courseId!,
+            //   studentId,
+            //   data!.tutorId!,
+            // );
+            _showConfirmationDialog(context,data!.courseId!,studentId,data!.tutorId!);
           },
         )
       : null,
     );
     
   }
+
+  void _showConfirmationDialog(BuildContext context,String courseId,studentId,tutorId) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return CustomDialogBox(
+        title1: 'Do you want to submit the enquiry?',
+        title2: '',
+        subtitle: 'Do you want to live this class?',
+         icon: const Icon(
+                                                      Icons.help_outline,
+                                                      color: Colors.white,
+                                                    ),
+       color:  Color(0xFF833AB4), // Set the primary color
+        color1: const Color(0xFF833AB4), // Optional gradient color
+        singleBtn: false, // Show both 'Yes' and 'No' buttons
+        btnName: 'No',
+        onTap: () {
+          // Call the updateClass method when 'Yes' is clicked
+         // Close the dialog after update
+         Navigator.of(context).pop();
+        },
+        btnName2: 'Yes',
+        onTap2: () {
+          // Close the dialog when 'No' is clicked
+          controller.addEnquirs(
+              context,
+              data!.courseId!,
+              studentId,
+              data!.tutorId!,
+            );
+          Navigator.of(context).pop();
+        },
+      );
+    },
+  );
+}
 }

@@ -139,7 +139,9 @@ class StudentAttendanceList extends StatelessWidget {
     child: Center(
       child: IconButton(
         onPressed: () {
-          controller.isBatchSelected.value = !controller.isBatchSelected.value;
+          // controller.isBatchSelected.value = !controller.isBatchSelected.value;
+           controller.isCalendarVisible.value =
+                        !controller.isCalendarVisible.value;
         },
         icon: const Icon(
           Icons.calendar_month_outlined,
@@ -157,7 +159,7 @@ class StudentAttendanceList extends StatelessWidget {
 
             // const SizedBox(height: 10,),
             Obx(() {
-              if (!controller.isBatchSelected.value) {
+              if (!controller.isCalendarVisible.value) {
                 return const SizedBox
                     .shrink(); // Hide calendar if no batch is selected
               }

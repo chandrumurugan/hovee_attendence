@@ -47,25 +47,49 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
     super.onInit();
     // Initialize TabController with three tabs
     tabController = TabController(length: 2, vsync: this);
-    tabController.addListener(() {
-      selectedTabIndex.value = tabController.index;
-      print("hi rahul ${selectedTabIndex.value}");
-      // Update type based on the selected tab index
-      String type;
-      if (tabController.index == 0) {
-        type = "Draft";
-      } else  {
-        type = "Public";
-      }
+    // tabController.addListener(() {
+    //   selectedTabIndex.value = tabController.index;
+    //   print("hi rahul ${selectedTabIndex.value}");
+    //   // Update type based on the selected tab index
+    //   String type;
+    //   if (tabController.index == 0) {
+    //     type = "Draft";
+    //   } else  {
+    //     type = "Public";
+    //   }
 
-      // Fetch the list based on the selected type
-      fetchClassesList(type);
-    });
+    //   // Fetch the list based on the selected type
+    //   fetchClassesList(type);
+    // });
 
     // Initially load "Pending" list
     fetchClassesList("Draft");
     fetchCourseList();
      _clearData();
+  }
+
+    void handleTabChange(int index) {
+    // Determine the type based on the selected tab index
+    String type = _getTypeFromIndex(index);
+     selectedTabIndex.value = index;
+
+    // Fetch the list for the selected type
+    fetchClassesList(type);
+
+    // Animate to the appropriate tab
+    tabController.animateTo(index);
+    fetchClassesList(type);
+  }
+
+  String _getTypeFromIndex(int index) {
+    switch (index) {
+      case 0:
+        return "Draft";
+      case 1:
+        return "Public";
+      default:
+        return "Draft";
+    }
   }
 
  void fetchClassesList(String type) async {
@@ -102,11 +126,11 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
             await WebService.updateClass(batchData);
 
         if (response != null && response.statusCode == 200) {
-        Get.snackbar('Class update successfully');
+       Get.snackbar('Your class is now live',backgroundColor: Color.fromRGBO(186, 1, 97, 1));
        // onInit();
        
-         String currentType = selectedTabIndex.value == 0 ? "Draft" : "Public";
-        fetchClassesList(currentType);
+        //  String currentType = selectedTabIndex.value == 0 ? "Draft" : "Public";
+        // fetchClassesList(currentType);
         } else {
          Get.snackbar(response?.message ?? 'Failed to update Enquire');
         }

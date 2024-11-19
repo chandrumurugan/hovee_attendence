@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 import 'package:hovee_attendence/widgets/preview_header.dart';
@@ -70,8 +71,8 @@ class AddEnrollmentScreen extends StatelessWidget {
             PreviewHeader(
               bgImage:
                   'assets/bgImage/teacherModel-removebg-preview-removebg-preview.jpg',
-              title: 'Maths',
-              subtitle: 'John Tution Centre',
+              title: subject,
+              subtitle: tutorname,
               ratingCount: '4.8',
             ),
             Padding(
@@ -80,7 +81,7 @@ class AddEnrollmentScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    'Student name',
+                    'Tutee name',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -586,10 +587,46 @@ class AddEnrollmentScreen extends StatelessWidget {
         btnName: 'Submit',
         isPadded: false,
         onTap: () {
-          controller.addEnrollment(
-              context, tutorId, tuteeId, courseId, batchId, tuteename, type);
+          if (controller.validateFields(context)) {
+          _showConfirmationDialog(context,tutorId,tuteeId,courseId,batchId,tuteename,type);
+          }
+          // controller.addEnrollment(
+          //     context, tutorId, tuteeId, courseId, batchId, tuteename, type);
         },
       ),
     );
   }
+
+   void _showConfirmationDialog(BuildContext context, String tutorId, tuteeId, courseId, batchId, tuteename, type) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return CustomDialogBox(
+        title1: 'Do you want to submit the enrollment?',
+        title2: '',
+        subtitle: 'Do you want to live this class?',
+         icon: const Icon(
+                                                      Icons.help_outline,
+                                                      color: Colors.white,
+                                                    ),
+       color:  Color(0xFF833AB4), // Set the primary color
+        color1: const Color(0xFF833AB4), // Optional gradient color
+        singleBtn: false, // Show both 'Yes' and 'No' buttons
+        btnName: 'No',
+        onTap: () {
+          // Call the updateClass method when 'Yes' is clicked
+         // Close the dialog after update
+         Navigator.of(context).pop();
+        },
+        btnName2: 'Yes',
+        onTap2: () {
+          // Close the dialog when 'No' is clicked
+             controller.addEnrollment(
+              context, tutorId, tuteeId, courseId, batchId, tuteename, type);
+          Navigator.of(context).pop();
+        },
+      );
+    },
+  );
+}
 }

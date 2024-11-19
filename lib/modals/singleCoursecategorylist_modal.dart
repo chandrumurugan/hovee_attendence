@@ -1,21 +1,124 @@
-
 class SingleCourseCategoryList {
-    SingleCourseCategoryList({
-        required this.statusCode,
-        required this.message,
-        required this.dataList,
-    });
+  int? statusCode;
+  String? message;
+  List<Data>? data;
 
-    final int statusCode;
-    final String message;
-    final List<Map<String, String>> dataList;
+  SingleCourseCategoryList({this.statusCode, this.message, this.data});
 
-    factory SingleCourseCategoryList.fromJson(Map<String, dynamic> json){ 
-        return SingleCourseCategoryList(
-            statusCode: json["statusCode"] ?? 0,
-            message: json["message"] ?? "",
-            dataList: json["data"] == null ? [] : List<Map<String, String>>.from(json["data"]!.map((x) => Map.from(x).map((k, v) => MapEntry<String, String>(k, v ?? "")))),
-        );
+  SingleCourseCategoryList.fromJson(Map<String, dynamic> json) {
+    statusCode = json['statusCode'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <Data>[];
+      json['data'].forEach((v) {
+        data!.add(new Data.fromJson(v));
+      });
     }
+  }
 
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['statusCode'] = this.statusCode;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Data {
+  String? fees;
+  String? courseCode;
+  String? batchName;
+  String? batchMaximumSlots;
+  String? batchTimingStart;
+  String? batchTimingEnd;
+  String? batchMode;
+  String? courseId;
+  String? createdAt;
+  double? distance;
+  String? tutorName;
+  TutorLocation? tutorLocation;
+  String? className;
+  String? subject;
+  String? tutorId;
+
+  Data(
+      {this.fees,
+      this.courseCode,
+      this.batchName,
+      this.batchMaximumSlots,
+      this.batchTimingStart,
+      this.batchTimingEnd,
+      this.batchMode,
+      this.courseId,
+      this.createdAt,
+      this.distance,
+      this.tutorName,
+      this.tutorLocation,
+      this.className,
+      this.subject,
+      this.tutorId});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    fees = json['fees'];
+    courseCode = json['course_code'];
+    batchName = json['batch_name'];
+    batchMaximumSlots = json['batch_maximum_slots'];
+    batchTimingStart = json['batch_timing_start'];
+    batchTimingEnd = json['batch_timing_end'];
+    batchMode = json['batch_mode'];
+    courseId = json['courseId'];
+    createdAt = json['created_at'];
+    distance = json['distance'];
+    tutorName = json['tutor_name'];
+    tutorLocation = json['tutor_location'] != null
+        ? new TutorLocation.fromJson(json['tutor_location'])
+        : null;
+    className = json['className'];
+    subject = json['subject'];
+    tutorId = json['TutorId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['fees'] = this.fees;
+    data['course_code'] = this.courseCode;
+    data['batch_name'] = this.batchName;
+    data['batch_maximum_slots'] = this.batchMaximumSlots;
+    data['batch_timing_start'] = this.batchTimingStart;
+    data['batch_timing_end'] = this.batchTimingEnd;
+    data['batch_mode'] = this.batchMode;
+    data['courseId'] = this.courseId;
+    data['created_at'] = this.createdAt;
+    data['distance'] = this.distance;
+    data['tutor_name'] = this.tutorName;
+    if (this.tutorLocation != null) {
+      data['tutor_location'] = this.tutorLocation!.toJson();
+    }
+    data['className'] = this.className;
+    data['subject'] = this.subject;
+    data['TutorId'] = this.tutorId;
+    return data;
+  }
+}
+
+class TutorLocation {
+  String? type;
+  List<double>? coordinates;
+
+  TutorLocation({this.type, this.coordinates});
+
+  TutorLocation.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    coordinates = json['coordinates'].cast<double>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['coordinates'] = this.coordinates;
+    return data;
+  }
 }

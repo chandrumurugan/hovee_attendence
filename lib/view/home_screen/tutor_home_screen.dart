@@ -179,7 +179,7 @@ class TutorHome extends StatelessWidget {
                                 TutorBatchList()); // Navigate to the batch screen
                           } else if (item['title'] == 'Courses') {
                             Get.to(() =>
-                                const TutorCourseList()); // Navigate to the course screen
+                                const TutorCourseList(type: 'Tutor',)); // Navigate to the course screen
 
                                 } else if (item['title'] == 'Attendance') {
                             Get.to(() => StudentAttendanceList(type: 'Tutor',)); // Navigate to the course screen

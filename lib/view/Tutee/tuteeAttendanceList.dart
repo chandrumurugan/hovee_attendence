@@ -118,12 +118,14 @@ class TuteeAttendanceList extends StatelessWidget {
                     child: Container(
                       color: AppConstants.secondaryColor,
                       height: 70,
-                      width: 80,
+                      width: 70,
                       child: Center(
                         child: IconButton(
                           onPressed: () {
-                            controller.isBatchSelected.value =
-                                !controller.isBatchSelected.value;
+                            // controller.isBatchSelected.value =
+                            //     !controller.isBatchSelected.value;
+                                 controller.isCalendarVisible.value =
+                        !controller.isCalendarVisible.value;
                           },
                           icon: const Icon(
                             Icons.calendar_month_outlined,
@@ -138,7 +140,7 @@ class TuteeAttendanceList extends StatelessWidget {
               ),
             ),
             Obx(() {
-              if (!controller.isBatchSelected.value) {
+              if (!controller.isCalendarVisible.value) {
                 return const SizedBox
                     .shrink(); // Hide calendar if no batch is selected
               }

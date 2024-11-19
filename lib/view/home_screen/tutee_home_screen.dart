@@ -206,7 +206,7 @@ class TuteeHome extends StatelessWidget {
                             if(index == 1){
                               var box = GetStorage();
                               Logger().i("${box.read('Token')}");
-                              Get.to(()=>const GetTopicsCourses());
+                              Get.to(()=>const GetTopicsCourses(type: 'Tutee',));
                             }
                             if(index == 2){
                               Get.to(()=> Tutorenquirlist(type: 'Tutee',));

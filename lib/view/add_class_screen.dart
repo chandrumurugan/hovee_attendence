@@ -51,7 +51,7 @@ class _TutorClassFormState extends State<TutorClassForm> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
-                'Add Classes',
+                'Add Class',
                 style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,

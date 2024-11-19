@@ -13,7 +13,8 @@ import 'package:hovee_attendence/widget/cateory_widget.dart';
 import 'package:hovee_attendence/widget/course_list_container.dart';
 
 class GetTopicsCourses extends StatefulWidget {
-  const GetTopicsCourses({super.key});
+  final String type;
+  const GetTopicsCourses({super.key, required this.type});
 
   @override
   State<GetTopicsCourses> createState() => _GetTopicsCoursesState();
@@ -24,7 +25,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
   List<String> categories = [];
   int selectedIndex = 0;
 
-  List<Map<String, String>> filteredList = [];
+  List<Data>? filteredList = [];
   bool isLoadingcategoryList = false;
 
    final CourseDetailController controller = Get.put(CourseDetailController());
@@ -63,7 +64,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
     var response = await WebService.singleCourseListfetch(type);
     if (response != null && response!.statusCode == 200) {
       setState(() {
-        filteredList = response.dataList;
+        filteredList = response.data;
         isLoadingcategoryList = false;
       });
     } else {
@@ -115,28 +116,28 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
             Expanded(
                 child: isLoadingcategoryList
                     ? const Center(child: CircularProgressIndicator())
-                    : filteredList.isEmpty
+                    : filteredList!.isEmpty
                         ? const Center(child: Text("No courses available"))
                         : ListView.builder(
                             // physics: NeverScrollableScrollPhysics(),
                             // shrinkWrap: true,
-                            itemCount: filteredList.length,
+                            itemCount: filteredList!.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: (){
-                                 controller.getClassTuteeById(context,filteredList[index]["className"]!,filteredList[index]["subject"]!,filteredList[index]["TutorId"]!);
+                                 controller.getClassTuteeById(context,filteredList![index].className!,filteredList![index].subject!,filteredList![index].tutorId!,filteredList![index].tutorName!);
                                 },
                                 child: CourseListContainer(
                                     image: "",
-                                    subject: filteredList[index]["subject"]!, //
+                                    subject: filteredList![index].subject!, //
                                     subjectCode:
-                                        "₹ ${filteredList[index]["fees"]!}",
-                                    std: filteredList[index]["className"]!,
-                                    medium: filteredList[index]["batch_mode"]!,
-                                    group: filteredList[index]["course_code"]!,
+                                        "₹ ${filteredList![index]!.fees!}",
+                                    std: filteredList![index].className!,
+                                    medium: filteredList![index].batchMode!,
+                                    group: filteredList![index].courseCode!,
                                     groupcode:
-                                        "${filteredList[index]["batch_timing_start"]!}-${filteredList[index]["batch_timing_end"]!}",
-                                    arrowIcon: true, className: filteredList[index]["className"]!, tutorId: filteredList[index]["TutorId"]!,),
+                                        "${filteredList![index].batchTimingStart!}-${filteredList![index].batchTimingEnd!}",
+                                    arrowIcon: true, className: filteredList![index].className!, tutorId: filteredList![index].tutorId!, batchname: filteredList![index].batchName!, tutorname: filteredList![index].tutorName!, type: widget.type,),
                               );
                             }))
           ],

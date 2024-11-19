@@ -10,6 +10,7 @@ import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/Tutee/tutee_courseDetails.dart';
+import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CourseDetailController extends GetxController {
@@ -36,7 +37,7 @@ class CourseDetailController extends GetxController {
     }
   
   void getClassTuteeById(BuildContext context, String className, String subject,
-      String TutorId) async {
+      String TutorId,tutorname) async {
      
     isLoading.value = true;
    
@@ -56,8 +57,8 @@ class CourseDetailController extends GetxController {
         //     context, 'Class and batch details retrieved successfully');
 
         // Pass response data to CourseDetailScreen
-        Get.to(CourseDetailScreen(
-          data: response.data!,
+        Get.off(CourseDetailScreen(
+          data: response.data!, tutorname: tutorname,
         ));
       } else {
         SnackBarUtils.showErrorSnackBar(context,
@@ -86,40 +87,41 @@ class CourseDetailController extends GetxController {
           await WebService.addEnquirs(batchData);
 
       if (response != null && response.statusCode == 200) {
-        SnackBarUtils.showSuccessSnackBar(
-            context, 'Enquiry submited successfully');
-          Get.back();
+         Get.snackbar('Enquiry submited successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+        // SnackBarUtils.showSuccessSnackBar(
+        //     context, 'Enquiry submited successfully');
+          //Get.back();
         // Show the modal bottom sheet
-        showModalBottomSheet(
-          isDismissible: false,
-          enableDrag: false,
-          context: context,
-          backgroundColor: Colors.transparent,
-          builder: (context) {
-            return CustomDialogBox(
-              title1: 'Enquiry form details have been successfully sent',
-              title2: '',
-              subtitle:
-                  'Note: Once the tutor is verified, we will notify you through a notification.',
-              btnName: 'Ok',
-              onTap: () {
-                Get.back(); // Close the modal and navigate back
-              },
-              icon: const Icon(
-                Icons.check,
-                color: Colors.white,
-              ),
-              color: const Color(0xFF833AB4),
-              singleBtn: true,
-            );
-          },
-        );
+        // showModalBottomSheet(
+        //   isDismissible: false,
+        //   enableDrag: false,
+        //   context: context,
+        //   backgroundColor: Colors.transparent,
+        //   builder: (context) {
+        //     return CustomDialogBox(
+        //       title1: 'Enquiry form details have been successfully sent',
+        //       title2: '',
+        //       subtitle:
+        //           'Note: Once the tutor is verified, we will notify you through a notification.',
+        //       btnName: 'Ok',
+        //       onTap: () {
+        //         Get.back(); // Close the modal and navigate back
+        //       },
+        //       icon: const Icon(
+        //         Icons.check,
+        //         color: Colors.white,
+        //       ),
+        //       color: const Color(0xFF833AB4),
+        //       singleBtn: true,
+        //     );
+        //   },
+        // );
 
-        Get.back(); // Optional: Close the current screen if needed
-        onInit();
+        // Get.back(); // Optional: Close the current screen if needed
+        // onInit();
+         Get.off(() => Tutorenquirlist(type: 'Tutee',)); 
       } else {
-        SnackBarUtils.showErrorSnackBar(
-            context, response?.message ?? 'Failed to retrieve enquir details');
+       Get.snackbar('Enquiry already submitted',backgroundColor: Color.fromRGBO(186, 1, 97, 1));
       }
     } catch (e) {
       SnackBarUtils.showErrorSnackBar(context, 'Error: $e');

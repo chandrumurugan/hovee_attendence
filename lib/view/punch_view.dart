@@ -92,17 +92,28 @@ class PunchView extends StatelessWidget {
             ),
             _controller.currentAddress.value.toString().trim() == ""
                 ? SizedBox()
-                : AddressIndicator(
-                   name: _controller.name ?? '',
-                    address: _controller.currentAddress.value ?? "",
-                  ),
+                :    Obx(
+            () => Positioned(
+              top: _controller.draggablePosition.value.dy,
+              left: _controller.draggablePosition.value.dx,
+              child: GestureDetector(
+                onPanUpdate: (details) {
+                  _controller.updateDraggablePosition(details.delta);
+                },
+                child: AddressIndicator(
+                  name: _controller.name ?? '',
+                  address: _controller.currentAddress.value ?? "",
+                ),
+              ),
+            ),
+          ),
           ],
         ),
 ),
                 ),
               ),
               Container(
-                height: 180,
+                height: 120,
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 6),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -336,8 +347,8 @@ class MarkerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       imagePath,
-      height: 150,
-      width: 150,
+      height: 110,
+      width: 110,
     );
   }
 }

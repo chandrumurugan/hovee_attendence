@@ -12,8 +12,9 @@ import 'package:hovee_attendence/widgets/details_header.dart';
 
 class CourseDetailScreen extends StatelessWidget {
   final Data1? data;
+  final String tutorname;
 
-  CourseDetailScreen({super.key, required this.data});
+  CourseDetailScreen({super.key, required this.data,required this.tutorname});
 
   final CourseDetailController controller = Get.put(CourseDetailController());
 
@@ -32,7 +33,8 @@ class CourseDetailScreen extends StatelessWidget {
             onTap2: () {
               Get.off(PreviewScreen(
                 data: data,
-                type: 'Course',
+                type: 'Course', tutorname: tutorname,
+                
               ));
             }),
         body: SingleChildScrollView(
@@ -40,7 +42,7 @@ class CourseDetailScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DeatilHeader(
-                  subject: data!.subject!, Coursecode: data!.courseCode!),
+                  subject: data!.subject!, Coursecode: tutorname),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(

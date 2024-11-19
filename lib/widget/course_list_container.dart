@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -14,9 +13,12 @@ class CourseListContainer extends StatelessWidget {
   final String group;
   final bool arrowIcon;
   final String groupcode;
- final String className;
- final String tutorId;
-   CourseListContainer(
+  final String className;
+  final String tutorId;
+  final String batchname;
+  final String tutorname;
+  final String type;
+  CourseListContainer(
       {super.key,
       required this.image,
       required this.subject,
@@ -25,10 +27,12 @@ class CourseListContainer extends StatelessWidget {
       required this.medium,
       required this.group,
       required this.groupcode,
-      required this.arrowIcon, required this.className, required this.tutorId});
+      required this.arrowIcon,
+      required this.className,
+      required this.tutorId,
+      required this.batchname, required this.tutorname, required this.type});
 
-
-final CourseDetailController controller = Get.put(CourseDetailController());
+  final CourseDetailController controller = Get.put(CourseDetailController());
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -45,9 +49,8 @@ final CourseDetailController controller = Get.put(CourseDetailController());
           ),
           child: Row(
             children: [
-           
-             // Image.asset(image),
-           
+              // Image.asset(image),
+
               const SizedBox(
                 width: 15,
               ),
@@ -76,8 +79,16 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                         const SizedBox(
                           width: 10,
                         ),
+                         type=='Tutor'?
+                         Text(
+                          "$batchname",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14),
+                        ):
                         Text(
-                          subjectCode,
+                          "$subjectCode /month",
                           style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w400,
@@ -123,14 +134,15 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                         group!=null?
-                        Text(
-                           group,  
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15),
-                        ):Container(),
+                        group != null
+                            ? Text(
+                                group,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 15),
+                              )
+                            : Container(),
                         Text(
                           groupcode,
                           style: const TextStyle(
@@ -141,23 +153,46 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                         type!='Tutor'?
+                        RichText(
+  text: TextSpan(
+    children: [
+      const TextSpan(
+        text: "Tutor name: ",
+        style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w400,
+          fontSize: 14,
+        ),
+      ),
+      TextSpan(
+        text: tutorname,
+        style: const TextStyle(
+          color: Color.fromRGBO(46, 91, 181, 1),
+          fontWeight: FontWeight.w400,
+          fontSize: 14,
+        ),
+      ),
+    ],
+  ),
+):Container(),
+
+
                         arrowIcon
                             ? IconButton(
                                 onPressed: () {
                                   // Navigate to course details screen
-                                //  controller. getClassTuteeById(
-                                //      context,className,subject,tutorId);
+                                   controller. getClassTuteeById(
+                                       context,className,subject,tutorId,tutorname);
                                 },
                                 icon: const Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   size: 20,
                                 ))
                             : InkWell(
-                                onTap: () {
-                                 
-                                },
+                                onTap: () {},
                                 child: const CircleAvatar(
                                   radius: 25,
                                   backgroundColor: AppConstants.primaryColor,
