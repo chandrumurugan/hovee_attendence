@@ -90,9 +90,9 @@ class NotificationController extends GetxController {
     isLoading(false);
 
     if (msgtype == 'Enquiry') {
-      Get.off(() => Tutorenquirlist(type: role!));
+      Get.off(() => Tutorenquirlist(type: role!, fromBottomNav: true,));
     } else {
-      Get.off(() => EnrollmentScreen(type: role!));
+      Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,));
     }
   } else {
     notificationList.clear();

@@ -558,54 +558,55 @@ final CourseDetailController controller = Get.put(CourseDetailController());
             ),
             ],
           )
-          // :Column(
-          //   children: [
-          //     Padding(
-          //         padding: const EdgeInsets.all(8.0),
-          //         child: Text(
-          //           'Location',
-          //           style: GoogleFonts.nunito(
-          //             fontSize: 18,
-          //             fontWeight: FontWeight.w500,
-          //             color: Colors.grey,
-          //           ),
-          //         ),
-          //       ),
-          //        Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     child: Row(
-          //       children: [
-          //         Padding(
-          //             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          //             child: Container(
-          //               height: 44,
-          //               width: 47,
-          //               decoration: BoxDecoration(
-          //                   color: Color(0xffD9D9D9).withOpacity(0.4),
-          //                   borderRadius: BorderRadius.circular(8)),
-          //                   child: Icon(Icons.location_on,size: 40,color: Colors.red,),
-          //             ),
-          //           ),
-          //         const SizedBox(
-          //           width: 10,
-          //         ),
-          //         Expanded(
-          //           child: 
-          //           Text(
-          //            data!.tutorAddress ??'',
-          //             style: GoogleFonts.nunito(
-          //               fontSize: 14,
-          //               fontWeight: FontWeight.w500,
-          //               color: Colors.black,
-          //             ),
-          //           )
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          //   ],
-          // )
-          :Container()
+          :Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Location',
+                    style: GoogleFonts.nunito(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                 Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Container(
+                        height: 44,
+                        width: 47,
+                        decoration: BoxDecoration(
+                            color: Color(0xffD9D9D9).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(8)),
+                            child: Icon(Icons.location_on,size: 40,color: Colors.red,),
+                      ),
+                    ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: 
+                    Text(
+                     data!.tutorAddress ??'',
+                      style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    )
+                  ),
+                ],
+              ),
+            ),
+            ],
+          )
+         // :Container()
            
           ],
         ),

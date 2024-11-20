@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/dashBoard.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/roleSelection.dart';
@@ -303,7 +304,8 @@ class _OtpScreenState extends State<OtpScreen> {
                                                                 .roleName ==
                                                             "Tutor") {
                                                           Get.offAll(() =>
-                                                              TutorHome());
+                                                              DashboardScreen(rolename: value.data!.roles!
+                                                                .roleName,));
                                                         } else if (value
                                                                 .data!
                                                                 .roles!
@@ -311,7 +313,8 @@ class _OtpScreenState extends State<OtpScreen> {
                                                             "Tutee") {
                                                           //Tutee
                                                           Get.offAll(() =>
-                                                              TuteeHome());
+                                                              DashboardScreen(rolename: value.data!.roles!
+                                                                .roleName,));
                                                         }
                                                         //  :
                                                         // Get.offAll(() => const RoleSelection());

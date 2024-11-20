@@ -125,8 +125,8 @@ class Data {
   String? sId;
   TutorId? tutorId;
   TutorId? studentId;
-  String? courseId;
-  String? batchId;
+  CourseId? courseId;
+  BatchId? batchId;
   String? rollNumber;
   String? startDate;
   String? endDate;
@@ -160,8 +160,11 @@ class Data {
     studentId = json['studentId'] != null
         ? new TutorId.fromJson(json['studentId'])
         : null;
-    courseId = json['courseId'];
-    batchId = json['batchId'];
+    courseId = json['courseId'] != null
+        ? new CourseId.fromJson(json['courseId'])
+        : null;
+    batchId =
+        json['batchId'] != null ? new BatchId.fromJson(json['batchId']) : null;
     rollNumber = json['rollNumber'];
     startDate = json['startDate'];
     endDate = json['endDate'];
@@ -182,8 +185,12 @@ class Data {
     if (this.studentId != null) {
       data['studentId'] = this.studentId!.toJson();
     }
-    data['courseId'] = this.courseId;
-    data['batchId'] = this.batchId;
+    if (this.courseId != null) {
+      data['courseId'] = this.courseId!.toJson();
+    }
+    if (this.batchId != null) {
+      data['batchId'] = this.batchId!.toJson();
+    }
     data['rollNumber'] = this.rollNumber;
     data['startDate'] = this.startDate;
     data['endDate'] = this.endDate;
@@ -215,6 +222,68 @@ class TutorId {
     data['_id'] = this.sId;
     data['first_name'] = this.firstName;
     data['last_name'] = this.lastName;
+    return data;
+  }
+}
+
+class CourseId {
+  String? sId;
+  String? board;
+  String? className;
+  String? subject;
+  String? courseCode;
+
+  CourseId(
+      {this.sId, this.board, this.className, this.subject, this.courseCode});
+
+  CourseId.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    board = json['board'];
+    className = json['class_name'];
+    subject = json['subject'];
+    courseCode = json['course_code'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['board'] = this.board;
+    data['class_name'] = this.className;
+    data['subject'] = this.subject;
+    data['course_code'] = this.courseCode;
+    return data;
+  }
+}
+
+class BatchId {
+  String? sId;
+  String? batchName;
+  String? batchTimingStart;
+  String? batchTimingEnd;
+  String? fees;
+
+  BatchId(
+      {this.sId,
+      this.batchName,
+      this.batchTimingStart,
+      this.batchTimingEnd,
+      this.fees});
+
+  BatchId.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    batchName = json['batch_name'];
+    batchTimingStart = json['batch_timing_start'];
+    batchTimingEnd = json['batch_timing_end'];
+    fees = json['fees'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['batch_name'] = this.batchName;
+    data['batch_timing_start'] = this.batchTimingStart;
+    data['batch_timing_end'] = this.batchTimingEnd;
+    data['fees'] = this.fees;
     return data;
   }
 }

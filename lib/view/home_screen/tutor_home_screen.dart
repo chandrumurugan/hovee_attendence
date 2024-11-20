@@ -190,12 +190,12 @@ class TutorHome extends StatelessWidget {
                                 
                           }  
                           else if (item['title'] == 'Enquiries') {
-                            Get.to(() => Tutorenquirlist(type: 'Tutor',));  Get.to(() => Tutorenquirlist(type: 'Tutor',)); // Navigate to the course screen
+                            Get.to(() => Tutorenquirlist(type: 'Tutor', fromBottomNav: true,));  Get.to(() => Tutorenquirlist(type: 'Tutor', fromBottomNav: true,)); // Navigate to the course screen
 
                                 
                           }  
  else if (item['title'] == 'Enrollment') {
-                           Get.to(()=> EnrollmentScreen(type: 'Tutor',)); // Navigate to the course screen
+                           Get.to(()=> EnrollmentScreen(type: 'Tutor', fromBottomNav: true,)); // Navigate to the course screen
 
                                 
                           }  

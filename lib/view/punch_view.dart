@@ -340,16 +340,25 @@ Future<void> _saveCoordinatesToPreferences(double latitude, double longitude) as
 
 class MarkerWidget extends StatelessWidget {
   final String imagePath;
-  
-  const MarkerWidget({super.key, required this.imagePath});
-  
+  final double rotationAngle; // Rotation angle in radians
+
+  const MarkerWidget({
+    Key? key,
+    required this.imagePath,
+    this.rotationAngle = 0, // Default rotation is 0
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      imagePath,
-      height: 110,
-      width: 110,
+    return Transform.rotate(
+      angle: rotationAngle, // Apply the rotation here
+      child: SvgPicture.asset(
+        imagePath,
+        height: 110,
+        width: 110,
+      ),
     );
   }
 }
+
 

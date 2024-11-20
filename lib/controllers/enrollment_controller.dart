@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hovee_attendence/controllers/attendance_controller.dart';
 import 'package:hovee_attendence/modals/addEnrollmentData_model.dart';
+import 'package:hovee_attendence/modals/enrollment_success_model.dart';
 import 'package:hovee_attendence/modals/updateEnquire_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
@@ -51,6 +52,8 @@ class EnrollmentController extends GetxController  with GetSingleTickerProviderS
     tabController = TabController(length: 3, vsync: this);
     fetchEnrollmentList("Pending");
      attendanceCourseListController.fetchAttendanceCourseList();
+     startDateController.clear();
+     endDateController.clear();
     // tabController.addListener(() {
     //   selectedTabIndex.value = tabController.index;
 
@@ -176,14 +179,22 @@ if (validateFields(context)) {
         "code":code
       };
 
-        final updateEnquiryStatusModel? response =
+        final UpdateEnrollmentStatusModel ? response =
             await WebService.updateEnrollment(batchData);
 
         if (response != null && response.statusCode == 200) {
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
+           if(response.data!.status=='Approved'){
         Get.snackbar('You are enrolled successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
         fetchEnrollmentList('Pending');
+         tabController.animateTo(1);
+                                    handleTabChange(1);
+           }else{
+             Get.snackbar('Enrollement rejected successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+              tabController.animateTo(2);
+                                    handleTabChange(2);
+           }
               //Get.off(()=>TutorClassList());
         } else {
           // SnackBarUtils.showErrorSnackBar(

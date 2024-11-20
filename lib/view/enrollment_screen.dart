@@ -12,7 +12,8 @@ import 'package:pinput/pinput.dart';
 
 class EnrollmentScreen extends StatelessWidget {
   final String type;
-  EnrollmentScreen({super.key, required this.type});
+  final bool fromBottomNav;
+  EnrollmentScreen({super.key, required this.type,  this.fromBottomNav=true,});
   final EnrollmentController controller = Get.put(EnrollmentController());
    final NotificationController notificontroller = Get.put(NotificationController());
   @override
@@ -23,28 +24,13 @@ class EnrollmentScreen extends StatelessWidget {
     return Scaffold(
       
       appBar: AppBarHeader(
-          needGoBack: true,
+          needGoBack: fromBottomNav,
           navigateTo: () {
             Navigator.pop(context);
           }),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Search and Filter Section
-          //  SearchfiltertabBar(
-          //   title: 'Enrollment List',
-          //   onSearchChanged: (searchTerm) {
-          //   },
-          //   filterOnTap: () {
-          //     // Implement filter logic here if needed
-          //   },
-          // ),
-           
-          // SearchfiltertabBar(
-          //   title: 'Enrollment List',
-          //   searchOnTap: () {},
-          //   filterOnTap: () {},
-          // ),
            Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
@@ -91,10 +77,10 @@ class EnrollmentScreen extends StatelessWidget {
                     final enrollmentList = controller.enrollmentList[index];
                     return GestureDetector(
                       onTap: (){
-              //           Get.to(EnRollmentPreviewScreen(
-              //   data: enrollmentList,
-              //   type: 'Enquire',
-              // ));
+                        Get.to(EnRollmentPreviewScreen(
+                data: enrollmentList,
+                type: 'Enquire',
+              ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
@@ -171,6 +157,8 @@ class EnrollmentScreen extends StatelessWidget {
                                         child: InkWell(
                                           onTap: () {
                                             controller.updateEnrollment(enrollmentList.sId!, 'Rejected',enrollmentList.enquiryCode!);
+                                  //            controller.tabController.animateTo(2);
+                                  // controller.  handleTabChange(2);
                                           },
                                           child: Container(
                                             width: double.infinity,

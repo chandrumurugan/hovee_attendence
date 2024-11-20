@@ -7,9 +7,12 @@ class SnackBarUtils {
   static void showInfoSnackBar(BuildContext context, String message) {
     showTopSnackBar(
       Overlay.of(context),
-      CustomSnackBar.info(
-        message: message,
-        backgroundColor: Colors.yellow,
+      SizedBox(
+         height: 60,
+        child: CustomSnackBar.info(
+          message: message,
+          backgroundColor: Colors.yellow,
+        ),
       ),
     );
   }
@@ -17,14 +20,18 @@ class SnackBarUtils {
   static void showSuccessSnackBar(BuildContext context, String message) {
     showTopSnackBar(
       Overlay.of(context),
-      CustomSnackBar.success(message: message,backgroundColor: Color.fromRGBO(186, 1, 97, 1),),
+      SizedBox(
+         height: 60,
+        child: CustomSnackBar.success(message: message,backgroundColor: Color.fromRGBO(186, 1, 97, 1),)),
     );
   }
 
   static void showErrorSnackBar(BuildContext context, String message) {
     showTopSnackBar(
       Overlay.of(context),
-      CustomSnackBar.error(message: message),
+      SizedBox(
+        height: 60,
+        child: CustomSnackBar.error(message: message)),
     );
   }
 }

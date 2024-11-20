@@ -103,7 +103,7 @@ class PunchController extends GetxController {
         // icon: await  icon,
         //fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,), "assets/appbar/placeholder (1).png",),
         icon: await const MarkerWidget(
-          imagePath: 'assets/appbar/Tutee_Location_updated_01.svg',
+          imagePath: 'assets/appbar/Tutee_location_marker_v3.svg',
         ).toBitmapDescriptor(
           logicalSize: const Size(150, 150),
           imageSize: const Size(400, 400),
@@ -115,7 +115,8 @@ class PunchController extends GetxController {
         position: targetLocation.value!,
         // icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,size: Size.square(10.0)), "assets/appbar/location-mark (1).png"),
         icon: await const MarkerWidget(
-                imagePath: 'assets/appbar/Tutor_location_icon_updated_03.svg')
+           rotationAngle: 60 * (3.14159 / 120),
+                imagePath: 'assets/appbar/Tutor_location_marker_v2.svg')
             .toBitmapDescriptor(
           logicalSize: const Size(150, 150),
           imageSize: const Size(400, 400),
@@ -282,7 +283,7 @@ class PunchController extends GetxController {
 
     // Check if distance is within the threshold
     if (distanceInMeters <= thresholdInMeters) {
-      if (isWithinPunchInWindow) {
+    //  if (isWithinPunchInWindow) {
         if (!punchedIn.value) {
           // Within punchable range, call the API to punch in
 
@@ -325,11 +326,12 @@ class PunchController extends GetxController {
                 context, response!.message!);
           }
         }
-      } else {
-        buttonLoader(false);
-        SnackBarUtils.showErrorSnackBar(context,
-            'You can only punch in within 30 minutes of the batch start time: ${batchTimingStart}.');
-      }
+     // } 
+      // else {
+      //   buttonLoader(false);
+      //   SnackBarUtils.showErrorSnackBar(context,
+      //       'You can only punch in within 30 minutes of the batch start time: ${batchTimingStart}.');
+      // }
     } else {
       print("User is outside 500 meters of the specific location.");
       buttonLoader(false);

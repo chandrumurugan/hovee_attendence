@@ -1,11 +1,11 @@
-class updateEnquiryStatusModel {
+class UpdateEnquiryStatusModel {
   int? statusCode;
   String? message;
   Enquiry? enquiry;
 
-  updateEnquiryStatusModel({this.statusCode, this.message, this.enquiry});
+  UpdateEnquiryStatusModel({this.statusCode, this.message, this.enquiry});
 
-  updateEnquiryStatusModel.fromJson(Map<String, dynamic> json) {
+  UpdateEnquiryStatusModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     message = json['message'];
     enquiry =

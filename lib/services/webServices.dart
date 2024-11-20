@@ -7,6 +7,7 @@ import 'package:hovee_attendence/modals/addEnrollmentData_model.dart';
 import 'package:hovee_attendence/modals/add_course_data_model.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/enrollment_success_model.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
@@ -827,7 +828,7 @@ class WebService {
     }
   }
 
-  static Future<updateEnquiryStatusModel?> updateEnquire(
+  static Future<UpdateEnquiryStatusModel ?> updateEnquire(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}attendane/updateEnquiryStatus"); // Replace with the actual endpoint
@@ -845,7 +846,7 @@ class WebService {
       );
       print(response.body);
       if (response.statusCode == 200) {
-        return updateEnquiryStatusModel.fromJson(json.decode(response.body));
+        return UpdateEnquiryStatusModel .fromJson(json.decode(response.body));
       } else {
         print('Failed to update Enquire: ${response.statusCode}');
         return null;
@@ -977,7 +978,7 @@ class WebService {
    
   }
 
-  static Future<updateEnquiryStatusModel?> updateEnrollment(
+  static Future<UpdateEnrollmentStatusModel ?> updateEnrollment(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}attendane/updateEnrollment"); // Replace with the actual endpoint
@@ -995,7 +996,7 @@ class WebService {
       );
       print(response.body);
       if (response.statusCode == 200) {
-        return updateEnquiryStatusModel.fromJson(json.decode(response.body));
+        return UpdateEnrollmentStatusModel .fromJson(json.decode(response.body));
       } else {
         print('Failed to update Enrollment: ${response.statusCode}');
         return null;

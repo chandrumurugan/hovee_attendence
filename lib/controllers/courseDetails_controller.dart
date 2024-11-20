@@ -119,7 +119,7 @@ class CourseDetailController extends GetxController {
 
         // Get.back(); // Optional: Close the current screen if needed
         // onInit();
-         Get.off(() => Tutorenquirlist(type: 'Tutee',)); 
+         Get.off(() => Tutorenquirlist(type: 'Tutee', fromBottomNav: true,)); 
       } else {
        Get.snackbar('Enquiry already submitted',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
       }

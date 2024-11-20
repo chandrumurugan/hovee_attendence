@@ -27,7 +27,7 @@ class DashBoard extends StatelessWidget {
        body: Obx(() => pages[controller.selectedIndex.value]),
        bottomNavigationBar:Obx(()=>BottomNavigationBar(
           currentIndex: controller.selectedIndex.value,
-        onTap: controller.changeTabIndex,
+        onTap: controller.onPageChanged,
         selectedItemColor: AppConstants.primaryColor,
         selectedIconTheme: const IconThemeData(
             // color: AppColors.secondary_color,

@@ -29,7 +29,7 @@ class TuteeHome extends StatelessWidget {
     final TuteeHomeController controller = Get.put(TuteeHomeController());
 
     return Scaffold(
-      key: controller.tuteeScaffoldKey,
+       key: controller.tuteeScaffoldKey,
       drawer: SideMenu(
         isGuest: false,
       ),
@@ -209,10 +209,10 @@ class TuteeHome extends StatelessWidget {
                               Get.to(()=>const GetTopicsCourses(type: 'Tutee',));
                             }
                             if(index == 2){
-                              Get.to(()=> Tutorenquirlist(type: 'Tutee',));
+                              Get.to(()=> Tutorenquirlist(type: 'Tutee', fromBottomNav: true,));
                             }
                             if(index == 3){
-                              Get.to(()=> EnrollmentScreen(type: 'Tutee',));
+                              Get.to(()=> EnrollmentScreen(type: 'Tutee', fromBottomNav: true,));
                             }
                              if(index == 0){
                               Get.to(()=> TuteeAttendanceList(type: 'Tutee',));

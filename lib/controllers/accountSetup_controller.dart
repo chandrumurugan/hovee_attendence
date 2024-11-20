@@ -5,6 +5,7 @@ import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:image_picker/image_picker.dart';
@@ -348,6 +349,12 @@ class AccountSetupController extends GetxController
   void storeAddressInfo(BuildContext context, String selectedRoleTypeName,
       String roleId, String roleTypeId) {
     if (validateAddressInfo(context)) {
+      String address = "${address1Controller.text}, "
+    "${address2Controller.text}, "
+    "${cityController.text}, "
+    "${stateController.text}, "
+    "${countryController.text} - "
+    "${pincodesController.text}";
       addressInfo.value = {
         "door_no": address1Controller.text,
         "street": address2Controller.text,
@@ -356,6 +363,7 @@ class AccountSetupController extends GetxController
         "country": countryController.text,
         "pincode": pincodesController.text,
         "phone_number": phController.text,
+        "address":address,
       };
       selectedRoleTypeName == 'I Run an Institute'
           ? submitAccountSetup(roleId, roleTypeId, context)
@@ -489,7 +497,7 @@ class AccountSetupController extends GetxController
         print(responseBody);
         SnackBarUtils.showSuccessSnackBar(
             context, "Account setup successfully completed.");
-        Get.offAll(() => const TuteeHome());
+        Get.offAll(() =>  DashboardScreen(rolename: 'Tutee',));
         // Handle success (e.g., show a success message)
       } else {
         print(response.statusCode);
@@ -565,7 +573,7 @@ class AccountSetupController extends GetxController
         print(responseBody);
         SnackBarUtils.showSuccessSnackBar(
             context, "Account setup successfully completed.");
-        Get.offAll(() => TutorHome());
+        Get.offAll(() => DashboardScreen(rolename: 'Tutor',));
         // Handle success (e.g., show a success message)
       } else {
         print(response.statusCode);

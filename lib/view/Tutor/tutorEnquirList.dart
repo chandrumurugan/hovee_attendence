@@ -14,16 +14,17 @@ import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class Tutorenquirlist extends StatelessWidget {
   final String type;
-
-  Tutorenquirlist({super.key, required this.type});
+   final bool fromBottomNav;
+  Tutorenquirlist({super.key, required this.type, this.fromBottomNav = true});
 
   final EnquirDetailController classController =
       Get.put(EnquirDetailController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarHeader(
-          needGoBack: true,
+      appBar:
+       AppBarHeader(
+          needGoBack:  fromBottomNav,
           navigateTo: () {
             classController.navigateBack();
           }),
@@ -387,8 +388,8 @@ class Tutorenquirlist extends StatelessWidget {
             // Close the dialog when 'No' is clicked
             classController.updateEnquire(
                 tutionCourseDetailsList.enquiryId!, 'Approved');
-                classController.tabController.animateTo(1);
-                classController.handleTabChange(1);
+                // classController.tabController.animateTo(1);
+                // classController.handleTabChange(1);
             Navigator.of(context).pop(); // Close the dialog after update
           },
         );

@@ -41,7 +41,7 @@ class EnquirDetailController extends GetxController
     // Animate to the appropriate tab
     tabController.animateTo(index);
 
-    //fetchEnquirList(type);
+    fetchEnquirList(type);
   }
 
   String _getTypeFromIndex(int index) {
@@ -99,13 +99,22 @@ class EnquirDetailController extends GetxController
         "enquiryId": enquiryId
       };
 
-        final updateEnquiryStatusModel? response =
+        final UpdateEnquiryStatusModel ? response =
             await WebService.updateEnquire(batchData);
 
         if (response != null && response.statusCode == 200) {
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
+          if(response.enquiry!.status=='Approved'){
         Get.snackbar('Enquiry accepted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+        tabController.animateTo(1);
+                                    handleTabChange(1);
+          }
+          else{
+             Get.snackbar('Enquiry rejected successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+        tabController.animateTo(2);
+                                    handleTabChange(2);
+          }
         // fetchEnquirList('Pending');
         //       //Get.off(()=>TutorClassList());
         //       controller.onInit();
