@@ -387,6 +387,7 @@ class Tutorenquirlist extends StatelessWidget {
           onTap2: () {
             // Close the dialog when 'No' is clicked
             classController.updateEnquire(
+              context,
                 tutionCourseDetailsList.enquiryId!, 'Approved');
                 // classController.tabController.animateTo(1);
                 // classController.handleTabChange(1);
@@ -419,6 +420,7 @@ class Tutorenquirlist extends StatelessWidget {
           onTap2: () {
             // Close the dialog when 'No' is clicked
             classController.updateEnquire(
+              context,
                 tutionCourseDetailsList.enquiryId!, 'Rejected');
                   classController.tabController.animateTo(2);
             Navigator.of(context).pop(); // Close the dialog after update

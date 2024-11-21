@@ -112,6 +112,7 @@ class StudentAttendanceList extends StatelessWidget {
                                   if (newBatch != null) {
                                     controller.selectBatch(newBatch);
                                     controller.isBatchSelected.value = true;
+                                    controller.fetchStudentsList(newBatch.batchId!, newBatch.startDate!, DateFormat('MMM').format(DateTime.now()));
                                     // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
                                     // Replace with your actual method to fetch batch-related data
                                   }
@@ -135,7 +136,7 @@ class StudentAttendanceList extends StatelessWidget {
   child: Container(
     color: AppConstants.secondaryColor,
     height: 70,
-    width: 80,
+    width: 70,
     child: Center(
       child: IconButton(
         onPressed: () {

@@ -88,51 +88,20 @@ class CourseDetailController extends GetxController {
           await WebService.addEnquirs(batchData);
 
       if (response != null && response.statusCode == 200) {
-         SnackBarUtils.showSuccessSnackBar(context,'Enquiry submited successfully',);
-        //   SnackBarUtils.showSuccessSnackBar(context,"Enquiry submitted successfully",backgroundColor: const Color.fromRGBO(186, 1, 97, 1));
-        // SnackBarUtils.showSuccessSnackBar(
-        //     context, 'Enquiry submited successfully');
-          //Get.back();
-        // Show the modal bottom sheet
-        // showModalBottomSheet(
-        //   isDismissible: false,
-        //   enableDrag: false,
-        //   context: context,
-        //   backgroundColor: Colors.transparent,
-        //   builder: (context) {
-        //     return CustomDialogBox(
-        //       title1: 'Enquiry form details have been successfully sent',
-        //       title2: '',
-        //       subtitle:
-        //           'Note: Once the tutor is verified, we will notify you through a notification.',
-        //       btnName: 'Ok',
-        //       onTap: () {
-        //         Get.back(); // Close the modal and navigate back
-        //       },
-        //       icon: const Icon(
-        //         Icons.check,
-        //         color: Colors.white,
-        //       ),
-        //       color: const Color(0xFF833AB4),
-        //       singleBtn: true,
-        //     );
-        //   },
-        // );
-
-        // Get.back(); // Optional: Close the current screen if needed
-        // onInit();
-
+         //SnackBarUtils.showSuccessSnackBar(context,'Enquiry submited successfully',);
+         Get.snackbar('Enquiry submited successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         Get.delete<EnquirDetailController>();
          Get.off(() => Tutorenquirlist(type: 'Tutee', fromBottomNav: true,)); 
       } else {
-        SnackBarUtils.showSuccessSnackBar(context,'Enquiry already submitted',);
+        Get.snackbar('Enquiry already submitted',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
     } catch (e) {
-       SnackBarUtils.showSuccessSnackBar(context,'Error: $e',);
+       Get.snackbar('Error: $e',);
     } finally {
       isLoading.value = false;
     }
   }
+  
 
    void makePhoneCall(String number) async {
     String phoneNumber = 'tel:+$number'; // Replace with your phone number

@@ -5,6 +5,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/enquir_controller.dart';
+import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
@@ -29,6 +31,9 @@ class TuteeHome extends StatelessWidget {
   Widget build(BuildContext context) {
     final TuteeHomeController controller = Get.put(TuteeHomeController());
      final NotificationController controller1 = Get.put(NotificationController());
+      final EnquirDetailController classController =
+      Get.put(EnquirDetailController());
+      final EnrollmentController enrollmentController = Get.put(EnrollmentController());
     return Scaffold(
        key: controller.tuteeScaffoldKey,
       drawer: SideMenu(
@@ -211,9 +216,11 @@ class TuteeHome extends StatelessWidget {
                               Get.to(()=>const GetTopicsCourses(type: 'Tutee',));
                             }
                             if(index == 2){
+                              classController.onInit();
                               Get.to(()=> Tutorenquirlist(type: 'Tutee', fromBottomNav: true,));
                             }
                             if(index == 3){
+                               enrollmentController.onInit();
                               Get.to(()=> EnrollmentScreen(type: 'Tutee', fromBottomNav: true,));
                             }
                              if(index == 0){

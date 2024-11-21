@@ -61,7 +61,7 @@ class TuteeAttendanceList extends StatelessWidget {
                             // const SizedBox(height: 10),
                             Obx(() {
                               if (controller.batchList.isEmpty) {
-                                return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                                return Text("No data found"); // Show loading indicator if no batches are fetched
                               }
                               return DropdownButtonFormField<Data1>(
                                 dropdownColor: AppConstants.primaryColor,

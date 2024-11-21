@@ -128,14 +128,14 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
 
         if (response != null && response.statusCode == 200) {
         Get.snackbar(
-       '', 'Your class is now live',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        'Your class is now live',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
        // onInit();
           tabController.animateTo(1);
                                     handleTabChange(1);
         //  String currentType = selectedTabIndex.value == 0 ? "Draft" : "Public";
         // fetchClassesList(currentType);
         } else {
-          Get.snackbar(response?.message ?? 'Failed to update Enquire','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+          Get.snackbar(response?.message ?? 'Failed to update Enquire',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         }
       } catch (e) {
         //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');

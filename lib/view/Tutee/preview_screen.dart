@@ -636,40 +636,40 @@ final CourseDetailController controller = Get.put(CourseDetailController());
     
   }
 
-  void _showConfirmationDialog(BuildContext context,String courseId,studentId,tutorId) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return CustomDialogBox(
-        title1: 'Do you want to submit the enquiry?',
-        title2: '',
-        subtitle: 'Do you want to live this class?',
-         icon: const Icon(
-                                                      Icons.help_outline,
-                                                      color: Colors.white,
-                                                    ),
-       color:  Color(0xFF833AB4), // Set the primary color
-        color1: const Color(0xFF833AB4), // Optional gradient color
-        singleBtn: false, // Show both 'Yes' and 'No' buttons
-        btnName: 'No',
-        onTap: () {
-          // Call the updateClass method when 'Yes' is clicked
-         // Close the dialog after update
-         Navigator.of(context).pop();
-        },
-        btnName2: 'Yes',
-        onTap2: () {
-          // Close the dialog when 'No' is clicked
-          controller.addEnquirs(
-              context,
-              data!.courseId!,
+   void _showConfirmationDialog(
+      BuildContext context, String courseId, String studentId, String tutorId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CustomDialogBox(
+          title1: 'Do you want to submit the enquiry?',
+          title2: '',
+          subtitle: 'Do you want to live this class?',
+          icon: const Icon(
+            Icons.help_outline,
+            color: Colors.white,
+          ),
+          color: const Color(0xFF833AB4), // Set the primary color
+          color1: const Color(0xFF833AB4), // Optional gradient color
+          singleBtn: false, // Show both 'Yes' and 'No' buttons
+          btnName: 'No',
+          onTap: () {
+            // Close the dialog when 'No' is clicked
+            Navigator.of(context).pop();
+          },
+          btnName2: 'Yes',
+          onTap2: () {
+            // Call the addEnquirs method with the parent context
+            controller.addEnquirs(
+              Get.context!, // Use Get.context instead of dialog context
+              courseId,
               studentId,
-              data!.tutorId!,
+              tutorId,
             );
-          Navigator.of(context).pop();
-        },
-      );
-    },
-  );
-}
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
 }

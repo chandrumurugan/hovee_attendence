@@ -8,7 +8,7 @@ import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:logger/logger.dart';
 
 class EnquirDetailController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+    with GetTickerProviderStateMixin {
   late TabController tabController;
 
   var selectedTabIndex = 0.obs;

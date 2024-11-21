@@ -63,6 +63,7 @@ class StudentAttendanceController extends GetxController {
   }
 
   void fetchBatch() async {
+    print(type);
     isLoading(true);
     try {
       var response = await WebService.fetchGroupedEnrollmentByBatch();
@@ -78,8 +79,9 @@ class StudentAttendanceController extends GetxController {
         String currentMonth = DateFormat('MMM').format(DateTime.now());
         if(type=='Tutor'){
          fetchStudentsList(selectedBatchIN.value!.batchId!, '', currentMonth);
-        }
+        }else{
          fetchTutteAttendanceList(selectedBatchIN.value!.batchId!, '', currentMonth);
+        }
       }
         Logger().i(batchList.length);
         isLoading(false);

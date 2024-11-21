@@ -158,7 +158,7 @@ class EnrollmentScreen extends StatelessWidget {
                                         Expanded(
                                           child: InkWell(
                                             onTap: () {
-                                              controller.updateEnrollment(enrollmentList.sId!, 'Rejected',enrollmentList.enquiryCode!);
+                                              controller.updateEnrollment(context,enrollmentList.sId!, 'Rejected',enrollmentList.enquiryCode!);
                                     //            controller.tabController.animateTo(2);
                                     // controller.  handleTabChange(2);
                                             },
@@ -318,7 +318,7 @@ void _showOtpDialog(BuildContext context, String enrollmentId) {
             onPressed: () {
               final otp = notificontroller.otpController.text;
               if (otp.isNotEmpty) {
-                controller.updateEnrollment(enrollmentId, 'Approved', otp);
+                controller.updateEnrollment(context,enrollmentId, 'Approved', otp);
               controller. otpController.clear(); // Clear the OTP field
     GetStorage().remove('otpCode');
                  Get.offAll(DashboardScreen(rolename: type,));

@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
+import 'package:hovee_attendence/controllers/enquir_controller.dart';
+import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
@@ -26,7 +28,9 @@ import 'package:share_plus/share_plus.dart';
 class TutorHome extends StatelessWidget {
   TutorHome({super.key});
   final TutorHomeController controller = Get.put(TutorHomeController());
-
+  final EnquirDetailController classController =
+      Get.put(EnquirDetailController());
+      final EnrollmentController enrollmentController = Get.put(EnrollmentController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,11 +194,13 @@ class TutorHome extends StatelessWidget {
                                 
                           }  
                           else if (item['title'] == 'Enquiries') {
+                             classController.onInit();
                             Get.to(() => Tutorenquirlist(type: 'Tutor', fromBottomNav: true,));  Get.to(() => Tutorenquirlist(type: 'Tutor', fromBottomNav: true,)); // Navigate to the course screen
 
                                 
                           }  
  else if (item['title'] == 'Enrollment') {
+  enrollmentController.onInit();
                            Get.to(()=> EnrollmentScreen(type: 'Tutor', fromBottomNav: true,)); // Navigate to the course screen
 
                                 
@@ -229,7 +235,7 @@ class TutorHome extends StatelessWidget {
                                     height: 30,
                                   ),
                                 ),
-                                Text(item['title'])
+                                Text(item['title'],style: TextStyle(fontSize: 16),)
                               ],
                             ),
                           ),
