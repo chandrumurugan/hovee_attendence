@@ -224,7 +224,7 @@ class TuteeHome extends StatelessWidget {
                               Get.to(()=> EnrollmentScreen(type: 'Tutee', fromBottomNav: true,));
                             }
                              if(index == 0){
-                              Get.to(()=> TuteeAttendanceList(type: 'Tutee',));
+                              Get.to(()=> TuteeAttendanceList(type: 'Tutee',), arguments:"Tutee");
                             }
                            
                           },

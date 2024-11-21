@@ -17,6 +17,7 @@ class NotificationScreen extends StatelessWidget {
    final TuteeHomeController attendanceCourseListController = Get.put(TuteeHomeController());
   @override
   Widget build(BuildContext context) {
+     controller.setSelectedIndex(0);
     return Scaffold(
       appBar: AppBarHeader(
           needGoBack: true,

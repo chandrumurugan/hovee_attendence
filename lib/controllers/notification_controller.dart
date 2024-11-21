@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
@@ -26,6 +27,8 @@ class NotificationController extends GetxController {
   final focusNode = FocusNode();
 
   var savedOtp;
+
+   final EnrollmentController enrollmentController = Get.put(EnrollmentController());
 
   @override
   void onInit() {
@@ -94,6 +97,7 @@ class NotificationController extends GetxController {
     if (msgtype == 'Enquiry') {
       Get.off(() => Tutorenquirlist(type: role!, fromBottomNav: true,));
     } else {
+      enrollmentController.onInit();
       Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,));
     }
   } else {
@@ -105,6 +109,7 @@ class NotificationController extends GetxController {
 
 
     void setSelectedIndex(int index) {
+      
     selectedIndex.value = index; // Update selected index
   }
 

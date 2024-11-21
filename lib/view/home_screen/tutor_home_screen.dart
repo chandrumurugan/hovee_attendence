@@ -186,7 +186,7 @@ class TutorHome extends StatelessWidget {
                                 const TutorCourseList(type: 'Tutor',)); // Navigate to the course screen
 
                                 } else if (item['title'] == 'Attendance') {
-                            Get.to(() => StudentAttendanceList(type: 'Tutor',)); // Navigate to the course screen
+                            Get.to(() => StudentAttendanceList(type: 'Tutor',), arguments:"Tutor"); // Navigate to the course screen
 
                             }  else if (item['title'] == 'Classes') {
                             Get.to(() => TutorClassList()); // Navigate to the course screen
@@ -235,7 +235,7 @@ class TutorHome extends StatelessWidget {
                                     height: 30,
                                   ),
                                 ),
-                                Text(item['title'],style: TextStyle(fontSize: 16),)
+                                Text(item['title'],style: TextStyle(fontSize: 14),)
                               ],
                             ),
                           ),

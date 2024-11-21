@@ -24,7 +24,7 @@ class MyBindings extends Bindings {
           Get.lazyPut<RoleController>(() => RoleController());//AccountSetupController
             Get.lazyPut<AccountSetupController>(() => AccountSetupController());//UserProfileController
              Get.lazyPut<UserProfileController>(() => UserProfileController());
-             Get.lazyPut<StudentAttendanceController>(() => StudentAttendanceController(''));
+             Get.lazyPut<StudentAttendanceController>(() => StudentAttendanceController());
              //AddEnqueryController
                 Get.lazyPut<AddEnqueryController>(() => AddEnqueryController());
 

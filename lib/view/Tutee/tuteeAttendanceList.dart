@@ -19,7 +19,7 @@ class TuteeAttendanceList extends StatelessWidget {
   final StudentAttendanceController controller;
 
   TuteeAttendanceList({super.key, required this.type})
-      : controller = Get.put(StudentAttendanceController(type));
+      : controller = Get.put(StudentAttendanceController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(

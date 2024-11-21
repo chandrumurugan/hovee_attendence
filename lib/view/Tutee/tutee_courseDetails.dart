@@ -33,7 +33,7 @@ class CourseDetailScreen extends StatelessWidget {
             onTap2: () {
               Get.off(PreviewScreen(
                 data: data,
-                type: 'Course', tutorname: tutorname,
+                type: 'Course', tutorname: tutorname, type1: '',
                 
               ));
             }),

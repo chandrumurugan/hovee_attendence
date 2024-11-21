@@ -88,7 +88,7 @@ class Tutorenquirlist extends StatelessWidget {
                          Get.to(PreviewScreen(
                 data: tutionCourseDetailsList,
                 type: 'Enquire',
-                tutorname: tutionCourseDetailsList.tutorName!,
+                tutorname: tutionCourseDetailsList.tutorName!, type1: type,
               ));
                       },
                       child: Padding(

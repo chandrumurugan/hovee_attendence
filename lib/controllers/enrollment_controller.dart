@@ -10,7 +10,7 @@ import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:logger/logger.dart';
 
-class EnrollmentController extends GetxController  with GetSingleTickerProviderStateMixin {
+class EnrollmentController extends GetxController  with GetTickerProviderStateMixin {
 
    var isLoading = true.obs;
 
@@ -50,6 +50,7 @@ class EnrollmentController extends GetxController  with GetSingleTickerProviderS
     super.onInit();
     // Initialize TabController with three tabs
     tabController = TabController(length: 3, vsync: this);
+     selectedTabIndex.value=0;
     fetchEnrollmentList("Pending");
      attendanceCourseListController.fetchAttendanceCourseList();
      startDateController.clear();

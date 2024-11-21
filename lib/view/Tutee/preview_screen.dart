@@ -14,8 +14,9 @@ import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 class PreviewScreen extends StatelessWidget {
  final dynamic data;
  final String type;
+ final String type1;
   final String tutorname;
-  PreviewScreen({super.key, required this.data, required this.type, required this.tutorname});
+  PreviewScreen({super.key, required this.data, required this.type, required this.tutorname, required this.type1});
 
    
 final CourseDetailController controller = Get.put(CourseDetailController());
@@ -266,6 +267,8 @@ final CourseDetailController controller = Get.put(CourseDetailController());
           //           ),
           //         )
           // ,
+           type1=='Tutee'
+                          ?
           Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 14.0),
                     child: Container(
@@ -285,7 +288,7 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16),
                           ),
-                          Text(
+                         Text(
                           controller.organizationName!,
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
@@ -295,7 +298,7 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                         ],
                       ),
                     ),
-                  )
+                  ):Container()
           ,
           // Padding(
           //           padding: const EdgeInsets.symmetric(horizontal: 14.0),

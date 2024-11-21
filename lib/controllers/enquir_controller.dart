@@ -27,7 +27,7 @@ class EnquirDetailController extends GetxController
     super.onInit();
 
     tabController = TabController(length: 3, vsync: this);
-
+    selectedTabIndex.value=0;
     // Initially load "Pending" list
     fetchEnquirList("Pending");
   }
@@ -109,12 +109,13 @@ class EnquirDetailController extends GetxController
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
           if(response.enquiry!.status=='Approved'){
-         SnackBarUtils.showSuccessSnackBar(context,'Enquiry accepted successfully',);
+        // SnackBarUtils.showSuccessSnackBar(context,'Enquiry accepted successfully',);
         tabController.animateTo(1);
                                     handleTabChange(1);
+                                    print(selectedTabIndex.value);
           }
           else{
-              SnackBarUtils.showSuccessSnackBar(context,'Enquiry rejected successfully');
+              //SnackBarUtils.showSuccessSnackBar(context,'Enquiry rejected successfully');
         tabController.animateTo(2);
                                     handleTabChange(2);
           }

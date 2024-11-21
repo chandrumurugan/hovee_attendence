@@ -56,7 +56,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Student name",
+                      "Tutee name",
                       style: GoogleFonts.nunito(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,
@@ -272,7 +272,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "₹ Fees",
+                      "Fees",
                       style: GoogleFonts.nunito(
                         color: Colors.black,
                         fontWeight: FontWeight.w400,
@@ -280,7 +280,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${data!.batchId!.fees!} /month",
+                      "₹ ${data!.batchId!.fees!} /month",
                       style: GoogleFonts.nunito(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,

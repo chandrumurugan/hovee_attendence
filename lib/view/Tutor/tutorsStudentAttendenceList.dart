@@ -9,18 +9,23 @@ import 'package:hovee_attendence/controllers/tutor_attendance_controller.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class StudentAttendanceList extends StatelessWidget {
    final String type;
-  final StudentAttendanceController controller;
- StudentAttendanceList({super.key, required this.type})
-      : controller = Get.put(StudentAttendanceController(type));
+  // final StudentAttendanceController controller;
+ StudentAttendanceList({super.key, required this.type});
+    
+
 
   @override
   Widget build(BuildContext context) {
+     StudentAttendanceController controller = Get.put(StudentAttendanceController());
+
+    Logger().i("type==>$type");
     List<AttendanceData> attendanceData = [
       AttendanceData(
         category: 'Present',
@@ -38,6 +43,7 @@ class StudentAttendanceList extends StatelessWidget {
         pointColor: const Color.fromRGBO(226, 1, 26, 1.0),
       ),
     ];
+    // controller.setType(type);
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
