@@ -163,11 +163,11 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
   bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (courseCodeController.value.isEmpty) {
-        Get.snackbar('Course code is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context,'Course code is required',);
       return false;
     }
     if (batchNameController1.text.isEmpty) {
-       Get.snackbar('Batch name is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,'Batch name is required',);
       return false;
     }
     return true;
@@ -199,11 +199,11 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
           //onInit();
            fetchClassesList("Draft");
         } else {
-            Get.snackbar(
-              response?.message ?? 'Failed to add Class','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+            SnackBarUtils.showSuccessSnackBar(context,
+              response?.message ?? 'Failed to add Class',);
         }
       } catch (e) {
-          Get.snackbar( 'Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+         SnackBarUtils.showSuccessSnackBar(context, 'Error: $e',);
       } finally {
         isLoading.value = false;
       }

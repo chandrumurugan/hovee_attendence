@@ -62,11 +62,11 @@ class CourseDetailController extends GetxController {
           data: response.data!, tutorname: tutorname,
         ));
       } else {
-         Get.snackbar(
-            response?.message ?? 'Failed to retrieve class and batch details','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+         SnackBarUtils.showSuccessSnackBar(context,
+            response?.message ?? 'Failed to retrieve class and batch details',);
       }
     } catch (e) {
-        Get.snackbar( 'Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context, 'Error: $e',);
     } finally {
       isLoading.value = false;
     }
@@ -88,8 +88,8 @@ class CourseDetailController extends GetxController {
           await WebService.addEnquirs(batchData);
 
       if (response != null && response.statusCode == 200) {
-         Get.snackbar('Enquiry submited successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
-        //   Get.snackbar("Enquiry submitted successfully",backgroundColor: const Color.fromRGBO(186, 1, 97, 1));
+         SnackBarUtils.showSuccessSnackBar(context,'Enquiry submited successfully',);
+        //   SnackBarUtils.showSuccessSnackBar(context,"Enquiry submitted successfully",backgroundColor: const Color.fromRGBO(186, 1, 97, 1));
         // SnackBarUtils.showSuccessSnackBar(
         //     context, 'Enquiry submited successfully');
           //Get.back();
@@ -125,10 +125,10 @@ class CourseDetailController extends GetxController {
         Get.delete<EnquirDetailController>();
          Get.off(() => Tutorenquirlist(type: 'Tutee', fromBottomNav: true,)); 
       } else {
-        Get.snackbar('Enquiry already submitted','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+        SnackBarUtils.showSuccessSnackBar(context,'Enquiry already submitted',);
       }
     } catch (e) {
-       Get.snackbar('Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Error: $e',);
     } finally {
       isLoading.value = false;
     }

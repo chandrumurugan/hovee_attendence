@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/enrollment_preview_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
@@ -322,7 +323,7 @@ void _showOtpDialog(BuildContext context, String enrollmentId) {
     GetStorage().remove('otpCode');
                  Get.offAll(DashboardScreen(rolename: type,));
               } else {
-                 Get.snackbar('Please enter OTP','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+                 SnackBarUtils.showSuccessSnackBar(context,'Please enter OTP',);
               }
             },
             child: Ink(

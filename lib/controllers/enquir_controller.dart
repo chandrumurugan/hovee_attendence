@@ -4,6 +4,7 @@ import 'package:hovee_attendence/controllers/attendance_controller.dart';
 import 'package:hovee_attendence/modals/getEnquireList_model.dart';
 import 'package:hovee_attendence/modals/updateEnquire_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:logger/logger.dart';
 
 class EnquirDetailController extends GetxController
@@ -93,7 +94,7 @@ class EnquirDetailController extends GetxController
   //   }
   // }
 
-  void updateEnquire(String enquiryId,String type ) async {
+  void updateEnquire(BuildContext context,String enquiryId,String type ) async {
       isLoading.value = true;
       try {
         var batchData = {
@@ -108,12 +109,12 @@ class EnquirDetailController extends GetxController
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
           if(response.enquiry!.status=='Approved'){
-         Get.snackbar('Enquiry accepted successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+         SnackBarUtils.showSuccessSnackBar(context,'Enquiry accepted successfully',);
         tabController.animateTo(1);
                                     handleTabChange(1);
           }
           else{
-              Get.snackbar('Enquiry rejected successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+              SnackBarUtils.showSuccessSnackBar(context,'Enquiry rejected successfully');
         tabController.animateTo(2);
                                     handleTabChange(2);
           }

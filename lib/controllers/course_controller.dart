@@ -70,7 +70,7 @@ class CourseController extends GetxController {
 //     }
 //   } catch (e) {
 //     print('Error: $e');
-//     //  Get.snackbar('Failed to fetch course');
+//     //  SnackBarUtils.showSuccessSnackBar(context,'Failed to fetch course');
 //   } finally {
 //     isLoading(false);
 //   }
@@ -103,7 +103,7 @@ class CourseController extends GetxController {
     }
   } catch (e) {
     print('Error: $e');
-    //  Get.snackbar('Failed to fetch course');
+    //  SnackBarUtils.showSuccessSnackBar(context,'Failed to fetch course');
   } finally {
     isLoading(false);
   }
@@ -221,21 +221,21 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
    bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (batchNameController.value.isEmpty) {
-       Get.snackbar('Branch name is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Branch name is required',);
       return false;
     }
     if (boardController.value.isEmpty) {
-       Get.snackbar('Board is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Board is required',);
       return false;
     }
     if (classController.value.isEmpty) {
-       Get.snackbar('Class is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Class is required',);
       return false;
     }
     
     
     if (subjectController.value.isEmpty) {
-       Get.snackbar('Subject is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Subject is required',);
       return false;
     }
     // if (remarks.text.isEmpty) {
@@ -267,16 +267,16 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
         if (response != null && response.success == true) {
           _clearData();
            SnackBarUtils.showSuccessSnackBar(context,'Course added successfully',);
-        //    Get.snackbar(
-        // 'Course added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
-          //Get.snackbar('Course added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        //    SnackBarUtils.showSuccessSnackBar(context,
+        // 'Course added successfully',,);
+          //SnackBarUtils.showSuccessSnackBar(context,'Course added successfully',,);
            Get.back();
            onInit();
         } else {
-            Get.snackbar( response?.message ?? 'Failed to add Course','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+            SnackBarUtils.showSuccessSnackBar(context, response?.message ?? 'Failed to add Course',);
         }
       } catch (e) {
-         Get.snackbar( 'Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+         SnackBarUtils.showSuccessSnackBar(context, 'Error: $e',);
       } finally {
         isLoading.value = false;
       }

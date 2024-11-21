@@ -108,11 +108,11 @@ class EnrollmentController extends GetxController  with GetSingleTickerProviderS
   bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (startDateController.text.isEmpty) {
-       Get.snackbar('Start Date is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Start Date is required',);
       return false;
     }
     if (endDateController.text.isEmpty) {
-       Get.snackbar('End date is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'End date is required',);
       return false;
     }
     return true;
@@ -136,15 +136,15 @@ if (validateFields(context)) {
         final addEnrollmentDataModel? response = await WebService.addEnrollment(data);
 
         if (response != null && response.statusCode == 200) {
-            Get.snackbar( 'Enrollment submitted successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+            SnackBarUtils.showSuccessSnackBar(context, 'Enrollment submitted successfully',);
             Get.delete<EnrollmentController>();
            Get.off(()=> EnrollmentScreen(type: entrollmentType,));
           
         } else {
-           Get.snackbar( response?.message ?? 'Failed to add Enrollment','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+           SnackBarUtils.showSuccessSnackBar(context, response?.message ?? 'Failed to add Enrollment',);
         }
       } catch (e) {
-         Get.snackbar( 'Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+         SnackBarUtils.showSuccessSnackBar(context, 'Error: $e',);
       } finally {
         isLoading.value = false;
       }
@@ -171,7 +171,7 @@ if (validateFields(context)) {
     }
   }
 
-  void updateEnrollment(String enrollmentId,String type,code) async {
+  void updateEnrollment(BuildContext context, String enrollmentId,String type,code) async {
       isLoading.value = true;
       try {
         var batchData = {
@@ -187,12 +187,12 @@ if (validateFields(context)) {
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
            if(response.data!.status=='Approved'){
-         Get.snackbar('You are enrolled successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+         SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
         fetchEnrollmentList('Pending');
          tabController.animateTo(1);
                                     handleTabChange(1);
            }else{
-              Get.snackbar('Enrollement rejected successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+              SnackBarUtils.showSuccessSnackBar(context,'Enrollement rejected successfully',);
               tabController.animateTo(2);
                                     handleTabChange(2);
            }

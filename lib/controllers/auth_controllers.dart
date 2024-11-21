@@ -58,56 +58,56 @@ class AuthControllers extends GetxController
 
   bool validateFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
-       Get.snackbar( 'Please enter the first name.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context, 'Please enter the first name.');
       return false;
     }
     if (lastNameController.text.isEmpty) {
-        Get.snackbar('Please enter the last name.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context,'Please enter the last name.',);
       return false;
     }
     if (emailController.text.isEmpty) {
-        Get.snackbar('Please enter the email.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context,'Please enter the email.',);
       return false;
     }
     // Email format validation
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text)) {
-       Get.snackbar('Invalid email format','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Invalid email format',);
       return false;
     }
 
     if (dobController.text.isEmpty) {
-        Get.snackbar('Please select the DOB.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context,'Please select the DOB.',);
       return false;
     }
 
     if (phController.text.isEmpty) {
-       Get.snackbar('Please enter the phone number.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Please enter the phone number.',);
       return false;
     }
     // Phone number format validation (10 digits)
     if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
-        Get.snackbar('Invalid mobile number','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context,'Invalid mobile number',);
       return false;
     }
 
     if (pincodeController.text.isEmpty) {
-        Get.snackbar('Please enter the pincode.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context,'Please enter the pincode.',);
       return false;
     }
 
     if (pincodeController.text.length != 6) {
-       Get.snackbar('Invalid pincode.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Invalid pincode.',);
       return false;
     }
 
     if (!acceptedTerms.value) {
-      Get.snackbar('Please accept the checkbox to proceed','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,'Please accept the checkbox to proceed',);
       return false;
     }
 
     if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
-       Get.snackbar('Please select the Id proof','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Please select the Id proof',);
       return false;
     }
 
@@ -119,14 +119,14 @@ class AuthControllers extends GetxController
     String input = logInController.text.trim();
 
     if (input.isEmpty) {
-        Get.snackbar('Please enter the phone number / email ID','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context,'Please enter the phone number / email ID',);
       return false;
     }
 
     // Check if the input is a phone number (10 digits)
     if (RegExp(r'^[0-9]+$').hasMatch(input)) {
       if (input.length != 10) {
-         Get.snackbar('Invalid Phone number','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+         SnackBarUtils.showSuccessSnackBar(context,'Invalid Phone number',);
         return false;
       }
       return true; // It's a valid phone number
@@ -134,7 +134,7 @@ class AuthControllers extends GetxController
 
     // Check if the input is a valid email format
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input)) {
-       Get.snackbar('Invalid email address.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,'Invalid email address.',);
       return false;
     }
 
@@ -144,7 +144,7 @@ class AuthControllers extends GetxController
 
   bool validateOtp(BuildContext context) {
     if (otpController.text.isEmpty) {
-       Get.snackbar('Please enter the OTP','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Please enter the OTP',);
       return false;
     }
     return true;

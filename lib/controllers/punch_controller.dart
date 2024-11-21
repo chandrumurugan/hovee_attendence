@@ -301,7 +301,7 @@ class PunchController extends GetxController {
             // Show error if the API call failed
             punchedIn.value = false;
             buttonLoader(false);
-             Get.snackbar(response!.message!,'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+             SnackBarUtils.showSuccessSnackBar(context,response!.message!,);
           }
         } else {
           final getAttendancePunchInModel? response =
@@ -321,7 +321,7 @@ class PunchController extends GetxController {
           } else {
             // Show error if the API call failed
             buttonLoader(false);
-             Get.snackbar( response!.message!,'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+             SnackBarUtils.showSuccessSnackBar(context, response!.message!,);
           }
         }
      // } 
@@ -377,10 +377,10 @@ class PunchController extends GetxController {
         Get.back();
         onInit(); // Refresh data
       } else {
-         Get.snackbar( response!.message!,'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+         SnackBarUtils.showSuccessSnackBar(context ,response!.message!,);
       }
     } catch (e) {
-       Get.snackbar('Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Error: $e',);
     } finally {
       isLoading.value = false;
     }
@@ -398,10 +398,10 @@ class PunchController extends GetxController {
         Get.back();
         onInit();
       } else {
-        Get.snackbar(response?.message ?? 'Failed to add batch','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context,response?.message ?? 'Failed to add batch',);
       }
     } catch (e) {
-        Get.snackbar('Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context,'Error: $e',);
     } finally {
       isLoading.value = false;
     }

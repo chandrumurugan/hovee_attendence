@@ -239,32 +239,32 @@ class AccountSetupController extends GetxController
 
   bool validateAddressInfo(BuildContext context) {
     if (address1Controller.text.isEmpty) {
-      Get.snackbar("Please enter the door no",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,"Please enter the door no",);
       return false;
     }
     if (address2Controller.text.isEmpty) {
-      Get.snackbar("Please enter the street & area",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,"Please enter the street & area",);
       return false;
     }
     if (cityController.text.isEmpty) {
-      Get.snackbar("Please enter the city",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,"Please enter the city",);
       return false;
     }
     if (stateController.text.isEmpty) {
-      Get.snackbar("Please enter the state",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,"Please enter the state",);
       return false;
     }
     if (countryController.text.isEmpty) {
-       Get.snackbar("Please enter the country",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,"Please enter the country",);
       return false;
     }
     if (pincodesController.text.isEmpty) {
-      Get.snackbar("Please enter the pincode",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,"Please enter the pincode",);
       return false;
     }
 
     if (pincodesController.text.length != 6) {
-       Get.snackbar('Invalid pincode.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Invalid pincode.',);
       return false;
     }
     return true;
@@ -272,49 +272,49 @@ class AccountSetupController extends GetxController
 
   bool validatePersonalFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
-      Get.snackbar('Please enter the first name.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,'Please enter the first name.',);
       return false;
     }
     if (lastNameController.text.isEmpty) {
-      Get.snackbar('Please enter the last name.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,'Please enter the last name.',);
       return false;
     }
     if (emailController.text.isEmpty) {
-      Get.snackbar('Please enter the email.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,'Please enter the email.',);
       return false;
     }
     // Email format validation
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text)) {
-      Get.snackbar('Invalid email format','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,'Invalid email format',);
       return false;
     }
     if (dobController.text.isEmpty) {
-       Get.snackbar('Please select the DOB.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Please select the DOB.',);
       return false;
     }
 
     if (phController.text.isEmpty) {
-       Get.snackbar('Please enter the mobile number.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Please enter the mobile number.',);
       return false;
     }
     if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
-       Get.snackbar('Invalid mobile number','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Invalid mobile number',);
       return false;
     }
 
     if (pincodeController.text.isEmpty) {
-      Get.snackbar('Please enter the pincode.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,'Please enter the pincode.',);
       return false;
     }
 
     if (pincodeController.text.length != 6) {
-     Get.snackbar('Invalid pincode.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+     SnackBarUtils.showSuccessSnackBar(context,'Invalid pincode.',);
       return false;
     }
 
     if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
-      Get.snackbar('Please select the Id proof','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,'Please select the Id proof',);
       return false;
     }
 
@@ -377,27 +377,27 @@ class AccountSetupController extends GetxController
     validationMessages.clear();
 
     if (highestQualification.value.isEmpty) {
-      Get.snackbar( "Please select a highest qualification.",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context, "Please select a highest qualification.",);
       return false;
     }
     if (teachingSkills.value.isEmpty) {
-      Get.snackbar('Please select a teaching skill set.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,'Please select a teaching skill set.',);
       return false;
     }
     if (workingTech.value.isEmpty) {
-        Get.snackbar('Please select a work type.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context,'Please select a work type.',);
       return false;
     }
     if (teachingExperience.value.isEmpty) {
-       Get.snackbar('Please select your teaching experience.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,'Please select your teaching experience.',);
       return false;
     }
     if (resumePath.value.isEmpty) {
-        Get.snackbar('Please attach  a resume.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context,'Please attach  a resume.',);
       return false;
     }
     if (experienceCertPath.value.isEmpty) {
-      Get.snackbar('Please attach a experience certificate.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      SnackBarUtils.showSuccessSnackBar(context,'Please attach a experience certificate.',);
       return false;
     }
     return true;
@@ -405,11 +405,11 @@ class AccountSetupController extends GetxController
 
   bool validateTuteEducationInfo(BuildContext context) {
     if (tuteeHighestQualification.value.isEmpty) {
-        Get.snackbar( "Please select highest qualification.",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        SnackBarUtils.showSuccessSnackBar(context, "Please select highest qualification.",);
       return false;
     }
     if (tuteeSpeciallization.value.isEmpty) {
-       Get.snackbar("Please select class/specialization.",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,"Please select class/specialization.",);
       return false;
     }
     // if(tuteeboardController.text.isEmpty){
@@ -419,7 +419,7 @@ class AccountSetupController extends GetxController
 
     // }
     if (tuteorganizationController.text.isEmpty) {
-       Get.snackbar("Please enter the school/college/other.",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       SnackBarUtils.showSuccessSnackBar(context,"Please enter the school/college/other.",);
       return false;
     }
     return true;
