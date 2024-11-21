@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/enrollment_preview_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:pinput/pinput.dart';
@@ -28,175 +29,176 @@ class EnrollmentScreen extends StatelessWidget {
           navigateTo: () {
             Navigator.pop(context);
           }),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-           Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: Text(
-                'Enrollment List',
-                style: GoogleFonts.nunito(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black),
+      body:  Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+             Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+                child: Text(
+                  'Enrollment List',
+                  style: GoogleFonts.nunito(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
               ),
+            // Tabs for Active and Inactive
+            TabBar(
+              controller: controller.tabController,
+              tabs: const [
+                Tab(text: 'Pending'),
+                Tab(text: 'Accepted'),
+                Tab(text: 'Rejected'),
+              ],
+              onTap: (value) {
+                controller.handleTabChange(value);
+              },
             ),
-          // Tabs for Active and Inactive
-          TabBar(
-            controller: controller.tabController,
-            tabs: const [
-              Tab(text: 'Pending'),
-              Tab(text: 'Accepted'),
-              Tab(text: 'Rejected'),
-            ],
-            onTap: (value) {
-              controller.handleTabChange(value);
-            },
-          ),
-          // Display List based on the selected tab
-          Expanded(
-            child: Obx(() {
-              if (controller.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
-              } else if (controller.enrollmentList.isEmpty) {
-                // Display "No data found" when the list is empty
-                return Center(
-                  child: Text(
-                    'No data found',
-                    style: GoogleFonts.nunito(
-                      color: Colors.black54,
-                      fontSize: 16,
+            // Display List based on the selected tab
+            Expanded(
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (controller.enrollmentList.isEmpty) {
+                  // Display "No data found" when the list is empty
+                  return Center(
+                    child: Text(
+                      'No data found',
+                      style: GoogleFonts.nunito(
+                        color: Colors.black54,
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                );
-              } else {
-                return ListView.builder(
-                  itemCount: controller.enrollmentList.length,
-                  itemBuilder: (context, index) {
-                    final enrollmentList = controller.enrollmentList[index];
-                    return GestureDetector(
-                      onTap: (){
-                        Get.to(EnRollmentPreviewScreen(
-                data: enrollmentList,
-                type: 'Enquire',
-              ));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                        child: Card(
-                          elevation: 10,
-                          shadowColor: Colors.black,
-                          surfaceTintColor: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 30,
-                                      backgroundColor: Colors.grey,
-                                      child: Icon(
-                                        Icons.person,
-                                        color: Colors.white,
-                                        size: 30,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          _buildRow('Tutee name',  '${enrollmentList.studentId.firstName} ${enrollmentList.studentId.lastName}',),
-                                          _buildRow('Start Date', enrollmentList.startDate),
-                                          _buildRow('End Date', enrollmentList.endDate),
-                                           _buildRow('Tutor name', '${enrollmentList.tutorId.firstName} ${enrollmentList.tutorId.lastName}',),
-                                         _buildRow('Status', enrollmentList.status == 'Approved' ? 'Accepted' : enrollmentList.status),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 5),
-                                // Display "Accept" and "Reject" buttons outide the column
-                                if ((controller.selectedTabIndex.value == 0 && type == 'Tutee'))
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: controller.enrollmentList.length,
+                    itemBuilder: (context, index) {
+                      final enrollmentList = controller.enrollmentList[index];
+                      return GestureDetector(
+                        onTap: (){
+                          Get.to(EnRollmentPreviewScreen(
+                  data: enrollmentList,
+                  type: 'Enquire',
+                ));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                          child: Card(
+                            elevation: 10,
+                            shadowColor: Colors.black,
+                            surfaceTintColor: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Expanded(
-                                        child: InkWell(
-                                          onTap: () {
-                                            _showOtpDialog(context,enrollmentList.sId! );//enrollmentList.id!
-                                          },
-                                          child: Container(
-                                            width: double.infinity,
-                                            padding: const EdgeInsets.symmetric(vertical: 10),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              gradient: LinearGradient(
-                                                colors: const [Color(0xFFBA0161), Color(0xFF510270)],
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              "Submit",
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.nunito(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 20,
-                                                  color: Colors.white),
-                                            ),
-                                          ),
+                                      CircleAvatar(
+                                        radius: 30,
+                                        backgroundColor: Colors.grey,
+                                        child: Icon(
+                                          Icons.person,
+                                          color: Colors.white,
+                                          size: 30,
                                         ),
                                       ),
                                       const SizedBox(width: 10),
                                       Expanded(
-                                        child: InkWell(
-                                          onTap: () {
-                                            controller.updateEnrollment(enrollmentList.sId!, 'Rejected',enrollmentList.enquiryCode!);
-                                  //            controller.tabController.animateTo(2);
-                                  // controller.  handleTabChange(2);
-                                          },
-                                          child: Container(
-                                            width: double.infinity,
-                                            padding: const EdgeInsets.symmetric(vertical: 10),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(8),
-                                              gradient: LinearGradient(
-                                                colors: const [Color(0xFFBA0161), Color(0xFF510270)],
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              "Reject",
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.nunito(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 20,
-                                                  color: Colors.white),
-                                            ),
-                                          ),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            _buildRow('Tutee name',  '${enrollmentList.studentId.firstName} ${enrollmentList.studentId.lastName}',),
+                                            _buildRow('Start Date', enrollmentList.startDate),
+                                            _buildRow('End Date', enrollmentList.endDate),
+                                             _buildRow('Tutor name', '${enrollmentList.tutorId.firstName} ${enrollmentList.tutorId.lastName}',),
+                                           _buildRow('Status', enrollmentList.status == 'Approved' ? 'Accepted' : enrollmentList.status),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
-                              ],
+                                  SizedBox(height: 5),
+                                  // Display "Accept" and "Reject" buttons outide the column
+                                  if ((controller.selectedTabIndex.value == 0 && type == 'Tutee'))
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              _showOtpDialog(context,enrollmentList.sId! );//enrollmentList.id!
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              padding: const EdgeInsets.symmetric(vertical: 10),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(8),
+                                                gradient: LinearGradient(
+                                                  colors: const [Color(0xFFBA0161), Color(0xFF510270)],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                ),
+                                              ),
+                                              child: Text(
+                                                "Submit",
+                                                textAlign: TextAlign.center,
+                                                style: GoogleFonts.nunito(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 20,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              controller.updateEnrollment(enrollmentList.sId!, 'Rejected',enrollmentList.enquiryCode!);
+                                    //            controller.tabController.animateTo(2);
+                                    // controller.  handleTabChange(2);
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              padding: const EdgeInsets.symmetric(vertical: 10),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(8),
+                                                gradient: LinearGradient(
+                                                  colors: const [Color(0xFFBA0161), Color(0xFF510270)],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                ),
+                                              ),
+                                              child: Text(
+                                                "Reject",
+                                                textAlign: TextAlign.center,
+                                                style: GoogleFonts.nunito(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 20,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              }
-            }),
-          ),
-        ],
-      ),
+                      );
+                    },
+                  );
+                }
+              }),
+            ),
+          ],
+        )
+      
     );
   }
 
@@ -318,9 +320,9 @@ void _showOtpDialog(BuildContext context, String enrollmentId) {
                 controller.updateEnrollment(enrollmentId, 'Approved', otp);
               controller. otpController.clear(); // Clear the OTP field
     GetStorage().remove('otpCode');
-                 Get.offAll(TuteeHome());
+                 Get.offAll(DashboardScreen(rolename: type,));
               } else {
-                Get.snackbar('Please enter OTP',colorText: Colors.white);
+                 Get.snackbar('Please enter OTP','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
               }
             },
             child: Ink(

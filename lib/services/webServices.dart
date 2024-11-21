@@ -73,7 +73,7 @@ class WebService {
         return LoginModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+        Get.snackbar("${result["message"]}",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         print("Failed to load login");
         return null;
       }
@@ -118,7 +118,7 @@ class WebService {
         return RegisterModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+          Get.snackbar("${result["message"]}",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
 
         return null;
       }
@@ -149,7 +149,7 @@ class WebService {
         return OtpModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+         Get.snackbar("${result["message"]}",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
 
         return null;
       }
@@ -174,7 +174,7 @@ class WebService {
         return LoginModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+         Get.snackbar("${result["message"]}",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         print("Failed to load login");
         return null;
       }
@@ -477,7 +477,7 @@ class WebService {
         return getAttendancePunchInModel.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+         Get.snackbar("${result["message"]}",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         return null;
       }
     } catch (e) {
@@ -504,7 +504,7 @@ class WebService {
         return getAttendancePunchInModel.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+          Get.snackbar("${result["message"]}",'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         return null;
       }
     } catch (e) {

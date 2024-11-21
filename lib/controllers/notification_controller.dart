@@ -31,7 +31,9 @@ class NotificationController extends GetxController {
   void onInit() {
     super.onInit();
     // Initialize TabController with three tabs
+    print("object");
     fetchNotificationsType();
+     print("object1");
   }
 
   void fetchNotificationsType() async {

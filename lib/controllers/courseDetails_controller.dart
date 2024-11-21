@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hovee_attendence/controllers/enquir_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/addClassData_model.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
@@ -61,11 +62,11 @@ class CourseDetailController extends GetxController {
           data: response.data!, tutorname: tutorname,
         ));
       } else {
-        SnackBarUtils.showErrorSnackBar(context,
-            response?.message ?? 'Failed to retrieve class and batch details');
+         Get.snackbar(
+            response?.message ?? 'Failed to retrieve class and batch details','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
     } catch (e) {
-      SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+        Get.snackbar( 'Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } finally {
       isLoading.value = false;
     }
@@ -87,7 +88,8 @@ class CourseDetailController extends GetxController {
           await WebService.addEnquirs(batchData);
 
       if (response != null && response.statusCode == 200) {
-         Get.snackbar('Enquiry submitted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+         Get.snackbar('Enquiry submited successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        //   Get.snackbar("Enquiry submitted successfully",backgroundColor: const Color.fromRGBO(186, 1, 97, 1));
         // SnackBarUtils.showSuccessSnackBar(
         //     context, 'Enquiry submited successfully');
           //Get.back();
@@ -119,12 +121,14 @@ class CourseDetailController extends GetxController {
 
         // Get.back(); // Optional: Close the current screen if needed
         // onInit();
+
+        Get.delete<EnquirDetailController>();
          Get.off(() => Tutorenquirlist(type: 'Tutee', fromBottomNav: true,)); 
       } else {
-       Get.snackbar('Enquiry already submitted',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+        Get.snackbar('Enquiry already submitted','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
       }
     } catch (e) {
-      SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+       Get.snackbar('Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } finally {
       isLoading.value = false;
     }

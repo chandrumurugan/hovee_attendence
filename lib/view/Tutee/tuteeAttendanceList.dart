@@ -7,6 +7,8 @@ import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
+import 'package:hovee_attendence/view/dashBoard.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -24,7 +26,7 @@ class TuteeAttendanceList extends StatelessWidget {
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
-         Get.offAll(TuteeHome());
+         Get.offAll(DashboardScreen(rolename: type,));
         },
       ),
       body: SingleChildScrollView(

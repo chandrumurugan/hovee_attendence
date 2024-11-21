@@ -301,8 +301,7 @@ class PunchController extends GetxController {
             // Show error if the API call failed
             punchedIn.value = false;
             buttonLoader(false);
-            SnackBarUtils.showErrorSnackBar(
-                context, response!.message!);
+             Get.snackbar(response!.message!,'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           }
         } else {
           final getAttendancePunchInModel? response =
@@ -322,8 +321,7 @@ class PunchController extends GetxController {
           } else {
             // Show error if the API call failed
             buttonLoader(false);
-            SnackBarUtils.showErrorSnackBar(
-                context, response!.message!);
+             Get.snackbar( response!.message!,'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           }
         }
      // } 
@@ -379,11 +377,10 @@ class PunchController extends GetxController {
         Get.back();
         onInit(); // Refresh data
       } else {
-        SnackBarUtils.showErrorSnackBar(
-            context, response!.message!);
+         Get.snackbar( response!.message!,'',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
     } catch (e) {
-      SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+       Get.snackbar('Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } finally {
       isLoading.value = false;
     }
@@ -401,11 +398,10 @@ class PunchController extends GetxController {
         Get.back();
         onInit();
       } else {
-        SnackBarUtils.showErrorSnackBar(
-            context, response?.message ?? 'Failed to add batch');
+        Get.snackbar(response?.message ?? 'Failed to add batch','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
     } catch (e) {
-      SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+        Get.snackbar('Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } finally {
       isLoading.value = false;
     }

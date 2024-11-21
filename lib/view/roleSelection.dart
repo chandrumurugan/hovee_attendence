@@ -266,23 +266,23 @@ class _RoleSelectionState extends State<RoleSelection> {
                                 onTap: () {
                                   // Check if selectedRoleId is null
                                   if (selectedRoleId == null) {
-                                    SnackBarUtils.showErrorSnackBar(
-                                        context, 'Please select a role.');
+                                      Get.snackbar(
+                                        'Please select a role.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
                                     return; // Exit early if no role is selected
                                   }
                                       
                                   // Check if the selected role is 'tutor' and ensure a role type is selected
                                   if (selectedRole == 'Tutor' &&
                                       selectedRoleTypeId == null) {
-                                    SnackBarUtils.showErrorSnackBar(context,
-                                        'Please select the role type.');
+                                     Get.snackbar(
+                                        'Please select the role type.','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
                                     return; // Exit early if tutor is selected but no role type is selected
                                   }
                                       
                                    if (selectedRole == 'Tutor' &&
                                       selectedRoleTypeName == 'Institute') {
-                                    SnackBarUtils.showErrorSnackBar(context,
-                                        'Feature under development');
+                                     Get.snackbar(
+                                        'Feature under development','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
                                     return; // Exit early if tutor is selected but no role type is selected
                                   }
                                       

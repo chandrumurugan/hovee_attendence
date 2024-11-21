@@ -108,11 +108,11 @@ class EnrollmentController extends GetxController  with GetSingleTickerProviderS
   bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (startDateController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Start Date is required');
+       Get.snackbar('Start Date is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       return false;
     }
     if (endDateController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'End date is required');
+       Get.snackbar('End date is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       return false;
     }
     return true;
@@ -136,14 +136,15 @@ if (validateFields(context)) {
         final addEnrollmentDataModel? response = await WebService.addEnrollment(data);
 
         if (response != null && response.statusCode == 200) {
-           Get.snackbar( 'Enrollment submitted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+            Get.snackbar( 'Enrollment submitted successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+            Get.delete<EnrollmentController>();
            Get.off(()=> EnrollmentScreen(type: entrollmentType,));
           
         } else {
-          Get.snackbar( response?.message ?? 'Failed to add Enrollment',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+           Get.snackbar( response?.message ?? 'Failed to add Enrollment','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
         }
       } catch (e) {
-        SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+         Get.snackbar( 'Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       } finally {
         isLoading.value = false;
       }
@@ -186,12 +187,12 @@ if (validateFields(context)) {
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
            if(response.data!.status=='Approved'){
-        Get.snackbar('You are enrolled successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+         Get.snackbar('You are enrolled successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
         fetchEnrollmentList('Pending');
          tabController.animateTo(1);
                                     handleTabChange(1);
            }else{
-             Get.snackbar('Enrollement rejected successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+              Get.snackbar('Enrollement rejected successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
               tabController.animateTo(2);
                                     handleTabChange(2);
            }

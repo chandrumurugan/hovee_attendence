@@ -93,6 +93,7 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
   }
 
  void fetchClassesList(String type) async {
+  print("object");
     try {
       var batchData = {
         "type": type,
@@ -126,14 +127,15 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
             await WebService.updateClass(batchData);
 
         if (response != null && response.statusCode == 200) {
-       Get.snackbar('Your class is now live',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+        Get.snackbar(
+       '', 'Your class is now live',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
        // onInit();
           tabController.animateTo(1);
                                     handleTabChange(1);
         //  String currentType = selectedTabIndex.value == 0 ? "Draft" : "Public";
         // fetchClassesList(currentType);
         } else {
-         Get.snackbar(response?.message ?? 'Failed to update Enquire');
+          Get.snackbar(response?.message ?? 'Failed to update Enquire','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         }
       } catch (e) {
         //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
@@ -161,11 +163,11 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
   bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (courseCodeController.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Course code is required');
+        Get.snackbar('Course code is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       return false;
     }
     if (batchNameController1.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Batch name is required');
+       Get.snackbar('Batch name is required','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       return false;
     }
     return true;
@@ -191,18 +193,17 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
 
         if (response != null && response.success == true) {
          _clearData();
-
-          SnackBarUtils.showSuccessSnackBar(
-              context, 'Class added successfully');
+           SnackBarUtils.showSuccessSnackBar(context,'Class added successfully',);
+          // Get.snackbar( 'Class added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           Get.back();
           //onInit();
            fetchClassesList("Draft");
         } else {
-          SnackBarUtils.showErrorSnackBar(
-              context, response?.message ?? 'Failed to add Class');
+            Get.snackbar(
+              response?.message ?? 'Failed to add Class','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         }
       } catch (e) {
-        SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+          Get.snackbar( 'Error: $e','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       } finally {
         isLoading.value = false;
       }

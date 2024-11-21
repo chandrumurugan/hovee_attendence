@@ -31,7 +31,7 @@ class SnackBarUtils {
       Overlay.of(context),
       SizedBox(
         height: 60,
-        child: CustomSnackBar.error(message: message)),
+        child: CustomSnackBar.error(message: message,backgroundColor: Color.fromRGBO(186, 1, 97, 1),)),
     );
   }
 }

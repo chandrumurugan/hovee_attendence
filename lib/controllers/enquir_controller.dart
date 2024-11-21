@@ -4,6 +4,7 @@ import 'package:hovee_attendence/controllers/attendance_controller.dart';
 import 'package:hovee_attendence/modals/getEnquireList_model.dart';
 import 'package:hovee_attendence/modals/updateEnquire_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:logger/logger.dart';
 
 class EnquirDetailController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -58,6 +59,7 @@ class EnquirDetailController extends GetxController
   }
 
    void fetchEnquirList(String type) async {
+    Logger().i("getting val;uegegbjhgsdfjs");
     try {
       isLoading(true);
 
@@ -106,12 +108,12 @@ class EnquirDetailController extends GetxController
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
           if(response.enquiry!.status=='Approved'){
-        Get.snackbar('Enquiry accepted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+         Get.snackbar('Enquiry accepted successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
         tabController.animateTo(1);
                                     handleTabChange(1);
           }
           else{
-             Get.snackbar('Enquiry rejected successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
+              Get.snackbar('Enquiry rejected successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1));
         tabController.animateTo(2);
                                     handleTabChange(2);
           }

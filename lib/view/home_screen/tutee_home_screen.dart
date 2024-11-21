@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
 import 'package:hovee_attendence/view/Tutee/tutee_courseList.dart';
@@ -27,7 +28,7 @@ class TuteeHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TuteeHomeController controller = Get.put(TuteeHomeController());
-
+     final NotificationController controller1 = Get.put(NotificationController());
     return Scaffold(
        key: controller.tuteeScaffoldKey,
       drawer: SideMenu(
@@ -81,6 +82,7 @@ class TuteeHome extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: (){
+                      controller1.onInit();
                       Get.to(()=> NotificationScreen());
                     },
                     child: Image.asset(

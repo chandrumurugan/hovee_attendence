@@ -28,7 +28,7 @@ class SingleCourseCategoryList {
 }
 
 class Data {
-  String? fees;
+  int? fees;
   String? courseCode;
   String? batchName;
   String? batchMaximumSlots;
@@ -37,9 +37,10 @@ class Data {
   String? batchMode;
   String? courseId;
   String? createdAt;
-  double? distance;
+  Null? distance;
   String? tutorName;
   TutorLocation? tutorLocation;
+  String? tutorAddress;
   String? className;
   String? subject;
   String? tutorId;
@@ -57,6 +58,7 @@ class Data {
       this.distance,
       this.tutorName,
       this.tutorLocation,
+      this.tutorAddress,
       this.className,
       this.subject,
       this.tutorId});
@@ -76,6 +78,7 @@ class Data {
     tutorLocation = json['tutor_location'] != null
         ? new TutorLocation.fromJson(json['tutor_location'])
         : null;
+    tutorAddress = json['tutor_address'];
     className = json['className'];
     subject = json['subject'];
     tutorId = json['TutorId'];
@@ -97,6 +100,7 @@ class Data {
     if (this.tutorLocation != null) {
       data['tutor_location'] = this.tutorLocation!.toJson();
     }
+    data['tutor_address'] = this.tutorAddress;
     data['className'] = this.className;
     data['subject'] = this.subject;
     data['TutorId'] = this.tutorId;

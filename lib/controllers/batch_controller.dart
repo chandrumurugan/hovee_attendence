@@ -247,7 +247,7 @@ void fetchBatchList({String searchTerm = ''}) async {
 
         if (response != null && response.success == true) {
           _clearData();
-          SnackBarUtils.showSuccessSnackBar(context, 'Batch added successfully');
+         // SnackBarUtils.showSuccessSnackBar(context, 'Batch added successfully');
            Get.back();
            onInit();
         } else {
