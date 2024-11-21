@@ -221,6 +221,7 @@ class TutorHome extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.white),
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Container(
@@ -235,7 +236,9 @@ class TutorHome extends StatelessWidget {
                                     height: 30,
                                   ),
                                 ),
-                                Text(item['title'],style: TextStyle(fontSize: 14),)
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Text(item['title'],textAlign: TextAlign.center,overflow: TextOverflow.ellipsis,))
                               ],
                             ),
                           ),

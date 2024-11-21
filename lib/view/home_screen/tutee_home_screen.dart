@@ -238,6 +238,7 @@ class TuteeHome extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(12),
                                   color: const Color.fromRGBO(246, 244, 254, 1)),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   Container(
@@ -253,8 +254,11 @@ class TuteeHome extends StatelessWidget {
                                       height: 30,
                                     ),
                                   ),
-                                  Text(
-                                      controller.tuteeMonitorList[index]['title'])
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Text(
+                                        controller.tuteeMonitorList[index]['title'],overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
+                                  )
                                 ],
                               ),
                             ),
