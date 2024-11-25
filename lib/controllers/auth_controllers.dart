@@ -226,6 +226,7 @@ class AuthControllers extends GetxController
           Logger().i(response.data);
           otpResponse.value = response!;
           box.write('Token', response.token);
+           box.write('Rolename', response.data!.roles!.roleName);
 
           isLoading.value = false;
           return response;

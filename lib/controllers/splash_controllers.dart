@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/validateTokenModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -25,6 +27,7 @@ class SplashController extends GetxController {
   final Duration _loadingDuration =
       const Duration(seconds: 3);
        var currentLocation = Rxn<LatLng>();
+ ValidateTokenData? validateTokendata;
   @override
   void onInit() {
     super.onInit();
@@ -67,35 +70,50 @@ class SplashController extends GetxController {
 
   Future<void> checkUserLoggedIn() async {
     try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('user_token');
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // String? token = prefs.getString('user_token');
       Future.delayed(const Duration(seconds: 5));
       String isLoggedIn = box.read('Token') ?? "";
+       String rolename =box.read('Rolename')?? '';
         Get.offAll(() => const LoginSignUp());
-      // if(isLoggedIn.isNotEmpty){
-      //      Get.offAll(() =>  TutorHome());
-      // }else{
-      //      Get.offAll(() => const LoginSignUp());
-      // }
+      if(isLoggedIn.isNotEmpty){
+        var response = await WebService.validateToken();
+        if (response!=null) {
+          // Navigate to Dashboard
+          String rolename = response.roleName!;
+         box.write('Token',response.data!.token!);
+         bool validateToken=response.tokenValid!;
+         if(validateToken){
+          validateTokendata= response.data;
+           Get.off(() => DashboardScreen(rolename: rolename));
+         }else {
+          // Navigate to Login Screen
+          Get.off(() => LoginSignUp());
+        }
+          
+        } else {
+          // Navigate to Login Screen
+          Get.off(() => LoginSignUp());
+        }
+           Get.offAll(() =>  DashboardScreen(rolename: rolename,));
+      }else{
+           Get.offAll(() => const LoginSignUp());
+      }
 
       // if (token != null && token.trim().isNotEmpty) {
-      //   bool response = await WebService.validateToken();
-      //   if (response) {
+      //   var response = await WebService.validateToken();
+      //   if (response!=null) {
       //     // Navigate to Dashboard
-      //     Get.off(() => DashBoard(
-      //           parent: false,
-      //           guestuser: false,
-      //           tutor: false,
-      //           studentOrParent: true,
-      //           hosteller: false,
-      //         ));
+      //     String rolename = response.roleName!;
+      //     prefs.setString('Token',response.data!.token!);
+      //     Get.off(() => DashboardScreen(rolename: rolename));
       //   } else {
       //     // Navigate to Login Screen
-      //     Get.off(() => SignupLogin());
+      //     Get.off(() => LoginSignUp());
       //   }
       // } else {
       //   // Navigate to Login Screen
-      //   Get.off(() => SignupLogin());
+      //   Get.off(() => LoginSignUp());
       // }
     } catch (e) {
       Logger().e(e);

@@ -139,7 +139,7 @@ class TuteeHome extends StatelessWidget {
                       onTap: (){
                          Get.to(()=>UserProfile());
                       },
-                      child: const HomePageHeader(
+                      child:  HomePageHeader(
                         title: 'Attendance Monitoring',
                         userType: "Tutee",
                       ),

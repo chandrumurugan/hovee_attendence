@@ -29,6 +29,7 @@ import 'package:hovee_attendence/modals/role_modal.dart';
 import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
 import 'package:hovee_attendence/modals/submitEnquirModel.dart';
 import 'package:hovee_attendence/modals/updateEnquire_model.dart';
+import 'package:hovee_attendence/modals/validateTokenModel.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'dart:convert';
@@ -1006,4 +1007,55 @@ class WebService {
       return null;
     }
   }
+
+  static Future<ValidateTokenModel ?> validateToken() async {
+    final url = Uri.parse(
+        "${baseUrl}user/validToken"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    final token = box.read('Token') ?? '';
+     var data = {"token": token};
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return ValidateTokenModel .fromJson(json.decode(response.body));
+      } else {
+        print('Failed to update Enrollment: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error updating Enrollment: $e');
+      return null;
+    }
+  }
+
+  // static Future<ValidateTokenModel> validateToken() async {
+  //   final url = Uri.parse('${baseUrl}user/validToken');
+  //   final box = GetStorage(); // Get an instance of GetStorage
+  //   // Retrieve the token from storage
+  //   final token = box.read('Token') ?? '';
+
+  //   final reponse = await http.post(
+  //     url, // Replace with the actual API URL
+  //     headers: {
+  //       'Authorization': 'Bearer $token', // Add the authorization token here
+  //       'Content-Type': 'application/json',
+  //     },
+  //   );
+  //   if (reponse.statusCode == 200) {
+  //     //Map<String, dynamic> result = json.decode(reponse.body);
+  //     return ValidateTokenModel.fromJson(json.decode(reponse.body));
+  //   } else {
+  //    return null;
+  //     //  throw Exception('Failed to fetch course category list');
+  //   }
+  // }
 }

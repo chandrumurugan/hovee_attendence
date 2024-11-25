@@ -10,6 +10,7 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/enquir_controller.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
+import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
@@ -31,6 +32,7 @@ class TutorHome extends StatelessWidget {
   final EnquirDetailController classController =
       Get.put(EnquirDetailController());
       final EnrollmentController enrollmentController = Get.put(EnrollmentController());
+       final SplashController splashController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,7 +134,7 @@ class TutorHome extends StatelessWidget {
                     onTap: (){
                       Get.to(()=>UserProfile());
                     },
-                    child: const HomePageHeader(
+                    child:  HomePageHeader(
                       title: 'Attendance Monitoring',
                       userType: "Tutor",
                     ),
@@ -301,11 +303,11 @@ class TutorHome extends StatelessWidget {
 
 class HomePageHeader extends StatelessWidget {
   @override
-  const HomePageHeader(
+   HomePageHeader(
       {super.key, required this.title, required this.userType});
   final String title;
   final String userType;
-
+ final SplashController splashController = Get.find();
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthControllers>();
@@ -358,7 +360,7 @@ class HomePageHeader extends StatelessWidget {
                          Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                            children: [
-                             Text('${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}',
+                             Text('${splashController.validateTokendata!.firstName} ${splashController.validateTokendata!.lastName}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 24.0,
@@ -415,7 +417,7 @@ class HomePageHeader extends StatelessWidget {
                           width: 10,
                         ),
                         Text(
-                            '${authController.otpResponse.value.data!.wowId!}',
+                            '${splashController.validateTokendata!.wowId!}',
                             style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 13.0,
