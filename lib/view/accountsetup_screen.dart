@@ -774,7 +774,7 @@ class AccountSetup extends StatelessWidget {
                                                 r"[0-9]",
                                               ),
                                             ),
-                                            LengthLimitingTextInputFormatter(6),
+                                            LengthLimitingTextInputFormatter(10),
                                           ],
                                         ),
                                         const SizedBox(

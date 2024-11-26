@@ -265,10 +265,10 @@ class TutorHome extends StatelessWidget {
                                             ),
                                         arguments:
                                             "Tutor"); // Navigate to the course screen
-                                  } else if (item.name == 'Classes') {
+                                  } else if (item.name == 'Tution Classes') {
                                     Get.to(() =>
                                         TutorClassList()); // Navigate to the course screen
-                                  } else if (item.name == 'Enquiries') {
+                                  } else if (item.name == 'Enquires') {
                                     classController.onInit();
                                     Get.to(() => Tutorenquirlist(
                                           type: 'Tutor',
