@@ -1,0 +1,31 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "hovee-attendance",
+                    "appId": "1:751210563328:android:35fed7a237a4cb9a7395e5",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "hovee-attendance",
+                    "appId": "1:751210563328:ios:cd6ea971bef589a27395e5",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "hovee-attendance",
+                    "configurations": {
+                        "android": "1:751210563328:android:35fed7a237a4cb9a7395e5",
+                        "ios": "1:751210563328:ios:cd6ea971bef589a27395e5",
+                        "web": "1:751210563328:web:bc03442b9dca64917395e5"
+                    }
+                }
+            }
+        }
+    }
+}

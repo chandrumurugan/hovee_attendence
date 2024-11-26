@@ -189,6 +189,7 @@ class TuteeHomeController extends GetxController{
     void fetchAttendanceCourseList() async {
     try {
       isLoading(true);
+   
       var attendanceCourseResponse = await WebService.fetchAttendanceCourseList();
       if (attendanceCourseResponse.data != null) {
         attendanceCourseList.value = attendanceCourseResponse.data!;

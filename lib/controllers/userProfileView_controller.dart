@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
+import 'package:hovee_attendence/services/firestoreService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:image_picker/image_picker.dart';
@@ -127,12 +128,17 @@ class UserProfileController extends GetxController
     _loadDropdownData();
   }
 
-  void _loadDropdownData() {
+  void _loadDropdownData() async {
     // Load data from GetStorage into lists
     qualifications = GetStorage().read<List<String>>('qualifications') ?? [];
     skills = GetStorage().read<List<String>>('skills') ?? [];
     techs = GetStorage().read<List<String>>('techs') ?? [];
     techsExperience = GetStorage().read<List<String>>('techsExperience') ?? [];
+
+
+              Logger().i("gettoing1234567890====");
+              
+
   }
 
   void fetchUserProfiles() async {
@@ -143,7 +149,8 @@ class UserProfileController extends GetxController
       if (fetchProfile != null) {
         userProfileResponse.value = fetchProfile;
         _populateFieldsFromResponse(fetchProfile.data!);
-        String organizationName = fetchProfile.data!.qualificationDetails.first.organizationName!;
+        String organizationName =
+            fetchProfile.data!.qualificationDetails.first.organizationName!;
         // Store relevant fields in GetStorage
         storage.write('doorNo', fetchProfile.data!.doorNo);
         storage.write('street', fetchProfile.data!.street);
@@ -152,20 +159,20 @@ class UserProfileController extends GetxController
         storage.write('country', fetchProfile.data!.country);
         storage.write('pincode', fetchProfile.data!.pincode);
         storage.write('id', fetchProfile.data!.id);
-         String name = "${fetchProfile.data!.firstName} "
-    "${fetchProfile.data!.lastName}";
-     storage.write('firstName', name);
+        String name = "${fetchProfile.data!.firstName} "
+            "${fetchProfile.data!.lastName}";
+        storage.write('firstName', name);
         storage.write('email', fetchProfile.data!.email);
         storage.write('phoneNumber', fetchProfile.data!.phoneNumber);
         storage.write('organizationNames', organizationName);
         storage.write('role', fetchProfile.data!.rolesId!.roleName!);
         String address = "${fetchProfile.data!.doorNo}, "
-    "${fetchProfile.data!.street}, "
-    "${fetchProfile.data!.city}, "
-    "${fetchProfile.data!.state}, "
-    "${fetchProfile.data!.country} - "
-    "${fetchProfile.data!.pincode}";
-    storage.write('address', address);
+            "${fetchProfile.data!.street}, "
+            "${fetchProfile.data!.city}, "
+            "${fetchProfile.data!.state}, "
+            "${fetchProfile.data!.country} - "
+            "${fetchProfile.data!.pincode}";
+        storage.write('address', address);
 
         isLoading(false);
       } else {

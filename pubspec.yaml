@@ -63,6 +63,8 @@ dependencies:
   cached_network_image: ^3.3.1
   multi_select_flutter:
   keyboard_actions: ^4.2.0
+  firebase_core: ^3.8.0
+  cloud_firestore: ^5.5.0
 
 dev_dependencies:
   flutter_test:

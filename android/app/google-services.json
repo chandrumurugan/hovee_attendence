@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "751210563328",
+    "project_id": "hovee-attendance",
+    "storage_bucket": "hovee-attendance.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751210563328:android:35fed7a237a4cb9a7395e5",
+        "android_client_info": {
+          "package_name": "com.example.hovee_attendence"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf_PiBWr8U_fpfODRHQYog5v3GA9M5YY0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

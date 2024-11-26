@@ -11,7 +11,8 @@ import 'package:hovee_attendence/controllers/tutorsStudentAttendanceList.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/view/splash_screen.dart';
 import 'package:get/get.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 
 class MyBindings extends Bindings {
@@ -31,8 +32,12 @@ class MyBindings extends Bindings {
   }
 }
 
-void main() {
+
+void main()async {
     WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
