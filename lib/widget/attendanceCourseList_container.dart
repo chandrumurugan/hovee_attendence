@@ -56,14 +56,14 @@ class AttendancecourselistContainer extends StatelessWidget {
                           color: Colors.black),
                     ),
                   ),
-                  // Text(
-                  //   "${attendanceCourse!.batch!.batchTimingStart} - ${attendanceCourse!.batch!.batchTimingEnd}",
+                  Text(
+                    "${attendanceCourse!.batch!.batchTimingStart} - ${attendanceCourse!.batch!.batchTimingEnd}",
                     
-                  //   style: GoogleFonts.nunito(
-                  //       fontSize: 14,
-                  //       fontWeight: FontWeight.bold,
-                  //       color: Colors.black),
-                  // ),
+                    style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
                 ],
               ),
               Column(

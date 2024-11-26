@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/dashBoard_controllers.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
+import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
@@ -133,10 +134,12 @@ class DashboardScreen extends StatelessWidget {
 
   List<Widget> _buildScreens() {
     return [
-      if (rolename=='Tutee')
+       if (rolename=='Tutee')
         TuteeHome()
+      else if (rolename=='Tutor')
+        TutorHome()
       else
-        TutorHome(),
+        ParentView(userId: '',),
         Tutorenquirlist(type: rolename, fromBottomNav: false,),
         EnrollmentScreen(type: rolename, fromBottomNav: false,),
       Center(child: Text("Feature under development")),

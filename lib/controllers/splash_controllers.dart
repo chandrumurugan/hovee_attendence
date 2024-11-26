@@ -82,7 +82,7 @@ class SplashController extends GetxController {
     
     String isLoggedIn = prefs.getString('Token') ?? "";
     String rolename = prefs.getString('Rolename') ?? '';
-    // Get.offAll(() => const LoginSignUp());
+   //Get.off(() => DashboardScreen(rolename: 'Parent'));
 
     if (isLoggedIn.isNotEmpty) {
       try{

@@ -29,12 +29,12 @@ class SideMenu extends StatelessWidget {
           body: SingleChildScrollView(
         child: Column(
           children: [
-            // SidemenuHeader(
-            //   isGuest: isGuest,
-            //   userName: 'Justin Joe',
-            //   wowID: '1234567',
-            //   rating: '3/5',
-            // ),
+            SidemenuHeader(
+              isGuest: isGuest,
+              userName: 'Justin Joe',
+              wowID: '1234567',
+              rating: '3/5',
+            ),
             const SizedBox(
               height: 10,
             ),
@@ -129,6 +129,30 @@ class SideMenu extends StatelessWidget {
               ),
               title: Text(
                 'Privacy',
+                style: GoogleFonts.nunito(
+                    fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios),
+            ),
+                ListTile(
+              onTap: () {
+                Get.off(() => ParentView( userId: '',));
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => WebViewLoader(
+                //       loadUrl: "http://hovee.in/attn-web/privacy-policy.php",
+                //       isBottomMenu: false,
+                //     ),
+                //   ),
+                // );
+              },
+              leading: Image.asset(
+                'assets/sidemenu/privacy.png',
+                height: 25,
+              ),
+              title: Text(
+                'Parent',
                 style: GoogleFonts.nunito(
                     fontSize: 16, fontWeight: FontWeight.w600),
               ),

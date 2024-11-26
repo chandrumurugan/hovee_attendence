@@ -300,9 +300,12 @@ class Batch {
   String? batchTeacher;
   String? fees;
   String? batchDays;
+  String? batchTimingStart;
+  String? batchTimingEnd;
 
   Batch(
-      {this.sId, this.batchName, this.batchTeacher, this.fees, this.batchDays});
+      {this.sId, this.batchName, this.batchTeacher, this.fees, this.batchDays,this.batchTimingStart,
+      this.batchTimingEnd});
 
   Batch.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -310,6 +313,8 @@ class Batch {
     batchTeacher = json['batch_teacher'];
     fees = json['fees'];
     batchDays = json['batch_days'];
+     batchTimingStart = json['batch_timing_start'];
+    batchTimingEnd = json['batch_timing_end'];
   }
 
   Map<String, dynamic> toJson() {
@@ -319,6 +324,8 @@ class Batch {
     data['batch_teacher'] = this.batchTeacher;
     data['fees'] = this.fees;
     data['batch_days'] = this.batchDays;
+    data['batch_timing_start'] = this.batchTimingStart;
+    data['batch_timing_end'] = this.batchTimingEnd;
     return data;
   }
 }
