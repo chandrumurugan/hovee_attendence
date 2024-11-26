@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/modals/add_course_data_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/deletebatch_model.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
 
 import 'package:hovee_attendence/services/webServices.dart';
@@ -309,5 +310,70 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
     
   //   }
   // }
+
+  void deleteCourse(BuildContext context, String courseId) async {
+    isLoading.value = true;
+    try {
+      var courseData = {
+        "courseId": courseId,
+      };
+
+      final deleteBatchDataModel? response =
+          await WebService.deleteCourse(courseData);
+
+      if (response != null && response.success == true) {
+        _clearData();
+        fetchCourseList();
+        SnackBarUtils.showSuccessSnackBar(context, 'Course delete successfully');
+        //  Get.back();
+        //  onInit();
+      } else {
+        SnackBarUtils.showErrorSnackBar(
+            context, response?.message ?? 'Failed to delete course');
+      }
+    } catch (e) {
+      SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void updateCourse(BuildContext context,String courseId) async {
+     if (validateFields(context)) {
+      isLoading.value = true;
+      try {
+        var batchData = {
+          'batch_name': batchNameController.value,
+          'board': boardController.value,
+          'class_name': classController.value,
+          'subject': subjectController.value,
+          'remarks': '',
+           'course_image':'',
+          'courseId':courseId,
+             "type": "U",
+             "batchId": selectedBatchId,
+         
+        };
+          
+        final AddCourseDataModel? response = await WebService.addCourse(batchData);
+
+        if (response != null && response.success == true) {
+          _clearData();
+           SnackBarUtils.showSuccessSnackBar(context,'Course updated successfully',);
+        //    SnackBarUtils.showSuccessSnackBar(context,
+        // 'Course added successfully',,);
+          //SnackBarUtils.showSuccessSnackBar(context,'Course added successfully',,);
+           Get.back();
+           onInit();
+        } else {
+            SnackBarUtils.showSuccessSnackBar(context, response?.message ?? 'Failed to updated Course',);
+        }
+      } catch (e) {
+         SnackBarUtils.showSuccessSnackBar(context, 'Error: $e',);
+      } finally {
+        isLoading.value = false;
+      }
+    }
+  }
 
 }

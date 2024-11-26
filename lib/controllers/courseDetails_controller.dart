@@ -118,4 +118,6 @@ class CourseDetailController extends GetxController {
   void navigateBack() {
     Get.back();
   }
+
+  
 }

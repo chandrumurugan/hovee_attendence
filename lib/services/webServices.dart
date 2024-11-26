@@ -7,6 +7,7 @@ import 'package:hovee_attendence/modals/addEnrollmentData_model.dart';
 import 'package:hovee_attendence/modals/add_course_data_model.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/deletebatch_model.dart';
 import 'package:hovee_attendence/modals/enrollment_success_model.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
@@ -52,11 +53,9 @@ class WebService {
         var data = jsonDecode(response.body);
         return AppConfig.fromJson(data);
       } else {
-        print("Failed to load app config");
         return null;
       }
     } catch (e) {
-      print("Error in fetching app config: $e");
       return null;
     }
   }
@@ -78,11 +77,9 @@ class WebService {
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
         SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
-        print("Failed to load login");
         return null;
       }
     } catch (e) {
-      print("Error in fetching login: $e");
       return null;
     }
   }
@@ -127,7 +124,6 @@ class WebService {
         return null;
       }
     } catch (e) {
-      print("Error in fetching register: $e");
       return null;
     }
   }
@@ -158,7 +154,6 @@ class WebService {
         return null;
       }
     } catch (e) {
-      print("Error in fetching login: $e");
       return null;
     }
   }
@@ -179,11 +174,9 @@ class WebService {
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
          SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
-        print("Failed to load login");
         return null;
       }
     } catch (e) {
-      print(e);
       return null;
     }
   }
@@ -196,6 +189,8 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
+    Logger().i("getting24567890avaluue==>${batchData}");
+     Logger().i("getting2456hgfujtgf0avaluue==>${token}");
     try {
       final response = await http.post(
         url,
@@ -204,16 +199,14 @@ class WebService {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
+        
       );
-      print(response.body);
       if (response.statusCode == 200) {
         return AddBatchDataModel.fromJson(json.decode(response.body));
       } else {
-        print('Failed to add batch: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error adding batch: $e');
       return null;
     }
   }
@@ -224,7 +217,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -234,7 +226,7 @@ class WebService {
         'Content-Type': 'application/json',
       },
     );
-
+     print(token);
     if (response.statusCode == 200) {
       return getBatchListModel.fromJson(json.decode(response.body));
     } else {
@@ -289,7 +281,6 @@ class WebService {
         return null;
       }
     } catch (e) {
-      print("Error in fetching Punch In: $e");
       return null;
     }
   }
@@ -305,7 +296,6 @@ class WebService {
         return null;
       }
     } catch (e) {
-      print(e);
       return null;
     }
   }
@@ -399,17 +389,14 @@ class WebService {
       var headers = {'Authorization': "Bearer $token"};
       var url = Uri.parse("${baseUrl}user/getUserProfile");
       var response = await http.post(url, headers: headers);
-      print(token);
       Logger().i(response.headers);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         return UserProfileM.fromJson(data);
       } else {
-        print("Failed to load app config");
         return null;
       }
     } catch (e) {
-      print(e);
       return null;
     }
   }
@@ -451,7 +438,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -474,7 +460,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     var headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
@@ -492,7 +477,6 @@ class WebService {
         return null;
       }
     } catch (e) {
-      print("Error in fetching Punch In: $e");
       return null;
     }
   }
@@ -504,7 +488,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     var headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
@@ -520,7 +503,6 @@ class WebService {
         return null;
       }
     } catch (e) {
-      print("Error in fetching Punch In: $e");
       return null;
     }
   }
@@ -532,7 +514,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -560,7 +541,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth,"fromDate":'',
     "toDate":''};
     final response = await http.post(
@@ -599,15 +579,12 @@ class WebService {
           'Authorization': 'Bearer $token',
         },
       );
-      print(response.body);
       if (response.statusCode == 200) {
         return AddCourseDataModel.fromJson(json.decode(response.body));
       } else {
-        print('Failed to add course: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error adding course: $e');
       return null;
     }
   }
@@ -629,15 +606,12 @@ class WebService {
           'Authorization': 'Bearer $token',
         },
       );
-      print(response.body);
       if (response.statusCode == 200) {
         return AddClassDataModel.fromJson(json.decode(response.body));
       } else {
-        print('Failed to add batch: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error adding batch: $e');
       return null;
     }
   }
@@ -648,7 +622,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(batchData),
@@ -703,15 +676,12 @@ class WebService {
           'Authorization': 'Bearer $token',
         },
       );
-      print(response.body);
       if (response.statusCode == 200) {
         return AddClassDataModel.fromJson(json.decode(response.body));
       } else {
-        print('Failed to add batch: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error adding batch: $e');
       return null;
     }
   }
@@ -733,15 +703,12 @@ class WebService {
           'Authorization': 'Bearer $token',
         },
       );
-      print(response.body);
       if (response.statusCode == 200) {
         return getClassTuteeByIdModel.fromJson(json.decode(response.body));
       } else {
-        print('Failed to add batch: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error adding batch: $e');
       return null;
     }
   }
@@ -763,15 +730,12 @@ class WebService {
           'Authorization': 'Bearer $token',
         },
       );
-      print(response.body);
       if (response.statusCode == 200) {
         return submitEnquiryModel.fromJson(json.decode(response.body));
       } else {
-        print('Failed to add batch: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error adding batch: $e');
       return null;
     }
   }
@@ -782,7 +746,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -807,7 +770,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth,"fromDate":'',
     "toDate":''};
     final response = await http.post(
@@ -835,7 +797,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(batchData),
@@ -869,15 +830,12 @@ class WebService {
           'Authorization': 'Bearer $token',
         },
       );
-      print(response.body);
       if (response.statusCode == 200) {
         return UpdateEnquiryStatusModel .fromJson(json.decode(response.body));
       } else {
-        print('Failed to update Enquire: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error updating Enquire: $e');
       return null;
     }
   }
@@ -911,7 +869,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(notificationData),
@@ -935,7 +892,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(notificationData),
@@ -958,7 +914,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(enrollmentData),
@@ -982,7 +937,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(batchData),
@@ -1002,7 +956,6 @@ class WebService {
     } 
     } catch (e) {
      
-      print(e); 
        return null;
     }
    
@@ -1025,15 +978,12 @@ class WebService {
           'Authorization': 'Bearer $token',
         },
       );
-      print(response.body);
       if (response.statusCode == 200) {
         return UpdateEnrollmentStatusModel .fromJson(json.decode(response.body));
       } else {
-        print('Failed to update Enrollment: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error updating Enrollment: $e');
       return null;
     }
   }
@@ -1055,15 +1005,12 @@ class WebService {
           'Authorization': 'Bearer $token',
         },
       );
-      print(response.body);
       if (response.statusCode == 200) {
         return ValidateTokenModel .fromJson(json.decode(response.body));
       } else {
-        print('Failed to update Enrollment: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error updating Enrollment: $e');
       return null;
     }
   }
@@ -1095,7 +1042,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -1120,7 +1066,6 @@ class WebService {
     // Retrieve the token from storage
      SharedPreferences prefs = await SharedPreferences.getInstance();
     final token =prefs.getString('Token') ?? "";
-    print(token);
     var data = {"batchId": batchId};
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -1138,6 +1083,50 @@ class WebService {
       Map<String, dynamic> result = jsonDecode(response.body);
       // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
       return null;
+    }
+  }
+
+  static Future<deleteBatchDataModel> deleteBatch( Map<String, dynamic> batchData) async {
+    final url = Uri.parse('${baseUrl}batch/deleteBatch');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(batchData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return deleteBatchDataModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Notification list');
+    }
+  }
+
+  static Future<deleteBatchDataModel> deleteCourse( Map<String, dynamic> batchData) async {
+    final url = Uri.parse('${baseUrl}course/deleteCourse');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(batchData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return deleteBatchDataModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Notification list');
     }
   }
 }

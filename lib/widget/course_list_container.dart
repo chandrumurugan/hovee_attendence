@@ -3,6 +3,10 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/courseDetails_controller.dart';
+import 'package:hovee_attendence/controllers/course_controller.dart';
+import 'package:hovee_attendence/modals/getCouseList_model.dart';
+import 'package:hovee_attendence/view/edit_batch_screen.dart';
+import 'package:hovee_attendence/view/edit_course_screen.dart';
 
 class CourseListContainer extends StatelessWidget {
   final String image;
@@ -18,6 +22,8 @@ class CourseListContainer extends StatelessWidget {
   final String batchname;
   final String tutorname;
   final String type;
+  final String id;
+  final Data1 course;
   CourseListContainer(
       {super.key,
       required this.image,
@@ -30,9 +36,10 @@ class CourseListContainer extends StatelessWidget {
       required this.arrowIcon,
       required this.className,
       required this.tutorId,
-      required this.batchname, required this.tutorname, required this.type});
+      required this.batchname, required this.tutorname, required this.type, required this.id, required this.course});
 
   final CourseDetailController controller = Get.put(CourseDetailController());
+  final CourseController courseController = Get.put(CourseController());
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -79,7 +86,96 @@ class CourseListContainer extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                         type=='Tutor'?
+                        Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          // Add edit functionality
+                         Get.to(EditCourseScreen(batch:course,));
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          // Add delete functionality
+                          courseController.deleteCourse(context, id);
+                        },
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
+                        //  type=='Tutor'?
+                        //  Text(
+                        //   "$batchname",
+                        //   style: const TextStyle(
+                        //       color: Colors.black,
+                        //       fontWeight: FontWeight.w400,
+                        //       fontSize: 14),
+                        // ):
+                        // Text(
+                        //   "$subjectCode /month",
+                        //   style: const TextStyle(
+                        //       color: Colors.black,
+                        //       fontWeight: FontWeight.w400,
+                        //       fontSize: 14),
+                        // ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                      Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              std,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 15),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              height: 1,
+                              width: 10,
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              medium,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14),
+                            ),
+                            
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          height: 15,
+                          width: 1.5,
+                          color: Colors.black.withOpacity(0.5),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+            type=='Tutor'?
                          Text(
                           "$batchname",
                           style: const TextStyle(
@@ -89,38 +185,6 @@ class CourseListContainer extends StatelessWidget {
                         ):
                         Text(
                           "$subjectCode /month",
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          std,
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          height: 1,
-                          width: 10,
-                          color: Colors.black.withOpacity(0.5),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          medium,
                           style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w400,

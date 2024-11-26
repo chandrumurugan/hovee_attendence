@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/addEnquery_controller.dart';
 import 'package:hovee_attendence/controllers/courseDetails_controller.dart';
+import 'package:hovee_attendence/controllers/course_controller.dart';
 import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
@@ -29,6 +30,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
   bool isLoadingcategoryList = false;
 
    final CourseDetailController controller = Get.put(CourseDetailController());
+   final CourseController courseController = Get.put(CourseController());
 
   @override
   void initState() {
@@ -123,6 +125,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                             // shrinkWrap: true,
                             itemCount: filteredList!.length,
                             itemBuilder: (context, index) {
+                               final course = courseController.courseList[index];
                               return GestureDetector(
                                 onTap: (){
                                  controller.getClassTuteeById(context,filteredList![index].className!,filteredList![index].subject!,filteredList![index].tutorId!,filteredList![index].tutorName!);
@@ -137,7 +140,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                                     group: filteredList![index].courseCode!,
                                     groupcode:
                                         "${filteredList![index].batchTimingStart!}-${filteredList![index].batchTimingEnd!}",
-                                    arrowIcon: true, className: filteredList![index].className!, tutorId: filteredList![index].tutorId!, batchname: filteredList![index].batchName!, tutorname: filteredList![index].tutorName!, type: widget.type,),
+                                    arrowIcon: true, className: filteredList![index].className!, tutorId: filteredList![index].tutorId!, batchname: filteredList![index].batchName!, tutorname: filteredList![index].tutorName!, type: widget.type, id: '',  course: course,),
                               );
                             }))
           ],

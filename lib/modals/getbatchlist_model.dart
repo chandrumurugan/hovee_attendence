@@ -6,7 +6,11 @@ class getBatchListModel {
   int? activeBatches;
   int? inactiveBatches;
 
-  getBatchListModel({this.statusCode, this.message, this.data,this.totalBatches,
+  getBatchListModel(
+      {this.statusCode,
+      this.message,
+      this.data,
+      this.totalBatches,
       this.activeBatches,
       this.inactiveBatches});
 
@@ -42,37 +46,68 @@ class Data2 {
   String? sId;
   String? batchName;
   String? batchTeacher;
+  String? batchMaximumSlots;
   String? batchTimingStart;
   String? batchTimingEnd;
-  String? batchDays;
+  dynamic batchDays;  // Can be a String or a List, handled dynamically
   String? batchMode;
   String? fees;
   String? month;
   String? createdAt;
+  int? totalCourses;
+  String? batchShortName;
+  String? branchName;
+  String? endDate;
+  Null? institudeId;
+  String? startDate;
+  Null? teacherId;
 
   Data2(
       {this.sId,
       this.batchName,
       this.batchTeacher,
+      this.batchMaximumSlots,
       this.batchTimingStart,
       this.batchTimingEnd,
       this.batchDays,
       this.batchMode,
       this.fees,
       this.month,
-      this.createdAt});
+      this.createdAt,
+      this.totalCourses,
+      this.batchShortName,
+      this.branchName,
+      this.endDate,
+      this.institudeId,
+      this.startDate,
+      this.teacherId});
 
   Data2.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     batchName = json['batch_name'];
     batchTeacher = json['batch_teacher'];
+    batchMaximumSlots = json['batch_maximum_slots'];
     batchTimingStart = json['batch_timing_start'];
     batchTimingEnd = json['batch_timing_end'];
-    batchDays = json['batch_days'];
+
+    // Check if batch_days is a list or a string and handle accordingly
+    if (json['batch_days'] is String) {
+      batchDays = json['batch_days'];  // If it's a string, assign directly
+    } else if (json['batch_days'] is List) {
+      batchDays = List<String>.from(json['batch_days']);  // If it's a list, convert to List<String>
+    }
+
     batchMode = json['batch_mode'];
     fees = json['fees'];
     month = json['month'];
     createdAt = json['created_at'];
+    totalCourses = json['totalCourses'];
+    batchShortName = json['batch_short_name'];
+    branchName = json['branch_name'];
+    endDate = json['end_date'];
+    institudeId = json['institudeId'];
+    startDate = json['start_date'];
+    teacherId = json['teacherId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -80,13 +115,28 @@ class Data2 {
     data['_id'] = this.sId;
     data['batch_name'] = this.batchName;
     data['batch_teacher'] = this.batchTeacher;
+    data['batch_maximum_slots'] = this.batchMaximumSlots;
     data['batch_timing_start'] = this.batchTimingStart;
     data['batch_timing_end'] = this.batchTimingEnd;
-    data['batch_days'] = this.batchDays;
+
+    // Handle batchDays serialization
+    if (this.batchDays is String) {
+      data['batch_days'] = this.batchDays;  // If it's a string, use directly
+    } else if (this.batchDays is List) {
+      data['batch_days'] = this.batchDays;  // If it's a list, just assign
+    }
+
     data['batch_mode'] = this.batchMode;
     data['fees'] = this.fees;
     data['month'] = this.month;
     data['created_at'] = this.createdAt;
+    data['totalCourses'] = this.totalCourses;
+    data['batch_short_name'] = this.batchShortName;
+    data['branch_name'] = this.branchName;
+    data['end_date'] = this.endDate;
+    data['institudeId'] = this.institudeId;
+    data['start_date'] = this.startDate;
+    data['teacherId'] = this.teacherId;
     return data;
   }
 }
