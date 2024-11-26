@@ -9,6 +9,8 @@ import 'package:hovee_attendence/controllers/enquir_controller.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
+import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
+import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
 import 'package:hovee_attendence/view/Tutee/tutee_courseList.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
@@ -30,12 +32,13 @@ class TuteeHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TuteeHomeController controller = Get.put(TuteeHomeController());
-     final NotificationController controller1 = Get.put(NotificationController());
-      final EnquirDetailController classController =
-      Get.put(EnquirDetailController());
-      final EnrollmentController enrollmentController = Get.put(EnrollmentController());
+    final EnquirDetailController classController =
+        Get.put(EnquirDetailController());
+    final EnrollmentController enrollmentController =
+        Get.put(EnrollmentController());
+    final TutorHomeController controller1 = Get.put(TutorHomeController());
     return Scaffold(
-       key: controller.tuteeScaffoldKey,
+      key: controller.tuteeScaffoldKey,
       drawer: SideMenu(
         isGuest: false,
       ),
@@ -65,7 +68,7 @@ class TuteeHome extends StatelessWidget {
                 const SizedBox(
                   width: 30,
                 ),
-                LogoGif()
+                const LogoGif()
                 // SvgPicture.asset(
                 //   'assets/appbar/hovee_attendance_app_icon_.svg',
                 //   height: 40,
@@ -85,16 +88,44 @@ class TuteeHome extends StatelessWidget {
                 // mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  InkWell(
-                    onTap: (){
-                      controller1.onInit();
-                      Get.to(()=> NotificationScreen());
-                    },
-                    child: Image.asset(
-                      'assets/appbar/bell 5.png',
-                      color: Colors.black.withOpacity(0.4),
-                      height: 30,
-                    ),
+                  Stack(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Get.to(() => NotificationScreen());
+                        },
+                        child: Image.asset(
+                          'assets/appbar/bell 5.png',
+                          color: Colors.black.withOpacity(0.4),
+                          height: 30,
+                        ),
+                      ),
+                      Obx(() => Positioned(
+                            right: 1,
+                            top: 1,
+                            child: controller.notificationCount.value > 0
+                                ? Container(
+                                    padding: const EdgeInsets.all(2),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    constraints: const BoxConstraints(
+                                      minWidth: 12,
+                                      minHeight: 12,
+                                    ),
+                                    child: Text(
+                                      '${controller.notificationCount.value}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 8,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                : const SizedBox(),
+                          )),
+                    ],
                   ),
                   const SizedBox(
                     width: 10,
@@ -120,13 +151,13 @@ class TuteeHome extends StatelessWidget {
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
       ),
-      body: Obx(
-        () {
+      body: Obx(() {
         if (controller.isLoading.value) {
-        // Call your refresh logic here, e.g., re-fetch data
-        // Reset the refresh state
-        return Center(child: CircularProgressIndicator());
-      } return  SingleChildScrollView(
+          // Call your refresh logic here, e.g., re-fetch data
+          // Reset the refresh state
+          return const Center(child: CircularProgressIndicator());
+        }
+        return SingleChildScrollView(
           child: Stack(
             children: [
               Padding(
@@ -134,12 +165,11 @@ class TuteeHome extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  
                     InkWell(
-                      onTap: (){
-                         Get.to(()=>UserProfile());
+                      onTap: () {
+                        Get.to(() => UserProfile());
                       },
-                      child:  HomePageHeader(
+                      child: HomePageHeader(
                         title: 'Attendance Monitoring',
                         userType: "Tutee",
                       ),
@@ -147,16 +177,100 @@ class TuteeHome extends StatelessWidget {
                     // SizedBox(
                     //   height: MediaQuery.sizeOf(context).height * 0.8,
                     // ),
+
                     Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Text(
-                      'Daily Attendance',
-                      style: GoogleFonts.nunito(
-                          fontSize: 18, fontWeight: FontWeight.w700),
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        'Daily Attendance',
+                        style: GoogleFonts.nunito(
+                            fontSize: 18, fontWeight: FontWeight.w700),
+                      ),
                     ),
-                  ),
-                  const ChartApp(),
-                  SizedBox(height: 10,),
+                    Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: Card(
+                        elevation: 10,
+                        shadowColor: Colors.grey.shade100,
+                        surfaceTintColor: Colors.white,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 10),
+                          width: MediaQuery.sizeOf(context).width * 0.9,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            image: DecorationImage(
+                                image:
+                                    AssetImage('assets/Course_BG_Banner.png'),
+                                fit: BoxFit.cover),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // const SizedBox(height: 10),
+                              Obx(() {
+                                if (controller1.batchList.isEmpty) {
+                                  return const Text(
+                                      "No data found"); // Show loading indicator if no batches are fetched
+                                }
+                                return DropdownButtonFormField<Data1>(
+                                  dropdownColor: AppConstants.primaryColor,
+                                  icon: const Icon(
+                                    Icons.arrow_drop_down_circle_rounded,
+                                    color: Colors.white,
+                                  ),
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                  decoration: InputDecoration(
+                                    suffixIconColor: Colors.white,
+                                    alignLabelWithHint: true,
+                                    border: InputBorder.none,
+                                    labelText: 'Select batch',
+                                    labelStyle: GoogleFonts.nunito(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  value: controller1.selectedBatchIN.value,
+                                  items:
+                                      controller1.batchList.map((Data1 batch) {
+                                    return DropdownMenuItem<Data1>(
+                                      value: batch,
+                                      child: Text(batch.batchName!),
+                                    );
+                                  }).toList(),
+                                  onChanged: (newBatch) {
+                                    if (newBatch != null) {
+                                      controller1.selectBatch(newBatch);
+                                      controller1.isBatchSelected.value = true;
+                                      controller1.fetchBatchList(
+                                        newBatch.batchId!,
+                                      );
+                                      // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
+                                      // Replace with your actual method to fetch batch-related data
+                                    }
+                                  },
+                                );
+                              }),
+
+                              // const SizedBox(
+                              //   height: 20,
+                              // ),
+                              //tabl
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    controller1.dailyattendance.value != null
+                        ? ChartApp()
+                        : const SizedBox.shrink(),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -167,107 +281,147 @@ class TuteeHome extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               color: Colors.black),
                         ),
-                         InkWell(
-                          onTap: (){
-                            Get.to(() =>
-                                  AttendanceCourseListScreen()); 
+                        InkWell(
+                          onTap: () {
+                            Get.to(() => AttendanceCourseListScreen());
                           },
-                           child: const Text(
+                          child: const Text(
                             'See All',
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black),
-                                                 ),
-                         ),
+                          ),
+                        ),
                       ],
                     ),
-                     SubjectContainer(),
+                    SubjectContainer(),
                     const SizedBox(
                       height: 10,
                     ),
-                    const Text(
-                      'My Listings',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              childAspectRatio: 1.0,
-                              crossAxisCount: 3,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10 // Number of columns
-                              ),
-                      itemBuilder: (context, int index) {
-                        final item = controller.tuteeMonitorList[index];
-                        return InkWell(
-                          onTap: () {
-                            if(index == 1){
-                              var box = GetStorage();
-                              Logger().i("${box.read('Token')}");
-                              Get.to(()=>const GetTopicsCourses(type: 'Tutee',));
-                            }
-                            if(index == 2){
-                              classController.onInit();
-                              Get.to(()=> Tutorenquirlist(type: 'Tutee', fromBottomNav: true,));
-                            }
-                            if(index == 3){
-                               enrollmentController.onInit();
-                              Get.to(()=> EnrollmentScreen(type: 'Tutee', fromBottomNav: true,));
-                            }
-                             if(index == 0){
-                              Get.to(()=> TuteeAttendanceList(type: 'Tutee',), arguments:"Tutee");
-                            }
-                           
-                          },
-                          child: Card(
-                            elevation: 10,
-                            shadowColor: Colors.grey,
-                            surfaceTintColor: Colors.white,
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: const Color.fromRGBO(246, 244, 254, 1)),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: controller.tuteeMonitorList[index]
-                                            ['color']),
-                                    child: Image.asset(
-                                      controller.tuteeMonitorList[index]['image'],
-                                      color: Colors.white,
-                                      height: 30,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Text(
-                                        controller.tuteeMonitorList[index]['title'],overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,),
-                                  )
-                                ],
-                              ),
+                    Obx(() {
+                      if (controller.isLoading.value) {
+                        return const SizedBox.shrink();
+                      }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: const Text(
+                              'My Listings',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
                             ),
                           ),
-                        );
-                      },
-                      itemCount: controller.tuteeMonitorList.length,
-                    ),
-                    
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 1.0,
+                                    crossAxisCount: 3,
+                                    mainAxisSpacing: 10,
+                                    crossAxisSpacing: 10 // Number of columns
+                                    ),
+                            itemBuilder: (context, int index) {
+                              final item =
+                                  controller.homeDashboardNavList.value[index];
+                              Color myColor = Color(
+                                int.parse((item.color ?? "#FFFFFF")
+                                    .replaceAll("#", "0xFF")),
+                              );
+
+                              return InkWell(
+                                onTap: () {
+                                  if (item.name == 'Course list') {
+                                    var box = GetStorage();
+                                    Logger().i("${box.read('Token')}");
+                                    Get.to(() => const GetTopicsCourses(
+                                          type: 'Tutee',
+                                        ));
+                                  }
+                                  if (item.name == 'Enquires') {
+                                    classController.onInit();
+                                    Get.to(() => Tutorenquirlist(
+                                          type: 'Tutee',
+                                          fromBottomNav: true,
+                                        ));
+                                  }
+                                  if (item.name == 'Enrollments') {
+                                    enrollmentController.onInit();
+                                    Get.to(() => EnrollmentScreen(
+                                          type: 'Tutee',
+                                          fromBottomNav: true,
+                                        ));
+                                  }
+                                  if (item.name == 'Attendance') {
+                                    Get.to(
+                                        () => TuteeAttendanceList(
+                                              type: 'Tutee',
+                                            ),
+                                        arguments: "Tutee");
+                                  }
+                                },
+                                child: Card(
+                                  elevation: 10,
+                                  shadowColor: Colors.grey,
+                                  surfaceTintColor: Colors.white,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: const Color.fromRGBO(
+                                            246, 244, 254, 1)),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 10),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color: myColor),
+                                          child: item
+                                                .image!=null?
+                                          Image.asset(
+                                            item
+                                                .image!,
+                                            color: Colors.white,
+                                            height: 30,
+                                          ):SizedBox.shrink(),
+                                        ),
+                                        SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: Text(
+                                            item
+                                                .name!,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            itemCount:
+                                controller.homeDashboardNavList.value.length,
+                          ),
+                        ],
+                      );
+                    }),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
                   ],
                 ),
               ),
@@ -275,36 +429,35 @@ class TuteeHome extends StatelessWidget {
               //     left: 20,
               //     right: 20,
               //     top: MediaQuery.sizeOf(context).height * 0.18,
-              //     child: 
+              //     child:
               //     const LineChartSample(userType: 'Tutee',)),
-        //           FutureBuilder<List<ChartData>>(
-        //   future: futureChartData,
-        //   builder: (context, snapshot) {
-        //     if (snapshot.connectionState == ConnectionState.waiting) {
-        //       return Center(child: CircularProgressIndicator());
-        //     } else if (snapshot.hasError) {
-        //       return Center(child: Text('Error: ${snapshot.error}'));
-        //     } else {
-        //       final List<ChartData> chartData = snapshot.data!;
-        //       return SfCartesianChart(
-        //         primaryXAxis: CategoryAxis(),
-        //         series: <ChartSeries>[
-        //           LineSeries<ChartData, String>(
-        //             dataSource: chartData,
-        //             xValueMapper: (ChartData data, _) => data.x,
-        //             yValueMapper: (ChartData data, _) => data.y,
-        //           )
-        //         ],
-        //       );
-        //     }
-        //   },
-        // ),
+              //           FutureBuilder<List<ChartData>>(
+              //   future: futureChartData,
+              //   builder: (context, snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.waiting) {
+              //       return Center(child: CircularProgressIndicator());
+              //     } else if (snapshot.hasError) {
+              //       return Center(child: Text('Error: ${snapshot.error}'));
+              //     } else {
+              //       final List<ChartData> chartData = snapshot.data!;
+              //       return SfCartesianChart(
+              //         primaryXAxis: CategoryAxis(),
+              //         series: <ChartSeries>[
+              //           LineSeries<ChartData, String>(
+              //             dataSource: chartData,
+              //             xValueMapper: (ChartData data, _) => data.x,
+              //             yValueMapper: (ChartData data, _) => data.y,
+              //           )
+              //         ],
+              //       );
+              //     }
+              //   },
+              // ),
               // )
             ],
           ),
         );
-        }
-      ),
+      }),
     );
   }
 }

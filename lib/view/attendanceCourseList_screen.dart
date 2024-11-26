@@ -54,7 +54,7 @@ class AttendanceCourseListScreen extends StatelessWidget {
             child: Obx(() {
               if (attendanceCourseListController.isLoading.value) {
                 return Center(child: CircularProgressIndicator());
-              } else if (attendanceCourseListController.attendanceCourseList.isEmpty) {
+              } else if (attendanceCourseListController.homeDashboardCourseList.isEmpty) {
                 // Display "No data found" when the list is empty
                 return Center(
                   child: Text(
@@ -68,10 +68,10 @@ class AttendanceCourseListScreen extends StatelessWidget {
               } else {
                 // Display the list of batches
                 return ListView.builder(
-                  itemCount: attendanceCourseListController.attendanceCourseList.length,
+                  itemCount: attendanceCourseListController.homeDashboardCourseList.length,
                   itemBuilder: (context, index) {
-                    final attendanceCourse = attendanceCourseListController.attendanceCourseList[index];
-                    return AttendancecourselistContainer(attendanceCourse: attendanceCourse);
+                    //final attendanceCourse = attendanceCourseListController.homeDashboardCourseList[index];
+                    return AttendancecourselistContainer(attendanceCourse: attendanceCourseListController.homeDashboardCourseList[index]);
                   },
                 );
               }

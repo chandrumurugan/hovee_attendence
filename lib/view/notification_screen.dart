@@ -13,11 +13,11 @@ import 'package:hovee_attendence/widget/cateory_widget.dart';
 
 class NotificationScreen extends StatelessWidget {
   NotificationScreen({super.key});
-  final NotificationController controller = Get.put(NotificationController());
+  //final NotificationController controller = Get.put(NotificationController());
    final TuteeHomeController attendanceCourseListController = Get.put(TuteeHomeController());
   @override
   Widget build(BuildContext context) {
-     controller.setSelectedIndex(0);
+     attendanceCourseListController.setSelectedIndex(0);
     return Scaffold(
       appBar: AppBarHeader(
           needGoBack: true,
@@ -42,9 +42,9 @@ class NotificationScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Obx(() {
-              if (controller.isLoading.value) {
+              if (attendanceCourseListController.isLoading.value) {
                 return Center(child: CircularProgressIndicator());
-              } else if (controller.notificationList.isEmpty) {
+              } else if (attendanceCourseListController.notificationList.isEmpty) {
                 // Display "No data found" when the list is empty
                 return Center(
                   child: Text(
@@ -58,12 +58,12 @@ class NotificationScreen extends StatelessWidget {
               } else {
                 // Display the list of batches
                 return CategoryList(
-                categories: controller.categories,
-                selectedIndex: controller.selectedIndex.value,
+                categories: attendanceCourseListController.categories,
+                selectedIndex: attendanceCourseListController.selectedIndex.value,
                 onCategorySelected: (index) {
-                  controller.setSelectedIndex(index);
-                  controller.filteredNotifications(
-                      controller.categories[index], controller.role!, false);
+                  attendanceCourseListController.setSelectedIndex(index);
+                  attendanceCourseListController.filteredNotifications(
+                      attendanceCourseListController.categories[index], attendanceCourseListController.role!, false);
                 },
                 primaryColor: AppConstants.primaryColor, // .
               );
@@ -71,9 +71,9 @@ class NotificationScreen extends StatelessWidget {
             }),
                            Expanded(
             child: Obx(() {
-              if (controller.isLoading.value) {
+              if (attendanceCourseListController.isLoading.value) {
                 return Center(child: CircularProgressIndicator());
-              } else if (controller.notificationList.isEmpty) {
+              } else if (attendanceCourseListController.notificationList.isEmpty) {
                 // Display "No data found" when the list is empty
                 return Center(
                   child: Text(
@@ -87,12 +87,12 @@ class NotificationScreen extends StatelessWidget {
               } else {
                 // Display the list of batches
                 return ListView.builder(
-                  itemCount: controller.notificationList.length,
+                  itemCount: attendanceCourseListController.notificationList.length,
                   itemBuilder: (context, index) {
-                    final notification = controller.notificationList[index];
+                    final notification = attendanceCourseListController.notificationList[index];
                     return GestureDetector(
                                       onTap: () {
-                                        controller.fetchMarkedNotification(notification.sId!,notification.role!,notification.type!);
+                                        attendanceCourseListController.fetchMarkedNotification(notification.sId!,notification.role!,notification.type!);
                                       },
                                       child: Padding(
                                           padding: const EdgeInsets.symmetric(

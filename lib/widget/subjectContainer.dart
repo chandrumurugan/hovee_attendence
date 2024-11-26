@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/attendance_controller.dart';
 import 'package:hovee_attendence/controllers/punch_controller.dart';
+import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/punch_view.dart';
 import 'package:hovee_attendence/widget/attendanceCourseList_container.dart';
@@ -14,6 +15,7 @@ import 'package:logger/web.dart';
 class SubjectContainer extends StatelessWidget {
    SubjectContainer({super.key});
   final AttendanceCourseListController attendanceCourseListController = Get.put(AttendanceCourseListController());
+   final TuteeHomeController attendanceListController = Get.put(TuteeHomeController());
   @override
   Widget build(BuildContext context) {
     return
@@ -113,7 +115,7 @@ class SubjectContainer extends StatelessWidget {
         child: Obx(() {
           if (attendanceCourseListController.isLoading.value) {
             return Center(child: CircularProgressIndicator());
-          } else if (attendanceCourseListController.attendanceCourseList.isEmpty) {
+          } else if (attendanceListController.homeDashboardCourseList.isEmpty) {
             // Display "No data found" when the list is empty
             return Center(
               child: Text(
@@ -130,10 +132,10 @@ class SubjectContainer extends StatelessWidget {
             return ListView.builder(
               padding: EdgeInsets.zero,
               scrollDirection: Axis.horizontal,
-              itemCount: attendanceCourseListController.attendanceCourseList.length,
+              itemCount: attendanceListController.homeDashboardCourseList.length,
               itemBuilder: (context, index) {
-                print("gettiunhs calye123456==>${attendanceCourseListController.attendanceCourseList.length}");
-                final attendanceCourse = attendanceCourseListController.attendanceCourseList[index];
+                print("gettiunhs calye123456==>${attendanceListController.homeDashboardCourseList.length}");
+                final attendanceCourse = attendanceListController.homeDashboardCourseList[index];
                 return SizedBox(
                   
                   width: MediaQuery.of(context).size.width,

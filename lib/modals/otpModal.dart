@@ -17,7 +17,7 @@ class OtpModal {
     final String? token;
     final bool? login;
     final String? message;
-    final Data? data;
+    final ValidateTokenData? data;
 
     factory OtpModal.fromJson(Map<String, dynamic> json){ 
         return OtpModal(
@@ -28,14 +28,14 @@ class OtpModal {
             token: json["token"],
             login: json["login"],
             message: json["message"],
-            data: json["data"] == null ? null : Data.fromJson(json["data"]),
+            data: json["data"] == null ? null : ValidateTokenData.fromJson(json["data"]),
         );
     }
 
 }
 
-class Data {
-    Data({
+class ValidateTokenData {
+    ValidateTokenData({
         required this.id,
         required this.firstName,
         required this.lastName,
@@ -77,8 +77,8 @@ class Data {
     final String? profileUrl;
      final Roles? roles;
 
-    factory Data.fromJson(Map<String, dynamic> json){ 
-        return Data(
+    factory ValidateTokenData.fromJson(Map<String, dynamic> json){ 
+        return ValidateTokenData(
             id: json["_id"],
             firstName: json["first_name"],
             lastName: json["last_name"],

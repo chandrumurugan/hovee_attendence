@@ -12,11 +12,13 @@ import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
+import 'package:hovee_attendence/modals/getDashboardYearFlow_model.dart';
 import 'package:hovee_attendence/modals/getEnquireList_model.dart';
 import 'package:hovee_attendence/modals/getEnrollment_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
+import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getQrcode_model.dart';
 import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
@@ -36,6 +38,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WebService {
   static String baseUrl = APIConfig.urlsConfig();
@@ -191,7 +194,8 @@ class WebService {
         "${baseUrl}batch/addBatch"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -218,7 +222,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}batch/getBatchList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     var data = {"searchKey": searchitems};
     final response = await http.post(
@@ -241,7 +246,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}tutee/getClassTuteeList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
 
     final reponse = await http.post(
       url, // Replace with the actual API URL
@@ -264,7 +270,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}tutee/getClassTuteeFilterList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     var headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
@@ -307,7 +314,8 @@ class WebService {
     final url = Uri.parse('$baseUrl/course/getCourse');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
      var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -385,8 +393,8 @@ class WebService {
 
   static Future<UserProfileM?> fetchUserProfile() async {
     final box = GetStorage(); // Get an instance of GetStorage
-
-    final token = box.read('Token') ?? '';
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     try {
       var headers = {'Authorization': "Bearer $token"};
       var url = Uri.parse("${baseUrl}user/getUserProfile");
@@ -441,7 +449,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}attendane/getAddendanceCourseList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -463,7 +472,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}attendane/punchIn');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     var headers = {
       'Authorization': 'Bearer $token',
@@ -492,7 +502,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}attendane/punchOut');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     var headers = {
       'Authorization': 'Bearer $token',
@@ -519,7 +530,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByBatch');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -546,7 +558,8 @@ class WebService {
         Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByAttendance');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth,"fromDate":'',
     "toDate":''};
@@ -575,7 +588,8 @@ class WebService {
         "${baseUrl}course/addCourses"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -604,7 +618,8 @@ class WebService {
         "${baseUrl}tutor/addTuitionClass"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -631,7 +646,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}tutor/getTuitionClasses');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -653,7 +669,8 @@ class WebService {
     final url = Uri.parse('$baseUrl/tutor/getTuitionCourseList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -675,7 +692,8 @@ class WebService {
         "${baseUrl}tutor/addTuitionClass"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -704,7 +722,8 @@ class WebService {
         "${baseUrl}tutee/getClassTuteeById"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -733,7 +752,8 @@ class WebService {
         "${baseUrl}attendane/submitEnquiry"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -760,7 +780,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}home/getQrcode');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -784,7 +805,8 @@ class WebService {
         Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByAttendanceTutee');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth,"fromDate":'',
     "toDate":''};
@@ -811,7 +833,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}attendane/getEnquiryList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -835,7 +858,8 @@ class WebService {
         "${baseUrl}attendane/updateEnquiryStatus"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -862,7 +886,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}home/getNotificationsType');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
 
     final reponse = await http.post(
       url, // Replace with the actual API URL
@@ -884,7 +909,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}home/getNotifications');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -907,7 +933,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}home/markNotificationAsRead');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -929,7 +956,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}attendane/submitEnrollment');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -952,7 +980,8 @@ class WebService {
        final url = Uri.parse('${baseUrl}attendane/getEnrollment');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     print(token);
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -985,7 +1014,8 @@ class WebService {
         "${baseUrl}attendane/updateEnrollment"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -1013,7 +1043,8 @@ class WebService {
         "${baseUrl}user/validToken"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
      var data = {"token": token};
     try {
       final response = await http.post(
@@ -1041,7 +1072,7 @@ class WebService {
   //   final url = Uri.parse('${baseUrl}user/validToken');
   //   final box = GetStorage(); // Get an instance of GetStorage
   //   // Retrieve the token from storage
-  //   final token = box.read('Token') ?? '';
+  //   final token =prefs.getString('Token') ?? "";
 
   //   final reponse = await http.post(
   //     url, // Replace with the actual API URL
@@ -1058,4 +1089,55 @@ class WebService {
   //     //  throw Exception('Failed to fetch course category list');
   //   }
   // }
+   static Future<getHomeDashboardTutorModel> fetchHomeDashboardList() async {
+    final url = Uri.parse('${baseUrl}home/getHomeDashboardTutor');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    print(token);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return getHomeDashboardTutorModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load dashboard list');
+    }
+  }
+
+    static Future<getdashboardYearflowModel?>
+      fetchHomeAttendanceList(
+          String batchId) async {
+    final url =
+        Uri.parse('${baseUrl}attendane/dashboardYearflow');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    print(token);
+    var data = {"batchId": batchId};
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(data),
+    );
+
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body);
+      return getdashboardYearflowModel.fromJson(result);
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+      return null;
+    }
+  }
 }

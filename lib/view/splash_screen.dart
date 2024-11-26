@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 
 class SplashScreen extends StatelessWidget {
   final SplashController splashController = Get.put(SplashController());
+  final AuthControllers classController =  Get.put(AuthControllers());
   @override 
   Widget build(BuildContext context) {
     return Scaffold(

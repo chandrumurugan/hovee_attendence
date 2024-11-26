@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
+import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/view/punch_view.dart';
 
 class AttendancecourselistContainer extends StatelessWidget {
-  final Data attendanceCourse;
+  final CourseList? attendanceCourse;
 
   AttendancecourselistContainer(
       {super.key, required this.attendanceCourse, required});
@@ -36,7 +37,7 @@ class AttendancecourselistContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    attendanceCourse.course!.courseCode!,
+                    attendanceCourse!.course!.courseCode!,
                     style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -45,7 +46,7 @@ class AttendancecourselistContainer extends StatelessWidget {
                   SizedBox(
                        width: MediaQuery.of(context).size.width * 0.4,
                     child: Text(
-                      "${attendanceCourse.course!.className!} - ${attendanceCourse.course!.subject!}",
+                      "${attendanceCourse!.course!.className!} - ${attendanceCourse!.course!.subject!}",
                       maxLines: 2, // Restrict to one line
                       overflow: TextOverflow
                           .ellipsis, // Add ellipsis if the text overflows
@@ -55,14 +56,14 @@ class AttendancecourselistContainer extends StatelessWidget {
                           color: Colors.black),
                     ),
                   ),
-                  Text(
-                    "${attendanceCourse.batch!.batchTimingStart} - ${attendanceCourse.batch!.batchTimingEnd}",
+                  // Text(
+                  //   "${attendanceCourse!.batch!.batchTimingStart} - ${attendanceCourse!.batch!.batchTimingEnd}",
                     
-                    style: GoogleFonts.nunito(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
+                  //   style: GoogleFonts.nunito(
+                  //       fontSize: 14,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.black),
+                  // ),
                 ],
               ),
               Column(
@@ -72,15 +73,15 @@ class AttendancecourselistContainer extends StatelessWidget {
                     onTap: () {
                       //Get.to(() =>QRScannerScreen(className: attendanceCourse.course!.className!, courseId:attendanceCourse.course!.sId!, batchId:attendanceCourse.batch!.sId!, batchStartTime: attendanceCourse.batch!.batchTimingStart!, batchEndTime: attendanceCourse.batch!.batchTimingEnd!, subjectName: attendanceCourse.course!.subject!, courseCode: attendanceCourse.course!.courseCode!,));
                       Get.to(() => PunchView(
-                            className: attendanceCourse.course!.className!,
-                            courseId: attendanceCourse.course!.sId!,
-                            batchId: attendanceCourse.batch!.sId!,
-                            batchStartTime:
-                                attendanceCourse.batch!.batchTimingStart!,
-                            batchEndTime:
-                                attendanceCourse.batch!.batchTimingEnd!,
-                            subjectName: attendanceCourse.course!.subject!,
-                            courseCode: attendanceCourse.course!.courseCode!,
+                            className: attendanceCourse!.course!.className!,
+                            courseId: attendanceCourse!.course!.sId!,
+                            batchId: attendanceCourse!.batch!.sId!,
+                            batchStartTime:'',
+                                //attendanceCourse!.batch!.batchTimingStart!,
+                            batchEndTime:'',
+                                //attendanceCourse!.batch!.batchTimingEnd!,
+                            subjectName: attendanceCourse!.course!.subject!,
+                            courseCode: attendanceCourse!.course!.courseCode!,
                           ));
                     },
                     child: const CircleAvatar(

@@ -1,14 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
+import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/loginSignup/otp_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:get_storage/get_storage.dart';
@@ -55,6 +58,9 @@ class AuthControllers extends GetxController
   bool get isTimerRunning => _isTimerRunning.value; // Getter for timer state
 
   RxBool isChecked = false.obs;
+  final SplashController splashController = Get.put(SplashController());
+
+  LoginData? loginData;
 
   bool validateFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
@@ -215,6 +221,7 @@ class AuthControllers extends GetxController
       isLoading.value = true;
       try {
         // Logger().i("moving to otp ===>$");
+         SharedPreferences prefs = await SharedPreferences.getInstance();
         var response = await WebService.otp(
             otpController.text,
            
@@ -225,9 +232,20 @@ class AuthControllers extends GetxController
         if (response != null) {
           Logger().i(response.data);
           otpResponse.value = response!;
-          box.write('Token', response.token);
-           box.write('Rolename', response.data!.roles!.roleName);
-
+          prefs.setString('Token', response.token!);
+          prefs.setString('Rolename', response.data!.roles!.roleName);
+           var validateTokendata = response.data!;
+          LoginData loginData = LoginData(
+            firstName: validateTokendata!.firstName,
+            lastName: validateTokendata.lastName,
+            wowId: validateTokendata.wowId,
+          );
+          prefs.setString('userData', jsonEncode(loginData.toJson()));
+          getUserData();
+          // box.write('Token', response.token);
+          //  box.write('Rolename', response.data!.roles!.roleName);
+          // var validateTokendata = response.data!;
+          //  box.write('ValidateTokenData', validateTokendata);
           isLoading.value = false;
           return response;
         } else {
@@ -310,6 +328,7 @@ class AuthControllers extends GetxController
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
     getForLaterUse();
+    getUserData();
   }
 
 Future<void> saveForLaterUse() async {
@@ -331,4 +350,20 @@ Future<void> getForLaterUse() async {
     logInController.text= prefs.getString('rememberUserNo')??''; 
   }
   
-}
+  Future<void> getUserData() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+ // To retrieve the data later:
+String? jsonString = prefs.getString('userData');
+if (jsonString != null) {
+  try {
+     loginData = LoginData.fromJson(jsonDecode(jsonString));
+    print("Hello ${loginData!.firstName}, ${loginData!.lastName}");
+  } catch (e) {
+    print("Error decoding JSON: $e");
+  }
+
+
+  }
+  
+  }
+    }

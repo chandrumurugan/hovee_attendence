@@ -1,119 +1,234 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
+import 'package:hovee_attendence/modals/getDashboardYearFlow_model.dart';
+import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-
 class ChartApp extends StatelessWidget {
-  const ChartApp({super.key});
-
+  ChartApp({super.key});
+  final TutorHomeController controller = Get.put(TutorHomeController());
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
-      child: Card(
-        elevation: 10,
-        shadowColor: Colors.grey,
-        surfaceTintColor: Colors.white,
-        child: Container(
-          padding: const EdgeInsets.all(5),
-          height: MediaQuery.sizeOf(context).height * 0.24,
-          child: Row(
-            children: [
-              Expanded(child: PieChartWidget()),
-              const SizedBox(
-                width: 15,
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          height: 20,
-                          width: 20,
-                          color: Colors.orange,
-                        ),
-                        Text(
-                          ' - Absent',
-                          style: GoogleFonts.nunito(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          height: 20,
-                          width: 20,
-                          color: Colors.purple,
-                        ),
-                        Text(
-                          ' - Present',
-                          style: GoogleFonts.nunito(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'June - 2024',
-                      style: GoogleFonts.nunito(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    )
-                  ],
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const SizedBox.shrink();
+      } else if (controller.dailyattendance == null) {
+         return Center(child: Text("No data found"));
+      }
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
+        child: Card(
+          elevation: 10,
+          shadowColor: Colors.grey,
+          surfaceTintColor: Colors.white,
+          child: Container(
+            padding: const EdgeInsets.all(5),
+            height: MediaQuery.sizeOf(context).height * 0.24,
+            child: Row(
+              children: [
+                Expanded(child: PieChartWidget()),
+                const SizedBox(
+                  width: 15,
                 ),
-              )
-            ],
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            height: 20,
+                            width: 20,
+                            color: Colors.orange,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          controller.dailyattendance.value != null
+                              ? Text(
+                                  'Absent - ${controller.dailyattendance.value!.absent!.toString()}',
+                                  style: GoogleFonts.nunito(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                )
+                              : SizedBox.shrink()
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            height: 20,
+                            width: 20,
+                            color: Colors.purple,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          controller.dailyattendance.value != null
+                              ? Text(
+                                  'Present - ${controller.dailyattendance.value!.present!.toString()}',
+                                  style: GoogleFonts.nunito(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                )
+                              : SizedBox.shrink()
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            height: 20,
+                            width: 20,
+                            color: Color(0xff014EA9),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          controller.dailyattendance.value != null
+                              ? Text(
+                                  'Leave - ${controller.dailyattendance.value!.leave!.toString()}',
+                                  style: GoogleFonts.nunito(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                )
+                              : SizedBox.shrink(),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            height: 20,
+                            width: 20,
+                            color: Color(0xff2E5BB5),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          controller.dailyattendance.value != null
+                              ? Text(
+                                  'Miss punch - ${controller.dailyattendance.value!.partialAttendance!.toString()}',
+                                  style: GoogleFonts.nunito(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                )
+                              : SizedBox.shrink(),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'June - 2024',
+                        style: GoogleFonts.nunito(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
 class PieChartWidget extends StatelessWidget {
+  final TutorHomeController controller = Get.find();
+
   @override
   Widget build(BuildContext context) {
-    return PieChart(
-      PieChartData(
-        sections: [
-          PieChartSectionData(
-            color: Colors.purple,
-            value: 70,
-            title: '70%',
-            // titlePositionPercentageOffset: 0.7,
-            radius: 35,
-            titleStyle: GoogleFonts.nunito(
-                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-          PieChartSectionData(
-            // titlePositionPercentageOffset: 0.2,
-            color: Colors.orange,
-            value: 30,
-            title: '30%',
-            radius: 35,
-            titleStyle: GoogleFonts.nunito(
-                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-        ],
-        centerSpaceRadius: 40,
-      ),
-    );
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const SizedBox.shrink();
+      } else if (controller.dailyattendance.value == null) {
+        //Center(child: Text("No data found"));
+        return Center(child: Text("No data found"));
+      }
+      return PieChart(
+        PieChartData(
+          sections: [
+            PieChartSectionData(
+              color: Colors.purple,
+              value: double.tryParse(
+                  controller.dailyattendance.value!.percentage != null
+                      ? controller.dailyattendance.value!.percentage!.present!
+                      : ''),
+              title:
+                  '${controller.dailyattendance.value!.percentage!.present!}',
+              radius: 35,
+              titleStyle: GoogleFonts.nunito(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            PieChartSectionData(
+              color: Colors.orange,
+              value: double.tryParse(
+                  controller.dailyattendance.value!.percentage != null
+                      ? controller.dailyattendance.value!.percentage!.absent!
+                      : ''),
+              title: '${controller.dailyattendance.value!.percentage!.absent!}',
+              radius: 35,
+              titleStyle: GoogleFonts.nunito(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            PieChartSectionData(
+              color: Colors.blue,
+              value: double.tryParse(
+                  controller.dailyattendance.value!.percentage != null
+                      ? controller.dailyattendance.value!.percentage!.leave!
+                      : ''),
+              title: '${controller.dailyattendance.value!.percentage!.leave!}',
+              radius: 35,
+              titleStyle: GoogleFonts.nunito(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            PieChartSectionData(
+              color: Colors.red,
+              value: double.tryParse(
+                  controller.dailyattendance.value!.percentage != null
+                      ? controller.dailyattendance.value!.percentage!.partial!
+                      : ''),
+              title:
+                  '${controller.dailyattendance.value!.percentage!.partial!}',
+              radius: 35,
+              titleStyle: GoogleFonts.nunito(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ],
+          centerSpaceRadius: 40,
+        ),
+      );
+    });
   }
 }
 
@@ -252,7 +367,7 @@ class StudentPIeChart extends StatelessWidget {
           PieChartSectionData(
             color: Colors.purple,
             value: 25,
-            title: '25%',
+            title: '25',
             // titlePositionPercentageOffset: 0.7,
             radius: 35,
             titleStyle: GoogleFonts.nunito(
@@ -261,7 +376,7 @@ class StudentPIeChart extends StatelessWidget {
           PieChartSectionData(
             color: Colors.red,
             value: 15,
-            title: '15%',
+            title: '15',
             // titlePositionPercentageOffset: 0.7,
             radius: 35,
             titleStyle: GoogleFonts.nunito(
@@ -270,7 +385,7 @@ class StudentPIeChart extends StatelessWidget {
           PieChartSectionData(
             color: Colors.blue,
             value: 20,
-            title: '20%',
+            title: '20',
             // titlePositionPercentageOffset: 0.7,
             radius: 35,
             titleStyle: GoogleFonts.nunito(
@@ -279,7 +394,7 @@ class StudentPIeChart extends StatelessWidget {
           PieChartSectionData(
             color: Colors.pink,
             value: 20,
-            title: '20%',
+            title: '20',
             // titlePositionPercentageOffset: 0.7,
             radius: 35,
             titleStyle: GoogleFonts.nunito(
@@ -289,7 +404,7 @@ class StudentPIeChart extends StatelessWidget {
             // titlePositionPercentageOffset: 0.2,
             color: Colors.orange,
             value: 20,
-            title: '20%',
+            title: '20',
             radius: 35,
             titleStyle: GoogleFonts.nunito(
                 fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
@@ -385,8 +500,6 @@ class BarChartWidget extends StatelessWidget {
   }
 }
 
-
-
 class LineChartSample extends StatefulWidget {
   final String userType;
   const LineChartSample({Key? key, required this.userType}) : super(key: key);
@@ -397,26 +510,11 @@ class LineChartSample extends StatefulWidget {
 
 class _LineChartSampleState extends State<LineChartSample> {
   String? _selectedBatch; // Initial value
-  List<String> _batches = ['Batch 1', 'Batch 2', 'Batch 3'];
-   List<String> _class = ['Maths', 'English', 'Science'];
-
+  // List<String> _batches = ['Batch 1', 'Batch 2', 'Batch 3'];
+  //  List<String> _class = ['Maths', 'English', 'Science'];
+  final TutorHomeController controller = Get.put(TutorHomeController());
   @override
   Widget build(BuildContext context) {
-    final List<ChartData> chartData = [
-      ChartData(x: 'Jan', y: 36),
-      ChartData(x: 'Feb', y: 41),
-      ChartData(x: 'Mar', y: 42),
-      ChartData(x: 'Apr', y: 43),
-      ChartData(x: 'May', y: 44),
-      ChartData(x: 'Jun', y: 38),
-      ChartData(x: 'Jul', y: 37),
-      ChartData(x: 'Aug', y: 47),
-      ChartData(x: 'Sep', y: 48),
-      ChartData(x: 'Oct', y: 49),
-      ChartData(x: 'Nov', y: 50),
-      ChartData(x: 'Dec', y: 52),
-    ];
-
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Card(
@@ -436,110 +534,210 @@ class _LineChartSampleState extends State<LineChartSample> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    DropdownButton<String>(
-                      value: _selectedBatch,
-                      hint: widget.userType =='Tutee'? Text('Class'):Text('Batch'),
-                      icon: const Icon(Icons.arrow_drop_down),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                      underline: Container(
-                        height: 0,
-                        color: Colors.transparent,
+                    Obx(() {
+                      if (controller.batchList.isEmpty) {
+                        return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                      }
+                      return DropdownButton<Data1>(
+                        value: controller.selectedBatchIN.value,
+                        hint: widget.userType == 'Tutee'
+                            ? Text('Class')
+                            : Text('Batch'),
+                        icon: const Icon(Icons.arrow_drop_down),
+                        iconSize: 24,
+                        elevation: 16,
+                        style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                        underline: Container(
+                          height: 0,
+                          color: Colors.transparent,
+                        ),
+                        onChanged: (newBatch) {
+                          if (newBatch != null) {
+                            controller.selectBatch(newBatch);
+                            controller.isBatchSelected.value = true;
+                            controller.fetchBatchList(
+                              newBatch.batchId!,
+                            );
+                          }
+                        },
+                        items: controller.batchList.map((Data1 batch) {
+                          return DropdownMenuItem<Data1>(
+                            value: batch,
+                            child: Text(batch.batchName!),
+                          );
+                        }).toList(),
+                      );
+                    }),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 8.0,
                       ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedBatch = newValue!;
-                        });
-                      },
-                      items: _batches
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Card(
-                          elevation: 10,
-                          shadowColor: Colors.black.withOpacity(.4),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Colors.white),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  'Months',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.grey),
-                                ),
-                                const SizedBox(width: 5),
-                                Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 6),
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xffFF8800),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8))),
-                                  child: const Text(
-                                    'Years',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Toggle Buttons for Month/Year
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    controller.isMonthSelected = true.obs;
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: controller.isMonthSelected.value
+                                        ? const Color(0xffFF8800)
+                                        : Colors.grey.shade300,
+                                  ),
+                                  child: Text(
+                                    'Month',
                                     style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: controller.isMonthSelected.value
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(width: 5),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    controller.isMonthSelected.value = false;
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: !controller.isMonthSelected.value
+                                        ? const Color(0xffFF8800)
+                                        : Colors.grey.shade300,
+                                  ),
+                                  child: Text(
+                                    'Year',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: !controller.isMonthSelected.value
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: 130,
-                child: SfCartesianChart(
-                  series: <CartesianSeries>[
-                    LineSeries<ChartData, String>(
-                      color: Colors.red,
-                      dataSource: chartData,
-                      xValueMapper: (ChartData data, _) => data.x,
-                      yValueMapper: (ChartData data, _) => data.y,
-                      markerSettings: const MarkerSettings(
-                        shape: DataMarkerType.circle,
-                        isVisible: true, // Show markers
-                      ),
+              controller.isMonthSelected.value
+                  ? ValueListenableBuilder<List<ChartData>>(
+                      valueListenable: controller.chartData,
+                      builder: (context, data, _) {
+                        return Column(
+                          children: [
+                            controller.isLoading1.value
+                                ? CircularProgressIndicator()
+                                : SizedBox(
+                                    height: 130,
+                                    child: SfCartesianChart(
+                                      series: <CartesianSeries>[
+                                        LineSeries<ChartData, String>(
+                                          color: Colors.red,
+                                          dataSource: data,
+                                          xValueMapper: (ChartData data, _) =>
+                                              data.x,
+                                          yValueMapper: (ChartData data, _) =>
+                                              data.y,
+                                          markerSettings: const MarkerSettings(
+                                            shape: DataMarkerType.circle,
+                                            isVisible: true,
+                                          ),
+                                        ),
+                                      ],
+                                      primaryXAxis: CategoryAxis(
+                                        title: AxisTitle(text: 'Month'),
+                                        axisLine: const AxisLine(width: .5),
+                                        majorGridLines:
+                                            const MajorGridLines(width: 0.4),
+                                      ),
+                                      primaryYAxis: NumericAxis(
+                                        title: AxisTitle(
+                                            text: 'Student Count',
+                                            textStyle: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold)),
+                                        axisLine: const AxisLine(width: 1),
+                                        majorGridLines:
+                                            const MajorGridLines(width: 0.4),
+                                      ),
+                                    ),
+                                  ),
+                          ],
+                        );
+                      },
                     )
-                  ],
-                  primaryXAxis: CategoryAxis(
-                    title: AxisTitle(text: '2024'),
-                    axisLine: const AxisLine(width: .5),
-                    majorGridLines: const MajorGridLines(width: 0.4),
-                  ),
-                  primaryYAxis: LogarithmicAxis(
-                    title: AxisTitle(
-                        text: 'Student count',
-                        textStyle: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold)),
-                    axisLine: const AxisLine(width: 1),
-                    majorGridLines: const MajorGridLines(width: 0.4),
-                  ),
-                ),
-              ),
+                  : ValueListenableBuilder<List<ChartData1>>(
+                      valueListenable: controller.chartData1,
+                      builder: (context, data, _) {
+                        return Column(
+                          children: [
+                            controller.isLoading1.value
+                                ? CircularProgressIndicator()
+                                : SizedBox(
+                                    height: 130,
+                                    child: SfCartesianChart(
+                                      series: <CartesianSeries>[
+                                        LineSeries<ChartData1, String>(
+                                          color: Colors.red,
+                                          dataSource: data,
+                                          xValueMapper: (ChartData1 data, _) =>
+                                              data.x,
+                                          yValueMapper: (ChartData1 data, _) =>
+                                              data.y,
+                                          markerSettings: const MarkerSettings(
+                                            shape: DataMarkerType.circle,
+                                            isVisible: true,
+                                          ),
+                                        ),
+                                      ],
+                                      primaryXAxis: CategoryAxis(
+                                        title: AxisTitle(text: 'Year'),
+                                        axisLine: const AxisLine(width: .5),
+                                        majorGridLines:
+                                            const MajorGridLines(width: 0.4),
+                                      ),
+                                      primaryYAxis: NumericAxis(
+                                        title: AxisTitle(
+                                            text: 'Student Count',
+                                            textStyle: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold)),
+                                        axisLine: const AxisLine(width: 1),
+                                        majorGridLines:
+                                            const MajorGridLines(width: 0.4),
+                                      ),
+                                    ),
+                                  ),
+                          ],
+                        );
+                      },
+                    )
             ],
           ),
         ),
@@ -555,3 +753,9 @@ class ChartData {
   ChartData({required this.x, required this.y});
 }
 
+class ChartData1 {
+  final String x;
+  final double y;
+
+  ChartData1({required this.x, required this.y});
+}

@@ -83,7 +83,7 @@ class SidemenuHeader extends StatelessWidget {
               ),
               if (authController.otpResponse.value != null)
                 Text(
-                  "${authController.otpResponse.value.data!.firstName} ${authController.otpResponse.value.data!.lastName}",
+                  "${authController.loginData!.firstName} ${authController.loginData!.lastName}",
                   style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -107,7 +107,7 @@ class SidemenuHeader extends StatelessWidget {
                       width: 180,
                       // width: MediaQuery.of(context).size.width * 0.02,
                       child: Text(
-                        '${authController.otpResponse.value.data!.wowId}',
+                        '${authController.loginData!.wowId}',
                         overflow: TextOverflow.clip,
                         style: GoogleFonts.nunito(
                             fontWeight: FontWeight.w400,

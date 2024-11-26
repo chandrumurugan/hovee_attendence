@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
+import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
@@ -17,12 +18,13 @@ class EnrollmentScreen extends StatelessWidget {
   final bool fromBottomNav;
   EnrollmentScreen({super.key, required this.type,  this.fromBottomNav=true,});
   final EnrollmentController controller = Get.put(EnrollmentController());
-   final NotificationController notificontroller = Get.put(NotificationController());
+   //final NotificationController notificontroller = Get.put(NotificationController());
+   final TuteeHomeController attendanceCourseListController = Get.put(TuteeHomeController());
   @override
   Widget build(BuildContext context) {
    final storage = GetStorage();
   final savedOtp = storage.read('otpCode') ?? '';
- notificontroller.otpController.text = savedOtp;
+ attendanceCourseListController.otpController.text = savedOtp;
     return Scaffold(
       
       appBar: AppBarHeader(
@@ -255,8 +257,8 @@ void _showOtpDialog(BuildContext context, String enrollmentId) {
                     child: Pinput(
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       length: 6,
-                      controller: notificontroller.otpController,
-                      focusNode: notificontroller.focusNode,
+                      controller: attendanceCourseListController.otpController,
+                      focusNode: attendanceCourseListController.focusNode,
                       defaultPinTheme: defaultPinTheme,
                       separatorBuilder: (index) => const SizedBox(width: 8),
                       onCompleted: (pin) {
@@ -316,7 +318,7 @@ void _showOtpDialog(BuildContext context, String enrollmentId) {
               ),
             ),
             onPressed: () {
-              final otp = notificontroller.otpController.text;
+              final otp = attendanceCourseListController.otpController.text;
               if (otp.isNotEmpty) {
                 controller.updateEnrollment(context,enrollmentId, 'Approved', otp);
               controller. otpController.clear(); // Clear the OTP field

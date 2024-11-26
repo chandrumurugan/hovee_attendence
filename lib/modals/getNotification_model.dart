@@ -2,8 +2,11 @@ class getNotificationsModel {
   int? statusCode;
   bool? success;
   List<Data1>? data;
+  int? readCount;
+  int? unreadCount;
 
-  getNotificationsModel({this.statusCode, this.success, this.data});
+  getNotificationsModel({this.statusCode, this.success, this.data,this.readCount,
+      this.unreadCount});
 
   getNotificationsModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
@@ -14,6 +17,8 @@ class getNotificationsModel {
         data!.add(new Data1.fromJson(v));
       });
     }
+     readCount = json['readCount'];
+    unreadCount = json['unreadCount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -23,6 +28,8 @@ class getNotificationsModel {
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
+    data['readCount'] = this.readCount;
+    data['unreadCount'] = this.unreadCount;
     return data;
   }
 }

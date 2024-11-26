@@ -1,9 +1,12 @@
 // controllers/splash_controller.dart
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/validateTokenModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
@@ -27,7 +30,11 @@ class SplashController extends GetxController {
   final Duration _loadingDuration =
       const Duration(seconds: 3);
        var currentLocation = Rxn<LatLng>();
- ValidateTokenData? validateTokendata;
+    //  final AuthControllers classController =
+    //   Get.put(AuthControllers());
+    var isLoading = true.obs;
+   // final AuthControllers classController =  Get.put(AuthControllers());
+  @override 
   @override
   void onInit() {
     super.onInit();
@@ -69,56 +76,57 @@ class SplashController extends GetxController {
   }
 
   Future<void> checkUserLoggedIn() async {
-    try {
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // String? token = prefs.getString('user_token');
-      Future.delayed(const Duration(seconds: 5));
-      String isLoggedIn = box.read('Token') ?? "";
-       String rolename =box.read('Rolename')?? '';
-        Get.offAll(() => const LoginSignUp());
-      if(isLoggedIn.isNotEmpty){
-        var response = await WebService.validateToken();
-        if (response!=null) {
-          // Navigate to Dashboard
-          String rolename = response.roleName!;
-         box.write('Token',response.data!.token!);
-         bool validateToken=response.tokenValid!;
-         if(validateToken){
-          validateTokendata= response.data;
-           Get.off(() => DashboardScreen(rolename: rolename));
-         }else {
-          // Navigate to Login Screen
-          Get.off(() => LoginSignUp());
-        }
+  try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Future.delayed(const Duration(seconds: 5));
+    
+    String isLoggedIn = prefs.getString('Token') ?? "";
+    String rolename = prefs.getString('Rolename') ?? '';
+    // Get.offAll(() => const LoginSignUp());
+
+    if (isLoggedIn.isNotEmpty) {
+      try{
+           isLoading(true);
+      var response = await WebService.validateToken();
+      if (response != null) {
+        String roleName = response.roleName!;
+        bool validateToken = response.tokenValid!;
+        
+        if (validateToken) {
+          var validateTokendata = response.data;
           
+          // Create LoginData object and save it in SharedPreferences
+          LoginData loginData = LoginData(
+            firstName: validateTokendata!.firstName,
+            lastName: validateTokendata.lastName,
+            wowId: validateTokendata.wowId,
+          );
+           prefs.setString('userData', jsonEncode(loginData.toJson()));
+            //classController.getUserData();
+          // Navigate to Dashboard
+          Get.off(() => DashboardScreen(rolename: roleName));
         } else {
           // Navigate to Login Screen
           Get.off(() => LoginSignUp());
         }
-           Get.offAll(() =>  DashboardScreen(rolename: rolename,));
-      }else{
-           Get.offAll(() => const LoginSignUp());
+      } else {
+        // Navigate to Login Screen
+        Get.off(() => LoginSignUp());
       }
-
-      // if (token != null && token.trim().isNotEmpty) {
-      //   var response = await WebService.validateToken();
-      //   if (response!=null) {
-      //     // Navigate to Dashboard
-      //     String rolename = response.roleName!;
-      //     prefs.setString('Token',response.data!.token!);
-      //     Get.off(() => DashboardScreen(rolename: rolename));
-      //   } else {
-      //     // Navigate to Login Screen
-      //     Get.off(() => LoginSignUp());
-      //   }
-      // } else {
-      //   // Navigate to Login Screen
-      //   Get.off(() => LoginSignUp());
-      // }
-    } catch (e) {
-      Logger().e(e);
-    }
+      }catch (e) {
+    // Handle errors if needed
+  } finally {
+    isLoading(false);
   }
+      
+    } else {
+      Get.offAll(() => const LoginSignUp());
+    }
+  } catch (e) {
+    Logger().e(e);
+  }
+}
+
 
   //   Future<void> _checkPermissions() async {
   //   var status = await Permission.location.status;
