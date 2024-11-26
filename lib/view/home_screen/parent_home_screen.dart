@@ -17,6 +17,7 @@ import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
+import 'package:hovee_attendence/view/parent/trackTuteeLocation.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
@@ -24,8 +25,8 @@ import 'package:logger/logger.dart';
 
 class ParentView extends StatefulWidget {
   String userId;
- 
-   ParentView({super.key, required this.userId});
+
+  ParentView({super.key, required this.userId});
 
   @override
   _ParentViewState createState() => _ParentViewState();
@@ -34,256 +35,253 @@ class ParentView extends StatefulWidget {
 class _ParentViewState extends State<ParentView> {
   // final FirestoreService _locationService = FirestoreService();
   // LatLng? _studentLocation;
- final ParentController controller = Get.put(ParentController());
- final EnquirDetailController classController =
-        Get.put(EnquirDetailController());
-    final EnrollmentController enrollmentController =
-        Get.put(EnrollmentController());
+  final ParentController controller = Get.put(ParentController());
+  final EnquirDetailController classController =
+      Get.put(EnquirDetailController());
+  final EnrollmentController enrollmentController =
+      Get.put(EnrollmentController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBarHeader(
-        needGoBack: true,
-        navigateTo: () {
-           Get.back();
-        },
-      ),
-      body:
-      //  StreamBuilder<Map<String, dynamic>>(
-      //   stream: _locationService.getStudentLiveLocation(userId: widget.userId),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return const Center(child: CircularProgressIndicator());
-      //     }
+        resizeToAvoidBottomInset: true,
+        appBar: AppBarHeader(
+          needGoBack: true,
+          navigateTo: () {
+            Get.back();
+          },
+        ),
+        body:
+            //  StreamBuilder<Map<String, dynamic>>(
+            //   stream: _locationService.getStudentLiveLocation(userId: widget.userId),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState == ConnectionState.waiting) {
+            //       return const Center(child: CircularProgressIndicator());
+            //     }
 
-      //     if (!snapshot.hasData || snapshot.data?['location'] == null) {
-      //       return const Center(child: Text("Location not available"));
-      //     }
+            //     if (!snapshot.hasData || snapshot.data?['location'] == null) {
+            //       return const Center(child: Text("Location not available"));
+            //     }
 
-      //     final location = snapshot.data!['location'];
-      //     _studentLocation = LatLng(location['lat'], location['lng']);
+            //     final location = snapshot.data!['location'];
+            //     _studentLocation = LatLng(location['lat'], location['lng']);
 
-      //     return GoogleMap(
-      //       initialCameraPosition: CameraPosition(
-      //         target: _studentLocation!,
-      //         zoom: 15,
-      //       ),
-      //       markers: _studentLocation != null
-      //           ? {
-      //               Marker(
-      //                 markerId: const MarkerId("student"),
-      //                 position: _studentLocation!,
-      //                 infoWindow: const InfoWindow(title: "Student Location"),
-      //               ),
-      //             }
-      //           : {},
-      //     );
-      //   },
-      // ),
-      SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Padding(
-          padding:  const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-               InkWell(
-                        onTap: () {
-                          //Get.to(() => UserProfile());
-                        },
-                        child: HomePageHeader(
-                          title: 'Attendance Monitoring',
-                          userType: "Parent",
-                        ),
+            //     return GoogleMap(
+            //       initialCameraPosition: CameraPosition(
+            //         target: _studentLocation!,
+            //         zoom: 15,
+            //       ),
+            //       markers: _studentLocation != null
+            //           ? {
+            //               Marker(
+            //                 markerId: const MarkerId("student"),
+            //                 position: _studentLocation!,
+            //                 infoWindow: const InfoWindow(title: "Student Location"),
+            //               ),
+            //             }
+            //           : {},
+            //     );
+            //   },
+            // ),
+            SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: () {
+                    //Get.to(() => UserProfile());
+                  },
+                  child: HomePageHeader(
+                    title: 'Attendance Monitoring',
+                    userType: "Parent",
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: const Text(
+                        'My Listings',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
                       ),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: const Text(
-                                'My Listings',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black),
+                    ),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              childAspectRatio: 1.0,
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10 // Number of columns
+                              ),
+                      itemBuilder: (context, int index) {
+                        final item = controller.parentMonitorList[index];
+                        Color myColor =
+                            controller.parentMonitorList[index]['color'];
+
+                        return InkWell(
+                          onTap: () {
+                            if (index == 1) {
+                              Get.to(() => TrackTuteeLocation(), arguments: [
+                                {"userId": "0000"}
+                              ]);
+                            }
+                            // if (item['title'] == 'Course list') {
+                            //   var box = GetStorage();
+                            //   Logger().i("${box.read('Token')}");
+                            //   Get.to(() => const GetTopicsCourses(
+                            //         type: 'Tutee',
+                            //       ));
+                            // }
+                            // if (item['title'] == 'Enquires') {
+                            //   classController.onInit();
+                            //   Get.to(() => Tutorenquirlist(
+                            //         type: 'Tutee',
+                            //         fromBottomNav: true,
+                            //       ));
+                            // }
+                            // if (item['title'] == 'Enrollments') {
+                            //   enrollmentController.onInit();
+                            //   Get.to(() => EnrollmentScreen(
+                            //         type: 'Tutee',
+                            //         fromBottomNav: true,
+                            //       ));
+                            // }
+                            // if (item['title'] == 'Attendance') {
+                            //   Get.to(
+                            //       () => TuteeAttendanceList(
+                            //             type: 'Tutee',
+                            //           ),
+                            //       arguments: "Tutee");
+                            // }
+                          },
+                          child: Card(
+                            elevation: 10,
+                            shadowColor: Colors.grey,
+                            surfaceTintColor: Colors.white,
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color:
+                                      const Color.fromRGBO(246, 244, 254, 1)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: myColor),
+                                    child: controller.parentMonitorList[index]
+                                                ['image'] !=
+                                            null
+                                        ? Image.asset(
+                                            controller.parentMonitorList[index]
+                                                ['image'],
+                                            color: Colors.white,
+                                            height: 30,
+                                          )
+                                        : SizedBox.shrink(),
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Text(
+                                      controller.parentMonitorList[index]
+                                          ['title'],
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                            GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      childAspectRatio: 1.0,
-                                      crossAxisCount: 3,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10 // Number of columns
-                                      ),
-                              itemBuilder: (context, int index) {
-                                final item =
-                                    controller.parentMonitorList[index];
-                                Color myColor =  controller.parentMonitorList[index]
-                                              ['color'];
-          
-                                return InkWell(
-                                  onTap: () {
-                                    if (item['title'] == 'Course list') {
-                                      var box = GetStorage();
-                                      Logger().i("${box.read('Token')}");
-                                      Get.to(() => const GetTopicsCourses(
-                                            type: 'Tutee',
-                                          ));
-                                    }
-                                    if (item['title'] == 'Enquires') {
-                                      classController.onInit();
-                                      Get.to(() => Tutorenquirlist(
-                                            type: 'Tutee',
-                                            fromBottomNav: true,
-                                          ));
-                                    }
-                                    if (item['title'] == 'Enrollments') {
-                                      enrollmentController.onInit();
-                                      Get.to(() => EnrollmentScreen(
-                                            type: 'Tutee',
-                                            fromBottomNav: true,
-                                          ));
-                                    }
-                                    if (item['title'] == 'Attendance') {
-                                      Get.to(
-                                          () => TuteeAttendanceList(
-                                                type: 'Tutee',
-                                              ),
-                                          arguments: "Tutee");
-                                    }
-                                  },
-                                  child: Card(
-                                    elevation: 10,
-                                    shadowColor: Colors.grey,
-                                    surfaceTintColor: Colors.white,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(12),
-                                          color: const Color.fromRGBO(
-                                              246, 244, 254, 1)),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 10),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                color: myColor),
-                                            child: controller.parentMonitorList[index]['image']!=null?
-                                            Image.asset(
-                                              controller.parentMonitorList[index]['image'],
-                                              color: Colors.white,
-                                              height: 30,
-                                            ):SizedBox.shrink(),
-                                          ),
-                                          SizedBox(
-                                            width:
-                                                MediaQuery.of(context).size.width,
-                                            child: Text(
-                                             controller.parentMonitorList[index]['title'],
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              itemCount:
-                                  controller.parentMonitorList.length,
-                            ),
-                          ],
-                        ),
-                         const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'My Children',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                        InkWell(
-                          onTap: () {
-                           // Get.to(() => AttendanceCourseListScreen());
-                          },
-                          child: const Text(
-                            'See All',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
                           ),
-                        ),
-                       
-                      ],
+                        );
+                      },
+                      itemCount: controller.parentMonitorList.length,
                     ),
-                     ListView.builder(
-                       scrollDirection: Axis.vertical,
-                       shrinkWrap: true,
-                       itemCount: 2,
-                       itemBuilder: (context, index) => 
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 5),
-                        child: Card(
-                            elevation: 10,
-                          shadowColor: Colors.black,
-                          surfaceTintColor: Colors.white,
-                          child: ListTile(
-                           leading:CircleAvatar(
-                             radius: 35,
-                             // Optional: Set a background color
-                             //backgroundColor: Colors.grey[200],
-                             child: Icon(
-                               Icons
-                                   .person, // Correct usage: provide IconData directly
-                               size: 36, // Adjust the icon size as needed
-                               color: Colors.black, // Set the icon color
-                             ),
-                           ) ,
-                           title:  Text(
-                                   'Surya',
-                                   style: const TextStyle(
-                                     fontWeight: FontWeight.w400,
-                                     fontSize: 20.0,
-                                     color: Colors.black,
-                                   )),
-                           subtitle:  Text(
-                                   'WOW758JHVHC',
-                                   style: const TextStyle(
-                                     fontWeight: FontWeight.w400,
-                                     fontSize: 14.0,
-                                     color: Colors.black,
-                                   )),
-                                   
-                          ),
-                        ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'My Children',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        // Get.to(() => AttendanceCourseListScreen());
+                      },
+                      child: const Text(
+                        'See All',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
                       ),
-                      
-                                           
-                     )
-            ],
+                    ),
+                  ],
+                ),
+                ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: 2,
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 5),
+                    child: Card(
+                      elevation: 10,
+                      shadowColor: Colors.black,
+                      surfaceTintColor: Colors.white,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 35,
+                          // Optional: Set a background color
+                          //backgroundColor: Colors.grey[200],
+                          child: Icon(
+                            Icons
+                                .person, // Correct usage: provide IconData directly
+                            size: 36, // Adjust the icon size as needed
+                            color: Colors.black, // Set the icon color
+                          ),
+                        ),
+                        title: Text('Surya',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 20.0,
+                              color: Colors.black,
+                            )),
+                        subtitle: Text('WOW758JHVHC',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14.0,
+                              color: Colors.black,
+                            )),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-      )
-    );
+        ));
   }
 }

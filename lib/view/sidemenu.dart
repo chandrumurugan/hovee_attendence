@@ -11,6 +11,7 @@ import 'package:hovee_attendence/utils/sidemenuHeader.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
+import 'package:hovee_attendence/view/parent/trackTuteeLocation.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 
 class SideMenu extends StatelessWidget {
@@ -67,9 +68,7 @@ class SideMenu extends StatelessWidget {
             if (!isGuest)
               ListTile(
                 onTap: () {
-                  Get.to(() => ParentView(
-                        userId: '12345678910',
-                      ));
+               
                 },
                 leading: Image.asset(
                   'assets/sidemenu/mypayment.png',
@@ -84,8 +83,7 @@ class SideMenu extends StatelessWidget {
               ),
             ListTile(
               onTap: () async {
-                await FirestoreService.updateUserLocation(
-                    userId: "12345678910", username: "chandrumurugan");
+              
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(

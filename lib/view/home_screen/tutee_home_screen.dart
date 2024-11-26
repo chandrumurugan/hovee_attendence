@@ -307,9 +307,9 @@ class TuteeHome extends StatelessWidget {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: const Text(
+                          const Padding(
+                            padding: EdgeInsets.all(5),
+                            child: Text(
                               'My Listings',
                               style: TextStyle(
                                   fontSize: 16,
@@ -396,7 +396,7 @@ class TuteeHome extends StatelessWidget {
                                                 .image!,
                                             color: Colors.white,
                                             height: 30,
-                                          ):SizedBox.shrink(),
+                                          ):const SizedBox.shrink(),
                                         ),
                                         SizedBox(
                                           width:

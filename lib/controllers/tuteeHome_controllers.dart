@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
+import 'package:hovee_attendence/services/firestoreService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
@@ -213,6 +214,8 @@ class TuteeHomeController extends GetxController{
       if (studentDetails.value != null && studentDetails.value.isNotEmpty) {
         // Getting the unreadNotificationCount of the first student
         homeDashboardCourseList.value = studentDetails[0].courseList!;
+          await FirestoreService.updateUserLocation(
+                    userId: studentDetails[0].wowId.toString() ?? "", username: "${studentDetails[0].firstName} ${studentDetails[0].lastName}");
         print('hi rahul $notificationCount');
       } 
     
