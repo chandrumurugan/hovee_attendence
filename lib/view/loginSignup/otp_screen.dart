@@ -8,6 +8,7 @@ import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/dashBoard.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
+import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/roleSelection.dart';
@@ -317,6 +318,9 @@ class _OtpScreenState extends State<OtpScreen> {
                                                               DashboardScreen(rolename: value.data!.roles!
                                                                 .roleName,));
                                                          // Get.offAll(() => TuteeHome());
+                                                        }else{
+                                                          Get.offAll(() =>
+                                                              ParentView(userId: '',));
                                                         }
                                                         //  :
                                                         // Get.offAll(() => const RoleSelection());

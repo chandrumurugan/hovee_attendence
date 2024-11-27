@@ -25,8 +25,8 @@ class EnrollmentScreen extends StatelessWidget {
    final storage = GetStorage();
   final savedOtp = storage.read('otpCode') ?? '';
  attendanceCourseListController.otpController.text = savedOtp;
+ controller.onInit();
     return Scaffold(
-      
       appBar: AppBarHeader(
           needGoBack: fromBottomNav,
           navigateTo: () {

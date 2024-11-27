@@ -27,7 +27,7 @@ class ChartApp extends StatelessWidget {
           shadowColor: Colors.grey,
           surfaceTintColor: Colors.white,
           child: Container(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(8),
             height: MediaQuery.sizeOf(context).height * 0.24,
             child: Row(
               children: [
@@ -43,8 +43,8 @@ class ChartApp extends StatelessWidget {
                       Row(
                         children: [
                           Container(
-                            height: 20,
-                            width: 20,
+                              height: 18,
+                            width: 18,
                             color: Colors.orange,
                           ),
                           SizedBox(
@@ -54,7 +54,7 @@ class ChartApp extends StatelessWidget {
                               ? Text(
                                   'Absent - ${controller.dailyattendance.value!.absent!.toString()}',
                                   style: GoogleFonts.nunito(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 )
@@ -67,8 +67,8 @@ class ChartApp extends StatelessWidget {
                       Row(
                         children: [
                           Container(
-                            height: 20,
-                            width: 20,
+                             height: 18,
+                            width: 18,
                             color: Colors.purple,
                           ),
                           SizedBox(
@@ -78,7 +78,7 @@ class ChartApp extends StatelessWidget {
                               ? Text(
                                   'Present - ${controller.dailyattendance.value!.present!.toString()}',
                                   style: GoogleFonts.nunito(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 )
@@ -91,8 +91,8 @@ class ChartApp extends StatelessWidget {
                       Row(
                         children: [
                           Container(
-                            height: 20,
-                            width: 20,
+                              height: 18,
+                            width: 18,
                             color: Color(0xff014EA9),
                           ),
                           SizedBox(
@@ -102,7 +102,7 @@ class ChartApp extends StatelessWidget {
                               ? Text(
                                   'Leave - ${controller.dailyattendance.value!.leave!.toString()}',
                                   style: GoogleFonts.nunito(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 )
@@ -115,8 +115,8 @@ class ChartApp extends StatelessWidget {
                       Row(
                         children: [
                           Container(
-                            height: 20,
-                            width: 20,
+                            height: 18,
+                            width: 18,
                             color: Color(0xff2E5BB5),
                           ),
                           SizedBox(
@@ -126,7 +126,7 @@ class ChartApp extends StatelessWidget {
                               ? Text(
                                   'Miss punch - ${controller.dailyattendance.value!.partialAttendance!.toString()}',
                                   style: GoogleFonts.nunito(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 )
@@ -134,15 +134,16 @@ class ChartApp extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 15,
                       ),
+                      controller.currentMonthYear!=null?
                       Text(
-                        'June - 2024',
+                        controller.currentMonthYear!,
                         style: GoogleFonts.nunito(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
-                      )
+                      ):SizedBox.shrink()
                     ],
                   ),
                 ),
@@ -193,7 +194,7 @@ class PieChartWidget extends StatelessWidget {
               title: '${controller.dailyattendance.value!.percentage!.absent!}',
               radius: 35,
               titleStyle: GoogleFonts.nunito(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
@@ -206,7 +207,7 @@ class PieChartWidget extends StatelessWidget {
               title: '${controller.dailyattendance.value!.percentage!.leave!}',
               radius: 35,
               titleStyle: GoogleFonts.nunito(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
@@ -220,7 +221,7 @@ class PieChartWidget extends StatelessWidget {
                   '${controller.dailyattendance.value!.percentage!.partial!}',
               radius: 35,
               titleStyle: GoogleFonts.nunito(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
@@ -535,14 +536,17 @@ class _LineChartSampleState extends State<LineChartSample> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Obx(() {
-                      if (controller.batchList.isEmpty) {
-                        return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                      if(controller.isLoading.value){
+                       return CircularProgressIndicator();
                       }
+                    //  else if (controller.batchList.isEmpty) {
+                    //     return Text("No batch found"); // Show loading indicator if no batches are fetched
+                    //   }
                       return DropdownButton<Data1>(
                         value: controller.selectedBatchIN.value,
                         hint: widget.userType == 'Tutee'
                             ? Text('Class')
-                            : Text('Batch'),
+                            : Text('Select'),
                         icon: const Icon(Icons.arrow_drop_down),
                         iconSize: 24,
                         elevation: 16,
@@ -589,27 +593,29 @@ class _LineChartSampleState extends State<LineChartSample> {
                                   });
                                 },
                                 child: Container(
+                                  // color: controller.isMonthSelected.value
+                                  //       ? const Color(0xffFF8800)
+                                  //       : Colors.grey.shade300,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: controller.isMonthSelected.value
-                                        ? const Color(0xffFF8800)
-                                        : Colors.grey.shade300,
-                                  ),
                                   child: Text(
-                                    'Month',
+                                    'Monthly',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: controller.isMonthSelected.value
-                                          ? Colors.white
-                                          : Colors.black,
+                                          ? Colors.blue
+                                          : Colors.black45,
                                     ),
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 5),
+                              Container(
+                          height: 15,
+                          width: 1.5,
+                          color: Colors.black.withOpacity(0.5),
+                        ),
+                              //const SizedBox(width: 5),
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -617,22 +623,19 @@ class _LineChartSampleState extends State<LineChartSample> {
                                   });
                                 },
                                 child: Container(
+                                  // color: !controller.isMonthSelected.value
+                                  //       ? const Color(0xffFF8800)
+                                  //       : Colors.grey.shade300,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: !controller.isMonthSelected.value
-                                        ? const Color(0xffFF8800)
-                                        : Colors.grey.shade300,
-                                  ),
                                   child: Text(
-                                    'Year',
+                                    'Yearly',
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: !controller.isMonthSelected.value
-                                          ? Colors.white
-                                          : Colors.black,
+                                          ? Colors.blue
+                                          : Colors.black45,
                                     ),
                                   ),
                                 ),

@@ -23,6 +23,7 @@ import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getQrcode_model.dart';
 import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
+import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
@@ -376,7 +377,9 @@ class WebService {
     //   request.files.add(await http.MultipartFile.fromPath('experience_certificate', experienceCertPath));
     // }
     Logger().i(request.headers);
-
+     Logger().i(personalInfo);
+      Logger().i(addressInfo);
+       Logger().i(educationInfo);
     // Send the request
     return await request.send();
   }
@@ -1127,6 +1130,33 @@ class WebService {
       return deleteBatchDataModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load Notification list');
+    }
+  }
+
+  static Future<getUserTokenListModel  ?> getUserTokenList(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}user/getUserTokenList"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return getUserTokenListModel  .fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
     }
   }
 }

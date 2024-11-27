@@ -76,10 +76,10 @@ class AttendancecourselistContainer extends StatelessWidget {
                             className: attendanceCourse!.course!.className!,
                             courseId: attendanceCourse!.course!.sId!,
                             batchId: attendanceCourse!.batch!.sId!,
-                            batchStartTime:'',
-                                //attendanceCourse!.batch!.batchTimingStart!,
-                            batchEndTime:'',
-                                //attendanceCourse!.batch!.batchTimingEnd!,
+                            batchStartTime:
+                                attendanceCourse!.batch!.batchTimingStart!,
+                            batchEndTime:
+                                attendanceCourse!.batch!.batchTimingEnd!,
                             subjectName: attendanceCourse!.course!.subject!,
                             courseCode: attendanceCourse!.course!.courseCode!,
                           ));

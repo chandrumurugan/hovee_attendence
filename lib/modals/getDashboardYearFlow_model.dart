@@ -23,8 +23,9 @@ class Data {
   List<Attendacemonth>? attendacemonth;
   List<AttendaceYrs>? attendaceYrs;
   Dailyattendance? dailyattendance;
+   String? currentMonthYear;
 
-  Data({this.attendacemonth, this.attendaceYrs, this.dailyattendance});
+  Data({this.attendacemonth, this.attendaceYrs, this.dailyattendance, this.currentMonthYear});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['attendacemonth'] != null) {
@@ -42,6 +43,7 @@ class Data {
     dailyattendance = json['dailyattendance'] != null
         ? new Dailyattendance.fromJson(json['dailyattendance'])
         : null;
+         currentMonthYear = json['currentMonthYear'];
   }
 
   Map<String, dynamic> toJson() {
@@ -57,6 +59,7 @@ class Data {
     if (this.dailyattendance != null) {
       data['dailyattendance'] = this.dailyattendance!.toJson();
     }
+     data['currentMonthYear'] = this.currentMonthYear;
     return data;
   }
 }

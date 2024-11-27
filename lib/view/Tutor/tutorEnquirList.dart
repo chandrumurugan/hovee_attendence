@@ -21,6 +21,7 @@ class Tutorenquirlist extends StatelessWidget {
       Get.put(EnquirDetailController());
   @override
   Widget build(BuildContext context) {
+    classController.onInit();
     return Scaffold(
       appBar:
        AppBarHeader(
@@ -28,7 +29,8 @@ class Tutorenquirlist extends StatelessWidget {
           navigateTo: () {
             classController.navigateBack();
           }),
-      body: Column(
+      body: 
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Search and Filter Section
@@ -310,7 +312,8 @@ class Tutorenquirlist extends StatelessWidget {
             }),
           )
         ],
-      ),
+      )
+    
     );
   }
 

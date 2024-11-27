@@ -263,10 +263,10 @@ class AccountSetupController extends GetxController
       return false;
     }
 
-    if (pincodesController.text.length != 6) {
-       SnackBarUtils.showSuccessSnackBar(context,'Invalid pincode.',);
-      return false;
-    }
+    // if (pincodesController.text.length != 6) {
+    //    SnackBarUtils.showSuccessSnackBar(context,'Invalid pincode.',);
+    //   return false;
+    // }
     return true;
   }
 
@@ -308,10 +308,10 @@ class AccountSetupController extends GetxController
       return false;
     }
 
-    if (pincodeController.text.length != 6) {
-     SnackBarUtils.showSuccessSnackBar(context,'Invalid pincode.',);
-      return false;
-    }
+    // if (pincodeController.text.length != 6) {
+    //  SnackBarUtils.showSuccessSnackBar(context,'Invalid pincode.',);
+    //   return false;
+    // }
 
     if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
       SnackBarUtils.showSuccessSnackBar(context,'Please select the Id proof',);
@@ -462,9 +462,10 @@ class AccountSetupController extends GetxController
       String roleId, BuildContext context) async {
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+    //final token = box.read('Token') ?? '';
     Logger().i(personalInfo.value);
     final prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
     latitude = prefs.getDouble('latitude');
     longitude = prefs.getDouble('longitude');
@@ -540,8 +541,9 @@ class AccountSetupController extends GetxController
       String roleId, String roleTypeId, BuildContext context) async {
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-    final token = box.read('Token') ?? '';
+    // final token = box.read('Token') ?? '';
     final prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
     Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
     latitude = prefs.getDouble('latitude');
     longitude = prefs.getDouble('longitude');

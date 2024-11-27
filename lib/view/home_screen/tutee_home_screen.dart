@@ -209,52 +209,53 @@ class TuteeHome extends StatelessWidget {
                             children: [
                               // const SizedBox(height: 10),
                               Obx(() {
-                                if (controller1.batchList.isEmpty) {
-                                  return const Text(
-                                      "No data found"); // Show loading indicator if no batches are fetched
-                                }
-                                return DropdownButtonFormField<Data1>(
-                                  dropdownColor: AppConstants.primaryColor,
-                                  icon: const Icon(
-                                    Icons.arrow_drop_down_circle_rounded,
-                                    color: Colors.white,
-                                  ),
-                                  style: GoogleFonts.nunito(
-                                    fontSize: 19,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                  ),
-                                  decoration: InputDecoration(
-                                    suffixIconColor: Colors.white,
-                                    alignLabelWithHint: true,
-                                    border: InputBorder.none,
-                                    labelText: 'Select batch',
-                                    labelStyle: GoogleFonts.nunito(
-                                      fontSize: 15,
+                                if (controller1.isLoading.value) {
+                                  return CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                                } else {
+                                  return DropdownButtonFormField<Data1>(
+                                    dropdownColor: AppConstants.primaryColor,
+                                    icon: const Icon(
+                                      Icons.arrow_drop_down_circle_rounded,
+                                      color: Colors.white,
+                                    ),
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 19,
                                       fontWeight: FontWeight.w400,
                                       color: Colors.white,
                                     ),
-                                  ),
-                                  value: controller1.selectedBatchIN.value,
-                                  items:
-                                      controller1.batchList.map((Data1 batch) {
-                                    return DropdownMenuItem<Data1>(
-                                      value: batch,
-                                      child: Text(batch.batchName!),
-                                    );
-                                  }).toList(),
-                                  onChanged: (newBatch) {
-                                    if (newBatch != null) {
-                                      controller1.selectBatch(newBatch);
-                                      controller1.isBatchSelected.value = true;
-                                      controller1.fetchBatchList(
-                                        newBatch.batchId!,
+                                    decoration: InputDecoration(
+                                      suffixIconColor: Colors.white,
+                                      alignLabelWithHint: true,
+                                      border: InputBorder.none,
+                                      labelText: 'Select batch',
+                                      labelStyle: GoogleFonts.nunito(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    value: controller1.selectedBatchIN.value,
+                                    items: controller1.batchList
+                                        .map((Data1 batch) {
+                                      return DropdownMenuItem<Data1>(
+                                        value: batch,
+                                        child: Text(batch.batchName!),
                                       );
-                                      // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
-                                      // Replace with your actual method to fetch batch-related data
-                                    }
-                                  },
-                                );
+                                    }).toList(),
+                                    onChanged: (newBatch) {
+                                      if (newBatch != null) {
+                                        controller1.selectBatch(newBatch);
+                                        controller1.isBatchSelected.value =
+                                            true;
+                                        controller1.fetchBatchList(
+                                          newBatch.batchId!,
+                                        );
+                                        // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
+                                        // Replace with your actual method to fetch batch-related data
+                                      }
+                                    },
+                                  );
+                                }
                               }),
 
                               // const SizedBox(
@@ -272,31 +273,53 @@ class TuteeHome extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'My Classes',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
+                    Obx(() {
+                    if (controller.isLoading.value) {
+                      return const SizedBox.shrink();
+                    } else if (controller.homeDashboardCourseList.value.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+                   else{
+                    return Column(
+                          children: [
+                            Visibility(
+                              visible: !controller.isLoading.value,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'My Classes',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Get.to(
+                                          () => AttendanceCourseListScreen());
+                                    },
+                                    child: const Text(
+                                      'See All',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Visibility(
+                                visible: !controller.isLoading.value,
+                                child: SubjectContainer()),
+                          ],
+                        );
+                    }
+                    }
                         ),
-                        InkWell(
-                          onTap: () {
-                            Get.to(() => AttendanceCourseListScreen());
-                          },
-                          child: const Text(
-                            'See All',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SubjectContainer(),
+
                     const SizedBox(
                       height: 10,
                     ),
@@ -328,8 +351,11 @@ class TuteeHome extends StatelessWidget {
                                     crossAxisSpacing: 10 // Number of columns
                                     ),
                             itemBuilder: (context, int index) {
-                              final item =
-                                  controller.homeDashboardNavList.value[index];
+                              final filteredList = controller
+                                  .homeDashboardNavList.value
+                                  .where((item) => item.name != 'Dashboard')
+                                  .toList();
+                              final item = filteredList[index];
                               Color myColor = Color(
                                 int.parse((item.color ?? "#FFFFFF")
                                     .replaceAll("#", "0xFF")),
@@ -389,21 +415,19 @@ class TuteeHome extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                               color: myColor),
-                                          child: item
-                                                .image!=null?
-                                          Image.asset(
-                                            item
-                                                .image!,
-                                            color: Colors.white,
-                                            height: 30,
-                                          ):const SizedBox.shrink(),
+                                          child: item.image != null
+                                              ? Image.asset(
+                                                  item.image!,
+                                                  color: Colors.white,
+                                                  height: 30,
+                                                )
+                                              : const SizedBox.shrink(),
                                         ),
                                         SizedBox(
                                           width:
                                               MediaQuery.of(context).size.width,
                                           child: Text(
-                                            item
-                                                .name!,
+                                            item.name!,
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.center,
                                           ),
@@ -414,8 +438,9 @@ class TuteeHome extends StatelessWidget {
                                 ),
                               );
                             },
-                            itemCount:
-                                controller.homeDashboardNavList.value.length,
+                            itemCount: controller.homeDashboardNavList.value
+                                .where((item) => item.name != 'Dashboard')
+                                .length,
                           ),
                         ],
                       );

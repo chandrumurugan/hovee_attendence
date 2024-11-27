@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/enquir_controller.dart';
@@ -47,6 +48,7 @@ class _ParentViewState extends State<ParentView> {
         appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
+            print("object");
             Get.back();
           },
         ),
@@ -98,6 +100,89 @@ class _ParentViewState extends State<ParentView> {
                     userType: "Parent",
                   ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'My Children',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        // Get.to(() => AttendanceCourseListScreen());
+                      },
+                      child: const Text(
+                        'See All',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+                Obx(() {
+                   if (controller.isLoading.value) {
+                return Center(child: CircularProgressIndicator());
+              } else if (controller.userDetails.value.isEmpty) {
+                return Center(
+                  child: Text(
+                    'No list found',
+                    style: GoogleFonts.nunito(
+                      color: Colors.black54,
+                      fontSize: 16,
+                    ),
+                  ),
+                );
+              } else {
+                 return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: controller.userDetails.value.length,
+                    itemBuilder: (context, index) {
+                      var userDetails = controller.userDetails.value[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 5),
+                        child: Card(
+                          elevation: 10,
+                          shadowColor: Colors.black,
+                          surfaceTintColor: Colors.white,
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 35,
+                              // Optional: Set a background color
+                              //backgroundColor: Colors.grey[200],
+                              child: Icon(
+                                Icons
+                                    .person, // Correct usage: provide IconData directly
+                                size: 36, // Adjust the icon size as needed
+                                color: Colors.black, // Set the icon color
+                              ),
+                            ),
+                            title: Text(userDetails.firstName!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 20.0,
+                                  color: Colors.black,
+                                )),
+                            subtitle: Text(userDetails.wowId!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                )),
+                          ),
+                        ),
+                      );
+                    });
+  }}),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -130,7 +215,7 @@ class _ParentViewState extends State<ParentView> {
                           onTap: () {
                             if (index == 1) {
                               Get.to(() => TrackTuteeLocation(), arguments: [
-                                {"userId": "0000"}
+                                {"userId": widget.userId}
                               ]);
                             }
                             // if (item['title'] == 'Course list') {
@@ -216,69 +301,6 @@ class _ParentViewState extends State<ParentView> {
                 const SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'My Children',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        // Get.to(() => AttendanceCourseListScreen());
-                      },
-                      child: const Text(
-                        'See All',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black),
-                      ),
-                    ),
-                  ],
-                ),
-                ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: 2,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 5),
-                    child: Card(
-                      elevation: 10,
-                      shadowColor: Colors.black,
-                      surfaceTintColor: Colors.white,
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 35,
-                          // Optional: Set a background color
-                          //backgroundColor: Colors.grey[200],
-                          child: Icon(
-                            Icons
-                                .person, // Correct usage: provide IconData directly
-                            size: 36, // Adjust the icon size as needed
-                            color: Colors.black, // Set the icon color
-                          ),
-                        ),
-                        title: Text('Surya',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 20.0,
-                              color: Colors.black,
-                            )),
-                        subtitle: Text('WOW758JHVHC',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14.0,
-                              color: Colors.black,
-                            )),
-                      ),
-                    ),
-                  ),
-                )
               ],
             ),
           ),

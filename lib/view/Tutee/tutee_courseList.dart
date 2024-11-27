@@ -125,12 +125,12 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                             // shrinkWrap: true,
                             itemCount: filteredList!.length,
                             itemBuilder: (context, index) {
-                               final course = courseController.courseList[index];
+                               final course = filteredList![index];
                               return GestureDetector(
                                 onTap: (){
                                  controller.getClassTuteeById(context,filteredList![index].className!,filteredList![index].subject!,filteredList![index].tutorId!,filteredList![index].tutorName!);
                                 },
-                                child: CourseListContainer(
+                                child: CourseListContainer1(
                                     image: "",
                                     subject: filteredList![index].subject!, //
                                     subjectCode:
@@ -140,7 +140,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                                     group: filteredList![index].courseCode!,
                                     groupcode:
                                         "${filteredList![index].batchTimingStart!}-${filteredList![index].batchTimingEnd!}",
-                                    arrowIcon: true, className: filteredList![index].className!, tutorId: filteredList![index].tutorId!, batchname: filteredList![index].batchName!, tutorname: filteredList![index].tutorName!, type: widget.type, id: '',  course: course,),
+                                    arrowIcon: true, className: filteredList![index].className!, tutorId: filteredList![index].tutorId!, batchname: filteredList![index].batchName!, tutorname: filteredList![index].tutorName!, type: widget.type, id: '',),
                               );
                             }))
           ],

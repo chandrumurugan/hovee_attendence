@@ -21,13 +21,21 @@ class EnquirDetailController extends GetxController
  
           // final tuteeController = TextEditingController();
   
+  
 
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    tabController.dispose();
+  }
   @override
   void onInit() {
     super.onInit();
-
+   print("object");
     tabController = TabController(length: 3, vsync: this);
     selectedTabIndex.value=0;
+    print(selectedTabIndex.value);
     // Initially load "Pending" list
     fetchEnquirList("Pending");
   }

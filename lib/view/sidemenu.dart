@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
+import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/services/firestoreService.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/utils/sidemenuHeader.dart';
@@ -22,7 +23,7 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthControllers authController = Get.put(AuthControllers());
     var box = GetStorage();
-
+     final TuteeHomeController controller = Get.put(TuteeHomeController());
     bool notification = true;
     return SizedBox(
       width: MediaQuery.sizeOf(context).width * 0.9,
@@ -134,7 +135,7 @@ class SideMenu extends StatelessWidget {
             ),
                 ListTile(
               onTap: () {
-                Get.off(() => ParentView( userId: '',));
+                Get.to(() => ParentView( userId: controller.studentDetails[0].wowId!,));
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(

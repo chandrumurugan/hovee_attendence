@@ -176,6 +176,8 @@ class TutorHome extends StatelessWidget {
                   Obx(() {
                     if (controller.isLoading.value) {
                       return const SizedBox.shrink();
+                    } else if (controller.dailyattendance.value == null) {
+                      return const SizedBox.shrink();
                     }
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,132 +215,127 @@ class TutorHome extends StatelessWidget {
                   // const SizedBox(
                   //   height: 20,
                   // ),
-                  Obx(() { 
-                     if (controller.isLoading.value) {
+                  Obx(() {
+                    if (controller.isLoading.value) {
                       return const SizedBox.shrink();
                     }
-                   return  Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Text(
-                              ' My Listings',
-                              style: GoogleFonts.nunito(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            ' My Listings',
+                            style: GoogleFonts.nunito(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
                             ),
                           ),
-                          GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 1.0,
-                                    crossAxisCount: 3,
-                                    mainAxisSpacing: 10,
-                                    crossAxisSpacing: 10 // Number of columns
-                                    ),
-                            itemBuilder: (context, int index) {
-                              final item =
-                                  controller.homeDashboardNavList.value[index];
-                               Color myColor = Color(
-                                int.parse((item.color ?? "#FFFFFF")
-                                    .replaceAll("#", "0xFF")),
-                              );
-                              return InkWell(
-                                onTap: () {
-                                  // Navigate to different screens based on the title
-                                  if (item.name == 'Batches') {
-                                    Get.to(() =>
-                                        TutorBatchList()); // Navigate to the batch screen
-                                  } else if (item.name == 'Courses') {
-                                    Get.to(() => const TutorCourseList(
-                                          type: 'Tutor',
-                                        )); // Navigate to the course screen
-                                  } else if (item.name == 'Attendance') {
-                                    Get.to(
-                                        () => StudentAttendanceList(
-                                              type: 'Tutor',
-                                            ),
-                                        arguments:
-                                            "Tutor"); // Navigate to the course screen
-                                  } else if (item.name == 'Tution Classes') {
-                                    Get.to(() =>
-                                        TutorClassList()); // Navigate to the course screen
-                                  } else if (item.name == 'Enquires') {
-                                    classController.onInit();
-                                    Get.to(() => Tutorenquirlist(
-                                          type: 'Tutor',
-                                          fromBottomNav: true,
-                                        ));
-                                    Get.to(() => Tutorenquirlist(
-                                          type: 'Tutor',
-                                          fromBottomNav: true,
-                                        )); // Navigate to the course screen
-                                  } else if (item.name == 'Enrollment') {
-                                    enrollmentController.onInit();
-                                    Get.to(() => EnrollmentScreen(
-                                          type: 'Tutor',
-                                          fromBottomNav: true,
-                                        )); // Navigate to the course screen
-                                  } else {
-                                    // Handle other cases or do nothing
-                                    print('Unknown screen');
-                                  }
-                                },
-                                child: Card(
-                                  elevation: 10,
-                                  shadowColor: Colors.grey,
-                                  surfaceTintColor: Colors.white,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: Colors.white),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 10),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              color: myColor),
-                                          child: item.image!=null?
-                                          Image.asset(
-                                            item.image!,
-                                            color: Colors.white,
-                                            height: 30,
-                                          ):SizedBox.shrink(),
+                        ),
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 1.0,
+                            crossAxisCount: 3, // Number of columns
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                          ),
+                          itemCount: controller.homeDashboardNavList.value
+                              .where((item) => item.name != 'Dashboard')
+                              .length,
+                          itemBuilder: (context, int index) {
+                            final filteredList = controller
+                                .homeDashboardNavList.value
+                                .where((item) => item.name != 'Dashboard')
+                                .toList();
+                            final item = filteredList[index];
+
+                            Color myColor = Color(
+                              int.parse((item.color ?? "#FFFFFF")
+                                  .replaceAll("#", "0xFF")),
+                            );
+
+                            return InkWell(
+                              onTap: () {
+                                // Navigate to different screens based on the title
+                                if (item.name == 'Batches') {
+                                  Get.to(() => TutorBatchList());
+                                } else if (item.name == 'Courses') {
+                                  Get.to(() =>
+                                      const TutorCourseList(type: 'Tutor'));
+                                } else if (item.name == 'Attendance') {
+                                  Get.to(
+                                      () =>
+                                          StudentAttendanceList(type: 'Tutor'),
+                                      arguments: "Tutor");
+                                } else if (item.name == 'Tution Classes') {
+                                  Get.to(() => TutorClassList());
+                                } else if (item.name == 'Enquires') {
+                                  classController.onInit();
+                                  Get.to(() => Tutorenquirlist(
+                                      type: 'Tutor', fromBottomNav: true));
+                                } else if (item.name == 'Enrollments') {
+                                  enrollmentController.onInit();
+                                  Get.to(() => EnrollmentScreen(
+                                      type: 'Tutor', fromBottomNav: true));
+                                } else {
+                                  print('Unknown screen');
+                                }
+                              },
+                              child: Card(
+                                elevation: 10,
+                                shadowColor: Colors.grey,
+                                surfaceTintColor: Colors.white,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.white,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: myColor,
                                         ),
-                                        SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Text(
-                                              item.name!,
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
-                                            ))
-                                      ],
-                                    ),
+                                        child: item.image != null
+                                            ? Image.asset(
+                                                item.image!,
+                                                color: Colors.white,
+                                                height: 30,
+                                              )
+                                            : SizedBox.shrink(),
+                                      ),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Text(
+                                          item.name!,
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              );
-                            },
-                            itemCount: controller.homeDashboardNavList.value.length,
-                          ),
-                        ],
-                      );
-                  }
-                      ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  }),
                   // const SizedBox(
                   //   height: 10,
                   // ),
@@ -463,13 +460,13 @@ class HomePageHeader extends StatelessWidget {
                                     '${authController.loginData!.firstName} ${authController.loginData!.lastName}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 24.0,
+                                      fontSize: 20.0,
                                       color: Colors.white,
                                     )),
                                 Text(userType,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 20.0,
+                                      fontSize: 18.0,
                                       color: Colors.amber,
                                     )),
                               ],

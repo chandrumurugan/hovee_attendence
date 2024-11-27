@@ -102,10 +102,10 @@ class AuthControllers extends GetxController
       return false;
     }
 
-    if (pincodeController.text.length != 6) {
-       SnackBarUtils.showSuccessSnackBar(context,'Invalid pincode.',);
-      return false;
-    }
+    // if (pincodeController.text.length <10) {
+    //    SnackBarUtils.showSuccessSnackBar(context,'Invalid pincode.',);
+    //   return false;
+    // }
 
     if (!acceptedTerms.value) {
       SnackBarUtils.showSuccessSnackBar(context,'Please accept the checkbox to proceed',);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
+import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 
 class ParentController extends GetxController {
@@ -59,6 +60,8 @@ class ParentController extends GetxController {
       'color': const Color.fromRGBO(81, 2, 112, 1)
     },
   ];
+
+  var userDetails= <UserId>[].obs;
    @override
   void onInit() {
     // TODO: implement onInit
@@ -86,6 +89,30 @@ class ParentController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+    void getUserTokenList(BuildContext context, String parentId) async {
+      isLoading.value = true;
+      try {
+        var batchData = {
+        "parentId": parentId,
+      };
+
+        final getUserTokenListModel ? response =
+            await WebService.getUserTokenList(batchData);
+
+        if (response != null && response.statusCode == 200) {
+          userDetails.value=response.data!.userId!;
+        } else {
+          // SnackBarUtils.showErrorSnackBar(
+          //     context, response?.message ?? 'Failed to update Enquire');
+        }
+      } catch (e) {
+        //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+      } finally {
+        isLoading.value = false;
+      }
+   
   }
 
 }

@@ -113,6 +113,7 @@ class TutorHomeController extends GetxController {
   final ValueNotifier<bool> isLoading1 = ValueNotifier(false);
   var dailyattendance = Rxn<Dailyattendance>();
    var homeDashboardNavList =<NavbarItems>[].obs;
+   String? currentMonthYear;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -161,6 +162,7 @@ class TutorHomeController extends GetxController {
           await WebService.fetchHomeAttendanceList(batchId);
 
       if (homeDashboardAttendanceResponse?.data != null) {
+        currentMonthYear = homeDashboardAttendanceResponse!.data!.currentMonthYear;
         var attendacemonth =
             homeDashboardAttendanceResponse!.data!.attendacemonth;
         var attendaceyear = homeDashboardAttendanceResponse.data!.attendaceYrs;

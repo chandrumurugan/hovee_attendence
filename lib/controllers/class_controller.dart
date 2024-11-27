@@ -240,4 +240,6 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
          batchNameController1.clear();
         courseCodeController.value='';
     }
+
+    
 }

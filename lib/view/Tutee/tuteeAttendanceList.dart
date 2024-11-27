@@ -40,7 +40,7 @@ class TuteeAttendanceList extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.only(top: 5),
                     child: Card(
                       elevation: 10,
                       shadowColor: Colors.grey.shade100,
@@ -60,10 +60,10 @@ class TuteeAttendanceList extends StatelessWidget {
                           children: [
                             // const SizedBox(height: 10),
                             Obx(() {
-                              if (controller.batchList.isEmpty) {
-                                return Text("No data found"); // Show loading indicator if no batches are fetched
+                              if (controller.isLoading.value) {
+                                return CircularProgressIndicator(); // Show loading indicator if no batches are fetched
                               }
-                              return DropdownButtonFormField<Data1>(
+                             else{ return DropdownButtonFormField<Data1>(
                                 dropdownColor: AppConstants.primaryColor,
                                 icon: const Icon(
                                   Icons.arrow_drop_down_circle_rounded,
@@ -101,7 +101,7 @@ class TuteeAttendanceList extends StatelessWidget {
                                   }
                                 },
                               );
-                            }),
+                            }}),
 
                             // const SizedBox(
                             //   height: 20,
