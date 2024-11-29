@@ -190,8 +190,8 @@ class PieChartWidget extends StatelessWidget {
             sections: [
               PieChartSectionData(
                 color: Color(0xff7E71FF ),
-                value: 100,
-                title: '0%',
+                // value: 100,
+                // title: '0%',
                 radius: 35,
                 titleStyle: GoogleFonts.nunito(
                   fontSize: 14,
