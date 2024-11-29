@@ -8,6 +8,7 @@ import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/Tutee/preview_screen.dart';
 import 'package:hovee_attendence/view/add_enrollment_screen.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/enrollment_preview_screen.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
@@ -27,7 +28,7 @@ class Tutorenquirlist extends StatelessWidget {
        AppBarHeader(
           needGoBack:  fromBottomNav,
           navigateTo: () {
-            classController.navigateBack();
+             Get.offAll(DashboardScreen(rolename: type,));
           }),
       body: 
       Column(

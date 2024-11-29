@@ -5,11 +5,13 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/widget/batch_list_container.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class TutorBatchList extends StatelessWidget {
-  TutorBatchList({super.key});
+  final String type;
+  TutorBatchList({super.key, required this.type});
   final BatchController batchController = Get.put(BatchController());
 
   @override
@@ -43,7 +45,7 @@ class TutorBatchList extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
-                              batchController.navigateBack();
+                               Get.offAll(DashboardScreen(rolename: type,));
                             },
                             icon: Icon(Icons.arrow_back, color: Colors.white),
                           ),

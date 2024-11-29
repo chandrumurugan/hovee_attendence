@@ -14,6 +14,7 @@ import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/parent/trackTuteeLocation.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SideMenu extends StatelessWidget {
   final bool isGuest;
@@ -135,7 +136,7 @@ class SideMenu extends StatelessWidget {
             ),
                 ListTile(
               onTap: () {
-                Get.to(() => ParentView( userId: controller.studentDetails[0].wowId!,));
+               // Get.to(() => ParentView( userId: controller.studentDetails[0].wowId!, type: '',));
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(
@@ -256,10 +257,12 @@ class SideMenu extends StatelessWidget {
                 return ListTile(
                   onTap: () async {
                     // _logoutPopup(context);
+                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     bool islogut = await ModalService.handleBackButton(context);
                     if (islogut) {
-                      box.remove("Token");
-                      authController!.tabController!.animateTo(0);
+                     // box.remove("Token");
+                     prefs.remove('Token');
+                      authController.tabController.animateTo(0);
                       authController.currentTabIndex.value == 0;
                       Get.offAll(() => const LoginSignUp());
                     } else {}

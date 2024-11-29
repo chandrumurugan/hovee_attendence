@@ -38,6 +38,7 @@ class TuteeHome extends StatelessWidget {
     final EnrollmentController enrollmentController =
         Get.put(EnrollmentController());
     final TutorHomeController controller1 = Get.put(TutorHomeController());
+     final NotificationController noticontroller = Get.put(NotificationController());
     return Scaffold(
       key: controller.tuteeScaffoldKey,
       drawer: SideMenu(
@@ -93,7 +94,7 @@ class TuteeHome extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          Get.to(() => NotificationScreen());
+                          Get.to(() => NotificationScreen(type: 'Tutee',));
                         },
                         child: Image.asset(
                           'assets/appbar/bell 5.png',
@@ -104,7 +105,7 @@ class TuteeHome extends StatelessWidget {
                       Obx(() => Positioned(
                             right: 1,
                             top: 1,
-                            child: controller.notificationCount.value > 0
+                            child: noticontroller.notificationCount.value > 0
                                 ? Container(
                                     padding: const EdgeInsets.all(2),
                                     decoration: BoxDecoration(
@@ -116,7 +117,7 @@ class TuteeHome extends StatelessWidget {
                                       minHeight: 12,
                                     ),
                                     child: Text(
-                                      '${controller.notificationCount.value}',
+                                      '${noticontroller.notificationCount.value}',
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 8,
@@ -282,38 +283,33 @@ class TuteeHome extends StatelessWidget {
                    else{
                     return Column(
                           children: [
-                            Visibility(
-                              visible: !controller.isLoading.value,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    'My Classes',
+                            Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'My Classes',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(
+                                        () => AttendanceCourseListScreen());
+                                  },
+                                  child: const Text(
+                                    'See All',
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black),
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      Get.to(
-                                          () => AttendanceCourseListScreen());
-                                    },
-                                    child: const Text(
-                                      'See All',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            Visibility(
-                                visible: !controller.isLoading.value,
-                                child: SubjectContainer()),
+                            SubjectContainer(),
                           ],
                         );
                     }

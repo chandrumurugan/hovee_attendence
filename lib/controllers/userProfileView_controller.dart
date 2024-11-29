@@ -150,7 +150,7 @@ class UserProfileController extends GetxController
         userProfileResponse.value = fetchProfile;
         _populateFieldsFromResponse(fetchProfile.data!);
         String organizationName =
-            fetchProfile.data!.qualificationDetails.first.organizationName!;
+            fetchProfile.data!.qualificationDetails.first.organizationName??'';
         // Store relevant fields in GetStorage
         storage.write('doorNo', fetchProfile.data!.doorNo);
         storage.write('street', fetchProfile.data!.street);

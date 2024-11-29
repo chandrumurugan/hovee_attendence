@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/modals/getDashboardYearFlow_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
+import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartApp extends StatelessWidget {
@@ -164,74 +165,122 @@ class PieChartWidget extends StatelessWidget {
     return Obx(() {
       if (controller.isLoading.value) {
         return const SizedBox.shrink();
-      } else if (controller.dailyattendance.value == null) {
-        //Center(child: Text("No data found"));
+      }
+
+      final percentage = controller.dailyattendance.value?.percentage;
+      Logger().i("dsg€sdgsg${percentage!.absent}");
+      if (percentage == null) {
         return Center(child: Text("No data found"));
       }
+
+      double? present = double.parse(
+                  percentage.present!.replaceAll('%', '')
+                     );
+                     print(present);
+      double? absent = double.parse(percentage.absent!.replaceAll('%', ''));
+      double? leave = double.parse(percentage.leave!.replaceAll('%', ''));
+      double? partial = double.parse(percentage.partial!.replaceAll('%', ''));
+
+      final total = present + absent + leave + partial;
+
+      // If all values are 0, display a single blue circle
+      if (total == 0) {
+        return PieChart(
+          PieChartData(
+            sections: [
+              PieChartSectionData(
+                color: Color(0xff7E71FF ),
+                value: 100,
+                title: '0%',
+                radius: 35,
+                titleStyle: GoogleFonts.nunito(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+            centerSpaceRadius: 40,
+          ),
+        );
+      }
+
+      List<PieChartSectionData> sections = [];
+
+      if (present > 0) {
+        sections.add(
+          PieChartSectionData(
+            color: Colors.purple,
+            value: present,
+            title: '$present%',
+            radius: 40,
+            titleStyle: GoogleFonts.nunito(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        );
+      }
+
+      if (absent > 0) {
+        sections.add(
+          PieChartSectionData(
+            color: Colors.orange,
+            value: absent,
+            title: 'Absent $absent%',
+            radius: 40,
+            titleStyle: GoogleFonts.nunito(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        );
+      }
+
+      if (leave > 0) {
+        sections.add(
+          PieChartSectionData(
+            color: Colors.blue,
+            value: leave,
+            title: 'Leave $leave%',
+            radius: 40,
+            titleStyle: GoogleFonts.nunito(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        );
+      }
+
+      if (partial > 0) {
+        sections.add(
+          PieChartSectionData(
+            color: Colors.red,
+            value: partial,
+            title: 'Partial $partial%',
+            radius: 40,
+            titleStyle: GoogleFonts.nunito(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        );
+      }
+
       return PieChart(
         PieChartData(
-          sections: [
-            PieChartSectionData(
-              color: Colors.purple,
-              value: double.tryParse(
-                  controller.dailyattendance.value!.percentage != null
-                      ? controller.dailyattendance.value!.percentage!.present!
-                      : ''),
-              title:
-                  '${controller.dailyattendance.value!.percentage!.present!}',
-              radius: 35,
-              titleStyle: GoogleFonts.nunito(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            PieChartSectionData(
-              color: Colors.orange,
-              value: double.tryParse(
-                  controller.dailyattendance.value!.percentage != null
-                      ? controller.dailyattendance.value!.percentage!.absent!
-                      : ''),
-              title: '${controller.dailyattendance.value!.percentage!.absent!}',
-              radius: 35,
-              titleStyle: GoogleFonts.nunito(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            PieChartSectionData(
-              color: Colors.blue,
-              value: double.tryParse(
-                  controller.dailyattendance.value!.percentage != null
-                      ? controller.dailyattendance.value!.percentage!.leave!
-                      : ''),
-              title: '${controller.dailyattendance.value!.percentage!.leave!}',
-              radius: 35,
-              titleStyle: GoogleFonts.nunito(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            PieChartSectionData(
-              color: Colors.red,
-              value: double.tryParse(
-                  controller.dailyattendance.value!.percentage != null
-                      ? controller.dailyattendance.value!.percentage!.partial!
-                      : ''),
-              title:
-                  '${controller.dailyattendance.value!.percentage!.partial!}',
-              radius: 35,
-              titleStyle: GoogleFonts.nunito(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-          ],
+          sections: sections,
           centerSpaceRadius: 40,
         ),
       );
     });
   }
 }
+
 
 class StudentChartApp extends StatelessWidget {
   const StudentChartApp({super.key});

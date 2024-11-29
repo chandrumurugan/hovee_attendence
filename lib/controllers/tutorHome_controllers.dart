@@ -114,6 +114,8 @@ class TutorHomeController extends GetxController {
   var dailyattendance = Rxn<Dailyattendance>();
    var homeDashboardNavList =<NavbarItems>[].obs;
    String? currentMonthYear;
+
+    var notificationCount = 0.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -206,7 +208,7 @@ class TutorHomeController extends GetxController {
       print("API Response: ${qrcodeResponse.data}");
 
       if (qrcodeResponse.data != null) {
-        qrcodeImage = qrcodeResponse.data!.qrCode;
+        qrcodeImage = qrcodeResponse.data!.qrCode??'';
         try {
           qrcodeImage =
               qrcodeImage.replaceFirst(RegExp(r'data:image\/\w+;base64,'), '');
@@ -236,6 +238,7 @@ class TutorHomeController extends GetxController {
     try {
       isLoading(true);
       var homeDashboardResponse = await WebService.fetchHomeDashboardList();
+      print(homeDashboardResponse.navbarItems!.length);
       if (homeDashboardResponse != null) {
         homeDashboardNavList.value = homeDashboardResponse.navbarItems!;
       //   studentDetails.value=homeDashboardResponse.studentDetails!;

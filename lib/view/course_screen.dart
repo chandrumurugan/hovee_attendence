@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/course_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/widget/course_list_container.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 
@@ -31,7 +32,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
       appBar: AppBarHeader(needGoBack:true, navigateTo: (){
-         courseController.navigateBack();
+         Get.offAll(DashboardScreen(rolename: widget.type,));
 
       }),
       body: Column(

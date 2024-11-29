@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
@@ -61,6 +62,8 @@ class AuthControllers extends GetxController
   final SplashController splashController = Get.put(SplashController());
 
   LoginData? loginData;
+
+  final ParentController parentController = Get.put(ParentController());
 
   bool validateFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
@@ -231,10 +234,15 @@ class AuthControllers extends GetxController
             context);
         if (response != null) {
           Logger().i(response.data);
-          otpResponse.value = response!;
+          otpResponse.value = response;
           prefs.setString('Token', response.token!);
-          prefs.setString('Rolename', response.data!.roles!.roleName);
+          prefs.setString('Rolename', response.data!.roles!.roleName??'');
            var validateTokendata = response.data!;
+            //if(response.parentData=='true'){
+              parentController.fetchHomeDashboardTuteeList();
+               parentController. getUserTokenList(response.data!.sId!);
+           // }
+        
           LoginData loginData = LoginData(
             firstName: validateTokendata!.firstName,
             lastName: validateTokendata.lastName,
@@ -242,6 +250,7 @@ class AuthControllers extends GetxController
           );
           prefs.setString('userData', jsonEncode(loginData.toJson()));
           getUserData();
+         
           // box.write('Token', response.token);
           //  box.write('Rolename', response.data!.roles!.roleName);
           // var validateTokendata = response.data!;

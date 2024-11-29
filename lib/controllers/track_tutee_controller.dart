@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hovee_attendence/services/firestoreService.dart';
+import 'package:hovee_attendence/view/punch_view.dart';
 import 'package:logger/logger.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:widget_to_marker/widget_to_marker.dart';
 
 class TrackTuteeLocationController extends GetxController {
   final FirestoreService _locationService = FirestoreService();
@@ -19,6 +21,7 @@ class TrackTuteeLocationController extends GetxController {
   var polyline = <Polyline>[].obs;
     var polylineCoordinates = <LatLng>[].obs;
   var markers = <Marker>{}.obs;
+  var name;
 
   @override
   void onInit() {
@@ -41,8 +44,8 @@ class TrackTuteeLocationController extends GetxController {
         LatLng location =
             LatLng(data['location']['lat'], data['location']['lng']);
         tuteeLocation.value = location;
-
-        updateMarkers();
+       name= data['name'];
+        updateMarkers(name);
           await fetchRoadRoute();
         updateDistance();
       }
@@ -53,17 +56,30 @@ class TrackTuteeLocationController extends GetxController {
  
   }
 
-  void updateMarkers() {
+  Future<void> updateMarkers(String name) async {
     if (tuteeLocation.value != null) {
       markers.value = {
         Marker(
           markerId: const MarkerId("student"),
+          icon: await const MarkerWidget(
+          imagePath: 'assets/appbar/Tutee_location_marker_v3.svg',
+        ).toBitmapDescriptor(
+          logicalSize: const Size(150, 150),
+          imageSize: const Size(400, 400),
+        ),
           position: tuteeLocation.value!,
-          infoWindow: const InfoWindow(title: "Tutee Location"),
+          infoWindow:  InfoWindow(title: name),
           
         ),
         Marker(
           markerId: const MarkerId("target"),
+           icon: await const MarkerWidget(
+           rotationAngle: 60 * (3.14159 / 120),
+                imagePath: 'assets/appbar/Tutor_location_marker_v2.svg')
+            .toBitmapDescriptor(
+          logicalSize: const Size(150, 150),
+          imageSize: const Size(400, 400),
+        ),
           position: targetLocation.value,
           infoWindow: const InfoWindow(title: "Tution Location"),
         ),

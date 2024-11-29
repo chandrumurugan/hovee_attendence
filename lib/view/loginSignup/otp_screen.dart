@@ -306,7 +306,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                                             "Tutor") {
                                                           Get.offAll(() =>
                                                               DashboardScreen(rolename: value.data!.roles!
-                                                                .roleName,));
+                                                                .roleName!,));
                                                           //Get.offAll(() => TutorHome());
                                                         } else if (value
                                                                 .data!
@@ -316,11 +316,12 @@ class _OtpScreenState extends State<OtpScreen> {
                                                           //Tutee
                                                           Get.offAll(() =>
                                                               DashboardScreen(rolename: value.data!.roles!
-                                                                .roleName,));
+                                                                .roleName!,));
                                                          // Get.offAll(() => TuteeHome());
                                                         }else{
                                                           Get.offAll(() =>
-                                                              ParentView(userId: '',));
+                                                              DashboardScreen(rolename: value.data!.roles!
+                                                                .roleName!,));
                                                         }
                                                         //  :
                                                         // Get.offAll(() => const RoleSelection());

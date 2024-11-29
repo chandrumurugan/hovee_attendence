@@ -8,6 +8,7 @@ import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/controllers/tutor_attendance_controller.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -48,7 +49,7 @@ class StudentAttendanceList extends StatelessWidget {
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
-          Get.back();
+         Get.offAll(DashboardScreen(rolename: type,));
         },
       ),
       body: SingleChildScrollView(
@@ -82,7 +83,7 @@ class StudentAttendanceList extends StatelessWidget {
                           children: [
                             // const SizedBox(height: 10),
                             Obx(() {
-                              if (controller.batchList.isEmpty) {
+                              if (controller.isLoading.value) {
                                 return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
                               }
                               return DropdownButtonFormField<Data1>(

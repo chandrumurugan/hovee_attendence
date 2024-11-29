@@ -12,6 +12,7 @@ import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TuteeHomeController extends GetxController{
    GlobalKey<ScaffoldState> tuteeScaffoldKey = GlobalKey<ScaffoldState>();
@@ -107,85 +108,87 @@ class TuteeHomeController extends GetxController{
     // TODO: implement onInit
     super.onInit();
     fetchHomeDashboardTuteeList();
-    fetchNotificationsType();
+    //fetchNotificationsType();
     fetchAttendanceCourseList();
      
   }
 
-  void fetchNotificationsType() async {
-    isLoading(true);
+  // void fetchNotificationsType() async {
+  //   isLoading(true);
 
-    var response = await WebService.fetchNotificationsType();
+  //   var response = await WebService.fetchNotificationsType();
 
-    if (response.isNotEmpty) {
-      categories.value= response;
-      isLoading(false); 
-       final storage = GetStorage();
-      role =storage.read('role');
-      filteredNotifications('Enquiry',role!,false);
-    } else {
-      isLoading(false);
-    }
-  }
+  //   if (response.isNotEmpty) {
+  //     categories.value= response;
+  //     isLoading(false); 
+  //     //  final storage = GetStorage();
+  //     // role =storage.read('role');
+  //      SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     role = prefs.getString('Rolename') ?? '';
+  //     filteredNotifications('Enquiry',role!,false);
+  //   } else {
+  //     isLoading(false);
+  //   }
+  // }
 
  
 
-  void filteredNotifications(String type, String role, bool isRead) async {
-    isLoading(true);
-    var batchData = {"role": role, "type": type, "isRead ": false};
-    var response = await WebService.getNotifications(batchData);
-    if (response != null && response!.statusCode == 200) {
-      notificationList.value =response.data!;
-      notificationCount.value=response.unreadCount!;
-      isLoading(false);
-    } else {
-      notificationList.clear();
-      isLoading(false);
-    }
-  }
+//   void filteredNotifications(String type, String role, bool isRead) async {
+//     isLoading(true);
+//     var batchData = {"role": role, "type": type, "isRead ": false};
+//     var response = await WebService.getNotifications(batchData);
+//     if (response != null && response!.statusCode == 200) {
+//       notificationList.value =response.data!;
+//       notificationCount.value=response.unreadCount!;
+//       isLoading(false);
+//     } else {
+//       notificationList.clear();
+//       isLoading(false);
+//     }
+//   }
 
-  void fetchMarkedNotification(String notificationId, String type, String msgtype) async {
-  isLoading(true);
-  var batchData = {"notificationId": notificationId};
-  var response = await WebService.FetchMarkedNotification(batchData);
-  final storage = GetStorage();
+//   void fetchMarkedNotification(String notificationId, String type, String msgtype) async {
+//   isLoading(true);
+//   var batchData = {"notificationId": notificationId};
+//   var response = await WebService.FetchMarkedNotification(batchData);
+//   final storage = GetStorage();
 
-  if (response != null && response.statusCode == 200) {
-    notificationData.value = response.data!;
+//   if (response != null && response.statusCode == 200) {
+//     notificationData.value = response.data!;
 
-    // Extract only the code using a regular expression
-    final message = notificationData.value!.message ?? "";
-    final regex = RegExp(r'\b\d{6}\b'); // Matches a 6-digit number
-    final match = regex.firstMatch(message);
+//     // Extract only the code using a regular expression
+//     final message = notificationData.value!.message ?? "";
+//     final regex = RegExp(r'\b\d{6}\b'); // Matches a 6-digit number
+//     final match = regex.firstMatch(message);
 
-    if (match != null) {
-      otpController.text = match.group(0)!; // Store only the code in otpController
-      storage.write('otpCode', otpController.text); // Store OTP in GetStorage
-      print("Stored OTP: ${otpController.text}");
-    } else {
-      otpController.text = ""; // Handle if code is not found
-    }
+//     if (match != null) {
+//       otpController.text = match.group(0)!; // Store only the code in otpController
+//       storage.write('otpCode', otpController.text); // Store OTP in GetStorage
+//       print("Stored OTP: ${otpController.text}");
+//     } else {
+//       otpController.text = ""; // Handle if code is not found
+//     }
 
-    isLoading(false);
+//     isLoading(false);
 
-    if (msgtype == 'Enquiry') {
-      Get.off(() => Tutorenquirlist(type: role!, fromBottomNav: true,));
-    } else {
-      enrollmentController.onInit();
-      Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,));
-    }
-  } else {
-    notificationList.clear();
-    isLoading(false);
-  }
-}
+//     if (msgtype == 'Enquiry') {
+//       Get.off(() => Tutorenquirlist(type: role!, fromBottomNav: true,));
+//     } else {
+//       enrollmentController.onInit();
+//       Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,));
+//     }
+//   } else {
+//     notificationList.clear();
+//     isLoading(false);
+//   }
+// }
 
 
 
-    void setSelectedIndex(int index) {
+  //   void setSelectedIndex(int index) {
       
-    selectedIndex.value = index; // Update selected index
-  }
+  //   selectedIndex.value = index; // Update selected index
+  // }
 
     void fetchAttendanceCourseList() async {
     try {

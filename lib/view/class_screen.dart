@@ -7,11 +7,13 @@ import 'package:hovee_attendence/controllers/class_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class TutorClassList extends StatelessWidget {
-  TutorClassList({super.key});
+  final String type;
+  TutorClassList({super.key, required this.type});
 
   final ClassController classController = Get.put(ClassController());
   @override
@@ -20,7 +22,8 @@ class TutorClassList extends StatelessWidget {
       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
-            classController.navigateBack();
+            Get.offAll(DashboardScreen(rolename: type,));
+
           }),
       body: Column(
         children: [

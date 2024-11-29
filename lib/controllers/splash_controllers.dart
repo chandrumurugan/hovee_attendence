@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
+import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/validateTokenModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
@@ -79,11 +80,12 @@ class SplashController extends GetxController {
   try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Future.delayed(const Duration(seconds: 5));
-    
+     final ParentController parentController = Get.put(ParentController());
+
     String isLoggedIn = prefs.getString('Token') ?? "";
     String rolename = prefs.getString('Rolename') ?? '';
    //Get.off(() => DashboardScreen(rolename: 'Parent'));
-
+    print(rolename);
     if (isLoggedIn.isNotEmpty) {
       try{
            isLoading(true);
@@ -104,6 +106,7 @@ class SplashController extends GetxController {
            prefs.setString('userData', jsonEncode(loginData.toJson()));
             //classController.getUserData();
           // Navigate to Dashboard
+          parentController. getUserTokenList(response.data!.sId!);
           Get.off(() => DashboardScreen(rolename: roleName));
         } else {
           // Navigate to Login Screen

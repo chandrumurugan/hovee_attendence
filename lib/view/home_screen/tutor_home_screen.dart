@@ -11,6 +11,7 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/enquir_controller.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
+import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
@@ -42,15 +43,9 @@ class TutorHome extends StatelessWidget {
       Get.put(EnrollmentController());
   final SplashController splashController = Get.find();
   final TuteeHomeController tuteecontroller = Get.put(TuteeHomeController());
+   final NotificationController noticontroller = Get.put(NotificationController());
   @override
   Widget build(BuildContext context) {
-    Logger().i("1234567890====>${controller.dailyattendance.value}");
-    // if(controller.isLoading.value){
-    //   return Obx((){
-    //     return  const Center(child: CircularProgressIndicator());
-    //   });
-    //   // return const Center(child: CircularProgressIndicator());
-    // }
     return Scaffold(
       key: controller.tutorScaffoldKey,
       drawer: SideMenu(isGuest: false),
@@ -103,7 +98,7 @@ class TutorHome extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          Get.to(() => NotificationScreen());
+                          Get.to(() => NotificationScreen(type: 'Tutor',));
                         },
                         child: Image.asset(
                           'assets/appbar/bell 5.png',
@@ -114,7 +109,7 @@ class TutorHome extends StatelessWidget {
                       Obx(() => Positioned(
                             right: 1,
                             top: 1,
-                            child: tuteecontroller.notificationCount.value > 0
+                            child: noticontroller.notificationCount.value > 0
                                 ? Container(
                                     padding: const EdgeInsets.all(2),
                                     decoration: BoxDecoration(
@@ -126,7 +121,7 @@ class TutorHome extends StatelessWidget {
                                       minHeight: 12,
                                     ),
                                     child: Text(
-                                      '${tuteecontroller.notificationCount.value}',
+                                      '${noticontroller.notificationCount.value}',
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 8,
@@ -152,150 +147,156 @@ class TutorHome extends StatelessWidget {
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: Obx(() { 
+       if (controller.isLoading.value) {
+          // Call your refresh logic here, e.g., re-fetch data
+          // Reset the refresh state
+          return const Center(child: CircularProgressIndicator());
+        }
+      return SingleChildScrollView(
+              child: Stack(
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Get.to(() => UserProfile());
-                    },
-                    child: HomePageHeader(
-                      title: 'Attendance Monitoring',
-                      userType: "Tutor",
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.18,
-                  ),
-
-                  Obx(() {
-                    if (controller.isLoading.value) {
-                      return const SizedBox.shrink();
-                    } else if (controller.dailyattendance.value == null) {
-                      return const SizedBox.shrink();
-                    }
-                    return Column(
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Visibility(
-                            visible: !controller.isLoading.value,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text(
-                                'Daily Attendance',
-                                style: GoogleFonts.nunito(
-                                    fontSize: 18, fontWeight: FontWeight.w700),
-                              ),
-                            )),
-                        Visibility(
-                            visible: !controller.isLoading.value,
-                            child: ChartApp()),
-                      ],
-                    );
-                  }),
-
-                  // controller.dailyattendance.value != null
-                  // ? Padding(
-                  //     padding: const EdgeInsets.all(5.0),
-                  //     child: Text(
-                  //       'Daily Attendance',
-                  //       style: GoogleFonts.nunito(
-                  //           fontSize: 18, fontWeight: FontWeight.w700),
-                  //     ),
-                  //   )
-                  //     : Container(),
-                  // controller.dailyattendance.value != null
-                  //     ? ChartApp()
-                  //     : Container(),
-                  // const SizedBox(
-                  //   height: 20,
-                  // ),
-                  Obx(() {
-                    if (controller.isLoading.value) {
-                      return const SizedBox.shrink();
-                    }
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Text(
-                            ' My Listings',
-                            style: GoogleFonts.nunito(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
+                        InkWell(
+                          onTap: () {
+                            Get.to(() => UserProfile());
+                          },
+                          child: HomePageHeader(
+                            title: 'Attendance Monitoring',
+                            userType: "Tutor",
                           ),
                         ),
-                        GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 1.0,
-                            crossAxisCount: 3, // Number of columns
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                          ),
-                          itemCount: controller.homeDashboardNavList.value
-                              .where((item) => item.name != 'Dashboard')
-                              .length,
-                          itemBuilder: (context, int index) {
-                            final filteredList = controller
-                                .homeDashboardNavList.value
-                                .where((item) => item.name != 'Dashboard')
-                                .toList();
-                            final item = filteredList[index];
-
-                            Color myColor = Color(
-                              int.parse((item.color ?? "#FFFFFF")
-                                  .replaceAll("#", "0xFF")),
-                            );
-
-                            return InkWell(
-                              onTap: () {
-                                // Navigate to different screens based on the title
-                                if (item.name == 'Batches') {
-                                  Get.to(() => TutorBatchList());
-                                } else if (item.name == 'Courses') {
-                                  Get.to(() =>
-                                      const TutorCourseList(type: 'Tutor'));
-                                } else if (item.name == 'Attendance') {
-                                  Get.to(
-                                      () =>
-                                          StudentAttendanceList(type: 'Tutor'),
-                                      arguments: "Tutor");
-                                } else if (item.name == 'Tution Classes') {
-                                  Get.to(() => TutorClassList());
-                                } else if (item.name == 'Enquires') {
-                                  classController.onInit();
-                                  Get.to(() => Tutorenquirlist(
-                                      type: 'Tutor', fromBottomNav: true));
-                                } else if (item.name == 'Enrollments') {
-                                  enrollmentController.onInit();
-                                  Get.to(() => EnrollmentScreen(
-                                      type: 'Tutor', fromBottomNav: true));
-                                } else {
-                                  print('Unknown screen');
-                                }
-                              },
-                              child: Card(
-                                elevation: 10,
-                                shadowColor: Colors.grey,
-                                surfaceTintColor: Colors.white,
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Colors.white,
+                        SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.18,
+                        ),
+      
+                        Obx(() {
+                          if (controller.isLoading.value) {
+                            return const SizedBox.shrink();
+                          } else if (controller.dailyattendance.value == null) {
+                            return const SizedBox.shrink();
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Visibility(
+                                  visible: !controller.isLoading.value,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Text(
+                                      'Daily Attendance',
+                                      style: GoogleFonts.nunito(
+                                          fontSize: 18, fontWeight: FontWeight.w700),
+                                    ),
+                                  )),
+                              Visibility(
+                                  visible: !controller.isLoading.value,
+                                  child: ChartApp()),
+                            ],
+                          );
+                        }),
+      
+                        // controller.dailyattendance.value != null
+                        // ? Padding(
+                        //     padding: const EdgeInsets.all(5.0),
+                        //     child: Text(
+                        //       'Daily Attendance',
+                        //       style: GoogleFonts.nunito(
+                        //           fontSize: 18, fontWeight: FontWeight.w700),
+                        //     ),
+                        //   )
+                        //     : Container(),
+                        // controller.dailyattendance.value != null
+                        //     ? ChartApp()
+                        //     : Container(),
+                        // const SizedBox(
+                        //   height: 20,
+                        // ),
+                        Obx(() {
+                          if (controller.isLoading.value) {
+                            return const SizedBox.shrink();
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Text(
+                                  ' My Listings',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
                                   ),
-                                  child: Column(
+                                ),
+                              ),
+                              GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  childAspectRatio: 1.0,
+                                  crossAxisCount: 3, // Number of columns
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                ),
+                                itemCount: controller.homeDashboardNavList.value
+                                    .where((item) => item.name != 'Dashboard')
+                                    .length,
+                                itemBuilder: (context, int index) {
+                                  final filteredList = controller
+                                      .homeDashboardNavList.value
+                                      .where((item) => item.name != 'Dashboard')
+                                      .toList();
+                                  final item = filteredList[index];
+      
+                                  Color myColor = Color(
+                                    int.parse((item.color ?? "#FFFFFF")
+                                        .replaceAll("#", "0xFF")),
+                                  );
+      
+                                  return InkWell(
+                                    onTap: () {
+                                      // Navigate to different screens based on the title
+                                      if (item.name == 'Batches') {
+                                        Get.to(() => TutorBatchList(type: 'Tutor',));
+                                      } else if (item.name == 'Courses') {
+                                        Get.to(() =>
+                                            const TutorCourseList(type: 'Tutor'));
+                                      } else if (item.name == 'Attendance') {
+                                        Get.to(
+                                            () =>
+                                                StudentAttendanceList(type: 'Tutor'),
+                                            arguments: "Tutor");
+                                      } else if (item.name == 'Tution Classes') {
+                                        Get.to(() => TutorClassList(type: 'Tutor',));
+                                      } else if (item.name == 'Enquires') {
+                                        classController.onInit();
+                                        Get.to(() => Tutorenquirlist(
+                                            type: 'Tutor', fromBottomNav: true));
+                                      } else if (item.name == 'Enrollments') {
+                                        enrollmentController.onInit();
+                                        Get.to(() => EnrollmentScreen(
+                                            type: 'Tutor', fromBottomNav: true));
+                                      } else {
+                                        print('Unknown screen');
+                                      }
+                                    },
+                                    child: Card(
+                                      elevation: 10,
+                                      shadowColor: Colors.grey,
+                                      surfaceTintColor: Colors.white,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(12),
+                                          color: Colors.white,
+                                        ),
+                                        child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment:
@@ -351,8 +352,9 @@ class TutorHome extends StatelessWidget {
                 )),
           ],
         ),
-      ),
-    );
+      );
+      }
+    ));
   }
 
   void _showQrCodeBottomSheet(BuildContext context, Uint8List qrCodeUrl) {

@@ -30,7 +30,7 @@ class EnrollmentScreen extends StatelessWidget {
       appBar: AppBarHeader(
           needGoBack: fromBottomNav,
           navigateTo: () {
-            Navigator.pop(context);
+            Get.offAll(DashboardScreen(rolename: type,));
           }),
       body:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,

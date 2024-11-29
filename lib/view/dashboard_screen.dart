@@ -137,9 +137,9 @@ class DashboardScreen extends StatelessWidget {
        if (rolename=='Tutee')
         TuteeHome()
       else if (rolename=='Tutor')
-        TutorHome(),
-      // else
-      //   ParentView(userId: '',),
+        TutorHome()
+      else if(rolename=='Parent')
+        ParentView(userId: '',rolename: 'Parent',),
         Tutorenquirlist(type: rolename, fromBottomNav: false,),
         EnrollmentScreen(type: rolename, fromBottomNav: false,),
       Center(child: Text("Feature under development")),

@@ -4,9 +4,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/track_tutee_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 
 class TrackTuteeLocation extends StatelessWidget {
-  TrackTuteeLocation({super.key});
+    final String type;
+  TrackTuteeLocation({super.key, required this.type});
 
   final controller = Get.put(TrackTuteeLocationController());
 
@@ -16,7 +18,7 @@ class TrackTuteeLocation extends StatelessWidget {
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
-          Get.back();
+          Get.offAll(DashboardScreen(rolename: type,));
         },
       ),
       body: Obx(() {
@@ -30,7 +32,7 @@ class TrackTuteeLocation extends StatelessWidget {
             GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: controller.tuteeLocation.value!,
-                zoom: 15,
+                zoom: 10,
               ),
               trafficEnabled: true,
               mapType: MapType.hybrid,
