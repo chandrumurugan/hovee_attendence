@@ -211,8 +211,8 @@ class PieChartWidget extends StatelessWidget {
         sections.add(
           PieChartSectionData(
             color: Colors.purple,
-            value: present,
-            title: '$present%',
+            //value: present,
+           // title: '$present%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,
@@ -227,8 +227,8 @@ class PieChartWidget extends StatelessWidget {
         sections.add(
           PieChartSectionData(
             color: Colors.orange,
-            value: absent,
-            title: 'Absent $absent%',
+           // value: absent,
+           /// title: 'Absent $absent%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,
@@ -243,8 +243,8 @@ class PieChartWidget extends StatelessWidget {
         sections.add(
           PieChartSectionData(
             color: Colors.blue,
-            value: leave,
-            title: 'Leave $leave%',
+            //value: leave,
+            //title: 'Leave $leave%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,
@@ -259,8 +259,8 @@ class PieChartWidget extends StatelessWidget {
         sections.add(
           PieChartSectionData(
             color: Colors.red,
-            value: partial,
-            title: 'Partial $partial%',
+           // value: partial,
+           // title: 'Partial $partial%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,
