@@ -8,6 +8,7 @@ import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/accountsetup_screen.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RoleSelection extends StatefulWidget {
   const RoleSelection({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class _RoleSelectionState extends State<RoleSelection> {
   }
 
   void fetchRoles() async {
+   
     try {
       setState(() {
         _isLoading = true;
@@ -42,6 +44,7 @@ class _RoleSelectionState extends State<RoleSelection> {
         setState(() {
           roles = fetchedRoles;
           _isLoading = false;
+         
         });
       }
     } catch (e) {
@@ -132,8 +135,14 @@ class _RoleSelectionState extends State<RoleSelection> {
                                       var role = roles![index];
                                       bool isSelected = selectedRoleId == role.id &&
                                           selectedRole == role.roleName;
+                                          
                                       return GestureDetector(
-                                        onTap: () {
+                                        onTap: () async {
+                                           SharedPreferences prefs = await SharedPreferences.getInstance();
+                                            prefs.setString(
+                                                            'Rolename',
+                                                           role.roleName??
+                                                                '');
                                           setState(() {
                                             selectedRoleId = role.id;
                                             roleTypes = role.roleTypes;

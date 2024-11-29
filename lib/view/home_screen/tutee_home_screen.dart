@@ -38,7 +38,7 @@ class TuteeHome extends StatelessWidget {
     final EnrollmentController enrollmentController =
         Get.put(EnrollmentController());
     final TutorHomeController controller1 = Get.put(TutorHomeController());
-     final NotificationController noticontroller = Get.put(NotificationController());
+      final NotificationController noticontroller = Get.put(NotificationController());
     return Scaffold(
       key: controller.tuteeScaffoldKey,
       drawer: SideMenu(

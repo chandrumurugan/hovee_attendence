@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
+import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
@@ -14,11 +13,11 @@ import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TuteeHomeController extends GetxController{
-   GlobalKey<ScaffoldState> tuteeScaffoldKey = GlobalKey<ScaffoldState>();
-    var attendanceCourseList = [].obs;
+class TuteeHomeController extends GetxController {
+  GlobalKey<ScaffoldState> tuteeScaffoldKey = GlobalKey<ScaffoldState>();
+  var attendanceCourseList = [].obs;
   var isLoading = true.obs;
-   final List<Map<String, dynamic>> tuteeMonitorList = [
+  final List<Map<String, dynamic>> tuteeMonitorList = [
     // {
     //   'title': 'Enquiries',
     //   'image': 'assets/online-learning (1) 1.png',
@@ -31,7 +30,7 @@ class TuteeHomeController extends GetxController{
       'desc': 'Lorem Ipsum is simply dummy',
       'color': const Color.fromRGBO(240, 119, 33, 1)
     },
-     {
+    {
       'title': 'Courses',
       'image': 'assets/tutorHomeImg/online-learning (2) 1 (1).png',
       'desc': 'Lorem Ipsum is simply dummy',
@@ -81,36 +80,36 @@ class TuteeHomeController extends GetxController{
     },
   ];
 
-  var homeDashboardNavList =<NavbarItems>[].obs;
-   var homeDashboardCourseList =<CourseList?>[].obs;
-   var studentDetails= <StudentDetails>[].obs;
- var categories =<String>[].obs;
+  var homeDashboardNavList = <NavbarItems>[].obs;
+  var homeDashboardCourseList = <CourseList?>[].obs;
+  var studentDetails = <StudentDetails>[].obs;
+  var categories = <String>[].obs;
   var selectedIndex = 0.obs;
-  var notificationList =[].obs;
- var  notificationData
- = getMarkNotificationAsReadModel().data.obs;
-  final UserProfileController controller =
-      Get.put(UserProfileController());
+  var notificationList = [].obs;
+  var notificationData = getMarkNotificationAsReadModel().data.obs;
+  final UserProfileController controller = Get.put(UserProfileController());
 
-       String? role;
+  String? role;
 
-     final otpController = TextEditingController();
+  final otpController = TextEditingController();
   final focusNode = FocusNode();
 
   var savedOtp;
 
-   final EnrollmentController enrollmentController = Get.put(EnrollmentController());
+  final EnrollmentController enrollmentController =
+      Get.put(EnrollmentController());
 
-    var notificationCount = 0.obs; // Observable
+  var notificationCount = 0.obs; // Observable
 
-   @override
+   //final NotificationController noticontroller = Get.put(NotificationController());
+
+  @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     fetchHomeDashboardTuteeList();
     //fetchNotificationsType();
     fetchAttendanceCourseList();
-     
   }
 
   // void fetchNotificationsType() async {
@@ -120,7 +119,7 @@ class TuteeHomeController extends GetxController{
 
   //   if (response.isNotEmpty) {
   //     categories.value= response;
-  //     isLoading(false); 
+  //     isLoading(false);
   //     //  final storage = GetStorage();
   //     // role =storage.read('role');
   //      SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -130,8 +129,6 @@ class TuteeHomeController extends GetxController{
   //     isLoading(false);
   //   }
   // }
-
- 
 
 //   void filteredNotifications(String type, String role, bool isRead) async {
 //     isLoading(true);
@@ -183,18 +180,17 @@ class TuteeHomeController extends GetxController{
 //   }
 // }
 
-
-
   //   void setSelectedIndex(int index) {
-      
+
   //   selectedIndex.value = index; // Update selected index
   // }
 
-    void fetchAttendanceCourseList() async {
+  void fetchAttendanceCourseList() async {
     try {
       isLoading(true);
-   
-      var attendanceCourseResponse = await WebService.fetchAttendanceCourseList();
+
+      var attendanceCourseResponse =
+          await WebService.fetchAttendanceCourseList();
       if (attendanceCourseResponse.data != null) {
         attendanceCourseList.value = attendanceCourseResponse.data!;
       }
@@ -205,23 +201,30 @@ class TuteeHomeController extends GetxController{
     }
   }
 
-   void fetchHomeDashboardTuteeList() async {
+  void fetchHomeDashboardTuteeList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     try {
       isLoading(true);
       var homeDashboardResponse = await WebService.fetchHomeDashboardList();
       if (homeDashboardResponse != null) {
+          // prefs.setString(
+          //                                                   'Rolename',
+          //                                                  homeDashboardResponse.roleName??
+          //                                                       '');
         homeDashboardNavList.value = homeDashboardResponse.navbarItems!;
-        studentDetails.value=homeDashboardResponse.studentDetails!;
+        studentDetails.value = homeDashboardResponse.studentDetails!;
         // Extracting notification count
-      //var studentDetails = homeDashboardResponse!.studentDetails;
-      if (studentDetails.value != null && studentDetails.value.isNotEmpty) {
-        // Getting the unreadNotificationCount of the first student
-        homeDashboardCourseList.value = studentDetails[0].courseList!;
+        //var studentDetails = homeDashboardResponse!.studentDetails;
+        if (studentDetails.value != null && studentDetails.value.isNotEmpty) {
+          // Getting the unreadNotificationCount of the first student
+          homeDashboardCourseList.value = studentDetails[0].courseList!;
           await FirestoreService.updateUserLocation(
-                    userId: studentDetails[0].wowId.toString() ?? "", username: "${studentDetails[0].firstName} ${studentDetails[0].lastName}");
-        print('hi rahul $notificationCount');
-      } 
-    
+              userId: studentDetails[0].wowId.toString() ?? "",
+              username:
+                  "${studentDetails[0].firstName} ${studentDetails[0].lastName}");
+          print('hi rahul $notificationCount');
+        }
       }
     } catch (e) {
       // Get.snackbar('Failed to fetch batches');
@@ -229,5 +232,4 @@ class TuteeHomeController extends GetxController{
       isLoading(false);
     }
   }
-  
 }
