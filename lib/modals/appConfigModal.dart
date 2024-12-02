@@ -32,6 +32,8 @@ class Data {
   List<StudentCategory>? studentCategory;
   List<IDProof>? tuteeHighestQualification;
   List<IDProof>? teachingSkill;
+  List<IDProof>? leaveType;
+  List<IDProof>? holidayType;
 
   Data(
       {this.iDProof,
@@ -42,7 +44,9 @@ class Data {
       this.batchDays,
       this.studentCategory,
       this.tuteeHighestQualification,
-      this.teachingSkill});
+      this.teachingSkill,
+       this.leaveType,
+      this.holidayType});
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['ID_Proof'] != null) {
@@ -100,6 +104,18 @@ class Data {
         teachingSkill!.add(new IDProof.fromJson(v));
       });
     }
+    if (json['Leave_type'] != null) {
+      leaveType = <IDProof>[];
+      json['Leave_type'].forEach((v) {
+        leaveType!.add(new IDProof.fromJson(v));
+      });
+    }
+    if (json['Holiday_type'] != null) {
+      holidayType = <IDProof>[];
+      json['Holiday_type'].forEach((v) {
+        holidayType!.add(new IDProof.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -135,6 +151,12 @@ class Data {
     if (this.teachingSkill != null) {
       data['Teaching_Skill'] =
           this.teachingSkill!.map((v) => v.toJson()).toList();
+    }
+    if (this.leaveType != null) {
+      data['Leave_type'] = this.leaveType!.map((v) => v.toJson()).toList();
+    }
+    if (this.holidayType != null) {
+      data['Holiday_type'] = this.holidayType!.map((v) => v.toJson()).toList();
     }
     return data;
   }

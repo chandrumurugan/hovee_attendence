@@ -11,6 +11,8 @@ class FirestoreService {
   static Future<void> updateUserLocation(
       {required String userId,
       // required LatLng location,
+      required String lat,
+     required String lng,
       required String username}) async {
     bool serviceEnabled;
 
@@ -42,6 +44,7 @@ class FirestoreService {
           {
             "name": username,
             'location': {'lat': position.latitude, 'lng': position.longitude},
+             //"targetLocation":{'lat': lat, 'lng': lng},
             'timeStamp': FieldValue.serverTimestamp()
           },
           SetOptions(merge: true),

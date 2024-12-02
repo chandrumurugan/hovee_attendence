@@ -10,6 +10,7 @@ import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/view/Tutee/tutee_courseDetails.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/widget/cateory_widget.dart';
 import 'package:hovee_attendence/widget/course_list_container.dart';
 
@@ -84,7 +85,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
-            Get.back();
+           Get.offAll(DashboardScreen(rolename: widget.type,));
           }),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),

@@ -222,21 +222,21 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
    bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (batchNameController.value.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'Branch name is required',);
+       SnackBarUtils.showErrorSnackBar(context,'Branch name is required',);
       return false;
     }
     if (boardController.value.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'Board is required',);
+       SnackBarUtils.showErrorSnackBar(context,'Board is required',);
       return false;
     }
     if (classController.value.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'Class is required',);
+       SnackBarUtils.showErrorSnackBar(context,'Class is required',);
       return false;
     }
     
     
     if (subjectController.value.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'Subject is required',);
+       SnackBarUtils.showErrorSnackBar(context,'Subject is required',);
       return false;
     }
     // if (remarks.text.isEmpty) {

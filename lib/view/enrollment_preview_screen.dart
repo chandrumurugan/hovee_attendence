@@ -137,7 +137,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Tutor name",
+                      "Tutor",
                       style: GoogleFonts.nunito(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,

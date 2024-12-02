@@ -222,7 +222,7 @@ class TuteeHomeController extends GetxController {
           await FirestoreService.updateUserLocation(
               userId: studentDetails[0].wowId.toString() ?? "",
               username:
-                  "${studentDetails[0].firstName} ${studentDetails[0].lastName}");
+                  "${studentDetails[0].firstName} ${studentDetails[0].lastName}", lat: '', lng: '');
           print('hi rahul $notificationCount');
         }
       }

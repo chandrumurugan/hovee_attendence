@@ -5,7 +5,9 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/add_batch_controller.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/widget/addteacher_dropdown.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
@@ -20,9 +22,13 @@ class TutorAddBatchScreen extends StatefulWidget {
 
 class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
   final BatchController controller = Get.put(BatchController());
+  UserProfileController accountController = Get.put(UserProfileController());
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
+     controller.batchTeacher.text = accountController
+                                                .firstNameController.text;
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
@@ -142,7 +148,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                   Row(
                     children: [
                       const Text(
-                        'Batch teacher',
+                        'Batch tutor',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -159,13 +165,35 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                       ),
                     ],
                   ),
-                  CommonDropdownInputField(
-                    title: 'Batch teacher',
-                    controllerValue: controller.batchTeacherController,
-                    selectedValue: controller.batchTeacherController,
-                    items: controller.teacher,
-                    onChanged: controller.setTeacher,
-                  ),
+                  // CommonDropdownInputField(
+                  //   title: 'Batch teacher',
+                  //   controllerValue: controller.batchTeacherController,
+                  //   selectedValue: controller.batchTeacherController,
+                  //   items: controller.teacher,
+                  //   onChanged: controller.setTeacher,
+                  // ),
+                  Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color: Colors.grey.shade200),
+                                        child: InputTextField(
+                                            suffix: false,
+                                            readonly: true,
+                                            hintText: 'First',
+                                            keyboardType:
+                                                TextInputType.name,
+                                            inputFormatter: [
+                                              FilteringTextInputFormatter
+                                                  .allow(
+                                                RegExp(
+                                                  r"[a-zA-Z0-9\s@&_,-\/.']",
+                                                ),
+                                              ),
+                                            ],
+                                            controller: accountController
+                                                .firstNameController),
+                                      ),
                 ],
               ),
             ),

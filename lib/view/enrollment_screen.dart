@@ -116,7 +116,7 @@ class EnrollmentScreen extends StatelessWidget {
                                             _buildRow('Tutee name',  '${enrollmentList.studentId.firstName} ${enrollmentList.studentId.lastName}',),
                                             _buildRow('Start Date', enrollmentList.startDate),
                                             _buildRow('End Date', enrollmentList.endDate),
-                                             _buildRow('Tutor name', '${enrollmentList.tutorId.firstName} ${enrollmentList.tutorId.lastName}',),
+                                             _buildRow('Tutor', '${enrollmentList.tutorId.firstName} ${enrollmentList.tutorId.lastName}',),
                                            _buildRow('Status', enrollmentList.status == 'Approved' ? 'Accepted' : enrollmentList.status),
                                           ],
                                         ),

@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/config/appConfig.dart';
 import 'package:hovee_attendence/modals/addClassData_model.dart';
 import 'package:hovee_attendence/modals/addEnrollmentData_model.dart';
+import 'package:hovee_attendence/modals/addHolidaymodel.dart';
 import 'package:hovee_attendence/modals/add_course_data_model.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
@@ -19,12 +20,14 @@ import 'package:hovee_attendence/modals/getEnrollment_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
+import 'package:hovee_attendence/modals/getHolidayDataModel.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getQrcode_model.dart';
 import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
+import 'package:hovee_attendence/modals/getbatchlocation.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
@@ -1159,4 +1162,109 @@ class WebService {
       return null;
     }
   }
+
+   static Future<getHolidayDataModel> fetchHoliDataList(String searchitems) async {
+    final url = Uri.parse('${baseUrl}tutor/getHoliday');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    var data = {"searchKey": searchitems};
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: jsonEncode(data),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+     print(token);
+    if (response.statusCode == 200) {
+      return getHolidayDataModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load batch list');
+    }
+  }
+
+   static Future<GetparentBatchLocation?>
+      fetchBatchLocation(
+          String batchId) async {
+    final url =
+        Uri.parse('${baseUrl}home/parentBatchLocation');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    var data = {"batchId": batchId};
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(data),
+    );
+
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body);
+      return GetparentBatchLocation.fromJson(result);
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+      return null;
+    }
+  }
+
+  static Future<AddHolidayModel?> addHoliday(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}tutor/addHoliday"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    Logger().i("getting24567890avaluue==>${batchData}");
+     Logger().i("getting2456hgfujtgf0avaluue==>${token}");
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        
+      );
+      if (response.statusCode == 200) {
+        return AddHolidayModel.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<deleteBatchDataModel> deleteHoliday( Map<String, dynamic> batchData) async {
+    final url = Uri.parse('${baseUrl}tutor/deleteHoliday');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(batchData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return deleteBatchDataModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Notification list');
+    }
+  }
+
 }

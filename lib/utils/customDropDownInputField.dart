@@ -46,7 +46,7 @@ class CommonDropdownInputField extends StatelessWidget {
 
   void _showDropdown(BuildContext context) {
     const double itemHeight = 56.0; // Height for each RadioListTile
-    const double maxHeight = 400.0; // Maximum height of the bottom sheet
+    const double maxHeight = 300.0; // Maximum height of the bottom sheet
     const double minHeight = 100.0;
     final double sheetHeight = (items.length * itemHeight).clamp(minHeight, maxHeight);
 
@@ -55,19 +55,21 @@ class CommonDropdownInputField extends StatelessWidget {
       isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
-          height: 160,
+          height: 170,
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               Text("Select $title", style: TextStyle(fontWeight: FontWeight.bold)),
               Expanded(
                 child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(bottom: 8),
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     return Obx(() {
                       final isSelected = selectedValue.value == items[index];
                       return SizedBox(
-                        height: 40,
+                        height: 33,
                         child: RadioListTile<String>(
                           contentPadding: EdgeInsets.symmetric(vertical: 0),
                           title: Text(items[index]),

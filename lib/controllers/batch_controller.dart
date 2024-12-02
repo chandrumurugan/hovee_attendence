@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/deletebatch_model.dart';
@@ -63,7 +64,7 @@ class BatchController extends GetxController {
 
   var filteredBatchList = [].obs; // Filtered list for display
   var searchKey = ''.obs;
-
+ UserProfileController accountController = Get.put(UserProfileController());
   // Method to fetch batch list
 //   void fetchBatchList() async {
 //   try {
@@ -166,10 +167,10 @@ class BatchController extends GetxController {
       SnackBarUtils.showErrorSnackBar(context, 'Batch name is required');
       return false;
     }
-    if (batchTeacherController.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Batch teacher is required');
-      return false;
-    }
+    // if (batchTeacherController.value.isEmpty) {
+    //   SnackBarUtils.showErrorSnackBar(context, 'Batch teacher is required');
+    //   return false;
+    // }
 
     if (batchTiming.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(context, 'Batch timing is required');
@@ -233,7 +234,7 @@ class BatchController extends GetxController {
           // 'branch_short_name': branchShortName.text,
           'branch_short_name': '',
           'batch_name': batchName.text,
-          'batch_teacher': batchTeacherController.value,
+          'batch_teacher': batchTeacher.text,
           'batch_timing_start': batchTiming.text,
           'batch_timing_end': batchTimingEnd.text,
           'batch_maximum_slots': maxSlots.text,
@@ -251,7 +252,7 @@ class BatchController extends GetxController {
         if (response != null && response.success == true) {
           _clearData();
           SnackBarUtils.showSuccessSnackBar(
-              context, 'Batch added successfully');
+              context, 'Batch added successfully',);
           Get.back();
           onInit();
         } else {

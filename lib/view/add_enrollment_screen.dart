@@ -404,7 +404,7 @@ class AddEnrollmentScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    'Tutor name',
+                    'Tutor',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

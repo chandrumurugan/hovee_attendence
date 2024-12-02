@@ -59,7 +59,7 @@ class CourseDetailController extends GetxController {
         //     context, 'Class and batch details retrieved successfully');
 
         // Pass response data to CourseDetailScreen
-        Get.off(CourseDetailScreen(
+        Get.to(CourseDetailScreen(
           data: response.data!, tutorname: tutorname,
         ));
       } else {
@@ -90,14 +90,17 @@ class CourseDetailController extends GetxController {
 
       if (response != null && response.statusCode == 200) {
          //SnackBarUtils.showSuccessSnackBar(context,'Enquiry submited successfully',);
-         Get.snackbar('Enquiry submited successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+         Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        ,'Enquiry submited successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         Get.delete<EnquirDetailController>();
          Get.off(() => Tutorenquirlist(type: 'Tutee', fromBottomNav: true,)); 
       } else {
-        Get.snackbar('Enquiry already submitted',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        ,'Enquiry already submitted',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
     } catch (e) {
-       Get.snackbar('Error: $e',);
+       Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
+        ,'Error: $e',);
     } finally {
       isLoading.value = false;
     }

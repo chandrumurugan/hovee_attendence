@@ -166,7 +166,7 @@ class TutorHomeController extends GetxController {
       if (homeDashboardAttendanceResponse?.data != null) {
         currentMonthYear = homeDashboardAttendanceResponse!.data!.currentMonthYear;
         var attendacemonth =
-            homeDashboardAttendanceResponse!.data!.attendacemonth;
+            homeDashboardAttendanceResponse.data!.attendacemonth;
         var attendaceyear = homeDashboardAttendanceResponse.data!.attendaceYrs;
         dailyattendance.value =
             homeDashboardAttendanceResponse.data!.dailyattendance ;

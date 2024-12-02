@@ -55,7 +55,7 @@ class BatchListConatiner extends StatelessWidget {
               const SizedBox(height: 20),
               _buildRow('Batch Name', batch.batchName),
               const SizedBox(height: 10),
-              _buildRow('Teacher', batch.batchTeacher),
+              _buildRow('Tutor', batch.batchTeacher),
               const SizedBox(height: 10),
               _buildRow('Timing', '${batch.batchTimingStart} - ${batch.batchTimingEnd}'),
               const SizedBox(height: 10),

@@ -24,6 +24,7 @@ import 'package:hovee_attendence/view/batch_screen.dart';
 import 'package:hovee_attendence/view/class_screen.dart';
 import 'package:hovee_attendence/view/course_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
+import 'package:hovee_attendence/view/holiday_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
@@ -282,7 +283,12 @@ class TutorHome extends StatelessWidget {
                                         enrollmentController.onInit();
                                         Get.to(() => EnrollmentScreen(
                                             type: 'Tutor', fromBottomNav: true));
-                                      } else {
+                                      }
+                                         else if (item.name == 'Holiday') {
+                                        Get.to(() =>
+                                             HolidayScreen(type: 'Tutor'));
+                                      } 
+                                       else {
                                         print('Unknown screen');
                                       }
                                     },

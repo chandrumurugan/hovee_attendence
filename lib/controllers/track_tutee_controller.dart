@@ -3,7 +3,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/services/firestoreService.dart';
+import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/punch_view.dart';
 import 'package:logger/logger.dart';
 import 'dart:convert';
@@ -15,7 +17,8 @@ class TrackTuteeLocationController extends GetxController {
   dynamic argumentData = Get.arguments;
 
   var tuteeLocation = Rxn<LatLng>();
-  var targetLocation = const LatLng(12.971598, 77.594566).obs;
+  //var targetLocation = Rxn<LatLng>();
+  var targetLocation = const LatLng(13.0694, 80.1948).obs;
 
   var distance = 0.0.obs;
   var polyline = <Polyline>[].obs;
@@ -23,12 +26,21 @@ class TrackTuteeLocationController extends GetxController {
   var markers = <Marker>{}.obs;
   var name;
 
+  var selectedBatchIN = Rxn<Data1>();
+
+   var isBatchSelected = false.obs;
+
+   var batchList = <Data1>[].obs;
+
+    var isLoading = true.obs;
+   var target = Rxn<LatLng>();
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     Logger().i("getting valiues fro argumets==>${argumentData[0]['userId']}");
-
+    //fetchGroupedEnrollmentByBatchListItem();
     getTuteeLocation();
 
   }
@@ -44,6 +56,7 @@ class TrackTuteeLocationController extends GetxController {
         LatLng location =
             LatLng(data['location']['lat'], data['location']['lng']);
         tuteeLocation.value = location;
+        //targetLocation.value = target.value;
        name= data['name'];
         updateMarkers(name);
           await fetchRoadRoute();
@@ -172,4 +185,64 @@ class TrackTuteeLocationController extends GetxController {
 
     return polyline;
   }
+
+   void selectBatch(Data1 batch) {
+    selectedBatchIN.value = batch;
+  }
+
+  void fetchGroupedEnrollmentByBatchListItem() async {
+    isLoading(true);
+    try {
+      // Call your API to fetch the data
+      var response = await WebService.fetchGroupedEnrollmentByBatch();
+      Logger().i(response);
+      if (response != null && response.data != null) {
+        batchList.clear();
+        batchList.addAll(response.data!);
+        // isLoading(false); // Add batches to the observable list
+        if (batchList.isNotEmpty) {
+          selectedBatchIN.value = batchList.first;
+          fetchBatchLocationList(selectedBatchIN.value!.batchId! );
+          isBatchSelected.value = true;
+          print(selectedBatchIN.value);
+        }
+      }
+    } catch (e) {
+      // Handle any errors
+      isLoading(false);
+      print('Error fetching batches: $e');
+    } finally{
+        isLoading(false);
+
+    }
+  }
+
+  void fetchBatchLocationList(String batchId) async {
+  try {
+    isLoading(true);
+
+    var batchLocationResponse = await WebService.fetchBatchLocation(batchId);
+
+    if (batchLocationResponse?.data != null) {
+      // Access location and coordinates
+      var location = batchLocationResponse!.data!.location;
+      if (location != null && location.coordinates != null) {
+        double latitude = location.coordinates![1];
+        double longitude = location.coordinates![0];
+        Logger().i("Latitude: $latitude, Longitude: $longitude");
+         target.value = LatLng(latitude, longitude);
+        targetLocation.value=target.value!;
+      } else {
+        Logger().w("Location or coordinates are null");
+      }
+    } else {
+      Logger().w("Batch location response data is null");
+    }
+  } catch (e) {
+    Logger().e("Error: $e");
+  } finally {
+    isLoading(false);
+  }
+}
+
 }

@@ -270,7 +270,7 @@ class TuteeHome extends StatelessWidget {
                     ),
                     controller1.dailyattendance.value != null
                         ? ChartApp()
-                        : const SizedBox.shrink(),
+                        : ChartApp1(),
                     const SizedBox(
                       height: 10,
                     ),

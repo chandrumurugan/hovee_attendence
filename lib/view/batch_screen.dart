@@ -159,31 +159,33 @@ class TutorBatchList extends StatelessWidget {
               // Implement filter logic here if needed
             },
           ),
-          Expanded(
-            child: Obx(() {
-              if (batchController.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
-              } else if (batchController.batchList.isEmpty) {
-                return Center(
-                  child: Text(
-                    'No list found',
-                    style: GoogleFonts.nunito(
-                      color: Colors.black54,
-                      fontSize: 16,
-                    ),
+          Obx(() {
+            if (batchController.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            } else if (batchController.batchList.isEmpty) {
+              return Center(
+                child: Text(
+                  'No list found',
+                  style: GoogleFonts.nunito(
+                    color: Colors.black54,
+                    fontSize: 16,
                   ),
-                );
-              } else {
-                return ListView.builder(
+                ),
+              );
+            } else {
+              return Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
                   itemCount: batchController.batchList.length,
                   itemBuilder: (context, index) {
                     final batch = batchController.batchList[index];
                     return BatchListConatiner(batch: batch);
                   },
-                );
-              }
-            }),
-          )
+                ),
+              );
+            }
+          })
         ],
       ),
       bottomNavigationBar: SingleCustomButtom(

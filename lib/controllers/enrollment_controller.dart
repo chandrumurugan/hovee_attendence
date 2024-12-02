@@ -138,16 +138,19 @@ if (validateFields(context)) {
 
         if (response != null && response.statusCode == 200) {
             //SnackBarUtils.showSuccessSnackBar(context, 'Enrollment submitted successfully',);
-              Get.snackbar('Enrollment submitted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+              Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        ,'Enrollment submitted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
             Get.delete<EnrollmentController>();
            Get.off(()=> EnrollmentScreen(type: entrollmentType,));
           
         } else {
           // SnackBarUtils.showSuccessSnackBar(context, response?.message ?? 'Failed to add Enrollment',);
-            Get.snackbar(response?.message ?? 'Failed to add Enrollment',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+            Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
+        ,response?.message ?? 'Failed to add Enrollment',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         }
       } catch (e) {
-         Get.snackbar( 'Error: $e',);
+         Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
+        , 'Error: $e',);
       } finally {
         isLoading.value = false;
       }
@@ -191,12 +194,14 @@ if (validateFields(context)) {
           //     context, 'Update enquire successfully');
            if(response.data!.status=='Approved'){
         // SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
-        Get.snackbar('You are enrolled successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        ,'You are enrolled successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         fetchEnrollmentList('Pending');
          tabController.animateTo(1);
                                     handleTabChange(1);
            }else{
-             Get.snackbar('Enrollement rejected successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+             Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        ,'Enrollement rejected successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
               //SnackBarUtils.showSuccessSnackBar(context,'Enrollement rejected successfully',);
               tabController.animateTo(2);
                                     handleTabChange(2);

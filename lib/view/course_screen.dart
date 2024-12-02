@@ -126,6 +126,8 @@ class _TutorCourseListState extends State<TutorCourseList> {
               } else {
                 // Display the list of batches
                 return ListView.separated(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
                     itemBuilder: (context, int index) {
                       final course = courseController.courseList[index];
                       return CourseListContainer(
@@ -140,7 +142,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
                     },
                     separatorBuilder: (context, int index) {
                       return const SizedBox(
-                        height: 5,
+                        height: 1,
                       );
                     },
                     itemCount: courseController.courseList.length);

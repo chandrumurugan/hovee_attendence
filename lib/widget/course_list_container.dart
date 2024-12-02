@@ -43,7 +43,7 @@ class CourseListContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
       child: Card(
         elevation: 10,
         shadowColor: Colors.black,
@@ -78,11 +78,11 @@ class CourseListContainer extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        Container(
-                          height: 15,
-                          width: 1.5,
-                          color: Colors.black.withOpacity(0.5),
-                        ),
+                        // Container(
+                        //   height: 15,
+                        //   width: 1.5,
+                        //   color: Colors.black.withOpacity(0.5),
+                        // ),
                         const SizedBox(
                           width: 10,
                         ),
@@ -359,13 +359,13 @@ class CourseListContainer1 extends StatelessWidget {
                           width: 10,
                         ),
                         //  type=='Tutor'?
-                        //  Text(
-                        //   "$batchname",
-                        //   style: const TextStyle(
-                        //       color: Colors.black,
-                        //       fontWeight: FontWeight.w400,
-                        //       fontSize: 14),
-                        // ):
+                         Text(
+                          "$batchname",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14),
+                        )
                         // Text(
                         //   "$subjectCode /month",
                         //   style: const TextStyle(

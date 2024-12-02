@@ -127,15 +127,15 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
             await WebService.updateClass(batchData);
 
         if (response != null && response.statusCode == 200) {
-        Get.snackbar(
-        'Your class is now live',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        ,'Your class is now live',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
        // onInit();
           tabController.animateTo(1);
                                     handleTabChange(1);
         //  String currentType = selectedTabIndex.value == 0 ? "Draft" : "Public";
         // fetchClassesList(currentType);
         } else {
-          Get.snackbar(response?.message ?? 'Failed to update Enquire',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+          Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),response?.message ?? 'Failed to update Enquire',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         }
       } catch (e) {
         //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
@@ -163,11 +163,11 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
   bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (courseCodeController.value.isEmpty) {
-        SnackBarUtils.showSuccessSnackBar(context,'Course code is required',);
+        SnackBarUtils.showErrorSnackBar(context,'Course code is required',);
       return false;
     }
     if (batchNameController1.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,'Batch name is required',);
+      SnackBarUtils.showErrorSnackBar(context,'Batch name is required',);
       return false;
     }
     return true;

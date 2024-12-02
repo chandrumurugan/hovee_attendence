@@ -54,17 +54,17 @@ class CourseDetailScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  data!.remarks ?? '',
-                  style: GoogleFonts.nunito(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Text(
+              //     data!.remarks ?? '',
+              //     style: GoogleFonts.nunito(
+              //       fontSize: 15,
+              //       fontWeight: FontWeight.w400,
+              //       color: Colors.black,
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
