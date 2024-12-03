@@ -1,3 +1,4 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -38,7 +39,8 @@ class TuteeHome extends StatelessWidget {
     final EnrollmentController enrollmentController =
         Get.put(EnrollmentController());
     final TutorHomeController controller1 = Get.put(TutorHomeController());
-      final NotificationController noticontroller = Get.put(NotificationController());
+    final NotificationController noticontroller =
+        Get.put(NotificationController());
     return Scaffold(
       key: controller.tuteeScaffoldKey,
       drawer: SideMenu(
@@ -94,7 +96,9 @@ class TuteeHome extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          Get.to(() => NotificationScreen(type: 'Tutee',));
+                          Get.to(() => NotificationScreen(
+                                type: 'Tutee',
+                              ));
                         },
                         child: Image.asset(
                           'assets/appbar/bell 5.png',
@@ -195,16 +199,16 @@ class TuteeHome extends StatelessWidget {
                         shadowColor: Colors.grey.shade100,
                         surfaceTintColor: Colors.white,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 10),
+                          // padding: const EdgeInsets.symmetric(
+                          //     horizontal: 12, vertical: 10),
                           width: MediaQuery.sizeOf(context).width * 0.9,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            image: DecorationImage(
-                                image:
-                                    AssetImage('assets/Course_BG_Banner.png'),
-                                fit: BoxFit.cover),
-                          ),
+                          // decoration: const BoxDecoration(
+                          //   borderRadius: BorderRadius.all(Radius.circular(8)),
+                          //   image: DecorationImage(
+                          //       image:
+                          //           AssetImage('assets/Course_BG_Banner.png'),
+                          //       fit: BoxFit.cover),
+                          // ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -213,49 +217,72 @@ class TuteeHome extends StatelessWidget {
                                 if (controller1.isLoading.value) {
                                   return CircularProgressIndicator(); // Show loading indicator if no batches are fetched
                                 } else {
-                                  return DropdownButtonFormField<Data1>(
-                                    dropdownColor: AppConstants.primaryColor,
-                                    icon: const Icon(
-                                      Icons.arrow_drop_down_circle_rounded,
-                                      color: Colors.white,
-                                    ),
-                                    style: GoogleFonts.nunito(
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white,
-                                    ),
-                                    decoration: InputDecoration(
-                                      suffixIconColor: Colors.white,
-                                      alignLabelWithHint: true,
-                                      border: InputBorder.none,
-                                      labelText: 'Select batch',
-                                      labelStyle: GoogleFonts.nunito(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    value: controller1.selectedBatchIN.value,
+                                  return CustomDropdown(
+                                    hintText: 'Select batch',
                                     items: controller1.batchList
-                                        .map((Data1 batch) {
-                                      return DropdownMenuItem<Data1>(
-                                        value: batch,
-                                        child: Text(batch.batchName!),
-                                      );
-                                    }).toList(),
-                                    onChanged: (newBatch) {
-                                      if (newBatch != null) {
-                                        controller1.selectBatch(newBatch);
+                                        .map((batch) => batch.batchName ?? '')
+                                        .toSet() // Remove duplicates
+                                        .toList(),
+                                    initialItem: controller1.selectedBatchIN.value?.batchName,
+                                    onChanged: (String? selectedValue) {
+                                      if (selectedValue != null) {
+                                        final selectedBatch =
+                                            controller1.batchList.firstWhere(
+                                          (batch) =>
+                                              batch.batchName == selectedValue,
+                                        );
+                                        controller1.selectBatch(selectedBatch);
                                         controller1.isBatchSelected.value =
                                             true;
                                         controller1.fetchBatchList(
-                                          newBatch.batchId!,
-                                        );
-                                        // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
-                                        // Replace with your actual method to fetch batch-related data
+                                            selectedBatch.batchId!);
                                       }
                                     },
                                   );
+
+                                  //  DropdownButtonFormField<Data1>(
+                                  //   dropdownColor: AppConstants.primaryColor,
+                                  //   icon: const Icon(
+                                  //     Icons.arrow_drop_down_circle_rounded,
+                                  //     color: Colors.white,
+                                  //   ),
+                                  //   style: GoogleFonts.nunito(
+                                  //     fontSize: 19,
+                                  //     fontWeight: FontWeight.w400,
+                                  //     color: Colors.white,
+                                  //   ),
+                                  //   decoration: InputDecoration(
+                                  //     suffixIconColor: Colors.white,
+                                  //     alignLabelWithHint: true,
+                                  //     border: InputBorder.none,
+                                  //     labelText: 'Select batch',
+                                  //     labelStyle: GoogleFonts.nunito(
+                                  //       fontSize: 15,
+                                  //       fontWeight: FontWeight.w400,
+                                  //       color: Colors.white,
+                                  //     ),
+                                  //   ),
+                                  //   value: controller1.selectedBatchIN.value,
+                                  //   items: controller1.batchList
+                                  //       .map((Data1 batch) {
+                                  //     return DropdownMenuItem<Data1>(
+                                  //       value: batch,
+                                  //       child: Text(batch.batchName!),
+                                  //     );
+                                  //   }).toList(),
+                                  //   onChanged: (newBatch) {
+                                  //     if (newBatch != null) {
+                                  // controller1.selectBatch(newBatch);
+                                  // controller1.isBatchSelected.value =
+                                  //     true;
+                                  // controller1.fetchBatchList(
+                                  //   newBatch.batchId!,
+                                  // );
+                                  //       // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
+                                  //       // Replace with your actual method to fetch batch-related data
+                                  //     }
+                                  //   },
+                                  // );
                                 }
                               }),
 
@@ -275,17 +302,16 @@ class TuteeHome extends StatelessWidget {
                       height: 10,
                     ),
                     Obx(() {
-                    if (controller.isLoading.value) {
-                      return const SizedBox.shrink();
-                    } else if (controller.homeDashboardCourseList.value.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
-                   else{
-                    return Column(
+                      if (controller.isLoading.value) {
+                        return const SizedBox.shrink();
+                      } else if (controller
+                          .homeDashboardCourseList.value.isEmpty) {
+                        return const SizedBox.shrink();
+                      } else {
+                        return Column(
                           children: [
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
                                   'My Classes',
@@ -296,8 +322,7 @@ class TuteeHome extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(
-                                        () => AttendanceCourseListScreen());
+                                    Get.to(() => AttendanceCourseListScreen());
                                   },
                                   child: const Text(
                                     'See All',
@@ -312,9 +337,8 @@ class TuteeHome extends StatelessWidget {
                             SubjectContainer(),
                           ],
                         );
-                    }
-                    }
-                        ),
+                      }
+                    }),
 
                     const SizedBox(
                       height: 10,

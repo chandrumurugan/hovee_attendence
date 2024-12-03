@@ -67,41 +67,41 @@ class AuthControllers extends GetxController
 
   bool validateFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context, 'Please enter the first name.');
+       SnackBarUtils.showErrorSnackBar(context, 'Please enter the first name.');
       return false;
     }
     if (lastNameController.text.isEmpty) {
-        SnackBarUtils.showSuccessSnackBar(context,'Please enter the last name.',);
+        SnackBarUtils.showErrorSnackBar(context,'Please enter the last name.',);
       return false;
     }
     if (emailController.text.isEmpty) {
-        SnackBarUtils.showSuccessSnackBar(context,'Please enter the email.',);
+        SnackBarUtils.showErrorSnackBar(context,'Please enter the email.',);
       return false;
     }
     // Email format validation
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text)) {
-       SnackBarUtils.showSuccessSnackBar(context,'Invalid email format',);
+       SnackBarUtils.showErrorSnackBar(context,'Invalid email format',);
       return false;
     }
 
     if (dobController.text.isEmpty) {
-        SnackBarUtils.showSuccessSnackBar(context,'Please select the DOB.',);
+        SnackBarUtils.showErrorSnackBar(context,'Please select the DOB.',);
       return false;
     }
 
     if (phController.text.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'Please enter the phone number.',);
+       SnackBarUtils.showErrorSnackBar(context,'Please enter the phone number.',);
       return false;
     }
     // Phone number format validation (10 digits)
     if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
-        SnackBarUtils.showSuccessSnackBar(context,'Invalid mobile number',);
+        SnackBarUtils.showErrorSnackBar(context,'Invalid mobile number',);
       return false;
     }
 
     if (pincodeController.text.isEmpty) {
-        SnackBarUtils.showSuccessSnackBar(context,'Please enter the pincode.',);
+        SnackBarUtils.showErrorSnackBar(context,'Please enter the pincode.',);
       return false;
     }
 
@@ -111,12 +111,12 @@ class AuthControllers extends GetxController
     // }
 
     if (!acceptedTerms.value) {
-      SnackBarUtils.showSuccessSnackBar(context,'Please accept the checkbox to proceed',);
+      SnackBarUtils.showErrorSnackBar(context,'Please accept the checkbox to proceed',);
       return false;
     }
 
     if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'Please select the Id proof',);
+       SnackBarUtils.showErrorSnackBar(context,'Please select the Id proof',);
       return false;
     }
 
@@ -128,14 +128,14 @@ class AuthControllers extends GetxController
     String input = logInController.text.trim();
 
     if (input.isEmpty) {
-        SnackBarUtils.showSuccessSnackBar(context,'Please enter the phone number / email ID',);
+        SnackBarUtils.showErrorSnackBar(context,'Please enter the phone number / \n email ID',);
       return false;
     }
 
     // Check if the input is a phone number (10 digits)
     if (RegExp(r'^[0-9]+$').hasMatch(input)) {
       if (input.length != 10) {
-         SnackBarUtils.showSuccessSnackBar(context,'Invalid Phone number',);
+         SnackBarUtils.showErrorSnackBar(context,'Invalid Phone number',);
         return false;
       }
       return true; // It's a valid phone number
@@ -143,7 +143,7 @@ class AuthControllers extends GetxController
 
     // Check if the input is a valid email format
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input)) {
-      SnackBarUtils.showSuccessSnackBar(context,'Invalid email address.',);
+      SnackBarUtils.showErrorSnackBar(context,'Invalid email address.',);
       return false;
     }
 
@@ -153,7 +153,7 @@ class AuthControllers extends GetxController
 
   bool validateOtp(BuildContext context) {
     if (otpController.text.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'Please enter the OTP',);
+       SnackBarUtils.showErrorSnackBar(context,'Please enter the OTP',);
       return false;
     }
     return true;

@@ -168,7 +168,6 @@ void setSubject(String value) {
 batchName = (storage.read<List<dynamic>>('batchList') ?? [])
     .map((item) => item.toString()) 
     .toList();
-    print(batchName);
         // Create board list by explicitly casting each part of the chain
         board = response.data?.studentCategory
             ?.expand((category) => category.label?.labelData ?? [])
@@ -201,7 +200,6 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
             .toSet() // Removes duplicates
             .cast<String>() // Ensures all items are strings
             .toList() ?? [];
-    print(classList);
   }
 
   void updateSubjectList(String className) {
@@ -216,13 +214,12 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
             .toSet()
             .cast<String>()
             .toList() ?? [];
-    print(subject);
   }
   
    bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (batchNameController.value.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Branch name is required',);
+       SnackBarUtils.showErrorSnackBar(context,'Batch name is required',);
       return false;
     }
     if (boardController.value.isEmpty) {

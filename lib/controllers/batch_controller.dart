@@ -148,7 +148,6 @@ class BatchController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    print("object");
     fetchBatchList();
     batchDays = getBatchDays();
     batchModes = getBatchModes();
@@ -157,8 +156,6 @@ class BatchController extends GetxController {
 
   bool validateFields(BuildContext context) {
     validationMessages.clear();
-
-    print("gettings12345678====>${branchShortName.text}");
     // if (branchShortName.text.isEmpty) {
     //   SnackBarUtils.showErrorSnackBar(context, 'Branch short name is required');
     //   return false;

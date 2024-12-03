@@ -1,3 +1,4 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -176,12 +177,12 @@ class PieChartWidget extends StatelessWidget {
       double? present = double.parse(
                   percentage.present!.replaceAll('%', '')
                      );
-                     print(present);
+                    
       double? absent = double.parse(percentage.absent!.replaceAll('%', ''));
       double? leave = double.parse(percentage.leave!.replaceAll('%', ''));
       double? partial = double.parse(percentage.partial!.replaceAll('%', ''));
 
-      final total = present + absent + leave + partial;
+      final total = present + absent + leave + partial.toInt();
 
       // If all values are 0, display a single blue circle
       if (total == 0) {
@@ -190,8 +191,8 @@ class PieChartWidget extends StatelessWidget {
             sections: [
               PieChartSectionData(
                 color: Color(0xff7E71FF ),
-                // value: 100,
-                // title: '0%',
+                value: 100,
+                 title: '${total.toInt()}%',
                 radius: 35,
                 titleStyle: GoogleFonts.nunito(
                   fontSize: 14,
@@ -211,8 +212,8 @@ class PieChartWidget extends StatelessWidget {
         sections.add(
           PieChartSectionData(
             color: Colors.purple,
-            //value: present,
-           // title: '$present%',
+            value: present,
+           title:'${present.toInt()}%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,
@@ -227,8 +228,8 @@ class PieChartWidget extends StatelessWidget {
         sections.add(
           PieChartSectionData(
             color: Colors.orange,
-           // value: absent,
-           /// title: 'Absent $absent%',
+           value: absent,
+            title: 'Absent $absent%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,
@@ -243,8 +244,8 @@ class PieChartWidget extends StatelessWidget {
         sections.add(
           PieChartSectionData(
             color: Colors.blue,
-            //value: leave,
-            //title: 'Leave $leave%',
+            value: leave,
+            title: 'Leave $leave%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,
@@ -259,8 +260,8 @@ class PieChartWidget extends StatelessWidget {
         sections.add(
           PieChartSectionData(
             color: Colors.red,
-           // value: partial,
-           // title: 'Partial $partial%',
+           value: partial,
+           title: 'Partial $partial%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,
@@ -814,41 +815,62 @@ class _LineChartSampleState extends State<LineChartSample> {
                       if(controller.isLoading.value){
                        return CircularProgressIndicator();
                       }
-                    //  else if (controller.batchList.isEmpty) {
-                    //     return Text("No batch found"); // Show loading indicator if no batches are fetched
-                    //   }
-                      return DropdownButton<Data1>(
-                        value: controller.selectedBatchIN.value,
-                        hint: widget.userType == 'Tutee'
-                            ? Text('Class')
-                            : Text('Select'),
-                        icon: const Icon(Icons.arrow_drop_down),
-                        iconSize: 24,
-                        elevation: 16,
-                        style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black),
-                        underline: Container(
-                          height: 0,
-                          color: Colors.transparent,
+                      return             SizedBox(
+                        width: MediaQuery.of(context).size.width*0.3,
+                        child: CustomDropdown(
+                          itemsListPadding: EdgeInsets.zero,
+                                listItemPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 10),
+                          hintText: 'Select batch',
+                          items: controller.batchList.map((batch) => batch.batchName ?? '').toList(),
+                          initialItem:controller.selectedBatchIN.value?.batchName,
+                          onChanged: (String? selectedValue) {
+                            if (selectedValue != null) {
+                              final selectedBatch = controller.batchList.firstWhere(
+                                (batch) => batch.batchName == selectedValue,
+                              );
+                              controller.selectBatch(selectedBatch);
+                              controller.isBatchSelected.value = true;
+                              controller.fetchBatchList(
+                                selectedBatch.batchId!,
+                        
+                              );
+                            }
+                          },
                         ),
-                        onChanged: (newBatch) {
-                          if (newBatch != null) {
-                            controller.selectBatch(newBatch);
-                            controller.isBatchSelected.value = true;
-                            controller.fetchBatchList(
-                              newBatch.batchId!,
-                            );
-                          }
-                        },
-                        items: controller.batchList.map((Data1 batch) {
-                          return DropdownMenuItem<Data1>(
-                            value: batch,
-                            child: Text(batch.batchName!),
-                          );
-                        }).toList(),
-                      );
+                      )
+;
+                      // DropdownButton<Data1>(
+                      //   value: controller.selectedBatchIN.value,
+                      //   hint: widget.userType == 'Tutee'
+                      //       ? Text('Class')
+                      //       : Text('Select'),
+                      //   icon: const Icon(Icons.arrow_drop_down),
+                      //   iconSize: 24,
+                      //   elevation: 16,
+                      //   style: const TextStyle(
+                      //       fontSize: 12,
+                      //       fontWeight: FontWeight.w500,
+                      //       color: Colors.black),
+                      //   underline: Container(
+                      //     height: 0,
+                      //     color: Colors.transparent,
+                      //   ),
+                      //   onChanged: (newBatch) {
+                      //     if (newBatch != null) {
+                      //       controller.selectBatch(newBatch);
+                      //       controller.isBatchSelected.value = true;
+                      //       controller.fetchBatchList(
+                      //         newBatch.batchId!,
+                      //       );
+                      //     }
+                      //   },
+                      //   items: controller.batchList.map((Data1 batch) {
+                      //     return DropdownMenuItem<Data1>(
+                      //       value: batch,
+                      //       child: Text(batch.batchName!),
+                      //     );
+                      //   }).toList(),
+                      // );
                     }),
                     Padding(
                       padding: const EdgeInsets.symmetric(

@@ -49,49 +49,89 @@ class CommonDropdownInputField extends StatelessWidget {
     const double maxHeight = 300.0; // Maximum height of the bottom sheet
     const double minHeight = 100.0;
     final double sheetHeight = (items.length * itemHeight).clamp(minHeight, maxHeight);
-
-    showModalBottomSheet(
+   showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
-          height: 170,
+         // height: 180, // Adjust height as needed
           padding: const EdgeInsets.all(10),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
+      
             children: [
               Text("Select $title", style: TextStyle(fontWeight: FontWeight.bold)),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(bottom: 8),
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return Obx(() {
-                      final isSelected = selectedValue.value == items[index];
-                      return SizedBox(
-                        height: 33,
-                        child: RadioListTile<String>(
-                          contentPadding: EdgeInsets.symmetric(vertical: 0),
-                          title: Text(items[index]),
-                          value: items[index],
-                          groupValue: selectedValue.value,
-                          onChanged: (value) {
-                            selectedValue.value = value!;
-                            controllerValue.value = value;
-                            onChanged(value);
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      );
-                    });
-                  },
-                ),
+              ListView.builder(
+                itemCount: items.length,
+                   shrinkWrap: true, // Ensures the ListView doesn't expand infinitely
+                            physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.only(bottom: 8),
+                itemBuilder: (context, index) {
+                  final isSelected = selectedValue.value == items[index];
+                  return SizedBox(
+                      height: 33,
+                      child: RadioListTile<String>(
+                        contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
+                        title: Text(items[index]),
+                        value: items[index],
+                        groupValue: selectedValue.value,
+                        onChanged: (value) {
+                          selectedValue.value = value!;
+                          controllerValue.value = value;
+                          onChanged(value);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    );
+                },
               ),
             ],
           ),
         );
       },
     );
+    // showModalBottomSheet(
+    //   context: context,
+    //   isScrollControlled: true,
+    //   builder: (BuildContext context) {
+    //     return Container(
+    //       padding: const EdgeInsets.all(10),
+    //       child: Column(
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           Text("Select $title", style: TextStyle(fontWeight: FontWeight.bold)),
+    //           Expanded(
+    //             child: ListView.builder(
+    //               shrinkWrap: true,
+    //               padding: EdgeInsets.only(bottom: 8),
+    //               itemCount: items.length,
+    //               itemBuilder: (context, index) {
+    //                 return Obx(() {
+    //                   final isSelected = selectedValue.value == items[index];
+    //                   return SizedBox(
+    //                     height: 33,
+    //                     child: RadioListTile<String>(
+    //                       contentPadding: EdgeInsets.symmetric(vertical: 0),
+    //                       title: Text(items[index]),
+    //                       value: items[index],
+    //                       groupValue: selectedValue.value,
+    //                       onChanged: (value) {
+    //                         selectedValue.value = value!;
+    //                         controllerValue.value = value;
+    //                         onChanged(value);
+    //                         Navigator.of(context).pop();
+    //                       },
+    //                     ),
+    //                   );
+    //                 });
+    //               },
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }
 

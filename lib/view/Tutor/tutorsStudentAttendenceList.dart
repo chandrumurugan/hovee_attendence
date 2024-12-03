@@ -1,3 +1,4 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,15 +17,14 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class StudentAttendanceList extends StatelessWidget {
-   final String type;
+  final String type;
   // final StudentAttendanceController controller;
- StudentAttendanceList({super.key, required this.type});
-    
-
+  StudentAttendanceList({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
-     StudentAttendanceController controller = Get.put(StudentAttendanceController());
+    StudentAttendanceController controller =
+        Get.put(StudentAttendanceController());
 
     Logger().i("type==>$type");
     List<AttendanceData> attendanceData = [
@@ -49,12 +49,14 @@ class StudentAttendanceList extends StatelessWidget {
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
-         Get.offAll(DashboardScreen(rolename: type,));
+          Get.offAll(DashboardScreen(
+            rolename: type,
+          ));
         },
       ),
       body: SingleChildScrollView(
         child: Column(
-         crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -69,98 +71,155 @@ class StudentAttendanceList extends StatelessWidget {
                       shadowColor: Colors.grey.shade100,
                       surfaceTintColor: Colors.white,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 10),
+                        //padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                         width: MediaQuery.sizeOf(context).width * 0.7,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          image: DecorationImage(
-                              image: AssetImage('assets/Course_BG_Banner.png'),
-                              fit: BoxFit.cover),
-                        ),
+                        // decoration: const BoxDecoration(
+                        //   borderRadius: BorderRadius.all(Radius.circular(8)),
+                        //   image: DecorationImage(
+                        //     image: AssetImage('assets/Course_BG_Banner.png'),
+                        //     fit: BoxFit.cover,
+                        //   ),
+                        //),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // const SizedBox(height: 10),
                             Obx(() {
                               if (controller.isLoading.value) {
                                 return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
                               }
-                              return DropdownButtonFormField<Data1>(
-                                dropdownColor: AppConstants.primaryColor,
-                                icon: const Icon(
-                                  Icons.arrow_drop_down_circle_rounded,
-                                  color: Colors.white,
-                                ),
-                                style: GoogleFonts.nunito(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                                decoration: InputDecoration(
-                                  suffixIconColor: Colors.white,
-                                  alignLabelWithHint: true,
-                                  border: InputBorder.none,
-                                  labelText: 'Select batch',
-                                  labelStyle: GoogleFonts.nunito(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                value: controller.selectedBatchIN.value,
-                                items: controller.batchList.map((Data1 batch) {
-                                  return DropdownMenuItem<Data1>(
-                                    value: batch,
-                                    child: Text(batch.batchName!),
-                                  );
-                                }).toList(),
-                                onChanged: (newBatch) {
-                                  if (newBatch != null) {
-                                    controller.selectBatch(newBatch);
+                              return CustomDropdown(
+                                itemsListPadding: EdgeInsets.zero,
+                                listItemPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 10),
+                                hintText: 'Select batch',
+                                items: controller.batchList
+                                    .map((batch) => batch.batchName ?? '')
+                                    .toList(),
+                                initialItem:
+                                    controller.selectedBatchIN.value?.batchName,
+                                onChanged: (String? selectedValue) {
+                                  if (selectedValue != null) {
+                                    final selectedBatch =
+                                        controller.batchList.firstWhere(
+                                      (batch) =>
+                                          batch.batchName == selectedValue,
+                                    );
+                                    controller.selectBatch(selectedBatch);
                                     controller.isBatchSelected.value = true;
-                                    controller.fetchStudentsList(newBatch.batchId!, newBatch.startDate!, DateFormat('MMM').format(DateTime.now()));
-                                    // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
-                                    // Replace with your actual method to fetch batch-related data
+                                    controller.fetchStudentsList(
+                                      selectedBatch.batchId!,
+                                      selectedBatch.startDate!,
+                                      DateFormat('MMM').format(DateTime.now()),
+                                    );
                                   }
                                 },
                               );
                             }),
-
-                            // const SizedBox(
-                            //   height: 20,
-                            // ),
-                            //tabl
                           ],
                         ),
                       ),
                     ),
                   ),
 
+                  // Padding(
+                  //   padding: const EdgeInsets.all(0),
+                  //   child: Card(
+                  //     elevation: 10,
+                  //     shadowColor: Colors.grey.shade100,
+                  //     surfaceTintColor: Colors.white,
+                  //     child: Container(
+                  //       padding: const EdgeInsets.symmetric(
+                  //           horizontal: 12, vertical: 10),
+                  //       width: MediaQuery.sizeOf(context).width * 0.7,
+                  //       decoration: const BoxDecoration(
+                  //         borderRadius: BorderRadius.all(Radius.circular(8)),
+                  //         image: DecorationImage(
+                  //             image: AssetImage('assets/Course_BG_Banner.png'),
+                  //             fit: BoxFit.cover),
+                  //       ),
+                  //       child: Column(
+                  //         mainAxisSize: MainAxisSize.min,
+                  //         children: [
+                  //           // const SizedBox(height: 10),
+                  //           Obx(() {
+                  //             if (controller.isLoading.value) {
+                  //               return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                  //             }
+                  //             return
+                  //             DropdownButtonFormField<Data1>(
+                  //               dropdownColor: AppConstants.primaryColor,
+                  //               icon: const Icon(
+                  //                 Icons.arrow_drop_down_circle_rounded,
+                  //                 color: Colors.white,
+                  //               ),
+                  //               style: GoogleFonts.nunito(
+                  //                 fontSize: 19,
+                  //                 fontWeight: FontWeight.w400,
+                  //                 color: Colors.white,
+                  //               ),
+                  //               decoration: InputDecoration(
+                  //                 suffixIconColor: Colors.white,
+                  //                 alignLabelWithHint: true,
+                  //                 border: InputBorder.none,
+                  //                 labelText: 'Select batch',
+                  //                 labelStyle: GoogleFonts.nunito(
+                  //                   fontSize: 15,
+                  //                   fontWeight: FontWeight.w400,
+                  //                   color: Colors.white,
+                  //                 ),
+                  //               ),
+                  //               value: controller.selectedBatchIN.value,
+                  //               items: controller.batchList.map((Data1 batch) {
+                  //                 return DropdownMenuItem<Data1>(
+                  //                   value: batch,
+                  //                   child: Text(batch.batchName!),
+                  //                 );
+                  //               }).toList(),
+                  //               onChanged: (newBatch) {
+                  //                 if (newBatch != null) {
+                  //                   controller.selectBatch(newBatch);
+                  //                   controller.isBatchSelected.value = true;
+                  //                   controller.fetchStudentsList(newBatch.batchId!, newBatch.startDate!, DateFormat('MMM').format(DateTime.now()));
+                  //                   // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
+                  //                   // Replace with your actual method to fetch batch-related data
+                  //                 }
+                  //               },
+                  //             );
+                  //           }),
+
+                  //           // const SizedBox(
+                  //           //   height: 20,
+                  //           // ),
+                  //           //tabl
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+
                   // Obx((){})
                   ClipRRect(
-  borderRadius: BorderRadius.circular(10), // Set the desired radius
-  child: Container(
-    color: AppConstants.secondaryColor,
-    height: 70,
-    width: 70,
-    child: Center(
-      child: IconButton(
-        onPressed: () {
-          // controller.isBatchSelected.value = !controller.isBatchSelected.value;
-           controller.isCalendarVisible.value =
-                        !controller.isCalendarVisible.value;
-        },
-        icon: const Icon(
-          Icons.calendar_month_outlined,
-          size: 30,
-          color: Colors.white,
-        ),
-      ),
-    ),
-  ),
-)
-
+                    borderRadius:
+                        BorderRadius.circular(10), // Set the desired radius
+                    child: Container(
+                      color: AppConstants.secondaryColor,
+                      height: 70,
+                      width: 70,
+                      child: Center(
+                        child: IconButton(
+                          onPressed: () {
+                            // controller.isBatchSelected.value = !controller.isBatchSelected.value;
+                            controller.isCalendarVisible.value =
+                                !controller.isCalendarVisible.value;
+                          },
+                          icon: const Icon(
+                            Icons.calendar_month_outlined,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -295,7 +354,8 @@ class StudentAttendanceList extends StatelessWidget {
                       Expanded(
                         child: Obx(() {
                           if (controller.isLoadingList.value) {
-                            return const Center(child: CircularProgressIndicator());
+                            return const Center(
+                                child: CircularProgressIndicator());
                           }
                           return Padding(
                             padding: const EdgeInsets.only(top: 40),
@@ -337,12 +397,11 @@ class StudentAttendanceList extends StatelessWidget {
                 ),
               ),
             ),
-      
 
             const SizedBox(
               height: 10,
             ),
-             Padding(
+            Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
@@ -353,7 +412,7 @@ class StudentAttendanceList extends StatelessWidget {
                     color: Colors.black),
               ),
             ),
-           
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Container(

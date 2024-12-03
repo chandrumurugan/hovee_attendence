@@ -35,7 +35,6 @@ class CourseDetailController extends GetxController {
     phoneNumber = storage.read('phoneNumber');
     organizationName = storage.read('organizationNames');
     storedAddress = storage.read('address');
-    print(organizationName);
     }
   
   void getClassTuteeById(BuildContext context, String className, String subject,

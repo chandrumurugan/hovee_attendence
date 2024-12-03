@@ -165,7 +165,7 @@ class AddHolidayScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    'Holiday Date',
+                    'Holiday From Date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -200,6 +200,47 @@ class AddHolidayScreen extends StatelessWidget {
                 controller: holidayController.startDateController,
               ),
             ),
+             Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+              child: Row(
+                children: [
+                  const Text(
+                    'Holiday End Date',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    '*',
+                    style: GoogleFonts.nunito(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red.withOpacity(0.6),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+             Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: InputTextField(
+                suffix: true,
+                readonly: true,
+                isDate: true,
+                hintText: 'Select',
+                initialDate: DateTime.now(),
+                firstDate:
+                    DateTime.now(), // Sets the minimum selectable date to today
+                lastDate:
+                    DateTime(2100), // You can set this to a far future date
+                keyboardType: TextInputType.datetime,
+                controller: holidayController.endDateController,
+              ),
+            ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
@@ -213,14 +254,6 @@ class AddHolidayScreen extends StatelessWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        '*',
-                        style: GoogleFonts.nunito(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.red.withOpacity(0.6),
                         ),
                       ),
                     ],

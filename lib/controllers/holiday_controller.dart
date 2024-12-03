@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/modals/addHolidaymodel.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/deleteHolidayModel.dart';
 import 'package:hovee_attendence/modals/deletebatch_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
@@ -28,6 +29,7 @@ class HolidayController extends GetxController {
   final description = TextEditingController();
   var validationMessages = <String>[].obs;
   final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
   List<String> holidayaType = [];
   var holidayTypeController = ''.obs;
   @override
@@ -42,34 +44,41 @@ class HolidayController extends GetxController {
   bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (batchNameController.value.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(
+      SnackBarUtils.showErrorSnackBar(
         context,
-        'Branch name is required',
+        'Batch name is required',
       );
       return false;
     }
     if (holidayName.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Batch name is required');
+      SnackBarUtils.showErrorSnackBar(context, 'Holiday name is required');
       return false;
     }
     if (holidayTypeController.value.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(
+      SnackBarUtils.showErrorSnackBar(
         context,
         'Holiday type is required',
       );
       return false;
     }
     if (startDateController.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(
+      SnackBarUtils.showErrorSnackBar(
         context,
-        'Holiday Date is required',
+        'Holiday From Date is required',
       );
       return false;
     }
-    if (description.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Batch name is required');
+    if (endDateController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Holiday End Date is required',
+      );
       return false;
     }
+    // if (description.text.isEmpty) {
+    //   SnackBarUtils.showErrorSnackBar(context, 'Batch name is required');
+    //   return false;
+    // }
 
     return true;
   }
@@ -99,7 +108,8 @@ class HolidayController extends GetxController {
           "batch_name": batchNameController.value,
           "description": description.text,
           "holidayId": "",
-          "holiday_date": startDateController.text,
+          "holiday_from_date": startDateController.text,
+           "holiday_end_date": endDateController.text,
           "holiday_name": holidayName.text,
           "holiday_type": holidayTypeController.value,
           "type": "N"
@@ -109,13 +119,14 @@ class HolidayController extends GetxController {
             await WebService.addHoliday(batchData);
 
         if (response != null && response.success == true) {
+           Get.back();
+          onInit();
           _clearData();
           SnackBarUtils.showSuccessSnackBar(
             context,
             'Holiday added successfully',
           );
-          Get.back();
-          onInit();
+         
         } else {
           SnackBarUtils.showErrorSnackBar(
               context, response?.message ?? 'Failed to add holiday');
@@ -128,7 +139,7 @@ class HolidayController extends GetxController {
     }
   }
 
-  void updateHoliday(BuildContext context,String holidayId) async {
+  void updateHoliday(BuildContext context, String holidayId) async {
     if (validateFields(context)) {
       isLoading.value = true;
       try {
@@ -137,7 +148,8 @@ class HolidayController extends GetxController {
           "batch_name": batchNameController.value,
           "description": description.text,
           "holidayId": holidayId,
-          "holiday_date": startDateController.text,
+          "holiday_from_date": startDateController.text,
+           "holiday_end_date": endDateController.text,
           "holiday_name": holidayName.text,
           "holiday_type": holidayTypeController.value,
           "type": "U"
@@ -148,7 +160,7 @@ class HolidayController extends GetxController {
 
         if (response != null && response.success == true) {
           _clearData();
-          SnackBarUtils.showSuccessSnackBar(
+         SnackBarUtils.showSuccessSnackBar(
             context,
             'Holiday updated successfully',
           );
@@ -166,28 +178,36 @@ class HolidayController extends GetxController {
     }
   }
 
-    void deleteHoliday(BuildContext context, String holidayId) async {
+  void deleteHoliday(BuildContext context, String holidayId) async {
     isLoading.value = true;
     try {
       var batchData = {
+        "batch_name": "",
+        "description": "",
         "holidayId": holidayId,
+        "holiday_from_date": "",
+           "holiday_end_date": "",
+        "holiday_name": "",
+        "holiday_type": "",
+        "type": "D"
       };
 
-      final deleteBatchDataModel? response =
+      final deleteHolidayModel? response =
           await WebService.deleteHoliday(batchData);
 
       if (response != null && response.success == true) {
-        _clearData();
+         _clearData();
         fetchBatchList();
-        SnackBarUtils.showSuccessSnackBar(context, 'Holiday delete successfully');
+         Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        ,'Holiday delete successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      // SnackBarUtils.showSuccessSnackBar(context, 'Holiday delete successfully');
         //  Get.back();
         //  onInit();
       } else {
-        SnackBarUtils.showErrorSnackBar(
-            context, response?.message ?? 'Failed to add Holiday');
+     Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),response?.message ?? 'Failed to update Enquire',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
     } catch (e) {
-      SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+       Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } finally {
       isLoading.value = false;
     }
@@ -207,9 +227,10 @@ class HolidayController extends GetxController {
 
   void _clearData() {
     batchNameController.value = '';
-     holidayName.clear();
-    holidayTypeController.value='';
+    holidayName.clear();
+    holidayTypeController.value = '';
     startDateController.clear();
+    endDateController.clear();
     description.clear();
   }
 

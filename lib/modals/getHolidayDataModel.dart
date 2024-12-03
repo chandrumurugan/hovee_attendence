@@ -31,7 +31,8 @@ class Data1 {
   String? sId;
   String? batchName;
   String? holidayName;
-  String? holidayDate;
+  String? holidayFromDate;
+  String? holidayEndDate;
   String? holidayType;
   String? description;
   String? createdAt;
@@ -42,7 +43,8 @@ class Data1 {
       {this.sId,
       this.batchName,
       this.holidayName,
-      this.holidayDate,
+     this.holidayFromDate,
+      this.holidayEndDate,
       this.holidayType,
       this.description,
       this.createdAt,
@@ -53,7 +55,8 @@ class Data1 {
     sId = json['_id'];
     batchName = json['batch_name'];
     holidayName = json['holiday_name'];
-    holidayDate = json['holiday_date'];
+     holidayFromDate = json['holiday_from_date'];
+    holidayEndDate = json['holiday_end_date'];
     holidayType = json['holiday_type'];
     description = json['description'];
     createdAt = json['created_at'];
@@ -66,7 +69,8 @@ class Data1 {
     data['_id'] = this.sId;
     data['batch_name'] = this.batchName;
     data['holiday_name'] = this.holidayName;
-    data['holiday_date'] = this.holidayDate;
+     data['holiday_from_date'] = this.holidayFromDate;
+    data['holiday_end_date'] = this.holidayEndDate;
     data['holiday_type'] = this.holidayType;
     data['description'] = this.description;
     data['created_at'] = this.createdAt;

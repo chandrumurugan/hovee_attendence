@@ -93,7 +93,6 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
   }
 
  void fetchClassesList(String type) async {
-  print("object");
     try {
       var batchData = {
         "type": type,

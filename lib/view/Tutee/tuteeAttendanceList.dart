@@ -1,3 +1,4 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,15 +47,13 @@ class TuteeAttendanceList extends StatelessWidget {
                       shadowColor: Colors.grey.shade100,
                       surfaceTintColor: Colors.white,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 10),
                         width: MediaQuery.sizeOf(context).width * 0.7,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          image: DecorationImage(
-                              image: AssetImage('assets/Course_BG_Banner.png'),
-                              fit: BoxFit.cover),
-                        ),
+                        // decoration: const BoxDecoration(
+                        //   borderRadius: BorderRadius.all(Radius.circular(8)),
+                        //   image: DecorationImage(
+                        //       image: AssetImage('assets/Course_BG_Banner.png'),
+                        //       fit: BoxFit.cover),
+                        // ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -63,41 +62,68 @@ class TuteeAttendanceList extends StatelessWidget {
                               if (controller.isLoading.value) {
                                 return CircularProgressIndicator(); // Show loading indicator if no batches are fetched
                               }
-                             else{ return DropdownButtonFormField<Data1>(
-                                dropdownColor: AppConstants.primaryColor,
-                                icon: const Icon(
-                                  Icons.arrow_drop_down_circle_rounded,
-                                  color: Colors.white,
-                                ),
-                                style: GoogleFonts.nunito(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                                decoration: InputDecoration(
-                                  suffixIconColor: Colors.white,
-                                  alignLabelWithHint: true,
-                                  border: InputBorder.none,
-                                  labelText: 'Select batch',
-                                  labelStyle: GoogleFonts.nunito(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                value: controller.selectedBatchIN.value,
-                                items: controller.batchList.map((Data1 batch) {
-                                  return DropdownMenuItem<Data1>(
-                                    value: batch,
-                                    child: Text(batch.batchName!),
-                                  );
-                                }).toList(),
-                                onChanged: (newBatch) {
-                                  if (newBatch != null) {
-                                    controller.selectBatch(newBatch);
+                             else{ return 
+                            //  DropdownButtonFormField<Data1>(
+                            //     dropdownColor: AppConstants.primaryColor,
+                            //     icon: const Icon(
+                            //       Icons.arrow_drop_down_circle_rounded,
+                            //       color: Colors.white,
+                            //     ),
+                            //     style: GoogleFonts.nunito(
+                            //       fontSize: 19,
+                            //       fontWeight: FontWeight.w400,
+                            //       color: Colors.white,
+                            //     ),
+                            //     decoration: InputDecoration(
+                            //       suffixIconColor: Colors.white,
+                            //       alignLabelWithHint: true,
+                            //       border: InputBorder.none,
+                            //       labelText: 'Select batch',
+                            //       labelStyle: GoogleFonts.nunito(
+                            //         fontSize: 15,
+                            //         fontWeight: FontWeight.w400,
+                            //         color: Colors.white,
+                            //       ),
+                            //     ),
+                            //     value: controller.selectedBatchIN.value,
+                            //     items: controller.batchList.map((Data1 batch) {
+                            //       return DropdownMenuItem<Data1>(
+                            //         value: batch,
+                            //         child: Text(batch.batchName!),
+                            //       );
+                            //     }).toList(),
+                            //     onChanged: (newBatch) {
+                            //       if (newBatch != null) {
+                            //         controller.selectBatch(newBatch);
+                            //         controller.isBatchSelected.value = true;
+                            //         // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
+                            //         // Replace with your actual method to fetch batch-related data
+                            //       }
+                            //     },
+                            //   );
+                             CustomDropdown(
+                              itemsListPadding: EdgeInsets.zero,
+                                listItemPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 10),
+                                hintText: 'Select batch',
+                                items: controller.batchList
+                                    .map((batch) => batch.batchName ?? '')
+                                    .toList(),
+                                initialItem:
+                                    controller.selectedBatchIN.value?.batchName,
+                                onChanged: (String? selectedValue) {
+                                  if (selectedValue != null) {
+                                    final selectedBatch =
+                                        controller.batchList.firstWhere(
+                                      (batch) =>
+                                          batch.batchName == selectedValue,
+                                    );
+                                    controller.selectBatch(selectedBatch);
                                     controller.isBatchSelected.value = true;
-                                    // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
-                                    // Replace with your actual method to fetch batch-related data
+                                    controller.fetchStudentsList(
+                                      selectedBatch.batchId!,
+                                      selectedBatch.startDate!,
+                                      DateFormat('MMM').format(DateTime.now()),
+                                    );
                                   }
                                 },
                               );

@@ -26,6 +26,7 @@ import 'package:hovee_attendence/view/course_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/holiday_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
+import 'package:hovee_attendence/view/msp_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/tutor_attendance_screen.dart';
@@ -287,6 +288,10 @@ class TutorHome extends StatelessWidget {
                                          else if (item.name == 'Holiday') {
                                         Get.to(() =>
                                              HolidayScreen(type: 'Tutor'));
+                                      } 
+                                        else if (item.name == 'Miss Punch') {
+                                        Get.to(() =>
+                                             MspScreen(type: 'Tutor'));
                                       } 
                                        else {
                                         print('Unknown screen');

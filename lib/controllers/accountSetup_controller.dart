@@ -239,27 +239,27 @@ class AccountSetupController extends GetxController
 
   bool validateAddressInfo(BuildContext context) {
     if (address1Controller.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,"Please enter the door no",);
+      SnackBarUtils.showErrorSnackBar(context,"Please enter the door no",);
       return false;
     }
     if (address2Controller.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,"Please enter the street & area",);
+      SnackBarUtils.showErrorSnackBar(context,"Please enter the street & area",);
       return false;
     }
     if (cityController.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,"Please enter the city",);
+      SnackBarUtils.showErrorSnackBar(context,"Please enter the city",);
       return false;
     }
     if (stateController.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,"Please enter the state",);
+      SnackBarUtils.showErrorSnackBar(context,"Please enter the state",);
       return false;
     }
     if (countryController.text.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,"Please enter the country",);
+       SnackBarUtils.showErrorSnackBar(context,"Please enter the country",);
       return false;
     }
     if (pincodesController.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,"Please enter the pincode",);
+      SnackBarUtils.showErrorSnackBar(context,"Please enter the pincode",);
       return false;
     }
 
@@ -272,39 +272,39 @@ class AccountSetupController extends GetxController
 
   bool validatePersonalFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,'Please enter the first name.',);
+      SnackBarUtils.showErrorSnackBar(context,'Please enter the first name.',);
       return false;
     }
     if (lastNameController.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,'Please enter the last name.',);
+      SnackBarUtils.showErrorSnackBar(context,'Please enter the last name.',);
       return false;
     }
     if (emailController.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,'Please enter the email.',);
+      SnackBarUtils.showErrorSnackBar(context,'Please enter the email.',);
       return false;
     }
     // Email format validation
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text)) {
-      SnackBarUtils.showSuccessSnackBar(context,'Invalid email format',);
+      SnackBarUtils.showErrorSnackBar(context,'Invalid email format',);
       return false;
     }
     if (dobController.text.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'Please select the DOB.',);
+       SnackBarUtils.showErrorSnackBar(context,'Please select the DOB.',);
       return false;
     }
 
     if (phController.text.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'Please enter the mobile number.',);
+       SnackBarUtils.showErrorSnackBar(context,'Please enter the mobile number.',);
       return false;
     }
     if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
-       SnackBarUtils.showSuccessSnackBar(context,'Invalid mobile number',);
+       SnackBarUtils.showErrorSnackBar(context,'Invalid mobile number',);
       return false;
     }
 
     if (pincodeController.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,'Please enter the pincode.',);
+      SnackBarUtils.showErrorSnackBar(context,'Please enter the pincode.',);
       return false;
     }
 
@@ -314,7 +314,7 @@ class AccountSetupController extends GetxController
     // }
 
     if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,'Please select the Id proof',);
+      SnackBarUtils.showErrorSnackBar(context,'Please select the Id proof',);
       return false;
     }
 
@@ -325,8 +325,6 @@ class AccountSetupController extends GetxController
   Future<void> storePersonalInfo(
       BuildContext context, String roleId, String roleTypeId) async {
     if (validatePersonalFields(context)) {
-      print("moving to persojnla info");
-
       personalInfo.value = {
         "first_name": firstNameController.text,
         "last_name": lastNameController.text,
@@ -377,27 +375,27 @@ class AccountSetupController extends GetxController
     validationMessages.clear();
 
     if (highestQualification.value.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context, "Please select a highest qualification.",);
+      SnackBarUtils.showErrorSnackBar(context, "Please select a highest qualification.",);
       return false;
     }
     if (teachingSkills.value.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,'Please select a teaching skill set.',);
+      SnackBarUtils.showErrorSnackBar(context,'Please select a teaching skill set.',);
       return false;
     }
     if (workingTech.value.isEmpty) {
-        SnackBarUtils.showSuccessSnackBar(context,'Please select a work type.',);
+        SnackBarUtils.showErrorSnackBar(context,'Please select a work type.',);
       return false;
     }
     if (teachingExperience.value.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'Please select your teaching experience.',);
+       SnackBarUtils.showErrorSnackBar(context,'Please select your teaching experience.',);
       return false;
     }
     if (resumePath.value.isEmpty) {
-        SnackBarUtils.showSuccessSnackBar(context,'Please attach  a resume.',);
+        SnackBarUtils.showErrorSnackBar(context,'Please attach  a resume.',);
       return false;
     }
     if (experienceCertPath.value.isEmpty) {
-      SnackBarUtils.showSuccessSnackBar(context,'Please attach a experience certificate.',);
+      SnackBarUtils.showErrorSnackBar(context,'Please attach a experience certificate.',);
       return false;
     }
     return true;
@@ -405,11 +403,11 @@ class AccountSetupController extends GetxController
 
   bool validateTuteEducationInfo(BuildContext context) {
     if (tuteeHighestQualification.value.isEmpty) {
-        SnackBarUtils.showSuccessSnackBar(context, "Please select highest qualification.",);
+        SnackBarUtils.showErrorSnackBar(context, "Please select highest qualification.",);
       return false;
     }
     if (tuteeSpeciallization.value.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,"Please select class/specialization.",);
+       SnackBarUtils.showErrorSnackBar(context,"Please select class/specialization.",);
       return false;
     }
     // if(tuteeboardController.text.isEmpty){
@@ -419,7 +417,7 @@ class AccountSetupController extends GetxController
 
     // }
     if (tuteorganizationController.text.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,"Please enter the school/college/other.",);
+       SnackBarUtils.showErrorSnackBar(context,"Please enter the school/college/other.",);
       return false;
     }
     return true;

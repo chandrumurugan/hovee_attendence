@@ -104,10 +104,11 @@ class StudentAttendanceController extends GetxController {
 
   void selectBatch(Data1 batch) {
     selectedBatchIN.value = batch;
-    // Parse dates
-    selectedBatchStartDate.value =
-        DateFormat('dd/MM/yyyy').parse(batch.startDate!);
-    selectedBatchEndDate.value = DateFormat('dd/MM/yyyy').parse(batch.endDate!);
+    // Parse dates using the correct format
+  selectedBatchStartDate.value =
+      DateFormat('dd-MM-yyyy').parse(batch.startDate!);  // Updated to '-'
+  selectedBatchEndDate.value =
+      DateFormat('dd-MM-yyyy').parse(batch.endDate!);    // Updated to '-'
 
     // fetchTutteAttendanceList(selectedBatchIN.value!.batchId!,);
   }

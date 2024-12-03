@@ -23,6 +23,7 @@ class ModalService {
             height: sheetHeight,
             padding: const EdgeInsets.all(10),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text("Select ID proof",
                     style: TextStyle(fontWeight: FontWeight.bold)),
