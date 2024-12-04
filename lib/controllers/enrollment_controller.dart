@@ -10,31 +10,31 @@ import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:logger/logger.dart';
 
-class EnrollmentController extends GetxController  with GetTickerProviderStateMixin {
+class EnrollmentController extends GetxController
+    with GetTickerProviderStateMixin {
+  var isLoading = true.obs;
 
-   var isLoading = true.obs;
+  var validationMessages = <String>[].obs;
 
-    var validationMessages = <String>[].obs;
+  final tuteeController = TextEditingController();
 
-     final tuteeController = TextEditingController();
+  final tutorController = TextEditingController();
 
-   final tutorController = TextEditingController();
+  final classController = TextEditingController();
 
-    final classController = TextEditingController();
+  final subjectController = TextEditingController();
 
-     final subjectController = TextEditingController();
+  final feesController = TextEditingController();
 
-      final feesController = TextEditingController();
+  final coureseCodeController = TextEditingController();
 
-       final coureseCodeController = TextEditingController();
+  final boardController = TextEditingController();
+  final branchController = TextEditingController();
+  final batchTimingController = TextEditingController();
+  final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
 
-        final boardController = TextEditingController();
-         final branchController = TextEditingController();
-          final batchTimingController = TextEditingController();
-           final startDateController = TextEditingController();
-            final endDateController = TextEditingController();
-
-            late TabController tabController;
+  late TabController tabController;
 
   var selectedTabIndex = 0.obs;
 
@@ -43,18 +43,19 @@ class EnrollmentController extends GetxController  with GetTickerProviderStateMi
   final otpController = TextEditingController();
   final focusNode = FocusNode();
 
-  final AttendanceCourseListController attendanceCourseListController = Get.put(AttendanceCourseListController());
+  final AttendanceCourseListController attendanceCourseListController =
+      Get.put(AttendanceCourseListController());
 
-   @override
+  @override
   void onInit() {
     super.onInit();
     // Initialize TabController with three tabs
     tabController = TabController(length: 3, vsync: this);
-     selectedTabIndex.value=0;
+    selectedTabIndex.value = 0;
     fetchEnrollmentList("Pending");
-     attendanceCourseListController.fetchAttendanceCourseList();
-     startDateController.clear();
-     endDateController.clear();
+    attendanceCourseListController.fetchAttendanceCourseList();
+    startDateController.clear();
+    endDateController.clear();
     // tabController.addListener(() {
     //   selectedTabIndex.value = tabController.index;
 
@@ -77,10 +78,10 @@ class EnrollmentController extends GetxController  with GetTickerProviderStateMi
     //  attendanceCourseListController.fetchAttendanceCourseList();
   }
 
-    void handleTabChange(int index) {
+  void handleTabChange(int index) {
     // Determine the type based on the selected tab index
     String type = _getTypeFromIndex(index);
-     selectedTabIndex.value = index;
+    selectedTabIndex.value = index;
 
     // Fetch the list for the selected type
     fetchEnrollmentList(type);
@@ -89,7 +90,7 @@ class EnrollmentController extends GetxController  with GetTickerProviderStateMi
     tabController.animateTo(index);
   }
 
-    String _getTypeFromIndex(int index) {
+  String _getTypeFromIndex(int index) {
     switch (index) {
       case 0:
         return "Pending";
@@ -102,72 +103,97 @@ class EnrollmentController extends GetxController  with GetTickerProviderStateMi
     }
   }
 
-
-
-
-
   bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (startDateController.text.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'Start Date is required',);
+      SnackBarUtils.showSuccessSnackBar(
+        context,
+        'Start Date is required',
+      );
       return false;
     }
     if (endDateController.text.isEmpty) {
-       SnackBarUtils.showSuccessSnackBar(context,'End date is required',);
+      SnackBarUtils.showSuccessSnackBar(
+        context,
+        'End date is required',
+      );
       return false;
     }
     return true;
-   }  
+  }
 
-void addEnrollment(BuildContext context,String tutorId,studentId,courseId,batchId,tutorName,entrollmentType ) async { 
-if (validateFields(context)) {
+  void addEnrollment(BuildContext context, String tutorId, studentId, courseId,
+      batchId, tutorName, entrollmentType) async {
+    if (validateFields(context)) {
       isLoading.value = true;
       try {
         var data = {
-    "tutorId": tutorId,
-    "studentId": studentId,
-    "courseId": courseId,
-    "batchId": batchId,
-    "startDate":  startDateController.text,
-    "endDate": endDateController.text,
-    "tutorName": tutorName,
-    "entrollmentType": entrollmentType // Tutor or Tutee
-};
+          "tutorId": tutorId,
+          "studentId": studentId,
+          "courseId": courseId,
+          "batchId": batchId,
+          "startDate": startDateController.text,
+          "endDate": endDateController.text,
+          "tutorName": tutorName,
+          "entrollmentType": entrollmentType // Tutor or Tutee
+        };
 
-        final addEnrollmentDataModel? response = await WebService.addEnrollment(data);
+        final addEnrollmentDataModel? response =
+            await WebService.addEnrollment(data);
 
         if (response != null && response.statusCode == 200) {
-            //SnackBarUtils.showSuccessSnackBar(context, 'Enrollment submitted successfully',);
-              Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        ,'Enrollment submitted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
-            Get.delete<EnrollmentController>();
-           Get.off(()=> EnrollmentScreen(type: entrollmentType,));
-          
+          //SnackBarUtils.showSuccessSnackBar(context, 'Enrollment submitted successfully',);
+          Get.snackbar(
+            icon: const Icon(
+              Icons.check_circle,
+              color: Colors.white,
+              size: 40,
+            ),
+            'Enrollment submitted successfully',
+            colorText: Colors.white,
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          );
+          Get.delete<EnrollmentController>();
+          Get.off(() => EnrollmentScreen(
+                type: entrollmentType,
+              ));
         } else {
           // SnackBarUtils.showSuccessSnackBar(context, response?.message ?? 'Failed to add Enrollment',);
-            Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
-        ,response?.message ?? 'Failed to add Enrollment',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+          Get.snackbar(
+            icon: const Icon(
+              Icons.info,
+              color: Colors.white,
+              size: 40,
+            ),
+            response?.message ?? 'Failed to add Enrollment',
+            colorText: Colors.white,
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          );
         }
       } catch (e) {
-         Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
-        , 'Error: $e',);
+        Get.snackbar(
+          icon: const Icon(
+            Icons.info,
+            color: Colors.white,
+            size: 40,
+          ),
+          'Error: $e',
+        );
       } finally {
         isLoading.value = false;
       }
     }
-  
-}
+  }
 
- void fetchEnrollmentList(String type) async {
+  void fetchEnrollmentList(String type) async {
     try {
       var batchData = {
         "status": type,
       };
       isLoading(true);
       var classesResponse = await WebService.getEnrollment(batchData);
-       Logger().i("getting values==>${classesResponse!.data!.length}");
+      Logger().i("getting values==>${classesResponse!.data!.length}");
       if (classesResponse!.data != null) {
-       
         enrollmentList.value = classesResponse.data!;
       }
     } catch (e) {
@@ -177,45 +203,61 @@ if (validateFields(context)) {
     }
   }
 
-  void updateEnrollment(BuildContext context, String enrollmentId,String type,code) async {
-      isLoading.value = true;
-      try {
-        var batchData = {
-        "status":type,
+  void updateEnrollment(
+      BuildContext context, String enrollmentId, String type, code) async {
+    isLoading.value = true;
+    try {
+      var batchData = {
+        "status": type,
         "enrollmentId": enrollmentId,
-        "code":code
+        "code": code
       };
 
-        final UpdateEnrollmentStatusModel ? response =
-            await WebService.updateEnrollment(batchData);
+      final UpdateEnrollmentStatusModel? response =
+          await WebService.updateEnrollment(batchData);
 
-        if (response != null && response.statusCode == 200) {
-          // SnackBarUtils.showSuccessSnackBar(
-          //     context, 'Update enquire successfully');
-           if(response.data!.status=='Approved'){
-        // SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
-        Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        ,'You are enrolled successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
-        fetchEnrollmentList('Pending');
-         tabController.animateTo(1);
-                                    handleTabChange(1);
-           }else{
-             Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        ,'Enrollement rejected successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
-              //SnackBarUtils.showSuccessSnackBar(context,'Enrollement rejected successfully',);
-              tabController.animateTo(2);
-                                    handleTabChange(2);
-           }
-              //Get.off(()=>TutorClassList());
+      if (response != null && response.statusCode == 200) {
+        // SnackBarUtils.showSuccessSnackBar(
+        //     context, 'Update enquire successfully');
+        if (response.data!.status == 'Approved') {
+          // SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
+          Get.snackbar(
+            icon: const Icon(
+              Icons.check_circle,
+              color: Colors.white,
+              size: 40,
+            ),
+            'You are enrolled successfully',
+            colorText: Colors.white,
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          );
+          fetchEnrollmentList('Pending');
+          tabController.animateTo(1);
+          handleTabChange(1);
         } else {
-          // SnackBarUtils.showErrorSnackBar(
-          //     context, response?.message ?? 'Failed to update Enquire');
+          Get.snackbar(
+            icon: const Icon(
+              Icons.check_circle,
+              color: Colors.white,
+              size: 40,
+            ),
+            'Enrollement rejected successfully',
+            colorText: Colors.white,
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          );
+          //SnackBarUtils.showSuccessSnackBar(context,'Enrollement rejected successfully',);
+          tabController.animateTo(2);
+          handleTabChange(2);
         }
-      } catch (e) {
-        //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
-      } finally {
-        isLoading.value = false;
+        //Get.off(()=>TutorClassList());
+      } else {
+        // SnackBarUtils.showErrorSnackBar(
+        //     context, response?.message ?? 'Failed to update Enquire');
       }
-   
+    } catch (e) {
+      //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

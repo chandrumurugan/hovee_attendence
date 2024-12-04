@@ -1,12 +1,9 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
-import 'package:hovee_attendence/modals/getDashboardYearFlow_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -20,7 +17,7 @@ class ChartApp extends StatelessWidget {
       if (controller.isLoading.value) {
         return const SizedBox.shrink();
       } else if (controller.dailyattendance == null) {
-         return Center(child: Text("No data found"));
+         return const Center(child: Text("No data found"));
       }
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
@@ -49,7 +46,7 @@ class ChartApp extends StatelessWidget {
                             width: 18,
                             color: Colors.orange,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           controller.dailyattendance.value != null
@@ -60,7 +57,7 @@ class ChartApp extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 )
-                              : SizedBox.shrink()
+                              : const SizedBox.shrink()
                         ],
                       ),
                       const SizedBox(
@@ -73,7 +70,7 @@ class ChartApp extends StatelessWidget {
                             width: 18,
                             color: Colors.purple,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           controller.dailyattendance.value != null
@@ -84,7 +81,7 @@ class ChartApp extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 )
-                              : SizedBox.shrink()
+                              : const SizedBox.shrink()
                         ],
                       ),
                       const SizedBox(
@@ -95,9 +92,9 @@ class ChartApp extends StatelessWidget {
                           Container(
                               height: 18,
                             width: 18,
-                            color: Color(0xff014EA9),
+                            color: const Color(0xff014EA9),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           controller.dailyattendance.value != null
@@ -108,7 +105,7 @@ class ChartApp extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 )
-                              : SizedBox.shrink(),
+                              : const SizedBox.shrink(),
                         ],
                       ),
                       const SizedBox(
@@ -119,9 +116,9 @@ class ChartApp extends StatelessWidget {
                           Container(
                             height: 18,
                             width: 18,
-                            color: Color(0xff2E5BB5),
+                            color: const Color(0xff2E5BB5),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           controller.dailyattendance.value != null
@@ -132,7 +129,7 @@ class ChartApp extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 )
-                              : SizedBox.shrink(),
+                              : const SizedBox.shrink(),
                         ],
                       ),
                       const SizedBox(
@@ -145,7 +142,7 @@ class ChartApp extends StatelessWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
-                      ):SizedBox.shrink()
+                      ):const SizedBox.shrink()
                     ],
                   ),
                 ),
@@ -171,7 +168,7 @@ class PieChartWidget extends StatelessWidget {
       final percentage = controller.dailyattendance.value?.percentage;
       //Logger().i("dsg€sdgsg${percentage!.absent}");
       if (percentage == null) {
-        return Center(child: Text("No data found"));
+        return const Center(child: Text("No data found"));
       }
 
       double? present = double.parse(
@@ -614,7 +611,7 @@ class StudentChartApp extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -746,14 +743,14 @@ class BarChartWidget extends StatelessWidget {
           ),
         ],
         titlesData: FlTitlesData(
-          leftTitles: AxisTitles(
+          leftTitles: const AxisTitles(
             sideTitles: SideTitles(showTitles: true),
           ),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (value, meta) {
-                TextStyle style = TextStyle(
+                TextStyle style = const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
@@ -766,7 +763,7 @@ class BarChartWidget extends StatelessWidget {
                   case 2:
                     return Text('Mar', style: style);
                   default:
-                    return Text('');
+                    return const Text('');
                 }
               },
             ),
@@ -813,7 +810,7 @@ class _LineChartSampleState extends State<LineChartSample> {
                   children: [
                     Obx(() {
                       if(controller.isLoading.value){
-                       return CircularProgressIndicator();
+                       return const CircularProgressIndicator();
                       }
                       return             SizedBox(
                         width: MediaQuery.of(context).size.width*0.3,
@@ -952,7 +949,7 @@ class _LineChartSampleState extends State<LineChartSample> {
                         return Column(
                           children: [
                             controller.isLoading1.value
-                                ? CircularProgressIndicator()
+                                ? const CircularProgressIndicator()
                                 : SizedBox(
                                     height: 130,
                                     child: SfCartesianChart(
@@ -970,21 +967,21 @@ class _LineChartSampleState extends State<LineChartSample> {
                                           ),
                                         ),
                                       ],
-                                      primaryXAxis: CategoryAxis(
+                                      primaryXAxis: const CategoryAxis(
                                         title: AxisTitle(text: 'Month'),
-                                        axisLine: const AxisLine(width: .5),
+                                        axisLine: AxisLine(width: .5),
                                         majorGridLines:
-                                            const MajorGridLines(width: 0.4),
+                                            MajorGridLines(width: 0.4),
                                       ),
-                                      primaryYAxis: NumericAxis(
+                                      primaryYAxis: const NumericAxis(
                                         title: AxisTitle(
                                             text: 'Student Count',
                                             textStyle: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
-                                        axisLine: const AxisLine(width: 1),
+                                        axisLine: AxisLine(width: 1),
                                         majorGridLines:
-                                            const MajorGridLines(width: 0.4),
+                                            MajorGridLines(width: 0.4),
                                       ),
                                     ),
                                   ),
@@ -998,7 +995,7 @@ class _LineChartSampleState extends State<LineChartSample> {
                         return Column(
                           children: [
                             controller.isLoading1.value
-                                ? CircularProgressIndicator()
+                                ? const CircularProgressIndicator()
                                 : SizedBox(
                                     height: 130,
                                     child: SfCartesianChart(
@@ -1016,21 +1013,21 @@ class _LineChartSampleState extends State<LineChartSample> {
                                           ),
                                         ),
                                       ],
-                                      primaryXAxis: CategoryAxis(
+                                      primaryXAxis: const CategoryAxis(
                                         title: AxisTitle(text: 'Year'),
-                                        axisLine: const AxisLine(width: .5),
+                                        axisLine: AxisLine(width: .5),
                                         majorGridLines:
-                                            const MajorGridLines(width: 0.4),
+                                            MajorGridLines(width: 0.4),
                                       ),
-                                      primaryYAxis: NumericAxis(
+                                      primaryYAxis: const NumericAxis(
                                         title: AxisTitle(
                                             text: 'Student Count',
                                             textStyle: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold)),
-                                        axisLine: const AxisLine(width: 1),
+                                        axisLine: AxisLine(width: 1),
                                         majorGridLines:
-                                            const MajorGridLines(width: 0.4),
+                                            MajorGridLines(width: 0.4),
                                       ),
                                     ),
                                   ),

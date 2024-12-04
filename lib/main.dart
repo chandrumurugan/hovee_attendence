@@ -14,6 +14,7 @@ import 'package:hovee_attendence/view/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 
 class MyBindings extends Bindings {
@@ -32,6 +33,11 @@ class MyBindings extends Bindings {
                 Get.lazyPut<ParentController>(() => ParentController());
 
   }
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
 
 
