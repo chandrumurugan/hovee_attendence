@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/controllers/msp_controller.dart';
+import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDropDownInputField.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
@@ -11,19 +12,24 @@ import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
 
 class AddMspScreen extends StatelessWidget {
-   AddMspScreen({super.key});
+ final BatchList? data;
+ final String date;
+ final String id,batchId;
+   AddMspScreen({super.key, required this.data, required this.date, required this.id, required this.batchId,});
   final MspController mspController = Get.put(MspController());
    final BatchController controller = Get.put(BatchController());
   @override
   Widget build(BuildContext context) {
      Size size = MediaQuery.sizeOf(context);
+       mspController.batchNameController.value = data!.batchName ?? '';
+    mspController.startDateController.text = date;
+
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
-          mspController.onInit();
-          Navigator.pop(context);
-          
+          Get.back();
+           mspController.onInit();
         },
       ),
       body: SingleChildScrollView(
@@ -137,7 +143,7 @@ class AddMspScreen extends StatelessWidget {
                   Row(
                     children: [
                       const Text(
-                        'Time in',
+                        'Time',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -172,49 +178,49 @@ class AddMspScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      const Text(
-                        'Time out',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        '*',
-                        style: GoogleFonts.nunito(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.red.withOpacity(0.6),
-                        ),
-                      ),
-                    ],
-                  ),
-                  CommonInputField(
-                    // title: 'Batch Timing Start',
-                    controllerValue: mspController.batchTimingEndController,
-                    selectedValue: mspController
-                        .batchTimingEndController, // Make the field read-only to prevent manual input
-                    //suffixIcon: Icon(Icons.arrow_drop_down), // Add dropdown icon
-                    onChanged: mspController.setEndingTiming,
-                    hintText: 'Select',
-                     readonly: true,
-                    onTap: () async {
-                      // Show time picker and pass the current context
-                      print("start time");
-                      await _showTimePicker(context, isStartTime: true);
-                    }, controller: mspController.batchTimingEnd,
-                  ),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding:
+            //       const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+            //   child: Column(
+            //     children: [
+            //       Row(
+            //         children: [
+            //           const Text(
+            //             'Time out',
+            //             style: TextStyle(
+            //               fontSize: 14,
+            //               fontWeight: FontWeight.w500,
+            //               color: Colors.black,
+            //             ),
+            //           ),
+            //           Text(
+            //             '*',
+            //             style: GoogleFonts.nunito(
+            //               fontSize: 18,
+            //               fontWeight: FontWeight.w600,
+            //               color: Colors.red.withOpacity(0.6),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //       CommonInputField(
+            //         // title: 'Batch Timing Start',
+            //         controllerValue: mspController.batchTimingEndController,
+            //         selectedValue: mspController
+            //             .batchTimingEndController, // Make the field read-only to prevent manual input
+            //         //suffixIcon: Icon(Icons.arrow_drop_down), // Add dropdown icon
+            //         onChanged: mspController.setEndingTiming,
+            //         hintText: 'Select',
+            //          readonly: true,
+            //         onTap: () async {
+            //           // Show time picker and pass the current context
+            //           print("start time");
+            //           await _showTimePicker(context, isStartTime: true);
+            //         }, controller: mspController.batchTimingEnd,
+            //       ),
+            //     ],
+            //   ),
+            // ),
              Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
@@ -251,38 +257,38 @@ class AddMspScreen extends StatelessWidget {
                 ],
               ),
             ),
-              Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      const Text(
-                        'Remarks',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                  CommonInputField(
-                    // title: 'Batch name',
-                    controllerValue: mspController.remarksController,
-                    selectedValue: mspController.remarksController,
-                    keyboardType: TextInputType.text,
-                    hintText: 'Enter here...',
-                    onTap: () {}, controller: mspController.remarks,
-                  ),
-                ],
-              ),
-            ),
+            //   Padding(
+            //   padding:
+            //       const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+            //   child: Column(
+            //     children: [
+            //       Row(
+            //         children: [
+            //           const Text(
+            //             'Remarks',
+            //             style: TextStyle(
+            //               fontSize: 14,
+            //               fontWeight: FontWeight.w500,
+            //               color: Colors.black,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //       CommonInputField(
+            //         // title: 'Batch name',
+            //         controllerValue: mspController.remarksController,
+            //         selectedValue: mspController.remarksController,
+            //         keyboardType: TextInputType.text,
+            //         hintText: 'Enter here...',
+            //         onTap: () {}, controller: mspController.remarks,
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SingleButton(
               btnName: 'Add',
               onTap: () {
-              // mspController.addHoliday(context);
+               mspController.addMSP(context,id,batchId);
               },
             )
           ],

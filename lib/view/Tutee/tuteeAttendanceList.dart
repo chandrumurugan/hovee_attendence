@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/msp_controller.dart';
 import 'package:hovee_attendence/controllers/tutorsStudentAttendanceList.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
+import 'package:hovee_attendence/view/add_msp_screen.dart';
 import 'package:hovee_attendence/view/dashBoard.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
@@ -21,6 +23,7 @@ class TuteeAttendanceList extends StatelessWidget {
 
   TuteeAttendanceList({super.key, required this.type})
       : controller = Get.put(StudentAttendanceController());
+      final MspController mspController = Get.put(MspController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -398,74 +401,92 @@ class TuteeAttendanceList extends StatelessWidget {
           ),
         ),
         const Divider(),
-        Obx(() {
-          // Check if attendance data is available and load it dynamically
-          if (controller.isLoadingList.value) {
-            return const CircularProgressIndicator();
-          } else if (controller.dataTutee?.attendanceDetails != null &&
-              controller.dataTutee!.attendanceDetails!.isNotEmpty) {
-            return ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: controller.dataTutee!.attendanceDetails!.length,
-              itemBuilder: (context, index) {
-                final attendance =
-                    controller.dataTutee!.attendanceDetails![index];
-
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0, vertical: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Name
-                      Expanded(
-                        child: Text(attendance.punchInDate ?? '',
-                            style: GoogleFonts.nunito(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black)),
-                      ),
-                      // Time In
-                      Expanded(
-                        child: attendance.punchInTime != null
-                            ? Padding(
-                                padding: const EdgeInsets.only(right: 20),
-                                child: Image.asset(
-                                  "assets/appbar/check.png",
-                                  height: 25,
-                                  width: 25,
-                                ),
-                              )
-                            : const Text(" - "),
-                      ),
-                      // Time Out
-                      Expanded(
-                        child: attendance.punchOutTime != null
-                            ? Padding(
-                                padding: const EdgeInsets.only(right: 20),
-                                child: Image.asset(
-                                  "assets/appbar/check.png",
-                                  height: 25,
-                                  width: 25,
-                                ),
-                              )
-                            : const Text(" - "),
-                      ),
-                    ],
+      Obx(() {
+  // Check if attendance data is available and load it dynamically
+  if (controller.isLoadingList.value) {
+    return const CircularProgressIndicator();
+  } else if (controller.dataTutee?.attendanceDetails != null &&
+      controller.dataTutee!.attendanceDetails!.isNotEmpty) {
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: controller.dataTutee!.attendanceDetails!.length,
+      itemBuilder: (context, index) {
+        final attendance = controller.dataTutee!.attendanceDetails![index];
+          
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Name
+              Expanded(
+                child: Text(
+                  attendance.punchInDate ?? '',
+                  style: GoogleFonts.nunito(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
                   ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return const Divider(); // Divider between items except the last one
-              },
-            );
-          } else {
-            return const Text(
-                'No attendance data available for the selected date.');
-          }
-        }),
+                ),
+              ),
+              // Time In
+              Expanded(
+                child: attendance.punchInTime != null &&
+                        attendance.punchInTime!.isNotEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Image.asset(
+                          "assets/appbar/check.png",
+                          height: 25,
+                          width: 25,
+                        ),
+                      )
+                    : IconButton(
+                        icon: const Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () {
+                          // Handle edit action for punch in time
+                         mspController.navigateToAddHolidatScreen();
+                          print('Edit Punch In Time for index $index');
+                        },
+                      ),
+              ),
+              // Time Out
+              Expanded(
+                child: attendance.punchOutTime != null &&
+                        attendance.punchOutTime!.isNotEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Image.asset(
+                          "assets/appbar/check.png",
+                          height: 25,
+                          width: 25,
+                        ),
+                      )
+                    : IconButton(
+                        icon: const Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () {
+                          // Handle edit action for punch out time
+                          Get.to(() => AddMspScreen(data: attendance.batchList, date: attendance.punchInDate!, id: attendance.batchList!.userId!, batchId: attendance.batchList!.sId!,));
+                          print('Edit Punch Out Time for index $index');
+                        },
+                      ),
+              ),
+            ],
+          ),
+        );
+      },
+      separatorBuilder: (context, index) {
+        return const Divider(); // Divider between items except the last one
+      },
+    );
+  } else {
+    return const Text(
+        'No attendance data available for the selected date.');
+  }
+}),
+
       ],
     ),
   ),

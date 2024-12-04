@@ -2,21 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/controllers/leave_controller.dart';
+import 'package:hovee_attendence/modals/getLeaveListModel.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDropDownInputField.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
 
-class TuteeAddLeaveScreen extends StatelessWidget {
-   TuteeAddLeaveScreen({super.key});
- final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
- final BatchController controller = Get.put(BatchController());
+class EditleaveScreen extends StatelessWidget {
+   final LeaveData batch;
+   EditleaveScreen({super.key, required this.batch});
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.sizeOf(context);
+     final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
+    leaveController.batchNameController.value = batch.batchDetails!.batchName ?? '';
+    leaveController.leaveTypeController.value = batch.leaveType ?? '';
+    leaveController.startDateController.text = batch.fromDate ?? '';
+    leaveController.endDateController.text = batch.endDate ?? '';
+    leaveController.reason.text=batch.reason ?? '';
+     Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
@@ -251,7 +257,7 @@ class TuteeAddLeaveScreen extends StatelessWidget {
               
               btnName: 'Add',
               onTap: () {
-               leaveController.addLeave(context);
+               leaveController.updateBatch(context,batch.sId!);
               },
             )
           ],

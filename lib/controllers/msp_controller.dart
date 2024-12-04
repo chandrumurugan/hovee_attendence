@@ -3,14 +3,16 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/modals/addHolidaymodel.dart';
+import 'package:hovee_attendence/modals/getMsplistmodel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_msp_screen.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 class MspController extends GetxController {
-  //var mspDataList = <Data1>[].obs;
+  var mspDataList = <MSPData>[].obs;
   var isLoading = true.obs;
   var batchNameController = ''.obs;
   List<String> batchName1 = [];
@@ -26,6 +28,14 @@ class MspController extends GetxController {
   final batchTiming = TextEditingController();
   final batchTimingEnd = TextEditingController();
   var batchTimingEndController = ''.obs;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    _clearData();
+    fetchBatchList();
+  }
 
   bool validateFields(BuildContext context) {
     validationMessages.clear();
@@ -47,10 +57,10 @@ class MspController extends GetxController {
       SnackBarUtils.showErrorSnackBar(context, 'Batch timing is required');
       return false;
     }
-    if (batchTimingEnd.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Batch timing End is required');
-      return false;
-    }
+    // if (batchTimingEnd.text.isEmpty) {
+    //   SnackBarUtils.showErrorSnackBar(context, 'Batch timing End is required');
+    //   return false;
+    // }
     if (reason.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(context, 'Reason name is required');
       return false;
@@ -82,23 +92,23 @@ class MspController extends GetxController {
     }
   }
 
-  // void fetchBatchList({String searchTerm = ''}) async {
-  //   try {
-  //     isLoading(true);
-  //     var holidayResponse = await WebService.fetchMSPDataList(
-  //         searchTerm); // Pass the searchTerm to the API
+  void fetchBatchList({String searchTerm = ''}) async {
+    try {
+      isLoading(true);
+      var holidayResponse = await WebService.fetchMSPDataList(
+          searchTerm); // Pass the searchTerm to the API
 
-  //     if (holidayResponse.data != null) {
-  //       holidayDataList.value = holidayResponse.data!;
-  //     }
-  //   } catch (e) {
-  //     // Handle errors if needed
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
+      if (holidayResponse.data != null) {
+        mspDataList.value = holidayResponse.data!;
+      }
+    } catch (e) {
+      // Handle errors if needed
+    } finally {
+      isLoading(false);
+    }
+  }
 
-  void addMSP(BuildContext context) async {
+  void addMSP(BuildContext context,String tutorId,batchId) async {
     if (validateFields(context)) {
       isLoading.value = true;
       try {
@@ -106,30 +116,29 @@ class MspController extends GetxController {
           // 'branch_short_name': branchShortName.text,
           "type": "N",
           "course_name": "",
-          "courseId": "",
-          "batchId": "",
-          "batch_name": "",
-          "date": "",
-          "reason": "",
-          "tutorId": "",
-          "status": "Pending", //Aprroved ,Rejected,Pending
+          "courseId": "674f1811a721cbb367a148b0",
+          "batchId": batchId,
+          "batch_name":batchNameController.value,
+          "date": startDateController.text,
+          "reason": reason.text,
+          "tutorId": tutorId,
+          "status": "Pending",
           "mspId": ""
         };
 
-        final AddHolidayModel? response =
-            await WebService.addMSP(batchData);
+        final AddHolidayModel? response = await WebService.addMSP(batchData);
 
         if (response != null && response.success == true) {
-          Get.back();
+          Get.offAll(DashboardScreen(rolename: 'Tutee',));
           onInit();
           _clearData();
           SnackBarUtils.showSuccessSnackBar(
             context,
-            'Holiday added successfully',
+            'MSP added successfully',
           );
         } else {
           SnackBarUtils.showErrorSnackBar(
-              context, response?.message ?? 'Failed to add holiday');
+              context, response?.message ?? 'Failed to add MSP');
         }
       } catch (e) {
         SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
@@ -216,6 +225,8 @@ class MspController extends GetxController {
   void _clearData() {
     batchNameController.value = '';
     startDateController.clear();
+    batchTiming.clear();
+    reason.clear();
   }
 
   void setBatchName(String value) {
@@ -228,6 +239,6 @@ class MspController extends GetxController {
   void setEndingTiming(String value) => batchTimingEndController.value = value;
 
   void navigateToAddHolidatScreen() {
-    Get.to(() => AddMspScreen());
+    // Get.to(() => AddMspScreen());
   }
 }

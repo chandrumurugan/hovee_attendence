@@ -1,15 +1,15 @@
-class getGroupedEnrollmentByBatch {
+class getGroupedLeaveByBatch {
   int? statusCode;
-  List<Data1>? data;
+  List<Data>? data;
 
-  getGroupedEnrollmentByBatch({this.statusCode, this.data});
+  getGroupedLeaveByBatch({this.statusCode, this.data});
 
-  getGroupedEnrollmentByBatch.fromJson(Map<String, dynamic> json) {
+  getGroupedLeaveByBatch.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     if (json['data'] != null) {
-      data = <Data1>[];
+      data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data1.fromJson(v));
+        data!.add(new Data.fromJson(v));
       });
     }
   }
@@ -24,7 +24,7 @@ class getGroupedEnrollmentByBatch {
   }
 }
 
-class Data1 {
+class Data {
   String? rollNumber;
   String? startDate;
   String? endDate;
@@ -37,7 +37,7 @@ class Data1 {
   String? courseCode;
   String? courseId;
 
-  Data1(
+  Data(
       {this.rollNumber,
       this.startDate,
       this.endDate,
@@ -50,7 +50,7 @@ class Data1 {
       this.courseCode,
       this.courseId});
 
-  Data1.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     rollNumber = json['rollNumber'];
     startDate = json['startDate'];
     endDate = json['endDate'];

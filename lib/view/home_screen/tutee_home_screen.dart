@@ -20,6 +20,8 @@ import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
+import 'package:hovee_attendence/view/leave_screen.dart';
+import 'package:hovee_attendence/view/msp_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
@@ -410,6 +412,16 @@ class TuteeHome extends StatelessWidget {
                                               type: 'Tutee',
                                             ),
                                         arguments: "Tutee");
+                                  }
+                                  if (item.name == 'Leave') {
+                                    Get.to(() =>  TuteeLeaveScreen(
+                                          type: 'Tutee',
+                                        ));
+                                  }
+                                  if (item.name == 'Miss Punch') {
+                                    Get.to(() =>  MspScreen(
+                                          type: 'Tutee',
+                                        ));
                                   }
                                 },
                                 child: Card(
