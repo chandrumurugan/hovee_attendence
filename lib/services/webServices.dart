@@ -30,6 +30,7 @@ import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/modals/getbatchlocation.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
+import 'package:hovee_attendence/modals/guestHome_modal.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
@@ -766,6 +767,25 @@ class WebService {
     } else {
       throw Exception('Failed to load attendanceCourse list');
     }
+  }
+
+  static Future<GuestUserModal?> fetchGuestUser() async {
+    final url = Uri.parse('${baseUrl}home/getGuestuserHomeDashboard');
+
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+// Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return GuestUserModal.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+
   }
 
    static Future<getGroupedEnrollmentByAttendanceTutee?>

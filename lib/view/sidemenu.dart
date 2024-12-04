@@ -34,9 +34,9 @@ class SideMenu extends StatelessWidget {
           children: [
             SidemenuHeader(
               isGuest: isGuest,
-              userName: 'Justin Joe',
-              wowID: '1234567',
-              rating: '3/5',
+              userName:isGuest ? "Guest" : 'Justin Joe',
+              wowID:isGuest ? "xxxxx" : '1234567',
+              rating: isGuest ? '0/5' :'3/5',
             ),
             const SizedBox(
               height: 10,

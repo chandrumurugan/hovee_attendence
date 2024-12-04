@@ -12,6 +12,7 @@ import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/validateTokenModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
+import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -123,7 +124,8 @@ class SplashController extends GetxController {
   }
       
     } else {
-      Get.offAll(() => const LoginSignUp());
+      Get.to(()=>GuestHomeScreen());
+      // Get.offAll(() => const LoginSignUp());
     }
   } catch (e) {
     Logger().e(e);

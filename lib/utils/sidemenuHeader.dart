@@ -83,6 +83,7 @@ class SidemenuHeader extends StatelessWidget {
               ),
               if (authController.otpResponse.value != null)
                 Text(
+                  isGuest ? "Guest" :
                   "${authController.loginData!.firstName} ${authController.loginData!.lastName}",
                   style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w600,
@@ -107,6 +108,7 @@ class SidemenuHeader extends StatelessWidget {
                       width: 180,
                       // width: MediaQuery.of(context).size.width * 0.02,
                       child: Text(
+                        isGuest ? "xxxxxxx" :
                         '${authController.loginData!.wowId}',
                         overflow: TextOverflow.clip,
                         style: GoogleFonts.nunito(
