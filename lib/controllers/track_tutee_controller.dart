@@ -22,18 +22,20 @@ class TrackTuteeLocationController extends GetxController {
 
   var distance = 0.0.obs;
   var polyline = <Polyline>[].obs;
-    var polylineCoordinates = <LatLng>[].obs;
+  var polylineCoordinates = <LatLng>[].obs;
   var markers = <Marker>{}.obs;
   var name;
 
   var selectedBatchIN = Rxn<Data1>();
 
-   var isBatchSelected = false.obs;
+  var isBatchSelected = false.obs;
 
-   var batchList = <Data1>[].obs;
+  var batchList = <Data1>[].obs;
 
-    var isLoading = true.obs;
-   var target = Rxn<LatLng>();
+  var isLoading = true.obs;
+  var target = Rxn<LatLng>();
+
+  var fetchingRoute = false.obs;
 
   @override
   void onInit() {
@@ -42,7 +44,6 @@ class TrackTuteeLocationController extends GetxController {
     Logger().i("getting valiues fro argumets==>${argumentData[0]['userId']}");
     //fetchGroupedEnrollmentByBatchListItem();
     getTuteeLocation();
-
   }
 
   Stream<Map<String, dynamic>> getTuteeLiveLocation(String userId) {
@@ -51,22 +52,37 @@ class TrackTuteeLocationController extends GetxController {
 
   void getTuteeLocation() async {
     try {
-         getTuteeLiveLocation("${argumentData[0]['userId']}").listen((data) async {
-      if (data['location'] != null) {
-        LatLng location =
-            LatLng(data['location']['lat'], data['location']['lng']);
-        tuteeLocation.value = location;
-        //targetLocation.value = target.value;
-       name= data['name'];
-        updateMarkers(name);
+      getTuteeLiveLocation("${argumentData[0]['userId']}").listen((data) async {
+        if (data['location'] != null) {
+          LatLng location =
+              LatLng(data['location']['lat'], data['location']['long']);
+          tuteeLocation.value = location;
+
+          name = data['name'];
+          updateMarkers(name);
           await fetchRoadRoute();
-        updateDistance();
-      }
-    }); 
+          updateDistance();
+          _checkRouteDeviation();
+        }
+      });
     } catch (e) {
-      print(e); 
+      print(e);
     }
- 
+  }
+
+  void _checkRouteDeviation() {
+    if (tuteeLocation.value != null && polylineCoordinates.isNotEmpty) {
+      final distanceFromRoute = Geolocator.distanceBetween(
+        tuteeLocation.value!.latitude,
+        tuteeLocation.value!.longitude,
+        polylineCoordinates.first.latitude,
+        polylineCoordinates.first.longitude,
+      );
+
+      if (distanceFromRoute > 50) {
+        fetchRoadRoute(); // Fetch a new route if deviation exceeds 50 meters
+      }
+    }
   }
 
   Future<void> updateMarkers(String name) async {
@@ -75,24 +91,23 @@ class TrackTuteeLocationController extends GetxController {
         Marker(
           markerId: const MarkerId("student"),
           icon: await const MarkerWidget(
-          imagePath: 'assets/appbar/Tutee_location_marker_v3.svg',
-        ).toBitmapDescriptor(
-          logicalSize: const Size(150, 150),
-          imageSize: const Size(400, 400),
-        ),
+            imagePath: 'assets/appbar/Tutee_location_marker_v3.svg',
+          ).toBitmapDescriptor(
+            logicalSize: const Size(150, 150),
+            imageSize: const Size(400, 400),
+          ),
           position: tuteeLocation.value!,
-          infoWindow:  InfoWindow(title: name),
-          
+          infoWindow: InfoWindow(title: name),
         ),
         Marker(
           markerId: const MarkerId("target"),
-           icon: await const MarkerWidget(
-           rotationAngle: 60 * (3.14159 / 120),
-                imagePath: 'assets/appbar/Tutor_location_marker_v2.svg')
-            .toBitmapDescriptor(
-          logicalSize: const Size(150, 150),
-          imageSize: const Size(400, 400),
-        ),
+          icon: await const MarkerWidget(
+                  rotationAngle: 60 * (3.14159 / 120),
+                  imagePath: 'assets/appbar/Tutor_location_marker_v2.svg')
+              .toBitmapDescriptor(
+            logicalSize: const Size(150, 150),
+            imageSize: const Size(400, 400),
+          ),
           position: targetLocation.value,
           infoWindow: const InfoWindow(title: "Tution Location"),
         ),
@@ -126,9 +141,13 @@ class TrackTuteeLocationController extends GetxController {
     }
   }
 
-    Future<void> fetchRoadRoute() async {
+  Future<void> fetchRoadRoute() async {
+    if (fetchingRoute.value) return;
+
+    fetchingRoute.value = true;
     try {
-      const apiKey = "AIzaSyCe2-5wVLxW2xSeQpqVzVCEt9n3ppUAwXA"; // Replace with your API key
+      const apiKey =
+          "AIzaSyCe2-5wVLxW2xSeQpqVzVCEt9n3ppUAwXA"; // Replace with your API key
       final origin =
           "${tuteeLocation.value!.latitude},${tuteeLocation.value!.longitude}";
       final destination =
@@ -151,7 +170,7 @@ class TrackTuteeLocationController extends GetxController {
       }
     } catch (e) {
       print("Error fetching directions: $e");
-    }
+    } finally {}
   }
 
   List<LatLng> decodePolyline(String encoded) {
@@ -186,7 +205,7 @@ class TrackTuteeLocationController extends GetxController {
     return polyline;
   }
 
-   void selectBatch(Data1 batch) {
+  void selectBatch(Data1 batch) {
     selectedBatchIN.value = batch;
   }
 
@@ -202,7 +221,7 @@ class TrackTuteeLocationController extends GetxController {
         // isLoading(false); // Add batches to the observable list
         if (batchList.isNotEmpty) {
           selectedBatchIN.value = batchList.first;
-          fetchBatchLocationList(selectedBatchIN.value!.batchId! );
+          fetchBatchLocationList(selectedBatchIN.value!.batchId!);
           isBatchSelected.value = true;
           print(selectedBatchIN.value);
         }
@@ -211,38 +230,36 @@ class TrackTuteeLocationController extends GetxController {
       // Handle any errors
       isLoading(false);
       print('Error fetching batches: $e');
-    } finally{
-        isLoading(false);
-
+    } finally {
+      isLoading(false);
     }
   }
 
   void fetchBatchLocationList(String batchId) async {
-  try {
-    isLoading(true);
+    try {
+      isLoading(true);
 
-    var batchLocationResponse = await WebService.fetchBatchLocation(batchId);
+      var batchLocationResponse = await WebService.fetchBatchLocation(batchId);
 
-    if (batchLocationResponse?.data != null) {
-      // Access location and coordinates
-      var location = batchLocationResponse!.data!.location;
-      if (location != null && location.coordinates != null) {
-        double latitude = location.coordinates![1];
-        double longitude = location.coordinates![0];
-        Logger().i("Latitude: $latitude, Longitude: $longitude");
-         target.value = LatLng(latitude, longitude);
-        targetLocation.value=target.value!;
+      if (batchLocationResponse?.data != null) {
+        // Access location and coordinates
+        var location = batchLocationResponse!.data!.location;
+        if (location != null && location.coordinates != null) {
+          double latitude = location.coordinates![1];
+          double longitude = location.coordinates![0];
+          Logger().i("Latitude: $latitude, Longitude: $longitude");
+          target.value = LatLng(latitude, longitude);
+          targetLocation.value = target.value!;
+        } else {
+          Logger().w("Location or coordinates are null");
+        }
       } else {
-        Logger().w("Location or coordinates are null");
+        Logger().w("Batch location response data is null");
       }
-    } else {
-      Logger().w("Batch location response data is null");
+    } catch (e) {
+      Logger().e("Error: $e");
+    } finally {
+      isLoading(false);
     }
-  } catch (e) {
-    Logger().e("Error: $e");
-  } finally {
-    isLoading(false);
   }
-}
-
 }

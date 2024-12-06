@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
@@ -99,91 +100,47 @@ class TuteeHomeController extends GetxController {
   final EnrollmentController enrollmentController =
       Get.put(EnrollmentController());
 
+  LocationPermission? permission;
+  Position? lastKnownLocation;
+
   var notificationCount = 0.obs; // Observable
 
-   //final NotificationController noticontroller = Get.put(NotificationController());
+  //final NotificationController noticontroller = Get.put(NotificationController());
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    startTrackingTuteeLocation();
     fetchHomeDashboardTuteeList();
     //fetchNotificationsType();
     fetchAttendanceCourseList();
   }
 
-  // void fetchNotificationsType() async {
-  //   isLoading(true);
+  //getlocationupdates of tutee
+  Future<void> startTrackingTuteeLocation() async {
+    bool serviceEnabled;
+    try {
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        bool locationServiceRequest = await Geolocator.openLocationSettings();
+        if (!locationServiceRequest) {
+          throw 'Location services are disabled.';
+        }
+        // Wait for the user to enable location services
+        await Future.delayed(const Duration(seconds: 1));
+        // throw 'Location services are disabled.';
+      }
 
-  //   var response = await WebService.fetchNotificationsType();
-
-  //   if (response.isNotEmpty) {
-  //     categories.value= response;
-  //     isLoading(false);
-  //     //  final storage = GetStorage();
-  //     // role =storage.read('role');
-  //      SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     role = prefs.getString('Rolename') ?? '';
-  //     filteredNotifications('Enquiry',role!,false);
-  //   } else {
-  //     isLoading(false);
-  //   }
-  // }
-
-//   void filteredNotifications(String type, String role, bool isRead) async {
-//     isLoading(true);
-//     var batchData = {"role": role, "type": type, "isRead ": false};
-//     var response = await WebService.getNotifications(batchData);
-//     if (response != null && response!.statusCode == 200) {
-//       notificationList.value =response.data!;
-//       notificationCount.value=response.unreadCount!;
-//       isLoading(false);
-//     } else {
-//       notificationList.clear();
-//       isLoading(false);
-//     }
-//   }
-
-//   void fetchMarkedNotification(String notificationId, String type, String msgtype) async {
-//   isLoading(true);
-//   var batchData = {"notificationId": notificationId};
-//   var response = await WebService.FetchMarkedNotification(batchData);
-//   final storage = GetStorage();
-
-//   if (response != null && response.statusCode == 200) {
-//     notificationData.value = response.data!;
-
-//     // Extract only the code using a regular expression
-//     final message = notificationData.value!.message ?? "";
-//     final regex = RegExp(r'\b\d{6}\b'); // Matches a 6-digit number
-//     final match = regex.firstMatch(message);
-
-//     if (match != null) {
-//       otpController.text = match.group(0)!; // Store only the code in otpController
-//       storage.write('otpCode', otpController.text); // Store OTP in GetStorage
-//       print("Stored OTP: ${otpController.text}");
-//     } else {
-//       otpController.text = ""; // Handle if code is not found
-//     }
-
-//     isLoading(false);
-
-//     if (msgtype == 'Enquiry') {
-//       Get.off(() => Tutorenquirlist(type: role!, fromBottomNav: true,));
-//     } else {
-//       enrollmentController.onInit();
-//       Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,));
-//     }
-//   } else {
-//     notificationList.clear();
-//     isLoading(false);
-//   }
-// }
-
-  //   void setSelectedIndex(int index) {
-
-  //   selectedIndex.value = index; // Update selected index
-  // }
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        permission = await Geolocator.requestPermission();
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   void fetchAttendanceCourseList() async {
     try {
@@ -208,22 +165,41 @@ class TuteeHomeController extends GetxController {
       isLoading(true);
       var homeDashboardResponse = await WebService.fetchHomeDashboardList();
       if (homeDashboardResponse != null) {
-          // prefs.setString(
-          //                                                   'Rolename',
-          //                                                  homeDashboardResponse.roleName??
-          //                                                       '');
+        // prefs.setString(
+        //                                                   'Rolename',
+        //                                                  homeDashboardResponse.roleName??
+        //                                                       '');
         homeDashboardNavList.value = homeDashboardResponse.navbarItems!;
         studentDetails.value = homeDashboardResponse.studentDetails!;
         // Extracting notification count
         //var studentDetails = homeDashboardResponse!.studentDetails;
+        print("ghetting value1234567890==");
         if (studentDetails.value != null && studentDetails.value.isNotEmpty) {
           // Getting the unreadNotificationCount of the first student
           homeDashboardCourseList.value = studentDetails[0].courseList!;
-          await FirestoreService.updateUserLocation(
-              userId: studentDetails[0].wowId.toString() ?? "",
-              username:
-                  "${studentDetails[0].firstName} ${studentDetails[0].lastName}", lat: '', lng: '');
-          print('hi rahul $notificationCount');
+
+          // if (permission == LocationPermission.whileInUse ||
+          //     permission == LocationPermission.always) {
+            Geolocator.getPositionStream(
+                locationSettings: const LocationSettings(
+              accuracy: LocationAccuracy.high,
+              distanceFilter: 10,
+              // timeLimit: Duration(seconds: 10),
+            )).listen((Position position) async {
+              if (_shouldUpdateLocation(position)) {
+                 lastKnownLocation = position;
+                FirestoreService.updateTuteeLocation(
+                    userId: studentDetails[0].wowId.toString(),
+                    lat: position.latitude,
+                    long: position.longitude,
+                    username:
+                        "${studentDetails[0].firstName} ${studentDetails[0].lastName}");
+              }
+            });
+      
+          // }
+
+      
         }
       }
     } catch (e) {
@@ -231,5 +207,18 @@ class TuteeHomeController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  bool _shouldUpdateLocation(Position position) {
+    if (lastKnownLocation == null) return true;
+
+    final distance = Geolocator.distanceBetween(
+      lastKnownLocation!.latitude,
+      lastKnownLocation!.longitude,
+      position.latitude,
+      position.longitude,
+    );
+
+    return distance > 10; // Update only if moved >10m
   }
 }
