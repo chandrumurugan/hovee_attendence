@@ -8,7 +8,10 @@ import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
+import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
+import 'package:hovee_attendence/view/leave_screen.dart';
+import 'package:hovee_attendence/view/msp_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,7 +57,7 @@ class NotificationController extends GetxController {
       // role =storage.read('role');
        SharedPreferences prefs = await SharedPreferences.getInstance();
        role = prefs.getString('Rolename') ?? '';
-      filteredNotifications('Enquiry',role!,false);
+      filteredNotifications('Announcements',role!,false);
     } else {
       isLoading(false);
     }
@@ -102,10 +105,19 @@ class NotificationController extends GetxController {
 
     if (msgtype == 'Enquiry') {
       Get.off(() => Tutorenquirlist(type: role!, fromBottomNav: true,));
-    } else {
+    }  if (msgtype == 'Enrollment') {
       enrollmentController.onInit();
       Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,));
     }
+     if (msgtype == 'Leave') {
+      Get.off(() => TuteeLeaveScreen(type: role!, fromBottomNav: true,));
+    } 
+     if (msgtype == 'Miss Punch') {
+      Get.off(() => MspScreen(type: role!, fromBottomNav: true,));
+    } 
+      if (msgtype == 'Announcements') {
+      Get.off(() => AnnouncementScreen(type: role!,));
+    } 
   } else {
     notificationList.clear();
     isLoading(false);

@@ -70,13 +70,15 @@ class StatusCounts {
   int? leave;
   int? partialAttendance;
   int? totalStudents;
+  int? missPunch;
 
   StatusCounts(
       {this.present,
       this.absent,
       this.leave,
       this.partialAttendance,
-      this.totalStudents});
+      this.totalStudents,
+      this.missPunch});
 
   StatusCounts.fromJson(Map<String, dynamic> json) {
     present = json['Present'];
@@ -84,6 +86,7 @@ class StatusCounts {
     leave = json['Leave'];
     partialAttendance = json['Partial Attendance'];
     totalStudents = json['totalStudents'];
+    missPunch = json['Miss Punch'];
   }
 
   Map<String, dynamic> toJson() {
@@ -93,6 +96,7 @@ class StatusCounts {
     data['Leave'] = this.leave;
     data['Partial Attendance'] = this.partialAttendance;
     data['totalStudents'] = this.totalStudents;
+      data['Miss Punch'] = this.missPunch;
     return data;
   }
 }

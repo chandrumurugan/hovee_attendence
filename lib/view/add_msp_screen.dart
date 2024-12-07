@@ -14,8 +14,8 @@ import 'package:hovee_attendence/widget/single_button.dart';
 class AddMspScreen extends StatelessWidget {
  final BatchList? data;
  final String date;
- final String id,batchId;
-   AddMspScreen({super.key, required this.data, required this.date, required this.id, required this.batchId,});
+ final String id,batchId,attendanceID;
+   AddMspScreen({super.key, required this.data, required this.date, required this.id, required this.batchId, required this.attendanceID,});
   final MspController mspController = Get.put(MspController());
    final BatchController controller = Get.put(BatchController());
   @override
@@ -288,7 +288,7 @@ class AddMspScreen extends StatelessWidget {
             SingleButton(
               btnName: 'Add',
               onTap: () {
-               mspController.addMSP(context,id,batchId);
+               mspController.addMSP(context,id,batchId,attendanceID);
               },
             )
           ],

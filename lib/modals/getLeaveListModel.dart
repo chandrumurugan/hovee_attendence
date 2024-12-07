@@ -43,6 +43,8 @@ class LeaveData {
   String? createdAt;
   String? updatedAt;
   BatchDetails? batchDetails;
+  EnrollmentDetails? enrollmentDetails;
+  StudentDetails? studentDetails;
 
   LeaveData(
       {this.sId,
@@ -59,7 +61,9 @@ class LeaveData {
       this.isDeleted,
       this.createdAt,
       this.updatedAt,
-      this.batchDetails});
+      this.batchDetails,
+      this.enrollmentDetails,
+      this.studentDetails});
 
   LeaveData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -78,6 +82,12 @@ class LeaveData {
     updatedAt = json['updated_at'];
     batchDetails = json['batchDetails'] != null
         ? new BatchDetails.fromJson(json['batchDetails'])
+        : null;
+    enrollmentDetails = json['enrollmentDetails'] != null
+        ? new EnrollmentDetails.fromJson(json['enrollmentDetails'])
+        : null;
+    studentDetails = json['studentDetails'] != null
+        ? new StudentDetails.fromJson(json['studentDetails'])
         : null;
   }
 
@@ -99,6 +109,12 @@ class LeaveData {
     data['updated_at'] = this.updatedAt;
     if (this.batchDetails != null) {
       data['batchDetails'] = this.batchDetails!.toJson();
+    }
+    if (this.enrollmentDetails != null) {
+      data['enrollmentDetails'] = this.enrollmentDetails!.toJson();
+    }
+    if (this.studentDetails != null) {
+      data['studentDetails'] = this.studentDetails!.toJson();
     }
     return data;
   }
@@ -189,6 +205,47 @@ class BatchDetails {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['__v'] = this.iV;
+    return data;
+  }
+}
+
+class EnrollmentDetails {
+  String? sId;
+  String? rollNumber;
+
+  EnrollmentDetails({this.sId, this.rollNumber});
+
+  EnrollmentDetails.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    rollNumber = json['rollNumber'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['rollNumber'] = this.rollNumber;
+    return data;
+  }
+}
+
+class StudentDetails {
+  String? sId;
+  String? firstName;
+  String? lastName;
+
+  StudentDetails({this.sId, this.firstName, this.lastName});
+
+  StudentDetails.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    firstName = json['first_name'];
+    lastName = json['last_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['first_name'] = this.firstName;
+    data['last_name'] = this.lastName;
     return data;
   }
 }

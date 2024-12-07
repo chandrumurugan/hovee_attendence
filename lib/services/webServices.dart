@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/config/appConfig.dart';
+import 'package:hovee_attendence/modals/addAnnounmentModel.dart';
 import 'package:hovee_attendence/modals/addClassData_model.dart';
 import 'package:hovee_attendence/modals/addEnrollmentData_model.dart';
 import 'package:hovee_attendence/modals/addHolidaymodel.dart';
+import 'package:hovee_attendence/modals/addMspModel.dart';
 import 'package:hovee_attendence/modals/add_course_data_model.dart';
 import 'package:hovee_attendence/modals/add_leave_model.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
@@ -12,6 +14,8 @@ import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/deleteHolidayModel.dart';
 import 'package:hovee_attendence/modals/deletebatch_model.dart';
 import 'package:hovee_attendence/modals/enrollment_success_model.dart';
+import 'package:hovee_attendence/modals/getAnnounmentBatchList_model.dart';
+import 'package:hovee_attendence/modals/getAnnounment_model.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
@@ -28,6 +32,7 @@ import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getLeaveListModel.dart';
 import 'package:hovee_attendence/modals/getMsplistmodel.dart';
 import 'package:hovee_attendence/modals/getNotification_model.dart';
+import 'package:hovee_attendence/modals/getParentvalidateCodeModel.dart';
 import 'package:hovee_attendence/modals/getQrcode_model.dart';
 import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
@@ -37,11 +42,14 @@ import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
 import 'package:hovee_attendence/modals/guestHome_modal.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
+import 'package:hovee_attendence/modals/parentLoginDataModel.dart';
+import 'package:hovee_attendence/modals/parentLoginModel.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
 import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
 import 'package:hovee_attendence/modals/submitEnquirModel.dart';
 import 'package:hovee_attendence/modals/updateEnquire_model.dart';
+import 'package:hovee_attendence/modals/updateLeaveModel.dart';
 import 'package:hovee_attendence/modals/validateTokenModel.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
@@ -1302,7 +1310,7 @@ class WebService {
     var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
-      body: jsonEncode(data),
+      body: json.encode(data),
       headers: {
         'Authorization': 'Bearer $token', // Add the authorization token here
         'Content-Type': 'application/json',
@@ -1317,7 +1325,7 @@ class WebService {
   }
 
 
-  static Future<AddHolidayModel?> addMSP(
+  static Future<addMspModel?> addMSP(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}tutor/addMsp"); // Replace with the actual endpoint
@@ -1338,7 +1346,7 @@ class WebService {
         
       );
       if (response.statusCode == 200) {
-        return AddHolidayModel.fromJson(json.decode(response.body));
+        return addMspModel.fromJson(json.decode(response.body));
       } else {
         return null;
       }
@@ -1444,6 +1452,260 @@ class WebService {
       return deleteBatchDataModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load Notification list');
+    }
+  }
+
+  static Future<updateLeaveModel ?> updateLeave(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}leave/updateLeave"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return updateLeaveModel .fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<getAnnouncementBatchListModel> fetchAnnounmentsBatchList() async {
+    final url = Uri.parse('${baseUrl}home/getAnnouncementBatchList');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+
+    final reponse = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+    if (reponse.statusCode == 200) {
+       return getAnnouncementBatchListModel.fromJson(json.decode(reponse.body));
+    } else {
+      throw Exception('Failed to load course list');
+      //  throw Exception('Failed to fetch course category list');
+    }
+  }
+
+
+    static Future<getAnnouncementModel> fetchAnnounmentsList(String searchitems) async {
+    final url = Uri.parse('$baseUrl/home/getAnnouncement');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+     var data = {"searchKey": searchitems};
+    final response = await http.post(
+      url, // Replace with the actual API URL
+       body: jsonEncode(data),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return getAnnouncementModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load course list');
+    }
+  }
+
+  static Future<getHolidayDataModel> fetchHoliDataTuteeList(String searchitems) async {
+    final url = Uri.parse('${baseUrl}tutor/getHolidayTuteeList');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    var data = {"searchKey": searchitems};
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: jsonEncode(data),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+     print(token);
+    if (response.statusCode == 200) {
+      return getHolidayDataModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load batch list');
+    }
+  }
+
+
+  static Future<addAnnouncementModel?> addAnnoument(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}home/addAnnouncement"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+    Logger().i("getting24567890avaluue==>${batchData}");
+     Logger().i("getting2456hgfujtgf0avaluue==>${token}");
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        
+      );
+      if (response.statusCode == 200) {
+        return addAnnouncementModel.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+    static Future<parentLoginModal?> parentLogin(
+      String identifiers, BuildContext context) async {
+    try {
+       SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+      var headers = {'Content-Type': 'application/json','Authorization': 'Bearer $token',};
+      var data = {"identifier": identifiers};
+      var url = Uri.parse("${baseUrl}user/generateInvitationLink");
+      
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
+      Logger().i(response.bodyBytes);
+      Logger().i(response.body);
+
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return parentLoginModal.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
+        SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<validateAndLoginParentModal?> otpParent(
+      String otp, String accountverificationtoken, BuildContext context) async {
+    try {
+      var headers = {'Content-Type': 'application/json'};
+
+      var data = {
+        "encryptedCode": accountverificationtoken,
+        "inputCode": otp
+      };
+      Logger().i(data);
+
+      var url = Uri.parse("${baseUrl}user/validateAndLoginParent");
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
+      Logger().i(response.body);
+
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return validateAndLoginParentModal.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
+         SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<RegisterModal?> RegisterParent({
+    required BuildContext context,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String dob,
+    required String phNo,
+    required String pincode,
+    required String idProof,
+  }) async {
+    try {
+      DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
+      String formattedDate1 = DateFormat('dd/MM/yyyy').format(parsedDate1);
+      var headers = {'Content-Type': 'application/json'};
+
+      var data = {
+        "first_name": firstName,
+        "last_name": lastName,
+        "email": email,
+        "dob": formattedDate1,
+        "phone_number": phNo,
+        "pincode": pincode,
+        "user_type": 2,
+        "id_proof_label": idProof
+      };
+
+      var url = Uri.parse("${baseUrl}user/registerParent");
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
+
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return RegisterModal.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
+          SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+   static Future<getParentInviteCodeModel?> getParentInviteCode(
+      String identifiers, BuildContext context) async {
+    try {
+       SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token =prefs.getString('Token') ?? "";
+      var headers = {'Content-Type': 'application/json','Authorization': 'Bearer $token',};
+      var data = {"phone_number": identifiers};
+      var url = Uri.parse("${baseUrl}user/getParentInviteCode");
+      
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
+      Logger().i(response.bodyBytes);
+      Logger().i(response.body);
+
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return getParentInviteCodeModel.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
+        SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        return null;
+      }
+    } catch (e) {
+      return null;
     }
   }
 

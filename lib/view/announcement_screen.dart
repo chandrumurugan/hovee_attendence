@@ -1,20 +1,19 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hovee_attendence/controllers/leave_controller.dart';
-import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/controllers/annoument_controller.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/widget/leave_list_container.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 
-class TuteeLeaveScreen extends StatelessWidget {
-  final String type;
-  final bool fromBottomNav;
-   TuteeLeaveScreen({super.key, required this.type, required this.fromBottomNav});
-
-final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
+class AnnouncementScreen extends StatelessWidget {
+   final String type;
+   AnnouncementScreen({super.key, required this.type});
+final AnnoumentController anoumentController = Get.put(AnnoumentController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,15 +51,13 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
                             icon: Icon(Icons.arrow_back, color: Colors.white),
                           ),
                         ],
-                      ),
-                      Image.asset(
-                        'assets/tuteeHomeImg/leave 1.png',
-                        height: 35,
-                        color: Colors.white,
-                        fit: BoxFit.contain,
-                      ),
+                       ),
+                      // Image.asset(
+                      //   'assets/headerIcons/holiday 1 (1).png',
+                      //   height: 35,
+                      // ),
                       Text(
-                        'Leave list',
+                        'Announcement list',
                         style: GoogleFonts.nunito(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -71,8 +68,7 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
                         padding: EdgeInsets.only(right: 15),
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: Text(
-                          type=='Tutor'?
-                          'Here, you can efficiently track and manage students planned leave, enabling precise scheduling and uninterrupted workflow for better organization and planning':'list your planned leaves for the upcoming year and keep everything well-organized ',
+                          'list your planned announcement for the upcoming year and keep everything well-organized',
                           overflow: TextOverflow.clip,
                           maxLines: 2,
                           style: GoogleFonts.nunito(
@@ -89,7 +85,7 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
             ),
           ),
                SearchfiltertabBar(
-            title: 'Leave List',
+            title: 'Announcement List',
             onSearchChanged: (searchTerm) {
               // Trigger the search functionality by passing the search term
               //batchController.fetchBatchList(searchTerm: searchTerm);
@@ -99,9 +95,9 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
             },
           ),
               Obx(() {
-            if (leaveController.isLoading.value) {
+            if (anoumentController.isLoading.value) {
               return Center(child: CircularProgressIndicator());
-            } else if (leaveController.leaveList.isEmpty) {
+            } else if (anoumentController.announmentList.isEmpty) {
               return Center(
                 child: Text(
                   'No list found',
@@ -116,10 +112,36 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
-                  itemCount: leaveController.leaveList.length,
+                  itemCount: anoumentController.announmentList.length,
                   itemBuilder: (context, index) {
-                    final leaveData = leaveController.leaveList[index];
-                    return LeaveListContainer(leave: leaveData, type: type,);
+                    final leaveData = anoumentController.announmentList[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Card(
+                              elevation: 10,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                              
+                                    _buildRow('Title', leaveData.title),
+                                    const SizedBox(height: 10),
+                                     _buildRow('StudentName', '${leaveData.userDetails!.firstName}  ${leaveData.userDetails!.lastName}'),
+                                    const SizedBox(height: 10),
+                                    _buildRow('BatchName', leaveData.batchList!.batchName),
+                                    const SizedBox(height: 10),
+                                    _buildRow('ClassName', '${leaveData.courseList!.className}'),
+                                    const SizedBox(height: 10),
+                                    _buildRow('Subject', leaveData.courseList!.subject),
+                                    const SizedBox(height: 10),
+                                    _buildRow('Description', leaveData.description),
+                                    
+                                  ],
+                                ),
+                              ),
+                            ),
+                    );
                   },
                 ),
               );
@@ -130,13 +152,39 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
           ),
           
           bottomNavigationBar: type == 'Tutor'
-                    ?SizedBox.fromSize()
-         : SingleCustomButtom(
-        btnName: 'Add Leave',
+                    ?
+           SingleCustomButtom(
+        btnName: 'Add Announcement',
         isPadded: false,
         onTap: () {
-         leaveController.navigateToAddBatchScreen();
+         anoumentController.navigateToAddBatchScreen();
         },
-      ),);
+      ):SizedBox.shrink());
+  }
+
+    Widget _buildRow(String title, String? value) {
+    final displayValue = title == 'Fees' ? '₹ ${value ?? 'N/A'} /month' : value ?? 'N/A';
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: Colors.black.withOpacity(0.4),
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+          ),
+        ),
+        Text(
+          displayValue,
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+          ),
+        ),
+      ],
+    );
   }
 }

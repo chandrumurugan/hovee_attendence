@@ -165,7 +165,7 @@ class AddHolidayScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    'Holiday From Date',
+                    'From Date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -206,7 +206,7 @@ class AddHolidayScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    'Holiday End Date',
+                    'End Date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

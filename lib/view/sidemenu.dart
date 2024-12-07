@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
+import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/services/firestoreService.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
+import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/utils/sidemenuHeader.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
+import 'package:hovee_attendence/view/add_annouments_screen.dart';
+import 'package:hovee_attendence/view/holiday_screen.dart';
 import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/parent/trackTuteeLocation.dart';
+import 'package:hovee_attendence/view/parent_login_screen.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,8 +31,9 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthControllers authController = Get.put(AuthControllers());
     var box = GetStorage();
-     final TuteeHomeController controller = Get.put(TuteeHomeController());
+    final TuteeHomeController controller = Get.put(TuteeHomeController());
     bool notification = true;
+    
     return SizedBox(
       width: MediaQuery.sizeOf(context).width * 0.9,
       child: Scaffold(
@@ -34,9 +42,9 @@ class SideMenu extends StatelessWidget {
           children: [
             SidemenuHeader(
               isGuest: isGuest,
-              userName:isGuest ? "Guest" : 'Justin Joe',
-              wowID:isGuest ? "xxxxx" : '1234567',
-              rating: isGuest ? '0/5' :'3/5',
+              userName: isGuest ? "Guest" : 'Justin Joe',
+              wowID: isGuest ? "xxxxx" : '1234567',
+              rating: isGuest ? '0/5' : '3/5',
             ),
             const SizedBox(
               height: 10,
@@ -45,11 +53,6 @@ class SideMenu extends StatelessWidget {
               ListTile(
                 onTap: () {
                   Get.to(() => UserProfile());
-
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => const StudentProfileScreen()));
                 },
                 leading: Image.asset(
                   'assets/sidemenu/viewprofile.png',
@@ -70,7 +73,7 @@ class SideMenu extends StatelessWidget {
             if (!isGuest)
               ListTile(
                 onTap: () {
-               
+                  // Get.to(() => AddAnnoumentsScreen());
                 },
                 leading: Image.asset(
                   'assets/sidemenu/mypayment.png',
@@ -84,18 +87,7 @@ class SideMenu extends StatelessWidget {
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
             ListTile(
-              onTap: () async {
-              
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => WebViewLoader(
-                //       loadUrl: "http://hovee.in/attn-web/how-it-works.php",
-                //       isBottomMenu: false,
-                //     ),
-                //   ),
-                // );
-              },
+              onTap: () async {},
               leading: Image.asset(
                 'assets/sidemenu/userManual.png',
                 height: 25,
@@ -113,15 +105,7 @@ class SideMenu extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => WebViewLoader(
-                //       loadUrl: "http://hovee.in/attn-web/privacy-policy.php",
-                //       isBottomMenu: false,
-                //     ),
-                //   ),
-                // );
+                // Get.to(() => HolidayScreen(type: 'Tutee'));
               },
               leading: Image.asset(
                 'assets/sidemenu/privacy.png',
@@ -134,42 +118,30 @@ class SideMenu extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
-                ListTile(
-              onTap: () {
-               // Get.to(() => ParentView( userId: controller.studentDetails[0].wowId!, type: '',));
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => WebViewLoader(
-                //       loadUrl: "http://hovee.in/attn-web/privacy-policy.php",
-                //       isBottomMenu: false,
-                //     ),
-                //   ),
-                // );
-              },
-              leading: Image.asset(
-                'assets/sidemenu/privacy.png',
-                height: 25,
-              ),
-              title: Text(
-                'Parent',
-                style: GoogleFonts.nunito(
-                    fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              trailing: const Icon(Icons.arrow_forward_ios),
-            ),
+ListTile(
+  onTap: () {
+    // Close the side menu
+   Get.offAll(() =>  ParentLoginScreen());
+
+    
+  },
+  leading: Image.asset(
+    'assets/sidemenu/privacy.png',
+    height: 25,
+  ),
+  title: Text(
+    'Invite Parent',
+    style: GoogleFonts.nunito(
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
+    ),
+  ),
+  trailing: const Icon(Icons.arrow_forward_ios),
+),
+
+
             ListTile(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => WebViewLoader(
-                //       loadUrl: "http://hovee.in/attn-web/terms-conditions.php",
-                //       isBottomMenu: false,
-                //     ),
-                //   ),
-                // );
-              },
+              onTap: () {},
               leading: Image.asset(
                 'assets/sidemenu/terms&condition.png',
                 height: 25,
@@ -257,11 +229,12 @@ class SideMenu extends StatelessWidget {
                 return ListTile(
                   onTap: () async {
                     // _logoutPopup(context);
-                     SharedPreferences prefs = await SharedPreferences.getInstance();
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
                     bool islogut = await ModalService.handleBackButton(context);
                     if (islogut) {
-                     // box.remove("Token");
-                     prefs.remove('Token');
+                      // box.remove("Token");
+                      prefs.remove('Token');
                       authController.tabController.animateTo(0);
                       authController.currentTabIndex.value == 0;
                       Get.offAll(() => const LoginSignUp());

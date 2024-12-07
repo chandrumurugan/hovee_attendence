@@ -7,6 +7,7 @@ import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/accountsetup_screen.dart';
+import 'package:hovee_attendence/view/parent_account_setup_screen.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -295,6 +296,9 @@ class _RoleSelectionState extends State<RoleSelection> {
                                     return; // Exit early if tutor is selected but no role type is selected
                                   }
                                       
+                                       if(selectedRole=='Parent'){
+                                      Get.to(() => ParentAccountSetupScreen());
+                                    }else{
                                   // If we reach here, either a role is selected and it's not 'tutor', or it's 'tuttee' (which doesn't require a role type)
                                   Get.to(() => AccountSetup(
                                         roleId: selectedRoleId!,
@@ -303,6 +307,10 @@ class _RoleSelectionState extends State<RoleSelection> {
                                             selectedRoleTypeName ?? '',
                                         selectedRole: selectedRole ?? '',
                                       ));
+                                    
+                                   
+                                    }
+                                     
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(

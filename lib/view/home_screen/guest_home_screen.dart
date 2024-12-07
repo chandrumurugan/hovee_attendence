@@ -1,4 +1,6 @@
+import 'package:five_pointed_star/five_pointed_star.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
@@ -20,7 +22,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
   GlobalKey<ScaffoldState> guestScaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = false;
   Data? guestHomeData;
-
+  int mycount = 0; 
   @override
   void initState() {
     super.initState();
@@ -96,7 +98,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w500),
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                         Container(
@@ -115,13 +117,53 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                       gradient: const LinearGradient(colors: [
                                         Color(0xFFBA0161),
                                         Color(0xFF510270)
-                                      ])),
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Image.asset(
-                                        "assets/bgImage/detailpagebanner.jpg",
-                                        fit: BoxFit.cover,
-                                      )),
+                                      ]),
+                                      image: DecorationImage(image: AssetImage("assets/bgImage/detailpagebanner.jpg"), fit: BoxFit.cover),),
+                                  child:Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Attendence !',
+                                                    style: GoogleFonts.nunito(
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.w400,
+                                                        fontSize: 24),
+                                                  ),
+                                                  SizedBox(height: 4,),
+                                                  Row(
+                                                    children: [
+                                                      SizedBox(
+                                                          width: MediaQuery.of(context).size.width *
+                                            0.6,
+                                                        child: Text(
+                                                          'Track student attendance in real-time with live location updates. Designed for schools, coaching centers, and institutions.',
+                                                          style: GoogleFonts.nunito(
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.w400,
+                                                              fontSize: 12),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 15,
+                                                      ),
+                                                      
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  )
+                                                ],
+                                              ),
+                                  ),
+                                  //  ClipRRect(
+                                  //     borderRadius: BorderRadius.circular(20),
+                                  //     child: Image.asset(
+                                  //       "assets/bgImage/detailpagebanner.jpg",
+                                  //       fit: BoxFit.cover,
+                                  //     )),
                                 ),
                               ),
                               Positioned(
@@ -141,6 +183,12 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                         borderRadius: BorderRadius.circular(20),
                                         color: const Color(0xFF31302D),
                                       ),
+                                      child: Center(
+                                        child: Text("2/3",style: GoogleFonts.nunito(
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.w400,
+                                                                fontSize: 16),),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -158,7 +206,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                 style: GoogleFonts.nunito(
                                     color: Colors.black,
                                     fontSize: 16,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 "see all",
@@ -256,9 +304,57 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                         //     )
                         //   ]),
                         // ),
-                        Padding(
+                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Steps to Follow",
+                                style: GoogleFonts.nunito(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                "see all",
+                                style: GoogleFonts.nunito(
+                                    color: const Color(0xFFFF9900),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 290,
+          decoration: BoxDecoration(
+            color: Colors.white,
+           // border: Border.all(color: Colors.blue, width: 2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: GridView.count(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            crossAxisCount: 2,
+            childAspectRatio: 2,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            children: [
+              _buildStepCard('assets/edit 1.png', "Registration"),
+              _buildStepCard('assets/search (1) 1.png', "Search Using Map"),
+              _buildStepCard('assets/diploma 1.png', "Enrollments"),
+               _buildStepCard('assets/edit 1.png', "Enquiry"),
+                _buildStepCard('assets/edit 1.png', "Attendance"),
+                _buildStepCard('assets/star 2.png', "Ratings"),
+            ],
+          ),
+        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -267,7 +363,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                 style: GoogleFonts.nunito(
                                     color: Colors.black,
                                     fontSize: 16,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 "see all",
@@ -329,7 +425,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                           child: Text(
                                                               "${course!.batchName}",
                                                               style: GoogleFonts.nunito(
-                                                                  fontSize: 12,
+                                                                  fontSize: 16,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600)),
@@ -347,7 +443,15 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                     style: GoogleFonts.nunito(
                                                         fontSize: 10,
                                                         fontWeight:
-                                                            FontWeight.w400))
+                                                            FontWeight.w400)),
+                                                            SizedBox(height: 8,),
+                                                           FivePointedStar( 
+              onChange: (count) { 
+                setState(() { 
+                  mycount = count; 
+                }); 
+              }, 
+            ), 
                                               ],
                                             ),
                                           ],
@@ -382,11 +486,11 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 15),
                           child: Text(
-                            "Testimonal",
+                            "Testimonial",
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w500),
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                         Card(
@@ -467,10 +571,9 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             ])),
                             child: Row(children: [
                               Container(
-                                height: 60,
-                                width: 100,
+                               
                                 child: Image.asset(
-                                        "assets/bgImage/peopleTop.png",
+                                        "assets/bgImage/iMockup - iPhone 14.png",
                                         fit: BoxFit.cover,
                                       ),
                               ),
@@ -514,7 +617,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                           Color(0xFF510270),  
                                         ])
                                       ),
-                                      child: Center(child: Text("Share",style: GoogleFonts.nunito(color: Colors.white),),))
+                                      child: Center(child: Text("SHARE",style: GoogleFonts.nunito(color: Colors.white),),))
                                   ],
                                 ),
                               )
@@ -571,7 +674,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                 children: [
                   Icon(Icons.search, color: Colors.white),
                   SizedBox(width: 16),
-                  Icon(Icons.g_translate, color: Colors.white),
+                 // Icon(Icons.g_translate, color: Colors.white),
                 ],
               ),
             ],
@@ -593,29 +696,42 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
               ),
               const Row(
                 children: [
+                  Icon(Icons.keyboard_arrow_down, color: Colors.white),
                   Text(
                     'Chennai, India',
                     style: TextStyle(color: Colors.white70),
                   ),
-                  Icon(Icons.keyboard_arrow_down, color: Colors.white),
+                  
                 ],
               ),
             ],
           ),
         ),
-        const Positioned(
+         Positioned(
           top: 100,
-          right: 80,
+          right: 70,
           child: CircleAvatar(
-            radius: 50,
+            radius: 65,
             backgroundColor: Color(0xFF9B0155),
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              radius: 45,
+              radius: 58,
               child: Padding(
-                padding: EdgeInsets.all(5.0),
+                padding: const EdgeInsets.all(5),
                 child: Center(
-                  child: LogoGif(),
+                  child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          // SvgPicture.asset(
+                          //   'assets/appConstantImg/app_icon.svg',
+                          //   height: 40,
+                          // ),
+                          Image.asset(
+                            'assets/hovee_attd_logo (1).png',
+                            height: 20,
+                          ),
+                        ],
+                      ),
                 ),
               ),
             ),
@@ -626,6 +742,50 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
           ),
         ),
       ],
+    );
+  }
+
+   Widget _buildStepCard(String image, String title) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Color(0xffF0E6F5),
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 4,
+          ),
+        ],
+      ),
+      child: Row(
+        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(width: 8,),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 40,
+              child: Image.asset(
+                fit: BoxFit.contain,
+                image.toString()),
+            ),
+          ),
+
+          SizedBox(
+            width: MediaQuery.of(context).size.width*0.2,
+            child: Text(
+              title,
+             style: GoogleFonts.lato(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

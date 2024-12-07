@@ -32,10 +32,10 @@ class AppBarHeader extends StatelessWidget implements PreferredSizeWidget {
       //       'assets/appConstantImg/app_icon.svg',
       //       height: 40,
       //     ),
-          // Image.asset(
-          //   'assets/appConstantImg/colorlogoword.png',
-          //   height: 30,
-          // ),
+      //     Image.asset(
+      //       'assets/appConstantImg/colorlogoword.png',
+      //       height: 30,
+      //     ),
       //   ],
       // ),
       centerTitle: true,

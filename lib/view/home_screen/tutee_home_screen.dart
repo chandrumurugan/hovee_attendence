@@ -16,14 +16,17 @@ import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
 import 'package:hovee_attendence/view/Tutee/tutee_courseList.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
+import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
+import 'package:hovee_attendence/view/holiday_screen.dart';
 import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/msp_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
+import 'package:hovee_attendence/view/tutee_holiday_screen.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 import 'package:hovee_attendence/widget/subjectContainer.dart';
@@ -415,11 +418,20 @@ class TuteeHome extends StatelessWidget {
                                   }
                                   if (item.name == 'Leave') {
                                     Get.to(() =>  TuteeLeaveScreen(
-                                          type: 'Tutee',
+                                          type: 'Tutee', fromBottomNav: true,
                                         ));
                                   }
                                   if (item.name == 'Miss Punch') {
                                     Get.to(() =>  MspScreen(
+                                          type: 'Tutee', fromBottomNav: true,
+                                        ));
+                                  }
+                                    if (item.name == 'Holiday') {
+                                        Get.to(() =>
+                                             TuteeHolidayScreen(type: 'Tutee'));
+                                      } 
+                                        if (item.name == 'Announcement') {
+                                    Get.to(() =>  AnnouncementScreen(
                                           type: 'Tutee',
                                         ));
                                   }

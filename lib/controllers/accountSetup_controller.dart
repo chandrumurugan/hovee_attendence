@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geocoding/geocoding.dart';
 
 class AccountSetupController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+    with GetTickerProviderStateMixin {
   // final AuthControllers authControllers = Get.put(AuthControllers());
 
   late AuthControllers authControllers;
@@ -132,17 +132,17 @@ class AccountSetupController extends GetxController
 
   void _populateFieldsFromAuth() {
     Logger().i(
-        "getting idprrof value==>${authControllers.otpResponse.value.data!.idProof!}");
-    phController.text = authControllers.otpResponse.value.data!.phoneNumber!;
+        "getting idprrof value==>${authControllers.otpResponse.value.data!.idProof??''}");
+    phController.text = authControllers.otpResponse.value.data!.phoneNumber??'';
     firstNameController.text =
-        authControllers.otpResponse.value.data!.firstName!;
-    lastNameController.text = authControllers.otpResponse.value.data!.lastName!;
-    emailController.text = authControllers.otpResponse.value.data!.email!;
+        authControllers.otpResponse.value.data!.firstName??'';
+    lastNameController.text = authControllers.otpResponse.value.data!.lastName??'';
+    emailController.text = authControllers.otpResponse.value.data!.email??'';
     dobController.text = authControllers.otpResponse.value.data!.dob!;
     pincodeController.text =
         authControllers.otpResponse.value.data!.pincode!.toString();
-    selectedIDProof.value = authControllers.otpResponse.value.data!.idProof!;
-    idProofController.text = authControllers.otpResponse.value.data!.idProof!;
+    selectedIDProof.value = authControllers.otpResponse.value.data!.idProof??'';
+    idProofController.text = authControllers.otpResponse.value.data!.idProof??'';
   }
 
   List<String> getQualifications() {

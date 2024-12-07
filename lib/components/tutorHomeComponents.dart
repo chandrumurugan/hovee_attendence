@@ -123,7 +123,7 @@ class ChartApp extends StatelessWidget {
                           ),
                           controller.dailyattendance.value != null
                               ? Text(
-                                  'Miss punch - ${controller.dailyattendance.value!.partialAttendance!.toString()}',
+                                  'Miss punch - ${controller.dailyattendance.value!.missPunch!.toString()}',
                                   style: GoogleFonts.nunito(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -177,7 +177,7 @@ class PieChartWidget extends StatelessWidget {
                     
       double? absent = double.parse(percentage.absent!.replaceAll('%', ''));
       double? leave = double.parse(percentage.leave!.replaceAll('%', ''));
-      double? partial = double.parse(percentage.partial!.replaceAll('%', ''));
+      double? partial = double.parse(percentage.missPunch!.replaceAll('%', ''));
 
       final total = present + absent + leave + partial.toInt();
 
@@ -226,7 +226,7 @@ class PieChartWidget extends StatelessWidget {
           PieChartSectionData(
             color: Colors.orange,
            value: absent,
-            title: 'Absent $absent%',
+            title: 'Absent ${absent.toInt()}%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,
@@ -242,7 +242,7 @@ class PieChartWidget extends StatelessWidget {
           PieChartSectionData(
             color: Colors.blue,
             value: leave,
-            title: 'Leave $leave%',
+            title: 'Leave ${leave.toInt()}%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,
@@ -256,9 +256,9 @@ class PieChartWidget extends StatelessWidget {
       if (partial > 0) {
         sections.add(
           PieChartSectionData(
-            color: Colors.red,
+            color: Color(0xff2E5BB5),
            value: partial,
-           title: 'Partial $partial%',
+           title: '${partial.toInt()}%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,

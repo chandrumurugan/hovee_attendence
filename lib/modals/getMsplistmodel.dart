@@ -41,6 +41,7 @@ class MSPData {
   TutorDetails? studentDetails;
   BatchDetails? batchDetails;
   CourseDetails? courseDetails;
+  EnrollmentDetails? enrollmentDetails;
 
   MSPData(
       {this.sId,
@@ -55,7 +56,8 @@ class MSPData {
       this.tutorDetails,
       this.studentDetails,
       this.batchDetails,
-      this.courseDetails});
+      this.courseDetails,
+      this.enrollmentDetails});
 
   MSPData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -78,6 +80,9 @@ class MSPData {
         : null;
     courseDetails = json['courseDetails'] != null
         ? new CourseDetails.fromJson(json['courseDetails'])
+        : null;
+    enrollmentDetails = json['enrollmentDetails'] != null
+        ? new EnrollmentDetails.fromJson(json['enrollmentDetails'])
         : null;
   }
 
@@ -103,6 +108,9 @@ class MSPData {
     }
     if (this.courseDetails != null) {
       data['courseDetails'] = this.courseDetails!.toJson();
+    }
+    if (this.enrollmentDetails != null) {
+      data['enrollmentDetails'] = this.enrollmentDetails!.toJson();
     }
     return data;
   }
@@ -189,6 +197,25 @@ class CourseDetails {
     data['class_name'] = this.className;
     data['subject'] = this.subject;
     data['course_code'] = this.courseCode;
+    return data;
+  }
+}
+
+class EnrollmentDetails {
+  String? sId;
+  String? rollNumber;
+
+  EnrollmentDetails({this.sId, this.rollNumber});
+
+  EnrollmentDetails.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    rollNumber = json['rollNumber'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['rollNumber'] = this.rollNumber;
     return data;
   }
 }

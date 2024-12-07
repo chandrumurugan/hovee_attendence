@@ -13,6 +13,7 @@ import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/utils/keyboardUtils.dart';
+import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 
 class LoginSignUp extends StatelessWidget {
   const LoginSignUp({super.key});
@@ -292,6 +293,7 @@ class LoginSignUp extends StatelessWidget {
                       ),
                     ),
                                         Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                                           children: [
                                             InkWell(
                                               onTap: () async {
@@ -337,8 +339,23 @@ class LoginSignUp extends StatelessWidget {
                                                       ),
                                               ),
                                             ),
+
+                                             InkWell(
+                                          onTap: (){
+                                            Get.to(()=>GuestHomeScreen());
+                                          },
+                                           child: Text(
+                                                                       "Maybe later",
+                                                                       style: GoogleFonts.nunito(
+                                                                         fontSize: 15.0,
+                                                                         color: Colors.blue,
+                                                                       ),
+                                                                     ),
+                                         ),
                                           ],
                                         ),
+                                        SizedBox(height: 10,),
+                                        
                                       ],
                                     ),
                                   ),

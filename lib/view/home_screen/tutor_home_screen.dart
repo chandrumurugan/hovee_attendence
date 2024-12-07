@@ -19,6 +19,7 @@ import 'package:hovee_attendence/modals/validateTokenModel.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
 import 'package:hovee_attendence/view/add_class_screen.dart';
+import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/batch_screen.dart';
 import 'package:hovee_attendence/view/class_screen.dart';
@@ -26,6 +27,7 @@ import 'package:hovee_attendence/view/course_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/holiday_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
+import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/msp_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
@@ -291,8 +293,18 @@ class TutorHome extends StatelessWidget {
                                       } 
                                         else if (item.name == 'Miss Punch') {
                                         Get.to(() =>
-                                             MspScreen(type: 'Tutor'));
+                                             MspScreen(type: 'Tutor', fromBottomNav: true,));
                                       } 
+                                      else if (item.name == 'Leave') {
+                                    Get.to(() =>  TuteeLeaveScreen(
+                                          type: 'Tutor', fromBottomNav: true,
+                                        ));
+                                  }
+                                   else if (item.name == 'Announcement') {
+                                    Get.to(() =>  AnnouncementScreen(
+                                          type: 'Tutor',
+                                        ));
+                                  }
                                        else {
                                         print('Unknown screen');
                                       }

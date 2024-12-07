@@ -12,10 +12,12 @@ import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorsStudentAttendanceList.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
+import 'package:hovee_attendence/view/parent_otp_screen.dart';
 import 'package:hovee_attendence/view/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:app_links/app_links.dart';
@@ -75,8 +77,8 @@ class _MyAppState extends State<MyApp> {
     @override
   void initState() {
     super.initState();
-
-    initDeepLinks();
+    
+    //initDeepLinks();
   }
 
   @override
@@ -86,16 +88,34 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
-    Future<void> initDeepLinks() async {
-    _appLinks = AppLinks();
+  //   Future<void> initDeepLinks() async {
+  //   _appLinks = AppLinks();
 
-    // Handle links
-    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-      debugPrint('onAppLink: $uri');
-      Logger().i("$uri");
-      // openAppLink(uri);
-    });
-  }
+  //   // Handle links
+  //   _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+  //     debugPrint('onAppLink: $uri');
+  //     Logger().i("$uri");
+  //     // openAppLink(uri);
+  //   });
+  // }
+
+//  Future<void> initDeepLinks() async {
+//   String url = 'https://express.insakal.com/parent-login?code=aec0c641b27c6db9ea70eab34450c925%3A08fe7457e1144be383540006b026381c&phoneNumber=9876543210';
+
+//   // Parse the URL
+//   Uri uri = Uri.parse(url);
+
+//   // Extract the 'code' query parameter
+//   String? code = uri.queryParameters['code'];
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     prefs.setString('code', code!);
+//   if (code != null) {
+//     print('Extracted Code: $code');
+//   } else {
+//     print('Code parameter not found in the URL');
+//   } 
+//   // Get.to(() => ParentOtpScreen());
+// }
 
 
   // This widget is the root of your application.

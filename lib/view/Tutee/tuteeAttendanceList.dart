@@ -176,7 +176,7 @@ class TuteeAttendanceList extends StatelessWidget {
                     .shrink(); // Hide calendar if no batch is selected
               }
               return Container(
-                height: MediaQuery.of(context).size.height * 0.45,
+                height: MediaQuery.of(context).size.height * 0.55,
                 margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                 // padding: EdgeInsets.symmetric(vertical: 30),
                 decoration: BoxDecoration(
@@ -332,8 +332,8 @@ class TuteeAttendanceList extends StatelessWidget {
                                 barChart(
                                   color: Color(0xff2E5BB5),
                                   count:
-                                      '${controller.dataTutee?.statusCounts?.partialAttendance ?? 0}',
-                                  title: 'P.Attend',
+                                      '${controller.dataTutee?.statusCounts?.missPunch ?? 0}',
+                                  title: 'Miss punch',
                                 ),
                               ],
                             ),
@@ -468,7 +468,7 @@ class TuteeAttendanceList extends StatelessWidget {
                         icon: const Icon(Icons.edit, color: Colors.blue),
                         onPressed: () {
                           // Handle edit action for punch out time
-                          Get.to(() => AddMspScreen(data: attendance.batchList, date: attendance.punchInDate!, id: attendance.batchList!.userId!, batchId: attendance.batchList!.sId!,));
+                          Get.to(() => AddMspScreen(data: attendance.batchList, date: attendance.punchInDate!, id: attendance.batchList!.userId!, batchId: attendance.batchList!.sId!, attendanceID: attendance.attendanceId!,));
                           print('Edit Punch Out Time for index $index');
                         },
                       ),

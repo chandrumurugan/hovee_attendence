@@ -113,6 +113,7 @@ class Dailyattendance {
   int? absent;
   int? leave;
   int? partialAttendance;
+ int? missPunch;
   Percentage? percentage;
 
   Dailyattendance(
@@ -120,13 +121,15 @@ class Dailyattendance {
       this.absent,
       this.leave,
       this.partialAttendance,
-      this.percentage});
+      this.percentage,
+        this.missPunch});
 
   Dailyattendance.fromJson(Map<String, dynamic> json) {
     present = json['Present'];
     absent = json['Absent'];
     leave = json['Leave'];
     partialAttendance = json['Partial Attendance'];
+     missPunch = json['Miss Punch'];
     percentage = json['percentage'] != null
         ? new Percentage.fromJson(json['percentage'])
         : null;
@@ -138,6 +141,7 @@ class Dailyattendance {
     data['Absent'] = this.absent;
     data['Leave'] = this.leave;
     data['Partial Attendance'] = this.partialAttendance;
+      data['Miss Punch'] = this.missPunch;
     if (this.percentage != null) {
       data['percentage'] = this.percentage!.toJson();
     }
@@ -150,14 +154,16 @@ class Percentage {
   String? absent;
   String? leave;
   String? partial;
+  String? missPunch;
 
-  Percentage({this.present, this.absent, this.leave, this.partial});
+  Percentage({this.present, this.absent, this.leave, this.partial,this.missPunch});
 
   Percentage.fromJson(Map<String, dynamic> json) {
     present = json['present'];
     absent = json['absent'];
     leave = json['leave'];
     partial = json['partial'];
+     missPunch = json['miss_punch'];
   }
 
   Map<String, dynamic> toJson() {
@@ -166,6 +172,7 @@ class Percentage {
     data['absent'] = this.absent;
     data['leave'] = this.leave;
     data['partial'] = this.partial;
+     data['miss_punch'] = this.missPunch;
     return data;
   }
 }

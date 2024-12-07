@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
@@ -53,6 +54,11 @@ class StudentAttendanceController extends GetxController {
   var type = "".obs;
   var isCalendarVisible = false.obs;
   // StudentAttendanceController();
+
+  final missPunchDates = <DateTime>{}.obs;
+
+   var absentDates = <DateTime>{}.obs;
+   var presentDates = <DateTime>{}.obs;
 
   @override
   void onInit() {
@@ -142,7 +148,7 @@ class StudentAttendanceController extends GetxController {
               pointColor: const Color(0xffAD0F60)),
           AttendanceData(
               category: "Partial\nAttendance",
-              percentage: data!.statusCounts!.partialAttendance!.toDouble(),
+              percentage: data!.statusCounts!.missPunch!.toDouble(),
               pointColor: Color(0xff2E5BB5)),
         ];
       }
@@ -163,6 +169,20 @@ class StudentAttendanceController extends GetxController {
       if (groupedEnrollmentByBatchResponse?.data != null) {
         dataTutee = groupedEnrollmentByBatchResponse!.data;
         print(dataTutee);
+        // Convert dates to DateTime for easier comparison
+
+        // Parse miss punch dates into DateTime list
+    // Parse miss punch dates into DateTime list
+      missPunchDates.value = dataTutee!.missPunch!
+          .map((date) => DateTime.parse(date.punchInTime!))
+          .toSet();
+  print(missPunchDates.value);
+    absentDates.value = dataTutee!.missPunch!
+          .map((date) => DateTime.parse(date.punchInTime!))
+          .toSet();
+            presentDates.value = dataTutee!.missPunch!
+          .map((date) => DateTime.parse(date.punchInTime!))
+          .toSet();
         attendanceData.value = [
           AttendanceData(
               category: "All",
@@ -179,7 +199,7 @@ class StudentAttendanceController extends GetxController {
           AttendanceData(
               category: "Partial\nAttendance",
               percentage:
-                  dataTutee!.statusCounts!.partialAttendance!.toDouble(),
+                  dataTutee!.statusCounts!.missPunch!.toDouble(),
               pointColor: Color(0xff2E5BB5)),
         ];
       }

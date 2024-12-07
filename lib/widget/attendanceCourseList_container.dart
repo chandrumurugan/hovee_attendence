@@ -37,12 +37,13 @@ class AttendancecourselistContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    attendanceCourse!.course!.courseCode!,
+                    attendanceCourse!.course!.courseCode??'',
                     style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
+                  attendanceCourse!.course!.className!=null?
                   SizedBox(
                        width: MediaQuery.of(context).size.width * 0.4,
                     child: Text(
@@ -55,7 +56,7 @@ class AttendancecourselistContainer extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
-                  ),
+                  ):SizedBox.shrink(),
                   Text(
                     "${attendanceCourse!.batch!.batchTimingStart} - ${attendanceCourse!.batch!.batchTimingEnd}",
                     

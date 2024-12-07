@@ -2,12 +2,20 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
+import 'package:hovee_attendence/modals/parentLoginDataModel.dart';
+import 'package:hovee_attendence/modals/parentLoginModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/utils/snackbar_utils.dart';
+import 'package:hovee_attendence/view/loginSignup/otp_screen.dart';
+import 'package:hovee_attendence/view/parent_otp_screen.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ParentController extends GetxController {
   GlobalKey<ScaffoldState> tuteeScaffoldKey = GlobalKey<ScaffoldState>();
@@ -17,6 +25,11 @@ class ParentController extends GetxController {
   var studentDetails = <StudentDetails>[].obs;
   var notificationCount = 0.obs;
   var selectedIndex = 0.obs;
+
+  final logInController = TextEditingController();
+
+  var deepLink =''.obs;
+ var code =''.obs;
 
   final List<Map<String, dynamic>> parentMonitorList = [
     // {
@@ -65,6 +78,12 @@ class ParentController extends GetxController {
 
   var userDetails = <UserId>[].obs;
   var userStoredData = <UserId>[].obs;
+
+  final otpController = TextEditingController();
+
+  var otpResponse = validateAndLoginParentModal().obs;
+
+   final focusNode = FocusNode();
   @override
   void onInit() {
     // TODO: implement onInit
@@ -128,7 +147,7 @@ class ParentController extends GetxController {
             String wowId = userMap['wowId'];
             String name = userMap['name'];
             String token = userMap['token '];
-           prefs.setString('Token', token);
+            prefs.setString('Token', token);
             // Debugging: Check if the values are retrieved correctly
             print('User ID: $wowId, User Name: $name');
           } else {
@@ -148,6 +167,149 @@ class ParentController extends GetxController {
       print('Error: $e');
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  bool validateLogin(BuildContext context) {
+    String input = logInController.text.trim();
+
+    // Check if the input is a phone number (10 digits)
+    if (RegExp(r'^[0-9]+$').hasMatch(input)) {
+      if (input.length != 10) {
+        SnackBarUtils.showErrorSnackBar(
+          context,
+          'Invalid Phone number',
+        );
+        return false;
+      }
+      return true; // It's a valid phone number
+    }
+    // If the input is a valid email
+    return true;
+  }
+
+   bool validateOtp(BuildContext context) {
+    if (otpController.text.isEmpty) {
+       SnackBarUtils.showErrorSnackBar(context,'Please enter the OTP',);
+      return false;
+    }
+    return true;
+  }
+
+
+  void logIn(String identifiers, BuildContext context) async {
+    if (validateLogin(context)) {
+      isLoading.value = true;
+      try {
+        var response = await WebService.parentLogin(identifiers, context);
+        if (response != null) {
+          // Assume `deeplink` is part of the response
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+           prefs.setString('Token','');
+          //  deepLink = response.mobileDeepLink!;
+          //  code = response.code!;
+         }  else {
+          Logger().e('Failed to load AppConfig');
+          isLoading.value = false;
+        }
+            var parentresponse = await WebService.getParentInviteCode(identifiers, context);
+        if (parentresponse != null) {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            deepLink.value=parentresponse.data!.invitationLink!;
+           code.value= parentresponse.data!.parentCode!;
+           prefs.setString('deepLink',parentresponse.data!.invitationLink!);
+            prefs.setString('OtpCode',parentresponse.data!.parentCode!);
+         //print(code);
+           print(deepLink);
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Success'),
+                content: Column(
+                  children: [
+                    Text('Deeplink: ${deepLink.value}'),
+                    Text('Code: ${parentresponse.data!.parentCode!}'),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: deepLink.value!));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text('Deeplink copied to clipboard!')),
+                      );
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Copy'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Share.share(deepLink.value!);
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Share'),
+                  ),
+                ],
+              );
+            },
+          );
+  String url = deepLink.value;
+
+  // Parse the URL
+  Uri uri = Uri.parse(url);
+   
+  // Extract the 'code' query parameter
+  String? code1 = uri.queryParameters['code'];
+   
+    prefs.setString('code', code1!);
+   
+  if (code != null) {
+    print('Extracted Code: $code1');
+    Get.to(() => ParentOtpScreen());
+
+  } else {
+    print('Code parameter not found in the URL');
+  } 
+        } else {
+          Logger().e('Failed to load AppConfig');
+          isLoading.value = false;
+        }
+      } catch (e) {
+        Logger().e(e);
+      }
+    }
+  }
+
+  Future<validateAndLoginParentModal?> otp(BuildContext context) async {
+    if (validateOtp(context)) {
+      isLoading.value = true;
+      try {
+        // Logger().i("moving to otp ===>$");
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+       final accountVerificationToken =prefs.getString('code') ?? "";
+        var response = await WebService.otpParent(
+            otpController.text,
+             accountVerificationToken,
+            context);
+        if (response != null) {
+          otpResponse.value = response;
+          prefs.setString('Token', response.parentToken!);
+          isLoading.value = false;
+          return response;
+        } else {
+          isLoading.value = false;
+          return null;
+        }
+
+        //     Get.snackbar(
+        // '', response.message!);
+      } catch (e) {
+        print(e);
+        return null;
+      }
     }
   }
 }

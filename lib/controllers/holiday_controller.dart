@@ -16,6 +16,7 @@ import '../modals/getHolidayDataModel.dart';
 
 class HolidayController extends GetxController {
   var holidayDataList = <Data1>[].obs;
+  var holidayTuteeDataList = <Data1>[].obs;
   var isLoading = true.obs;
 
   var batchNameController = ''.obs;
@@ -37,6 +38,7 @@ class HolidayController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     fetchBatchList();
+    fetchHoliDataTuteeList();
     _clearData();
     holidayaType = getBatchDays();
   }
@@ -64,14 +66,14 @@ class HolidayController extends GetxController {
     if (startDateController.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Holiday From Date is required',
+        'From Date is required',
       );
       return false;
     }
     if (endDateController.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Holiday End Date is required',
+        'End Date is required',
       );
       return false;
     }
@@ -99,6 +101,24 @@ class HolidayController extends GetxController {
     }
   }
 
+   void fetchHoliDataTuteeList({String searchTerm = ''}) async {
+    try {
+      isLoading(true);
+      var holidayResponse = await WebService.fetchHoliDataTuteeList(
+          searchTerm); // Pass the searchTerm to the API
+
+      if (holidayResponse.data != null) {
+        holidayTuteeDataList.value = holidayResponse.data!;
+      }
+    } catch (e) {
+      // Handle errors if needed
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  
+
   void addHoliday(BuildContext context) async {
     if (validateFields(context)) {
       isLoading.value = true;
@@ -112,7 +132,8 @@ class HolidayController extends GetxController {
            "holiday_end_date": endDateController.text,
           "holiday_name": holidayName.text,
           "holiday_type": holidayTypeController.value,
-          "type": "N"
+          "type": "N",
+          "batchId":selectedBatchId,
         };
 
         final AddHolidayModel? response =

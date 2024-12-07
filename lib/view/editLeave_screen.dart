@@ -90,6 +90,7 @@ class EditleaveScreen extends StatelessWidget {
                       selectedValue: leaveController.batchNameController,
                       items: leaveController.batchName1,
                       onChanged: leaveController.setBatchName,
+                      
                     ),
                   ],
                 ),

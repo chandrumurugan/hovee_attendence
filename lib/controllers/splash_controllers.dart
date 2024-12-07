@@ -15,6 +15,7 @@ import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
+import 'package:hovee_attendence/view/parent_otp_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logger/logger.dart';
@@ -35,7 +36,9 @@ class SplashController extends GetxController {
     //  final AuthControllers classController =
     //   Get.put(AuthControllers());
     var isLoading = true.obs;
-   // final AuthControllers classController =  Get.put(AuthControllers());
+     final ParentController parentController = Get.put(ParentController());
+
+     String? deeplink;
   @override 
   @override
   void onInit() {
@@ -47,6 +50,7 @@ class SplashController extends GetxController {
     _getCurrentLocation();
     //  _checkPermissions();
    fetchAppConfig();
+    initDeepLinks();
   }
 
   Future<void> fetchAppConfig() async {
@@ -86,6 +90,7 @@ class SplashController extends GetxController {
     String isLoggedIn = prefs.getString('Token') ?? "";
     String rolename = prefs.getString('Rolename') ?? '';
    //Get.off(() => DashboardScreen(rolename: 'Parent'));
+  
     print(rolename);
     if (isLoggedIn.isNotEmpty) {
       try{
@@ -124,12 +129,40 @@ class SplashController extends GetxController {
   }
       
     } else {
+      // if(deeplink!=null){
+      //   Get.to(()=>ParentOtpScreen());
+      // }else{
+
+      
       Get.to(()=>GuestHomeScreen());
+      }
       // Get.offAll(() => const LoginSignUp());
-    }
+   // }
   } catch (e) {
     Logger().e(e);
   }
+}
+
+
+ Future<void> initDeepLinks() async {
+   SharedPreferences prefs = await SharedPreferences.getInstance();
+    deeplink =prefs.getString('deepLink')?? null;
+  //String url = deeplink!;
+
+  // // Parse the URL
+  // Uri uri = Uri.parse(url);
+   
+  // // Extract the 'code' query parameter
+  // String? code = uri.queryParameters['code'];
+   
+  //   prefs.setString('code', code!);
+   
+  // if (code != null) {
+  //   print('Extracted Code: $code');
+  // } else {
+  //   print('Code parameter not found in the URL');
+  // } 
+  // Get.to(() => ParentOtpScreen());
 }
 
 

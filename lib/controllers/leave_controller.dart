@@ -8,6 +8,9 @@ import 'package:hovee_attendence/modals/add_leave_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/deletebatch_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
+import 'package:hovee_attendence/modals/getLeaveListModel.dart';
+import 'package:hovee_attendence/modals/updateEnquire_model.dart';
+import 'package:hovee_attendence/modals/updateLeaveModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_batch.dart';
@@ -16,7 +19,7 @@ import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:logger/logger.dart';
 
 class TuteeLeaveController extends GetxController {
-  var leaveList = [].obs;
+  var leaveList = <LeaveData>[].obs;
   var isLoading = true.obs;
   var validationMessages = <String>[].obs;
   var batchNameController = ''.obs;
@@ -119,19 +122,19 @@ class TuteeLeaveController extends GetxController {
     if (startDateController.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Leave From Date is required',
+        'From Date is required',
       );
       return false;
     }
     if (endDateController.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Leave End Date is required',
+        'End Date is required',
       );
       return false;
     }
     if (reason.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'reason is required');
+      SnackBarUtils.showErrorSnackBar(context, 'Reason is required');
       return false;
     }
 
@@ -224,7 +227,7 @@ class TuteeLeaveController extends GetxController {
           fetchBatchList();
           _clearData();
           Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        ,'Leave updete successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        ,'Leave updated  successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
          
         } else {
           SnackBarUtils.showErrorSnackBar(
@@ -242,32 +245,24 @@ class TuteeLeaveController extends GetxController {
       isLoading.value = true;
       try {
         var batchData = {
-          // 'branch_short_name': branchShortName.text,
-          "courseId": "",
-          "course_name": "",
-          "leave_type": "",
-          "from_date": "",
-          "end_date": "",
-          "reason": "",
-          "batchId": "",
-          "tutorId": "",
           "type":
-              "D", // new record N , update record U , delete record D  and U ,D required leaveId
+              "D", 
           "leaveId": leaveId,
-           "batch_name":'',
         };
 
         final deleteBatchDataModel? response =
             await WebService.deleteLeave(batchData);
 
         if (response != null && response.success == true) {
-         Get.back();
-          onInit();
-          _clearData();
-        Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,), 'leave delete successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+         // Remove the deleted item locally
+      leaveList.value.removeWhere((item) => item.sId == leaveId);
+
+      // Notify listeners about the updated list
+      leaveList.refresh(); // Ensures the UI is updated
+        Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,), 'Leave deleted  successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
            //Get.off(()=> TuteeLeaveScreen(type: 'Tutee',));
       } else {
-         Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), response?.message ?? 'Failed to delete leave',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+         Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),colorText: Colors.white, response?.message ?? 'Failed to delete leave',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
       } catch (e) {
          Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
@@ -275,6 +270,44 @@ class TuteeLeaveController extends GetxController {
         isLoading.value = false;
       }
   }
+
+    void updateLeave(BuildContext context,String leaveId,String type ) async {
+      isLoading.value = true;
+      try {
+        var batchData = {
+        "status":type,
+        "leaveId": leaveId
+      };
+
+        final updateLeaveModel ? response =
+            await WebService.updateLeave(batchData);
+
+        if (response != null && response.statusCode == 200) {
+        
+          if(response.data!.status=='Accepted'){
+             fetchBatchList();
+         Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),'Leave accepted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+
+          }
+          else{
+             fetchBatchList();
+              Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),'Leave rejected successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+          }
+        // fetchEnquirList('Pending');
+        //       //Get.off(()=>TutorClassList());
+        //       controller.onInit();
+        } else {
+          // SnackBarUtils.showErrorSnackBar(
+          //     context, response?.message ?? 'Failed to update Enquire');
+        }
+      } catch (e) {
+        //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+      } finally {
+        isLoading.value = false;
+      }
+   
+  }
+
 
   void setBatchName(String value) {
     batchNameController.value = value;
