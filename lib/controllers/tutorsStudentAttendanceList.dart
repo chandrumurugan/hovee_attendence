@@ -55,7 +55,8 @@ class StudentAttendanceController extends GetxController {
   var isCalendarVisible = false.obs;
   // StudentAttendanceController();
 
-  final missPunchDates = <DateTime>{}.obs;
+  // final missPunchDates = <DateTime>{}.obs;
+  RxSet<DateTime> missPunchDates = RxSet<DateTime>();
 
    var absentDates = <DateTime>{}.obs;
    var presentDates = <DateTime>{}.obs;
@@ -125,7 +126,7 @@ class StudentAttendanceController extends GetxController {
 
   void fetchStudentsList(
       String batchId, String selectedDate, selectedMonth) async {
-        Logger().i("gettingh values==2345678==${type.value}");
+        Logger().i("gettingh values==2345678==${batchId} -- ${selectedDate} -- ${selectedMonth}");
     try {
       isLoadingList(true);
       var groupedEnrollmentByBatchResponse =
@@ -133,6 +134,7 @@ class StudentAttendanceController extends GetxController {
               batchId, selectedDate, selectedMonth);
       if (groupedEnrollmentByBatchResponse!.data != null) {
         data = groupedEnrollmentByBatchResponse.data!;
+        Logger().i("====1234567890=====${data!.attendanceDetails![0].attendanceStatus}");
         attendanceData.value = [
           AttendanceData(
               category: "All",
@@ -169,19 +171,27 @@ class StudentAttendanceController extends GetxController {
       if (groupedEnrollmentByBatchResponse?.data != null) {
         dataTutee = groupedEnrollmentByBatchResponse!.data;
         print(dataTutee);
+        Logger().i("====1234567890=====${dataTutee!.missPunch![0].punchInTime}");
         // Convert dates to DateTime for easier comparison
 
         // Parse miss punch dates into DateTime list
     // Parse miss punch dates into DateTime list
-      missPunchDates.value = dataTutee!.missPunch!
-          .map((date) => DateTime.parse(date.punchInTime!))
+    //  missPunchDates.value = dataTutee!.missPunch!
+    //       .map((date) => DateFormat('dd-MM-yyyy').parse(date.punchInTime!))
+    //       .toSet();
+     missPunchDates.value = dataTutee!.missPunch!
+          .map((date) {
+            final parsedDate = DateFormat('dd-MM-yyyy').parse(date.punchInTime!);
+            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+          })
           .toSet();
-  print(missPunchDates.value);
+    
+  print("===========>${missPunchDates.value}");
     absentDates.value = dataTutee!.missPunch!
-          .map((date) => DateTime.parse(date.punchInTime!))
+          .map((date) => DateFormat('dd-MM-yyyy').parse(date.punchInTime!))
           .toSet();
             presentDates.value = dataTutee!.missPunch!
-          .map((date) => DateTime.parse(date.punchInTime!))
+          .map((date) => DateFormat('dd-MM-yyyy').parse(date.punchInTime!))
           .toSet();
         attendanceData.value = [
           AttendanceData(

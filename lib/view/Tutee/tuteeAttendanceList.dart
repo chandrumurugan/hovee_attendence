@@ -18,19 +18,21 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class TuteeAttendanceList extends StatelessWidget {
- final String type;
+  final String type;
   final StudentAttendanceController controller;
 
   TuteeAttendanceList({super.key, required this.type})
       : controller = Get.put(StudentAttendanceController());
-      final MspController mspController = Get.put(MspController());
+  final MspController mspController = Get.put(MspController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
-         Get.offAll(DashboardScreen(rolename: type,));
+          Get.offAll(DashboardScreen(
+            rolename: type,
+          ));
         },
       ),
       body: SingleChildScrollView(
@@ -64,73 +66,76 @@ class TuteeAttendanceList extends StatelessWidget {
                             Obx(() {
                               if (controller.isLoading.value) {
                                 return CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                              } else {
+                                return
+                                    //  DropdownButtonFormField<Data1>(
+                                    //     dropdownColor: AppConstants.primaryColor,
+                                    //     icon: const Icon(
+                                    //       Icons.arrow_drop_down_circle_rounded,
+                                    //       color: Colors.white,
+                                    //     ),
+                                    //     style: GoogleFonts.nunito(
+                                    //       fontSize: 19,
+                                    //       fontWeight: FontWeight.w400,
+                                    //       color: Colors.white,
+                                    //     ),
+                                    //     decoration: InputDecoration(
+                                    //       suffixIconColor: Colors.white,
+                                    //       alignLabelWithHint: true,
+                                    //       border: InputBorder.none,
+                                    //       labelText: 'Select batch',
+                                    //       labelStyle: GoogleFonts.nunito(
+                                    //         fontSize: 15,
+                                    //         fontWeight: FontWeight.w400,
+                                    //         color: Colors.white,
+                                    //       ),
+                                    //     ),
+                                    //     value: controller.selectedBatchIN.value,
+                                    //     items: controller.batchList.map((Data1 batch) {
+                                    //       return DropdownMenuItem<Data1>(
+                                    //         value: batch,
+                                    //         child: Text(batch.batchName!),
+                                    //       );
+                                    //     }).toList(),
+                                    //     onChanged: (newBatch) {
+                                    //       if (newBatch != null) {
+                                    //         controller.selectBatch(newBatch);
+                                    //         controller.isBatchSelected.value = true;
+                                    //         // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
+                                    //         // Replace with your actual method to fetch batch-related data
+                                    //       }
+                                    //     },
+                                    //   );
+                                    CustomDropdown(
+                                  itemsListPadding: EdgeInsets.zero,
+                                  listItemPadding: EdgeInsets.symmetric(
+                                      vertical: 6, horizontal: 10),
+                                  hintText: 'Select batch',
+                                  items: controller.batchList
+                                      .map((batch) => batch.batchName ?? '')
+                                      .toList(),
+                                  initialItem: controller
+                                      .selectedBatchIN.value?.batchName,
+                                  onChanged: (String? selectedValue) {
+                                    if (selectedValue != null) {
+                                      final selectedBatch =
+                                          controller.batchList.firstWhere(
+                                        (batch) =>
+                                            batch.batchName == selectedValue,
+                                      );
+                                      controller.selectBatch(selectedBatch);
+                                      controller.isBatchSelected.value = true;
+                                      controller.fetchStudentsList(
+                                        selectedBatch.batchId!,
+                                        selectedBatch.startDate!,
+                                        DateFormat('MMM')
+                                            .format(DateTime.now()),
+                                      );
+                                    }
+                                  },
+                                );
                               }
-                             else{ return 
-                            //  DropdownButtonFormField<Data1>(
-                            //     dropdownColor: AppConstants.primaryColor,
-                            //     icon: const Icon(
-                            //       Icons.arrow_drop_down_circle_rounded,
-                            //       color: Colors.white,
-                            //     ),
-                            //     style: GoogleFonts.nunito(
-                            //       fontSize: 19,
-                            //       fontWeight: FontWeight.w400,
-                            //       color: Colors.white,
-                            //     ),
-                            //     decoration: InputDecoration(
-                            //       suffixIconColor: Colors.white,
-                            //       alignLabelWithHint: true,
-                            //       border: InputBorder.none,
-                            //       labelText: 'Select batch',
-                            //       labelStyle: GoogleFonts.nunito(
-                            //         fontSize: 15,
-                            //         fontWeight: FontWeight.w400,
-                            //         color: Colors.white,
-                            //       ),
-                            //     ),
-                            //     value: controller.selectedBatchIN.value,
-                            //     items: controller.batchList.map((Data1 batch) {
-                            //       return DropdownMenuItem<Data1>(
-                            //         value: batch,
-                            //         child: Text(batch.batchName!),
-                            //       );
-                            //     }).toList(),
-                            //     onChanged: (newBatch) {
-                            //       if (newBatch != null) {
-                            //         controller.selectBatch(newBatch);
-                            //         controller.isBatchSelected.value = true;
-                            //         // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
-                            //         // Replace with your actual method to fetch batch-related data
-                            //       }
-                            //     },
-                            //   );
-                             CustomDropdown(
-                              itemsListPadding: EdgeInsets.zero,
-                                listItemPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 10),
-                                hintText: 'Select batch',
-                                items: controller.batchList
-                                    .map((batch) => batch.batchName ?? '')
-                                    .toList(),
-                                initialItem:
-                                    controller.selectedBatchIN.value?.batchName,
-                                onChanged: (String? selectedValue) {
-                                  if (selectedValue != null) {
-                                    final selectedBatch =
-                                        controller.batchList.firstWhere(
-                                      (batch) =>
-                                          batch.batchName == selectedValue,
-                                    );
-                                    controller.selectBatch(selectedBatch);
-                                    controller.isBatchSelected.value = true;
-                                    controller.fetchStudentsList(
-                                      selectedBatch.batchId!,
-                                      selectedBatch.startDate!,
-                                      DateFormat('MMM').format(DateTime.now()),
-                                    );
-                                  }
-                                },
-                              );
-                            }}),
+                            }),
 
                             // const SizedBox(
                             //   height: 20,
@@ -155,8 +160,8 @@ class TuteeAttendanceList extends StatelessWidget {
                           onPressed: () {
                             // controller.isBatchSelected.value =
                             //     !controller.isBatchSelected.value;
-                                 controller.isCalendarVisible.value =
-                        !controller.isCalendarVisible.value;
+                            controller.isCalendarVisible.value =
+                                !controller.isCalendarVisible.value;
                           },
                           icon: const Icon(
                             Icons.calendar_month_outlined,
@@ -195,6 +200,12 @@ class TuteeAttendanceList extends StatelessWidget {
                     titleCentered: true,
                   ),
                   calendarStyle: const CalendarStyle(
+                    markerDecoration: BoxDecoration(
+                      color: Colors.red, // Color for miss punch markers
+                      shape: BoxShape.circle,
+                    ),
+                    markersAlignment: Alignment.bottomCenter,
+                    markersMaxCount: 1,
                     rangeHighlightColor: AppConstants.primaryColor,
                     withinRangeTextStyle: TextStyle(color: Colors.white),
                     selectedDecoration: BoxDecoration(
@@ -247,14 +258,51 @@ class TuteeAttendanceList extends StatelessWidget {
                     controller.onDateSelectedTutee(selectedDay);
                     controller.setFocusedDay(focusedDay);
                   },
+                  //               eventLoader: (day) {
+                  //                 // final normalizedDay =
+                  //                 //     DateTime(day.year, day.month, day.day);
+                  //                 // return controller.missPunchDates.any((missPunchDate) =>
+                  //                 //         missPunchDate.year == normalizedDay.year &&
+                  //                 //         missPunchDate.month == normalizedDay.month &&
+                  //                 //         missPunchDate.day == normalizedDay.day)
+                  //                 //     ? ['Miss Punch']
+                  //                 //     : [];
+
+                  //                   final normalizedDay = DateTime(day.year, day.month, day.day);
+                  // return controller.missPunchDates.contains(normalizedDay) ? ['Miss Punch'] : [];
+                  //               },
                   onPageChanged: (focusedDay) {
                     controller.setFocusedDay(focusedDay);
                     controller.onMonthSelectedTutee(focusedDay);
-                     // Format the month as an abbreviation (e.g., "Nov" for November)
-     
-      // Send the  month to the API
-     // controller.sendMonthToApi(monthAbbreviation);
+                    // Format the month as an abbreviation (e.g., "Nov" for November)
+
+                    // Send the  month to the API
+                    // controller.sendMonthToApi(monthAbbreviation);
                   },
+                  calendarBuilders: CalendarBuilders(
+                    defaultBuilder: (context, day, focusedDay) {
+                      // Check if the day is a miss punch date
+                      if (controller.missPunchDates
+                          .contains(DateTime(day.year, day.month, day.day))) {
+                        return Container(
+                          margin: const EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                            color: AppConstants.primaryColor.withOpacity(
+                                0.8), // Background color for miss punch dates
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            '${day.day}', // Display the day
+                            style: const TextStyle(
+                                color: Colors.white), // Text style
+                          ),
+                        );
+                      }
+                      // Return default appearance for other dates
+                      return null;
+                    },
+                  ),
                 ),
               );
             }),
@@ -400,141 +448,162 @@ class TuteeAttendanceList extends StatelessWidget {
                     color: Colors.black),
               ),
             ),
-           Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 12),
-  child: Container(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Column headers
-              Expanded(
-                child: Text('Date',
-                    style: GoogleFonts.nunito(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black)),
-              ),
-              Expanded(
-                child: Text('Punch In',
-                    style: GoogleFonts.nunito(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black)),
-              ),
-              Expanded(
-                child: Text('Punch Out',
-                    style: GoogleFonts.nunito(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black)),
-              ),
-            ],
-          ),
-        ),
-        const Divider(),
-      Obx(() {
-  // Check if attendance data is available and load it dynamically
-  if (controller.isLoadingList.value) {
-    return const CircularProgressIndicator();
-  } else if (controller.dataTutee?.attendanceDetails != null &&
-      controller.dataTutee!.attendanceDetails!.isNotEmpty) {
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: controller.dataTutee!.attendanceDetails!.length,
-      itemBuilder: (context, index) {
-        final attendance = controller.dataTutee!.attendanceDetails![index];
-          
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Name
-              Expanded(
-                child: Text(
-                  attendance.punchInDate ?? '',
-                  style: GoogleFonts.nunito(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Column headers
+                          Expanded(
+                            child: Text('Date',
+                                style: GoogleFonts.nunito(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black)),
+                          ),
+                          Expanded(
+                            child: Text('Punch In',
+                                style: GoogleFonts.nunito(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black)),
+                          ),
+                          Expanded(
+                            child: Text('Punch Out',
+                                style: GoogleFonts.nunito(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                    Obx(() {
+                      // Check if attendance data is available and load it dynamically
+                      if (controller.isLoadingList.value) {
+                        return const CircularProgressIndicator();
+                      } else if (controller.dataTutee?.attendanceDetails !=
+                              null &&
+                          controller.dataTutee!.attendanceDetails!.isNotEmpty) {
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount:
+                              controller.dataTutee!.attendanceDetails!.length,
+                          itemBuilder: (context, index) {
+                            final attendance =
+                                controller.dataTutee!.attendanceDetails![index];
+
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15.0, vertical: 5),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // Name
+                                  Expanded(
+                                    child: Text(
+                                      attendance.punchInDate ?? '',
+                                      style: GoogleFonts.nunito(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  // Time In
+                                  Expanded(
+                                    child: attendance.punchInTime != null &&
+                                            attendance.punchInTime!.isNotEmpty
+                                        ? Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 20),
+                                            child: Image.asset(
+                                              "assets/appbar/check.png",
+                                              height: 25,
+                                              width: 25,
+                                            ),
+                                          )
+                                        : IconButton(
+                                            icon: const Icon(Icons.edit,
+                                                color: Colors.blue),
+                                            onPressed: () {
+                                              // Handle edit action for punch in time
+                                              mspController
+                                                  .navigateToAddHolidatScreen();
+                                              print(
+                                                  'Edit Punch In Time for index $index');
+                                            },
+                                          ),
+                                  ),
+                                  // Time Out
+                                  Expanded(
+                                    child: attendance.punchOutTime != null &&
+                                            attendance.punchOutTime!.isNotEmpty
+                                        ? Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 20),
+                                            child: Image.asset(
+                                              "assets/appbar/check.png",
+                                              height: 25,
+                                              width: 25,
+                                            ),
+                                          )
+                                        : IconButton(
+                                            icon: const Icon(Icons.edit,
+                                                color: Colors.blue),
+                                            onPressed: () {
+                                              // Handle edit action for punch out time
+                                              Get.to(() => AddMspScreen(
+                                                    data: attendance.batchList,
+                                                    date:
+                                                        attendance.punchInDate!,
+                                                    id: attendance
+                                                        .batchList!.userId!,
+                                                    batchId: attendance
+                                                        .batchList!.sId!,
+                                                    attendanceID: attendance
+                                                        .attendanceId!,
+                                                  ));
+                                              print(
+                                                  'Edit Punch Out Time for index $index');
+                                            },
+                                          ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const Divider(); // Divider between items except the last one
+                          },
+                        );
+                      } else {
+                        return const Text(
+                            'No attendance data available for the selected date.');
+                      }
+                    }),
+                  ],
                 ),
               ),
-              // Time In
-              Expanded(
-                child: attendance.punchInTime != null &&
-                        attendance.punchInTime!.isNotEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Image.asset(
-                          "assets/appbar/check.png",
-                          height: 25,
-                          width: 25,
-                        ),
-                      )
-                    : IconButton(
-                        icon: const Icon(Icons.edit, color: Colors.blue),
-                        onPressed: () {
-                          // Handle edit action for punch in time
-                         mspController.navigateToAddHolidatScreen();
-                          print('Edit Punch In Time for index $index');
-                        },
-                      ),
-              ),
-              // Time Out
-              Expanded(
-                child: attendance.punchOutTime != null &&
-                        attendance.punchOutTime!.isNotEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Image.asset(
-                          "assets/appbar/check.png",
-                          height: 25,
-                          width: 25,
-                        ),
-                      )
-                    : IconButton(
-                        icon: const Icon(Icons.edit, color: Colors.blue),
-                        onPressed: () {
-                          // Handle edit action for punch out time
-                          Get.to(() => AddMspScreen(data: attendance.batchList, date: attendance.punchInDate!, id: attendance.batchList!.userId!, batchId: attendance.batchList!.sId!, attendanceID: attendance.attendanceId!,));
-                          print('Edit Punch Out Time for index $index');
-                        },
-                      ),
-              ),
-            ],
-          ),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return const Divider(); // Divider between items except the last one
-      },
-    );
-  } else {
-    return const Text(
-        'No attendance data available for the selected date.');
-  }
-}),
-
-      ],
-    ),
-  ),
-)
-
+            )
           ],
         ),
       ),
     );
   }
 
-   Widget barChart(
+  Widget barChart(
       {required String count, required String title, required Color color}) {
     return Column(
       children: [
@@ -557,4 +626,3 @@ class TuteeAttendanceList extends StatelessWidget {
     );
   }
 }
-
