@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
+import 'package:hovee_attendence/controllers/holiday_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
@@ -12,6 +13,7 @@ import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/msp_screen.dart';
+import 'package:hovee_attendence/view/tutee_holiday_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -118,11 +120,19 @@ class NotificationController extends GetxController {
       if (msgtype == 'Announcements') {
       Get.off(() => AnnouncementScreen(type: role!,));
     } 
+     if (msgtype == 'Holiday') {
+      if(role=='Tutor'){
+      Get.off(() => HolidayController());
+    } else{
+       Get.off(() => TuteeHolidayScreen(type: role!,));
+    }
   } else {
     notificationList.clear();
     isLoading(false);
   }
 }
+
+  }
 
 
 

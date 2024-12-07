@@ -204,6 +204,42 @@ class TuteeAttendanceList extends StatelessWidget {
                     ),
                     // outsideRangeTextStyle: TextStyle(color: Colors.grey),
                   ),
+                  calendarBuilders: CalendarBuilders(
+  defaultBuilder: (context, date, _) {
+    // Highlight Miss Punch dates
+    if (controller.missPunchDates.contains(date)) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.amber, // Miss Punch color
+          shape: BoxShape.circle,
+        ),
+        child: Center(child: Text('${date.day}')),
+      );
+    }
+    // Highlight Absent dates
+    if (controller.absentDates.contains(date)) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.red, // Absent color
+          shape: BoxShape.circle,
+        ),
+        child: Center(child: Text('${date.day}')),
+      );
+    }
+    // Highlight Present dates
+    if (controller.presentDates.contains(date)) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.green, // Present color
+          shape: BoxShape.circle,
+        ),
+        child: Center(child: Text('${date.day}')),
+      );
+    }
+    return null; // Default calendar cell styling
+  },
+),
+
                   selectedDayPredicate: (day) {
                     return isSameDay(controller.selectedDay.value, day);
                   },

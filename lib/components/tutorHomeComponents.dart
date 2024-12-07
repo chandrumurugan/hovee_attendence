@@ -226,7 +226,7 @@ class PieChartWidget extends StatelessWidget {
           PieChartSectionData(
             color: Colors.orange,
            value: absent,
-            title: 'Absent ${absent.toInt()}%',
+            title: ' ${absent.toInt()}%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,
@@ -242,7 +242,7 @@ class PieChartWidget extends StatelessWidget {
           PieChartSectionData(
             color: Colors.blue,
             value: leave,
-            title: 'Leave ${leave.toInt()}%',
+            title: ' ${leave.toInt()}%',
             radius: 40,
             titleStyle: GoogleFonts.nunito(
               fontSize: 11,

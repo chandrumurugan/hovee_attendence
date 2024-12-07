@@ -47,15 +47,7 @@ class NotificationScreen extends StatelessWidget {
                 return Center(child: CircularProgressIndicator());
               } else if (attendanceCourseListController.notificationList.isEmpty) {
                 // Display "No data found" when the list is empty
-                return Center(
-                  child: Text(
-                    'No notification list',
-                    style: GoogleFonts.nunito(
-                      color: Colors.black54,
-                      fontSize: 16,
-                    ),
-                  ),
-                );
+                return SizedBox.shrink();
               } else {
                 // Display the list of batches
                 return CategoryList(

@@ -133,11 +133,13 @@ final HolidayController holidayController = Get.put(HolidayController());
                     itemBuilder: (context, index) {
                       final holidayData =
                           holidayController.holidayTuteeDataList.value[index];
-                          DateTime dateTime = DateFormat("dd-MM-yyyy").parse(holidayData.holidayFromDate!);
+                          String fromDate=holidayData.holidayFromDate??'';
+                          String endDate=holidayData.holidayEndDate??'';
+                          DateTime dateTime = DateFormat("dd-MM-yyyy").parse(fromDate);
                           Logger().i("123456===>$dateTime");
                            String formattedDate = DateFormat("ddMMMyy").format(dateTime);
                            Logger().i("0987654===>$formattedDate");
-                            DateTime dateTime2 = DateFormat("dd-MM-yyyy").parse(holidayData.holidayEndDate!);
+                            DateTime dateTime2 = DateFormat("dd-MM-yyyy").parse(endDate);
                           Logger().i("123456===>$dateTime");
                            String formattedDate2 = DateFormat("ddMMMyy").format(dateTime2);
                            Logger().i("0987654===>$formattedDate");
