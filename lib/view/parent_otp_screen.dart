@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
@@ -14,7 +13,7 @@ class ParentOtpScreen extends StatelessWidget {
  final ParentController parentController = Get.put(ParentController());
   @override
   Widget build(BuildContext context) {
-    const focusedBorderColor = Colors.blue;
+    const focusedBorderColor = Colors.blue; 
     final defaultPinTheme = PinTheme(
       width: 50,
       height: 38,

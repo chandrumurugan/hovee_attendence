@@ -31,13 +31,15 @@ class TrackTuteeLocation extends StatelessWidget {
         return Stack(
           children: [
             GoogleMap(
+              onMapCreated: controller.setMapController,
               initialCameraPosition: CameraPosition(
                 target: controller.tuteeLocation.value!,
                 zoom: 10,
               ),
               trafficEnabled: true,
-              mapType: MapType.hybrid,
+              mapType: MapType.terrain,
               markers: controller.markers.value,
+               onCameraMove: controller.handleCameraPositionChange,
               polylines: {
                 Polyline(
                   polylineId: const PolylineId("road_route"),

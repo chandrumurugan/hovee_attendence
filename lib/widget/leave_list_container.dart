@@ -53,7 +53,7 @@ class LeaveListContainer extends StatelessWidget {
                       'assets/Ellipse 261.png',
                       height: 70,
                     ),
-                         SizedBox(width: 8),
+                         const SizedBox(width: 8),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,20 +64,20 @@ class LeaveListContainer extends StatelessWidget {
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14,
                                       color: Colors.black)),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               leave.enrollmentDetails!=null?
                               Text('Roll no: ${leave.enrollmentDetails!.rollNumber??''}',
                                   style: GoogleFonts.nunito(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14,
-                                      color: Colors.black)):SizedBox.shrink(),
-                              SizedBox(height: 4),
+                                      color: Colors.black)):const SizedBox.shrink(),
+                              const SizedBox(height: 4),
                               Text('Date: $formattedDate - $formattedDate2',
                                   style: GoogleFonts.nunito(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14,
                                       color: Colors.black)),
-                                      SizedBox(height: 4),
+                                      const SizedBox(height: 4),
                                       leave.batchDetails!=null?
                                        Text(
                                               'Batch name: ${leave.batchDetails!.batchName}',
@@ -85,13 +85,13 @@ class LeaveListContainer extends StatelessWidget {
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 14,
                                                   color: Colors.black),
-                                            ):SizedBox.shrink(),
-                                            SizedBox(height: 4),
+                                            ):const SizedBox.shrink(),
+                                            const SizedBox(height: 4),
                                       _buildRow('Status', '${leave.status}'),
                             ],
                           ),
                         ),
-                         SizedBox(width: 8),
+                         const SizedBox(width: 8),
                         Container(
                           width: 60,
                           color: Colors.white,
@@ -104,7 +104,7 @@ class LeaveListContainer extends StatelessWidget {
                                 iconSize: 25,
                             onPressed: () {}, // No action needed here
                             icon: PopupMenuButton<String>(
-                              icon: Icon(Icons.more_vert),
+                              icon: const Icon(Icons.more_vert),
                               onSelected: (String value) {
                                 // Optional if further actions are needed after selection
                               },
@@ -114,8 +114,8 @@ class LeaveListContainer extends StatelessWidget {
                                   PopupMenuItem(
                                     value: 'Edit',
                                     child: ListTile(
-                                      leading: Icon(Icons.edit),
-                                      title: Text('Edit'),
+                                      leading: const Icon(Icons.edit),
+                                      title: const Text('Edit'),
                                       onTap: () {
                                         Navigator.pop(context); // Close the popup first
                                         Get.to(EditleaveScreen(
@@ -127,8 +127,8 @@ class LeaveListContainer extends StatelessWidget {
                                   PopupMenuItem(
                                     value: 'Delete',
                                     child: ListTile(
-                                      leading: Icon(Icons.delete),
-                                      title: Text('Delete'),
+                                      leading: const Icon(Icons.delete),
+                                      title: const Text('Delete'),
                                       onTap: () {
                                         Navigator.pop(context);
                                          _showConfirmationDialogDelete(context, leave.sId!);
@@ -144,7 +144,7 @@ class LeaveListContainer extends StatelessWidget {
                           ),
                           
                               Container(
-                                padding: EdgeInsets.all(3),
+                                padding: const EdgeInsets.all(3),
                                 decoration: BoxDecoration(
                                     color: Colors.amber,
                                     borderRadius: BorderRadius.circular(10)),
@@ -165,7 +165,7 @@ class LeaveListContainer extends StatelessWidget {
                     // SizedBox(
                     //   height: 4,
                     // ),
-                    Divider(
+                    const Divider(
                       //height: 100,
                       color: Colors.grey,
                       thickness: 1,
@@ -186,13 +186,13 @@ class LeaveListContainer extends StatelessWidget {
                   ],
                 ),
                 leave.status != 'Accepted' && leave.status != 'Rejected'?
-                Divider(
+                const Divider(
                   //height: 100,
                   color: Colors.grey,
                   thickness: 1,
                   indent: 0,
                   endIndent: 0,
-                ):SizedBox(height: 8,),
+                ):const SizedBox(height: 8,),
                  buildActionButtons(type,leave.status!,leave.sId!,context)
                 //SizedBox(height: 16),
     //             type == 'Tutor' && (leave.status != 'Accepted' && leave.status != 'Rejected')
@@ -456,7 +456,7 @@ class LeaveListContainer extends StatelessWidget {
           textColor = Colors.green;
           break;
         case 'pending':
-          textColor = Color(0XFF74788D);
+          textColor = const Color(0XFF74788D);
           break;
         case 'rejected':
           textColor = Colors.red;
@@ -570,7 +570,7 @@ class LeaveListContainer extends StatelessWidget {
             Icons.help_outline,
             color: Colors.white,
           ),
-          color: Color(0xFF833AB4), // Set the primary color
+          color: const Color(0xFF833AB4), // Set the primary color
           color1: const Color(0xFF833AB4), // Optional gradient color
           singleBtn: false, // Show both 'Yes' and 'No' buttons
           btnName: 'No',

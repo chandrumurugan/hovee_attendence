@@ -65,7 +65,7 @@ class TuteeAttendanceList extends StatelessWidget {
                             // const SizedBox(height: 10),
                             Obx(() {
                               if (controller.isLoading.value) {
-                                return CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                                return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
                               } else {
                                 return
                                     //  DropdownButtonFormField<Data1>(
@@ -108,7 +108,7 @@ class TuteeAttendanceList extends StatelessWidget {
                                     //   );
                                     CustomDropdown(
                                   itemsListPadding: EdgeInsets.zero,
-                                  listItemPadding: EdgeInsets.symmetric(
+                                  listItemPadding: const EdgeInsets.symmetric(
                                       vertical: 6, horizontal: 10),
                                   hintText: 'Select batch',
                                   items: controller.batchList
@@ -208,48 +208,14 @@ class TuteeAttendanceList extends StatelessWidget {
                     markersMaxCount: 1,
                     rangeHighlightColor: AppConstants.primaryColor,
                     withinRangeTextStyle: TextStyle(color: Colors.white),
-                    selectedDecoration: BoxDecoration(
-                      color:
-                          Colors.blue, // Customize the color for selected date
-                      shape: BoxShape.circle,
-                    ),
+                    // selectedDecoration: BoxDecoration(
+                    //   color:
+                    //       Colors.blue, // Customize the color for selected date
+                    //   shape: BoxShape.circle,
+                    // ),
                     // outsideRangeTextStyle: TextStyle(color: Colors.grey),
                   ),
-                  // calendarBuilders: CalendarBuilders(
-                  //   defaultBuilder: (context, date, _) {
-                  //     // Highlight Miss Punch dates
-                  //     if (controller.missPunchDates.contains(date)) {
-                  //       return Container(
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.amber, // Miss Punch color
-                  //           shape: BoxShape.circle,
-                  //         ),
-                  //         child: Center(child: Text('${date.day}')),
-                  //       );
-                  //     }
-                  //     // Highlight Absent dates
-                  //     if (controller.absentDates.contains(date)) {
-                  //       return Container(
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.red, // Absent color
-                  //           shape: BoxShape.circle,
-                  //         ),
-                  //         child: Center(child: Text('${date.day}')),
-                  //       );
-                  //     }
-                  //     // Highlight Present dates
-                  //     if (controller.presentDates.contains(date)) {
-                  //       return Container(
-                  //         decoration: BoxDecoration(
-                  //           color: Colors.green, // Present color
-                  //           shape: BoxShape.circle,
-                  //         ),
-                  //         child: Center(child: Text('${date.day}')),
-                  //       );
-                  //     }
-                  //     return null; // Default calendar cell styling
-                  //   },
-                  // ),
+              
 
                   selectedDayPredicate: (day) {
                     return isSameDay(controller.selectedDay.value, day);
@@ -287,7 +253,7 @@ class TuteeAttendanceList extends StatelessWidget {
                         return Container(
                           margin: const EdgeInsets.all(4.0),
                           decoration: BoxDecoration(
-                            color:Color(0xff2E5BB5), // Background color for miss punch dates
+                            color:const Color(0xff2E5BB5), // Background color for miss punch dates
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           alignment: Alignment.center,
@@ -304,7 +270,7 @@ class TuteeAttendanceList extends StatelessWidget {
                         return Container(
                             margin: const EdgeInsets.all(4.0),
                           decoration: BoxDecoration(
-                               color: Color(0xffAD0F60), // Background color for miss punch dates
+                               color: const Color(0xffAD0F60), // Background color for miss punch dates
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                                  alignment: Alignment.center,
@@ -318,7 +284,7 @@ class TuteeAttendanceList extends StatelessWidget {
                         return Container(
                             margin: const EdgeInsets.all(4.0),
                           decoration: BoxDecoration(
-                             color:Color(0xffF07721), // Background color for miss punch dates
+                             color:const Color(0xffF07721), // Background color for miss punch dates
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                             alignment: Alignment.center,
@@ -390,7 +356,7 @@ class TuteeAttendanceList extends StatelessWidget {
                       // Wrap only the Circular Chart in Obx to react to changes in attendanceData
                       Obx(() {
                         if (controller.isLoadingList.value) {
-                          return SizedBox.shrink();
+                          return const SizedBox.shrink();
                         }
                         return SizedBox(
                           width: 130,
@@ -438,7 +404,7 @@ class TuteeAttendanceList extends StatelessWidget {
                       Expanded(
                         child: Obx(() {
                           if (controller.isLoadingList.value) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
                           return Padding(
                             padding: const EdgeInsets.only(top: 40),
@@ -447,25 +413,25 @@ class TuteeAttendanceList extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 barChart(
-                                  color: Color(0xff014EA9),
+                                  color: const Color(0xff014EA9),
                                   count:
                                       '${controller.dataTutee?.statusCounts?.totalStudents ?? 0}',
                                   title: 'All',
                                 ),
                                 barChart(
-                                  color: Color(0xffF07721),
+                                  color: const Color(0xffF07721),
                                   count:
                                       '${controller.dataTutee?.statusCounts?.present ?? 0}',
                                   title: 'Present',
                                 ),
                                 barChart(
-                                  color: Color(0xffAD0F60),
+                                  color: const Color(0xffAD0F60),
                                   count:
                                       '${controller.dataTutee?.statusCounts?.absent ?? 0}',
                                   title: 'Absent',
                                 ),
                                 barChart(
-                                  color: Color(0xff2E5BB5),
+                                  color: const Color(0xff2E5BB5),
                                   count:
                                       '${controller.dataTutee?.statusCounts?.missPunch ?? 0}',
                                   title: 'Miss punch',
@@ -663,13 +629,13 @@ class TuteeAttendanceList extends StatelessWidget {
           style: GoogleFonts.nunito(
               color: color, fontWeight: FontWeight.w400, fontSize: 20),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Text(
           title,
           style: GoogleFonts.nunito(
-              color: Color(0xff828282),
+              color: const Color(0xff828282),
               fontWeight: FontWeight.w400,
               fontSize: 12),
         )

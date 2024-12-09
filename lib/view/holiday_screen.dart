@@ -19,6 +19,10 @@ class HolidayScreen extends StatelessWidget {
   final HolidayController holidayController = Get.put(HolidayController());
   @override
   Widget build(BuildContext context) {
+  TextStyle fontStyle = GoogleFonts.nunito(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: Colors.black);
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,7 +40,7 @@ class HolidayScreen extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.only(top: 25, left: 15),
+              padding: const EdgeInsets.only(top: 25, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -52,7 +56,7 @@ class HolidayScreen extends StatelessWidget {
                                 rolename: type,
                               ));
                             },
-                            icon: Icon(Icons.arrow_back, color: Colors.white),
+                            icon: const Icon(Icons.arrow_back, color: Colors.white),
                           ),
                         ],
                       ),
@@ -69,7 +73,7 @@ class HolidayScreen extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(right: 15),
+                        padding: const EdgeInsets.only(right: 15),
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: Text(
                          'list your planned holidays for the upcoming year and keep everything well-organized.',
@@ -101,27 +105,27 @@ class HolidayScreen extends StatelessWidget {
             },
           ),
           // Header Row
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //Text('S. Name', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('Batch Name',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+          // const Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 12),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       //Text('S. Name', style: TextStyle(fontWeight: FontWeight.bold)),
+          //       Text('Batch Name',
+          //           style: TextStyle(fontWeight: FontWeight.bold)),
 
-                Text('Date', style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('Holiday Name',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-              ],
-            ),
-          ),
+          //       Text('Date', style: TextStyle(fontWeight: FontWeight.bold)),
+          //       Text('Holiday Name',
+          //           style: TextStyle(fontWeight: FontWeight.bold)),
+          //     ],
+          //   ),
+          // ),
           //const SizedBox(height: 10),
           Obx(() {
             if (holidayController.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (holidayController.holidayDataList.value.isEmpty) {
-              return Center(child: Text("No data found"));
+              return const Center(child: Text("No data found"));
             }
             return Expanded(
               child: Padding(
@@ -145,93 +149,179 @@ class HolidayScreen extends StatelessWidget {
                            Logger().i("0987654===>$formattedDate");
                       return Card(
                         elevation: 2,
-                        margin: EdgeInsets.symmetric(vertical: 6),
+                        margin: const EdgeInsets.symmetric(vertical: 6),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Padding(
+                        child:  Padding(
                           padding: const EdgeInsets.all(12.0),
-                          child: Column(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              type!= 'Tutor'?SizedBox.shrink()
-                              :Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      // Add edit functionality
-                                      Get.to(EditHolidayScreen(
-                                        holiday: holidayData,
-                                      ));
-                                    },
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      // Add delete functionality
-                                      _showConfirmationDialog(
-                                          context, holidayData.sId!);
-                                      // holidayController.deleteHoliday(
-                                      //     context, holidayData.sId!);
-                                    },
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // Colored strip and S.Name
-                                  // Row(
-                                  //   children: [
-                                  //     Container(
-                                  //       width: 5,
-                                  //       height: 50,
-                                  //       color: Colors.purple,
-                                  //     ),
-                                  //     const SizedBox(width: 8),
-                                  //     Text(
-                                  //       'BM133',
-                                  //       style: TextStyle(
-                                  //         fontWeight: FontWeight.bold,
-                                  //         fontSize: 16,
-                                  //       ),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  // B.Name
-                                  Text(
-                                    holidayData.batchName ?? '',
-                                    style: TextStyle(
-                                        overflow: TextOverflow.ellipsis),
-                                  ),
-                                  // Reason
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               
-                                  // Date
-                                  Text(
-                                '$formattedDate - $formattedDate2',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                                  SizedBox(
-                                    width: 50,
-                                    child: Text(
-                                      holidayData.holidayName ?? '',
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          overflow: TextOverflow.ellipsis),
+                              children: [
+                                Text('Batch name : ${ holidayData.batchName ?? ""}',
+                                    style: fontStyle),
+                                      Text('Holiday name : ${ holidayData.holidayName ?? ""}',
+                                    style: fontStyle),
+                                    //      Text('Holiday type : ${ holidayData.holidayType ?? ""}',
+                                    // style:fontStyle),
+                                        Text('Date : $formattedDate - $formattedDate2',
+                                    style: fontStyle),
+                              
+                              
+                            ]),
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                     IconButton(
+                                  iconSize: 25,
+                              onPressed: () {}, // No action needed here
+                              icon: PopupMenuButton<String>(
+                                icon: const Icon(Icons.more_vert),
+                                onSelected: (String value) {
+                                  // Optional if further actions are needed after selection
+                                },
+                                itemBuilder: (BuildContext context) {
+                                  return [
+                                    if ( type!= 'Tutor')
+                                    PopupMenuItem(
+                                      value: 'Edit',
+                                      child: ListTile(
+                                        leading: const Icon(Icons.edit),
+                                        title: const Text('Edit'),
+                                        onTap: () {
+                                          Navigator.pop(context); // Close the popup first
+                                                      Get.to(EditHolidayScreen(
+                                          holiday: holidayData,
+                                        ));
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    PopupMenuItem(
+                                      value: 'Delete',
+                                      child: ListTile(
+                                        leading: const Icon(Icons.delete),
+                                        title: const Text('Delete'),
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                         _showConfirmationDialog(
+                                            context, holidayData.sId!);
+                                    
+                                        },
+                                      ),
+                                    ),
+                                  ];
+                                },
                               ),
-                            ],
-                          ),
+                                                        ),
+                              
+                              Container(
+                                  padding: const EdgeInsets.all(3),
+                                  decoration: BoxDecoration(
+                                      color: Colors.amber,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Text(holidayData.holidayType ?? "",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.nunito(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12,
+                                          color: Colors.red)),
+                                ),
+                              
+                              
+                              
+                                
+                              ]),
+                            )
+                          ]),
+                          // child: Column(
+                          //   children: [
+                          //     type!= 'Tutor'?const SizedBox.shrink()
+                          //     :Row(
+                          //       mainAxisAlignment: MainAxisAlignment.end,
+                          //       children: [
+                          //         IconButton(
+                          //           onPressed: () {
+                          //             // Add edit functionality
+                                      // Get.to(EditHolidayScreen(
+                                      //   holiday: holidayData,
+                                      // ));
+                          //           },
+                          //           icon: const Icon(
+                          //             Icons.edit,
+                          //             color: Colors.blue,
+                          //           ),
+                          //         ),
+                          //         IconButton(
+                                    // onPressed: () {
+                                    //   // Add delete functionality
+                                    //   _showConfirmationDialog(
+                                    //       context, holidayData.sId!);
+                                    //   // holidayController.deleteHoliday(
+                                    //   //     context, holidayData.sId!);
+                                    // },
+                          //           icon: const Icon(
+                          //             Icons.delete,
+                          //             color: Colors.red,
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //     Row(
+                          //       mainAxisAlignment:
+                          //           MainAxisAlignment.spaceBetween,
+                          //       children: [
+                          //         // Colored strip and S.Name
+                          //         // Row(
+                          //         //   children: [
+                          //         //     Container(
+                          //         //       width: 5,
+                          //         //       height: 50,
+                          //         //       color: Colors.purple,
+                          //         //     ),
+                          //         //     const SizedBox(width: 8),
+                          //         //     Text(
+                          //         //       'BM133',
+                          //         //       style: TextStyle(
+                          //         //         fontWeight: FontWeight.bold,
+                          //         //         fontSize: 16,
+                          //         //       ),
+                          //         //     ),
+                          //         //   ],
+                          //         // ),
+                          //         // B.Name
+                          //         Text(
+                          //           holidayData.batchName ?? '',
+                          //           style: const TextStyle(
+                          //               overflow: TextOverflow.ellipsis),
+                          //         ),
+                          //         // Reason
+                              
+                          //         // Date
+                          //         Text(
+                          //       '$formattedDate - $formattedDate2',
+                          //       style: const TextStyle(fontSize: 16),
+                          //     ),
+                          //         SizedBox(
+                          //           width: 50,
+                          //           child: Text(
+                          //             holidayData.holidayName ?? '',
+                          //             maxLines: 1,
+                          //             style: const TextStyle(
+                          //                 overflow: TextOverflow.ellipsis),
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ],
+                          // ),
                         ),
                       );
                     },
@@ -268,7 +358,7 @@ class HolidayScreen extends StatelessWidget {
             Icons.help_outline,
             color: Colors.white,
           ),
-          color: Color(0xFF833AB4), // Set the primary color
+          color: const Color(0xFF833AB4), // Set the primary color
           color1: const Color(0xFF833AB4), // Optional gradient color
           singleBtn: false, // Show both 'Yes' and 'No' buttons
           btnName: 'No',

@@ -15,10 +15,11 @@ import 'package:widget_to_marker/widget_to_marker.dart';
 class TrackTuteeLocationController extends GetxController {
   final FirestoreService _locationService = FirestoreService();
   dynamic argumentData = Get.arguments;
+  late GoogleMapController _mapController;
 
   var tuteeLocation = Rxn<LatLng>();
   //var targetLocation = Rxn<LatLng>();
-  var targetLocation = const LatLng(13.0694, 80.1948).obs;
+  var targetLocation = const LatLng(13.039422387848779,80.22285977520232).obs;
 
   var distance = 0.0.obs;
   var polyline = <Polyline>[].obs;
@@ -42,8 +43,12 @@ class TrackTuteeLocationController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     Logger().i("getting valiues fro argumets==>${argumentData[0]['userId']}");
+   
     //fetchGroupedEnrollmentByBatchListItem();
     getTuteeLocation();
+  }
+    void setMapController(GoogleMapController controller) {
+    _mapController = controller;
   }
 
   Stream<Map<String, dynamic>> getTuteeLiveLocation(String userId) {
@@ -54,8 +59,8 @@ class TrackTuteeLocationController extends GetxController {
     try {
       getTuteeLiveLocation("${argumentData[0]['userId']}").listen((data) async {
         if (data['location'] != null) {
-          LatLng location =
-              LatLng(data['location']['lat'], data['location']['long']);
+          LatLng location = const LatLng(13.043303, 80.213260);
+              // LatLng(data['location']['lat'], data['location']['long']);
           tuteeLocation.value = location;
 
           name = data['name'];
@@ -114,7 +119,19 @@ class TrackTuteeLocationController extends GetxController {
       };
     }
   }
-
+   
+     void handleCameraPositionChange(CameraPosition position) {
+    if (tuteeLocation.value != null) {
+      _mapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: tuteeLocation.value!,
+            zoom: 15, // Adjust the zoom level as needed
+          ),
+        ),
+      );
+    }
+  }
   void updateDistance() {
     if (tuteeLocation.value != null) {
       distance.value = Geolocator.distanceBetween(

@@ -490,6 +490,7 @@ class WebService {
 
   static Future<getAttendancePunchInModel?> getAttendancePunchIn(
       String courseId, String batchId, BuildContext context) async {
+          Logger().d("api calling");
     final url = Uri.parse('${baseUrl}attendane/punchIn');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
@@ -500,13 +501,17 @@ class WebService {
       'Content-Type': 'application/json'
     };
     var data = {"courseId": courseId, "batchId": batchId};
+          Logger().d("api calling ==>${token}");
+            Logger().d("api calling ==>${data}");
     try {
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
+            Logger().d(response.body);
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         return getAttendancePunchInModel.fromJson(result);
       } else {
+            Logger().d(response.reasonPhrase);
         Map<String, dynamic> result = jsonDecode(response.body);
         SnackBarUtils.showSuccessSnackBar(
           context,
@@ -515,6 +520,7 @@ class WebService {
         return null;
       }
     } catch (e) {
+      Logger().e(e);
       return null;
     }
   }
@@ -601,6 +607,7 @@ class WebService {
 
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
+      Logger().i(result);
       return getGroupedEnrollmentByAttendanceModel.fromJson(result);
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
