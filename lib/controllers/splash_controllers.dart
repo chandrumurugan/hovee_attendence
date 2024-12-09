@@ -1,22 +1,20 @@
 // controllers/splash_controller.dart
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:app_links/app_links.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
-import 'package:hovee_attendence/modals/validateTokenModel.dart';
+import 'package:hovee_attendence/services/liveLocationService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/parent_otp_screen.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logger/logger.dart';
 
@@ -25,207 +23,192 @@ import 'package:logger/logger.dart';
 // import '../views/login_screen.dart';
 
 class SplashController extends GetxController {
-  var showSecondImage = false.obs;
-  var appConfig = AppConfig().obs;
-  final box = GetStorage();
- final int _steps = 100; 
- var progressValue = 0.0.obs;
-  final Duration _loadingDuration =
-      const Duration(seconds: 3);
-       var currentLocation = Rxn<LatLng>();
-    //  final AuthControllers classController =
-    //   Get.put(AuthControllers());
-    var isLoading = true.obs;
-     final ParentController parentController = Get.put(ParentController());
+  final Rx<double> progressValue = 0.0.obs;
+  final Rx<AppConfig?> appConfig = Rx<AppConfig?>(null);
+  final LocationService locationService = LocationService();
+  var currentLocation = Rxn<LatLng>();
 
-     String? deeplink;
-  @override 
+  final int _steps = 10; // Number of steps for progress animation
+  final int _loadingDuration = 3000; // Total loading duration in milliseconds
+
+  //.haandling DEEPLINK
+  final RxString deepLink = ''.obs;
+  final RxBool isAppConfigFetched = false.obs;
+
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
+
+  var isLoading = true.obs;
+  final ParentController parentController = Get.put(ParentController());
+
   @override
   void onInit() {
     super.onInit();
-
-    Future.delayed(const Duration(seconds: 2), () {
-      showSecondImage.value = true;
-    });
-    _getCurrentLocation();
-    //  _checkPermissions();
-   fetchAppConfig();
     initDeepLinks();
+  }
+
+  Future<void> initDeepLinks() async {
+    try {
+      _appLinks = AppLinks();
+
+      // Listen to deep link streams
+      _linkSubscription = _appLinks.uriLinkStream.listen((Uri? uri) {
+        if (uri != null) {
+          Logger().i("Deep link received: $uri");
+          deepLink.value = uri.toString();
+          handleDeepLinkFlow(uri);
+        }
+      });
+
+      // Handle initial deep link
+      final initialLink = await _appLinks.getInitialLink();
+      if (initialLink != null) {
+        Logger().i("Initial deep link: $initialLink");
+        deepLink.value = initialLink.toString();
+        handleDeepLinkFlow(initialLink);
+      } else {
+        handleNormalAppFlow(); // Proceed to the normal app flow
+      }
+    } catch (e) {
+      Logger().e("Error in initDeepLinks: $e");
+      handleNormalAppFlow();
+    }
+  }
+
+  @override
+  void onClose() {
+    _linkSubscription?.cancel();
+    super.onClose();
   }
 
   Future<void> fetchAppConfig() async {
     final stepDuration = _loadingDuration ~/ _steps;
+
     try {
       var response = await WebService.fetchAppConfig();
       if (response != null) {
         appConfig.value = response;
-       // Store the response data in GetStorage
-      final storage = GetStorage();
-      storage.write('appConfig', response.toJson());
-      for (int i = 0; i <= _steps; i++) {
-     
-        progressValue.value = i / _steps; // Update progress value for each step
-    
-      await Future.delayed(stepDuration);
-    }
-         Future.delayed(const Duration(seconds: 2), () {
-        checkUserLoggedIn(); // Navigate after 2 seconds
-      });
-        // checkUserLoggedIn();
+
+        // Store the response data in GetStorage
+        final storage = GetStorage();
+        storage.write('appConfig', response.toJson());
+
+        // Simulate progress steps
+        for (int i = 0; i <= _steps; i++) {
+          progressValue.value =
+              i / _steps; // Update progress value for each step
+          await Future.delayed(Duration(milliseconds: stepDuration));
+        }
+
+        // // Proceed to user authentication check after a slight delay
+        // Future.delayed(const Duration(seconds: 2), () {
+        //   handleNormalAppFlow();
+        // });
+        await Future.delayed(const Duration(seconds: 2));
+
         Logger().i('AppConfig loaded successfully');
       } else {
         Logger().e('Failed to load AppConfig');
+        // navigateToErrorScreen(); // Navigate to an error screen or retry logic
       }
     } catch (e) {
       Logger().e(e);
+      // navigateToErrorScreen(); // Navigate to an error screen or retry logic
     }
   }
 
-  Future<void> checkUserLoggedIn() async {
-  try {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Future.delayed(const Duration(seconds: 5));
-     final ParentController parentController = Get.put(ParentController());
-
-    String isLoggedIn = prefs.getString('Token') ?? "";
-    String rolename = prefs.getString('Rolename') ?? '';
-   //Get.off(() => DashboardScreen(rolename: 'Parent'));
-  
-    print(rolename);
-    if (isLoggedIn.isNotEmpty) {
-      try{
-           isLoading(true);
-      var response = await WebService.validateToken();
-      if (response != null) {
-        String roleName = response.roleName!;
-        bool validateToken = response.tokenValid!;
-        
-        if (validateToken) {
-          var validateTokendata = response.data;
-          
-          // Create LoginData object and save it in SharedPreferences
-          LoginData loginData = LoginData(
-            firstName: validateTokendata!.firstName,
-            lastName: validateTokendata.lastName,
-            wowId: validateTokendata.wowId,
-          );
-           prefs.setString('userData', jsonEncode(loginData.toJson()));
-            //classController.getUserData();
-          // Navigate to Dashboard
-          parentController. getUserTokenList(response.data!.sId!);
-          Get.off(() => DashboardScreen(rolename: roleName));
-        } else {
-          // Navigate to Login Screen
-          Get.off(() => LoginSignUp());
-        }
-      } else {
-        // Navigate to Login Screen
-        Get.off(() => LoginSignUp());
-      }
-      }catch (e) {
-    // Handle errors if needed
-  } finally {
-    isLoading(false);
-  }
-      
+  void handleDeepLinkFlow(Uri deepLink) async {
+    isAppConfigFetched.value = true;
+    final parsedData = _parseDeepLink(deepLink);
+    if (parsedData != null) {
+      await fetchAppConfig();
+      await Get.off(() => ParentOtpScreen(), arguments: parsedData);
+      // });
+      // Replace SplashScreen
     } else {
-      // if(deeplink!=null){
-      //   Get.to(()=>ParentOtpScreen());
-      // }else{
-
-      
-      Get.to(()=>GuestHomeScreen());
-      }
-      // Get.offAll(() => const LoginSignUp());
-   // }
-  } catch (e) {
-    Logger().e(e);
+      Logger().w("Invalid deep link. Proceeding with normal app flow.");
+      handleNormalAppFlow();
+    }
   }
-}
 
-
- Future<void> initDeepLinks() async {
-   SharedPreferences prefs = await SharedPreferences.getInstance();
-    deeplink =prefs.getString('deepLink')?? null;
-  //String url = deeplink!;
-
-  // // Parse the URL
-  // Uri uri = Uri.parse(url);
-   
-  // // Extract the 'code' query parameter
-  // String? code = uri.queryParameters['code'];
-   
-  //   prefs.setString('code', code!);
-   
-  // if (code != null) {
-  //   print('Extracted Code: $code');
-  // } else {
-  //   print('Code parameter not found in the URL');
-  // } 
-  // Get.to(() => ParentOtpScreen());
-}
-
-
-  //   Future<void> _checkPermissions() async {
-  //   var status = await Permission.location.status;
-  //   if (status.isGranted) {
-  //     _getCurrentLocation();
-  //   } else {
-  //     var result = await Permission.location.request();
-  //     if (result.isGranted) {
-  //       _getCurrentLocation();
-  //     } else {
-  //       // Handle the case when the user denies the permission
-  //     }
-  //   }
-  // }
-
-  Future<void> _getCurrentLocation() async {
+  Map<String, String>? _parseDeepLink(Uri uri) {
     try {
-      
+      final code = uri.queryParameters['code']?.split('/phone').first;
+      final phoneDetails = uri.queryParameters['code']?.split('/phone').last;
 
-        Position position = await _determinePosition();
+      String? phoneNumber;
+      if (phoneDetails != null && phoneDetails.startsWith('?')) {
+        phoneNumber = Uri.parse('https://dummy$phoneDetails')
+            .queryParameters['phoneNumber'];
+      }
 
-      // Position position = await Geolocator.getCurrentPosition(
-      //     desiredAccuracy: LocationAccuracy.high);
-      currentLocation.value = LatLng(position.latitude, position.longitude);
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setDouble('latitude', position.latitude);
-      await prefs.setDouble('longitude', position.longitude);
-       Get.log("Latitude: ${position.latitude}, Longitude: ${position.longitude}");
+      if (code != null && phoneNumber != null) {
+        return {'code': code, 'phoneNumber': phoneNumber};
+      }
     } catch (e) {
-      print('Error fetching location: $e');
-      // Handle error fetching location
+      Logger().e(e);
+      // print("Error parsing deep link: $e");
+    }
+    return null;
+  }
+
+  Future<void> handleNormalAppFlow() async {
+    await fetchAppConfig();
+    isAppConfigFetched.value = true;
+
+    // Retrieve token from SharedPreferences
+    final token = await getTokenFromPreferences();
+
+    // Navigate based on token presence
+    if (token.isNotEmpty) {
+      await _validateTokenAndNavigate();
+    } else {
+      Get.off(() => const GuestHomeScreen()); // Navigate to guest home
     }
   }
 
-   Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  Future<String> getTokenFromPreferences() async {
+    // Simulate token retrieval logic, replace with actual implementation
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('Token') ?? "";
+  }
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      bool locationServiceRequest = await Geolocator.openLocationSettings();
-      if (!locationServiceRequest) {
-        throw 'Location services are disabled.';
+  Future<void> _validateTokenAndNavigate() async {
+    try {
+      isLoading(true);
+
+      // Fetch current location
+      currentLocation.value = await locationService.getCurrentLocation();
+
+      // Validate token using web service
+      final response = await WebService.validateToken();
+
+      if (response != null && response.tokenValid == true) {
+        // Extract and save user data
+        final validateTokenData = response.data;
+        final prefs = await SharedPreferences.getInstance();
+
+        LoginData loginData = LoginData(
+          firstName: validateTokenData!.firstName,
+          lastName: validateTokenData.lastName,
+          wowId: validateTokenData.wowId,
+        );
+        prefs.setString('userData', jsonEncode(loginData.toJson()));
+
+        // Navigate to Dashboard
+        final roleName = response.roleName ?? 'Guest';
+        parentController.getUserTokenList(response.data!.sId!);
+        Get.off(() => DashboardScreen(rolename: roleName));
+      } else {
+        // Token invalid, navigate to Login/Signup
+        Get.off(() => const LoginSignUp());
       }
-      // Wait for the user to enable location services
-      await Future.delayed(Duration(seconds: 1));
-      // throw 'Location services are disabled.';
+    } catch (e) {
+      // Handle errors
+      Logger().e(e);
+      Get.off(() => const LoginSignUp());
+    } finally {
+      isLoading(false);
     }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        throw 'Location permissions are denied';
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      throw 'Location permissions are permanently denied, we cannot request permissions.';
-    }
-
-    return await Geolocator.getCurrentPosition();
   }
 }

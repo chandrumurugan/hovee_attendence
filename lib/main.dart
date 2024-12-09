@@ -22,45 +22,93 @@ import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:app_links/app_links.dart';
 
-
-
 class MyBindings extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<SplashController>(() => SplashController());
     Get.lazyPut<AuthControllers>(() => AuthControllers());
-       Get.lazyPut<DashboardController>(() => DashboardController()); //TutorHomeController
-         Get.lazyPut<TutorHomeController>(() => TutorHomeController());//RoleController
-          Get.lazyPut<RoleController>(() => RoleController());//AccountSetupController
-            Get.lazyPut<AccountSetupController>(() => AccountSetupController());//UserProfileController
-             Get.lazyPut<UserProfileController>(() => UserProfileController());
-             Get.lazyPut<StudentAttendanceController>(() => StudentAttendanceController());
-             //AddEnqueryController
-                Get.lazyPut<AddEnqueryController>(() => AddEnqueryController());
-                Get.lazyPut<ParentController>(() => ParentController());
-
+    Get.lazyPut<DashboardController>(
+        () => DashboardController()); //TutorHomeController
+    Get.lazyPut<TutorHomeController>(
+        () => TutorHomeController()); //RoleController
+    Get.lazyPut<RoleController>(
+        () => RoleController()); //AccountSetupController
+    Get.lazyPut<AccountSetupController>(
+        () => AccountSetupController()); //UserProfileController
+    Get.lazyPut<UserProfileController>(() => UserProfileController());
+    Get.lazyPut<StudentAttendanceController>(
+        () => StudentAttendanceController());
+    //AddEnqueryController
+    Get.lazyPut<AddEnqueryController>(() => AddEnqueryController());
+    Get.lazyPut<ParentController>(() => ParentController());
   }
 }
 
+// ignore: unused_element
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
 
-
-void main()async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-    Get.put(AuthControllers());
-  runApp(const MyApp());
+  Get.put(AuthControllers());
+  runApp( const MyApp());
 }
+
+
+// class MyApp extends StatelessWidget {
+//    final AppLinks _appLinks = AppLinks();
+//    MyApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GetMaterialApp(
+//       initialBinding: MyBindings(),
+//       title: 'Attendence',
+//       debugShowCheckedModeBanner: false,
+//       home: SplashScreen(onInitializationComplete: _handleAppInitialization),
+//     );
+//   }
+
+//     Future<void> _handleAppInitialization() async {
+//       Logger().i("App initialized");
+    // final SplashController splashController = Get.find<SplashController>();
+    // Uri? deepLink = await _fetchDeepLink();
+    //   Logger().i(deepLink == null);
+    // if (deepLink != null) {
+    //   splashController.handleDeepLinkFlow(deepLink);
+    // } else {
+
+    //   splashController.handleNormalAppFlow();
+    // }
+//   }
+
+//     Future<Uri?> _fetchDeepLink() async {
+//     try {
+//       //    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+//       //   debugPrint('onAppLink: $uri');
+//       //   Logger().i("$uri");
+        
+//       //   openAppLink(uri.toString());
+//       // });
+//       Logger().i("fetchDeepLink ====>${_appLinks.uriLinkStream.first}");
+//       return await _appLinks.uriLinkStream.first;
+
+//     } catch (e) {
+//       Logger().e(e);
+   
+//       return null;
+//     }
+//   }
+// }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -70,64 +118,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-   late AppLinks _appLinks;
-  StreamSubscription<Uri>? _linkSubscription;
-
-
-    @override
-  void initState() {
-    super.initState();
-    
-    //initDeepLinks();
-  }
-
-  @override
-  void dispose() {
-    _linkSubscription?.cancel();
-
-    super.dispose();
-  }
-
-  //   Future<void> initDeepLinks() async {
-  //   _appLinks = AppLinks();
-
-  //   // Handle links
-  //   _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-  //     debugPrint('onAppLink: $uri');
-  //     Logger().i("$uri");
-  //     // openAppLink(uri);
-  //   });
-  // }
-
-//  Future<void> initDeepLinks() async {
-//   String url = 'https://express.insakal.com/parent-login?code=aec0c641b27c6db9ea70eab34450c925%3A08fe7457e1144be383540006b026381c&phoneNumber=9876543210';
-
-//   // Parse the URL
-//   Uri uri = Uri.parse(url);
-
-//   // Extract the 'code' query parameter
-//   String? code = uri.queryParameters['code'];
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     prefs.setString('code', code!);
-//   if (code != null) {
-//     print('Extracted Code: $code');
-//   } else {
-//     print('Code parameter not found in the URL');
-//   } 
-//   // Get.to(() => ParentOtpScreen());
-// }
-
-
-  // This widget is the root of your application.
+  
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        initialBinding: MyBindings(),
+      initialBinding: MyBindings(),
       title: 'Attendence',
       debugShowCheckedModeBanner: false,
-  
       home: SplashScreen(),
     );
   }
 }
-

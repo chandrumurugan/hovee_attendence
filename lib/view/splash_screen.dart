@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,10 +9,14 @@ import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 
 class SplashScreen extends StatelessWidget {
+  //  final Future<void> Function() onInitializationComplete;
+     SplashScreen({Key? key,})
+      : super(key: key);
   final SplashController splashController = Get.put(SplashController());
   final AuthControllers classController = Get.put(AuthControllers());
   @override
   Widget build(BuildContext context) {
+    // _startInitialization();
     return Scaffold(
       body: Stack(
         children: [
@@ -24,51 +30,7 @@ class SplashScreen extends StatelessWidget {
                   LogoGif(issplash: true),
                 ],
               )
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     ClipRRect(
-              //       borderRadius: BorderRadius.circular(12.0),
-              // child: SvgPicture.asset(
-              //   'assets/appConstantImg/app_icon.svg',
-              //   height: 50,
-              // ),
-              //     ),
-              //     const SizedBox(width: 6),
-              //     Obx(() {
-              //       return splashController.showSecondImage.value
-              //           ? SvgPicture.asset(
-              //               'assets/appConstantImg/logo_text.svg',
-              //               height: 40,
-              //               width: 40,
-              //             )
-              //           : SizedBox.shrink();
-              //     }),
-              //   ],
-              // ),
-
-              // Align(
-              //   alignment: Alignment.bottomCenter,
-              //   child: Column(
-              //     mainAxisSize: MainAxisSize.min,
-              //     mainAxisAlignment: MainAxisAlignment.end,
-              //     children: [
-              //     ,
-              //       // const SizedBox(height: 16),
-              // SizedBox(
-              //   width: 97,
-              //   child: LinearProgressIndicator(
-              //     minHeight: 5.0,
-              //     backgroundColor: Colors.grey[200],
-              //     valueColor:  AlwaysStoppedAnimation<Color>(
-              //         AppConstants.primaryColor),
-              //     value: splashController.progressValue.value,
-              //     borderRadius: BorderRadius.circular(20),
-              //   ),
-              // ),
-              //     ],
-              //   ),
-              // ),
+         
             ],
           ),
           Positioned(
@@ -111,4 +73,10 @@ class SplashScreen extends StatelessWidget {
       ),
     );
   }
+
+
+  //   Future<void> _startInitialization() async {
+  //   // await Future.delayed(const Duration(seconds: 3)); // Splash screen delay
+  //   await onInitializationComplete();
+  // }
 }

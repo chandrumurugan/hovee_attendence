@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -7,10 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
-import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/roleSelection.dart';
 import 'package:pinput/pinput.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ParentOtpScreen extends StatelessWidget {
    ParentOtpScreen({super.key});
@@ -216,7 +213,7 @@ class ParentOtpScreen extends StatelessWidget {
                                           onTap: () async {
                                             var value = await parentController
                                                 .otp(context);
-                                            if (value!.statusCode == 200) {
+                                            if (value!.statusCode == 200) {      
                                               showModalBottomSheet(
                                                 isDismissible: false,
                                                 enableDrag: false,
@@ -290,13 +287,7 @@ class ParentOtpScreen extends StatelessWidget {
                                               ),
                                             ),
                                             child: Obx(() {
-                                              return parentController
-                                                      .isLoading.value
-                                                  ? const Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
-                                                    )
-                                                  : const Center(
+                                              return const Center(
                                                       child: Text(
                                                         'Verify Code',
                                                         style: TextStyle(

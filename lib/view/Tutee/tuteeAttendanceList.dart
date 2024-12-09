@@ -215,41 +215,41 @@ class TuteeAttendanceList extends StatelessWidget {
                     ),
                     // outsideRangeTextStyle: TextStyle(color: Colors.grey),
                   ),
-                  calendarBuilders: CalendarBuilders(
-  defaultBuilder: (context, date, _) {
-    // Highlight Miss Punch dates
-    if (controller.missPunchDates.contains(date)) {
-      return Container(
-        decoration: BoxDecoration(
-          color: Colors.amber, // Miss Punch color
-          shape: BoxShape.circle,
-        ),
-        child: Center(child: Text('${date.day}')),
-      );
-    }
-    // Highlight Absent dates
-    if (controller.absentDates.contains(date)) {
-      return Container(
-        decoration: BoxDecoration(
-          color: Colors.red, // Absent color
-          shape: BoxShape.circle,
-        ),
-        child: Center(child: Text('${date.day}')),
-      );
-    }
-    // Highlight Present dates
-    if (controller.presentDates.contains(date)) {
-      return Container(
-        decoration: BoxDecoration(
-          color: Colors.green, // Present color
-          shape: BoxShape.circle,
-        ),
-        child: Center(child: Text('${date.day}')),
-      );
-    }
-    return null; // Default calendar cell styling
-  },
-),
+                  // calendarBuilders: CalendarBuilders(
+                  //   defaultBuilder: (context, date, _) {
+                  //     // Highlight Miss Punch dates
+                  //     if (controller.missPunchDates.contains(date)) {
+                  //       return Container(
+                  //         decoration: BoxDecoration(
+                  //           color: Colors.amber, // Miss Punch color
+                  //           shape: BoxShape.circle,
+                  //         ),
+                  //         child: Center(child: Text('${date.day}')),
+                  //       );
+                  //     }
+                  //     // Highlight Absent dates
+                  //     if (controller.absentDates.contains(date)) {
+                  //       return Container(
+                  //         decoration: BoxDecoration(
+                  //           color: Colors.red, // Absent color
+                  //           shape: BoxShape.circle,
+                  //         ),
+                  //         child: Center(child: Text('${date.day}')),
+                  //       );
+                  //     }
+                  //     // Highlight Present dates
+                  //     if (controller.presentDates.contains(date)) {
+                  //       return Container(
+                  //         decoration: BoxDecoration(
+                  //           color: Colors.green, // Present color
+                  //           shape: BoxShape.circle,
+                  //         ),
+                  //         child: Center(child: Text('${date.day}')),
+                  //       );
+                  //     }
+                  //     return null; // Default calendar cell styling
+                  //   },
+                  // ),
 
                   selectedDayPredicate: (day) {
                     return isSameDay(controller.selectedDay.value, day);
@@ -287,8 +287,7 @@ class TuteeAttendanceList extends StatelessWidget {
                         return Container(
                           margin: const EdgeInsets.all(4.0),
                           decoration: BoxDecoration(
-                            color: AppConstants.primaryColor.withOpacity(
-                                0.8), // Background color for miss punch dates
+                            color:Color(0xff2E5BB5), // Background color for miss punch dates
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           alignment: Alignment.center,
@@ -297,6 +296,33 @@ class TuteeAttendanceList extends StatelessWidget {
                             style: const TextStyle(
                                 color: Colors.white), // Text style
                           ),
+                        );
+                      }
+
+                      if (controller.absentDates
+                          .contains(DateTime(day.year, day.month, day.day))) {
+                        return Container(
+                            margin: const EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                               color: Color(0xffAD0F60), // Background color for miss punch dates
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                                 alignment: Alignment.center,
+                          child: Center(child: Text('${day.day}')),
+                        );
+                      }
+
+                      // Highlight Present dates
+                      if (controller.presentDates
+                          .contains(DateTime(day.year, day.month, day.day))) {
+                        return Container(
+                            margin: const EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                             color:Color(0xffF07721), // Background color for miss punch dates
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                            alignment: Alignment.center,
+                          child: Center(child: Text('${day.day}')),
                         );
                       }
                       // Return default appearance for other dates

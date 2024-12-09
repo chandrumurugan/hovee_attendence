@@ -1,17 +1,13 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/modals/parentLoginDataModel.dart';
-import 'package:hovee_attendence/modals/parentLoginModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
-import 'package:hovee_attendence/view/loginSignup/otp_screen.dart';
 import 'package:hovee_attendence/view/parent_otp_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +15,7 @@ import 'package:share_plus/share_plus.dart';
 
 class ParentController extends GetxController {
   GlobalKey<ScaffoldState> tuteeScaffoldKey = GlobalKey<ScaffoldState>();
-  var isLoading = true.obs;
+  var isLoading = false.obs;
   var homeDashboardNavList = <NavbarItems>[].obs;
   var homeDashboardCourseList = <CourseList?>[].obs;
   var studentDetails = <StudentDetails>[].obs;

@@ -57,9 +57,11 @@ class StudentAttendanceController extends GetxController {
 
   // final missPunchDates = <DateTime>{}.obs;
   RxSet<DateTime> missPunchDates = RxSet<DateTime>();
+    RxSet<DateTime> absentDates = RxSet<DateTime>();
+    RxSet<DateTime> presentDates = RxSet<DateTime>();
 
-   var absentDates = <DateTime>{}.obs;
-   var presentDates = <DateTime>{}.obs;
+  //  var absentDates = <DateTime>{}.obs;
+  //  var presentDates = <DateTime>{}.obs;
 
   @override
   void onInit() {
@@ -187,11 +189,18 @@ class StudentAttendanceController extends GetxController {
           .toSet();
     
   print("===========>${missPunchDates.value}");
-    absentDates.value = dataTutee!.missPunch!
-          .map((date) => DateFormat('dd-MM-yyyy').parse(date.punchInTime!))
+    absentDates.value = dataTutee!.absent!
+          .map((date) {
+             final parsedDate = DateFormat('dd-MM-yyyy').parse(date.punchInTime!);
+            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+
+          } )
           .toSet();
-            presentDates.value = dataTutee!.missPunch!
-          .map((date) => DateFormat('dd-MM-yyyy').parse(date.punchInTime!))
+            presentDates.value = dataTutee!.parent!
+          .map((date) {
+                    final parsedDate = DateFormat('dd-MM-yyyy').parse(date.punchInTime!);
+            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+          })
           .toSet();
         attendanceData.value = [
           AttendanceData(

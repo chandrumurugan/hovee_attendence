@@ -108,7 +108,7 @@ class AccountSetupController extends GetxController
 
   void _populateAddressFromLocation() async {
     final prefs = await SharedPreferences.getInstance();
-    Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
+    Get.log("Latitude: $latitude, Longitude: $longitude");
     latitude = prefs.getDouble('latitude');
     longitude = prefs.getDouble('longitude');
     try {
@@ -126,23 +126,27 @@ class AccountSetupController extends GetxController
         pincodesController.text = place.postalCode ?? "";
       }
     } catch (e) {
-      print(e);
+      Logger().e(e);
     }
   }
 
   void _populateFieldsFromAuth() {
     Logger().i(
-        "getting idprrof value==>${authControllers.otpResponse.value.data!.idProof??''}");
-    phController.text = authControllers.otpResponse.value.data!.phoneNumber??'';
+        "getting idprrof value==>${authControllers.otpResponse.value.data!.idProof ?? ''}");
+    phController.text =
+        authControllers.otpResponse.value.data!.phoneNumber ?? '';
     firstNameController.text =
-        authControllers.otpResponse.value.data!.firstName??'';
-    lastNameController.text = authControllers.otpResponse.value.data!.lastName??'';
-    emailController.text = authControllers.otpResponse.value.data!.email??'';
+        authControllers.otpResponse.value.data!.firstName ?? '';
+    lastNameController.text =
+        authControllers.otpResponse.value.data!.lastName ?? '';
+    emailController.text = authControllers.otpResponse.value.data!.email ?? '';
     dobController.text = authControllers.otpResponse.value.data!.dob!;
     pincodeController.text =
         authControllers.otpResponse.value.data!.pincode!.toString();
-    selectedIDProof.value = authControllers.otpResponse.value.data!.idProof??'';
-    idProofController.text = authControllers.otpResponse.value.data!.idProof??'';
+    selectedIDProof.value =
+        authControllers.otpResponse.value.data!.idProof ?? '';
+    idProofController.text =
+        authControllers.otpResponse.value.data!.idProof ?? '';
   }
 
   List<String> getQualifications() {
@@ -239,27 +243,45 @@ class AccountSetupController extends GetxController
 
   bool validateAddressInfo(BuildContext context) {
     if (address1Controller.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,"Please enter the door no",);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the door no",
+      );
       return false;
     }
     if (address2Controller.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,"Please enter the street & area",);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the street & area",
+      );
       return false;
     }
     if (cityController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,"Please enter the city",);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the city",
+      );
       return false;
     }
     if (stateController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,"Please enter the state",);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the state",
+      );
       return false;
     }
     if (countryController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,"Please enter the country",);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the country",
+      );
       return false;
     }
     if (pincodesController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,"Please enter the pincode",);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the pincode",
+      );
       return false;
     }
 
@@ -272,39 +294,63 @@ class AccountSetupController extends GetxController
 
   bool validatePersonalFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please enter the first name.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the first name.',
+      );
       return false;
     }
     if (lastNameController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please enter the last name.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the last name.',
+      );
       return false;
     }
     if (emailController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please enter the email.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the email.',
+      );
       return false;
     }
     // Email format validation
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text)) {
-      SnackBarUtils.showErrorSnackBar(context,'Invalid email format',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Invalid email format',
+      );
       return false;
     }
     if (dobController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please select the DOB.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please select the DOB.',
+      );
       return false;
     }
 
     if (phController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please enter the mobile number.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the mobile number.',
+      );
       return false;
     }
     if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
-       SnackBarUtils.showErrorSnackBar(context,'Invalid mobile number',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Invalid mobile number',
+      );
       return false;
     }
 
     if (pincodeController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please enter the pincode.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the pincode.',
+      );
       return false;
     }
 
@@ -314,7 +360,10 @@ class AccountSetupController extends GetxController
     // }
 
     if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please select the Id proof',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please select the Id proof',
+      );
       return false;
     }
 
@@ -346,11 +395,11 @@ class AccountSetupController extends GetxController
       String roleId, String roleTypeId) {
     if (validateAddressInfo(context)) {
       String address = "${address1Controller.text}, "
-    "${address2Controller.text}, "
-    "${cityController.text}, "
-    "${stateController.text}, "
-    "${countryController.text} - "
-    "${pincodesController.text}";
+          "${address2Controller.text}, "
+          "${cityController.text}, "
+          "${stateController.text}, "
+          "${countryController.text} - "
+          "${pincodesController.text}";
       addressInfo.value = {
         "door_no": address1Controller.text,
         "street": address2Controller.text,
@@ -359,7 +408,7 @@ class AccountSetupController extends GetxController
         "country": countryController.text,
         "pincode": pincodesController.text,
         "phone_number": phController.text,
-        "address":address,
+        "address": address,
       };
       selectedRoleTypeName == 'I Run an Institute'
           ? submitAccountSetup(roleId, roleTypeId, context)
@@ -375,27 +424,45 @@ class AccountSetupController extends GetxController
     validationMessages.clear();
 
     if (highestQualification.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, "Please select a highest qualification.",);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please select a highest qualification.",
+      );
       return false;
     }
     if (teachingSkills.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please select a teaching skill set.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please select a teaching skill set.',
+      );
       return false;
     }
     if (workingTech.value.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please select a work type.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please select a work type.',
+      );
       return false;
     }
     if (teachingExperience.value.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please select your teaching experience.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please select your teaching experience.',
+      );
       return false;
     }
     if (resumePath.value.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please attach  a resume.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please attach  a resume.',
+      );
       return false;
     }
     if (experienceCertPath.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Please attach a experience certificate.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please attach a experience certificate.',
+      );
       return false;
     }
     return true;
@@ -403,11 +470,17 @@ class AccountSetupController extends GetxController
 
   bool validateTuteEducationInfo(BuildContext context) {
     if (tuteeHighestQualification.value.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context, "Please select highest qualification.",);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please select highest qualification.",
+      );
       return false;
     }
     if (tuteeSpeciallization.value.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,"Please select class/specialization.",);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please select class/specialization.",
+      );
       return false;
     }
     // if(tuteeboardController.text.isEmpty){
@@ -417,7 +490,10 @@ class AccountSetupController extends GetxController
 
     // }
     if (tuteorganizationController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,"Please enter the school/college/other.",);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the school/college/other.",
+      );
       return false;
     }
     return true;
@@ -463,7 +539,7 @@ class AccountSetupController extends GetxController
     //final token = box.read('Token') ?? '';
     Logger().i(personalInfo.value);
     final prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    final token = prefs.getString('Token') ?? "";
     Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
     latitude = prefs.getDouble('latitude');
     longitude = prefs.getDouble('longitude');
@@ -487,8 +563,10 @@ class AccountSetupController extends GetxController
         print(responseBody);
         SnackBarUtils.showSuccessSnackBar(
             context, "Account setup successfully completed.");
-        Get.offAll(() =>  DashboardScreen(rolename: 'Tutee',));
-       //Get.offAll(() => TutorHome());
+        Get.offAll(() => DashboardScreen(
+              rolename: 'Tutee',
+            ));
+        //Get.offAll(() => TutorHome());
         // Handle success (e.g., show a success message)
       } else {
         print(response.statusCode);
@@ -541,7 +619,7 @@ class AccountSetupController extends GetxController
     // Retrieve the token from storage
     // final token = box.read('Token') ?? '';
     final prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    final token = prefs.getString('Token') ?? "";
     Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
     latitude = prefs.getDouble('latitude');
     longitude = prefs.getDouble('longitude');
@@ -562,11 +640,13 @@ class AccountSetupController extends GetxController
       // Handle the response
       if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
-        print(responseBody);
-        SnackBarUtils.showSuccessSnackBar(
-            context, "Account setup successfully completed.");
-        Get.offAll(() => DashboardScreen(rolename: 'Tutor',));
-       //Get.offAll(() => TutorHome());
+        // print(responseBody);
+        // SnackBarUtils.showSuccessSnackBar(
+        //     context, "Account setup successfully completed.");
+        Get.offAll(() => DashboardScreen(
+              rolename: 'Tutor',
+            ));
+        //Get.offAll(() => TutorHome());
         // Handle success (e.g., show a success message)
       } else {
         print(response.statusCode);

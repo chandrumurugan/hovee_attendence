@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 
@@ -13,7 +12,7 @@ class ModalService {
       builder: (BuildContext context) {
         return Obx(() {
           // Check if the ID Proofs are available in appConfig
-          var idProofs = splashController.appConfig.value.data?.iDProof ?? [];
+          var idProofs = splashController.appConfig.value!.data?.iDProof ?? [];
           const double itemHeight = 56.0; // Height for each RadioListTile
           const double maxHeight = 400.0; // Maximum height of the bottom sheet
           final double sheetHeight =
