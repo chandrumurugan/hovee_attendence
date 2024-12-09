@@ -57,7 +57,7 @@ class AuthControllers extends GetxController
   bool get isTimerRunning => _isTimerRunning.value; // Getter for timer state
 
   RxBool isChecked = false.obs;
-  final SplashController splashController = Get.put(SplashController());
+  final SplashController splashController = Get.put(SplashController(parentId: '', phoneNumber: '',));
 
   LoginData? loginData;
 

@@ -2,11 +2,15 @@
 import 'dart:async';
 import 'dart:convert';
 
+
 import 'package:app_links/app_links.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
+import 'package:hovee_attendence/main.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/services/liveLocationService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
@@ -41,50 +45,58 @@ class SplashController extends GetxController {
   var isLoading = true.obs;
   final ParentController parentController = Get.put(ParentController());
   String? deepLinkUrl;
- Uri sampleUri = Uri.parse("https://express.insakal.com/parent-login?code=a2cb8c72577c5521be948e17d178ebbb%3Ae9b230f30dc8930484da34476755c7e1&phoneNumber=undefined");
+
+  final String parentId;
+  final String phoneNumber;
+
+
+    //constreuct
+      SplashController({required this.parentId,required this.phoneNumber}); 
 
   @override
   void onInit() {
     super.onInit();
-     initDeepLinks();
-    // handleDeepLinkFlow(sampleUri);
+    // initDeepLinks();
+    //  handleDeepLinkFlow(sampleUri);
+     handleNormalAppFlow();
   }
 
-  Future<void> initDeepLinks() async {
-    try {
-      _appLinks = AppLinks();
-       SharedPreferences prefs = await SharedPreferences.getInstance();
-      Uri? uri;
-      deepLinkUrl = prefs.getString('deepLink') ?? null;
-      // Listen to deep link streams
-      final Uri? initialUri = Uri.tryParse(deepLinkUrl!);
-      if (initialUri != null) {
-        Logger().i("Initial deep link: $initialUri");
-        handleDeepLinkFlow(initialUri);
-      }
+  // Future<void> initDeepLinks() async {
+  //   try {
+  //     _appLinks = AppLinks();
+     
 
-      _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-        if (uri != null) {
-          Logger().i("Deep link received: $uri");
-          deepLink.value = uri.toString();
-          handleDeepLinkFlow(uri); // Use the uri received from the stream
-        }
-      });
 
-      // Handle initial deep link
-      final initialLink = await _appLinks.getInitialLink();
-      if (initialLink != null) {
-        Logger().i("Initial deep link: $initialLink");
-        deepLink.value = initialLink.toString();
-        handleDeepLinkFlow(initialLink);
-      } else {
-        handleNormalAppFlow(); // Proceed to the normal app flow
-      }
-    } catch (e) {
-      Logger().e("Error in initDeepLinks: $e");
-      handleNormalAppFlow();
-    }
-  }
+  //     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+  //       if (uri != null) {
+  //         Logger().i("Deep link received: $uri");
+  //         deepLink.value = uri.toString();
+  //         handleDeepLinkFlow(uri); // Use the uri received from the stream
+  //       }
+  //     });
+  //     // _linkSubscription!.onData((uri) {
+  //     //   if (uri != null) {
+  //     //     SystemNavigator.pop();
+  //     //     runApp(const MyApp());
+  //     //   }
+  //     // });
+
+  //     // Handle initial deep link
+  //     final initialLink = await _appLinks.getInitialLink();
+  //     if (initialLink != null) {
+  //       Logger().i("Initial deep link: $initialLink");
+  //       deepLink.value = initialLink.toString();
+  //       handleDeepLinkFlow(initialLink);
+  //     }
+      
+  //     //  else {
+  //     //   handleNormalAppFlow(); // Proceed to the normal app flow
+  //     // }
+  //   } catch (e) {
+  //     Logger().e("Error in initDeepLinks: $e");
+  //     handleNormalAppFlow();
+  //   }
+  // }
 
   @override
   void onClose() {
@@ -133,11 +145,11 @@ class SplashController extends GetxController {
     final parsedData = _parseDeepLink(deepLink);
     if (parsedData != null) {
       await fetchAppConfig();
-      await Get.off(() => ParentOtpScreen(), arguments: parsedData);
+       Get.off(() => ParentOtpScreen(), arguments: parsedData);
       // });
       // Replace SplashScreen
     } else {
-      Logger().w("Invalid deep link. Proceeding with normal app flow.");
+      Logger().w("Invalid deep link. Proceeding with normal app flow.",stackTrace: StackTrace.current);
       handleNormalAppFlow();
     }
   }
@@ -175,19 +187,22 @@ class SplashController extends GetxController {
     prefs.getDouble('latitude');
     prefs.getDouble('longitude');
 
+
+
+
     // Retrieve token from SharedPreferences
     final token = await getTokenFromPreferences();
 
     // Navigate based on token presence
-    if (token.isNotEmpty) {
+
+    if(parentId.isNotEmpty){
+       Get.off(() => ParentOtpScreen(), arguments: {"code": parentId, "phoneNumber": phoneNumber});
+      
+    }else if (token.isNotEmpty) {
       await _validateTokenAndNavigate();
-    } else {
-       if(deepLink!=null){
-          Get.off(() =>  ParentOtpScreen());
-        }else{
-           Get.off(() => const GuestHomeScreen());
-        }
-    //  Get.off(() => const GuestHomeScreen()); // Navigate to guest home
+    }
+    else {
+      Get.off(() => const GuestHomeScreen()); // Navigate to guest home
     }
   }
 

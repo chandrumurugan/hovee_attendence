@@ -8,31 +8,25 @@ import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   //  final Future<void> Function() onInitializationComplete;
-     SplashScreen({Key? key,})
+  final String parentId;
+  final String phoneNumber;
+
+     SplashScreen({Key? key,required this.parentId, required this.phoneNumber,})
       : super(key: key);
 
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
   final AuthControllers classController = Get.put(AuthControllers());
-   final SplashController splashController = Get.put(SplashController());
-    Uri sampleUri = Uri.parse("https://express.insakal.com/parent-login?code=a2cb8c72577c5521be948e17d178ebbb%3Ae9b230f30dc8930484da34476755c7e1&phoneNumber=undefined");
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    splashController.handleDeepLinkFlow(sampleUri);
 
-  }
+    // Uri sampleUri = Uri.parse("https://express.insakal.com/parent-login?code=a2cb8c72577c5521be948e17d178ebbb%3Ae9b230f30dc8930484da34476755c7e1&phoneNumber=undefined");
 
+  // @override
   @override
   Widget build(BuildContext context) {
      
+        final SplashController splashController = Get.put(SplashController(parentId: parentId, phoneNumber: phoneNumber));
+
     // _startInitialization();
     return Scaffold(
       body: Stack(

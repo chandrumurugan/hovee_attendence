@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
@@ -12,7 +13,6 @@ import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorsStudentAttendanceList.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
-import 'package:hovee_attendence/view/parent_otp_screen.dart';
 import 'package:hovee_attendence/view/splash_screen.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,12 +20,15 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:app_links/app_links.dart';
+import 'package:restart_app/restart_app.dart';
+
+bool _initialUriIsHandled = false;
 
 class MyBindings extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<SplashController>(() => SplashController());
+    Get.lazyPut<SplashController>(
+        () => SplashController(parentId: '', phoneNumber: ''));
     Get.lazyPut<AuthControllers>(() => AuthControllers());
     Get.lazyPut<DashboardController>(
         () => DashboardController()); //TutorHomeController
@@ -60,9 +63,8 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
   Get.put(AuthControllers());
-  runApp( const MyApp());
+  runApp(const MyApp());
 }
-
 
 // class MyApp extends StatelessWidget {
 //    final AppLinks _appLinks = AppLinks();
@@ -80,15 +82,15 @@ void main() async {
 
 //     Future<void> _handleAppInitialization() async {
 //       Logger().i("App initialized");
-    // final SplashController splashController = Get.find<SplashController>();
-    // Uri? deepLink = await _fetchDeepLink();
-    //   Logger().i(deepLink == null);
-    // if (deepLink != null) {
-    //   splashController.handleDeepLinkFlow(deepLink);
-    // } else {
+// final SplashController splashController = Get.find<SplashController>();
+// Uri? deepLink = await _fetchDeepLink();
+//   Logger().i(deepLink == null);
+// if (deepLink != null) {
+//   splashController.handleDeepLinkFlow(deepLink);
+// } else {
 
-    //   splashController.handleNormalAppFlow();
-    // }
+//   splashController.handleNormalAppFlow();
+// }
 //   }
 
 //     Future<Uri?> _fetchDeepLink() async {
@@ -96,7 +98,7 @@ void main() async {
 //       //    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
 //       //   debugPrint('onAppLink: $uri');
 //       //   Logger().i("$uri");
-        
+
 //       //   openAppLink(uri.toString());
 //       // });
 //       Logger().i("fetchDeepLink ====>${_appLinks.uriLinkStream.first}");
@@ -104,7 +106,7 @@ void main() async {
 
 //     } catch (e) {
 //       Logger().e(e);
-   
+
 //       return null;
 //     }
 //   }
@@ -118,14 +120,108 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
+  Uri? _initialUri;
+  Uri? _latestUri;
+  Object? _err;
+  bool _initialUriIsHandled = false;
+  String code = '';
+  String phoneNumber = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _appLinks = AppLinks();
+    initDeepLinks(); //stream listen
+    _handleInitialUri();
+  }
+
+  Future<void> _handleInitialUri() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (!_initialUriIsHandled) {
+      _initialUriIsHandled = true;
+      try {
+        _initialUri = await _appLinks.getInitialLink();
+        if (_initialUri != null) {
+          final parsedData = _parseDeepLink(_initialUri!);
+          if (parsedData != null) {
+            setState(() {
+              code = parsedData['code']!;
+              phoneNumber = parsedData['phoneNumber']!;
+              prefs.setString('code', parsedData['code']!);
+              prefs.setString('phoneNumber', parsedData['phoneNumber']!);
+            });
+          }
+        }
+      } catch (e) {
+        Logger().e(e);
+      }
+    }
+  }
+
+  void initDeepLinks() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      final parsedData = _parseDeepLink(uri);
+      if (parsedData != null) {
+        setState(() {
+          code = parsedData['code']!;
+          phoneNumber = parsedData['phoneNumber']!;
+          prefs.setString('code', parsedData['code']!);
+          prefs.setString('phoneNumber', parsedData['phoneNumber']!);
+        });
+
+        // Get.off(() => ParentOtpScreen(), arguments: parsedData);
+      }
+      setState(() {
+        _latestUri = uri;
+      });
+
+      Restart.restartApp();
+    }, onError: (Object err) {
+      Logger().e(err);
+    });
+  }
+
+  Map<String, String>? _parseDeepLink(Uri uri) {
+    try {
+      final code = uri.queryParameters['code']?.split('/phone').first;
+      final phoneDetails = uri.queryParameters['code']?.split('/phone').last;
+
+      String? phoneNumber;
+      if (phoneDetails != null && phoneDetails.startsWith('?')) {
+        phoneNumber = Uri.parse('https://dummy$phoneDetails')
+            .queryParameters['phoneNumber'];
+      }
+
+      if (code != null && phoneNumber != null) {
+        return {'code': code, 'phoneNumber': phoneNumber};
+      }
+    } catch (e) {
+      Logger().e(e);
+      // print("Error parsing deep link: $e");
+    }
+    return null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _linkSubscription?.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: MyBindings(),
       title: 'Attendence',
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: SplashScreen(
+        parentId: code,
+        phoneNumber: phoneNumber,
+      ),
     );
   }
 }
