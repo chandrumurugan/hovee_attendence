@@ -46,22 +46,22 @@ class SplashController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // initDeepLinks();
-     handleDeepLinkFlow(sampleUri);
+     initDeepLinks();
+    // handleDeepLinkFlow(sampleUri);
   }
 
   Future<void> initDeepLinks() async {
     try {
       _appLinks = AppLinks();
-     
-      // Uri? uri;
-      // deepLinkUrl = prefs.getString('deepLink') ?? null;
-      // // Listen to deep link streams
-      // final Uri? initialUri = Uri.tryParse(deepLinkUrl!);
-      // if (initialUri != null) {
-      //   Logger().i("Initial deep link: $initialUri");
-      //   handleDeepLinkFlow(initialUri);
-      // }
+       SharedPreferences prefs = await SharedPreferences.getInstance();
+      Uri? uri;
+      deepLinkUrl = prefs.getString('deepLink') ?? null;
+      // Listen to deep link streams
+      final Uri? initialUri = Uri.tryParse(deepLinkUrl!);
+      if (initialUri != null) {
+        Logger().i("Initial deep link: $initialUri");
+        handleDeepLinkFlow(initialUri);
+      }
 
       _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
         if (uri != null) {
@@ -182,7 +182,12 @@ class SplashController extends GetxController {
     if (token.isNotEmpty) {
       await _validateTokenAndNavigate();
     } else {
-      Get.off(() => const GuestHomeScreen()); // Navigate to guest home
+       if(deepLink!=null){
+          Get.off(() =>  ParentOtpScreen());
+        }else{
+           Get.off(() => const GuestHomeScreen());
+        }
+    //  Get.off(() => const GuestHomeScreen()); // Navigate to guest home
     }
   }
 

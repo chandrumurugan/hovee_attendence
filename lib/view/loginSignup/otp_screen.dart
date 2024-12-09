@@ -327,7 +327,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                                         // Get.offAll(() => const RoleSelection());
                                                       } else {
                                                         Get.offAll(() =>
-                                                            const RoleSelection());
+                                                            const RoleSelection(isFromParentOtp: false,));
                                                       }
                                                     },
                                                     icon: const Icon(

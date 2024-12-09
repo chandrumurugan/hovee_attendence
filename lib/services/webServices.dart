@@ -1683,65 +1683,68 @@ class WebService {
   }
 
   static Future<RegisterParentModel?> RegisterParent({
-    required BuildContext context,
-    required String firstName,
-    required String lastName,
-    required String email,
-    required String dob,
-    required String phNo,
-    required String pincode,
-    required String latitude,
-    required String longitude,
-    required String country,
-    required String state,
-    required String city,
-    required String street,
-    required String doorNo
+  required BuildContext context,
+  required String firstName,
+  required String lastName,
+  required String email,
+  required String dob,
+  required String phNo,
+  required String pincode,
+  required String latitude,
+  required String longitude,
+  required String country,
+  required String state,
+  required String city,
+  required String street,
+  required String doorNo,
+}) async {
+  try {
+    DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
+    String formattedDate1 = DateFormat('dd/MM/yyyy').format(parsedDate1);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
 
-  }) async {
-    try {
-      DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
-      String formattedDate1 = DateFormat('dd/MM/yyyy').format(parsedDate1);
-       SharedPreferences prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('Token') ?? "";
-      var headers = {'Content-Type': 'application/json','Authorization': 'Bearer $token',};
+    var data = {
+      "first_name": firstName,
+      "last_name": lastName,
+      "email": email,
+      "dob": formattedDate1,
+      "phone_number": phNo,
+      "pincode": pincode,
+      "longitude": longitude,
+      "latitude": latitude,
+      "country": country,
+      "state": state,
+      "city": city,
+      "street": street,
+      "door_no": doorNo,
+    };
 
-      var data = {
-        "first_name": firstName,
-        "last_name": lastName,
-        "email": email,
-        "dob": formattedDate1,
-        "phone_number": phNo,
-        "pincode": pincode,
-        "longitude": longitude,
-        "latitude": latitude,
-        "country":country,
-        "state": state,
-        "city": city,
-        "street": street,
-        "door_no": doorNo
-      };
+    var url = Uri.parse("${baseUrl}user/registerParent");
+    var response =
+        await http.post(url, body: jsonEncode(data), headers: headers);
 
-      var url = Uri.parse("${baseUrl}user/registerParent");
-      var response =
-          await http.post(url, body: jsonEncode(data), headers: headers);
-
-      if (response.statusCode == 200) {
-        var result = jsonDecode(response.body);
-        return RegisterParentModel.fromJson(result);
-      } else {
-        Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showSuccessSnackBar(
-          context,
-          "${result["message"]}",
-        );
-
-        return null;
-      }
-    } catch (e) {
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body);
+      return RegisterParentModel.fromJson(result);
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "${result["message"]}",
+      );
       return null;
     }
+  } catch (e) {
+    SnackBarUtils.showErrorSnackBar(context, "An error occurred.");
+    return null;
   }
+}
+
 
   static Future<getParentInviteCodeModel?> getParentInviteCode(
       String identifiers, BuildContext context) async {

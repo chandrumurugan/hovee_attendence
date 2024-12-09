@@ -245,10 +245,10 @@ class Tutorenquirlist extends StatelessWidget {
                                                       .board!,
                                                   batchStartingTime:
                                                       tutionCourseDetailsList
-                                                          .batchTimingStart!,
+                                                          .batchTimingStart??'',
                                                   batchEndingTime:
                                                       tutionCourseDetailsList
-                                                          .batchTimingEnd!,
+                                                          .batchTimingEnd??'',
                                                   tutorname:
                                                       tutionCourseDetailsList
                                                           .tutorName!,

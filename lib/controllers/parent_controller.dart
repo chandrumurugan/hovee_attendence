@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/modals/parentLoginDataModel.dart';
+import 'package:hovee_attendence/modals/parentLoginModel.dart';
 import 'package:hovee_attendence/modals/update_parent_status_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
@@ -83,6 +84,7 @@ class ParentController extends GetxController {
   final otpController = TextEditingController();
 
   var otpResponse = validateAndLoginParentModal().obs;
+  var loginResponse = parentLoginModal().obs;
 
    final focusNode = FocusNode();
     UserDetail ? childrenData   ;
@@ -200,70 +202,30 @@ class ParentController extends GetxController {
   }
 
 
-  void logIn(String identifiers, BuildContext context) async {
+ Future<parentLoginModal?> logIn(String identifiers,BuildContext context) async {
     if (validateLogin(context)) {
       isLoading.value = true;
       try {
-        var response = await WebService.parentLogin(identifiers, context);
+        var response = await WebService.parentLogin(
+            identifiers,
+            context);
         if (response != null) {
-          // Assume `deeplink` is part of the response
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-          // prefs.setString('Token','');
-          //  deepLink = response.mobileDeepLink!;
-          //  code = response.code!;
-           logInController.clear();
-            isLoading.value = true;
-            // getValidateLink(identifiers,context);
-            //  Get.to(()=>DashboardScreen(rolename: 'Tutee',));
-             showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Success'),
-                content: Column(
-                  children: [
-                    Text('Deeplink: ${response.mobileDeepLink}'),
-                    Text('Code: ${response.code!}'),
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Clipboard.setData(ClipboardData(text: deepLink.value!));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('Deeplink copied to clipboard!')),
-                      );
-                      Get.to(()=>DashboardScreen(rolename: 'Tutee',));
-                      Navigator.of(context).pop(); // Close the dialog
-                    },
-                    child: Text('Copy'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Share.share(deepLink.value!);
-                      Get.to(()=>DashboardScreen(rolename: 'Tutee',));
-                      Navigator.of(context).pop(); // Close the dialog
-                    },
-                    child: Text('Share'),
-                  ),
-                ],
-              );
-            },
-          );
-         }  else {
-          Logger().e('Failed to load AppConfig');
+          loginResponse.value = response;
           isLoading.value = false;
+          logInController.clear();
+          getValidateLink(identifiers,context);
+          return response;
+        } else {
+          isLoading.value = false;
+          return null;
         }
-         //Get.back();
-         //Get.to(()=>DashboardScreen(rolename: 'Tutee',));
-  
       } catch (e) {
-        Logger().e(e);
+        print(e);
+        return null;
       }
     }
   }
+
 
  void getValidateLink(String identifiers, BuildContext context) async {
               var parentresponse = await WebService.getParentInviteCode(identifiers, context);

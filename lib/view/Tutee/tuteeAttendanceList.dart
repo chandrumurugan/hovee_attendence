@@ -274,7 +274,8 @@ class TuteeAttendanceList extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                                  alignment: Alignment.center,
-                          child: Center(child: Text('${day.day}')),
+                          child: Center(child: Text('${day.day}', style: const TextStyle(
+                                color: Colors.white),)),
                         );
                       }
 
@@ -288,7 +289,8 @@ class TuteeAttendanceList extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                             alignment: Alignment.center,
-                          child: Center(child: Text('${day.day}')),
+                          child: Center(child: Text('${day.day}', style: const TextStyle(
+                                color: Colors.white),)),
                         );
                       }
 
@@ -301,7 +303,8 @@ class TuteeAttendanceList extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                             alignment: Alignment.center,
-                          child: Center(child: Text('${day.day}')),
+                          child: Center(child: Text('${day.day}', style: const TextStyle(
+                                color: Colors.white),)),
                         );
                       }
                       if (controller.holidayDates
@@ -313,7 +316,8 @@ class TuteeAttendanceList extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                             alignment: Alignment.center,
-                          child: Center(child: Text('${day.day}')),
+                          child: Center(child: Text('${day.day}', style: const TextStyle(
+                                color: Colors.white),)),
                         );
                       }
                       // Return default appearance for other dates
@@ -326,6 +330,179 @@ class TuteeAttendanceList extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
+             Obx(() {
+              if (!controller.isCalendarVisible.value) {
+                return const SizedBox
+                    .shrink(); // Hide calendar if no batch is selected
+              }
+            return  Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Card(
+                color: Colors.white,
+                elevation: 10,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  height: 105,
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      // Wrap only the Circular Chart in Obx to react to changes in attendanceData
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width*0.8,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                    const SizedBox(
+                              height: 10,
+                            ),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: [
+                                                                                  Container(
+                                                                                      height: 18,
+                                                                                    width: 18,
+                                                                                    color: Color(0xffAD0F60),
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    width: 10,
+                                                                                  ),
+                                                         Text(
+                                                                                          'Absent',
+                                                                                          style: GoogleFonts.nunito(
+                                                                                              fontSize: 14,
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              color: Colors.black),
+                                                                                        )
+                                                        ],
+                                                      ),
+                                                       const SizedBox(
+                              width: 10,
+                            ),
+                                                       Row(
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                            Container(
+                               height: 18,
+                              width: 18,
+                              color: Color(0xffF07721),
+                            ),
+                           const SizedBox(
+                              width: 10,
+                            ),
+                             Text(
+                                    'Present',
+                                    style: GoogleFonts.nunito(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  )
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                              width: 10,
+                            ),
+                                                   Row(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                            Container(
+                                height: 18,
+                              width: 18,
+                              color: const Color(0xff014EA9),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                             Text(
+                                    'Leave ',
+                                    style: GoogleFonts.nunito(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  )
+                                                    ],
+                                                  ),
+                                                    ],
+                                                  ),
+                                                    const SizedBox(
+                              height: 10,
+                            ),
+                                                   Row(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        children: [
+                                                                                  Container(
+                                                                                      height: 18,
+                                                                                    width: 18,
+                                                                                    color: Colors.pink,
+                                                                                  ),
+                                                                                  const SizedBox(
+                                                                                    width: 10,
+                                                                                  ),
+                                                         Text(
+                                                                                          'Holiday',
+                                                                                          style: GoogleFonts.nunito(
+                                                                                              fontSize: 14,
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              color: Colors.black),
+                                                                                        )
+                                                        ],
+                                                      ),
+                                                       const SizedBox(
+                              width: 20,
+                            ),
+                                                       Row(
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                            Container(
+                               height: 18,
+                              width: 18,
+                              color: Color(0xff2E5BB5),
+                            ),
+                           const SizedBox(
+                              width: 10,
+                            ),
+                             Text(
+                                    'Miss Punch',
+                                    style: GoogleFonts.nunito(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  )
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                              width: 10,
+                            ),
+                                                  
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                          ),
+                        ),
+                     
+                      // Wrap the bar chart section in a separate Obx to react to changes in controller.data
+                    ],
+                  ),
+                ),
+              ),
+            );
+            }),
+
+           
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),

@@ -62,6 +62,9 @@ class StudentAttendanceController extends GetxController {
     RxSet<DateTime> leaveDates = RxSet<DateTime>();
     RxSet<DateTime> holidayDates = RxSet<DateTime>();
 
+    //tutor
+    RxSet<DateTime> holidayDatesTutor = RxSet<DateTime>();
+
   //  var absentDates = <DateTime>{}.obs;
   //  var presentDates = <DateTime>{}.obs;
 
@@ -139,6 +142,12 @@ class StudentAttendanceController extends GetxController {
       if (groupedEnrollmentByBatchResponse!.data != null) {
         data = groupedEnrollmentByBatchResponse.data!;
         Logger().i("====1234567890=====${data!.attendanceDetails![0].attendanceStatus}");
+         holidayDatesTutor.value = data!.holidays!
+          .map((date) {
+                    final parsedDate = DateFormat('dd-MM-yyyy').parse(date.holidayDate!);
+            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+          })
+          .toSet();
         attendanceData.value = [
           AttendanceData(
               category: "All",

@@ -9,183 +9,276 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
+import 'package:hovee_attendence/utils/snackbar_utils.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
+import 'package:hovee_attendence/view/parent_otp_screen.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ParentLoginScreen extends StatelessWidget {
-   ParentLoginScreen({super.key});
-final ParentController parentController = Get.put(ParentController());
+  ParentLoginScreen({super.key});
+  final ParentController parentController = Get.put(ParentController());
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: AppBarHeader(
-          needGoBack: false,
-          navigateTo: () {},
-        ),
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    width: MediaQuery.sizeOf(context).width,
-                    height: MediaQuery.sizeOf(context).height * 0.24,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/image 194.png'),
-                          fit: BoxFit.cover),
-                      gradient: LinearGradient(
-                        colors: [Color(0xFFC13584), Color(0xFF833AB4)],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                    ),
-                    child: const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Welcome !',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 24),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                      ],
-                    ),
-               ), ],
-              ),
+        child: Scaffold(
+            resizeToAvoidBottomInset: true,
+            appBar: AppBarHeader(
+              needGoBack: false,
+              navigateTo: () {},
             ),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Card(
-                  elevation: 10,
-                  shadowColor: Colors.black,
-                  surfaceTintColor: Colors.white,
-                  color: Colors.white,
-                  child: Obx(() {
-                    return Container(
-                      height:  MediaQuery.of(context).size.height * 0.3,
-                      width: MediaQuery.sizeOf(context).width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 10,
+            body: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        width: MediaQuery.sizeOf(context).width,
+                        height: MediaQuery.sizeOf(context).height * 0.24,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/image 194.png'),
+                              fit: BoxFit.cover),
+                          gradient: LinearGradient(
+                            colors: [Color(0xFFC13584), Color(0xFF833AB4)],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
                           ),
-                      
-                         
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                        ),
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              'Invite Parent',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 24),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.1),
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Card(
+                            elevation: 10,
+                            shadowColor: Colors.black,
+                            surfaceTintColor: Colors.white,
+                            color: Colors.white,
+                            child: Obx(() {
+                              return Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                  width: MediaQuery.sizeOf(context).width,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    color: Colors.white,
+                                  ),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         const SizedBox(
-                                          height: 14,
+                                          height: 10,
                                         ),
-                                        Text(
-                                          'Enter Phone no',
-                                          style: GoogleFonts.nunito(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        InputTextField(
-                                          suffix: false,
-                                          readonly: false,
-                                          inputFormatter: [
-                                            FilteringTextInputFormatter.allow(
-                                              RegExp(
-                                                r"[a-zA-Z0-9\s@&_,-\/.']",
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(
+                                                height: 14,
                                               ),
-                                            ),
-                                          ],
-                                          hintText: 'Enter here...',
-                                          keyboardType: TextInputType.emailAddress,
-                                          controller:
-                                              parentController.logInController,
-                                        ),
-                                     SizedBox(height: 30,),
-                                        Row(
-                                          children: [
-                                            InkWell(
-                                              onTap: () async {
-                                                parentController.logIn(
-                                                    parentController
-                                                        .logInController.text,
-                                                    context);
-
-                                  
-                                              },
-                                              child: Container(
-                                                height: 48,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  horizontal: 40,
+                                              Text(
+                                                'Enter Phone no',
+                                                style: GoogleFonts.nunito(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
                                                 ),
-                                                decoration: const BoxDecoration(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(8)),
-                                                  gradient: LinearGradient(
-                                                    colors: [
-                                                      Color(0xFFC13584),
-                                                      Color(0xFF833AB4)
-                                                    ],
-                                                    begin: Alignment.topCenter,
-                                                    end: Alignment.bottomCenter,
+                                              ),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              InputTextField(
+                                                suffix: false,
+                                                readonly: false,
+                                                inputFormatter: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(
+                                                    RegExp(
+                                                      r"[a-zA-Z0-9\s@&_,-\/.']",
+                                                    ),
                                                   ),
-                                                ),
-                                                child: parentController
-                                                        .isLoading.value
-                                                    ? const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      )
-                                                    : const Center(
-                                                        child: Text(
-                                                          'Get invite link ',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Colors.white,
-                                                          ),
+                                                ],
+                                                hintText: 'Enter here...',
+                                                keyboardType:
+                                                    TextInputType.emailAddress,
+                                                controller: parentController
+                                                    .logInController,
+                                              ),
+                                              SizedBox(
+                                                height: 30,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      var response =
+                                                          await parentController
+                                                              .logIn(
+                                                        parentController
+                                                            .logInController
+                                                            .text,
+                                                        context,
+                                                      );
+
+                                                      if (response != null &&
+                                                          response.statusCode ==
+                                                              200) {
+                                                        showDialog(
+                                                          context: context,
+                                                          barrierDismissible:
+                                                              false,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return AlertDialog(
+                                                              title: const Text(
+                                                                  'Success'),
+                                                              content: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  Text(
+                                                                      'Invitelink: ${response.mobileDeepLink}'),
+                                                                  Text(
+                                                                      'Code: ${response.code}'),
+                                                                ],
+                                                              ),
+                                                              actions: [
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Clipboard.setData(
+                                                                        ClipboardData(
+                                                                            text:
+                                                                                response.mobileDeepLink!));
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                      const SnackBar(
+                                                                        content:
+                                                                            Text('Deeplink copied to clipboard!'),
+                                                                      ),
+                                                                    );
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop(); // Close the dialog
+                                                                        Get.off(() => DashboardScreen(rolename: 'Tutee',));
+                                                                  },
+                                                                  child:
+                                                                      const Text(
+                                                                          'Copy'),
+                                                                ),
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Share.share(
+                                                                        response
+                                                                            .mobileDeepLink!);
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop(); // Close the dialog
+                                                                        Get.off(() => DashboardScreen(rolename: 'Tutee',));
+                                                                  },
+                                                                  child: const Text(
+                                                                      'Share'),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
+                                                      } else {
+                                                        SnackBarUtils
+                                                            .showErrorSnackBar(
+                                                          context,
+                                                          response!.message!,
+                                                        );
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      height: 48,
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 40,
+                                                      ),
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    8)),
+                                                        gradient:
+                                                            LinearGradient(
+                                                          colors: [
+                                                            Color(0xFFC13584),
+                                                            Color(0xFF833AB4)
+                                                          ],
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomCenter,
                                                         ),
                                                       ),
+                                                      child: parentController
+                                                              .isLoading.value
+                                                          ? const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            )
+                                                          : const Center(
+                                                              child: Text(
+                                                                'Get invite link ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                      
-      
-           ] ));
-  }))))],
-                    
-            
-  )));}
+                                      ]));
+                            }))))
+              ],
+            )));
+  }
 }

@@ -1,3 +1,5 @@
+import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
+
 class getGroupedEnrollmentByAttendanceModel {
  int? statusCode;
   Data? data;
@@ -25,13 +27,15 @@ class Data {
   String? month;
   StatusCounts? statusCounts;
   List<AttendanceDetails>? attendanceDetails;
+  List<Holidays>? holidays;
 
   Data(
       {this.batchId,
       this.date,
       this.month,
       this.statusCounts,
-      this.attendanceDetails});
+      this.attendanceDetails,
+      this.holidays});
 
   Data.fromJson(Map<String, dynamic> json) {
     batchId = json['batchId'];
@@ -44,6 +48,12 @@ class Data {
       attendanceDetails = <AttendanceDetails>[];
       json['attendanceDetails'].forEach((v) {
         attendanceDetails!.add(new AttendanceDetails.fromJson(v));
+      });
+    }
+    if (json['holidays'] != null) {
+      holidays = <Holidays>[];
+      json['holidays'].forEach((v) {
+        holidays!.add(new Holidays.fromJson(v));
       });
     }
   }
@@ -59,6 +69,9 @@ class Data {
     if (this.attendanceDetails != null) {
       data['attendanceDetails'] =
           this.attendanceDetails!.map((v) => v.toJson()).toList();
+    }
+     if (this.holidays != null) {
+      data['holidays'] = this.holidays!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -134,6 +147,25 @@ class AttendanceDetails {
     data['punchOutTime'] = this.punchOutTime;
     data['attendanceStatus'] = this.attendanceStatus;
     data['punchInDate'] = this.punchInDate;
+    return data;
+  }
+}
+
+class Holidays {
+  String? sId;
+  String? holidayDate;
+
+  Holidays({this.sId, this.holidayDate});
+
+  Holidays.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    holidayDate = json['holiday_date'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['holiday_date'] = this.holidayDate;
     return data;
   }
 }

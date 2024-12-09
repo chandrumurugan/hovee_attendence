@@ -12,7 +12,8 @@ import 'package:hovee_attendence/widget/gifController.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RoleSelection extends StatefulWidget {
-  const RoleSelection({Key? key}) : super(key: key);
+   final bool isFromParentOtp;
+  const RoleSelection({Key? key, required this.isFromParentOtp}) : super(key: key);
 
   @override
   State<RoleSelection> createState() => _RoleSelectionState();
@@ -42,33 +43,35 @@ void fetchRoles() async {
 
     List<Role>? fetchedRoles = await WebService.getRoles();
 
-    if (fetchedRoles != null) {
-      // Find the "parent" role
-      var parentRole = fetchedRoles.firstWhere(
-          (role) => role.roleName.toLowerCase() == 'Parent',
-          orElse: () => fetchedRoles[2]); // Fallback to the first role if "parent" not found
+     if (fetchedRoles != null) {
+        setState(() async {
+          roles = fetchedRoles;
 
-      setState(() {
-        roles = fetchedRoles;
+          // Set default selection only if coming from ParentOtpScreen
+          if (widget.isFromParentOtp) {
+            var parentRole = fetchedRoles.firstWhere(
+              (role) => role.roleName.toLowerCase() == 'Parent',
+              orElse: () => fetchedRoles[2], // Default to index 2 if "Parent" not found
+            );
 
-        // Set default selection for "parent" role
-        selectedRoleId = parentRole.id;
-        selectedRole = parentRole.roleName;
-        roleTypes = parentRole.roleTypes;
+            selectedRoleId = parentRole.id;
+            selectedRole = parentRole.roleName;
+            roleTypes = parentRole.roleTypes;
 
-        // Set default role type if available
-        if (roleTypes.isNotEmpty) {
-          selectedRoleTypeId = roleTypes.first.id;
-          selectedRoleTypeName = roleTypes.first.roleTypeName;
-        }
+            // Set default role type if available
+            if (roleTypes.isNotEmpty) {
+              selectedRoleTypeId = roleTypes.first.id;
+              selectedRoleTypeName = roleTypes.first.roleTypeName;
+            }
 
-        _isLoading = false;
-      });
+            // Save the "Parent" role in SharedPreferences
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('Rolename', selectedRole ?? '');
+          }
 
-      // Save the "parent" role in SharedPreferences
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('Rolename', selectedRole ?? '');
-    }
+          _isLoading = false;
+        });
+      }
   } catch (e) {
     setState(() {
       _isLoading = false;

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
-import 'package:hovee_attendence/controllers/parent_accountsetup_screen.dart';
+import 'package:hovee_attendence/controllers/parent_accountsetup_controller.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
@@ -762,7 +762,7 @@ class ParentAccountSetupScreen extends StatelessWidget {
                                           onTap: () {
                                              KeyboardUtil.hideKeyboard(context);
                                             parentController.signIn(context);
-                                            
+                                             
                                           },
                                           child: Container(
                                             height: 48,

@@ -13,8 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ParentAccountSetupController extends GetxController
     with GetTickerProviderStateMixin {
+  RxBool isLoading = false.obs;
 
- RxBool isLoading = false.obs;
   ///personal info
   final phController = TextEditingController();
   final firstNameController = TextEditingController();
@@ -26,7 +26,7 @@ class ParentAccountSetupController extends GetxController
   final idProofController = TextEditingController();
   var selectedIDProof = ''.obs;
 
-    final address1Controller = TextEditingController();
+  final address1Controller = TextEditingController();
   final address2Controller = TextEditingController();
   final cityController = TextEditingController();
   final stateController = TextEditingController();
@@ -40,11 +40,11 @@ class ParentAccountSetupController extends GetxController
   late TabController tabController;
   var currentTabIndex = 0.obs;
   RxBool isChecked = false.obs;
-final ParentController parentController = Get.put(ParentController());
+  final ParentController parentController = Get.put(ParentController());
 
-var registerResponse = RegisterParentModel().obs;
+  var registerResponse = RegisterParentModel().obs;
 
-@override
+  @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
@@ -53,47 +53,68 @@ var registerResponse = RegisterParentModel().obs;
   }
 
   void _populateFieldsFromAuth() {
-    phController.text = parentController.otpResponse.value.parentDetail!.phoneNumber??'';
-  
+    phController.text =
+        parentController.otpResponse.value.parentDetail!.phoneNumber ?? '';
   }
 
-    bool validateFields(BuildContext context) {
+  bool validateFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context, 'Please enter the first name.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the first name.');
       return false;
     }
     if (lastNameController.text.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please enter the last name.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the last name.',
+      );
       return false;
     }
     if (emailController.text.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please enter the email.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the email.',
+      );
       return false;
     }
     // Email format validation
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text)) {
-       SnackBarUtils.showErrorSnackBar(context,'Invalid email format',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Invalid email format',
+      );
       return false;
     }
 
     if (dobController.text.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please select the DOB.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please select the DOB.',
+      );
       return false;
     }
 
     if (phController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please enter the phone number.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the phone number.',
+      );
       return false;
     }
     // Phone number format validation (10 digits)
     if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
-        SnackBarUtils.showErrorSnackBar(context,'Invalid mobile number',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Invalid mobile number',
+      );
       return false;
     }
 
     if (pincodeController.text.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please enter the pincode.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the pincode.',
+      );
       return false;
     }
 
@@ -165,13 +186,13 @@ var registerResponse = RegisterParentModel().obs;
     return true;
   }
 
-    void signIn(BuildContext context) async {
+  void signIn(BuildContext context) async {
     if (validateAddressInfo(context)) {
       isLoading.value = true;
       try {
-         final prefs = await SharedPreferences.getInstance();
-       double?  latitude = prefs.getDouble('latitude');
-   double? longitude = prefs.getDouble('longitude');
+        final prefs = await SharedPreferences.getInstance();
+        double? latitude = prefs.getDouble('latitude');
+        double? longitude = prefs.getDouble('longitude');
         var response = await WebService.RegisterParent(
             context: context,
             firstName: firstNameController.text,
@@ -180,25 +201,31 @@ var registerResponse = RegisterParentModel().obs;
             dob: dobController.text,
             phNo: phController.text,
             pincode: pincodeController.text,
-           latitude: latitude.toString(), longitude:longitude.toString(), country: countryController.text, state: stateController.text, city: cityController.text, street: address2Controller.text, doorNo: address1Controller.text);
+            latitude: latitude.toString(),
+            longitude: longitude.toString(),
+            country: countryController.text,
+            state: stateController.text,
+            city: cityController.text,
+            street: address2Controller.text,
+            doorNo: address1Controller.text);
 
         if (response != null) {
           registerResponse.value = response;
-              phController.clear();
-     firstNameController.clear();
-      lastNameController.clear();
-       emailController.clear();
-        dobController.clear();
-         pincodeController.clear();
+          phController.clear();
+          firstNameController.clear();
+          lastNameController.clear();
+          emailController.clear();
+          dobController.clear();
+          pincodeController.clear();
           //otpController.clear();
-            address1Controller.clear();
-      address2Controller.clear();
-       cityController.clear();
-        stateController.clear();
-         countryController.clear();
-        
+          address1Controller.clear();
+          address2Controller.clear();
+          cityController.clear();
+          stateController.clear();
+          countryController.clear();
+
           isLoading.value = false;
-                                                                        showDialog(
+          showDialog(
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
@@ -206,17 +233,24 @@ var registerResponse = RegisterParentModel().obs;
                 title: Text('Success'),
                 content: Column(
                   children: [
-                     _buildRow('Tutee name',  '${response.data!.firstName} ${response.data!.lastName}',),
-                                            _buildRow('Wow ID',response.data!.wowId!),
-                                            _buildRow('Email', response.data!.email!),
-                                             _buildRow('Phone number', '${response.data!.phoneNumber}',),
-                                           _buildRow('Dob', response.data!.dob! ),
+                    _buildRow(
+                      'Tutee name',
+                      '${response.data!.firstName} ${response.data!.lastName}',
+                    ),
+                    _buildRow('Wow ID', response.data!.wowId!),
+                    _buildRow('Email', response.data!.email!),
+                    _buildRow(
+                      'Phone number',
+                      '${response.data!.phoneNumber}',
+                    ),
+                    _buildRow('Dob', response.data!.dob!),
                   ],
                 ),
                 actions: [
                   TextButton(
                     onPressed: () {
-                      updateEnrollment(context,response.data!.sId!,response.data!.userId!.toString());
+                      updateEnrollment(context, response.data!.sId!,
+                          response.data!.userId!.toString());
                       Navigator.of(context).pop(); // Close the dialog
                     },
                     child: Text('Accept'),
@@ -243,36 +277,35 @@ var registerResponse = RegisterParentModel().obs;
   }
 
   Widget _buildRow(String label, String value) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Flexible(
-          child: Text(
-            value,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.grey[600]),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
-        ),
-      ],
-    ),
-  );
-}
-
+          Flexible(
+            child: Text(
+              value,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.grey[600]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   void updateEnrollment(
-      BuildContext context, String parentId, String userId,) async {
+    BuildContext context,
+    String parentId,
+    String userId,
+  ) async {
     isLoading.value = true;
     try {
-      var batchData = {
-       "parentId":parentId,
-    "userId":userId
-      };
+      var batchData = {"parentId": parentId, "userId": userId};
 
       final UpdateParentStausModel? response =
           await WebService.updateParentStatus(batchData);
@@ -281,29 +314,29 @@ var registerResponse = RegisterParentModel().obs;
         // SnackBarUtils.showSuccessSnackBar(
         //     context, 'Update enquire successfully');
         // if (response.data!.status == 'Approved') {
-          // SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
-          Get.snackbar(
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.white,
-              size: 40,
-            ),
-           response.message!,
-            colorText: Colors.white,
-            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          );
-          Get.off(() => DashboardScreen(rolename: 'Parent'));
+        // SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
+        Get.snackbar(
+          icon: const Icon(
+            Icons.check_circle,
+            color: Colors.white,
+            size: 40,
+          ),
+          response.message!,
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        );
+        Get.off(() => DashboardScreen(rolename: 'Parent'));
       } else {
         Get.snackbar(
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.white,
-              size: 40,
-            ),
-           response!.message!,
-            colorText: Colors.white,
-            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          );
+          icon: const Icon(
+            Icons.check_circle,
+            color: Colors.white,
+            size: 40,
+          ),
+          response!.message!,
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        );
       }
     } catch (e) {
       //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
@@ -311,4 +344,4 @@ var registerResponse = RegisterParentModel().obs;
       isLoading.value = false;
     }
   }
-     }
+}

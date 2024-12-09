@@ -26,7 +26,7 @@ class RegisterParentModel {
 }
 
 class Data {
-  List<String>? userId;
+  String? userId;
   String? firstName;
   String? lastName;
   String? wowId;
@@ -80,7 +80,7 @@ class Data {
       this.token});
 
   Data.fromJson(Map<String, dynamic> json) {
-    userId = json['userId'].cast<String>();
+    userId = json['userId'];
     firstName = json['first_name'];
     lastName = json['last_name'];
     wowId = json['wow_id'];

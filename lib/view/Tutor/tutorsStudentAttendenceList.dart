@@ -270,13 +270,33 @@ class StudentAttendanceList extends StatelessWidget {
                     controller.setFocusedDay(focusedDay);
                     controller.onMonthSelectedTutor(focusedDay);
                   },
+                     calendarBuilders: CalendarBuilders(
+                    defaultBuilder: (context, day, focusedDay) {
+                      // Check if the day is a miss punch date
+                      if (controller.holidayDatesTutor
+                          .contains(DateTime(day.year, day.month, day.day))) {
+                        return Container(
+                            margin: const EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                             color:Colors.amber, // Background color for miss punch dates
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                            alignment: Alignment.center,
+                          child: Center(child: Text('${day.day}', style: const TextStyle(
+                                color: Colors.white),)),
+                        );
+                      }
+                      // Return default appearance for other dates
+                      return null;
+                    },
+                  ),
                 ),
               );
             }),
             const SizedBox(
               height: 10,
             ),
-            Padding(
+             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(

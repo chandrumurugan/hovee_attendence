@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
+import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:hovee_attendence/view/roleSelection.dart';
 import 'package:pinput/pinput.dart';
 
@@ -253,8 +254,8 @@ class ParentOtpScreen extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                  
-                      Navigator.of(context).pop(); // Close the dialog
+                      Navigator.of(context).pop();
+                      Get.off(() => const GuestHomeScreen()); // Close the dialog
                     },
                     child: Text('Reject'),
                   ),
@@ -265,7 +266,7 @@ class ParentOtpScreen extends StatelessWidget {
                                                         
                                                       } else {
                                                         Get.offAll(() =>
-                                                            const RoleSelection());
+                                                            const RoleSelection(isFromParentOtp: true,));
                                                       }
                                                     },
                                                     icon: const Icon(
