@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/addEnquery_controller.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
@@ -57,6 +58,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+   await GetStorage.init();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -139,6 +141,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _handleInitialUri() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+       final storage = GetStorage();
     if (!_initialUriIsHandled) {
       _initialUriIsHandled = true;
       try {
@@ -151,6 +154,7 @@ class _MyAppState extends State<MyApp> {
               phoneNumber = parsedData['phoneNumber']!;
               prefs.setString('code', parsedData['code']!);
               prefs.setString('phoneNumber', parsedData['phoneNumber']!);
+              storage.write('deepLink', true); 
             });
           }
         }
@@ -162,6 +166,9 @@ class _MyAppState extends State<MyApp> {
 
   void initDeepLinks() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final storage = GetStorage();
+        // prefs.setBool("deepLink", true);
+           storage.write('deepLink', false); 
 
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
       final parsedData = _parseDeepLink(uri);
@@ -171,6 +178,8 @@ class _MyAppState extends State<MyApp> {
           phoneNumber = parsedData['phoneNumber']!;
           prefs.setString('code', parsedData['code']!);
           prefs.setString('phoneNumber', parsedData['phoneNumber']!);
+          // prefs.setBool("deepLink", true);
+           storage.write('deepLink', true); 
         });
 
         // Get.off(() => ParentOtpScreen(), arguments: parsedData);

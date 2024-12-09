@@ -140,40 +140,8 @@ class SplashController extends GetxController {
     }
   }
 
-  void handleDeepLinkFlow(Uri deepLink) async {
-    isAppConfigFetched.value = true;
-    final parsedData = _parseDeepLink(deepLink);
-    if (parsedData != null) {
-      await fetchAppConfig();
-       Get.off(() => ParentOtpScreen(), arguments: parsedData);
-      // });
-      // Replace SplashScreen
-    } else {
-      Logger().w("Invalid deep link. Proceeding with normal app flow.",stackTrace: StackTrace.current);
-      handleNormalAppFlow();
-    }
-  }
 
-  Map<String, String>? _parseDeepLink(Uri uri) {
-    try {
-      final code = uri.queryParameters['code']?.split('/phone').first;
-      final phoneDetails = uri.queryParameters['code']?.split('/phone').last;
 
-      String? phoneNumber;
-      if (phoneDetails != null && phoneDetails.startsWith('?')) {
-        phoneNumber = Uri.parse('https://dummy$phoneDetails')
-            .queryParameters['phoneNumber'];
-      }
-
-      if (code != null && phoneNumber != null) {
-        return {'code': code, 'phoneNumber': phoneNumber};
-      }
-    } catch (e) {
-      Logger().e(e);
-      // print("Error parsing deep link: $e");
-    }
-    return null;
-  }
 
   Future<void> handleNormalAppFlow() async {
     await fetchAppConfig();
@@ -181,11 +149,19 @@ class SplashController extends GetxController {
     // Fetch current location
     currentLocation.value = await locationService.getCurrentLocation();
     final prefs = await SharedPreferences.getInstance();
+      final storage = GetStorage();
     Logger().i(
         "lat====${prefs.getDouble('latitude')}------${prefs.getDouble('longitude')}");
     Logger().i("${currentLocation.value.toString()}");
     prefs.getDouble('latitude');
     prefs.getDouble('longitude');
+
+    final phoneNumber = prefs.getString('phoneNumber') ?? "";
+    final code = prefs.getString('code') ?? "";
+     var isDeepLink =
+     storage.read('deepLink') ?? false; 
+    
+    //  prefs.getBool('deepLink') ?? false;
 
 
 
@@ -195,8 +171,8 @@ class SplashController extends GetxController {
 
     // Navigate based on token presence
 
-    if(parentId.isNotEmpty){
-       Get.off(() => ParentOtpScreen(), arguments: {"code": parentId, "phoneNumber": phoneNumber});
+    if(isDeepLink){
+       Get.off(() => ParentOtpScreen(), arguments: {"code": code, "phoneNumber": phoneNumber});
       
     }else if (token.isNotEmpty) {
       await _validateTokenAndNavigate();

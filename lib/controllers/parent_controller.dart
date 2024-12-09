@@ -94,6 +94,7 @@ class ParentController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     fetchHomeDashboardTuteeList();
+    
   }
 
   void fetchHomeDashboardTuteeList() async {
