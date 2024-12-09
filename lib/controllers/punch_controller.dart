@@ -13,6 +13,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:hovee_attendence/constants/common_function.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
+import 'package:hovee_attendence/services/liveLocationService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
@@ -32,6 +33,7 @@ class PunchController extends GetxController {
   GoogleMapController? get mapController => _mapController;
   final punchedIn = false.obs;
   double punchable_distance_in_meters = 500;
+  final LocationService locationService = LocationService();
 
   var isLoading = true.obs;
   var buttonLoader = false.obs;
@@ -56,22 +58,22 @@ class PunchController extends GetxController {
   var hasScanned = false.obs;
   String? name;
   UserProfileController accountController = Get.put(UserProfileController());
-   var draggablePosition = Rx<Offset>(Offset(50, 50));
-   
+  var draggablePosition = Rx<Offset>(Offset(50, 50));
+
   @override
   void onInit() {
     super.onInit();
-     targetLocation.value = LatLng(targetLat ?? 0.0, targetLong ?? 0.0);
-      setInatlizeLocation();
+    targetLocation.value = LatLng(targetLat ?? 0.0, targetLong ?? 0.0);
+    setInatlizeLocation();
     getCurrentLocation();
     // targetLocation.value!.latitude!=0.0;
     // targetLocation.value!.longitude!=0.0;
   }
 
   Future<void> setInatlizeLocation() async {
-       final prefs = await SharedPreferences.getInstance();
-     await prefs.setDouble("target_lat", 0.0);
-      await prefs.setDouble("target_long", 0.0);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble("target_lat", 0.0);
+    await prefs.setDouble("target_long", 0.0);
   }
 
   Future<void> getCurrentLocation() async {
@@ -80,13 +82,15 @@ class PunchController extends GetxController {
       final prefs = await SharedPreferences.getInstance();
       final storage = GetStorage();
 // Retrieve latitude and longitude, providing default values if null
-      double latitude = prefs.getDouble('latitude') ?? 0.0;
-      double longitude = prefs.getDouble('longitude') ?? 0.0;
+      // double latitude = prefs.getDouble('latitude')! ;
+      // double longitude = prefs.getDouble('longitude') !;
+      //    Logger().i('-=: $latitude ----$longitude');
 
 // Update the current location with non-nullable values
-      currentLocation.value = LatLng(latitude, longitude);
+      currentLocation.value = await locationService.getCurrentLocation();
 
-      Get.log("Latitude: $latitude, Longitude: $longitude");
+      // Get.log("Latitude: $latitude, Longitude: $longitude");
+      Logger().i('-=: ${currentLocation.value}');
 
       targetLat = prefs.getDouble('target_lat') ?? 0.0;
       targetLong = prefs.getDouble('target_long') ?? 0.0;
@@ -95,8 +99,8 @@ class PunchController extends GetxController {
 
       Get.log("currentLocation.value ${currentLocation.value}");
       Get.log("targetLocation.value ${targetLocation.value}");
-       
-     name = storage.read('firstName');
+
+      name = storage.read('firstName');
       markers.add(Marker(
         markerId: const MarkerId("currentLocation"),
         position: currentLocation.value!,
@@ -115,7 +119,7 @@ class PunchController extends GetxController {
         position: targetLocation.value!,
         // icon:await BitmapDescriptor.fromAssetImage( const ImageConfiguration(devicePixelRatio: 1.0,size: Size.square(10.0)), "assets/appbar/location-mark (1).png"),
         icon: await const MarkerWidget(
-           rotationAngle: 60 * (3.14159 / 120),
+                rotationAngle: 60 * (3.14159 / 120),
                 imagePath: 'assets/appbar/Tutor_location_marker_v2.svg')
             .toBitmapDescriptor(
           logicalSize: const Size(150, 150),
@@ -255,14 +259,14 @@ class PunchController extends GetxController {
 
     print("getingbv  vakluyeuwkgqie====>");
     // Get user's current location
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
+    // Position position = await Geolocator.getCurrentPosition(
+    //   desiredAccuracy: LocationAccuracy.high,
+    // );
 
     // Calculate distance between current location and specific location
     double distanceInMeters = await Geolocator.distanceBetween(
-      position.latitude,
-      position.longitude,
+      currentLocation.value!.latitude,
+      currentLocation.value!.longitude,
       targetLat!,
       targetLong!,
     );
@@ -276,55 +280,62 @@ class PunchController extends GetxController {
     DateTime batchEndTime = _parseBatchTime(batchTimingEnd);
     print('hi rahul $batchStartTime');
     print('hi ragul$batchEndTime');
-    // Check if current time is within 30 minutes before the batch start time
-    bool isWithinPunchInWindow =
-        now.isAfter(batchStartTime.subtract(const Duration(minutes: 30))) &&
-            now.isBefore(batchEndTime);
 
     // Check if distance is within the threshold
     if (distanceInMeters <= thresholdInMeters) {
-    //  if (isWithinPunchInWindow) {
-        if (!punchedIn.value) {
-          // Within punchable range, call the API to punch in
+      Logger().i("User is within 500 meters of the specific location.");
 
-          final getAttendancePunchInModel? response =
-              await WebService.getAttendancePunchIn(courseId, batchId, context);
+      // Check if the current time is within the punchable window
+      //  if (isWithinPunchInWindow) {
+      if (!punchedIn.value) {
+        Logger().i("punch can done");
+        // Within punchable range, call the API to punch in
 
-          if (response != null && response.success == true) {
-            // API call was successful, update state and show success message
-            punchedIn.value = true;
-            buttonLoader(false);
-            showAnimatedDialog('Punched in successfully!',
-                "assets/images/success_punching.png",context);
-           // SnackBarUtils.showSuccessSnackBar(context, 'Attendance successfully marked');
-          } else {
-            // Show error if the API call failed
-            punchedIn.value = false;
-            buttonLoader(false);
-             SnackBarUtils.showSuccessSnackBar(context,response!.message!,);
-          }
+        final getAttendancePunchInModel? response =
+            await WebService.getAttendancePunchIn(courseId, batchId, context);
+        Logger().i(response);
+
+        if (response != null && response.success == true) {
+          // API call was successful, update state and show success message
+          punchedIn.value = true;
+          buttonLoader(false);
+          // showAnimatedDialog('Punched in successfully!',
+          //     "assets/images/success_punching.png",context);
+          // SnackBarUtils.showSuccessSnackBar(context, 'Attendance successfully marked');
         } else {
-          final getAttendancePunchInModel? response =
-              await WebService.getAttendancePunchOut(context);
-
-          if (response != null && response.success == true) {
-            // API call was successful, update state and show success message
-            punchedIn.value = false;
-            buttonLoader(false);
-            showAnimatedDialog('Punched out successfully!',
-                "assets/images/success_punching.png",context);
-                
-          // After the dialog is dismissed, navigate to the next page
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      Get.to(() => TuteeAttendanceList(type: 'Tutee'));
-    });
-          } else {
-            // Show error if the API call failed
-            buttonLoader(false);
-             SnackBarUtils.showSuccessSnackBar(context, response!.message!,);
-          }
+          // Show error if the API call failed
+          punchedIn.value = false;
+          buttonLoader(false);
+          SnackBarUtils.showSuccessSnackBar(
+            context,
+            response!.message!,
+          );
         }
-     // } 
+      } else {
+        final getAttendancePunchInModel? response =
+            await WebService.getAttendancePunchOut(context);
+
+        if (response != null && response.success == true) {
+          // API call was successful, update state and show success message
+          punchedIn.value = false;
+          buttonLoader(false);
+          showAnimatedDialog('Punched out successfully!',
+              "assets/images/success_punching.png", context);
+
+          // After the dialog is dismissed, navigate to the next page
+          Future.delayed(const Duration(milliseconds: 1500), () {
+            Get.to(() => TuteeAttendanceList(type: 'Tutee'));
+          });
+        } else {
+          // Show error if the API call failed
+          buttonLoader(false);
+          SnackBarUtils.showSuccessSnackBar(
+            context,
+            response!.message!,
+          );
+        }
+      }
+      // }
       // else {
       //   buttonLoader(false);
       //   SnackBarUtils.showErrorSnackBar(context,
@@ -333,8 +344,9 @@ class PunchController extends GetxController {
     } else {
       print("User is outside 500 meters of the specific location.");
       buttonLoader(false);
-      showAnimatedDialog(
-          'You are away from the office', "assets/images/error_punching.png",context);
+      Logger().e("User is within 500 meters of the specific location.");
+      showAnimatedDialog('You are away from the office',
+          "assets/images/error_punching.png", context);
     }
   }
 
@@ -366,9 +378,9 @@ class PunchController extends GetxController {
           await WebService.getAttendancePunchIn(courseId, batchId, context);
 
       if (response != null && response.success == true) {
-        // Show success dialog when API response is successful
-        showAnimatedDialog('You have successfully punched In',
-            "assets/images/success_punching.png",context);
+        // // Show success dialog when API response is successful
+        // showAnimatedDialog('You have successfully punched In',
+        //     "assets/images/success_punching.png",context);
 
         // Change the punchedIn value to true
         punchedIn.value = false;
@@ -377,10 +389,16 @@ class PunchController extends GetxController {
         Get.back();
         onInit(); // Refresh data
       } else {
-         SnackBarUtils.showSuccessSnackBar(context ,response!.message!,);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          response!.message!,
+        );
       }
     } catch (e) {
-       SnackBarUtils.showSuccessSnackBar(context,'Error: $e',);
+      SnackBarUtils.showSuccessSnackBar(
+        context,
+        'Error: $e',
+      );
     } finally {
       isLoading.value = false;
     }
@@ -398,16 +416,22 @@ class PunchController extends GetxController {
         Get.back();
         onInit();
       } else {
-        SnackBarUtils.showSuccessSnackBar(context,response?.message ?? 'Failed to add batch',);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          response?.message ?? 'Failed to add batch',
+        );
       }
     } catch (e) {
-        SnackBarUtils.showSuccessSnackBar(context,'Error: $e',);
+      SnackBarUtils.showSuccessSnackBar(
+        context,
+        'Error: $e',
+      );
     } finally {
       isLoading.value = false;
     }
   }
 
-   void updateDraggablePosition(Offset delta) {
+  void updateDraggablePosition(Offset delta) {
     draggablePosition.value += delta;
   }
 }

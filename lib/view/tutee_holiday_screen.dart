@@ -34,7 +34,7 @@ final HolidayController holidayController = Get.put(HolidayController());
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.only(top: 25, left: 15),
+              padding: const EdgeInsets.only(top: 25, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -50,7 +50,7 @@ final HolidayController holidayController = Get.put(HolidayController());
                                 rolename: type,
                               ));
                             },
-                            icon: Icon(Icons.arrow_back, color: Colors.white),
+                            icon: const Icon(Icons.arrow_back, color: Colors.white),
                           ),
                         ],
                       ),
@@ -67,7 +67,7 @@ final HolidayController holidayController = Get.put(HolidayController());
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(right: 15),
+                        padding: const EdgeInsets.only(right: 15),
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: Text(
                           'Here, you can see the holidays declared for the year, helping you stay informed and plan your schedule accordingly.',
@@ -99,8 +99,8 @@ final HolidayController holidayController = Get.put(HolidayController());
             },
           ),
           // Header Row
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -117,9 +117,9 @@ final HolidayController holidayController = Get.put(HolidayController());
           //const SizedBox(height: 10),
           Obx(() {
             if (holidayController.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (holidayController.holidayTuteeDataList.value.isEmpty) {
-              return Center(child: Text("No data found"));
+              return const Center(child: Text("No data found"));
             }
             return Expanded(
               child: Padding(
@@ -137,17 +137,17 @@ final HolidayController holidayController = Get.put(HolidayController());
                             Logger().i("123456===>$fromDate");
 
                           String endDate=holidayData.holidayEndDate??'';
-                          DateTime dateTime = DateFormat("dd/MM/yyyy").parse(fromDate);
+                          DateTime dateTime = DateFormat("dd-MM-yyyy").parse(fromDate);
                         
                            String formattedDate = DateFormat("ddMMMyy").format(dateTime);
                            Logger().i("0987654===>$formattedDate");
-                            DateTime dateTime2 = DateFormat("dd/MM/yyyy").parse(endDate);
+                            DateTime dateTime2 = DateFormat("dd-MM-yyyy").parse(endDate);
                           Logger().i("123456===>$dateTime");
                            String formattedDate2 = DateFormat("ddMMMyy").format(dateTime2);
                            Logger().i("0987654===>$formattedDate");
                       return Card(
                         elevation: 2,
-                        margin: EdgeInsets.symmetric(vertical: 6),
+                        margin: const EdgeInsets.symmetric(vertical: 6),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -164,7 +164,7 @@ final HolidayController holidayController = Get.put(HolidayController());
                                       // holidayController.deleteHoliday(
                                       //     context, holidayData.sId!);
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.delete,
                                       color: Colors.red,
                                     ),
@@ -175,7 +175,7 @@ final HolidayController holidayController = Get.put(HolidayController());
                                 children: [
                                   Text(
                                     holidayData.batchName ?? '',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         overflow: TextOverflow.ellipsis),
                                   ),
                                   // Reason
@@ -183,14 +183,14 @@ final HolidayController holidayController = Get.put(HolidayController());
                                   // Date
                                   Text(
                                 '$formattedDate - $formattedDate2',
-                                style: TextStyle(fontSize: 16),
+                                style: const TextStyle(fontSize: 16),
                               ),
                                   SizedBox(
                                     width: 50,
                                     child: Text(
                                       holidayData.holidayName ?? '',
                                       maxLines: 1,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           overflow: TextOverflow.ellipsis),
                                     ),
                                   ),
@@ -224,7 +224,7 @@ final HolidayController holidayController = Get.put(HolidayController());
             Icons.help_outline,
             color: Colors.white,
           ),
-          color: Color(0xFF833AB4), // Set the primary color
+          color: const Color(0xFF833AB4), // Set the primary color
           color1: const Color(0xFF833AB4), // Optional gradient color
           singleBtn: false, // Show both 'Yes' and 'No' buttons
           btnName: 'No',
