@@ -228,31 +228,42 @@ class ParentOtpScreen extends StatelessWidget {
                                                     btnName: 'Ok',
                                                     onTap: () {
                                                       if (value.parentAccount!) {
-                                                        //  authController.currentTabIndex == 0 ?
-                                                        // if (value.data!.roles!
-                                                        //         .roleName ==
-                                                        //     "Tutor") {
-                                                        //   Get.offAll(() =>
-                                                        //       DashboardScreen(rolename: value.data!.roles!
-                                                        //         .roleName!,));
-                                                        //   //Get.offAll(() => TutorHome());
-                                                        // } else if (value
-                                                        //         .data!
-                                                        //         .roles!
-                                                        //         .roleName ==
-                                                        //     "Tutee") {
-                                                        //   //Tutee
-                                                        //   Get.offAll(() =>
-                                                        //       DashboardScreen(rolename: value.data!.roles!
-                                                        //         .roleName!,));
-                                                        //  // Get.offAll(() => TuteeHome());
-                                                        // }else{
-                                                        //   Get.offAll(() =>
-                                                        //       DashboardScreen(rolename: value.data!.roles!
-                                                        //         .roleName!,));
-                                                        // }
-                                                        //  :
-                                                        // Get.offAll(() => const RoleSelection());
+                                                              showDialog(
+                                                                
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Success'),
+                content: Column(
+                  children: [
+                     _buildRow('Tutee name',  '${value.userDetail!.firstName} $value.userDetail!.lastName}',),
+                                            _buildRow('Wow ID',value.userDetail!.wowId),
+                                            _buildRow('Email', value.userDetail!.email),
+                                             _buildRow('Phone number', '${value.userDetail!.phoneNumber}',),
+                                           _buildRow('DOB', value.userDetail!.dob ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                  parentController.  updateEnrollment(context,value.parentDetail!.sId!,value.userDetail!.sId!);
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Accept'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                  
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Reject'),
+                  ),
+                ],
+              );
+            },
+          );
+                                                        
                                                       } else {
                                                         Get.offAll(() =>
                                                             const RoleSelection());
@@ -286,8 +297,9 @@ class ParentOtpScreen extends StatelessWidget {
                                                 end: Alignment.bottomCenter,
                                               ),
                                             ),
-                                            child: Obx(() {
-                                              return const Center(
+                                            child:
+                                            //  Obx(() {
+                                              const Center(
                                                       child: Text(
                                                         'Verify Code',
                                                         style: TextStyle(
@@ -297,11 +309,14 @@ class ParentOtpScreen extends StatelessWidget {
                                                           color: Colors.white,
                                                         ),
                                                       ),
-                                                    );
-                                            }),
+                                                    )
+                                            // }),
                                           ),
                                         ),
                                          Obx(() {
+                                          if( parentController.code.value.isEmpty){
+                                            return const SizedBox.shrink();
+                                          }
                                          
                                           return Text(
                                               parentController.code.value);
@@ -355,7 +370,7 @@ class ParentOtpScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Column(
@@ -373,5 +388,24 @@ class ParentOtpScreen extends StatelessWidget {
           ),
         )
         );
+  }
+
+  Widget _buildRow(String title, String? value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+              color: Colors.black.withOpacity(0.4),
+              fontWeight: FontWeight.w500,
+              fontSize: 16),
+        ),
+        Text(
+          value ?? '',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
+        ),
+      ],
+    );
   }
 }

@@ -189,7 +189,7 @@ class TuteeLeaveController extends GetxController {
           );
         } else {
           SnackBarUtils.showErrorSnackBar(
-              context, response?.message ?? 'Failed to add leave');
+              context, response?.message ?? 'Leave already applied for these dates');
         }
       } catch (e) {
         SnackBarUtils.showErrorSnackBar(context, 'Error: $e');

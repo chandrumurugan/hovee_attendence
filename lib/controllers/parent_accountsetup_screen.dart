@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
+import 'package:hovee_attendence/modals/Regsisterparent_model.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
+import 'package:hovee_attendence/modals/update_parent_status_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ParentAccountSetupController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+    with GetTickerProviderStateMixin {
 
  RxBool isLoading = false.obs;
   ///personal info
@@ -38,7 +42,7 @@ class ParentAccountSetupController extends GetxController
   RxBool isChecked = false.obs;
 final ParentController parentController = Get.put(ParentController());
 
-var registerResponse = RegisterModal().obs;
+var registerResponse = RegisterParentModel().obs;
 
 @override
   void onInit() {
@@ -49,7 +53,7 @@ var registerResponse = RegisterModal().obs;
   }
 
   void _populateFieldsFromAuth() {
-    phController.text = parentController.otpResponse.value.userDetail!.phoneNumber!;
+    phController.text = parentController.otpResponse.value.parentDetail!.phoneNumber??'';
   
   }
 
@@ -98,24 +102,76 @@ var registerResponse = RegisterModal().obs;
     //   return false;
     // }
 
-    if (!acceptedTerms.value) {
-      SnackBarUtils.showErrorSnackBar(context,'Please accept the checkbox to proceed',);
+    // if (!acceptedTerms.value) {
+    //   SnackBarUtils.showErrorSnackBar(context,'Please accept the checkbox to proceed',);
+    //   return false;
+    // }
+
+    // if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
+    //    SnackBarUtils.showErrorSnackBar(context,'Please select the Id proof',);
+    //   return false;
+    // }
+    return true;
+  }
+
+  bool validateAddressInfo(BuildContext context) {
+    if (address1Controller.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the door no",
+      );
       return false;
     }
-
-    if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please select the Id proof',);
+    if (address2Controller.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the street & area",
+      );
       return false;
     }
+    if (cityController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the city",
+      );
+      return false;
+    }
+    if (stateController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the state",
+      );
+      return false;
+    }
+    if (countryController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the country",
+      );
+      return false;
+    }
+    // if (pincodesController.text.isEmpty) {
+    //   SnackBarUtils.showErrorSnackBar(
+    //     context,
+    //     "Please enter the pincode",
+    //   );
+    //   return false;
+    // }
 
-    // Add more validation as needed
+    // if (pincodesController.text.length != 6) {
+    //    SnackBarUtils.showSuccessSnackBar(context,'Invalid pincode.',);
+    //   return false;
+    // }
     return true;
   }
 
     void signIn(BuildContext context) async {
-    if (validateFields(context)) {
+    if (validateAddressInfo(context)) {
       isLoading.value = true;
       try {
+         final prefs = await SharedPreferences.getInstance();
+       double?  latitude = prefs.getDouble('latitude');
+   double? longitude = prefs.getDouble('longitude');
         var response = await WebService.RegisterParent(
             context: context,
             firstName: firstNameController.text,
@@ -124,7 +180,7 @@ var registerResponse = RegisterModal().obs;
             dob: dobController.text,
             phNo: phController.text,
             pincode: pincodeController.text,
-            idProof: selectedIDProof.value);
+           latitude: latitude.toString(), longitude:longitude.toString(), country: countryController.text, state: stateController.text, city: cityController.text, street: address2Controller.text, doorNo: address1Controller.text);
 
         if (response != null) {
           registerResponse.value = response;
@@ -135,12 +191,47 @@ var registerResponse = RegisterModal().obs;
         dobController.clear();
          pincodeController.clear();
           //otpController.clear();
-            idProofController.clear();
-            acceptedTerms.value=false;
-            selectedIDProof.value='';
+            address1Controller.clear();
+      address2Controller.clear();
+       cityController.clear();
+        stateController.clear();
+         countryController.clear();
         
           isLoading.value = false;
-         // Get.to(() => Das());
+                                                                        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Success'),
+                content: Column(
+                  children: [
+                     _buildRow('Tutee name',  '${response.data!.firstName} ${response.data!.lastName}',),
+                                            _buildRow('Wow ID',response.data!.wowId!),
+                                            _buildRow('Email', response.data!.email!),
+                                             _buildRow('Phone number', '${response.data!.phoneNumber}',),
+                                           _buildRow('Dob', response.data!.dob! ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      updateEnrollment(context,response.data!.sId!,response.data!.userId!.toString());
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Accept'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Get.off(() => DashboardScreen(rolename: 'Parent'));
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                    child: Text('Reject'),
+                  ),
+                ],
+              );
+            },
+          );
         } else {
           Logger().e('Failed to load AppConfig');
           isLoading.value = false;
@@ -148,6 +239,76 @@ var registerResponse = RegisterModal().obs;
       } catch (e) {
         print(e);
       }
+    }
+  }
+
+  Widget _buildRow(String label, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Flexible(
+          child: Text(
+            value,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Colors.grey[600]),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
+  void updateEnrollment(
+      BuildContext context, String parentId, String userId,) async {
+    isLoading.value = true;
+    try {
+      var batchData = {
+       "parentId":parentId,
+    "userId":userId
+      };
+
+      final UpdateParentStausModel? response =
+          await WebService.updateParentStatus(batchData);
+
+      if (response != null && response.statusCode == 200) {
+        // SnackBarUtils.showSuccessSnackBar(
+        //     context, 'Update enquire successfully');
+        // if (response.data!.status == 'Approved') {
+          // SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
+          Get.snackbar(
+            icon: const Icon(
+              Icons.check_circle,
+              color: Colors.white,
+              size: 40,
+            ),
+           response.message!,
+            colorText: Colors.white,
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          );
+          Get.off(() => DashboardScreen(rolename: 'Parent'));
+      } else {
+        Get.snackbar(
+            icon: const Icon(
+              Icons.check_circle,
+              color: Colors.white,
+              size: 40,
+            ),
+           response!.message!,
+            colorText: Colors.white,
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          );
+      }
+    } catch (e) {
+      //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
      }

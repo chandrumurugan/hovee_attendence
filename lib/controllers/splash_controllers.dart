@@ -40,23 +40,34 @@ class SplashController extends GetxController {
 
   var isLoading = true.obs;
   final ParentController parentController = Get.put(ParentController());
+  String? deepLinkUrl;
+ Uri sampleUri = Uri.parse("https://express.insakal.com/parent-login?code=a2cb8c72577c5521be948e17d178ebbb%3Ae9b230f30dc8930484da34476755c7e1&phoneNumber=undefined");
 
   @override
   void onInit() {
     super.onInit();
-    initDeepLinks();
+    // initDeepLinks();
+     handleDeepLinkFlow(sampleUri);
   }
 
   Future<void> initDeepLinks() async {
     try {
       _appLinks = AppLinks();
+     
+      // Uri? uri;
+      // deepLinkUrl = prefs.getString('deepLink') ?? null;
+      // // Listen to deep link streams
+      // final Uri? initialUri = Uri.tryParse(deepLinkUrl!);
+      // if (initialUri != null) {
+      //   Logger().i("Initial deep link: $initialUri");
+      //   handleDeepLinkFlow(initialUri);
+      // }
 
-      // Listen to deep link streams
-      _linkSubscription = _appLinks.uriLinkStream.listen((Uri? uri) {
+      _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
         if (uri != null) {
           Logger().i("Deep link received: $uri");
           deepLink.value = uri.toString();
-          handleDeepLinkFlow(uri);
+          handleDeepLinkFlow(uri); // Use the uri received from the stream
         }
       });
 
@@ -155,6 +166,14 @@ class SplashController extends GetxController {
   Future<void> handleNormalAppFlow() async {
     await fetchAppConfig();
     isAppConfigFetched.value = true;
+    // Fetch current location
+    currentLocation.value = await locationService.getCurrentLocation();
+    final prefs = await SharedPreferences.getInstance();
+    Logger().i(
+        "lat====${prefs.getDouble('latitude')}------${prefs.getDouble('longitude')}");
+    Logger().i("${currentLocation.value.toString()}");
+    prefs.getDouble('latitude');
+    prefs.getDouble('longitude');
 
     // Retrieve token from SharedPreferences
     final token = await getTokenFromPreferences();
@@ -176,9 +195,6 @@ class SplashController extends GetxController {
   Future<void> _validateTokenAndNavigate() async {
     try {
       isLoading(true);
-
-      // Fetch current location
-      currentLocation.value = await locationService.getCurrentLocation();
 
       // Validate token using web service
       final response = await WebService.validateToken();

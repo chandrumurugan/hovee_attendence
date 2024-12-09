@@ -444,7 +444,7 @@ class LeaveListContainer extends StatelessWidget {
   }
 }
 
-  Widget _buildRow(String title, String? value) {
+ Widget _buildRow(String title, String? value) {
     final displayValue =
         title == 'Fees' ? '₹ ${value ?? 'N/A'} /month' : value ?? 'N/A';
 
@@ -452,7 +452,7 @@ class LeaveListContainer extends StatelessWidget {
     Color textColor = Colors.black;
     if (title == 'Status') {
       switch (value?.toLowerCase()) {
-        case 'Accepted':
+        case 'accepted':
           textColor = Colors.green;
           break;
         case 'pending':

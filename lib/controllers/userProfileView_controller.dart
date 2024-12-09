@@ -82,6 +82,13 @@ class UserProfileController extends GetxController
   var qualificationsProfile1 = ''.obs;
   var classProfile1 = ''.obs;
 
+  var personalInfo = {}.obs;
+  var addressInfo = {}.obs;
+  var educationInfo = {}.obs;
+
+  var roleId =''.obs;
+   var roleTypeId =''.obs;
+
   void setHighestQualification(String value) =>
       highestQualification.value = value;
   //void setTeachingSkills(String value) => teachingSkills.value = value;
@@ -116,6 +123,85 @@ class UserProfileController extends GetxController
   }
 
   var token = GetStorage();
+
+   bool validatePersonalFields(BuildContext context) {
+    if (firstNameController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the first name.',
+      );
+      return false;
+    }
+    if (lastNameController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the last name.',
+      );
+      return false;
+    }
+    if (emailController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the email.',
+      );
+      return false;
+    }
+    // Email format validation
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+        .hasMatch(emailController.text)) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Invalid email format',
+      );
+      return false;
+    }
+    if (dobController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please select the DOB.',
+      );
+      return false;
+    }
+
+    if (phController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the mobile number.',
+      );
+      return false;
+    }
+    if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Invalid mobile number',
+      );
+      return false;
+    }
+
+    if (pincodeController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the pincode.',
+      );
+      return false;
+    }
+
+    // if (pincodeController.text.length != 6) {
+    //  SnackBarUtils.showSuccessSnackBar(context,'Invalid pincode.',);
+    //   return false;
+    // }
+
+    if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please select the Id proof',
+      );
+      return false;
+    }
+
+    // Add more validation as needed
+    return true;
+  }
 
   @override
   void onInit() {
@@ -237,5 +323,25 @@ class UserProfileController extends GetxController
     additionalInfo.value = userdata.qualificationDetails.isNotEmpty
         ? userdata.qualificationDetails[0].additionalInfo ?? ""
         : "";
+  }
+
+  Future<void> storePersonalInfo(
+      BuildContext context, String roleId, String roleTypeId) async {
+    if (validatePersonalFields(context)) {
+      personalInfo.value = {
+        "first_name": firstNameController.text,
+        "last_name": lastNameController.text,
+        "email": emailController.text,
+        "dob": dobController.text,
+        "phone_number": phController.text,
+        "pincode": pincodeController.text,
+        "user_type": 2,
+        "id_proof_label": idProofController.text,
+        'rolesId': roleId,
+        'rolesTypeId': roleTypeId,
+      };
+      tabController.animateTo(1);
+      Logger().i(personalInfo.value);
+    }
   }
 }

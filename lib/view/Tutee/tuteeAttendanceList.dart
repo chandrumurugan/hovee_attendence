@@ -325,6 +325,31 @@ class TuteeAttendanceList extends StatelessWidget {
                           child: Center(child: Text('${day.day}')),
                         );
                       }
+
+                      if (controller.leaveDates
+                          .contains(DateTime(day.year, day.month, day.day))) {
+                        return Container(
+                            margin: const EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                             color:Colors.blue, // Background color for miss punch dates
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                            alignment: Alignment.center,
+                          child: Center(child: Text('${day.day}')),
+                        );
+                      }
+                      if (controller.holidayDates
+                          .contains(DateTime(day.year, day.month, day.day))) {
+                        return Container(
+                            margin: const EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                             color:Colors.pink, // Background color for miss punch dates
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                            alignment: Alignment.center,
+                          child: Center(child: Text('${day.day}')),
+                        );
+                      }
                       // Return default appearance for other dates
                       return null;
                     },

@@ -165,7 +165,7 @@ final ParentController parentController = Get.put(ParentController());
                                                       )
                                                     : const Center(
                                                         child: Text(
-                                                          'Login',
+                                                          'Get invite link ',
                                                           style: TextStyle(
                                                             fontSize: 16,
                                                             fontWeight:

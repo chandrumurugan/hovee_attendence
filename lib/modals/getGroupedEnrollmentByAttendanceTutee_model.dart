@@ -278,6 +278,8 @@ class TuteeData {
   List<MissPunch>? missPunch;
   List<MissPunch>? parent;
   List<MissPunch>? absent;
+  List<Holidays>? holidays;
+  List<Leave>? leave;
 
   TuteeData(
       {this.batchId,
@@ -289,7 +291,9 @@ class TuteeData {
       this.attendanceDetails,
       this.missPunch,
       this.parent,
-      this.absent});
+      this.absent,
+      this.holidays,
+      this.leave});
 
   TuteeData.fromJson(Map<String, dynamic> json) {
     batchId = json['batchId'];
@@ -324,6 +328,18 @@ class TuteeData {
         absent!.add(new MissPunch.fromJson(v));
       });
     }
+     if (json['holidays'] != null) {
+      holidays = <Holidays>[];
+      json['holidays'].forEach((v) {
+        holidays!.add(new Holidays.fromJson(v));
+      });
+    }
+    if (json['leave'] != null) {
+      leave = <Leave>[];
+      json['leave'].forEach((v) {
+        leave!.add(new Leave.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -348,6 +364,12 @@ class TuteeData {
     }
     if (this.absent != null) {
       data['absent'] = this.absent!.map((v) => v.toJson()).toList();
+    }
+     if (this.holidays != null) {
+      data['holidays'] = this.holidays!.map((v) => v.toJson()).toList();
+    }
+    if (this.leave != null) {
+      data['leave'] = this.leave!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -543,6 +565,45 @@ class MissPunch {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['punchInTime'] = this.punchInTime;
+    return data;
+  }
+
+  
+}
+class Holidays {
+  String? sId;
+  String? holidayDate;
+
+  Holidays({this.sId, this.holidayDate});
+
+  Holidays.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    holidayDate = json['holiday_date'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['holiday_date'] = this.holidayDate;
+    return data;
+  }
+}
+
+class Leave {
+  String? sId;
+  String? leaveDate;
+
+  Leave({this.sId, this.leaveDate});
+
+  Leave.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    leaveDate = json['leave_date'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['leave_date'] = this.leaveDate;
     return data;
   }
 }

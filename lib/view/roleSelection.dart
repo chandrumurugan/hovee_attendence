@@ -34,27 +34,50 @@ class _RoleSelectionState extends State<RoleSelection> {
     fetchRoles();
   }
 
-  void fetchRoles() async {
-   
-    try {
+void fetchRoles() async {
+  try {
+    setState(() {
+      _isLoading = true;
+    });
+
+    List<Role>? fetchedRoles = await WebService.getRoles();
+
+    if (fetchedRoles != null) {
+      // Find the "parent" role
+      var parentRole = fetchedRoles.firstWhere(
+          (role) => role.roleName.toLowerCase() == 'Parent',
+          orElse: () => fetchedRoles[2]); // Fallback to the first role if "parent" not found
+
       setState(() {
-        _isLoading = true;
-      });
-      List<Role>? fetchedRoles = await WebService.getRoles();
-      if (fetchedRoles != null) {
-        setState(() {
-          roles = fetchedRoles;
-          _isLoading = false;
-         
-        });
-      }
-    } catch (e) {
-      setState(() {
+        roles = fetchedRoles;
+
+        // Set default selection for "parent" role
+        selectedRoleId = parentRole.id;
+        selectedRole = parentRole.roleName;
+        roleTypes = parentRole.roleTypes;
+
+        // Set default role type if available
+        if (roleTypes.isNotEmpty) {
+          selectedRoleTypeId = roleTypes.first.id;
+          selectedRoleTypeName = roleTypes.first.roleTypeName;
+        }
+
         _isLoading = false;
       });
-      print("Error fetching roles: $e");
+
+      // Save the "parent" role in SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('Rolename', selectedRole ?? '');
     }
+  } catch (e) {
+    setState(() {
+      _isLoading = false;
+    });
+    print("Error fetching roles: $e");
   }
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -74,19 +97,7 @@ class _RoleSelectionState extends State<RoleSelection> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // Container(
-                      //           padding: const EdgeInsets.symmetric(
-                      //               horizontal: 40, vertical: 8),
-                      //           decoration: const BoxDecoration(
-                      //             borderRadius: BorderRadius.all(Radius.circular(1)),
-                      //             color: Colors.white,
-                      //           ),
-                      //           child:const LogoGif()
-               
-                      //         ),   
                       Container(
-                        // height: MediaQuery.of(context).size.height * 0.5,
-                        //padding: const EdgeInsets.all(20),
                         width: MediaQuery.sizeOf(context).width,
                         decoration: const BoxDecoration(
                           gradient: LinearGradient(

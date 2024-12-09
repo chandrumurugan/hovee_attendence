@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/config/appConfig.dart';
+import 'package:hovee_attendence/modals/Regsisterparent_model.dart';
 import 'package:hovee_attendence/modals/addAnnounmentModel.dart';
 import 'package:hovee_attendence/modals/addClassData_model.dart';
 import 'package:hovee_attendence/modals/addEnrollmentData_model.dart';
@@ -50,6 +51,7 @@ import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
 import 'package:hovee_attendence/modals/submitEnquirModel.dart';
 import 'package:hovee_attendence/modals/updateEnquire_model.dart';
 import 'package:hovee_attendence/modals/updateLeaveModel.dart';
+import 'package:hovee_attendence/modals/update_parent_status_model.dart';
 import 'package:hovee_attendence/modals/validateTokenModel.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
@@ -94,7 +96,10 @@ class WebService {
         return LoginModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
         return null;
       }
     } catch (e) {
@@ -137,7 +142,10 @@ class WebService {
         return RegisterModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-          SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
 
         return null;
       }
@@ -167,7 +175,10 @@ class WebService {
         return OtpModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-         SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
 
         return null;
       }
@@ -191,7 +202,10 @@ class WebService {
         return LoginModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-         SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
         return null;
       }
     } catch (e) {
@@ -205,10 +219,10 @@ class WebService {
         "${baseUrl}batch/addBatch"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     Logger().i("getting24567890avaluue==>${batchData}");
-     Logger().i("getting2456hgfujtgf0avaluue==>${token}");
+    Logger().i("getting2456hgfujtgf0avaluue==>${token}");
     try {
       final response = await http.post(
         url,
@@ -217,7 +231,6 @@ class WebService {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        
       );
       if (response.statusCode == 200) {
         return AddBatchDataModel.fromJson(json.decode(response.body));
@@ -233,8 +246,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}batch/getBatchList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -244,7 +257,7 @@ class WebService {
         'Content-Type': 'application/json',
       },
     );
-     print(token);
+    print(token);
     if (response.statusCode == 200) {
       return getBatchListModel.fromJson(json.decode(response.body));
     } else {
@@ -256,8 +269,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}tutee/getClassTuteeList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
 
     final reponse = await http.post(
       url, // Replace with the actual API URL
@@ -280,8 +293,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}tutee/getClassTuteeFilterList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     var headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
@@ -322,12 +335,12 @@ class WebService {
     final url = Uri.parse('$baseUrl/course/getCourse');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
-     var data = {"searchKey": searchitems};
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
-       body: jsonEncode(data),
+      body: jsonEncode(data),
       headers: {
         'Authorization': 'Bearer $token', // Add the authorization token here
         'Content-Type': 'application/json',
@@ -351,7 +364,8 @@ class WebService {
     String resumePath = '',
     String educationCertPath = '',
     String experienceCertPath = '',
-   required String latitude,required String longitude,
+    required String latitude,
+    required String longitude,
   }) async {
     var headers = {
       'Authorization': 'Bearer $token', // Pass the token for authorization
@@ -378,8 +392,8 @@ class WebService {
     //  request.fields['experience_certificate'] = '';
     //  request.fields['rolesId'] = roleId;
     //  request.fields['rolesTypeId'] = roleTypeId;
-     request.fields['latitude'] = latitude;
-      request.fields['longitude'] = longitude;
+    request.fields['latitude'] = latitude;
+    request.fields['longitude'] = longitude;
     request.headers.addAll(headers);
     Logger().i(request.fields);
 
@@ -394,17 +408,17 @@ class WebService {
     //   request.files.add(await http.MultipartFile.fromPath('experience_certificate', experienceCertPath));
     // }
     Logger().i(request.headers);
-     Logger().i(personalInfo);
-      Logger().i(addressInfo);
-       Logger().i(educationInfo);
+    Logger().i(personalInfo);
+    Logger().i(addressInfo);
+    Logger().i(educationInfo);
     // Send the request
     return await request.send();
   }
 
   static Future<UserProfileM?> fetchUserProfile() async {
     final box = GetStorage(); // Get an instance of GetStorage
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     try {
       var headers = {'Authorization': "Bearer $token"};
       var url = Uri.parse("${baseUrl}user/getUserProfile");
@@ -426,7 +440,8 @@ class WebService {
     required Map<dynamic, dynamic> personalInfo,
     required Map<dynamic, dynamic> addressInfo,
     required Map<dynamic, dynamic> educationInfo,
-    required String latitude,required String longitude,
+    required String latitude,
+    required String longitude,
   }) async {
     var headers = {
       'Authorization': 'Bearer $token', // Pass the token for authorization
@@ -446,8 +461,8 @@ class WebService {
     // Add education info
     request.fields['education_info'] = jsonEncode(educationInfo);
     request.fields['type'] = 'N';
-     request.fields['latitude'] = latitude;
-      request.fields['longitude'] = longitude;
+    request.fields['latitude'] = latitude;
+    request.fields['longitude'] = longitude;
     request.headers.addAll(headers);
     return await request.send();
   }
@@ -456,8 +471,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}attendane/getAddendanceCourseList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -478,8 +493,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}attendane/punchIn');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     var headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
@@ -493,7 +508,10 @@ class WebService {
         return getAttendancePunchInModel.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-         SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
         return null;
       }
     } catch (e) {
@@ -506,8 +524,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}attendane/punchOut');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     var headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
@@ -519,7 +537,10 @@ class WebService {
         return getAttendancePunchInModel.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-          SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
         return null;
       }
     } catch (e) {
@@ -532,8 +553,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByBatch');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -554,15 +575,20 @@ class WebService {
 
   static Future<getGroupedEnrollmentByAttendanceModel?>
       fetchGroupedEnrollmentByBatchList(
-          String batchId, String selectedDate,selectedMonth) async {
+          String batchId, String selectedDate, selectedMonth) async {
     final url =
         Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByAttendance');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
-    var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth,"fromDate":'',
-    "toDate":''};
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var data = {
+      "date": selectedDate,
+      "batchId": batchId,
+      "month": selectedMonth,
+      "fromDate": '',
+      "toDate": ''
+    };
     print(data);
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -589,8 +615,8 @@ class WebService {
         "${baseUrl}course/addCourses"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -610,14 +636,14 @@ class WebService {
     }
   }
 
-   static Future<AddClassDataModel?> addClass(
+  static Future<AddClassDataModel?> addClass(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}tutor/addTuitionClass"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -637,12 +663,13 @@ class WebService {
     }
   }
 
-   static Future<getTuitionCourseListModel> fetchClassesList( Map<String, dynamic> batchData) async {
+  static Future<getTuitionCourseListModel> fetchClassesList(
+      Map<String, dynamic> batchData) async {
     final url = Uri.parse('${baseUrl}tutor/getTuitionClasses');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(batchData),
@@ -659,12 +686,12 @@ class WebService {
     }
   }
 
-    static Future<getTuitionCourseListModel> fetchTuitionCourseList() async {
+  static Future<getTuitionCourseListModel> fetchTuitionCourseList() async {
     final url = Uri.parse('$baseUrl/tutor/getTuitionCourseList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -680,14 +707,14 @@ class WebService {
     }
   }
 
-    static Future<AddClassDataModel?> updateClass(
+  static Future<AddClassDataModel?> updateClass(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}tutor/addTuitionClass"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -707,14 +734,14 @@ class WebService {
     }
   }
 
-   static Future<getClassTuteeByIdModel?> getClassTuteeById(
+  static Future<getClassTuteeByIdModel?> getClassTuteeById(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}tutee/getClassTuteeById"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -734,14 +761,14 @@ class WebService {
     }
   }
 
-   static Future<submitEnquiryModel?> addEnquirs(
+  static Future<submitEnquiryModel?> addEnquirs(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}attendane/submitEnquiry"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -765,8 +792,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}home/getQrcode');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -798,20 +825,24 @@ class WebService {
     } else {
       return null;
     }
-
   }
 
-   static Future<getGroupedEnrollmentByAttendanceTutee?>
+  static Future<getGroupedEnrollmentByAttendanceTutee?>
       fetchTutteAttendanceList(
-          String batchId, String selectedDate,selectedMonth) async {
+          String batchId, String selectedDate, selectedMonth) async {
     final url =
         Uri.parse('${baseUrl}attendane/getGroupedEnrollmentByAttendanceTutee');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
-    var data = {"date": selectedDate, "batchId": batchId, "month":selectedMonth,"fromDate":'',
-    "toDate":''};
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var data = {
+      "date": selectedDate,
+      "batchId": batchId,
+      "month": selectedMonth,
+      "fromDate": '',
+      "toDate": ''
+    };
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -831,12 +862,13 @@ class WebService {
     }
   }
 
-  static Future<getEnquiryListModel> fetchEnquireList( Map<String, dynamic> batchData) async {
+  static Future<getEnquiryListModel> fetchEnquireList(
+      Map<String, dynamic> batchData) async {
     final url = Uri.parse('${baseUrl}attendane/getEnquiryList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(batchData),
@@ -853,14 +885,14 @@ class WebService {
     }
   }
 
-  static Future<UpdateEnquiryStatusModel ?> updateEnquire(
+  static Future<UpdateEnquiryStatusModel?> updateEnquire(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}attendane/updateEnquiryStatus"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -871,7 +903,7 @@ class WebService {
         },
       );
       if (response.statusCode == 200) {
-        return UpdateEnquiryStatusModel .fromJson(json.decode(response.body));
+        return UpdateEnquiryStatusModel.fromJson(json.decode(response.body));
       } else {
         return null;
       }
@@ -880,12 +912,12 @@ class WebService {
     }
   }
 
-   static Future<List<String>> fetchNotificationsType() async {
+  static Future<List<String>> fetchNotificationsType() async {
     final url = Uri.parse('${baseUrl}home/getNotificationsType');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
 
     final reponse = await http.post(
       url, // Replace with the actual API URL
@@ -903,12 +935,13 @@ class WebService {
     }
   }
 
-  static Future<getNotificationsModel> getNotifications( Map<String, dynamic> notificationData) async {
+  static Future<getNotificationsModel> getNotifications(
+      Map<String, dynamic> notificationData) async {
     final url = Uri.parse('${baseUrl}home/getNotifications');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(notificationData),
@@ -925,13 +958,13 @@ class WebService {
     }
   }
 
-
-  static Future<getMarkNotificationAsReadModel> FetchMarkedNotification( Map<String, dynamic> notificationData) async {
+  static Future<getMarkNotificationAsReadModel> FetchMarkedNotification(
+      Map<String, dynamic> notificationData) async {
     final url = Uri.parse('${baseUrl}home/markNotificationAsRead');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(notificationData),
@@ -942,18 +975,20 @@ class WebService {
     );
 
     if (response.statusCode == 200) {
-      return getMarkNotificationAsReadModel.fromJson(json.decode(response.body));
+      return getMarkNotificationAsReadModel
+          .fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load Notification list');
     }
   }
 
-  static Future<addEnrollmentDataModel> addEnrollment( Map<String, dynamic> enrollmentData) async {
+  static Future<addEnrollmentDataModel> addEnrollment(
+      Map<String, dynamic> enrollmentData) async {
     final url = Uri.parse('${baseUrl}attendane/submitEnrollment');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(enrollmentData),
@@ -970,45 +1005,44 @@ class WebService {
     }
   }
 
-   static Future<GetEnrollmentModel?> getEnrollment( Map<String, dynamic> batchData) async {
+  static Future<GetEnrollmentModel?> getEnrollment(
+      Map<String, dynamic> batchData) async {
     try {
-       final url = Uri.parse('${baseUrl}attendane/getEnrollment');
-    final box = GetStorage(); // Get an instance of GetStorage
-    // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
-    final response = await http.post(
-      url, // Replace with the actual API URL
-      body: json.encode(batchData),
-      headers: {
-        'Authorization': 'Bearer $token', // Add the authorization token here
-        'Content-Type': 'application/json',
-      },
-    );
-    Logger().i(token);
+      final url = Uri.parse('${baseUrl}attendane/getEnrollment');
+      final box = GetStorage(); // Get an instance of GetStorage
+      // Retrieve the token from storage
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token') ?? "";
+      final response = await http.post(
+        url, // Replace with the actual API URL
+        body: json.encode(batchData),
+        headers: {
+          'Authorization': 'Bearer $token', // Add the authorization token here
+          'Content-Type': 'application/json',
+        },
+      );
+      Logger().i(token);
 
-    Logger().i(response.body);
+      Logger().i(response.body);
 
-    if (response.statusCode == 200) {
-      return GetEnrollmentModel.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load Enquir list');
-    } 
+      if (response.statusCode == 200) {
+        return GetEnrollmentModel.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load Enquir list');
+      }
     } catch (e) {
-     
-       return null;
+      return null;
     }
-   
   }
 
-  static Future<UpdateEnrollmentStatusModel ?> updateEnrollment(
+  static Future<UpdateEnrollmentStatusModel?> updateEnrollment(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}attendane/updateEnrollment"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -1019,7 +1053,7 @@ class WebService {
         },
       );
       if (response.statusCode == 200) {
-        return UpdateEnrollmentStatusModel .fromJson(json.decode(response.body));
+        return UpdateEnrollmentStatusModel.fromJson(json.decode(response.body));
       } else {
         return null;
       }
@@ -1028,14 +1062,14 @@ class WebService {
     }
   }
 
-  static Future<ValidateTokenModel ?> validateToken() async {
+  static Future<ValidateTokenModel?> validateToken() async {
     final url = Uri.parse(
         "${baseUrl}user/validToken"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
-     var data = {"token": token};
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var data = {"token": token};
     try {
       final response = await http.post(
         url,
@@ -1046,7 +1080,7 @@ class WebService {
         },
       );
       if (response.statusCode == 200) {
-        return ValidateTokenModel .fromJson(json.decode(response.body));
+        return ValidateTokenModel.fromJson(json.decode(response.body));
       } else {
         return null;
       }
@@ -1076,12 +1110,12 @@ class WebService {
   //     //  throw Exception('Failed to fetch course category list');
   //   }
   // }
-   static Future<getHomeDashboardTutorModel> fetchHomeDashboardList() async {
+  static Future<getHomeDashboardTutorModel> fetchHomeDashboardList() async {
     final url = Uri.parse('${baseUrl}home/getHomeDashboardTutor');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -1097,15 +1131,13 @@ class WebService {
     }
   }
 
-    static Future<getdashboardYearflowModel?>
-      fetchHomeAttendanceList(
-          String batchId) async {
-    final url =
-        Uri.parse('${baseUrl}attendane/dashboardYearflow');
+  static Future<getdashboardYearflowModel?> fetchHomeAttendanceList(
+      String batchId) async {
+    final url = Uri.parse('${baseUrl}attendane/dashboardYearflow');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     var data = {"batchId": batchId};
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -1126,12 +1158,13 @@ class WebService {
     }
   }
 
-  static Future<deleteBatchDataModel> deleteBatch( Map<String, dynamic> batchData) async {
+  static Future<deleteBatchDataModel> deleteBatch(
+      Map<String, dynamic> batchData) async {
     final url = Uri.parse('${baseUrl}batch/deleteBatch');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(batchData),
@@ -1148,12 +1181,13 @@ class WebService {
     }
   }
 
-  static Future<deleteBatchDataModel> deleteCourse( Map<String, dynamic> batchData) async {
+  static Future<deleteBatchDataModel> deleteCourse(
+      Map<String, dynamic> batchData) async {
     final url = Uri.parse('${baseUrl}course/deleteCourse');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(batchData),
@@ -1170,14 +1204,14 @@ class WebService {
     }
   }
 
-  static Future<getUserTokenListModel  ?> getUserTokenList(
+  static Future<getUserTokenListModel?> getUserTokenList(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}user/getUserTokenList"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -1188,7 +1222,7 @@ class WebService {
         },
       );
       if (response.statusCode == 200) {
-        return getUserTokenListModel  .fromJson(json.decode(response.body));
+        return getUserTokenListModel.fromJson(json.decode(response.body));
       } else {
         return null;
       }
@@ -1197,12 +1231,13 @@ class WebService {
     }
   }
 
-   static Future<getHolidayDataModel> fetchHoliDataList(String searchitems) async {
+  static Future<getHolidayDataModel> fetchHoliDataList(
+      String searchitems) async {
     final url = Uri.parse('${baseUrl}tutor/getHoliday');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -1212,7 +1247,7 @@ class WebService {
         'Content-Type': 'application/json',
       },
     );
-     print(token);
+    print(token);
     if (response.statusCode == 200) {
       return getHolidayDataModel.fromJson(json.decode(response.body));
     } else {
@@ -1220,15 +1255,13 @@ class WebService {
     }
   }
 
-   static Future<GetparentBatchLocation?>
-      fetchBatchLocation(
-          String batchId) async {
-    final url =
-        Uri.parse('${baseUrl}home/parentBatchLocation');
+  static Future<GetparentBatchLocation?> fetchBatchLocation(
+      String batchId) async {
+    final url = Uri.parse('${baseUrl}home/parentBatchLocation');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     var data = {"batchId": batchId};
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -1255,10 +1288,10 @@ class WebService {
         "${baseUrl}tutor/addHoliday"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     Logger().i("getting24567890avaluue==>${batchData}");
-     Logger().i("getting2456hgfujtgf0avaluue==>${token}");
+    Logger().i("getting2456hgfujtgf0avaluue==>${token}");
     try {
       final response = await http.post(
         url,
@@ -1267,7 +1300,6 @@ class WebService {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        
       );
       if (response.statusCode == 200) {
         return AddHolidayModel.fromJson(json.decode(response.body));
@@ -1279,12 +1311,13 @@ class WebService {
     }
   }
 
-  static Future<deleteHolidayModel> deleteHoliday( Map<String, dynamic> batchData) async {
+  static Future<deleteHolidayModel> deleteHoliday(
+      Map<String, dynamic> batchData) async {
     final url = Uri.parse('${baseUrl}tutor/addHoliday');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(batchData),
@@ -1301,12 +1334,12 @@ class WebService {
     }
   }
 
-   static Future<getMspModel> fetchMSPDataList(String searchitems) async {
+  static Future<getMspModel> fetchMSPDataList(String searchitems) async {
     final url = Uri.parse('${baseUrl}tutor/getMsp');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -1316,7 +1349,7 @@ class WebService {
         'Content-Type': 'application/json',
       },
     );
-     print(token);
+    print(token);
     if (response.statusCode == 200) {
       return getMspModel.fromJson(json.decode(response.body));
     } else {
@@ -1324,17 +1357,15 @@ class WebService {
     }
   }
 
-
-  static Future<addMspModel?> addMSP(
-      Map<String, dynamic> batchData) async {
-    final url = Uri.parse(
-        "${baseUrl}tutor/addMsp"); // Replace with the actual endpoint
+  static Future<addMspModel?> addMSP(Map<String, dynamic> batchData) async {
+    final url =
+        Uri.parse("${baseUrl}tutor/addMsp"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     Logger().i("getting24567890avaluue==>${batchData}");
-     Logger().i("getting2456hgfujtgf0avaluue==>${token}");
+    Logger().i("getting2456hgfujtgf0avaluue==>${token}");
     try {
       final response = await http.post(
         url,
@@ -1343,7 +1374,6 @@ class WebService {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        
       );
       if (response.statusCode == 200) {
         return addMspModel.fromJson(json.decode(response.body));
@@ -1355,12 +1385,12 @@ class WebService {
     }
   }
 
-    static Future<getLeaveListModel> fetchLeaveList(String searchitems) async {
+  static Future<getLeaveListModel> fetchLeaveList(String searchitems) async {
     final url = Uri.parse('${baseUrl}leave/getLeaveList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -1370,7 +1400,7 @@ class WebService {
         'Content-Type': 'application/json',
       },
     );
-     print(token);
+    print(token);
     if (response.statusCode == 200) {
       return getLeaveListModel.fromJson(json.decode(response.body));
     } else {
@@ -1384,10 +1414,10 @@ class WebService {
         "${baseUrl}leave/submitLeave"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     Logger().i("getting24567890avaluue==>${batchData}");
-     Logger().i("getting2456hgfujtgf0avaluue==>${token}");
+    Logger().i("getting2456hgfujtgf0avaluue==>${token}");
     try {
       final response = await http.post(
         url,
@@ -1396,7 +1426,6 @@ class WebService {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        
       );
       if (response.statusCode == 200) {
         return submitLeaveModel.fromJson(json.decode(response.body));
@@ -1413,8 +1442,8 @@ class WebService {
     final url = Uri.parse('${baseUrl}leave/getGroupedLeaveByBatch');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -1433,12 +1462,13 @@ class WebService {
     }
   }
 
-   static Future<deleteBatchDataModel> deleteLeave( Map<String, dynamic> batchData) async {
+  static Future<deleteBatchDataModel> deleteLeave(
+      Map<String, dynamic> batchData) async {
     final url = Uri.parse('${baseUrl}leave/submitLeave');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     final response = await http.post(
       url, // Replace with the actual API URL
       body: json.encode(batchData),
@@ -1455,14 +1485,14 @@ class WebService {
     }
   }
 
-  static Future<updateLeaveModel ?> updateLeave(
+  static Future<updateLeaveModel?> updateLeave(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}leave/updateLeave"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
@@ -1473,7 +1503,7 @@ class WebService {
         },
       );
       if (response.statusCode == 200) {
-        return updateLeaveModel .fromJson(json.decode(response.body));
+        return updateLeaveModel.fromJson(json.decode(response.body));
       } else {
         return null;
       }
@@ -1482,12 +1512,13 @@ class WebService {
     }
   }
 
-  static Future<getAnnouncementBatchListModel> fetchAnnounmentsBatchList() async {
+  static Future<getAnnouncementBatchListModel>
+      fetchAnnounmentsBatchList() async {
     final url = Uri.parse('${baseUrl}home/getAnnouncementBatchList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
 
     final reponse = await http.post(
       url, // Replace with the actual API URL
@@ -1497,24 +1528,24 @@ class WebService {
       },
     );
     if (reponse.statusCode == 200) {
-       return getAnnouncementBatchListModel.fromJson(json.decode(reponse.body));
+      return getAnnouncementBatchListModel.fromJson(json.decode(reponse.body));
     } else {
       throw Exception('Failed to load course list');
       //  throw Exception('Failed to fetch course category list');
     }
   }
 
-
-    static Future<getAnnouncementModel> fetchAnnounmentsList(String searchitems) async {
+  static Future<getAnnouncementModel> fetchAnnounmentsList(
+      String searchitems) async {
     final url = Uri.parse('$baseUrl/home/getAnnouncement');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
-     var data = {"searchKey": searchitems};
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
-       body: jsonEncode(data),
+      body: jsonEncode(data),
       headers: {
         'Authorization': 'Bearer $token', // Add the authorization token here
         'Content-Type': 'application/json',
@@ -1528,12 +1559,13 @@ class WebService {
     }
   }
 
-  static Future<getHolidayDataModel> fetchHoliDataTuteeList(String searchitems) async {
+  static Future<getHolidayDataModel> fetchHoliDataTuteeList(
+      String searchitems) async {
     final url = Uri.parse('${baseUrl}tutor/getHolidayTuteeList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -1543,7 +1575,7 @@ class WebService {
         'Content-Type': 'application/json',
       },
     );
-     print(token);
+    print(token);
     if (response.statusCode == 200) {
       return getHolidayDataModel.fromJson(json.decode(response.body));
     } else {
@@ -1551,17 +1583,16 @@ class WebService {
     }
   }
 
-
   static Future<addAnnouncementModel?> addAnnoument(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}home/addAnnouncement"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
     Logger().i("getting24567890avaluue==>${batchData}");
-     Logger().i("getting2456hgfujtgf0avaluue==>${token}");
+    Logger().i("getting2456hgfujtgf0avaluue==>${token}");
     try {
       final response = await http.post(
         url,
@@ -1570,7 +1601,6 @@ class WebService {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        
       );
       if (response.statusCode == 200) {
         return addAnnouncementModel.fromJson(json.decode(response.body));
@@ -1582,15 +1612,18 @@ class WebService {
     }
   }
 
-    static Future<parentLoginModal?> parentLogin(
+  static Future<parentLoginModal?> parentLogin(
       String identifiers, BuildContext context) async {
     try {
-       SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
-      var headers = {'Content-Type': 'application/json','Authorization': 'Bearer $token',};
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token') ?? "";
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
       var data = {"identifier": identifiers};
       var url = Uri.parse("${baseUrl}user/generateInvitationLink");
-      
+
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
       Logger().i(response.bodyBytes);
@@ -1601,7 +1634,10 @@ class WebService {
         return parentLoginModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
         return null;
       }
     } catch (e) {
@@ -1614,10 +1650,7 @@ class WebService {
     try {
       var headers = {'Content-Type': 'application/json'};
 
-      var data = {
-        "encryptedCode": accountverificationtoken,
-        "inputCode": otp
-      };
+      var data = {"encryptedCode": accountverificationtoken, "inputCode": otp};
       Logger().i(data);
 
       var url = Uri.parse("${baseUrl}user/validateAndLoginParent");
@@ -1630,7 +1663,10 @@ class WebService {
         return validateAndLoginParentModal.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-         SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
 
         return null;
       }
@@ -1639,7 +1675,7 @@ class WebService {
     }
   }
 
-  static Future<RegisterModal?> RegisterParent({
+  static Future<RegisterParentModel?> RegisterParent({
     required BuildContext context,
     required String firstName,
     required String lastName,
@@ -1647,12 +1683,21 @@ class WebService {
     required String dob,
     required String phNo,
     required String pincode,
-    required String idProof,
+    required String latitude,
+    required String longitude,
+    required String country,
+    required String state,
+    required String city,
+    required String street,
+    required String doorNo
+
   }) async {
     try {
       DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
       String formattedDate1 = DateFormat('dd/MM/yyyy').format(parsedDate1);
-      var headers = {'Content-Type': 'application/json'};
+       SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token') ?? "";
+      var headers = {'Content-Type': 'application/json','Authorization': 'Bearer $token',};
 
       var data = {
         "first_name": firstName,
@@ -1661,8 +1706,13 @@ class WebService {
         "dob": formattedDate1,
         "phone_number": phNo,
         "pincode": pincode,
-        "user_type": 2,
-        "id_proof_label": idProof
+        "longitude": longitude,
+        "latitude": latitude,
+        "country":country,
+        "state": state,
+        "city": city,
+        "street": street,
+        "door_no": doorNo
       };
 
       var url = Uri.parse("${baseUrl}user/registerParent");
@@ -1671,10 +1721,13 @@ class WebService {
 
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
-        return RegisterModal.fromJson(result);
+        return RegisterParentModel.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-          SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
 
         return null;
       }
@@ -1682,15 +1735,19 @@ class WebService {
       return null;
     }
   }
-   static Future<getParentInviteCodeModel?> getParentInviteCode(
+
+  static Future<getParentInviteCodeModel?> getParentInviteCode(
       String identifiers, BuildContext context) async {
     try {
-       SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token =prefs.getString('Token') ?? "";
-      var headers = {'Content-Type': 'application/json','Authorization': 'Bearer $token',};
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token') ?? "";
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
       var data = {"phone_number": identifiers};
       var url = Uri.parse("${baseUrl}user/getParentInviteCode");
-      
+
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
       Logger().i(response.bodyBytes);
@@ -1701,7 +1758,10 @@ class WebService {
         return getParentInviteCodeModel.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showSuccessSnackBar(context,"${result["message"]}",);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
         return null;
       }
     } catch (e) {
@@ -1709,4 +1769,30 @@ class WebService {
     }
   }
 
+  static Future<UpdateParentStausModel?> updateParentStatus(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}user/updateParentStaus"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return UpdateParentStausModel.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 }

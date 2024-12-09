@@ -540,10 +540,11 @@ class AccountSetupController extends GetxController
     Logger().i(personalInfo.value);
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
-    Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
+   
     latitude = prefs.getDouble('latitude');
     longitude = prefs.getDouble('longitude');
     isLoading.value = true;
+      Logger().i("Latitude====>: ${latitude}, Longitude: ${longitude}");
     try {
       http.StreamedResponse response = await webService.submitTuteeAccountSetup(
           token: token, // Add the actual token here

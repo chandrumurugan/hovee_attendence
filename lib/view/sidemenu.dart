@@ -118,6 +118,7 @@ class SideMenu extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
+             if (!isGuest)
 ListTile(
   onTap: () {
     // Close the side menu

@@ -47,23 +47,48 @@ class NotificationController extends GetxController {
      print("object1");
   }
 
+  // void fetchNotificationsType() async {
+  //   isLoading(true);
+
+  //   var response = await WebService.fetchNotificationsType();
+
+  //   if (response.isNotEmpty) {
+  //     categories.value= response;
+  //     isLoading(false); 
+  //      final storage = GetStorage();
+  //     // role =storage.read('role');
+  //      SharedPreferences prefs = await SharedPreferences.getInstance();
+  //      role = prefs.getString('Rolename') ?? '';
+  //     filteredNotifications('Announcements',role!,false);
+  //   } else {
+  //     isLoading(false);
+  //   }
+  // }
+
   void fetchNotificationsType() async {
-    isLoading(true);
+  isLoading(true);
 
-    var response = await WebService.fetchNotificationsType();
+  var response = await WebService.fetchNotificationsType();
 
-    if (response.isNotEmpty) {
-      categories.value= response;
-      isLoading(false); 
-       final storage = GetStorage();
-      // role =storage.read('role');
-       SharedPreferences prefs = await SharedPreferences.getInstance();
-       role = prefs.getString('Rolename') ?? '';
-      filteredNotifications('Announcements',role!,false);
-    } else {
-      isLoading(false);
+  if (response.isNotEmpty) {
+    // Move "Announcements" to the last index
+    if (response.contains("Announcements")) {
+      response.remove("Announcements");
+      response.add("Announcements");
     }
+
+    categories.value = response;
+    isLoading(false);
+
+    final storage = GetStorage();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    role = prefs.getString('Rolename') ?? '';
+    filteredNotifications('Enquiry', role!, false);
+  } else {
+    isLoading(false);
   }
+}
+
 
  
 

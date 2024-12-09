@@ -8,14 +8,31 @@ import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   //  final Future<void> Function() onInitializationComplete;
      SplashScreen({Key? key,})
       : super(key: key);
-  final SplashController splashController = Get.put(SplashController());
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   final AuthControllers classController = Get.put(AuthControllers());
+   final SplashController splashController = Get.put(SplashController());
+    Uri sampleUri = Uri.parse("https://express.insakal.com/parent-login?code=a2cb8c72577c5521be948e17d178ebbb%3Ae9b230f30dc8930484da34476755c7e1&phoneNumber=undefined");
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    splashController.handleDeepLinkFlow(sampleUri);
+
+  }
+
   @override
   Widget build(BuildContext context) {
+     
     // _startInitialization();
     return Scaffold(
       body: Stack(
@@ -73,10 +90,4 @@ class SplashScreen extends StatelessWidget {
       ),
     );
   }
-
-
-  //   Future<void> _startInitialization() async {
-  //   // await Future.delayed(const Duration(seconds: 3)); // Splash screen delay
-  //   await onInitializationComplete();
-  // }
 }

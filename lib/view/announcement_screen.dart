@@ -125,17 +125,17 @@ final AnnoumentController anoumentController = Get.put(AnnoumentController());
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                               
-                                    _buildRow('Title', leaveData.title),
+                                    _buildRow('Title', leaveData.title,context),
                                     const SizedBox(height: 10),
-                                     _buildRow('StudentName', '${leaveData.userDetails!.firstName}  ${leaveData.userDetails!.lastName}'),
+                                     _buildRow('Student name', '${leaveData.userDetails!.firstName}  ${leaveData.userDetails!.lastName}',context),
                                     const SizedBox(height: 10),
-                                    _buildRow('BatchName', leaveData.batchList!.batchName),
+                                    _buildRow('Batch name', leaveData.batchList!.batchName,context),
                                     const SizedBox(height: 10),
-                                    _buildRow('ClassName', '${leaveData.courseList!.className}'),
+                                    _buildRow('Class name', '${leaveData.courseList!.className}',context),
                                     const SizedBox(height: 10),
-                                    _buildRow('Subject', leaveData.courseList!.subject),
+                                    _buildRow('Subject', leaveData.courseList!.subject,context),
                                     const SizedBox(height: 10),
-                                    _buildRow('Description', leaveData.description),
+                                    _buildRow('Description', leaveData.description,context),
                                     
                                   ],
                                 ),
@@ -162,7 +162,7 @@ final AnnoumentController anoumentController = Get.put(AnnoumentController());
       ):SizedBox.shrink());
   }
 
-    Widget _buildRow(String title, String? value) {
+    Widget _buildRow(String title, String? value,BuildContext context) {
     final displayValue = title == 'Fees' ? '₹ ${value ?? 'N/A'} /month' : value ?? 'N/A';
 
     return Row(
@@ -176,12 +176,17 @@ final AnnoumentController anoumentController = Get.put(AnnoumentController());
             fontSize: 14,
           ),
         ),
-        Text(
-          displayValue,
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-            fontSize: 14,
+        SizedBox(
+          width: MediaQuery.of(context).size.width*0.4,
+          child: Text(
+            displayValue,
+            maxLines: 3,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
+              overflow: TextOverflow.ellipsis
+            ),
           ),
         ),
       ],

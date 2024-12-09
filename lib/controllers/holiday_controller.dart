@@ -11,6 +11,7 @@ import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_holiday_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:path/path.dart';
 
 import '../modals/getHolidayDataModel.dart';
 
@@ -105,7 +106,7 @@ class HolidayController extends GetxController {
     try {
       isLoading(true);
       var holidayResponse = await WebService.fetchHoliDataTuteeList(
-          searchTerm); // Pass the searchTerm to the API
+          searchTerm,); // Pass the searchTerm to the API
 
       if (holidayResponse.data != null) {
         holidayTuteeDataList.value = holidayResponse.data!;
@@ -150,7 +151,7 @@ class HolidayController extends GetxController {
          
         } else {
           SnackBarUtils.showErrorSnackBar(
-              context, response?.message ?? 'Failed to add holiday');
+              context, response?.message ?? 'Holiday already exists for these dates');
         }
       } catch (e) {
         SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
@@ -220,7 +221,7 @@ class HolidayController extends GetxController {
          _clearData();
         fetchBatchList();
          Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        ,'Holiday delete successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        ,'Holiday deleted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       // SnackBarUtils.showSuccessSnackBar(context, 'Holiday delete successfully');
         //  Get.back();
         //  onInit();

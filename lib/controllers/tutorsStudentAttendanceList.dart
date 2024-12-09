@@ -59,6 +59,8 @@ class StudentAttendanceController extends GetxController {
   RxSet<DateTime> missPunchDates = RxSet<DateTime>();
     RxSet<DateTime> absentDates = RxSet<DateTime>();
     RxSet<DateTime> presentDates = RxSet<DateTime>();
+    RxSet<DateTime> leaveDates = RxSet<DateTime>();
+    RxSet<DateTime> holidayDates = RxSet<DateTime>();
 
   //  var absentDates = <DateTime>{}.obs;
   //  var presentDates = <DateTime>{}.obs;
@@ -199,6 +201,18 @@ class StudentAttendanceController extends GetxController {
             presentDates.value = dataTutee!.parent!
           .map((date) {
                     final parsedDate = DateFormat('dd-MM-yyyy').parse(date.punchInTime!);
+            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+          })
+          .toSet();
+           leaveDates.value = dataTutee!.leave!
+          .map((date) {
+                    final parsedDate = DateFormat('dd-MM-yyyy').parse(date.leaveDate!);
+            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+          })
+          .toSet();
+           holidayDates.value = dataTutee!.holidays!
+          .map((date) {
+                    final parsedDate = DateFormat('dd-MM-yyyy').parse(date.holidayDate!);
             return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
           })
           .toSet();

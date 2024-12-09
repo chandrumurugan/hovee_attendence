@@ -6,10 +6,15 @@ import 'package:get/get.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/modals/parentLoginDataModel.dart';
+import 'package:hovee_attendence/modals/update_parent_status_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
+import 'package:hovee_attendence/view/dashBoard.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
+import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/parent_otp_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -80,6 +85,8 @@ class ParentController extends GetxController {
   var otpResponse = validateAndLoginParentModal().obs;
 
    final focusNode = FocusNode();
+    UserDetail ? childrenData   ;
+    
   @override
   void onInit() {
     // TODO: implement onInit
@@ -201,23 +208,14 @@ class ParentController extends GetxController {
         if (response != null) {
           // Assume `deeplink` is part of the response
             SharedPreferences prefs = await SharedPreferences.getInstance();
-           prefs.setString('Token','');
+          // prefs.setString('Token','');
           //  deepLink = response.mobileDeepLink!;
           //  code = response.code!;
-         }  else {
-          Logger().e('Failed to load AppConfig');
-          isLoading.value = false;
-        }
-            var parentresponse = await WebService.getParentInviteCode(identifiers, context);
-        if (parentresponse != null) {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            deepLink.value=parentresponse.data!.invitationLink!;
-           code.value= parentresponse.data!.parentCode!;
-           prefs.setString('deepLink',parentresponse.data!.invitationLink!);
-            prefs.setString('OtpCode',parentresponse.data!.parentCode!);
-         //print(code);
-           print(deepLink);
-          showDialog(
+           logInController.clear();
+            isLoading.value = true;
+            // getValidateLink(identifiers,context);
+            //  Get.to(()=>DashboardScreen(rolename: 'Tutee',));
+             showDialog(
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
@@ -225,8 +223,8 @@ class ParentController extends GetxController {
                 title: Text('Success'),
                 content: Column(
                   children: [
-                    Text('Deeplink: ${deepLink.value}'),
-                    Text('Code: ${parentresponse.data!.parentCode!}'),
+                    Text('Deeplink: ${response.mobileDeepLink}'),
+                    Text('Code: ${response.code!}'),
                   ],
                 ),
                 actions: [
@@ -237,6 +235,7 @@ class ParentController extends GetxController {
                         SnackBar(
                             content: Text('Deeplink copied to clipboard!')),
                       );
+                      Get.to(()=>DashboardScreen(rolename: 'Tutee',));
                       Navigator.of(context).pop(); // Close the dialog
                     },
                     child: Text('Copy'),
@@ -244,6 +243,7 @@ class ParentController extends GetxController {
                   TextButton(
                     onPressed: () {
                       Share.share(deepLink.value!);
+                      Get.to(()=>DashboardScreen(rolename: 'Tutee',));
                       Navigator.of(context).pop(); // Close the dialog
                     },
                     child: Text('Share'),
@@ -252,6 +252,68 @@ class ParentController extends GetxController {
               );
             },
           );
+         }  else {
+          Logger().e('Failed to load AppConfig');
+          isLoading.value = false;
+        }
+         //Get.back();
+         //Get.to(()=>DashboardScreen(rolename: 'Tutee',));
+  
+      } catch (e) {
+        Logger().e(e);
+      }
+    }
+  }
+
+ void getValidateLink(String identifiers, BuildContext context) async {
+              var parentresponse = await WebService.getParentInviteCode(identifiers, context);
+        if (parentresponse != null) {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            deepLink.value=parentresponse.data!.invitationLink!;
+           code.value= parentresponse.data!.parentCode!;
+           prefs.setString('deepLink',parentresponse.data!.invitationLink!);
+            prefs.setString('OtpCode',parentresponse.data!.parentCode!);
+            code.value =prefs.getString('OtpCode')??'';
+            prefs.setString('Token','');
+            print(' ${prefs.setString('deepLink',parentresponse.data!.invitationLink!)}');
+             print(' ${code.value}');
+         //print(code);
+           print(deepLink);
+          // showDialog(
+          //   context: context,
+          //   barrierDismissible: false,
+          //   builder: (BuildContext context) {
+          //     return AlertDialog(
+          //       title: Text('Success'),
+          //       content: Column(
+          //         children: [
+          //           Text('Deeplink: ${deepLink.value}'),
+          //           Text('Code: ${parentresponse.data!.parentCode!}'),
+          //         ],
+          //       ),
+          //       actions: [
+          //         TextButton(
+          //           onPressed: () {
+          //             Clipboard.setData(ClipboardData(text: deepLink.value!));
+          //             ScaffoldMessenger.of(context).showSnackBar(
+          //               SnackBar(
+          //                   content: Text('Deeplink copied to clipboard!')),
+          //             );
+          //             Navigator.of(context).pop(); // Close the dialog
+          //           },
+          //           child: Text('Copy'),
+          //         ),
+          //         TextButton(
+          //           onPressed: () {
+          //             Share.share(deepLink.value!);
+          //             Navigator.of(context).pop(); // Close the dialog
+          //           },
+          //           child: Text('Share'),
+          //         ),
+          //       ],
+          //     );
+          //   },
+          // );
   String url = deepLink.value;
 
   // Parse the URL
@@ -264,7 +326,7 @@ class ParentController extends GetxController {
    
   if (code != null) {
     print('Extracted Code: $code1');
-    Get.to(() => ParentOtpScreen());
+   //Get.to(() => ParentOtpScreen());
 
   } else {
     print('Code parameter not found in the URL');
@@ -273,10 +335,6 @@ class ParentController extends GetxController {
           Logger().e('Failed to load AppConfig');
           isLoading.value = false;
         }
-      } catch (e) {
-        Logger().e(e);
-      }
-    }
   }
 
   Future<validateAndLoginParentModal?> otp(BuildContext context) async {
@@ -306,6 +364,53 @@ class ParentController extends GetxController {
         print(e);
         return null;
       }
+    }
+  }
+
+  void updateEnrollment(
+      BuildContext context, String parentId, String userId,) async {
+    isLoading.value = true;
+    try {
+      var batchData = {
+       "parentId":parentId,
+    "userId":userId
+      };
+
+      final UpdateParentStausModel? response =
+          await WebService.updateParentStatus(batchData);
+
+      if (response != null && response.statusCode == 200) {
+        // SnackBarUtils.showSuccessSnackBar(
+        //     context, 'Update enquire successfully');
+        // if (response.data!.status == 'Approved') {
+          // SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
+          Get.snackbar(
+            icon: const Icon(
+              Icons.check_circle,
+              color: Colors.white,
+              size: 40,
+            ),
+           response.message!,
+            colorText: Colors.white,
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          );
+          Get.off(() => DashboardScreen(rolename: 'Tutee'));
+      } else {
+        Get.snackbar(
+            icon: const Icon(
+              Icons.check_circle,
+              color: Colors.white,
+              size: 40,
+            ),
+           response!.message!,
+            colorText: Colors.white,
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          );
+      }
+    } catch (e) {
+      //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
 }

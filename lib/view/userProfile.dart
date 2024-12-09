@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
+import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/widget/addteacher_dropdown.dart';
@@ -23,6 +25,7 @@ class UserProfile extends StatelessWidget {
     accountController.dobController.text = DateFormat('dd/MM/yyyy').format(
       DateTime.now().subtract(const Duration(days: 365 * 18)),
     );
+     final splashController = Get.find<SplashController>();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBarHeader(
@@ -422,11 +425,11 @@ class UserProfile extends StatelessWidget {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          // print("gretting values==");
-                                          // ModalService.openIDProofModalSheet(
-                                          //     context,
-                                          //     splashController,
-                                          //     accountController);
+                                          print("gretting values==");
+                                          ModalService.openIDProofModalSheet(
+                                              context,
+                                              splashController,
+                                              accountController);
                                         },
                                         child: Container(
                                           height: 55,
@@ -454,52 +457,52 @@ class UserProfile extends StatelessWidget {
                                       const SizedBox(
                                         height: 16,
                                       ),
-                                      // InkWell(
-                                      //   onTap: () {
-                                      //     // accountController.storePersonalInfo(
-                                      //     //     context, roleId, roleTypeId);
-                                      //   },
-                                      //   child: Container(
-                                      //     height: 48,
-                                      //     padding: const EdgeInsets.symmetric(
-                                      //       horizontal: 40,
-                                      //       vertical: 12,
-                                      //     ),
-                                      //     decoration: const BoxDecoration(
-                                      //       borderRadius: BorderRadius.all(
-                                      //         Radius.circular(8),
-                                      //       ),
-                                      //       gradient: LinearGradient(
-                                      //         colors: [
-                                      //           Color(0xFFC13584),
-                                      //           Color(0xFF833AB4)
-                                      //         ],
-                                      //         begin: Alignment.topCenter,
-                                      //         end: Alignment.bottomCenter,
-                                      //       ),
-                                      //     ),
-                                      //     child:
-                                      //         accountController.isLoading.value
-                                      //             ? const Center(
-                                      //                 child:
-                                      //                     CircularProgressIndicator(),
-                                      //               )
-                                      //             : const Center(
-                                      //                 child: Text(
-                                      //                   'Next',
-                                      //                   style: TextStyle(
-                                      //                     fontSize: 16,
-                                      //                     fontWeight:
-                                      //                         FontWeight.w600,
-                                      //                     color: Colors.white,
-                                      //                   ),
-                                      //                 ),
-                                      //               ),
-                                      //   ),
-                                      // ),
-                                      // const SizedBox(
-                                      //   height: 16,
-                                      // ),
+                                      InkWell(
+                                        onTap: () {
+                                          accountController.storePersonalInfo(
+                                              context,accountController. roleId.value,accountController. roleTypeId.value);
+                                        },
+                                        child: Container(
+                                          height: 48,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 40,
+                                            vertical: 12,
+                                          ),
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8),
+                                            ),
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Color(0xFFC13584),
+                                                Color(0xFF833AB4)
+                                              ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                            ),
+                                          ),
+                                          child:
+                                              accountController.isLoading.value
+                                                  ? const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    )
+                                                  : const Center(
+                                                      child: Text(
+                                                        'Next',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -729,52 +732,52 @@ class UserProfile extends StatelessWidget {
                                           LengthLimitingTextInputFormatter(6),
                                         ],
                                       ),
-                                      // const SizedBox(
-                                      //   height: 16,
-                                      // ),
-                                      // InkWell(
-                                      //   onTap: () {
-                                      //     // accountController
-                                      //     //     .storeAddressInfo(context);
-                                      //   },
-                                      //   child: Container(
-                                      //     height: 48,
-                                      //     padding: const EdgeInsets.symmetric(
-                                      //       horizontal: 40,
-                                      //       vertical: 12,
-                                      //     ),
-                                      //     decoration: const BoxDecoration(
-                                      //       borderRadius: BorderRadius.all(
-                                      //         Radius.circular(8),
-                                      //       ),
-                                      //       gradient: LinearGradient(
-                                      //         colors: [
-                                      //           Color(0xFFC13584),
-                                      //           Color(0xFF833AB4)
-                                      //         ],
-                                      //         begin: Alignment.topCenter,
-                                      //         end: Alignment.bottomCenter,
-                                      //       ),
-                                      //     ),
-                                      //     child:
-                                      //         accountController.isLoading.value
-                                      //             ? const Center(
-                                      //                 child:
-                                      //                     CircularProgressIndicator(),
-                                      //               )
-                                      //             : const Center(
-                                      //                 child: Text(
-                                      //                   'Next',
-                                      //                   style: TextStyle(
-                                      //                     fontSize: 16,
-                                      //                     fontWeight:
-                                      //                         FontWeight.w600,
-                                      //                     color: Colors.white,
-                                      //                   ),
-                                      //                 ),
-                                      //               ),
-                                      //   ),
-                                      // ),
+                                      const SizedBox(
+                                        height: 16,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          // accountController
+                                          //     .storeAddressInfo(context);
+                                        },
+                                        child: Container(
+                                          height: 48,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 40,
+                                            vertical: 12,
+                                          ),
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8),
+                                            ),
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Color(0xFFC13584),
+                                                Color(0xFF833AB4)
+                                              ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                            ),
+                                          ),
+                                          child:
+                                              accountController.isLoading.value
+                                                  ? const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    )
+                                                  : const Center(
+                                                      child: Text(
+                                                        'Next',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                        ),
+                                      ),
                                       const SizedBox(
                                         height: 16,
                                       ),
