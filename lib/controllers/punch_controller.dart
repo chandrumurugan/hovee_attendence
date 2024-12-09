@@ -299,9 +299,9 @@ class PunchController extends GetxController {
           // API call was successful, update state and show success message
           punchedIn.value = true;
           buttonLoader(false);
-          // showAnimatedDialog('Punched in successfully!',
-          //     "assets/images/success_punching.png",context);
-          // SnackBarUtils.showSuccessSnackBar(context, 'Attendance successfully marked');
+          showAnimatedDialog('Punched in successfully!',
+              "assets/images/success_punching.png",context);
+          SnackBarUtils.showSuccessSnackBar(context, 'Attendance successfully marked');
         } else {
           // Show error if the API call failed
           punchedIn.value = false;
