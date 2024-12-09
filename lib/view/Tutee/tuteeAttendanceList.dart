@@ -253,7 +253,7 @@ class TuteeAttendanceList extends StatelessWidget {
                         return Container(
                           margin: const EdgeInsets.all(4.0),
                           decoration: BoxDecoration(
-                            color:const Color(0xff2E5BB5), // Background color for miss punch dates
+                            color: Colors.orange[400], // Background color for miss punch dates
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           alignment: Alignment.center,
@@ -285,7 +285,7 @@ class TuteeAttendanceList extends StatelessWidget {
                         return Container(
                             margin: const EdgeInsets.all(4.0),
                           decoration: BoxDecoration(
-                             color:const Color(0xffF07721), // Background color for miss punch dates
+                             color: Colors.green, // Background color for miss punch dates
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                             alignment: Alignment.center,
@@ -312,7 +312,7 @@ class TuteeAttendanceList extends StatelessWidget {
                         return Container(
                             margin: const EdgeInsets.all(4.0),
                           decoration: BoxDecoration(
-                             color:Colors.pink, // Background color for miss punch dates
+                             color:Colors.amber, // Background color for miss punch dates
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                             alignment: Alignment.center,
@@ -395,7 +395,7 @@ class TuteeAttendanceList extends StatelessWidget {
                             Container(
                                height: 18,
                               width: 18,
-                              color: Color(0xffF07721),
+                              color: Colors.green,
                             ),
                            const SizedBox(
                               width: 10,
@@ -418,7 +418,7 @@ class TuteeAttendanceList extends StatelessWidget {
                             Container(
                                 height: 18,
                               width: 18,
-                              color: const Color(0xff014EA9),
+                              color:  Colors.blue,
                             ),
                             const SizedBox(
                               width: 10,
@@ -446,7 +446,7 @@ class TuteeAttendanceList extends StatelessWidget {
                                                                                   Container(
                                                                                       height: 18,
                                                                                     width: 18,
-                                                                                    color: Colors.pink,
+                                                                                    color: Colors.amber,
                                                                                   ),
                                                                                   const SizedBox(
                                                                                     width: 10,
@@ -461,7 +461,7 @@ class TuteeAttendanceList extends StatelessWidget {
                                                         ],
                                                       ),
                                                        const SizedBox(
-                              width: 20,
+                              width: 30,
                             ),
                                                        Row(
                                                         mainAxisAlignment: MainAxisAlignment.start,
@@ -469,7 +469,7 @@ class TuteeAttendanceList extends StatelessWidget {
                             Container(
                                height: 18,
                               width: 18,
-                              color: Color(0xff2E5BB5),
+                              color: Colors.orange[400],
                             ),
                            const SizedBox(
                               width: 10,

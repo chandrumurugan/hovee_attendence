@@ -44,7 +44,7 @@ class ChartApp extends StatelessWidget {
                           Container(
                               height: 18,
                             width: 18,
-                            color: Colors.orange,
+                            color: Color(0xffAD0F60),
                           ),
                           const SizedBox(
                             width: 10,
@@ -68,7 +68,7 @@ class ChartApp extends StatelessWidget {
                           Container(
                              height: 18,
                             width: 18,
-                            color: Colors.purple,
+                            color: Colors.green,
                           ),
                           const SizedBox(
                             width: 10,
@@ -92,7 +92,7 @@ class ChartApp extends StatelessWidget {
                           Container(
                               height: 18,
                             width: 18,
-                            color: const Color(0xff014EA9),
+                            color:  Colors.blue,
                           ),
                           const SizedBox(
                             width: 10,
@@ -116,7 +116,7 @@ class ChartApp extends StatelessWidget {
                           Container(
                             height: 18,
                             width: 18,
-                            color: const Color(0xff2E5BB5),
+                            color:  Colors.orange[500],
                           ),
                           const SizedBox(
                             width: 10,
@@ -208,7 +208,7 @@ class PieChartWidget extends StatelessWidget {
       if (present > 0) {
         sections.add(
           PieChartSectionData(
-            color: Colors.purple,
+            color: Colors.green,
             value: present,
            title:'${present.toInt()}%',
             radius: 40,
@@ -224,7 +224,7 @@ class PieChartWidget extends StatelessWidget {
       if (absent > 0) {
         sections.add(
           PieChartSectionData(
-            color: Colors.orange,
+            color: Color(0xffAD0F60),
            value: absent,
             title: ' ${absent.toInt()}%',
             radius: 40,
@@ -256,7 +256,7 @@ class PieChartWidget extends StatelessWidget {
       if (partial > 0) {
         sections.add(
           PieChartSectionData(
-            color: Color(0xff2E5BB5),
+            color: Colors.orange[500],
            value: partial,
            title: '${partial.toInt()}%',
             radius: 40,

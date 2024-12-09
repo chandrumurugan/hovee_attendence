@@ -165,10 +165,12 @@ class HolidayScreen extends StatelessWidget {
                               children: [
                                 Text('Batch name : ${ holidayData.batchName ?? ""}',
                                     style: fontStyle),
+                                    SizedBox(height: 5,),
                                       Text('Holiday name : ${ holidayData.holidayName ?? ""}',
                                     style: fontStyle),
                                     //      Text('Holiday type : ${ holidayData.holidayType ?? ""}',
                                     // style:fontStyle),
+                                     SizedBox(height: 5,),
                                         Text('Date : $formattedDate - $formattedDate2',
                                     style: fontStyle),
                               
@@ -190,7 +192,7 @@ class HolidayScreen extends StatelessWidget {
                                 },
                                 itemBuilder: (BuildContext context) {
                                   return [
-                                    if ( type!= 'Tutor')
+                                    if ( type== 'Tutor')
                                     PopupMenuItem(
                                       value: 'Edit',
                                       child: ListTile(

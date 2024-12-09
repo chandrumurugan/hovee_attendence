@@ -132,14 +132,14 @@ class AddAnnoumentsScreen extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            Text(
-              '*',
-              style: GoogleFonts.nunito(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.red.withOpacity(0.6),
-              ),
-            ),
+            // Text(
+            //   '*',
+            //   style: GoogleFonts.nunito(
+            //     fontSize: 18,
+            //     fontWeight: FontWeight.w600,
+            //     color: Colors.red.withOpacity(0.6),
+            //   ),
+            // ),
           ],
         ),
         Obx(() => CommonDropdownInputField(

@@ -1628,7 +1628,7 @@ class WebService {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       };
-      var data = {"identifier": identifiers};
+      var data = {"phone_number": identifiers};
       var url = Uri.parse("${baseUrl}user/generateInvitationLink");
 
       var response =
