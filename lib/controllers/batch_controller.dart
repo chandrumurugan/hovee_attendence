@@ -346,12 +346,14 @@ class BatchController extends GetxController {
       if (response != null && response.success == true) {
         _clearData();
         fetchBatchList();
-        SnackBarUtils.showSuccessSnackBar(context, 'Batch delete successfully');
+         Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        ,'Batch delete successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        //SnackBarUtils.showSuccessSnackBar(context, 'Batch delete successfully');
         //  Get.back();
         //  onInit();
       } else {
-        SnackBarUtils.showErrorSnackBar(
-            context, response?.message ?? 'Failed to add batch');
+         Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
+        ,'fail to delete batch',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
     } catch (e) {
       SnackBarUtils.showErrorSnackBar(context, 'Error: $e');

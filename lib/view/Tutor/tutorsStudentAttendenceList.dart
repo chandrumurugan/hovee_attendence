@@ -239,7 +239,7 @@ class StudentAttendanceList extends StatelessWidget {
                     border: Border.all(color: Colors.black)),
                 child: TableCalendar(
                   firstDay: DateTime(2024, 1, 1),
-                  lastDay: DateTime(2024, 12, 31),
+                  lastDay: DateTime(2025, 12, 31),
                   focusedDay: controller.selectedBatchStartDate.value!,
                   rangeStartDay: controller.selectedBatchStartDate.value,
                   rangeEndDay: controller.selectedBatchEndDate.value,
@@ -406,7 +406,7 @@ class StudentAttendanceList extends StatelessWidget {
                                   color: const Color(0xff2E5BB5),
                                   count:
                                       '${controller.data?.statusCounts?.missPunch ?? 0}',
-                                  title: 'P.Attend',
+                                  title: 'Miss Punch',
                                 ),
                               ],
                             ),

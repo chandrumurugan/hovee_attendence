@@ -16,7 +16,10 @@ class PreviewScreen extends StatelessWidget {
  final String type;
  final String type1;
   final String tutorname;
-  PreviewScreen({super.key, required this.data, required this.type, required this.tutorname, required this.type1});
+  final String tuteename;
+  final String tuteeemail;
+  final String tuteephn;
+  PreviewScreen({super.key, required this.data, required this.type, required this.tutorname, required this.type1, required this.tuteename, required this.tuteeemail, required this.tuteephn});
 
    
 final CourseDetailController controller = Get.put(CourseDetailController());
@@ -69,8 +72,16 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16),
                           ),
+                          type=='Course'?
                           Text(
-                           controller.username!?? '',
+                           controller.username?? '',
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          ):
+                          Text(
+                           tuteename?? '',
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,

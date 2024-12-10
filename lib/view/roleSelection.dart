@@ -153,7 +153,7 @@ void fetchRoles() async {
     return GestureDetector(
       onTap: () async {
         // Allow interaction only with the initially selected role
-        if (isSelected) {
+        if (!widget.isFromParentOtp ||isSelected) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('Rolename', role.roleName ?? '');
           setState(() {

@@ -119,12 +119,13 @@ class StudentAttendanceController extends GetxController {
   void selectBatch(Data1 batch) {
     selectedBatchIN.value = batch;
     // Parse dates using the correct format
-  selectedBatchStartDate.value =
-      DateFormat('dd-MM-yyyy').parse(batch.startDate??'');  // Updated to '-'
-  selectedBatchEndDate.value =
-      DateFormat('dd-MM-yyyy').parse(batch.endDate??'');    // Updated to '-'
+  // selectedBatchStartDate.value =
+  //     DateFormat('dd-MM-yyyy').parse(batch.startDate??'');  // Updated to '-'
+  // selectedBatchEndDate.value =
+  //     DateFormat('dd-MM-yyyy').parse(batch.endDate??'');    // Updated to '-'
+       String currentMonth = DateFormat('MMM').format(DateTime.now());
 
-    fetchTutteAttendanceList(selectedBatchIN.value!.batchId!,'','');
+    fetchTutteAttendanceList(selectedBatchIN.value!.batchId!,'',currentMonth);
   }
 
   void setFocusedDay(DateTime date) {
@@ -141,7 +142,7 @@ class StudentAttendanceController extends GetxController {
               batchId, selectedDate, selectedMonth);
       if (groupedEnrollmentByBatchResponse!.data != null) {
         data = groupedEnrollmentByBatchResponse.data!;
-        Logger().i("====1234567890=====${data!.attendanceDetails![0].attendanceStatus}");
+        //Logger().i("====1234567890=====${data!.attendanceDetails![0].attendanceStatus}");
          holidayDatesTutor.value = data!.holidays!
           .map((date) {
                     final parsedDate = DateFormat('dd-MM-yyyy').parse(date.holidayDate!);
@@ -184,14 +185,7 @@ class StudentAttendanceController extends GetxController {
       if (groupedEnrollmentByBatchResponse?.data != null) {
         dataTutee = groupedEnrollmentByBatchResponse!.data;
         print(dataTutee);
-        Logger().i("====1234567890=====${dataTutee!.missPunch![0].punchInTime}");
-        // Convert dates to DateTime for easier comparison
-
-        // Parse miss punch dates into DateTime list
-    // Parse miss punch dates into DateTime list
-    //  missPunchDates.value = dataTutee!.missPunch!
-    //       .map((date) => DateFormat('dd-MM-yyyy').parse(date.punchInTime!))
-    //       .toSet();
+       // Logger().i("====1234567890=====${dataTutee!.missPunch![0].punchInTime}");
      missPunchDates.value = dataTutee!.missPunch!
           .map((date) {
             final parsedDate = DateFormat('dd-MM-yyyy').parse(date.punchInTime!);
