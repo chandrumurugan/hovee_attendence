@@ -144,67 +144,62 @@ void fetchRoles() async {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 3, vertical: 8),
                                   child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: roles?.length ?? 0,
-                                    itemBuilder: (context, index) {
-                                      var role = roles![index];
-                                      bool isSelected = selectedRoleId == role.id &&
-                                          selectedRole == role.roleName;
-                                          
-                                      return GestureDetector(
-                                        onTap: () async {
-                                           SharedPreferences prefs = await SharedPreferences.getInstance();
-                                            prefs.setString(
-                                                            'Rolename',
-                                                           role.roleName??
-                                                                '');
-                                          setState(() {
-                                            selectedRoleId = role.id;
-                                            roleTypes = role.roleTypes;
-                                            selectedRoleTypeId = null;
-                                            selectedRoleTypeName =
-                                                null; // Reset selected role type
-                                            selectedRole = role.roleName;
-                                          });
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 4.0),
-                                          child: Card(
-                                            child: Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10.0, vertical: 5),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(12),
-                                                gradient: isSelected
-                                                    ? const LinearGradient(
-                                                        colors: [
-                                                          Color(0xFFBA0161),
-                                                          Color(0xFF510270),
-                                                        ],
-                                                        begin: Alignment.topCenter,
-                                                        end: Alignment.bottomCenter,
-                                                      )
-                                                    : null,
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  role.roleName,
-                                                  style: GoogleFonts.nunito(
-                                                    color: isSelected
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
+  scrollDirection: Axis.horizontal,
+  itemCount: roles?.length ?? 0,
+  itemBuilder: (context, index) {
+    var role = roles![index];
+    bool isSelected = selectedRoleId == role.id && selectedRole == role.roleName;
+
+    return GestureDetector(
+      onTap: () async {
+        // Allow interaction only with the initially selected role
+        if (isSelected) {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('Rolename', role.roleName ?? '');
+          setState(() {
+            selectedRoleId = role.id;
+            roleTypes = role.roleTypes;
+            selectedRoleTypeId = null;
+            selectedRoleTypeName = null; // Reset selected role type
+            selectedRole = role.roleName;
+          });
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: Card(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              gradient: isSelected
+                  ? const LinearGradient(
+                      colors: [
+                        Color(0xFFBA0161),
+                        Color(0xFF510270),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    )
+                  : null,
+            ),
+            child: Center(
+              child: Text(
+                role.roleName,
+                style: GoogleFonts.nunito(
+                  color: isSelected ? Colors.white : Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  },
+)
+
                                 ),
                               ),
                             ),

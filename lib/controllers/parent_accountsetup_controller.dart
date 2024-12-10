@@ -225,47 +225,49 @@ class ParentAccountSetupController extends GetxController
           countryController.clear();
 
           isLoading.value = false;
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Success'),
-                content: Column(
-                  children: [
-                    _buildRow(
-                      'Tutee name',
-                      '${response.data!.firstName} ${response.data!.lastName}',
-                    ),
-                    _buildRow('Wow ID', response.data!.wowId!),
-                    _buildRow('Email', response.data!.email!),
-                    _buildRow(
-                      'Phone number',
-                      '${response.data!.phoneNumber}',
-                    ),
-                    _buildRow('Dob', response.data!.dob!),
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      updateEnrollment(context, response.data!.sId!,
-                          response.data!.userId!.toString());
-                      Navigator.of(context).pop(); // Close the dialog
-                    },
-                    child: Text('Accept'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Get.off(() => DashboardScreen(rolename: 'Parent'));
-                      Navigator.of(context).pop(); // Close the dialog
-                    },
-                    child: Text('Reject'),
-                  ),
-                ],
-              );
-            },
+          Get.dialog(
+  AlertDialog(
+    title: Text('Tutee Preview'),
+    content: Column(
+      mainAxisSize: MainAxisSize.min, // To avoid stretching the dialog unnecessarily
+      children: [
+        _buildRow(
+          'Tutee name',
+          '${response.data!.firstName} ${response.data!.lastName}',
+        ),
+        _buildRow('Wow ID', response.data!.wowId!),
+        _buildRow('Email', response.data!.email!),
+        _buildRow(
+          'Phone number',
+          '${response.data!.phoneNumber}',
+        ),
+        _buildRow('Dob', response.data!.dob!),
+      ],
+    ),
+    actions: [
+      TextButton(
+        onPressed: () {
+          updateEnrollment(
+            Get.context!, // Using Get.context for context
+            response.data!.sId!,
+            response.data!.userId!.first,
           );
+          Get.back(); // Close the dialog
+        },
+        child: Text('Accept'),
+      ),
+      TextButton(
+        onPressed: () {
+          Get.off(() => DashboardScreen(rolename: 'Parent'));
+          Get.back(); // Close the dialog
+        },
+        child: Text('Reject'),
+      ),
+    ],
+  ),
+  barrierDismissible: false, // Ensures the dialog is not dismissed by tapping outside
+);
+
         } else {
           Logger().e('Failed to load AppConfig');
           isLoading.value = false;

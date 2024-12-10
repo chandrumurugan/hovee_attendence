@@ -1747,7 +1747,7 @@ class WebService {
 
 
   static Future<getParentInviteCodeModel?> getParentInviteCode(
-      String identifiers, BuildContext context) async {
+      String identifiers) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('Token') ?? "";
@@ -1768,10 +1768,10 @@ class WebService {
         return getParentInviteCodeModel.fromJson(result);
       } else {
         Map<String, dynamic> result = jsonDecode(response.body);
-        SnackBarUtils.showSuccessSnackBar(
-          context,
-          "${result["message"]}",
-        );
+        // SnackBarUtils.showSuccessSnackBar(
+        //   context,
+        //   "${result["message"]}",
+        // );
         return null;
       }
     } catch (e) {

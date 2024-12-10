@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
+import 'package:hovee_attendence/controllers/parent_otp_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
@@ -12,6 +13,8 @@ import 'package:pinput/pinput.dart';
 class ParentOtpScreen extends StatelessWidget {
    ParentOtpScreen({super.key});
  final ParentController parentController = Get.put(ParentController());
+  final ParentOtpController otpparentController = Get.put(ParentOtpController());
+ 
   @override
   Widget build(BuildContext context) {
     const focusedBorderColor = Colors.blue; 
@@ -314,12 +317,12 @@ class ParentOtpScreen extends StatelessWidget {
                                           ),
                                         ),
                                          Obx(() {
-                                          if( parentController.code.value.isEmpty){
+                                          if( otpparentController.code.value.isEmpty){
                                             return const SizedBox.shrink();
                                           }
                                          
                                           return Text(
-                                              parentController.code.value);
+                                              otpparentController.code.value);
                                         }),
                                       ],
                                     ),

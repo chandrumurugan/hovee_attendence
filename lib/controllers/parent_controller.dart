@@ -214,7 +214,6 @@ class ParentController extends GetxController {
           loginResponse.value = response;
           isLoading.value = false;
           logInController.clear();
-          getValidateLink(identifiers,context);
           return response;
         } else {
           isLoading.value = false;
@@ -228,77 +227,77 @@ class ParentController extends GetxController {
   }
 
 
- void getValidateLink(String identifiers, BuildContext context) async {
-              var parentresponse = await WebService.getParentInviteCode(identifiers, context);
-        if (parentresponse != null) {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            deepLink.value=parentresponse.data!.invitationLink!;
-           code.value= parentresponse.data!.parentCode!;
-           prefs.setString('deepLink',parentresponse.data!.invitationLink!);
-            prefs.setString('OtpCode',parentresponse.data!.parentCode!);
-            code.value =prefs.getString('OtpCode')??'';
-            prefs.setString('Token','');
-            print(' ${prefs.setString('deepLink',parentresponse.data!.invitationLink!)}');
-             print(' ${code.value}');
-         //print(code);
-           print(deepLink);
-          // showDialog(
-          //   context: context,
-          //   barrierDismissible: false,
-          //   builder: (BuildContext context) {
-          //     return AlertDialog(
-          //       title: Text('Success'),
-          //       content: Column(
-          //         children: [
-          //           Text('Deeplink: ${deepLink.value}'),
-          //           Text('Code: ${parentresponse.data!.parentCode!}'),
-          //         ],
-          //       ),
-          //       actions: [
-          //         TextButton(
-          //           onPressed: () {
-          //             Clipboard.setData(ClipboardData(text: deepLink.value!));
-          //             ScaffoldMessenger.of(context).showSnackBar(
-          //               SnackBar(
-          //                   content: Text('Deeplink copied to clipboard!')),
-          //             );
-          //             Navigator.of(context).pop(); // Close the dialog
-          //           },
-          //           child: Text('Copy'),
-          //         ),
-          //         TextButton(
-          //           onPressed: () {
-          //             Share.share(deepLink.value!);
-          //             Navigator.of(context).pop(); // Close the dialog
-          //           },
-          //           child: Text('Share'),
-          //         ),
-          //       ],
-          //     );
-          //   },
-          // );
-  String url = deepLink.value;
+//  void getValidateLink(String identifiers) async {
+//               var parentresponse = await WebService.getParentInviteCode(identifiers);
+//         if (parentresponse != null) {
+//             SharedPreferences prefs = await SharedPreferences.getInstance();
+//             deepLink.value=parentresponse.data!.invitationLink!;
+//            code.value= parentresponse.data!.parentCode!;
+//            prefs.setString('deepLink',parentresponse.data!.invitationLink!);
+//             prefs.setString('OtpCode',parentresponse.data!.parentCode!);
+//             code.value =prefs.getString('OtpCode')??'';
+//             prefs.setString('Token','');
+//             print(' ${prefs.setString('deepLink',parentresponse.data!.invitationLink!)}');
+//              print(' ${code.value}');
+//          //print(code);
+//            print(deepLink);
+//           // showDialog(
+//           //   context: context,
+//           //   barrierDismissible: false,
+//           //   builder: (BuildContext context) {
+//           //     return AlertDialog(
+//           //       title: Text('Success'),
+//           //       content: Column(
+//           //         children: [
+//           //           Text('Deeplink: ${deepLink.value}'),
+//           //           Text('Code: ${parentresponse.data!.parentCode!}'),
+//           //         ],
+//           //       ),
+//           //       actions: [
+//           //         TextButton(
+//           //           onPressed: () {
+//           //             Clipboard.setData(ClipboardData(text: deepLink.value!));
+//           //             ScaffoldMessenger.of(context).showSnackBar(
+//           //               SnackBar(
+//           //                   content: Text('Deeplink copied to clipboard!')),
+//           //             );
+//           //             Navigator.of(context).pop(); // Close the dialog
+//           //           },
+//           //           child: Text('Copy'),
+//           //         ),
+//           //         TextButton(
+//           //           onPressed: () {
+//           //             Share.share(deepLink.value!);
+//           //             Navigator.of(context).pop(); // Close the dialog
+//           //           },
+//           //           child: Text('Share'),
+//           //         ),
+//           //       ],
+//           //     );
+//           //   },
+//           // );
+//   String url = deepLink.value;
 
-  // Parse the URL
-  Uri uri = Uri.parse(url);
+//   // Parse the URL
+//   Uri uri = Uri.parse(url);
    
-  // Extract the 'code' query parameter
-  String? code1 = uri.queryParameters['code'];
+//   // Extract the 'code' query parameter
+//   String? code1 = uri.queryParameters['code'];
    
-    prefs.setString('code', code1!);
+//     prefs.setString('code', code1!);
    
-  if (code != null) {
-    print('Extracted Code: $code1');
-   //Get.to(() => ParentOtpScreen());
+//   if (code != null) {
+//     print('Extracted Code: $code1');
+//    //Get.to(() => ParentOtpScreen());
 
-  } else {
-    print('Code parameter not found in the URL');
-  } 
-        } else {
-          Logger().e('Failed to load AppConfig');
-          isLoading.value = false;
-        }
-  }
+//   } else {
+//     print('Code parameter not found in the URL');
+//   } 
+//         } else {
+//           Logger().e('Failed to load AppConfig');
+//           isLoading.value = false;
+//         }
+//   }
 
   Future<validateAndLoginParentModal?> otp(BuildContext context) async {
     if (validateOtp(context)) {
@@ -306,7 +305,7 @@ class ParentController extends GetxController {
       try {
         // Logger().i("moving to otp ===>$");
         SharedPreferences prefs = await SharedPreferences.getInstance();
-       final accountVerificationToken =prefs.getString('code') ?? "";
+        final accountVerificationToken =Get.arguments['code'] ?? '';
         var response = await WebService.otpParent(
             otpController.text,
              accountVerificationToken,
