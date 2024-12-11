@@ -354,7 +354,7 @@ class WebService {
     }
   }
 
-  Future<http.StreamedResponse> submitAccountSetup({
+ static Future<http.StreamedResponse> submitAccountSetup({
     required String token,
     required Map<dynamic, dynamic> personalInfo,
     required Map<dynamic, dynamic> addressInfo,
@@ -414,6 +414,66 @@ class WebService {
     // Send the request
     return await request.send();
   }
+  static Future<http.StreamedResponse> submitAccountSetupEdit({
+    required String token,
+    required Map<dynamic, dynamic> personalInfo,
+    required Map<dynamic, dynamic> addressInfo,
+    required Map<dynamic, dynamic> educationInfo,
+    // required String roleId,
+    //  required String roleTypeId,
+    String resumePath = '',
+    String educationCertPath = '',
+    String experienceCertPath = '',
+    required String latitude,
+    required String longitude,
+  }) async {
+    var headers = {
+      'Authorization': 'Bearer $token', // Pass the token for authorization
+      'Content-Type': 'application/json'
+    };
+
+    var request =
+        http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
+
+    // Add personal info
+    request.fields['personal_info'] = jsonEncode(personalInfo);
+
+    // Add address info
+    request.fields['permanent_address'] = jsonEncode(addressInfo);
+
+    // Add education info
+    request.fields['education_info'] = jsonEncode(educationInfo);
+
+    // Add other fields
+    request.fields['type'] = 'U';
+    //  request.fields['id_proof'] = '';
+    //  request.fields['resume'] = '';
+    //  request.fields['education_certificate'] = '';
+    //  request.fields['experience_certificate'] = '';
+    //  request.fields['rolesId'] = roleId;
+    //  request.fields['rolesTypeId'] = roleTypeId;
+    request.fields['latitude'] = latitude;
+    request.fields['longitude'] = longitude;
+    request.headers.addAll(headers);
+    Logger().i(request.fields);
+
+    // Add files (if present)
+    // if (resumePath.isNotEmpty) {
+    //   request.files.add(await http.MultipartFile.fromPath('resume', resumePath));
+    // }
+    // if (educationCertPath.isNotEmpty) {
+    //   request.files.add(await http.MultipartFile.fromPath('education_certificate', educationCertPath));
+    // }
+    // if (experienceCertPath.isNotEmpty) {
+    //   request.files.add(await http.MultipartFile.fromPath('experience_certificate', experienceCertPath));
+    // }
+    Logger().i(request.headers);
+    Logger().i(personalInfo);
+    Logger().i(addressInfo);
+    Logger().i(educationInfo);
+    // Send the request
+    return await request.send();
+  }
 
   static Future<UserProfileM?> fetchUserProfile() async {
     final box = GetStorage(); // Get an instance of GetStorage
@@ -435,7 +495,7 @@ class WebService {
     }
   }
 
-  Future<http.StreamedResponse> submitTuteeAccountSetup({
+ static Future<http.StreamedResponse> submitTuteeAccountSetup({
     required String token,
     required Map<dynamic, dynamic> personalInfo,
     required Map<dynamic, dynamic> addressInfo,
@@ -461,6 +521,38 @@ class WebService {
     // Add education info
     request.fields['education_info'] = jsonEncode(educationInfo);
     request.fields['type'] = 'N';
+    request.fields['latitude'] = latitude;
+    request.fields['longitude'] = longitude;
+    request.headers.addAll(headers);
+    return await request.send();
+  }
+
+  static Future<http.StreamedResponse> submitTuteeAccountSetupEdit({
+    required String token,
+    required Map<dynamic, dynamic> personalInfo,
+    required Map<dynamic, dynamic> addressInfo,
+    required Map<dynamic, dynamic> educationInfo,
+    required String latitude,
+    required String longitude,
+  }) async {
+    var headers = {
+      'Authorization': 'Bearer $token', // Pass the token for authorization
+      'Content-Type': 'application/json'
+    };
+    Logger().i(personalInfo);
+
+    var request =
+        http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
+
+    // Add personal info
+    request.fields['personal_info'] = jsonEncode(personalInfo);
+
+    // Add address info
+    request.fields['permanent_address'] = jsonEncode(addressInfo);
+
+    // Add education info
+    request.fields['education_info'] = jsonEncode(educationInfo);
+    request.fields['type'] = 'U';
     request.fields['latitude'] = latitude;
     request.fields['longitude'] = longitude;
     request.headers.addAll(headers);

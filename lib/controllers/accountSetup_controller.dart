@@ -546,7 +546,7 @@ class AccountSetupController extends GetxController
     isLoading.value = true;
       Logger().i("Latitude====>: ${latitude}, Longitude: ${longitude}");
     try {
-      http.StreamedResponse response = await webService.submitTuteeAccountSetup(
+      http.StreamedResponse response = await WebService.submitTuteeAccountSetup(
           token: token, // Add the actual token here
           personalInfo: personalInfo.value,
           addressInfo: addressInfo.value,
@@ -627,7 +627,7 @@ class AccountSetupController extends GetxController
     isLoading.value = true;
     try {
       // Call the API using the WebService
-      http.StreamedResponse response = await webService.submitAccountSetup(
+      http.StreamedResponse response = await WebService.submitAccountSetup(
           token: token, // Add the actual token here
           personalInfo: personalInfo.value,
           addressInfo: addressInfo.value,

@@ -14,6 +14,7 @@ import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/widget/addteacher_dropdown.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart' as path;
 
 class UserProfile extends StatelessWidget {
   UserProfile({super.key});
@@ -459,8 +460,9 @@ class UserProfile extends StatelessWidget {
                                       ),
                                       InkWell(
                                         onTap: () {
+                
                                           accountController.storePersonalInfo(
-                                              context,accountController. roleId.value,accountController. roleTypeId.value);
+                                              context);
                                         },
                                         child: Container(
                                           height: 48,
@@ -737,8 +739,10 @@ class UserProfile extends StatelessWidget {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          // accountController
-                                          //     .storeAddressInfo(context);
+                                        accountController.storeAddressInfo(
+                                                context,
+                                                accountController.userProfileResponse.value.data!.rolesId!.roleName!,
+                                               );
                                         },
                                         child: Container(
                                           height: 48,
@@ -795,110 +799,11 @@ class UserProfile extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       accountController.userProfileResponse.value.data!.rolesId!.roleName!='Tutor'?
-                                      _buildDropdowns()
-                                      :_buildTutor(),
-                                      // Padding(
-                                      //   padding:
-                                      //       EdgeInsets.symmetric(vertical: 10),
-                                      //   child: Column(
-                                      //     crossAxisAlignment:
-                                      //         CrossAxisAlignment.start,
-                                      //     children: [
-                                      //       const Text(
-                                      //         'Additional Info',
-                                      //         style: TextStyle(
-                                      //           fontSize: 14,
-                                      //           fontWeight: FontWeight.w500,
-                                      //           color: Colors.black,
-                                      //         ),
-                                      //       ),
-                                      //       const SizedBox(
-                                      //         height: 5,
-                                      //       ),
-                                      //       CommonInputField(
-                                      //         title: 'Additional Info',
-                                      //         controllerValue: accountController
-                                      //             .additionalInfo,
-                                      //             selectedValue: accountController.additionalInfo,
-                                      //         onTap: () {},
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // ),
-                                      // _buildFileUploadSection(
-                                      //     'Attach Resume', 'resume'),
-                                      // _buildFileUploadSection(
-                                      //     'Attach Education Certificate',
-                                      //     'education'),
-                                      // _buildFileUploadSection(
-                                      //     'Attach Experience Certificate',
-                                      //     'experience'),
-                                      // if (accountController
-                                      //     .validationMessages.isNotEmpty)
-                                      //   Column(
-                                      //     children: accountController
-                                      //         .validationMessages
-                                      //         .map((msg) => Text(
-                                      //               msg,
-                                      //               style: TextStyle(
-                                      //                   color: Colors.red),
-                                      //             ))
-                                      //         .toList(),
-                                      //   ),
-                                      // InkWell(
-                                      //   onTap: () {
-                                      //     // accountController.storeEducationInfo(
-                                      //     //     context, roleId, roleTypeId);
-                                      //   },
-                                      //   child: Container(
-                                      //     height: 48,
-                                      //     padding: const EdgeInsets.symmetric(
-                                      //       horizontal: 40,
-                                      //       vertical: 12,
-                                      //     ),
-                                      //     decoration: const BoxDecoration(
-                                      //       borderRadius: BorderRadius.all(
-                                      //         Radius.circular(8),
-                                      //       ),
-                                      //       gradient: LinearGradient(
-                                      //         colors: [
-                                      //           Color(0xFFC13584),
-                                      //           Color(0xFF833AB4)
-                                      //         ],
-                                      //         begin: Alignment.topCenter,
-                                      //         end: Alignment.bottomCenter,
-                                      //       ),
-                                      //     ),
-                                      //     child:
-                                      //         accountController.isLoading.value
-                                      //             ? const Center(
-                                      //                 child:
-                                      //                     CircularProgressIndicator(),
-                                      //               )
-                                      //             : const Center(
-                                      //                 child: Text(
-                                      //                   'Next',
-                                      //                   style: TextStyle(
-                                      //                     fontSize: 16,
-                                      //                     fontWeight:
-                                      //                         FontWeight.w600,
-                                      //                     color: Colors.white,
-                                      //                   ),
-                                      //                 ),
-                                      //               ),
-                                      //   ),
-                                      // ),
+                                      _buildDropdowns(context)
+                                      :_buildTutor(context),
                                       const SizedBox(
                                         height: 16,
                                       ),
-                                      // SingleButton(
-                                      //   btnName: 'Add',
-                                      //   onTap: () {
-                                      // accountController
-                                      //     .storeEducationInfo(context);
-
-                                      //   },
-                                      // )
                                     ],
                                   ),
                                 ),
@@ -3473,7 +3378,7 @@ class UserProfile extends StatelessWidget {
     );
   }
 
-    Widget _buildDropdowns() {
+    Widget _buildDropdowns(BuildContext context) {
     return
       Column(
         children: [
@@ -3505,44 +3410,51 @@ class UserProfile extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                // CommonDropdownInputField(
-                //   title: 'Highest qualification',
-                //   controllerValue: accountController.highestQualification,
-                //   selectedValue: accountController.highestQualification,
-                //   items: accountController.qualifications,
-                //   onChanged: accountController.setHighestQualification,
-                // ),
-                InkWell(
-                                                onTap: () {
+                CommonDropdownInputField(
+                  title: 'Highest qualification',
+                  controllerValue: accountController.highestQualification,
+                  selectedValue: accountController.highestQualification,
+                  items: accountController.tuteeQualifications,
+                  onChanged: accountController.setHighestQualification,
+                ),
+            //      CommonDropdownInputField(
+            //   title: 'Highest qualification',
+            //   controllerValue: accountController.highestQualification,
+            //   selectedValue: accountController.highestQualification,
+            //   items: accountController.highestQualification,
+            //   onChanged: accountController.setHighestQualifications,
+            // ),
+                // InkWell(
+                //                                 onTap: () {
                                                    
-                                                },
-                                                child: Container(
-                                                  height: 55,
-                                                  alignment: Alignment.centerLeft,
-                                                  padding: const EdgeInsets.only(
-                                                      top: 10,
-                                                      bottom: 10,
-                                                      left: 12),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.grey[200],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15)),
-                                                  child: accountController
-                                                          .highestQualification
-                                                          .value
-                                                          .isNotEmpty
-                                                      ? Text(accountController
-                                                          .highestQualification.value)
-                                                      : Text(
-                                                          "Select",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.grey[400],
-                                                              fontWeight:
-                                                                  FontWeight.w400)),
-                                                ),
-                                              ),
+                //                                 },
+                //                                 child: Container(
+                //                                   height: 55,
+                //                                   alignment: Alignment.centerLeft,
+                //                                   padding: const EdgeInsets.only(
+                //                                       top: 10,
+                //                                       bottom: 10,
+                //                                       left: 12),
+                //                                   decoration: BoxDecoration(
+                //                                       color: Colors.grey[200],
+                //                                       borderRadius:
+                //                                           BorderRadius.circular(
+                //                                               15)),
+                //                                   child: accountController
+                //                                           .highestQualification
+                //                                           .value
+                //                                           .isNotEmpty
+                //                                       ? Text(accountController
+                //                                           .highestQualification.value)
+                //                                       : Text(
+                //                                           "Select",
+                //                                           style: TextStyle(
+                //                                               color:
+                //                                                   Colors.grey[400],
+                //                                               fontWeight:
+                //                                                   FontWeight.w400)),
+                //                                 ),
+                //                               ),
               ],
             ),
           ),
@@ -3574,44 +3486,44 @@ class UserProfile extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            // CommonDropdownInputField(
-            //   title: 'Teaching skill set',
-            //   controllerValue: accountController.teachingSkills,
-            //   selectedValue: accountController.teachingSkills,
-            //   items: accountController.skills,
-            //   onChanged: accountController.setTeachingSkills,
-            // ),
-            InkWell(
-                                            onTap: () {
+            CommonDropdownInputField(
+              title: 'Teaching skill set',
+              controllerValue: accountController.QualificationClass,
+              selectedValue: accountController.QualificationClass,
+              items: accountController.tuteeSpeciallizationClass,
+              onChanged: accountController.setTeachingSkills,
+            ),
+            // InkWell(
+            //                                 onTap: () {
                                             
-                                            },
-                                            child: Container(
-                                              height: 55,
-                                              alignment: Alignment.centerLeft,
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  bottom: 10,
-                                                  left: 12),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey[200],
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              child: accountController
-                                                      .QualificationClass
-                                                      .value
-                                                      .isNotEmpty
-                                                  ? Text(accountController
-                                                      .QualificationClass.value)
-                                                  : Text(
-                                                      "Select",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.grey[400],
-                                                          fontWeight:
-                                                              FontWeight.w400)),
-                                            ),
-                                          ),
+            //                                 },
+            //                                 child: Container(
+            //                                   height: 55,
+            //                                   alignment: Alignment.centerLeft,
+            //                                   padding: const EdgeInsets.only(
+            //                                       top: 10,
+            //                                       bottom: 10,
+            //                                       left: 12),
+            //                                   decoration: BoxDecoration(
+            //                                       color: Colors.grey[200],
+            //                                       borderRadius:
+            //                                           BorderRadius.circular(
+            //                                               15)),
+            //                                   child: accountController
+            //                                           .QualificationClass
+            //                                           .value
+            //                                           .isNotEmpty
+            //                                       ? Text(accountController
+            //                                           .QualificationClass.value)
+            //                                       : Text(
+            //                                           "Select",
+            //                                           style: TextStyle(
+            //                                               color:
+            //                                                   Colors.grey[400],
+            //                                               fontWeight:
+            //                                                   FontWeight.w400)),
+            //                                 ),
+            //                               ),
           ],
         ),
       ),
@@ -3714,42 +3626,99 @@ class UserProfile extends StatelessWidget {
             ),
             // CommonDropdownInputField(
             //   title: 'Teaching experience',
-            //   controllerValue: accountController.teachingExperience,
-            //   selectedValue: accountController.teachingExperience,
+            //   controllerValue: accountController.organizationName,
+            //   selectedValue: accountController.organizationName,
             //   items: accountController.techsExperience,
             //   onChanged: accountController.setTeachingExperience,
             // ),
-             InkWell(
-                                            onTap: () {
+             InputTextField(
+                                        suffix: false,
+                                        readonly: false,
+                                        hintText: 'Enter your country',
+                                        keyboardType: TextInputType.name,
+                                        controller:
+                                            accountController.tuteorganizationController,
+                                      ),
+            //  InkWell(
+            //                                 onTap: () {
                                             
-                                            },
-                                            child: Container(
-                                              height: 55,
-                                              alignment: Alignment.centerLeft,
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  bottom: 10,
-                                                  left: 12),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey[200],
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              child: accountController
-                                                      .organizationName
-                                                      .value
-                                                      .isNotEmpty
-                                                  ? Text(accountController
-                                                      .organizationName.value)
-                                                  : Text(
-                                                      "Tap to select the ID proof",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.grey[400],
-                                                          fontWeight:
-                                                              FontWeight.w400)),
+            //                                 },
+            //                                 child: Container(
+            //                                   height: 55,
+            //                                   alignment: Alignment.centerLeft,
+            //                                   padding: const EdgeInsets.only(
+            //                                       top: 10,
+            //                                       bottom: 10,
+            //                                       left: 12),
+            //                                   decoration: BoxDecoration(
+            //                                       color: Colors.grey[200],
+            //                                       borderRadius:
+            //                                           BorderRadius.circular(
+            //                                               15)),
+            //                                   child: accountController
+            //                                           .organizationName
+            //                                           .value
+            //                                           .isNotEmpty
+            //                                       ? Text(accountController
+            //                                           .organizationName.value)
+            //                                       : Text(
+            //                                           "Tap to select the ID proof",
+            //                                           style: TextStyle(
+            //                                               color:
+            //                                                   Colors.grey[400],
+            //                                               fontWeight:
+            //                                                   FontWeight.w400)),
+            //                                 ),
+            //                     
+            //          ),
+                        
+                         const SizedBox(
+              height: 25,
+            ),
+            // Comm
+                          InkWell(
+                                        onTap: () {
+                                          
+                                                          accountController.storeTuteeeducationInfo(context);
+                                        },
+                                        child: Container(
+                                          height: 48,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 40,
+                                            vertical: 12,
+                                          ),
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8),
+                                            ),
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Color(0xFFC13584),
+                                                Color(0xFF833AB4)
+                                              ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
                                             ),
                                           ),
+                                          child:
+                                              accountController.isLoading.value
+                                                  ? const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    )
+                                                  : const Center(
+                                                      child: Text(
+                                                        'Next',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                        ),
+                                      ),
           ],
         ),
       ),
@@ -3760,7 +3729,7 @@ class UserProfile extends StatelessWidget {
     
   }
   
-Widget _buildTutor() {
+Widget _buildTutor(BuildContext context) {
     return 
       Column(
         children: [
@@ -3792,37 +3761,44 @@ Widget _buildTutor() {
                 const SizedBox(
                   height: 5,
                 ),
-                InkWell(
-                                                onTap: () {
+                 CommonDropdownInputField(
+              title: 'Highest qualification',
+              controllerValue: accountController.highestQualification,
+              selectedValue: accountController.highestQualification,
+              items: accountController.qualifications,
+              onChanged: accountController.setHighestQualification,
+            ),
+                // InkWell(
+                //                                 onTap: () {
                                                    
-                                                },
-                                                child: Container(
-                                                  height: 55,
-                                                  alignment: Alignment.centerLeft,
-                                                  padding: const EdgeInsets.only(
-                                                      top: 10,
-                                                      bottom: 10,
-                                                      left: 12),
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.grey[200],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15)),
-                                                  child: accountController
-                                                          .highestQualification
-                                                          .value
-                                                          .isNotEmpty
-                                                      ? Text(accountController
-                                                          .highestQualification.value)
-                                                      : Text(
-                                                          "Select",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.grey[400],
-                                                              fontWeight:
-                                                                  FontWeight.w400)),
-                                                ),
-                                              ),
+                //                                 },
+                //                                 child: Container(
+                //                                   height: 55,
+                //                                   alignment: Alignment.centerLeft,
+                //                                   padding: const EdgeInsets.only(
+                //                                       top: 10,
+                //                                       bottom: 10,
+                //                                       left: 12),
+                //                                   decoration: BoxDecoration(
+                //                                       color: Colors.grey[200],
+                //                                       borderRadius:
+                //                                           BorderRadius.circular(
+                //                                               15)),
+                //                                   child: accountController
+                //                                           .highestQualification
+                //                                           .value
+                //                                           .isNotEmpty
+                //                                       ? Text(accountController
+                //                                           .highestQualification.value)
+                //                                       : Text(
+                //                                           "Select",
+                //                                           style: TextStyle(
+                //                                               color:
+                //                                                   Colors.grey[400],
+                //                                               fontWeight:
+                //                                                   FontWeight.w400)),
+                //                                 ),
+                //                               ),
               ],
             ),
           ),
@@ -3854,37 +3830,44 @@ Widget _buildTutor() {
             const SizedBox(
               height: 5,
             ),
-            InkWell(
-                                            onTap: () {
+            CommonDropdownInputField(
+              title: 'Teaching skill set',
+              controllerValue: accountController.teachingSkills,
+              selectedValue: accountController.teachingSkills,
+              items: accountController.skills,
+              onChanged: accountController.setTeachingSkills,
+            ),
+            // InkWell(
+            //                                 onTap: () {
                                             
-                                            },
-                                            child: Container(
-                                              height: 55,
-                                              alignment: Alignment.centerLeft,
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  bottom: 10,
-                                                  left: 12),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey[200],
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              child: accountController
-                                                      .teachingSkills
-                                                      .value
-                                                      .isNotEmpty
-                                                  ? Text(accountController
-                                                      .teachingSkills.value)
-                                                  : Text(
-                                                      "Select",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.grey[400],
-                                                          fontWeight:
-                                                              FontWeight.w400)),
-                                            ),
-                                          ),
+            //                                 },
+            //                                 child: Container(
+            //                                   height: 55,
+            //                                   alignment: Alignment.centerLeft,
+            //                                   padding: const EdgeInsets.only(
+            //                                       top: 10,
+            //                                       bottom: 10,
+            //                                       left: 12),
+            //                                   decoration: BoxDecoration(
+            //                                       color: Colors.grey[200],
+            //                                       borderRadius:
+            //                                           BorderRadius.circular(
+            //                                               15)),
+            //                                   child: accountController
+            //                                           .teachingSkills
+            //                                           .value
+            //                                           .isNotEmpty
+            //                                       ? Text(accountController
+            //                                           .teachingSkills.value)
+            //                                       : Text(
+            //                                           "Select",
+            //                                           style: TextStyle(
+            //                                               color:
+            //                                                   Colors.grey[400],
+            //                                               fontWeight:
+            //                                                   FontWeight.w400)),
+            //                                 ),
+            //                               ),
           ],
         ),
       ),
@@ -3916,37 +3899,44 @@ Widget _buildTutor() {
             const SizedBox(
               height: 5,
             ),
-            InkWell(
-                                            onTap: () {
+            CommonDropdownInputField(
+              title: 'Work type',
+              controllerValue: accountController.workingTech,
+              selectedValue: accountController.workingTech,
+              items: accountController.techs,
+              onChanged: accountController.setWorkingTech,
+            ),
+            // InkWell(
+            //                                 onTap: () {
                                             
-                                            },
-                                            child: Container(
-                                              height: 55,
-                                              alignment: Alignment.centerLeft,
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  bottom: 10,
-                                                  left: 12),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey[200],
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              child: accountController
-                                                      .workingTech
-                                                      .value
-                                                      .isNotEmpty
-                                                  ? Text(accountController
-                                                      .workingTech.value)
-                                                  : Text(
-                                                      "Select",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.grey[400],
-                                                          fontWeight:
-                                                              FontWeight.w400)),
-                                            ),
-                                          ),
+            //                                 },
+            //                                 child: Container(
+            //                                   height: 55,
+            //                                   alignment: Alignment.centerLeft,
+            //                                   padding: const EdgeInsets.only(
+            //                                       top: 10,
+            //                                       bottom: 10,
+            //                                       left: 12),
+            //                                   decoration: BoxDecoration(
+            //                                       color: Colors.grey[200],
+            //                                       borderRadius:
+            //                                           BorderRadius.circular(
+            //                                               15)),
+            //                                   child: accountController
+            //                                           .workingTech
+            //                                           .value
+            //                                           .isNotEmpty
+            //                                       ? Text(accountController
+            //                                           .workingTech.value)
+            //                                       : Text(
+            //                                           "Select",
+            //                                           style: TextStyle(
+            //                                               color:
+            //                                                   Colors.grey[400],
+            //                                               fontWeight:
+            //                                                   FontWeight.w400)),
+            //                                 ),
+            //                               ),
           ],
         ),
       ),
@@ -3978,37 +3968,44 @@ Widget _buildTutor() {
             const SizedBox(
               height: 5,
             ),
-            InkWell(
-                                            onTap: () {
+            CommonDropdownInputField(
+              title: 'Teaching experience',
+              controllerValue: accountController.teachingExperience,
+              selectedValue: accountController.teachingExperience,
+              items: accountController.techsExperience,
+              onChanged: accountController.setTeachingExperience,
+            ),
+            // InkWell(
+            //                                 onTap: () {
                                             
-                                            },
-                                            child: Container(
-                                              height: 55,
-                                              alignment: Alignment.centerLeft,
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  bottom: 10,
-                                                  left: 12),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey[200],
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              child: accountController
-                                                      .teachingExperience
-                                                      .value
-                                                      .isNotEmpty
-                                                  ? Text(accountController
-                                                      .teachingExperience.value)
-                                                  : Text(
-                                                      "Select",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.grey[400],
-                                                          fontWeight:
-                                                              FontWeight.w400)),
-                                            ),
-                                          ),
+            //                                 },
+            //                                 child: Container(
+            //                                   height: 55,
+            //                                   alignment: Alignment.centerLeft,
+            //                                   padding: const EdgeInsets.only(
+            //                                       top: 10,
+            //                                       bottom: 10,
+            //                                       left: 12),
+            //                                   decoration: BoxDecoration(
+            //                                       color: Colors.grey[200],
+            //                                       borderRadius:
+            //                                           BorderRadius.circular(
+            //                                               15)),
+            //                                   child: accountController
+            //                                           .teachingExperience
+            //                                           .value
+            //                                           .isNotEmpty
+            //                                       ? Text(accountController
+            //                                           .teachingExperience.value)
+            //                                       : Text(
+            //                                           "Select",
+            //                                           style: TextStyle(
+            //                                               color:
+            //                                                   Colors.grey[400],
+            //                                               fontWeight:
+            //                                                   FontWeight.w400)),
+            //                                 ),
+            //                               ),
           ],
         ),
       ),
@@ -4028,43 +4025,193 @@ Widget _buildTutor() {
             const SizedBox(
               height: 5,
             ),
-             InkWell(
-                                            onTap: () {
+             
+                                                  if (accountController
+                                                      .validationMessages
+                                                      .isNotEmpty)
+                                                    Column(
+                                                      children: accountController
+                                                          .validationMessages
+                                                          .map((msg) => Text(
+                                                                msg,
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .red),
+                                                              ))
+                                                          .toList(),
+                                                    ),
+                                                     InputTextField(
+                                        suffix: false,
+                                        readonly: false,
+                                        hintText: 'Enter your country',
+                                        keyboardType: TextInputType.name,
+                                        controller:
+                                            accountController.additionalInfoController,
+                                      ),
+            //  InkWell(
+            //                                 onTap: () {
                                             
-                                            },
-                                            child: Container(
-                                              height: 55,
-                                              alignment: Alignment.centerLeft,
-                                              padding: const EdgeInsets.only(
-                                                  top: 10,
-                                                  bottom: 10,
-                                                  left: 12),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.grey[200],
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
-                                              child: accountController
-                                                      .additionalInfo
-                                                      .value
-                                                      .isNotEmpty
-                                                  ? Text(accountController
-                                                      .additionalInfo.value)
-                                                  : Text(
-                                                      "Enter here...",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.grey[400],
-                                                          fontWeight:
-                                                              FontWeight.w400)),
-                                            ),
-                                          ),
+            //                                 },
+            //                                 child: Container(
+            //                                   height: 55,
+            //                                   alignment: Alignment.centerLeft,
+            //                                   padding: const EdgeInsets.only(
+            //                                       top: 10,
+            //                                       bottom: 10,
+            //                                       left: 12),
+            //                                   decoration: BoxDecoration(
+            //                                       color: Colors.grey[200],
+            //                                       borderRadius:
+            //                                           BorderRadius.circular(
+            //                                               15)),
+            //                                   child: accountController
+            //                                           .additionalInfo
+            //                                           .value
+            //                                           .isNotEmpty
+            //                                       ? Text(accountController
+            //                                           .additionalInfo.value)
+            //                                       : Text(
+            //                                           "Enter here...",
+            //                                           style: TextStyle(
+            //                                               color:
+            //                                                   Colors.grey[400],
+            //                                               fontWeight:
+            //                                                   FontWeight.w400)),
+            //                                 ),
+            //                               ),
           ],
         ),
       ),
+      _buildFileUploadSection(
+                                                      'Attach resume', 'resume'),
+                                                  _buildFileUploadSection(
+                                                      'Attach education certificate',
+                                                      'education'),
+                                                  _buildFileUploadSection(
+                                                      'Attach experience certificate',
+                                                      'experience'),
+                                                       InkWell(
+                                        onTap: () {
+                                           accountController
+                                                          .storeEducationInfo(
+                                                              context,
+                                                              );
+                                        },
+                                        child: Container(
+                                          height: 48,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 40,
+                                            vertical: 12,
+                                          ),
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8),
+                                            ),
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Color(0xFFC13584),
+                                                Color(0xFF833AB4)
+                                              ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                            ),
+                                          ),
+                                          child:
+                                              accountController.isLoading.value
+                                                  ? const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    )
+                                                  : const Center(
+                                                      child: Text(
+                                                        'Next',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                        ),
+                                      ),
         ],
       );
   }
+
+  Widget _buildFileUploadSection(String title, String type) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
+              ),
+              // Display the asterisk (*) only for types other than 'education'
+              if (type != 'education')
+                Text(
+                  '*',
+                  style: GoogleFonts.nunito(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red.withOpacity(0.6),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          InkWell(
+            onTap: () {
+              
+              print("Greeting values==");
+              accountController.pickFile(type);
+            },
+            child: Container(
+              height: 55,
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 12),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: (type == 'resume' &&
+                          accountController.resumePath.value.isNotEmpty) ||
+                      (type == 'education' &&
+                          accountController
+                              .educationCertPath.value.isNotEmpty) ||
+                      (type == 'experience' &&
+                          accountController.experienceCertPath.value.isNotEmpty)
+                  ? Text(
+                      path.basename(
+                        type == 'resume'
+                            ? accountController.resumePath.value
+                            : type == 'education'
+                                ? accountController.educationCertPath.value
+                                : accountController.experienceCertPath.value,
+                      ),
+                    )
+                  : Text(
+                      "Upload document",
+                      style: TextStyle(
+                          color: Colors.grey[400], fontWeight: FontWeight.w400),
+                    ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 
 }
 
