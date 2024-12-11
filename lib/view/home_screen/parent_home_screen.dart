@@ -4,59 +4,151 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/route_manager.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hovee_attendence/constants/colors_constants.dart';
-import 'package:hovee_attendence/controllers/enquir_controller.dart';
-import 'package:hovee_attendence/controllers/enrollment_controller.dart';
-import 'package:hovee_attendence/controllers/notification_controller.dart';
-import 'package:hovee_attendence/controllers/parent_controller.dart';
+import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
-import 'package:hovee_attendence/services/firestoreService.dart';
-import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/services/webServices.dart';
+import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/notification_controller.dart';
+import 'package:hovee_attendence/controllers/parent_dashboard_controller.dart';
 import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
-import 'package:hovee_attendence/view/Tutee/tutee_courseList.dart';
-import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
-import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
-import 'package:hovee_attendence/view/enrollment_screen.dart';
-import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
-import 'package:hovee_attendence/view/notification_screen.dart';
 import 'package:hovee_attendence/view/parent/trackTuteeLocation.dart';
 import 'package:hovee_attendence/view/profile_card.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
-import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
-import 'package:logger/logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ParentView extends StatefulWidget {
   String userId;
   String rolename;
 
-  ParentView({super.key, required this.userId, required this.rolename});
+  ParentView({
+    Key? key,
+    required this.userId,
+    required this.rolename,
+  }) : super(key: key);
 
   @override
-  _ParentViewState createState() => _ParentViewState();
+  State<ParentView> createState() => _ParentViewState();
 }
 
 class _ParentViewState extends State<ParentView> {
   // final FirestoreService _locationService = FirestoreService();
-  // LatLng? _studentLocation;
-  final ParentController controller = Get.put(ParentController());
-  final EnquirDetailController classController =
-      Get.put(EnquirDetailController());
-  final EnrollmentController enrollmentController =
-      Get.put(EnrollmentController());
   final NotificationController noticontroller =
       Get.put(NotificationController());
-  String? wowId, firstName;
+
+          final ParentDashboardController controller = Get.put(ParentDashboardController(), );
+
+  // String? wowId, firstName;
+
+
+  void fetchHomeDashboardTuteeList() async {
+    try {
+      setState(() {
+       controller.   isLoading (true);
+      });
+    
+      var homeDashboardResponse = await WebService.fetchHomeDashboardParentList();
+      if (homeDashboardResponse != null) {
+        Logger().i("getting printed ===>${homeDashboardResponse.partentId!.id!}");
+        controller.homeDashboardNavList.value = homeDashboardResponse.navbarItems!;
+       controller.  studentDetails.value = homeDashboardResponse.studentDetails!;
+        // Extracting notification count
+        //var studentDetails = homeDashboardResponse!.studentDetails;
+        if (controller.studentDetails.value != null &&controller. studentDetails.value.isNotEmpty) {
+          // Getting the unreadNotificationCount of the first student
+       controller.   homeDashboardCourseList.value = controller .studentDetails![0].courseList!;
+        }
+        getUserTokenList(homeDashboardResponse.partentId!.id!);
+        controller.    loginData.value = ParentDataq(
+            firstName: homeDashboardResponse.partentId!.firstName,
+            lastName: homeDashboardResponse.partentId!.lastName,
+            wowId: homeDashboardResponse.partentId!.wowId,
+            id: homeDashboardResponse.partentId!.id
+          );
+      }
+    } catch (e) {
+      // Get.snackbar('Failed to fetch batches');
+
+      Logger().e("getting==>${e}");
+    } finally {
+      controller.  isLoading(false);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchHomeDashboardTuteeList();
+  }
+   void getUserTokenList(String parentId) async {
+    controller.  isLoading.value = true;
+    try {
+      var batchData = {
+        "parentId": parentId,
+      };
+
+      // Fetch the data from the WebService
+      final getUserTokenListModel? response =
+          await WebService.getUserTokenList(batchData);
+
+      if (response != null && response.statusCode == 200) {
+        // Get the userId list from the response
+      controller.    userDetails.value = response.data!.userId!;
+        List<UserId>? userIds = response.data?.userId;
+
+        if (userIds != null && userIds.isNotEmpty) {
+          // Get the first UserId object (index 0)
+          UserId firstUser = userIds[0];
+
+          // Convert UserId object to JSON string
+          String userJson = firstUser.toJson().toString();
+
+          // Save the JSON string in SharedPreferences
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String? userDataJson = prefs.getString('firstUserId');
+
+          if (userDataJson != null) {
+            // Decode the JSON string into a Map
+            Map<String, dynamic> userMap = jsonDecode(userDataJson);
+
+            // Retrieve the wowId and name from the Map
+            String wowId = userMap['wowId'];
+            String name = userMap['name'];
+            String token = userMap['token '];
+            prefs.setString('Token', token);
+            // Debugging: Check if the values are retrieved correctly
+            print('User ID: $wowId, User Name: $name');
+          } else {
+            print('No user data found in SharedPreferences');
+          }
+
+          // userDetails.value = firstUser.sId!;
+        } else {
+          // Handle empty userId list
+          print('UserId list is empty');
+        }
+      } else {
+        // Handle API failure or response error
+        print('Failed to fetch user token list');
+      }
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+    controller.    isLoading.value = false;
+    }
+  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         key: controller.tuteeScaffoldKey,
         drawer: SideMenu(
           isGuest: false,
+          type: 'Parent',
         ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -260,7 +352,7 @@ class _ParentViewState extends State<ParentView> {
   }
 
   if (controller.isLoading.value) {
-    return Center(child: CircularProgressIndicator());
+    return const Center(child: CircularProgressIndicator());
   } else if (controller.userDetails.isEmpty) {
     return Center(
       child: Text(
@@ -273,7 +365,7 @@ class _ParentViewState extends State<ParentView> {
     );
   } else {
     return ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemCount: controller.userDetails.length,
@@ -302,14 +394,14 @@ class _ParentViewState extends State<ParentView> {
               shadowColor: Colors.black,
               surfaceTintColor: Colors.white,
               shape: RoundedRectangleBorder(
-                side: BorderSide(
+                side: const BorderSide(
                   color: Colors.transparent,
                   width: 2,
                 ),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -318,7 +410,7 @@ class _ParentViewState extends State<ParentView> {
                       'assets/Ellipse 261.png',
                       height: 60,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -349,14 +441,14 @@ class _ParentViewState extends State<ParentView> {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Row(
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 3,
                           backgroundColor: Colors.green,
                         ),
-                        SizedBox(width: 2),
+                        const SizedBox(width: 2),
                         Text(
                           'LIVE',
                           style: GoogleFonts.nunito(
@@ -381,9 +473,9 @@ class _ParentViewState extends State<ParentView> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: const Text(
+                    const Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Text(
                         'My Listings',
                         style: TextStyle(
                             fontSize: 16,
@@ -418,6 +510,7 @@ class _ParentViewState extends State<ParentView> {
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               String? userData = prefs.getString('firstUserId');
+                              String? wowId, firstName;
                               if (userData != null) {
                                 Map<String, dynamic> userMap =
                                     jsonDecode(userData);
@@ -526,7 +619,7 @@ class _ParentViewState extends State<ParentView> {
                                 shadowColor: Colors.black,
                                 surfaceTintColor: Colors.white,
                                 shape: RoundedRectangleBorder(
-                                  side: BorderSide(
+                                  side: const BorderSide(
                                     color:  Colors
                                             .transparent, // Highlight condition
                                     width: 2, // Border width
@@ -535,7 +628,7 @@ class _ParentViewState extends State<ParentView> {
                                       8), // Rounded border
                                 ),
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 12,vertical: 10),
+                                  padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 10),
                                   child: Row(
                                      mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -553,15 +646,15 @@ class _ParentViewState extends State<ParentView> {
                                       //color: Colors.white,
                                       height: 60,
                                     ), 
-                                    SizedBox(width: 8,),
-                                      Column(
+                                    const SizedBox(width: 8,),
+                                      const Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                              'John Hook',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 20.0,
                                               color: Colors.black,
@@ -570,7 +663,7 @@ class _ParentViewState extends State<ParentView> {
                                          
                                           Text(
                                              'It is a long established fact that a reader\nwill be distracted by the readable content\nof a page when looking at its layout.',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontWeight: FontWeight.w400,
                                               fontSize: 14.0,
                                               color: Colors.black,
@@ -590,7 +683,6 @@ class _ParentViewState extends State<ParentView> {
         ));
   }
 }
-
 
 class TestimonialCard extends StatelessWidget {
   final String image;
@@ -642,7 +734,7 @@ class TestimonialCard extends StatelessWidget {
                         children: [
                           Text(
                             name,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -661,7 +753,7 @@ class TestimonialCard extends StatelessWidget {
                       // Testimonial text
                       Text(
                         testimonial,
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ],
                   ),

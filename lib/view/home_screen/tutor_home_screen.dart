@@ -252,7 +252,7 @@ class TutorHome extends StatelessWidget {
                                   crossAxisSpacing: 10,
                                 ),
                                 itemCount: controller.homeDashboardNavList.value
-                                    .where((item) => item.name != 'Dashboard')
+                                    .where((item) => item!.name != 'Dashboard')
                                     .length,
                                 itemBuilder: (context, int index) {
                                   final filteredList = controller

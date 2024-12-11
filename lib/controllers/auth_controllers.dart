@@ -238,7 +238,7 @@ class AuthControllers extends GetxController
           prefs.setString('Rolename', response.data!.roles!.roleName??'');
            var validateTokendata = response.data!;
             //if(response.parentData=='true'){
-              parentController.fetchHomeDashboardTuteeList();
+              // parentController.fetchHomeDashboardTuteeList();
                parentController. getUserTokenList(response.data!.sId!);
            // }
         

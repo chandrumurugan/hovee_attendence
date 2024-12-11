@@ -8,7 +8,9 @@ import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/addEnquery_controller.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/dashBoard_controllers.dart';
+import 'package:hovee_attendence/controllers/parent_accountsetup_controller.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
+import 'package:hovee_attendence/controllers/parent_dashboard_controller.dart';
 import 'package:hovee_attendence/controllers/role_controller.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
@@ -45,6 +47,8 @@ class MyBindings extends Bindings {
     //AddEnqueryController
     Get.lazyPut<AddEnqueryController>(() => AddEnqueryController());
     Get.lazyPut<ParentController>(() => ParentController());
+    Get.lazyPut<ParentAccountSetupController>(() => ParentAccountSetupController());
+    Get.lazyPut<ParentDashboardController>(() => ParentDashboardController());
   }
 }
 

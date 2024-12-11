@@ -4,7 +4,7 @@ class getHomeDashboardTutorModel {
   List<NavbarItems>? navbarItems;
   String? roleName;
   String? roleTypeName;
-  String? partentId;
+   PartentId? partentId;
 
   getHomeDashboardTutorModel(
       {this.statusCode,
@@ -30,7 +30,7 @@ class getHomeDashboardTutorModel {
     }
     roleName = json['roleName'];
     roleTypeName = json['roleTypeName'];
-     partentId = json['partentId'];
+     partentId = json["partentId"] == null ? null : PartentId.fromJson(json["partentId"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -413,4 +413,91 @@ class NavbarItems {
     data['title'] = this.title;
     return data;
   }
+}
+
+class PartentId {
+    PartentId({
+        required this.location,
+        required this.parentRegister,
+        required this.otp,
+        required this.accountVerificationToken,
+        required this.id,
+        required this.userId,
+        required this.firstName,
+        required this.lastName,
+        required this.wowId,
+        required this.email,
+        required this.dob,
+        required this.address,
+        required this.phoneNumber,
+        required this.pincode,
+        required this.doorNo,
+        required this.street,
+        required this.city,
+        required this.state,
+        required this.country,
+        required this.latitude,
+        required this.longitude,
+        required this.isActive,
+        required this.isDeleted,
+        required this.createdAt,
+        required this.token,
+    });
+
+    final Location? location;
+    final bool? parentRegister;
+    final String? otp;
+    final String? accountVerificationToken;
+    final String? id;
+    final List<dynamic> userId;
+    final String? firstName;
+    final String? lastName;
+    final String? wowId;
+    final String? email;
+    final DateTime? dob;
+    final String? address;
+    final String? phoneNumber;
+    final int? pincode;
+    final String? doorNo;
+    final String? street;
+    final String? city;
+    final String? state;
+    final String? country;
+    final dynamic latitude;
+    final dynamic longitude;
+    final int? isActive;
+    final int? isDeleted;
+    final DateTime? createdAt;
+    final String? token;
+
+    factory PartentId.fromJson(Map<String, dynamic> json){ 
+        return PartentId(
+            location: json["location"] == null ? null : Location.fromJson(json["location"]),
+            parentRegister: json["parentRegister"],
+            otp: json["otp"],
+            accountVerificationToken: json["account_verification_token"],
+            id: json["_id"],
+            userId: json["userId"] == null ? [] : List<dynamic>.from(json["userId"]!.map((x) => x)),
+            firstName: json["first_name"],
+            lastName: json["last_name"],
+            wowId: json["wow_id"],
+            email: json["email"],
+            dob: DateTime.tryParse(json["dob"] ?? ""),
+            address: json["address"],
+            phoneNumber: json["phone_number"],
+            pincode: json["pincode"],
+            doorNo: json["door_no"],
+            street: json["street"],
+            city: json["city"],
+            state: json["state"],
+            country: json["country"],
+            latitude: json["latitude"],
+            longitude: json["longitude"],
+            isActive: json["is_active"],
+            isDeleted: json["is_deleted"],
+            createdAt: DateTime.tryParse(json["created_at"] ?? ""),
+            token: json["token"],
+        );
+    }
+
 }

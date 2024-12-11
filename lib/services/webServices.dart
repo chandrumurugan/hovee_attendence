@@ -33,6 +33,7 @@ import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getLeaveListModel.dart';
 import 'package:hovee_attendence/modals/getMsplistmodel.dart';
 import 'package:hovee_attendence/modals/getNotification_model.dart';
+import 'package:hovee_attendence/modals/getParenthomeModal.dart';
 import 'package:hovee_attendence/modals/getParentvalidateCodeModel.dart';
 import 'package:hovee_attendence/modals/getQrcode_model.dart';
 import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
@@ -1210,11 +1211,13 @@ class WebService {
   //   }
   // }
   static Future<getHomeDashboardTutorModel> fetchHomeDashboardList() async {
-    final url = Uri.parse('${baseUrl}home/getHomeDashboardTutor');
+    try {
+          final url = Uri.parse('${baseUrl}home/getHomeDashboardTutor');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
+    Logger().d("$token");
     final response = await http.post(
       url, // Replace with the actual API URL
       headers: {
@@ -1224,10 +1227,47 @@ class WebService {
     );
 
     if (response.statusCode == 200) {
+      Logger().i("200yhasuvsagvfdsfjsfvd");
       return getHomeDashboardTutorModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load dashboard list');
     }
+    } catch (e) {
+      Logger().e(e);
+      throw e;
+      
+    }
+
+  }
+
+    static Future<GetHomeDashboardParentModel> fetchHomeDashboardParentList() async {
+    try {
+          final url = Uri.parse('${baseUrl}home/getHomeDashboardTutor');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    Logger().d("$token");
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Logger().i("200yhasuvsagvfdsfjsfvd");
+      return GetHomeDashboardParentModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load dashboard list');
+    }
+    } catch (e) {
+      Logger().e(e);
+      throw e;
+      
+    }
+
   }
 
   static Future<getdashboardYearflowModel?> fetchHomeAttendanceList(

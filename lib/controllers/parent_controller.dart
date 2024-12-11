@@ -95,37 +95,38 @@ class ParentController extends GetxController {
     ParentData? parentdata;
 
     LoginData? loginData;
+     UserDetail? userDetail;
     
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    getUserData();
-    fetchHomeDashboardTuteeList();
+  // @override
+  // void onInit() {
+  //   // TODO: implement onInit
+  //   super.onInit();
+  //  // getUserData();
+  //   //fetchHomeDashboardTuteeList();
     
-  }
+  // }
 
-  void fetchHomeDashboardTuteeList() async {
-    try {
-      isLoading(true);
-      var homeDashboardResponse = await WebService.fetchHomeDashboardList();
-      if (homeDashboardResponse != null) {
-        homeDashboardNavList.value = homeDashboardResponse.navbarItems!;
-        studentDetails.value = homeDashboardResponse.studentDetails!;
-        // Extracting notification count
-        //var studentDetails = homeDashboardResponse!.studentDetails;
-        if (studentDetails.value != null && studentDetails.value.isNotEmpty) {
-          // Getting the unreadNotificationCount of the first student
-          homeDashboardCourseList.value = studentDetails[0].courseList!;
-        }
-        getUserTokenList(homeDashboardResponse.partentId!);
-      }
-    } catch (e) {
-      // Get.snackbar('Failed to fetch batches');
-    } finally {
-      isLoading(false);
-    }
-  }
+  // void fetchHomeDashboardTuteeList() async {
+  //   try {
+  //     isLoading(true);
+  //     var homeDashboardResponse = await WebService.fetchHomeDashboardList();
+  //     if (homeDashboardResponse != null) {
+  //       homeDashboardNavList.value = homeDashboardResponse.navbarItems!;
+  //       studentDetails.value = homeDashboardResponse.studentDetails!;
+  //       // Extracting notification count
+  //       //var studentDetails = homeDashboardResponse!.studentDetails;
+  //       if (studentDetails.value != null && studentDetails.value.isNotEmpty) {
+  //         // Getting the unreadNotificationCount of the first student
+  //         homeDashboardCourseList.value = studentDetails[0].courseList!;
+  //       }
+  //       getUserTokenList(homeDashboardResponse.partentId!.id!);
+  //     }
+  //   } catch (e) {
+  //     // Get.snackbar('Failed to fetch batches');
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
 
   void getUserTokenList(String parentId) async {
     isLoading.value = true;
@@ -322,6 +323,7 @@ class ParentController extends GetxController {
         if (response != null) {
           otpResponse.value = response;
           userID.value=otpResponse.value.userDetail!.sId.toString();
+          userDetail=otpResponse.value.userDetail!;
           print(userID.value);
             prefs.setString('Token', response.parentToken!);
          // prefs.setString('Rolename', response.data!.roles!.roleName??'');
@@ -373,14 +375,14 @@ class ParentController extends GetxController {
             // getUserTokenList(response.data!.sId!);
            // }
            // getUserTokenList(parentId);
-        loginData = LoginData(
-            firstName: parentdata!.firstName,
-            lastName: parentdata!.lastName,
-            wowId: parentdata!.wowId,
-            id: parentdata!.sId
-          );
-          prefs.setString('userData', jsonEncode(loginData!.toJson()));
-       await getUserData();
+      //   loginData = LoginData(
+      //       firstName: parentdata!.firstName,
+      //       lastName: parentdata!.lastName,
+      //       wowId: parentdata!.wowId,
+      //       id: parentdata!.sId
+      //     );
+      //     prefs.setString('userData', jsonEncode(loginData!.toJson()));
+      //  await getUserData();
           Get.snackbar(
             icon: const Icon(
               Icons.check_circle,
@@ -411,21 +413,21 @@ class ParentController extends GetxController {
     }
   }
 
-  Future<void> getUserData() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
- // To retrieve the data later:
-String? jsonString = prefs.getString('userData');
-if (jsonString != null) {
-  try {
-     loginData = LoginData.fromJson(jsonDecode(jsonString));
-    print("Hello ${loginData!.firstName}, ${loginData!.lastName}");
-    //  getUserTokenList(loginData!.id!);
-  } catch (e) {
-    print("Error decoding JSON: $e");
-  }
+//   Future<void> getUserData() async {
+//       SharedPreferences prefs = await SharedPreferences.getInstance();
+//  // To retrieve the data later:
+// String? jsonString = prefs.getString('userData');
+// if (jsonString != null) {
+//   try {
+//      loginData = LoginData.fromJson(jsonDecode(jsonString));
+//     print("Hello ${loginData!.firstName}, ${loginData!.lastName}");
+//     //  getUserTokenList(loginData!.id!);
+//   } catch (e) {
+//     print("Error decoding JSON: $e");
+//   }
 
 
-  }
-}
+//   }
+// }
 
 }

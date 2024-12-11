@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
+import 'package:hovee_attendence/controllers/parent_dashboard_controller.dart';
 import 'package:hovee_attendence/modals/Regsisterparent_model.dart';
+import 'package:hovee_attendence/modals/login_data_model.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/modals/update_parent_status_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
@@ -43,19 +45,24 @@ class ParentAccountSetupController extends GetxController
   late TabController tabController;
   var currentTabIndex = 0.obs;
   RxBool isChecked = false.obs;
-  // final ParentController parentController = Get.put(ParentController());
+  // final ParentDashboardController parentControllerDas = Get.put(ParentDashboardController());
 
   var registerResponse = RegisterParentModel().obs;
    //final ParentController parentController1 = Get.put(ParentController());
   //  LoginData? loginData;
    String? firstname,lastname,wowId;
-   final parentController = Get.find<ParentController>();
+   final parentController = Get.find<ParentController>();//ParentDashboardController
+    // final parentDController = Get.find<ParentDashboardController>();
+   
+    LoginData? loginData;
+     ParentData? parentdata;
   @override 
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
     _populateFieldsFromAuth();
+    // getUserData();
   }
 
   void _populateFieldsFromAuth() {
@@ -218,8 +225,8 @@ class ParentAccountSetupController extends GetxController
         if (response != null) {
           registerResponse.value = response;
          var validateTokendata = response.data!;
+            await prefs.setString('Token',response.data!.token ?? "") ;
             //if(response.parentData=='true'){
-           
           isLoading.value = false;
           Get.dialog(
   AlertDialog(
@@ -229,15 +236,15 @@ class ParentAccountSetupController extends GetxController
       children: [
         _buildRow(
           'Tutee name',
-          '${response.data!.firstName} ${response.data!.lastName}',
+          '${parentController.userDetail!.firstName} ${parentController.userDetail!.lastName}',
         ),
-        _buildRow('Wow ID', response.data!.wowId!),
-        _buildRow('Email', response.data!.email!),
+        _buildRow('Wow ID', parentController.userDetail!.wowId!),
+        _buildRow('Email', parentController.userDetail!.email!),
         _buildRow(
           'Phone number',
-          '${response.data!.phoneNumber}',
+          '${parentController.userDetail!.phoneNumber}',
         ),
-        _buildRow('Dob', response.data!.dob!),
+        _buildRow('Dob', parentController.userDetail!.dob!),
       ],
     ),
     actions: [
@@ -304,11 +311,25 @@ class ParentAccountSetupController extends GetxController
     isLoading.value = true;
     try {
       var batchData = {"parentId": parentId, "userId": userId};
-
+        SharedPreferences prefs = await SharedPreferences.getInstance();
       final UpdateParentStausModel? response =
           await WebService.updateParentStatus(batchData);
 
       if (response != null && response.statusCode == 200) {
+         parentdata =response.data;
+         parentController.getUserTokenList(response.data!.sId!);
+        //  parentDController.getUserTokenList(response.data!.sId!);
+        //  parentDController.fetchHomeDashboardTuteeList();
+        
+         loginData = LoginData(
+            firstName: parentdata!.firstName,
+            lastName: parentdata!.lastName,
+            wowId: parentdata!.wowId,
+            id: parentdata!.sId
+          );
+      
+          prefs.setString('userData', jsonEncode(loginData!.toJson()));
+       await getUserData();
         Get.snackbar(
           icon: const Icon(
             Icons.check_circle,
@@ -338,5 +359,22 @@ class ParentAccountSetupController extends GetxController
       isLoading.value = false;
     }
   }
+
+  Future<void> getUserData() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+ // To retrieve the data later:
+String? jsonString = prefs.getString('userData');
+if (jsonString != null) {
+  try {
+     loginData = LoginData.fromJson(jsonDecode(jsonString));
+    print("Hello ${loginData!.firstName}, ${loginData!.lastName}");
+    //  getUserTokenList(loginData!.id!);
+  } catch (e) {
+    print("Error decoding JSON: $e");
+  }
+
+
+  }
+}
 
 }

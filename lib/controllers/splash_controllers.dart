@@ -173,11 +173,11 @@ class SplashController extends GetxController {
     // Navigate based on token presence
 
     if(isDeepLink){
-       //storage.write('deepLink',false); 
+       storage.write('deepLink',false); 
        Get.off(() => ParentOtpScreen(), arguments: {"code": code, "phoneNumber": phoneNumber});
       
     }else if (token.isNotEmpty) {
-       //storage.write('deepLink',false); 
+       storage.write('deepLink',false); 
       await _validateTokenAndNavigate();
     }
     else {

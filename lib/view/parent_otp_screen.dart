@@ -6,6 +6,7 @@ import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/controllers/parent_otp_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:hovee_attendence/view/roleSelection.dart';
 import 'package:pinput/pinput.dart';
@@ -232,43 +233,38 @@ class ParentOtpScreen extends StatelessWidget {
                                                     btnName: 'Ok',
                                                     onTap: () {
                                                       if (value.parentAccount!) {
-                                                              showDialog(
-                                                                
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Success'),
-                content: Column(
-                  children: [
-                     _buildRow('Tutee name',  '${value.userDetail!.firstName} $value.userDetail!.lastName}',),
+          Get.dialog(
+  AlertDialog(
+    title: Text('Tutee Preview'),
+    content: Column(
+      mainAxisSize: MainAxisSize.min, // To avoid stretching the dialog unnecessarily
+      children: [
+               _buildRow('Tutee name',  '${value.userDetail!.firstName} $value.userDetail!.lastName}',),
                                             _buildRow('Wow ID',value.userDetail!.wowId),
                                             _buildRow('Email', value.userDetail!.email),
                                              _buildRow('Phone number', '${value.userDetail!.phoneNumber}',),
                                            _buildRow('DOB', value.userDetail!.dob ),
-                  ],
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () async {
-                       final prefs = await SharedPreferences.getInstance();
-                       prefs.setString('userID', value.userDetail!.sId!);
-                  parentController.  updateEnrollment(context,value.parentDetail!.sId!,value.userDetail!.sId!);
-                      Navigator.of(context).pop(); // Close the dialog
-                    },
-                    child: Text('Accept'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Get.off(() => const GuestHomeScreen()); // Close the dialog
-                    },
-                    child: Text('Reject'),
-                  ),
-                ],
-              );
-            },
+      ],
+    ),
+    actions: [
+      TextButton(
+        onPressed: ()  {
+          parentController.updateEnrollment(
+           context,value.parentDetail!.sId!,value.userDetail!.sId!
           );
+          Get.back(); // Close the dialog
+        },
+        child: Text('Accept'),
+      ),
+      TextButton(
+        onPressed: () {
+          Get.off(() => DashboardScreen(rolename: 'Parent'));
+          Get.back(); // Close the dialog
+        },
+        child: Text('Reject'),
+      ),
+    ],
+  ));
                                                         
                                                       } else {
                                                         Get.offAll(() =>

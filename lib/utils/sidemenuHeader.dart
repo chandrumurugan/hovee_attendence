@@ -6,6 +6,7 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/parent_accountsetup_controller.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
+import 'package:hovee_attendence/controllers/parent_dashboard_controller.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 
 class SidemenuHeader extends StatelessWidget {
@@ -14,18 +15,20 @@ class SidemenuHeader extends StatelessWidget {
       required this.userName,
       required this.wowID,
       required this.rating,
-      required this.isGuest});
+      required this.isGuest, this.type});
   final String userName;
   final String wowID;
   final bool isGuest;
   final String rating;
+  final String? type;
   // final String image;
   GlobalKey<ScaffoldState> sidemenuKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthControllers>();
-     final ParentController parentController = Get.put(ParentController());
+     final parentController = Get.find<ParentDashboardController>();
+      //  final ParentDashboardController  parentController =Get.put(ParentDashboardController());
     return Container(
       key: sidemenuKey,
       height: 170,
@@ -84,17 +87,18 @@ class SidemenuHeader extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              authController.otpResponse.value != null?
-                Text(
+              type!.isNotEmpty?
+               Text(
                   isGuest ? "Guest" :
-                 authController.loginData!=null? "${authController.loginData!.firstName} ${authController.loginData!.lastName}":'',
+                                    '${parentController.loginData.value.firstName} ${parentController.loginData!.value.lastName}',
                   style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                       fontSize: 20),
-                ): Text(
+                ):
+                Text(
                   isGuest ? "Guest" :
-                                    '${parentController.loginData!.firstName} ${parentController.loginData!.lastName}',
+                 authController.loginData!=null? "${authController.loginData!.firstName} ${authController.loginData!.lastName}":'',
                   style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -112,7 +116,7 @@ class SidemenuHeader extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  authController.otpResponse.value != null?
+                  // authController.otpResponse.value != null?
                     Container(
                       //color: Colors.amberAccent,
                       width: 180,
@@ -126,14 +130,15 @@ class SidemenuHeader extends StatelessWidget {
                             color: Colors.white,
                             fontSize: 16),
                       ),
-                    ):Text(
-                  isGuest ? "Guest" :
-                                    '${parentController.loginData!.wowId}',
-                  style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                      fontSize: 20),
-                ),
+                    )
+                //     :Text(
+                //   isGuest ? "Guest" :
+                //                     '${parentController.loginData!.value.wowId}',
+                //   style: GoogleFonts.nunito(
+                //       fontWeight: FontWeight.w600,
+                //       color: Colors.white,
+                //       fontSize: 20),
+                // ),
                 ],
               ),
               const SizedBox(

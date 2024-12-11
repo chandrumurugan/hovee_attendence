@@ -13,7 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SideMenu extends StatelessWidget {
   final bool isGuest;
-  SideMenu({super.key, required this.isGuest});
+ final String? type;
+  SideMenu({super.key, required this.isGuest,  this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +34,7 @@ class SideMenu extends StatelessWidget {
               userName: isGuest ? "Guest" : 'Justin Joe',
               wowID: isGuest ? "xxxxx" : '1234567',
               rating: isGuest ? '0/5' : '3/5',
+              type: type??"",
             ),
             const SizedBox(
               height: 10,
