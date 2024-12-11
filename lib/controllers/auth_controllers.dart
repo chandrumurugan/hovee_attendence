@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
+import 'package:hovee_attendence/modals/login_data_model.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/services/webServices.dart';

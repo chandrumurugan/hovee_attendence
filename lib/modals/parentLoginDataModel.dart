@@ -50,7 +50,7 @@ class validateAndLoginParentModal {
 class ParentDetail {
   Location? location;
   String? sId;
-  List<String>? userId;
+  // List<String>? userId;
   String? firstName;
   String? lastName;
   String? wowId;
@@ -77,7 +77,7 @@ class ParentDetail {
   ParentDetail(
       {this.location,
       this.sId,
-      this.userId,
+      // this.userId,
       this.firstName,
       this.lastName,
       this.wowId,
@@ -106,7 +106,7 @@ class ParentDetail {
         ? new Location.fromJson(json['location'])
         : null;
     sId = json['_id'];
-    userId = json['userId'];
+    //userId = json['userId'];
     firstName = json['first_name'];
     lastName = json['last_name'];
     wowId = json['wow_id'];
@@ -137,7 +137,7 @@ class ParentDetail {
       data['location'] = this.location!.toJson();
     }
     data['_id'] = this.sId;
-    data['userId'] = this.userId;
+    //data['userId'] = this.userId;
     data['first_name'] = this.firstName;
     data['last_name'] = this.lastName;
     data['wow_id'] = this.wowId;

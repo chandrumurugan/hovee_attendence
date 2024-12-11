@@ -25,6 +25,7 @@ import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/msp_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
+import 'package:hovee_attendence/view/profile_card.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/tutee_holiday_screen.dart';
 import 'package:hovee_attendence/view/userProfile.dart';

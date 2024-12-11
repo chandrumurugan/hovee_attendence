@@ -1787,21 +1787,25 @@ class WebService {
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
+    print(token);
     try {
       final response = await http.post(
         url,
-        body: json.encode(batchData),
+       body: jsonEncode(batchData),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
       if (response.statusCode == 200) {
-        return UpdateParentStausModel.fromJson(json.decode(response.body));
+          var result = jsonDecode(response.body);
+        return UpdateParentStausModel.fromJson(result);
       } else {
+         Map<String, dynamic> result = jsonDecode(response.body);
         return null;
       }
     } catch (e) {
+      Logger().e(e);
       return null;
     }
   }

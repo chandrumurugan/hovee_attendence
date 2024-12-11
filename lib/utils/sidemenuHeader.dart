@@ -4,6 +4,8 @@ import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
+import 'package:hovee_attendence/controllers/parent_accountsetup_controller.dart';
+import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 
 class SidemenuHeader extends StatelessWidget {
@@ -23,6 +25,7 @@ class SidemenuHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthControllers>();
+     final ParentController parentController = Get.put(ParentController());
     return Container(
       key: sidemenuKey,
       height: 170,
@@ -81,10 +84,17 @@ class SidemenuHeader extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              if (authController.otpResponse.value != null)
+              authController.otpResponse.value != null?
                 Text(
                   isGuest ? "Guest" :
-                  "${authController.loginData!.firstName} ${authController.loginData!.lastName}",
+                 authController.loginData!=null? "${authController.loginData!.firstName} ${authController.loginData!.lastName}":'',
+                  style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 20),
+                ): Text(
+                  isGuest ? "Guest" :
+                                    '${parentController.loginData!.firstName} ${parentController.loginData!.lastName}',
                   style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -102,21 +112,28 @@ class SidemenuHeader extends StatelessWidget {
                   const SizedBox(
                     width: 5,
                   ),
-                  if (authController.otpResponse.value != null)
+                  authController.otpResponse.value != null?
                     Container(
                       //color: Colors.amberAccent,
                       width: 180,
                       // width: MediaQuery.of(context).size.width * 0.02,
                       child: Text(
                         isGuest ? "xxxxxxx" :
-                        '${authController.loginData!.wowId}',
+                        authController.loginData!=null?'${authController.loginData!.wowId}':'',
                         overflow: TextOverflow.clip,
                         style: GoogleFonts.nunito(
                             fontWeight: FontWeight.w400,
                             color: Colors.white,
                             fontSize: 16),
                       ),
-                    ),
+                    ):Text(
+                  isGuest ? "Guest" :
+                                    '${parentController.loginData!.wowId}',
+                  style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 20),
+                ),
                 ],
               ),
               const SizedBox(

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -8,6 +10,7 @@ import 'package:hovee_attendence/modals/update_parent_status_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
+import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,11 +43,14 @@ class ParentAccountSetupController extends GetxController
   late TabController tabController;
   var currentTabIndex = 0.obs;
   RxBool isChecked = false.obs;
-  final ParentController parentController = Get.put(ParentController());
+  // final ParentController parentController = Get.put(ParentController());
 
   var registerResponse = RegisterParentModel().obs;
-
-  @override
+   //final ParentController parentController1 = Get.put(ParentController());
+  //  LoginData? loginData;
+   String? firstname,lastname,wowId;
+   final parentController = Get.find<ParentController>();
+  @override 
   void onInit() {
     // TODO: implement onInit
     super.onInit();
@@ -53,8 +59,8 @@ class ParentAccountSetupController extends GetxController
   }
 
   void _populateFieldsFromAuth() {
-    phController.text =
-        parentController.otpResponse.value.parentDetail!.phoneNumber ?? '';
+    phController.text =parentController.otpResponse.value.userDetail!=null?
+        parentController.otpResponse.value.userDetail!.parentPhoneNumber ?? '':'';
   }
 
   bool validateFields(BuildContext context) {
@@ -211,19 +217,9 @@ class ParentAccountSetupController extends GetxController
 
         if (response != null) {
           registerResponse.value = response;
-          phController.clear();
-          firstNameController.clear();
-          lastNameController.clear();
-          emailController.clear();
-          dobController.clear();
-          pincodeController.clear();
-          //otpController.clear();
-          address1Controller.clear();
-          address2Controller.clear();
-          cityController.clear();
-          stateController.clear();
-          countryController.clear();
-
+         var validateTokendata = response.data!;
+            //if(response.parentData=='true'){
+           
           isLoading.value = false;
           Get.dialog(
   AlertDialog(
@@ -246,11 +242,11 @@ class ParentAccountSetupController extends GetxController
     ),
     actions: [
       TextButton(
-        onPressed: () {
+        onPressed: ()  {
           updateEnrollment(
             Get.context!, // Using Get.context for context
             response.data!.sId!,
-            response.data!.userId!.first,
+            parentController.userID.value,
           );
           Get.back(); // Close the dialog
         },
@@ -313,10 +309,6 @@ class ParentAccountSetupController extends GetxController
           await WebService.updateParentStatus(batchData);
 
       if (response != null && response.statusCode == 200) {
-        // SnackBarUtils.showSuccessSnackBar(
-        //     context, 'Update enquire successfully');
-        // if (response.data!.status == 'Approved') {
-        // SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
         Get.snackbar(
           icon: const Icon(
             Icons.check_circle,
@@ -346,4 +338,5 @@ class ParentAccountSetupController extends GetxController
       isLoading.value = false;
     }
   }
+
 }

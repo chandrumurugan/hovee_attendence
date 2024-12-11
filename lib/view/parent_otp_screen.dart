@@ -9,6 +9,7 @@ import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:hovee_attendence/view/roleSelection.dart';
 import 'package:pinput/pinput.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ParentOtpScreen extends StatelessWidget {
    ParentOtpScreen({super.key});
@@ -249,7 +250,9 @@ class ParentOtpScreen extends StatelessWidget {
                 ),
                 actions: [
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
+                       final prefs = await SharedPreferences.getInstance();
+                       prefs.setString('userID', value.userDetail!.sId!);
                   parentController.  updateEnrollment(context,value.parentDetail!.sId!,value.userDetail!.sId!);
                       Navigator.of(context).pop(); // Close the dialog
                     },

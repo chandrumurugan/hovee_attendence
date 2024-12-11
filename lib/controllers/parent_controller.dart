@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
+import 'package:hovee_attendence/modals/login_data_model.dart';
 import 'package:hovee_attendence/modals/parentLoginDataModel.dart';
 import 'package:hovee_attendence/modals/parentLoginModel.dart';
 import 'package:hovee_attendence/modals/update_parent_status_model.dart';
@@ -13,6 +14,7 @@ import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/dashBoard.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
+import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/parent_otp_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
@@ -88,11 +90,17 @@ class ParentController extends GetxController {
 
    final focusNode = FocusNode();
     UserDetail ? childrenData   ;
+
+    var userID=''.obs;
+    ParentData? parentdata;
+
+    LoginData? loginData;
     
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    getUserData();
     fetchHomeDashboardTuteeList();
     
   }
@@ -110,6 +118,7 @@ class ParentController extends GetxController {
           // Getting the unreadNotificationCount of the first student
           homeDashboardCourseList.value = studentDetails[0].courseList!;
         }
+        getUserTokenList(homeDashboardResponse.partentId!);
       }
     } catch (e) {
       // Get.snackbar('Failed to fetch batches');
@@ -312,8 +321,25 @@ class ParentController extends GetxController {
             context);
         if (response != null) {
           otpResponse.value = response;
-          prefs.setString('Token', response.parentToken!);
+          userID.value=otpResponse.value.userDetail!.sId.toString();
+          print(userID.value);
+            prefs.setString('Token', response.parentToken!);
+         // prefs.setString('Rolename', response.data!.roles!.roleName??'');
+          //  var validateTokendata = response.parentDetail!;
+          //   //if(response.parentData=='true'){
+          //     fetchHomeDashboardTuteeList();
+          //     getUserTokenList(response.parentDetail!.sId!);
+          //  // }
+        
+          // LoginData loginData = LoginData(
+          //   firstName: validateTokendata.firstName,
+          //   lastName: validateTokendata.lastName,
+          //   wowId: validateTokendata.wowId,
+          // );
+          // prefs.setString('userData', jsonEncode(loginData.toJson()));
+          // getUserData();
           isLoading.value = false;
+          //getUserTokenList(otpResponse.value.parentDetail!.sId!);
           return response;
         } else {
           isLoading.value = false;
@@ -337,15 +363,24 @@ class ParentController extends GetxController {
        "parentId":parentId,
     "userId":userId
       };
-
+        SharedPreferences prefs = await SharedPreferences.getInstance();
       final UpdateParentStausModel? response =
           await WebService.updateParentStatus(batchData);
 
       if (response != null && response.statusCode == 200) {
-        // SnackBarUtils.showSuccessSnackBar(
-        //     context, 'Update enquire successfully');
-        // if (response.data!.status == 'Approved') {
-          // SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
+          parentdata=response.data;
+           //fetchHomeDashboardTuteeList();
+            // getUserTokenList(response.data!.sId!);
+           // }
+           // getUserTokenList(parentId);
+        loginData = LoginData(
+            firstName: parentdata!.firstName,
+            lastName: parentdata!.lastName,
+            wowId: parentdata!.wowId,
+            id: parentdata!.sId
+          );
+          prefs.setString('userData', jsonEncode(loginData!.toJson()));
+       await getUserData();
           Get.snackbar(
             icon: const Icon(
               Icons.check_circle,
@@ -356,7 +391,7 @@ class ParentController extends GetxController {
             colorText: Colors.white,
             backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           );
-          Get.off(() => DashboardScreen(rolename: 'Tutee'));
+          Get.off(() => DashboardScreen(rolename: 'Parent'));
       } else {
         Get.snackbar(
             icon: const Icon(
@@ -375,4 +410,22 @@ class ParentController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  Future<void> getUserData() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+ // To retrieve the data later:
+String? jsonString = prefs.getString('userData');
+if (jsonString != null) {
+  try {
+     loginData = LoginData.fromJson(jsonDecode(jsonString));
+    print("Hello ${loginData!.firstName}, ${loginData!.lastName}");
+    //  getUserTokenList(loginData!.id!);
+  } catch (e) {
+    print("Error decoding JSON: $e");
+  }
+
+
+  }
+}
+
 }

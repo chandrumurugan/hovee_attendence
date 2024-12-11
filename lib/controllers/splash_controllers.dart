@@ -12,6 +12,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/main.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/login_data_model.dart';
 import 'package:hovee_attendence/services/liveLocationService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
@@ -153,8 +154,8 @@ class SplashController extends GetxController {
     Logger().i(
         "lat====${prefs.getDouble('latitude')}------${prefs.getDouble('longitude')}");
     Logger().i("${currentLocation.value.toString()}");
-    prefs.getDouble('latitude');
-    prefs.getDouble('longitude');
+    // prefs.getDouble('latitude');
+    // prefs.getDouble('longitude');
 
     final phoneNumber = prefs.getString('phoneNumber') ?? "";
     final code = prefs.getString('code') ?? "";
@@ -172,9 +173,11 @@ class SplashController extends GetxController {
     // Navigate based on token presence
 
     if(isDeepLink){
+       //storage.write('deepLink',false); 
        Get.off(() => ParentOtpScreen(), arguments: {"code": code, "phoneNumber": phoneNumber});
       
     }else if (token.isNotEmpty) {
+       //storage.write('deepLink',false); 
       await _validateTokenAndNavigate();
     }
     else {

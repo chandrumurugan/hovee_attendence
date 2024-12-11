@@ -2,21 +2,21 @@ class UpdateParentStausModel {
 	int? statusCode;
 	bool? success;
 	String? message;
-	Data? data;
+	ParentData? data;
 	Location? location;
 	String? sId;
-	List<String>? userId;
+	// List<String>? userId;
 
-	UpdateParentStausModel({this.statusCode, this.success, this.message, this.data, this.location, this.sId, this.userId});
+	UpdateParentStausModel({this.statusCode, this.success, this.message, this.data, this.location, this.sId,});
 
 	UpdateParentStausModel.fromJson(Map<String, dynamic> json) {
 		statusCode = json['statusCode'];
 		success = json['success'];
 		message = json['message'];
-		data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+		data = json['data'] != null ? new ParentData.fromJson(json['data']) : null;
 		location = json['location'] != null ? new Location.fromJson(json['location']) : null;
 		sId = json['_id'];
-		userId = json['userId'].cast<String>();
+		// userId = json['userId'].cast<String>();
 	}
 
 	Map<String, dynamic> toJson() {
@@ -31,12 +31,12 @@ class UpdateParentStausModel {
       data['location'] = this.location!.toJson();
     }
 		data['_id'] = this.sId;
-		data['userId'] = this.userId;
+		// data['userId'] = this.userId;
 		return data;
 	}
 }
 
-class Data {
+class ParentData {
 	String? sId;
 	String? firstName;
 	String? lastName;
@@ -61,9 +61,9 @@ class Data {
 	String? createdAt;
 	String? token;
 
-	Data({this.sId, this.firstName, this.lastName, this.wowId, this.email, this.dob, this.address, this.phoneNumber, this.pincode, this.doorNo, this.street, this.city, this.state, this.country, this.latitude, this.longitude, this.parentRegister, this.otp, this.accountVerificationToken, this.isActive, this.isDeleted, this.createdAt, this.token});
+	ParentData({this.sId, this.firstName, this.lastName, this.wowId, this.email, this.dob, this.address, this.phoneNumber, this.pincode, this.doorNo, this.street, this.city, this.state, this.country, this.latitude, this.longitude, this.parentRegister, this.otp, this.accountVerificationToken, this.isActive, this.isDeleted, this.createdAt, this.token});
 
-	Data.fromJson(Map<String, dynamic> json) {
+	ParentData.fromJson(Map<String, dynamic> json) {
 		sId = json['_id'];
 		firstName = json['first_name'];
 		lastName = json['last_name'];

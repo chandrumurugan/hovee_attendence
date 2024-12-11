@@ -135,16 +135,17 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _appLinks = AppLinks();
-    initDeepLinks(); //stream listen
-    _handleInitialUri();
+    _streamLink(); //stream listen
+    _intialLink();
   }
 
-  Future<void> _handleInitialUri() async {
+  Future<void> _intialLink() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
        final storage = GetStorage();
     if (!_initialUriIsHandled) {
       _initialUriIsHandled = true;
       try {
+     //_initialUri=  Uri.tryParse('https://express.insakal.com/parent-login?code=e84ac7f93efec4e70def8b288946518b%3A1570ac303ecb547e71d9e693d6e40681&phoneNumber=1233211233');
         _initialUri = await _appLinks.getInitialLink();
         if (_initialUri != null) {
           final parsedData = _parseDeepLink(_initialUri!);
@@ -164,11 +165,11 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void initDeepLinks() async {
+  void _streamLink() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final storage = GetStorage();
         // prefs.setBool("deepLink", true);
-           storage.write('deepLink', false); 
+           //storage.write('deepLink', false); 
 
     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
       final parsedData = _parseDeepLink(uri);
@@ -194,26 +195,44 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  // Map<String, String>? _parseDeepLink(Uri uri) {
+  //   try {
+  //     final code = uri.queryParameters['code']?.split('/phone').first;
+  //     final phoneDetails = uri.queryParameters['code']?.split('/phone').last;
+
+  //     String? phoneNumber;
+  //     if (phoneDetails != null && phoneDetails.startsWith('?')) {
+  //       phoneNumber = Uri.parse('https://dummy$phoneDetails')
+  //           .queryParameters['phoneNumber'];
+  //     }
+
+  //     if (code != null && phoneNumber != null) {
+  //       return {'code': code, 'phoneNumber': phoneNumber};
+  //     }
+  //   } catch (e) {
+  //     Logger().e(e);
+  //     // print("Error parsing deep link: $e");
+  //   }
+  //   return null;
+  // }
   Map<String, String>? _parseDeepLink(Uri uri) {
-    try {
-      final code = uri.queryParameters['code']?.split('/phone').first;
-      final phoneDetails = uri.queryParameters['code']?.split('/phone').last;
+  try {
+    // Extract the "code" parameter
+    final code = uri.queryParameters['code'];
 
-      String? phoneNumber;
-      if (phoneDetails != null && phoneDetails.startsWith('?')) {
-        phoneNumber = Uri.parse('https://dummy$phoneDetails')
-            .queryParameters['phoneNumber'];
-      }
+    // Extract the "phoneNumber" parameter directly
+    final phoneNumber = uri.queryParameters['phoneNumber'];
 
-      if (code != null && phoneNumber != null) {
-        return {'code': code, 'phoneNumber': phoneNumber};
-      }
-    } catch (e) {
-      Logger().e(e);
-      // print("Error parsing deep link: $e");
+    // Return both values if they are not null
+    if (code != null && phoneNumber != null) {
+      return {'code': code, 'phoneNumber': phoneNumber};
     }
-    return null;
+  } catch (e) {
+    Logger().e(e); // Log any errors
   }
+  return null; // Return null if parsing fails
+}
+
 
   @override
   void dispose() {

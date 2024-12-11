@@ -4,13 +4,15 @@ class getHomeDashboardTutorModel {
   List<NavbarItems>? navbarItems;
   String? roleName;
   String? roleTypeName;
+  String? partentId;
 
   getHomeDashboardTutorModel(
       {this.statusCode,
       this.studentDetails,
       this.navbarItems,
       this.roleName,
-      this.roleTypeName});
+      this.roleTypeName,
+      this.partentId});
 
   getHomeDashboardTutorModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
@@ -28,6 +30,7 @@ class getHomeDashboardTutorModel {
     }
     roleName = json['roleName'];
     roleTypeName = json['roleTypeName'];
+     partentId = json['partentId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,6 +45,7 @@ class getHomeDashboardTutorModel {
     }
     data['roleName'] = this.roleName;
     data['roleTypeName'] = this.roleTypeName;
+     data['partentId'] = this.partentId;
     return data;
   }
 }
