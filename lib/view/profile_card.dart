@@ -11,7 +11,8 @@ class HomePageHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthControllers authController = Get.put(AuthControllers());
-       final parentController = Get.find<ParentDashboardController>();
+      // final parentController = Get.find<ParentDashboardController>();
+       final ParentDashboardController parentController = Get.put(ParentDashboardController(),permanent: true );
       // final ParentDashboardController  parentController =Get.put(ParentDashboardController());
    return   Container(
             padding: const EdgeInsets.fromLTRB(20, 5, 20, 40),
@@ -63,13 +64,16 @@ class HomePageHeader extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 userType=='Parent'?
-                                 Text(
-                                    '${parentController.loginData!.value.firstName ?? ""} ${parentController.loginData!.value.lastName ?? ""}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 20.0,
-                                      color: Colors.white,
-                                    )):
+                                Obx(() {
+                                   return Text(
+                                      '${parentController.loginData!.value.firstName ?? ""} ${parentController.loginData!.value.lastName ?? ""}',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 20.0,
+                                        color: Colors.white,
+                                      ));
+                                } ):
+                                
                                 Text(
                                     '${authController.loginData!.firstName} ${authController.loginData!.lastName}',
                                     style: const TextStyle(

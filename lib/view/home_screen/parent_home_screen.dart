@@ -34,21 +34,23 @@ class ParentView extends StatefulWidget {
   State<ParentView> createState() => _ParentViewState();
 }
 
-class _ParentViewState extends State<ParentView> {
+class _ParentViewState extends State<ParentView>with  AutomaticKeepAliveClientMixin  {
+   @override
+  bool get wantKeepAlive => true;
   // final FirestoreService _locationService = FirestoreService();
   final NotificationController noticontroller =
       Get.put(NotificationController());
 
-          final ParentDashboardController controller = Get.put(ParentDashboardController(), );
+          final ParentDashboardController controller = Get.put(ParentDashboardController(),permanent: true );
 
   // String? wowId, firstName;
 
-
+  
   void fetchHomeDashboardTuteeList() async {
     try {
-      setState(() {
-       controller.   isLoading (true);
-      });
+     // setState(() {
+       controller.isLoading (true);
+     // });
     
       var homeDashboardResponse = await WebService.fetchHomeDashboardParentList();
       if (homeDashboardResponse != null) {
@@ -68,6 +70,7 @@ class _ParentViewState extends State<ParentView> {
             wowId: homeDashboardResponse.partentId!.wowId,
             id: homeDashboardResponse.partentId!.id
           );
+          print( controller.loginData.value);
       }
     } catch (e) {
       // Get.snackbar('Failed to fetch batches');

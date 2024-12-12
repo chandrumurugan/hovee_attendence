@@ -239,7 +239,7 @@ class ParentOtpScreen extends StatelessWidget {
     content: Column(
       mainAxisSize: MainAxisSize.min, // To avoid stretching the dialog unnecessarily
       children: [
-               _buildRow('Tutee name',  '${value.userDetail!.firstName} $value.userDetail!.lastName}',),
+               _buildRow('Tutee name',  '${value.userDetail!.firstName} ${value.userDetail!.lastName}',),
                                             _buildRow('Wow ID',value.userDetail!.wowId),
                                             _buildRow('Email', value.userDetail!.email),
                                              _buildRow('Phone number', '${value.userDetail!.phoneNumber}',),
