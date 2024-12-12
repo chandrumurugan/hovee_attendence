@@ -20,8 +20,8 @@ import 'package:table_calendar/table_calendar.dart';
 class TuteeAttendanceList extends StatelessWidget {
   final String type;
   final StudentAttendanceController controller;
-
-  TuteeAttendanceList({super.key, required this.type})
+    final String? firstname,lastname,wowid;
+  TuteeAttendanceList({super.key, required this.type, this.firstname, this.lastname, this.wowid})
       : controller = Get.put(StudentAttendanceController());
   final MspController mspController = Get.put(MspController());
   @override
@@ -32,6 +32,9 @@ class TuteeAttendanceList extends StatelessWidget {
         navigateTo: () {
           Get.offAll(DashboardScreen(
             rolename: type,
+            firstname: firstname??'',
+            lastname: lastname??'',
+            wowid: wowid??'',
           ));
         },
       ),

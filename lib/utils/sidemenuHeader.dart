@@ -15,19 +15,19 @@ class SidemenuHeader extends StatelessWidget {
       required this.userName,
       required this.wowID,
       required this.rating,
-      required this.isGuest, this.type});
+      required this.isGuest, this.type, this.firstname, this.lastname, this.wowid});
   final String userName;
   final String wowID;
   final bool isGuest;
   final String rating;
   final String? type;
-  // final String image;
+    final String? firstname,lastname,wowid;
   GlobalKey<ScaffoldState> sidemenuKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthControllers>();
-     final parentController = Get.find<ParentDashboardController>();
+     //final parentController = Get.find<ParentAccountSetupController>();
       //  final ParentDashboardController  parentController =Get.put(ParentDashboardController());
     return Container(
       key: sidemenuKey,
@@ -90,7 +90,7 @@ class SidemenuHeader extends StatelessWidget {
               type!.isNotEmpty?
                Text(
                   isGuest ? "Guest" :
-                                    '${parentController.loginData.value.firstName} ${parentController.loginData!.value.lastName}',
+                                    '${firstname} ${lastname}',
                   style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -120,8 +120,16 @@ class SidemenuHeader extends StatelessWidget {
                     Container(
                       //color: Colors.amberAccent,
                       width: 180,
-                      // width: MediaQuery.of(context).size.width * 0.02,
-                      child: Text(
+                     child:  type!.isNotEmpty?
+               Text(
+                  isGuest ? "Guest" :
+                                    '${wowid}',
+                  style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 20),
+                ):
+                       Text(
                         isGuest ? "xxxxxxx" :
                         authController.loginData!=null?'${authController.loginData!.wowId}':'',
                         overflow: TextOverflow.clip,

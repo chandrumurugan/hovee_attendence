@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:five_pointed_star/five_pointed_star.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/modals/guestHome_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/view/Tutee/tutee_courseList.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
@@ -23,6 +25,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
   bool isLoading = false;
   Data? guestHomeData;
   int mycount = 0; 
+   int _currentIndexSlider = 0;
   @override
   void initState() {
     super.initState();
@@ -43,6 +46,27 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
       // guestHomeData.teacherList
     }
   }
+
+   final List<Map<String, String>> testimonials = [
+    {
+      "name": "John Hook",
+      "location": "Chennai",
+      "image": "assets/tutorHomeImg/Rectangle 18373.png", // Replace with your image URL
+      "text": "It is a long-established fact that a reader will be distracted by the readable content of a page when looking."
+    },
+    {
+      "name": "Jane Doe",
+      "location": "Mumbai",
+      "image": "assets/tutorHomeImg/Rectangle 18373.png",
+      "text": "The quick brown fox jumps over the lazy dog, providing an example of a sentence that uses every letter."
+    },
+    {
+      "name": "Emily Smith",
+      "location": "Bangalore",
+      "image": "assets/tutorHomeImg/Rectangle 18373.png",
+      "text": "Flutter is an open-source UI software development toolkit created by Google."
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -208,13 +232,13 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Text(
-                                "see all",
-                                style: GoogleFonts.nunito(
-                                    color: const Color(0xFFFF9900),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w700),
-                              ),
+                              // Text(
+                              //   "see all",
+                              //   style: GoogleFonts.nunito(
+                              //       color: const Color(0xFFFF9900),
+                              //       fontSize: 13,
+                              //       fontWeight: FontWeight.w700),
+                              // ),
                             ],
                           ),
                         ),
@@ -365,12 +389,19 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Text(
-                                "see all",
-                                style: GoogleFonts.nunito(
-                                    color: const Color(0xFFFF9900),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w700),
+                              InkWell(
+                                onTap: (){
+                                  //  Get.to(() => const GetTopicsCourses(
+                                  //         type: 'Parent',
+                                  //       ));
+                                },
+                                child: Text(
+                                  "See all",
+                                  style: GoogleFonts.nunito(
+                                      color: const Color(0xFFFF9900),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700),
+                                ),
                               ),
                             ],
                           ),
@@ -493,69 +524,200 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Card(
-                          elevation: 10,
-                          shadowColor: Colors.black,
-                          surfaceTintColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                              color: Colors.transparent, // Highlight condition
-                              width: 2, // Border width
-                            ),
-                            borderRadius:
-                                BorderRadius.circular(8), // Rounded border
-                          ),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                // CircleAvatar(
-                                //   radius: 40,
-                                //   child: Icon(
-                                //     Icons.person,
-                                //     size: 20,
-                                //     color: Colors.black,
-                                //   ),
+                        // Card(
+                        //   elevation: 10,
+                        //   shadowColor: Colors.black,
+                        //   surfaceTintColor: Colors.white,
+                        //   shape: RoundedRectangleBorder(
+                        //     side: const BorderSide(
+                        //       color: Colors.transparent, // Highlight condition
+                        //       width: 2, // Border width
+                        //     ),
+                        //     borderRadius:
+                        //         BorderRadius.circular(8), // Rounded border
+                        //   ),
+                        //   child: Container(
+                        //     padding: const EdgeInsets.symmetric(
+                        //         horizontal: 12, vertical: 10),
+                            // child: Row(
+                            //   mainAxisAlignment: MainAxisAlignment.start,
+                            //   children: [
+                            //     // CircleAvatar(
+                            //     //   radius: 40,
+                            //     //   child: Icon(
+                            //     //     Icons.person,
+                            //     //     size: 20,
+                            //     //     color: Colors.black,
+                            //     //   ),
+                            //     // ),
+                                // Image.asset(
+                                //   'assets/tutorHomeImg/Rectangle 18373.png',
+                                //   //color: Colors.white,
+                                //   height: 60,
                                 // ),
-                                Image.asset(
-                                  'assets/tutorHomeImg/Rectangle 18373.png',
-                                  //color: Colors.white,
-                                  height: 60,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                const Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            //     const SizedBox(
+                            //       width: 8,
+                            //     ),
+                            //     const Column(
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment.spaceBetween,
+                            //       crossAxisAlignment: CrossAxisAlignment.start,
+                            //       children: [
+                            //         Text(
+                            //           'John Hook',
+                            //           style: TextStyle(
+                            //             fontWeight: FontWeight.w400,
+                            //             fontSize: 20.0,
+                            //             color: Colors.black,
+                            //           ),
+                            //         ),
+                            //         Text(
+                            //           'It is a long established fact that a reader\nwill be distracted by the readable content\nof a page when looking at its layout.',
+                            //           style: TextStyle(
+                            //             fontWeight: FontWeight.w400,
+                            //             fontSize: 14.0,
+                            //             color: Colors.black,
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     )
+                            //   ],
+                            // ),
+                        //   ),
+                        // ),]
+CarouselSlider(
+            options: CarouselOptions(
+              height: MediaQuery.of(context).size.height * 0.2,
+              enableInfiniteScroll: false,
+              enlargeCenterPage: true,
+              viewportFraction: 0.9,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _currentIndexSlider = index;
+                });
+              },
+            ),
+            items: testimonials.map((testimonial) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                    padding: EdgeInsets.all(16),
+                    margin: EdgeInsets.symmetric(horizontal: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4,
+                          offset: Offset(2, 2),
+                        ),
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Stack(
                                   children: [
-                                    Text(
-                                      'John Hook',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 20.0,
-                                        color: Colors.black,
+                                    CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                        testimonial["image"]!,
                                       ),
+                                      radius: 40,
                                     ),
-                                    Text(
-                                      'It is a long established fact that a reader\nwill be distracted by the readable content\nof a page when looking at its layout.',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14.0,
-                                        color: Colors.black,
+                                    Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: CircleAvatar(
+                                        backgroundColor: Colors.orange,
+                                        radius: 10,
+                                        child: Icon(
+                                          Icons.format_quote,
+                                          size: 12,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
                                   ],
-                                )
+                                ),
+                                SizedBox(width: 10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          testimonial["name"]!,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          testimonial["location"]!,
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey[600],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                              0.5,
+                                      child: Text(
+                                        testimonial["text"]!,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[600],
+                                        ),
+                                        maxLines: 4,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
-                          ),
+                          ],
                         ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            }).toList(),
+          ),
+          SizedBox(height: 16),
+          // Indicator
+          Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        testimonials.length,
+        (index) => AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          margin: EdgeInsets.symmetric(horizontal: 4),
+          width: _currentIndexSlider == index ? 12 : 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: _currentIndexSlider == index ? Colors.red : Colors.grey,
+            borderRadius: BorderRadius.circular(4),
+          
+          ),
+        ),
+      ),
+    ),
+    SizedBox(width: 16), // Add spacing between dots and the count
+    // Numeric Indicator
 
-                        Padding(
+
+                      Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
                           child: Container(
                             // height: 80,
@@ -577,7 +739,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                         fit: BoxFit.cover,
                                       ),
                               ),
-                              const SizedBox(width: 10,),
+                              const SizedBox(width: 20,),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -592,13 +754,12 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
-                                      child: const Text(
+                                      child:  Text(
                                         'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 14.0,
-                                          color: Colors.black,
-                                        ),
+                                        style:  GoogleFonts.nunito(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400)
                                       ),
                                     ),
 

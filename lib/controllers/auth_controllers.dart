@@ -234,12 +234,21 @@ class AuthControllers extends GetxController
         if (response != null) {
           Logger().i(response.data);
           otpResponse.value = response;
+         if( response.data!.roles!.roleName=='Parent'){
+          prefs.setString('PrentToken', response.token!);
+         }else{
           prefs.setString('Token', response.token!);
+         }
           prefs.setString('Rolename', response.data!.roles!.roleName??'');
            var validateTokendata = response.data!;
             //if(response.parentData=='true'){
               // parentController.fetchHomeDashboardTuteeList();
+               if( response.data!.roles!.roleName=='Parent'){
+         
                parentController. getUserTokenList(response.data!.sId!);
+               }else{
+                
+               }
            // }
         
           LoginData loginData = LoginData(

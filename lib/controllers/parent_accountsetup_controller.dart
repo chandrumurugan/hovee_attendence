@@ -225,7 +225,7 @@ class ParentAccountSetupController extends GetxController
         if (response != null) {
           registerResponse.value = response;
          var validateTokendata = response.data!;
-            await prefs.setString('Token',response.data!.token ?? "") ;
+            await prefs.setString('PrentToken',response.data!.token ?? "") ;
             //if(response.parentData=='true'){
           isLoading.value = false;
           Get.dialog(
@@ -317,8 +317,7 @@ class ParentAccountSetupController extends GetxController
 
       if (response != null && response.statusCode == 200) {
          parentdata =response.data;
-         parentController.getUserTokenList(response.data!.sId!);
-        //  parentDController.getUserTokenList(response.data!.sId!);
+         parentController.getUserTokenList(parentId);
         //  parentDController.fetchHomeDashboardTuteeList();
         
          loginData = LoginData(
@@ -340,7 +339,7 @@ class ParentAccountSetupController extends GetxController
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
         );
-        Get.off(() => DashboardScreen(rolename: 'Parent'));
+        Get.off(() => DashboardScreen(rolename: 'Parent',firstname:parentdata!.firstName,lastname: parentdata!.lastName,wowid: parentdata!.wowId,));
       } else {
         Get.snackbar(
           icon: const Icon(

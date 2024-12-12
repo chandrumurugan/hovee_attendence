@@ -212,8 +212,13 @@ class SplashController extends GetxController {
 
         // Navigate to Dashboard
         final roleName = response.roleName ?? 'Guest';
-        parentController.getUserTokenList(response.data!.sId!);
-        Get.off(() => DashboardScreen(rolename: roleName));
+         if( response.roleName=='Parent'){
+         
+               parentController. getUserTokenList(response.data!.sId!);
+               }else{
+                
+               }
+        Get.off(() => DashboardScreen(rolename: roleName,firstname: validateTokenData.firstName,lastname: validateTokenData.lastName,wowid:validateTokenData.wowId));
       } else {
         // Token invalid, navigate to Login/Signup
         Get.off(() => const LoginSignUp());

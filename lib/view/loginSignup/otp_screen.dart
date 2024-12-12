@@ -321,7 +321,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                                         }else{
                                                           Get.offAll(() =>
                                                               DashboardScreen(rolename: value.data!.roles!
-                                                                .roleName!,));
+                                                                .roleName!,firstname: value.data!.firstName,lastname: value.data!.lastName,wowid: value.data!.wowId,));
                                                         }
                                                         //  :
                                                         // Get.offAll(() => const RoleSelection());

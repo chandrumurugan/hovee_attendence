@@ -9,7 +9,8 @@ import 'package:hovee_attendence/view/dashboard_screen.dart';
 
 class TrackTuteeLocation extends StatelessWidget {
     final String type;
-  TrackTuteeLocation({super.key, required this.type});
+      final String? firstname,lastname,wowid;
+  TrackTuteeLocation({super.key, required this.type, this.firstname, this.lastname, this.wowid});
 
   final controller = Get.put(TrackTuteeLocationController());
 
@@ -19,7 +20,7 @@ class TrackTuteeLocation extends StatelessWidget {
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
-          Get.offAll(DashboardScreen(rolename: type,));
+          Get.offAll(DashboardScreen(rolename: type,firstname: firstname??'',lastname: lastname??'',wowid: wowid??'',));
         },
       ),
       body: Obx(() {

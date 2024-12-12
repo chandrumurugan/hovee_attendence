@@ -48,8 +48,8 @@ class ValidateTokenData {
   String? phoneNumber;
   int? pincode;
   int? userType;
-  Null? otp;
-  Null? accountVerificationToken;
+  // Null? otp;
+  // Null? accountVerificationToken;
   bool? accountVerified;
   bool? accountSetup;
   String? doorNo;
@@ -85,8 +85,8 @@ class ValidateTokenData {
       this.phoneNumber,
       this.pincode,
       this.userType,
-      this.otp,
-      this.accountVerificationToken,
+     // this.otp,
+      //this.accountVerificationToken,
       this.accountVerified,
       this.accountSetup,
       this.doorNo,
@@ -124,8 +124,8 @@ class ValidateTokenData {
     phoneNumber = json['phone_number'];
     pincode = json['pincode'];
     userType = json['user_type'];
-    otp = json['otp'];
-    accountVerificationToken = json['account_verification_token'];
+    //otp = json['otp'] ?? "";
+   // accountVerificationToken = json['account_verification_token'];
     accountVerified = json['account_verified'];
     accountSetup = json['account_setup'];
     doorNo = json['door_no'];
@@ -165,8 +165,8 @@ class ValidateTokenData {
     data['phone_number'] = this.phoneNumber;
     data['pincode'] = this.pincode;
     data['user_type'] = this.userType;
-    data['otp'] = this.otp;
-    data['account_verification_token'] = this.accountVerificationToken;
+    // data['otp'] = this.otp;
+    // data['account_verification_token'] = this.accountVerificationToken;
     data['account_verified'] = this.accountVerified;
     data['account_setup'] = this.accountSetup;
     data['door_no'] = this.doorNo;

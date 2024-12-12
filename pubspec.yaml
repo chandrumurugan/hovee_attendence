@@ -72,6 +72,7 @@ dependencies:
   five_pointed_star: ^1.0.3
   collection: ^1.17.0
   restart_app: ^1.2.1
+  carousel_slider:
 
 dev_dependencies:
   flutter_test:

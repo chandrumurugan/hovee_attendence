@@ -17,7 +17,8 @@ import 'package:share_plus/share_plus.dart';
 
 class DashboardScreen extends StatelessWidget {
   final String rolename;
-  DashboardScreen({Key? key, required this.rolename}) : super(key: key);
+  final String? firstname,lastname,wowid;
+  DashboardScreen({Key? key, required this.rolename, this.firstname, this.lastname, this.wowid}) : super(key: key);
 
   final DashboardController controller = Get.put(DashboardController());
 
@@ -139,7 +140,7 @@ class DashboardScreen extends StatelessWidget {
       else if (rolename=='Tutor')
         TutorHome()
       else if(rolename=='Parent')
-        ParentView(userId: '',rolename: 'Parent',),
+        ParentView(userId: '',rolename: 'Parent',firstname: firstname,lastname: lastname,wowid: wowid,),
         Tutorenquirlist(type: rolename, fromBottomNav: false,),
         EnrollmentScreen(type: rolename, fromBottomNav: false,),
       Center(child: Text("Feature under development")),

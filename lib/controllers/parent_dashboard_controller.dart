@@ -11,7 +11,7 @@ class ParentDashboardController extends GetxController {
   var isLoading = false.obs;
   var homeDashboardNavList = <NavbarItem>[].obs;
   var homeDashboardCourseList = <CourseList?>[].obs;
-  var studentDetails = <StudentDetails>[].obs;
+  //var studentDetails = <StudentDetails>[].obs;
   var notificationCount = 0.obs;
   var selectedIndex = 0.obs;
   var userDetails = <UserId>[].obs;

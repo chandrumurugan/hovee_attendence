@@ -14,7 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SideMenu extends StatelessWidget {
   final bool isGuest;
  final String? type;
-  SideMenu({super.key, required this.isGuest,  this.type});
+   final String? firstname,lastname,wowid;
+  SideMenu({super.key, required this.isGuest,  this.type, this.firstname, this.lastname, this.wowid});
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +33,12 @@ class SideMenu extends StatelessWidget {
             SidemenuHeader(
               isGuest: isGuest,
               userName: isGuest ? "Guest" : 'Justin Joe',
-              wowID: isGuest ? "xxxxx" : '1234567',
+              wowID: isGuest ? "ID:xxxxx" : '1234567',
               rating: isGuest ? '0/5' : '3/5',
               type: type??"",
+              firstname: firstname,
+              lastname: lastname,
+              wowid: wowid,
             ),
             const SizedBox(
               height: 10,
@@ -108,7 +112,7 @@ class SideMenu extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
-             if (!isGuest)
+             if (!isGuest ||type=='Tutee')
 ListTile(
   onTap: () {
     // Close the side menu
