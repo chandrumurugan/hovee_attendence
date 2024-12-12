@@ -33,6 +33,7 @@ import 'package:hovee_attendence/widget/gifController.dart';
 import 'package:hovee_attendence/widget/subjectContainer.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class TuteeHome extends StatelessWidget {
   const TuteeHome({super.key});
@@ -229,7 +230,8 @@ class TuteeHome extends StatelessWidget {
                                         .map((batch) => batch.batchName ?? '')
                                         .toSet() // Remove duplicates
                                         .toList(),
-                                    initialItem: controller1.selectedBatchIN.value?.batchName,
+                                    initialItem: controller1
+                                        .selectedBatchIN.value?.batchName,
                                     onChanged: (String? selectedValue) {
                                       if (selectedValue != null) {
                                         final selectedBatch =
@@ -353,6 +355,12 @@ class TuteeHome extends StatelessWidget {
                       if (controller.isLoading.value) {
                         return const SizedBox.shrink();
                       }
+                      final filteredList = controller.homeDashboardNavList.value
+                          .where((item) => item.name != 'Dashboard')
+                          .toList();
+                      if (filteredList.isEmpty) {
+                        return Center(child: Text('No items to display'));
+                      }
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -366,127 +374,136 @@ class TuteeHome extends StatelessWidget {
                                   color: Colors.black),
                             ),
                           ),
-                          GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 1.0,
-                                    crossAxisCount: 3,
-                                    mainAxisSpacing: 10,
-                                    crossAxisSpacing: 10 // Number of columns
-                                    ),
-                            itemBuilder: (context, int index) {
-                              final filteredList = controller
-                                  .homeDashboardNavList.value
-                                  .where((item) => item.name != 'Dashboard')
-                                  .toList();
-                              final item = filteredList[index];
-                              Color myColor = Color(
-                                int.parse((item.color ?? "#FFFFFF")
-                                    .replaceAll("#", "0xFF")),
-                              );
-
-                              return InkWell(
-                                onTap: () {
-                                  if (item.name == 'Course list') {
-                                    var box = GetStorage();
-                                    Logger().i("${box.read('Token')}");
-                                    Get.to(() => const GetTopicsCourses(
-                                          type: 'Tutee',
-                                        ));
-                                  }
-                                  if (item.name == 'Enquires') {
-                                    classController.onInit();
-                                    Get.to(() => Tutorenquirlist(
-                                          type: 'Tutee',
-                                          fromBottomNav: true,
-                                        ));
-                                  }
-                                  if (item.name == 'Enrollments') {
-                                    enrollmentController.onInit();
-                                    Get.to(() => EnrollmentScreen(
-                                          type: 'Tutee',
-                                          fromBottomNav: true,
-                                        ));
-                                  }
-                                  if (item.name == 'Attendance') {
-                                    Get.to(
-                                        () => TuteeAttendanceList(
-                                              type: 'Tutee',
-                                            ),
-                                        arguments: "Tutee");
-                                  }
-                                  if (item.name == 'Leave') {
-                                    Get.to(() =>  TuteeLeaveScreen(
-                                          type: 'Tutee', fromBottomNav: true,
-                                        ));
-                                  }
-                                  if (item.name == 'Miss Punch') {
-                                    Get.to(() =>  MspScreen(
-                                          type: 'Tutee', fromBottomNav: true,
-                                        ));
-                                  }
+                          Animate(
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      childAspectRatio: 1.0,
+                                      crossAxisCount: 3,
+                                      mainAxisSpacing: 10,
+                                      crossAxisSpacing: 10 // Number of columns
+                                      ),
+                              itemBuilder: (context, int index) {
+                                // final filteredList = controller
+                                //     .homeDashboardNavList.value
+                                //     .where((item) => item.name != 'Dashboard')
+                                //     .toList();
+                                final item = filteredList[index];
+                                Color myColor = Color(
+                                  int.parse((item.color ?? "#FFFFFF")
+                                      .replaceAll("#", "0xFF")),
+                                );
+                            
+                                return InkWell(
+                                  onTap: () {
+                                    if (item.name == 'Course list') {
+                                      var box = GetStorage();
+                                      Logger().i("${box.read('Token')}");
+                                      Get.to(() => const GetTopicsCourses(
+                                            type: 'Tutee',
+                                          ));
+                                    }
+                                    if (item.name == 'Enquires') {
+                                      classController.onInit();
+                                      Get.to(() => Tutorenquirlist(
+                                            type: 'Tutee',
+                                            fromBottomNav: true,
+                                          ));
+                                    }
+                                    if (item.name == 'Enrollments') {
+                                      enrollmentController.onInit();
+                                      Get.to(() => EnrollmentScreen(
+                                            type: 'Tutee',
+                                            fromBottomNav: true,
+                                          ));
+                                    }
+                                    if (item.name == 'Attendance') {
+                                      Get.to(
+                                          () => TuteeAttendanceList(
+                                                type: 'Tutee',
+                                              ),
+                                          arguments: "Tutee");
+                                    }
+                                    if (item.name == 'Leave') {
+                                      Get.to(() => TuteeLeaveScreen(
+                                            type: 'Tutee',
+                                            fromBottomNav: true,
+                                          ));
+                                    }
+                                    if (item.name == 'Miss Punch') {
+                                      Get.to(() => MspScreen(
+                                            type: 'Tutee',
+                                            fromBottomNav: true,
+                                          ));
+                                    }
                                     if (item.name == 'Holiday') {
-                                        Get.to(() =>
-                                             TuteeHolidayScreen(type: 'Tutee'));
-                                      } 
-                                        if (item.name == 'Announcement') {
-                                    Get.to(() =>  AnnouncementScreen(
-                                          type: 'Tutee',
-                                        ));
-                                  }
-                                },
-                                child: Card(
-                                  elevation: 10,
-                                  shadowColor: Colors.grey,
-                                  surfaceTintColor: Colors.white,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: const Color.fromRGBO(
-                                            246, 244, 254, 1)),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 10),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              color: myColor),
-                                          child: item.image != null
-                                              ? Image.asset(
-                                                  item.image!,
-                                                  color: Colors.white,
-                                                  height: 30,
-                                                )
-                                              : const SizedBox.shrink(),
-                                        ),
-                                        SizedBox(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: Text(
-                                            item.name!,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.center,
+                                      Get.to(() =>
+                                          TuteeHolidayScreen(type: 'Tutee'));
+                                    }
+                                    if (item.name == 'Announcement') {
+                                      Get.to(() => AnnouncementScreen(
+                                            type: 'Tutee',
+                                          ));
+                                    }
+                                  },
+                                  child: Card(
+                                    elevation: 10,
+                                    shadowColor: Colors.grey,
+                                    surfaceTintColor: Colors.white,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          color: const Color.fromRGBO(
+                                              246, 244, 254, 1)),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 10),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: myColor),
+                                            child: item.image != null
+                                                ? Image.asset(
+                                                    item.image!,
+                                                    color: Colors.white,
+                                                    height: 30,
+                                                  )
+                                                : const SizedBox.shrink(),
                                           ),
-                                        )
-                                      ],
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: Text(
+                                              item.name!,
+                                              overflow: TextOverflow.ellipsis,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                            itemCount: controller.homeDashboardNavList.value
-                                .where((item) => item.name != 'Dashboard')
-                                .length,
-                          ),
+                                )
+                                  
+                                  ;
+                              },
+                              itemCount: controller.homeDashboardNavList.value
+                                  .where((item) => item.name != 'Dashboard')
+                                  .length,
+                            ),
+                          ) .animate().shimmer().slide()
+                                  ,
                         ],
                       );
                     }),

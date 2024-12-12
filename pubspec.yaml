@@ -73,6 +73,8 @@ dependencies:
   collection: ^1.17.0
   restart_app: ^1.2.1
   carousel_slider:
+  android_intent_plus: ^5.2.0
+  flutter_animate: ^4.5.2
 
 dev_dependencies:
   flutter_test:

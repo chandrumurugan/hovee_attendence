@@ -14,7 +14,9 @@ import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TuteeHomeController extends GetxController {
+class TuteeHomeController extends GetxController with GetSingleTickerProviderStateMixin{
+
+  late AnimationController animationController;
   GlobalKey<ScaffoldState> tuteeScaffoldKey = GlobalKey<ScaffoldState>();
   var attendanceCourseList = [].obs;
   var isLoading = true.obs;
@@ -111,6 +113,10 @@ class TuteeHomeController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+        animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
     startTrackingTuteeLocation();
     fetchHomeDashboardTuteeList();
     //fetchNotificationsType();
@@ -220,5 +226,12 @@ class TuteeHomeController extends GetxController {
     );
 
     return distance > 10; // Update only if moved >10m
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+     animationController.dispose();
   }
 }
