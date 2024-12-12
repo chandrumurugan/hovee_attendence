@@ -17,6 +17,54 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.1"
+  alert_banner:
+    dependency: "direct main"
+    description:
+      name: alert_banner
+      sha256: b290fb6e97c4f18e5f9369b1edeb1f7bea416ae7327fcde15342ad7723b9c7e2
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
+  animated_custom_dropdown:
+    dependency: "direct main"
+    description:
+      name: animated_custom_dropdown
+      sha256: "5a72dc209041bb53f6c7164bc2e366552d5197cdb032b1c9b2c36e3013024486"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.1"
+  app_links:
+    dependency: "direct main"
+    description:
+      name: app_links
+      sha256: ad1a6d598e7e39b46a34f746f9a8b011ee147e4c275d407fa457e7a62f84dd99
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.3.2"
+  app_links_linux:
+    dependency: transitive
+    description:
+      name: app_links_linux
+      sha256: f5f7173a78609f3dfd4c2ff2c95bd559ab43c80a87dc6a095921d96c05688c81
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
+  app_links_platform_interface:
+    dependency: transitive
+    description:
+      name: app_links_platform_interface
+      sha256: "05f5379577c513b534a29ddea68176a4d4802c46180ee8e2e966257158772a3f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
+  app_links_web:
+    dependency: transitive
+    description:
+      name: app_links_web
+      sha256: af060ed76183f9e2b87510a9480e56a5352b6c249778d07bd2c95fc35632a555
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   args:
     dependency: transitive
     description:
@@ -65,6 +113,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  carousel_slider:
+    dependency: "direct main"
+    description:
+      name: carousel_slider
+      sha256: "7b006ec356205054af5beaef62e2221160ea36b90fb70a35e4deacd49d0349ae"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.0"
   characters:
     dependency: transitive
     description:
@@ -106,7 +162,7 @@ packages:
     source: hosted
     version: "4.3.4"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       sha256: ee67cb0715911d28db6bf4af1026078bd6f0128b07a5f66fb2ed94ec6783c09a
@@ -233,6 +289,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.18.1"
+  firebase_messaging:
+    dependency: "direct main"
+    description:
+      name: firebase_messaging
+      sha256: "4d0968ecb860d7baa15a6e2af3469ec5b0d959e51c59ce84a52b0f7632a4aa5a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "15.1.5"
+  firebase_messaging_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_messaging_platform_interface
+      sha256: a2cb3e7d71d40b6612e2d4e0daa0ae759f6a9d07f693f904d14d22aadf70be10
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.5.48"
+  firebase_messaging_web:
+    dependency: transitive
+    description:
+      name: firebase_messaging_web
+      sha256: "1554e190f0cd9d6fe59f61ae0275ac12006fdb78b07669f1a260d1a9e6de3a1f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.9.4"
+  five_pointed_star:
+    dependency: "direct main"
+    description:
+      name: five_pointed_star
+      sha256: "706e8bccd04ed7fdcb69c124656f94492e3aacc2a0cde8644b3e3ee85e4f9ad1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.3"
   fixnum:
     dependency: transitive
     description:
@@ -464,6 +552,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.10"
+  gtk:
+    dependency: transitive
+    description:
+      name: gtk
+      sha256: e8ce9ca4b1df106e4d72dad201d345ea1a036cc12c360f1a7d5a758f78ffa42c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   html:
     dependency: transitive
     description:
@@ -816,6 +912,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.6.1"
+  restart_app:
+    dependency: "direct main"
+    description:
+      name: restart_app
+      sha256: "00d5ec3e9de871cedbe552fc41e615b042b5ec654385e090e0983f6d02f655ed"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.2"
   rxdart:
     dependency: transitive
     description:
@@ -1230,5 +1334,5 @@ packages:
     source: hosted
     version: "6.5.0"
 sdks:
-  dart: ">=3.5.0 <4.0.0"
+  dart: ">=3.5.1 <4.0.0"
   flutter: ">=3.24.0"

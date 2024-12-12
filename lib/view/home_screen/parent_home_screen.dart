@@ -10,6 +10,7 @@ import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -700,6 +701,17 @@ class _ParentViewState extends State<ParentView> {
                                         ),
                                     arguments: "Parent");
                               }
+                              if (item['title'] == 'Enrollment') {
+                                    //enrollmentController.onInit();
+                                    Get.to(() => EnrollmentScreen(
+                                          type: 'Parent',
+                                          fromBottomNav: true,
+                                          firstname: widget.firstname,
+                                          lastname: widget.lastname,
+                                          wowid: widget.wowid,
+                                        
+                                        ));
+                                  }
                             },
                             child: Card(
                               elevation: 10,

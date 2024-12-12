@@ -16,7 +16,8 @@ import 'package:pinput/pinput.dart';
 class EnrollmentScreen extends StatelessWidget {
   final String type;
   final bool fromBottomNav;
-  EnrollmentScreen({super.key, required this.type,  this.fromBottomNav=true,});
+  final String? firstname,lastname,wowid;
+  EnrollmentScreen({super.key, required this.type,  this.fromBottomNav=true, this.firstname, this.lastname, this.wowid,});
   final EnrollmentController controller = Get.put(EnrollmentController());
    //final NotificationController notificontroller = Get.put(NotificationController());
    final TuteeHomeController attendanceCourseListController = Get.put(TuteeHomeController());
@@ -30,7 +31,7 @@ class EnrollmentScreen extends StatelessWidget {
       appBar: AppBarHeader(
           needGoBack: fromBottomNav,
           navigateTo: () {
-            Get.offAll(DashboardScreen(rolename: type,));
+            Get.offAll(DashboardScreen(rolename: type,firstname: firstname,lastname: lastname,wowid: wowid,));
           }),
       body:  Column(
           crossAxisAlignment: CrossAxisAlignment.start,

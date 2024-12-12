@@ -121,13 +121,13 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             "Our services",
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 17,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
                         Container(
-                          // color: Colors.amber,
-                          height: 230,
+                          //color: Colors.amber,
+                          height: 210,
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: Stack(
                             children: [
@@ -136,7 +136,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                   height: 180,
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
-                                      color: Colors.amber,
+                                      // color: Colors.amber,
                                       borderRadius: BorderRadius.circular(20),
                                       gradient: const LinearGradient(colors: [
                                         Color(0xFFBA0161),
@@ -229,7 +229,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                 "Top Teachers",
                                 style: GoogleFonts.nunito(
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontSize: 17,
                                     fontWeight: FontWeight.bold),
                               ),
                               // Text(
@@ -242,35 +242,46 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             ],
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 10),
-                          height: 80,
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Stack(
-                            clipBehavior: Clip
-                                .none, // Allow the images to overflow the container
-                            children: List.generate(
-                              guestHomeData!
-                                  .teacherList.length, // Use the dynamic length
-                              (index) {
-                                return Positioned(
-                                  left: index *
-                                      70.0, // Adjust the spacing between circles
-                                  child: const CircleAvatar(
-                                    radius: 40,
-                                    backgroundColor: Colors
-                                        .blueAccent, // Add dynamic colors if needed
-                                    backgroundImage: AssetImage(
-                                      'assets/Ellipse 261.png', // Use a dynamic image if required
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        // Container(
+                       Container(
+  margin: const EdgeInsets.only(top: 10),
+  height: 120, // Increased height to accommodate the text
+  width: MediaQuery.of(context).size.width,
+  padding: const EdgeInsets.symmetric(horizontal: 10),
+  child: Stack(
+    clipBehavior: Clip.none, // Allow the images to overflow the container
+    children: List.generate(
+      guestHomeData!.teacherList.length, // Use the dynamic length
+      (index) {
+        return Positioned(
+          left: index * 70.0, // Adjust the spacing between items
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.blueAccent, // Add dynamic colors if needed
+                backgroundImage: AssetImage(
+                  'assets/Ellipse 261.png', // Use a dynamic image if required
+                ),
+              ),
+              const SizedBox(height: 5), // Add spacing between the image and text
+              SizedBox(
+                width: MediaQuery.of(context).size.width*0.2,
+                child: Text(
+                  guestHomeData!.teacherList[index].teacherName, // Dynamic name
+                  style: const TextStyle(fontSize: 14), // Adjust font size if needed
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.clip, // Center align text
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    ),
+  ),
+),
+ // Container(
                         //   margin: const EdgeInsets.only(top: 10),
                         //   height: 80,
                         //   width: MediaQuery.of(context).size.width,
@@ -338,21 +349,21 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                 "Steps to Follow",
                                 style: GoogleFonts.nunito(
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontSize: 17,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Text(
-                                "see all",
-                                style: GoogleFonts.nunito(
-                                    color: const Color(0xFFFF9900),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w700),
-                              ),
+                              // Text(
+                              //   "see all",
+                              //   style: GoogleFonts.nunito(
+                              //       color: const Color(0xFFFF9900),
+                              //       fontSize: 13,
+                              //       fontWeight: FontWeight.w700),
+                              // ),
                             ],
                           ),
                         ),
                         Container(
-                          height: 290,
+                          height: 270,
           decoration: BoxDecoration(
             color: Colors.white,
            // border: Border.all(color: Colors.blue, width: 2),
@@ -378,7 +389,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10),
+                              horizontal: 10,vertical: 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -386,14 +397,13 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                 "Our courses",
                                 style: GoogleFonts.nunito(
                                     color: Colors.black,
-                                    fontSize: 16,
+                                    fontSize: 17,
                                     fontWeight: FontWeight.bold),
                               ),
                               InkWell(
                                 onTap: (){
-                                  //  Get.to(() => const GetTopicsCourses(
-                                  //         type: 'Parent',
-                                  //       ));
+                                   Get.to(() => LoginSignUp(
+                                        ));
                                 },
                                 child: Text(
                                   "See all",
@@ -406,6 +416,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 10,),
                         Container(
                             height: 220,
                             width: MediaQuery.of(context).size.width,
@@ -467,12 +478,12 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                 ),
                                                 Text("${course!.batchName}",
                                                     style: GoogleFonts.nunito(
-                                                        fontSize: 12,
+                                                        fontSize: 16,
                                                         fontWeight:
                                                             FontWeight.w600)),
                                                 Text("${course!.subject}",
                                                     style: GoogleFonts.nunito(
-                                                        fontSize: 10,
+                                                        fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.w400)),
                                                             SizedBox(height: 8,),
@@ -520,7 +531,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             "Testimonial",
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 17,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -872,24 +883,24 @@ CarouselSlider(
           top: 100,
           right: 70,
           child: CircleAvatar(
-            radius: 65,
+            radius: 55,
             backgroundColor: Color(0xFF9B0155),
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              radius: 58,
+              radius: 50,
               child: Padding(
                 padding: const EdgeInsets.all(5),
                 child: Center(
                   child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           // SvgPicture.asset(
                           //   'assets/appConstantImg/app_icon.svg',
                           //   height: 40,
                           // ),
                           Image.asset(
-                            'assets/hovee_attd_logo (1).png',
-                            height: 20,
+                            'assets/guest_logo.jpg',
+                            height: 72,
                           ),
                         ],
                       ),

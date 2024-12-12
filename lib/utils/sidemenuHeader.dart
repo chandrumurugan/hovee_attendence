@@ -130,7 +130,7 @@ class SidemenuHeader extends StatelessWidget {
                       fontSize: 20),
                 ):
                        Text(
-                        isGuest ? "xxxxxxx" :
+                        isGuest ? "ID: xxxxxxx" :
                         authController.loginData!=null?'${authController.loginData!.wowId}':'',
                         overflow: TextOverflow.clip,
                         style: GoogleFonts.nunito(
