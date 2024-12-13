@@ -12,14 +12,14 @@ class SnackBarUtils {
         child: CustomSnackBar.info(
           message: message,
           textAlign: TextAlign.left,
-          icon: Icon(
+          icon: const Icon(
             Icons.check_circle,
             color: Colors.white,
           ),
           iconPositionTop: -10,
           iconRotationAngle: 0,
           textStyle:
-              TextStyle(fontWeight: FontWeight.normal, color: Colors.white),
+              const TextStyle(fontWeight: FontWeight.normal, color: Colors.white),
           backgroundColor: Colors.yellow,
         ),
       ),
@@ -34,8 +34,8 @@ class SnackBarUtils {
           child: CustomSnackBar.success(
             message: message,
               maxLines: 2,
-            messagePadding: EdgeInsets.symmetric(vertical: 18, horizontal: 44),
-            icon: Icon(
+            messagePadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 44),
+            icon: const Icon(
               Icons.check_circle,
               color: Colors.white,
               size: 34,
@@ -44,13 +44,13 @@ class SnackBarUtils {
             iconRotationAngle: 0,
             iconPositionLeft: 5,
             textAlign: TextAlign.left,
-            textStyle: TextStyle(
+            textStyle: const TextStyle(
               fontWeight: FontWeight.normal,
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 14,
               overflow: TextOverflow.ellipsis,
             ),
-            backgroundColor: Color.fromRGBO(186, 1, 97, 1),
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           )),
     );
   }
@@ -70,8 +70,8 @@ class SnackBarUtils {
           child: CustomSnackBar.error(
             message: message,
             maxLines: 2,
-            messagePadding: EdgeInsets.symmetric(vertical: 18, horizontal: 44),
-            icon: Icon(
+            messagePadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 44),
+            icon: const Icon(
               Icons.info,
               color: Colors.white,
               size: 30,
@@ -80,12 +80,12 @@ class SnackBarUtils {
             iconRotationAngle: 0,
             iconPositionLeft: 5,
             textAlign: TextAlign.center,
-            textStyle: TextStyle(
+            textStyle: const TextStyle(
                 fontWeight: FontWeight.normal,
                 color: Colors.white,
-                fontSize: 15,
+                fontSize: 14,
                 overflow: TextOverflow.ellipsis),
-            backgroundColor: Color.fromRGBO(186, 1, 97, 1),
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           )),
     );
   }
