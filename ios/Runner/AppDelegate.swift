@@ -3,6 +3,7 @@ import Flutter
 import GoogleMaps
 import flutter_local_notifications
 import Firebase
+import app_links
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -25,6 +26,11 @@ import Firebase
       
       // CONFIGURE FIREBASE PROJECT
       FirebaseApp.configure()
+       if let url = AppLinks.shared.getLink(launchOptions: launchOptions) {
+      // We have a link, propagate it to your Flutter app or not
+      AppLinks.shared.handleLink(url: url)
+      return true // Returning true will stop the propagation to other packages
+    }
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
