@@ -408,7 +408,7 @@ class _ParentViewState extends State<ParentView> {
                                   color: Colors.green),
                               child: Row(
                                 children: [
-                                  const Text('4.2',
+                                  const Text('0',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 10.0,
@@ -438,7 +438,7 @@ class _ParentViewState extends State<ParentView> {
                             //       color: Colors.white,
                             //     )):
                            
-                            Text('${widget.wowid??''}',
+                            Text('ID: ${widget.wowid??''}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 13.0,

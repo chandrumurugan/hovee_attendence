@@ -108,7 +108,7 @@ class HomePageHeader extends StatelessWidget {
                                   color: Colors.green),
                               child: Row(
                                 children: [
-                                  const Text('4.2',
+                                  const Text('0',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 10.0,
@@ -137,7 +137,7 @@ class HomePageHeader extends StatelessWidget {
                             //       fontSize: 13.0,
                             //       color: Colors.white,
                             //     )):
-                            Text('${authController.loginData!.wowId!}',
+                            Text('ID: ${authController.loginData!.wowId!}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 13.0,

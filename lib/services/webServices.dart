@@ -165,10 +165,11 @@ class WebService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var fcmToken= prefs.getString("FCM_TOKEN");
       var headers = {'Content-Type': 'application/json'};
-
+   final rolename=  prefs.getString('Rolename')??'';
       var data = {
         "account_verification_token": accountverificationtoken,
         "otp": otp,
+        if(rolename!='Parent')
         "fcm_token" : fcmToken
       };
       Logger().i(data);
