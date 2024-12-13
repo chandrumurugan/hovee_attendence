@@ -13,7 +13,8 @@ import 'package:logger/logger.dart';
 
 class TuteeHolidayScreen extends StatelessWidget {
   final String type;
-   TuteeHolidayScreen({super.key, required this.type});
+  final String? firstname,lastname,wowid;
+   TuteeHolidayScreen({super.key, required this.type, this.firstname, this.lastname, this.wowid});
 final HolidayController holidayController = Get.put(HolidayController());
   @override
   Widget build(BuildContext context) {
@@ -52,6 +53,9 @@ final HolidayController holidayController = Get.put(HolidayController());
                             onPressed: () {
                               Get.offAll(DashboardScreen(
                                 rolename: type,
+                                firstname: firstname,
+                                lastname: lastname,
+                                wowid: wowid,
                               ));
                             },
                             icon: const Icon(Icons.arrow_back, color: Colors.white),

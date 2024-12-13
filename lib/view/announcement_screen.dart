@@ -137,7 +137,7 @@ class AnnouncementScreen extends StatelessWidget {
                                       const SizedBox(height: 10),
                                       _buildRow(
                                           'Student name',
-                                          '${leaveData.userDetails![index].studentFirstName}  ${leaveData.userDetails![index].studentLastName}',
+                                          '${leaveData.userDetails![0].studentFirstName}  ${leaveData.userDetails![0].studentLastName}',
                                           context),
                                       const SizedBox(height: 10),
                                       _buildRow(

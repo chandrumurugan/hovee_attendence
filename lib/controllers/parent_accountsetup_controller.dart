@@ -238,7 +238,7 @@ class ParentAccountSetupController extends GetxController
           'Tutee name',
           '${parentController.userDetail!.firstName} ${parentController.userDetail!.lastName}',
         ),
-        _buildRow('Wow ID', parentController.userDetail!.wowId!),
+        _buildRow('ID', parentController.userDetail!.wowId!),
         _buildRow('Email', parentController.userDetail!.email!),
         _buildRow(
           'Phone number',

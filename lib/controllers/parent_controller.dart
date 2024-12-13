@@ -72,6 +72,12 @@ class ParentController extends GetxController {
       'desc': 'Lorem Ipsum is simply dummy ',
       'color': const Color.fromRGBO(186, 1, 97, 1)
     },
+    {
+      'title': 'Leave',
+      'image': 'assets/tutorHomeImg/leave 1.png',
+      'desc': 'Lorem Ipsum is simply dummy ',
+      'color': const Color.fromRGBO(126, 113, 255, 1)
+    },
     // {
     //   'title': 'MSP',
     //   'image': 'assets/tuteeHomeImg/teacher (1) 1.png',

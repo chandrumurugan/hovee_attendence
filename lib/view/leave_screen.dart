@@ -12,7 +12,8 @@ import 'package:hovee_attendence/widget/single_custom_button.dart';
 class TuteeLeaveScreen extends StatelessWidget {
   final String type;
   final bool fromBottomNav;
-   TuteeLeaveScreen({super.key, required this.type, required this.fromBottomNav});
+  final String? firstname,lastname,wowid;
+   TuteeLeaveScreen({super.key, required this.type, required this.fromBottomNav, this.firstname, this.lastname, this.wowid});
 
 final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
   @override
@@ -47,6 +48,9 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
                             onPressed: () {
                               Get.offAll(DashboardScreen(
                                 rolename: type,
+                                firstname: firstname,
+                                lastname: lastname,
+                                wowid: wowid,
                               ));
                             },
                             icon: Icon(Icons.arrow_back, color: Colors.white),

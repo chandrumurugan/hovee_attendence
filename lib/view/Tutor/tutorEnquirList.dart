@@ -16,7 +16,8 @@ import 'package:hovee_attendence/widget/single_custom_button.dart';
 class Tutorenquirlist extends StatelessWidget {
   final String type;
    final bool fromBottomNav;
-  Tutorenquirlist({super.key, required this.type, this.fromBottomNav = true});
+   final String? firstname,lastname,wowid;
+  Tutorenquirlist({super.key, required this.type, this.fromBottomNav = true, this.firstname, this.lastname, this.wowid});
 
   final EnquirDetailController classController =
       Get.put(EnquirDetailController());
@@ -28,7 +29,7 @@ class Tutorenquirlist extends StatelessWidget {
        AppBarHeader(
           needGoBack:  fromBottomNav,
           navigateTo: () {
-             Get.offAll(DashboardScreen(rolename: type,));
+             Get.offAll(DashboardScreen(rolename: type,firstname: firstname,lastname: lastname,wowid: wowid,));
           }),
       body: 
       Column(

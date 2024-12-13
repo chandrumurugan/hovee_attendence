@@ -186,33 +186,37 @@ class StudentAttendanceController extends GetxController {
         dataTutee = groupedEnrollmentByBatchResponse!.data;
         print(dataTutee);
        // Logger().i("====1234567890=====${dataTutee!.missPunch![0].punchInTime}");
+        dataTutee!.missPunch!=null?
      missPunchDates.value = dataTutee!.missPunch!
           .map((date) {
             final parsedDate = DateFormat('dd-MM-yyyy').parse(date.punchInTime!);
             return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
           })
-          .toSet();
+          .toSet():'';
     
   print("===========>${missPunchDates.value}");
+   dataTutee!.absent!=null?
     absentDates.value = dataTutee!.absent!
           .map((date) {
              final parsedDate = DateFormat('dd-MM-yyyy').parse(date.punchInTime!);
             return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
 
           } )
-          .toSet();
+          .toSet():'';
+          dataTutee!.parent!=null?
             presentDates.value = dataTutee!.parent!
           .map((date) {
                     final parsedDate = DateFormat('dd-MM-yyyy').parse(date.punchInTime!);
             return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
           })
-          .toSet();
+          .toSet():'';
+          dataTutee!.leave!=null?
            leaveDates.value = dataTutee!.leave!
           .map((date) {
                     final parsedDate = DateFormat('dd-MM-yyyy').parse(date.leaveDate!);
             return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
           })
-          .toSet();
+          .toSet():'';
            holidayDates.value = dataTutee!.holidays!
           .map((date) {
                     final parsedDate = DateFormat('dd-MM-yyyy').parse(date.holidayDate!);

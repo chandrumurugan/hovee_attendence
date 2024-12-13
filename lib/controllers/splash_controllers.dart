@@ -21,6 +21,7 @@ import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/parent_otp_screen.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:logger/logger.dart';
 
@@ -178,6 +179,7 @@ class SplashController extends GetxController {
     isAppConfigFetched.value = true;
     // Fetch current location
     currentLocation.value = await locationService.getCurrentLocation();
+    _requestNotificationPermission();
     final prefs = await SharedPreferences.getInstance();
       final storage = GetStorage();
     Logger().i(
@@ -260,4 +262,19 @@ class SplashController extends GetxController {
       isLoading(false);
     }
   }
+
+  
+Future<void> _requestNotificationPermission() async {
+  var status = await Permission.notification.status;
+  if (status.isDenied) {
+    // Request the permission
+    if (await Permission.notification.request().isGranted) {
+      print('Notification permission granted');
+    } else {
+      print('Notification permission denied');
+    }
+  } else if (status.isGranted) {
+    print('Notification permission already granted');
+  }
+}
 }

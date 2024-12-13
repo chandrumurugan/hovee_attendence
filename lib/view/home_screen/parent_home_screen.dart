@@ -12,6 +12,7 @@ import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
+import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/tutee_holiday_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -718,11 +719,25 @@ class _ParentViewState extends State<ParentView> {
                                       Get.to(() => Tutorenquirlist(
                                             type: 'Parent',
                                             fromBottomNav: true,
+                                             firstname: widget.firstname,
+                                          lastname: widget.lastname,
+                                          wowid: widget.wowid,
                                           ));
                                     }
                                     if (item['title'] == 'Holiday') {
                                       Get.to(() =>
-                                          TuteeHolidayScreen(type: 'Parent'));
+                                          TuteeHolidayScreen(type: 'Parent', firstname: widget.firstname,
+                                          lastname: widget.lastname,
+                                          wowid: widget.wowid,));
+                                    }
+                                    if (item['title'] == 'Leave') {
+                                      Get.to(() => TuteeLeaveScreen(
+                                            type: 'Parent',
+                                            fromBottomNav: true,
+                                             firstname: widget.firstname,
+                                          lastname: widget.lastname,
+                                          wowid: widget.wowid,
+                                          ));
                                     }
                             },
                             child: Card(
