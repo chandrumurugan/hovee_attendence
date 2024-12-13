@@ -20,7 +20,7 @@ class ChartApp extends StatelessWidget {
          return const Center(child: Text("No data found"));
       }
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0),
         child: Card(
           elevation: 10,
           shadowColor: Colors.grey,
@@ -30,6 +30,9 @@ class ChartApp extends StatelessWidget {
             height: MediaQuery.sizeOf(context).height * 0.24,
             child: Row(
               children: [
+                const SizedBox(
+                  width: 10,
+                ),
                 Expanded(child: PieChartWidget()),
                 const SizedBox(
                   width: 15,

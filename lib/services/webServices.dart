@@ -13,6 +13,7 @@ import 'package:hovee_attendence/modals/add_leave_model.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/deleteHolidayModel.dart';
+import 'package:hovee_attendence/modals/delete_announcement_model.dart';
 import 'package:hovee_attendence/modals/deletebatch_model.dart';
 import 'package:hovee_attendence/modals/enrollment_success_model.dart';
 import 'package:hovee_attendence/modals/getAnnounmentBatchList_model.dart';
@@ -121,6 +122,8 @@ class WebService {
     try {
       DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
       String formattedDate1 = DateFormat('dd/MM/yyyy').format(parsedDate1);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var fcmToken= prefs.getString("FCM_TOKEN");
       var headers = {'Content-Type': 'application/json'};
 
       var data = {
@@ -131,7 +134,8 @@ class WebService {
         "phone_number": phNo,
         "pincode": pincode,
         "user_type": 2,
-        "id_proof_label": idProof
+        "id_proof_label": idProof,
+        if (fcmToken != null) "fcm_token": fcmToken
       };
 
       var url = Uri.parse("${baseUrl}user/registerUser");
@@ -158,11 +162,14 @@ class WebService {
   static Future<OtpModal?> otp(
       String otp, String accountverificationtoken, BuildContext context) async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var fcmToken= prefs.getString("FCM_TOKEN");
       var headers = {'Content-Type': 'application/json'};
 
       var data = {
         "account_verification_token": accountverificationtoken,
-        "otp": otp
+        "otp": otp,
+        "fcm_token" : fcmToken
       };
       Logger().i(data);
 
@@ -290,7 +297,7 @@ class WebService {
   }
 
   static Future<SingleCourseCategoryList?> singleCourseListfetch(
-      String type) async {
+      String type,searchTerm) async {
     final url = Uri.parse('${baseUrl}tutee/getClassTuteeFilterList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
@@ -300,7 +307,7 @@ class WebService {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
-    var data = {"type": type};
+    var data = {"type": type,"search":searchTerm};
     try {
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
@@ -1682,7 +1689,7 @@ class WebService {
 
   static Future<getAnnouncementModel> fetchAnnounmentsList(
       String searchitems) async {
-    final url = Uri.parse('$baseUrl/home/getAnnouncement');
+    final url = Uri.parse('$baseUrl/home/getGroupedAnnouncement');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1945,6 +1952,29 @@ class WebService {
     } catch (e) {
       Logger().e(e);
       return null;
+    }
+  }
+
+  static Future<DeleteAnnouncementModel> deleteAnnouncement(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse('${baseUrl}home/addAnnouncement');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(batchData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return DeleteAnnouncementModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Notification list');
     }
   }
 }

@@ -75,6 +75,7 @@ dependencies:
   carousel_slider:
   android_intent_plus: ^5.2.0
   flutter_animate: ^4.5.2
+  flutter_local_notifications:
 
 dev_dependencies:
   flutter_test:

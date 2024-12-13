@@ -1,9 +1,11 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/modals/addAnnounmentModel.dart';
+import 'package:hovee_attendence/modals/delete_announcement_model.dart';
 import 'package:hovee_attendence/modals/getAnnounmentBatchList_model.dart';
 import 'package:hovee_attendence/modals/getAnnounment_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
@@ -165,6 +167,7 @@ void addAnnoument(BuildContext context) async {
           "studentId": studentIds, // Pass student IDs as an array
           "courseId": selectedCourse.sId, // Assuming courseCode is the course ID
           "batchId": selectedBatch.sId, // Assuming batchId is the batch ID
+           'type': "N",
         };
 
         final addAnnouncementModel? response =
@@ -192,6 +195,108 @@ void addAnnoument(BuildContext context) async {
     }
   }
 }
+
+void editAnnoument(BuildContext context,String announcementId) async {
+  if (validateFields(context)) {
+    isLoading.value = true;
+    try {
+      // Find the corresponding course ID for the selected course
+      final selectedCourse = announmentBatchList.firstWhereOrNull((batchData) {
+        final courseName = '${batchData.className ?? ''} - ${batchData.subject ?? ''}';
+        return courseName == courseNamesController.value;
+      });
+
+      // Find the corresponding batch for the selected batch
+      final selectedBatch = selectedCourse?.batchList?.firstWhereOrNull((batch) {
+        return batch.batchName == batchNamesController.value;
+      });
+
+      // Check if both course and batch are found
+      if (selectedCourse != null && selectedBatch != null) {
+        List<String?> studentIds = [];
+
+        if (userNamesController.value.isNotEmpty) {
+          // If a specific student is selected, add only that student's ID
+          final selectedUser = selectedBatch.userList?.firstWhereOrNull((user) {
+            return '${user.studentFirstName} ${user.studentLastName}' == userNamesController.value;
+          });
+
+          if (selectedUser != null) {
+            studentIds.add(selectedUser.studentId!); // Add the selected student's ID
+          }
+        } else {
+          // If no student is selected, add all student IDs from the batch
+          studentIds = selectedBatch.userList?.map((user) => user.studentId).toList() ?? [];
+        }
+
+        // Create the payload
+        var batchData = {
+          "title": title.text,
+          "description": description.text,
+          "studentId": studentIds, // Pass student IDs as an array
+          "courseId": selectedCourse.sId, // Assuming courseCode is the course ID
+          "batchId": selectedBatch.sId,
+           'type': "U",
+          'announcementId':announcementId, // Assuming batchId is the batch ID
+        };
+
+        final addAnnouncementModel? response =
+            await WebService.addAnnoument(batchData);
+
+        if (response != null && response.statusCode == 200) {
+          Get.back();
+          onInit();
+          _clearData();
+          SnackBarUtils.showSuccessSnackBar(
+            context,
+            'Announcement updated successfully',
+          );
+        } else {
+          SnackBarUtils.showErrorSnackBar(
+              context, response?.message ?? 'Failed to update announcement');
+        }
+      } else {
+        SnackBarUtils.showErrorSnackBar(context, 'Course or Batch not found');
+      }
+    } catch (e) {
+      SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+}
+
+void deleteAnnouncement(BuildContext context, String batchId,courseId,announcementId) async {
+    isLoading.value = true;
+    try {
+      var batchData = {
+        "courseId": courseId, // Assuming courseCode is the course ID
+          "batchId": batchId,
+           'type': "D",
+      };
+
+      final DeleteAnnouncementModel? response =
+          await WebService.deleteAnnouncement(batchData);
+
+      if (response != null && response.statusCode == 200) {
+         announmentList.removeWhere((item) => item.announcementId == announcementId);
+
+      // Notify listeners about the updated list
+      announmentList.refresh(); 
+         Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        ,'Announcement deleted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      // SnackBarUtils.showSuccessSnackBar(context, 'Holiday delete successfully');
+        //  Get.back();
+        //  onInit();
+      } else {
+     Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),response?.message ?? 'Failed to deleted announcement',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+      }
+    } catch (e) {
+       Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
 
 

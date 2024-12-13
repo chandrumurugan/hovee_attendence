@@ -9,6 +9,7 @@ import 'package:hovee_attendence/controllers/course_controller.dart';
 import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/Tutee/tutee_courseDetails.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/widget/cateory_widget.dart';
@@ -38,7 +39,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
     // TODO: implement initState
     super.initState();
     fetchCourseCategory();
-    filteredfetchList('All');
+    filteredfetchList('All','');
   }
 
   void fetchCourseCategory() async {
@@ -60,23 +61,26 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
     }
   }
 
-  void filteredfetchList(String type) async {
+  void filteredfetchList(String type, searchTerm) async {
+  setState(() {
+    isLoadingcategoryList = true;
+  });
+
+  // Fetch the data from the API with the search term
+  var response = await WebService.singleCourseListfetch(type,searchTerm);
+  if (response != null && response.statusCode == 200) {
     setState(() {
-      isLoadingcategoryList = true;
+      filteredList = response.data; // Update the filtered list
+      isLoadingcategoryList = false;
     });
-    var response = await WebService.singleCourseListfetch(type);
-    if (response != null && response!.statusCode == 200) {
-      setState(() {
-        filteredList = response.data;
-        isLoadingcategoryList = false;
-      });
-    } else {
-      setState(() {
-        filteredList = [];
-        isLoadingcategoryList = false;
-      });
-    }
+  } else {
+    setState(() {
+      filteredList = []; // Clear the list if no data found
+      isLoadingcategoryList = false;
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +106,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                   fontWeight: FontWeight.w500,
                   fontSize: 16),
             ),
+            
             const SizedBox(height: 10),
                       CategoryList(
             categories: categories,
@@ -110,12 +115,21 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
               setState(() {
                 selectedIndex = index;
               });
-              filteredfetchList(categories[index]);
+              filteredfetchList(categories[index],'');
             },
             primaryColor: AppConstants.primaryColor, // Example primary color
           ),
 
-            SizedBox(height: 10,),
+            //SizedBox(height: 10,),
+            SearchfiltertabBar(
+            title: 'Course List',
+            onSearchChanged: (searchTerm) {
+             filteredfetchList('',searchTerm);
+            },
+            filterOnTap: () {
+              // Implement filter logic here if needed
+            },
+          ),
             Expanded(
                 child: isLoadingcategoryList
                     ? const Center(child: CircularProgressIndicator())

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 
 import 'package:app_links/app_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -49,7 +50,7 @@ class SplashController extends GetxController {
 
   final String parentId;
   final String phoneNumber;
-
+   final RxBool showSecondImage = false.obs;
 
     //constreuct
       SplashController({required this.parentId,required this.phoneNumber}); 
@@ -59,7 +60,35 @@ class SplashController extends GetxController {
     super.onInit();
     // initDeepLinks();
     //  handleDeepLinkFlow(sampleUri);
+     FirebaseMessaging.instance.getToken().then((token) {
+      print("FCM Token: $token"); 
+      storeFcm(token.toString());
+
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("Received a foreground message: ${message.data.toString()}");
+      // Handle the message and display a notification or update UI accordingly
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print("Message clicked!");
+      // Handle the message and navigate to specific screen if necessary
+    });
+    print('init ended');
+    Future.delayed(Duration(seconds: 3), () {
+     
+        showSecondImage.value = true;
+     
+    });
      handleNormalAppFlow();
+  }
+
+  void storeFcm(String fcmToken)async{
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     await prefs.setString("FCM_TOKEN", "${fcmToken}");
+
+
   }
 
   // Future<void> initDeepLinks() async {

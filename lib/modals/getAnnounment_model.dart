@@ -26,69 +26,57 @@ class getAnnouncementModel {
 
 class AnnounmentsData {
   String? title;
+  String? announcementId;
   String? description;
-  UserDetails? userDetails;
-  BatchList? batchList;
-  CourseList? courseList;
+  BatchDetails? batchDetails;
+  CourseDetails? courseDetails;
+  List<UserDetails>? userDetails;
 
   AnnounmentsData(
       {this.title,
+      this.announcementId,
       this.description,
-      this.userDetails,
-      this.batchList,
-      this.courseList});
+      this.batchDetails,
+      this.courseDetails,
+      this.userDetails});
 
   AnnounmentsData.fromJson(Map<String, dynamic> json) {
     title = json['title'];
+    announcementId = json['announcementId'];
     description = json['description'];
-    userDetails = json['userDetails'] != null
-        ? new UserDetails.fromJson(json['userDetails'])
+    batchDetails = json['batchDetails'] != null
+        ? new BatchDetails.fromJson(json['batchDetails'])
         : null;
-    batchList = json['batchList'] != null
-        ? new BatchList.fromJson(json['batchList'])
+    courseDetails = json['courseDetails'] != null
+        ? new CourseDetails.fromJson(json['courseDetails'])
         : null;
-    courseList = json['courseList'] != null
-        ? new CourseList.fromJson(json['courseList'])
-        : null;
+    if (json['userDetails'] != null) {
+      userDetails = <UserDetails>[];
+      json['userDetails'].forEach((v) {
+        userDetails!.add(new UserDetails.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['title'] = this.title;
+    data['announcementId'] = this.announcementId;
     data['description'] = this.description;
+    if (this.batchDetails != null) {
+      data['batchDetails'] = this.batchDetails!.toJson();
+    }
+    if (this.courseDetails != null) {
+      data['courseDetails'] = this.courseDetails!.toJson();
+    }
     if (this.userDetails != null) {
-      data['userDetails'] = this.userDetails!.toJson();
-    }
-    if (this.batchList != null) {
-      data['batchList'] = this.batchList!.toJson();
-    }
-    if (this.courseList != null) {
-      data['courseList'] = this.courseList!.toJson();
+      data['userDetails'] = this.userDetails!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class UserDetails {
-  String? firstName;
-  String? lastName;
-
-  UserDetails({this.firstName, this.lastName});
-
-  UserDetails.fromJson(Map<String, dynamic> json) {
-    firstName = json['first_name'];
-    lastName = json['last_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['first_name'] = this.firstName;
-    data['last_name'] = this.lastName;
-    return data;
-  }
-}
-
-class BatchList {
+class BatchDetails {
   String? sId;
   String? batchName;
   String? batchTeacher;
@@ -108,8 +96,13 @@ class BatchList {
   String? createdAt;
   String? updatedAt;
   int? iV;
+  String? endDate;
+  Null? institudeId;
+  String? institudeName;
+  String? startDate;
+  Null? teacherId;
 
-  BatchList(
+  BatchDetails(
       {this.sId,
       this.batchName,
       this.batchTeacher,
@@ -128,9 +121,14 @@ class BatchList {
       this.isDelete,
       this.createdAt,
       this.updatedAt,
-      this.iV});
+      this.iV,
+      this.endDate,
+      this.institudeId,
+      this.institudeName,
+      this.startDate,
+      this.teacherId});
 
-  BatchList.fromJson(Map<String, dynamic> json) {
+  BatchDetails.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     batchName = json['batch_name'];
     batchTeacher = json['batch_teacher'];
@@ -150,6 +148,11 @@ class BatchList {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     iV = json['__v'];
+    endDate = json['end_date'];
+    institudeId = json['institudeId'];
+    institudeName = json['institude_name'];
+    startDate = json['start_date'];
+    teacherId = json['teacherId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -173,11 +176,16 @@ class BatchList {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['__v'] = this.iV;
+    data['end_date'] = this.endDate;
+    data['institudeId'] = this.institudeId;
+    data['institude_name'] = this.institudeName;
+    data['start_date'] = this.startDate;
+    data['teacherId'] = this.teacherId;
     return data;
   }
 }
 
-class CourseList {
+class CourseDetails {
   String? sId;
   String? batchName;
   String? board;
@@ -193,7 +201,7 @@ class CourseList {
   String? updatedAt;
   int? iV;
 
-  CourseList(
+  CourseDetails(
       {this.sId,
       this.batchName,
       this.board,
@@ -209,7 +217,7 @@ class CourseList {
       this.updatedAt,
       this.iV});
 
-  CourseList.fromJson(Map<String, dynamic> json) {
+  CourseDetails.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     batchName = json['batch_name'];
     board = json['board'];
@@ -242,6 +250,28 @@ class CourseList {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['__v'] = this.iV;
+    return data;
+  }
+}
+
+class UserDetails {
+  String? studentFirstName;
+  String? studentLastName;
+  String? studentId;
+
+  UserDetails({this.studentFirstName, this.studentLastName, this.studentId});
+
+  UserDetails.fromJson(Map<String, dynamic> json) {
+    studentFirstName = json['student_first_name'];
+    studentLastName = json['student_last_name'];
+    studentId = json['studentId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['student_first_name'] = this.studentFirstName;
+    data['student_last_name'] = this.studentLastName;
+    data['studentId'] = this.studentId;
     return data;
   }
 }

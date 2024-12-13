@@ -10,7 +10,9 @@ import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
+import 'package:hovee_attendence/view/tutee_holiday_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -712,6 +714,16 @@ class _ParentViewState extends State<ParentView> {
                                         
                                         ));
                                   }
+                                  if (item['title'] == 'Enquiries') {
+                                      Get.to(() => Tutorenquirlist(
+                                            type: 'Parent',
+                                            fromBottomNav: true,
+                                          ));
+                                    }
+                                    if (item['title'] == 'Holiday') {
+                                      Get.to(() =>
+                                          TuteeHolidayScreen(type: 'Parent'));
+                                    }
                             },
                             child: Card(
                               elevation: 10,
