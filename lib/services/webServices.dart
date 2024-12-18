@@ -170,7 +170,7 @@ class WebService {
       var data = {
         "account_verification_token": accountverificationtoken,
         "otp": otp,
-       //if (fcmToken != null) "fcm_token": fcmToken
+       if (fcmToken != null) "fcm_token": fcmToken
       };
       Logger().i(data);
 
