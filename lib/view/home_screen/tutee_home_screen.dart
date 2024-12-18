@@ -25,6 +25,7 @@ import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/msp_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
+import 'package:hovee_attendence/view/parent_login_screen.dart';
 import 'package:hovee_attendence/view/profile_card.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/tutee_holiday_screen.dart';
@@ -222,7 +223,7 @@ class TuteeHome extends StatelessWidget {
                               // const SizedBox(height: 10),
                               Obx(() {
                                 if (controller1.isLoading.value) {
-                                  return CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                                  return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
                                 } else {
                                   return CustomDropdown(
                                     hintText: 'Select batch',
@@ -359,7 +360,7 @@ class TuteeHome extends StatelessWidget {
                           .where((item) => item.name != 'Dashboard')
                           .toList();
                       if (filteredList.isEmpty) {
-                        return Center(child: Text('No items to display'));
+                        return const Center(child: Text('No items to display'));
                       }
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -386,6 +387,56 @@ class TuteeHome extends StatelessWidget {
                                       crossAxisSpacing: 10 // Number of columns
                                       ),
                               itemBuilder: (context, int index) {
+                                    if (index == controller.homeDashboardNavList.value
+                                  .where((item) => item.name != 'Dashboard')
+                                  .length ) {
+        // Logic for the additional item at the end
+        return InkWell(
+          onTap: () {
+            // // Handle tap for the additional item
+            Get.to(() => ParentLoginScreen());
+          },
+          child: Card(
+            elevation: 10,
+            shadowColor: Colors.grey,
+            surfaceTintColor: Colors.white,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: const Color.fromRGBO(246, 244, 254, 1),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.grey, // Custom color for the additional item
+                    ),
+                    child: const Icon(
+                      Icons.add, // Use an icon for the additional item
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: const Text(
+                      "Invite Parent", // Label for the additional item
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
                                 // final filteredList = controller
                                 //     .homeDashboardNavList.value
                                 //     .where((item) => item.name != 'Dashboard')
@@ -500,7 +551,7 @@ class TuteeHome extends StatelessWidget {
                               },
                               itemCount: controller.homeDashboardNavList.value
                                   .where((item) => item.name != 'Dashboard')
-                                  .length,
+                                  .length + 1,
                             ),
                           ) .animate().shimmer().slide()
                                   ,

@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/holiday_controller.dart';
+import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
@@ -23,6 +25,17 @@ final HolidayController holidayController = Get.put(HolidayController());
                                       fontSize: 14,
                                       color: Colors.black);
     return Scaffold(
+        appBar: AppBarHeader(
+        needGoBack: true,
+        navigateTo: () {
+          Get.offAll(DashboardScreen(
+                                rolename: type,
+                                firstname: firstname,
+                                lastname: lastname,
+                                wowid: wowid,
+                              ));
+        },
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -47,21 +60,21 @@ final HolidayController holidayController = Get.put(HolidayController());
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Get.offAll(DashboardScreen(
-                                rolename: type,
-                                firstname: firstname,
-                                lastname: lastname,
-                                wowid: wowid,
-                              ));
-                            },
-                            icon: const Icon(Icons.arrow_back, color: Colors.white),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     IconButton(
+                      //       onPressed: () {
+                      //         Get.offAll(DashboardScreen(
+                      //           rolename: type,
+                      //           firstname: firstname,
+                      //           lastname: lastname,
+                      //           wowid: wowid,
+                      //         ));
+                      //       },
+                      //       icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      //     ),
+                      //   ],
+                      // ),
                       Image.asset(
                         'assets/headerIcons/holiday 1 (1).png',
                         height: 35,
@@ -134,170 +147,190 @@ final HolidayController holidayController = Get.put(HolidayController());
                           Logger().i("123456===>$dateTime");
                            String formattedDate2 = DateFormat("ddMMMyy").format(dateTime2);
                            Logger().i("0987654===>$formattedDate");
-                      return Card(
-                        elevation: 2,
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              
+                      return Animate(
+                          effects: [
+                                  SlideEffect(
+                                    begin: Offset(-1, 0), // Start from the left
+                                    end: Offset(
+                                        0, 0), // End at the original position
+                                    curve: Curves.easeInOut,
+                                    duration: 500
+                                        .ms, // Consistent timing for each item
+                                    delay: 100.ms *
+                                        index, // Add delay between items
+                                  ),
+                                  FadeEffect(
+                                    begin: 0, // Start transparent
+                                    end: 1, // End opaque
+                                    duration: 500.ms,
+                                    delay: 100.ms * index,
+                                  ),
+                                ],
+                        child: Card(
+                          elevation: 2,
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child:  Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Batch name : ${ holidayData.batchName ?? ""}',
-                                    style: fontStyle),
-                                    SizedBox(height: 5,),
-                                      Text('Holiday name : ${ holidayData.holidayName ?? ""}',
-                                    style: fontStyle),
-                                    //      Text('Holiday type : ${ holidayData.holidayType ?? ""}',
-                                    // style:fontStyle),
-                                     SizedBox(height: 5,),
-                                        Text('Date : $formattedDate - $formattedDate2',
-                                    style: fontStyle),
-                              
-                              
-                            ]),
-                            Expanded(
-                              child: Column(
+                              Column(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                
                                 children: [
-                                     IconButton(
-                                  iconSize: 25,
-                              onPressed: () {}, // No action needed here
-                              icon: PopupMenuButton<String>(
-                                icon: const Icon(Icons.more_vert),
-                                onSelected: (String value) {
-                                  // Optional if further actions are needed after selection
-                                },
-                                itemBuilder: (BuildContext context) {
-                                  return [
-                                  
-                                    PopupMenuItem(
-                                      value: 'Delete',
-                                      child: ListTile(
-                                        leading: const Icon(Icons.delete),
-                                        title: const Text('Delete'),
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                         _showConfirmationDialog(
-                                            context, holidayData.sId!);
-                                    
-                                        },
-                                      ),
-                                    ),
-                                  ];
-                                },
-                              ),
-                                                        ),
-                              
-                              Container(
-                                  padding: const EdgeInsets.all(3),
-                                  decoration: BoxDecoration(
-                                      color: Colors.amber,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Text(holidayData.holidayType ?? "",
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.nunito(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12,
-                                          color: Colors.red)),
-                                ),
-                              
-                              
-                              
+                                  Text('Batch name : ${ holidayData.batchName ?? ""}',
+                                      style: fontStyle),
+                                      SizedBox(height: 5,),
+                                        Text('Holiday name : ${ holidayData.holidayName ?? ""}',
+                                      style: fontStyle),
+                                      //      Text('Holiday type : ${ holidayData.holidayType ?? ""}',
+                                      // style:fontStyle),
+                                       SizedBox(height: 5,),
+                                          Text('Date : $formattedDate - $formattedDate2',
+                                      style: fontStyle),
+                                
                                 
                               ]),
-                            )
-                          ]),
-                          // child: Column(
-                          //   children: [
-                          //     type!= 'Tutor'?const SizedBox.shrink()
-                          //     :Row(
-                          //       mainAxisAlignment: MainAxisAlignment.end,
-                          //       children: [
-                          //         IconButton(
-                          //           onPressed: () {
-                          //             // Add edit functionality
-                                      // Get.to(EditHolidayScreen(
-                                      //   holiday: holidayData,
-                                      // ));
-                          //           },
-                          //           icon: const Icon(
-                          //             Icons.edit,
-                          //             color: Colors.blue,
-                          //           ),
-                          //         ),
-                          //         IconButton(
-                                    // onPressed: () {
-                                    //   // Add delete functionality
-                                    //   _showConfirmationDialog(
-                                    //       context, holidayData.sId!);
-                                    //   // holidayController.deleteHoliday(
-                                    //   //     context, holidayData.sId!);
-                                    // },
-                          //           icon: const Icon(
-                          //             Icons.delete,
-                          //             color: Colors.red,
-                          //           ),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //     Row(
-                          //       mainAxisAlignment:
-                          //           MainAxisAlignment.spaceBetween,
-                          //       children: [
-                          //         // Colored strip and S.Name
-                          //         // Row(
-                          //         //   children: [
-                          //         //     Container(
-                          //         //       width: 5,
-                          //         //       height: 50,
-                          //         //       color: Colors.purple,
-                          //         //     ),
-                          //         //     const SizedBox(width: 8),
-                          //         //     Text(
-                          //         //       'BM133',
-                          //         //       style: TextStyle(
-                          //         //         fontWeight: FontWeight.bold,
-                          //         //         fontSize: 16,
-                          //         //       ),
-                          //         //     ),
-                          //         //   ],
-                          //         // ),
-                          //         // B.Name
-                          //         Text(
-                          //           holidayData.batchName ?? '',
-                          //           style: const TextStyle(
-                          //               overflow: TextOverflow.ellipsis),
-                          //         ),
-                          //         // Reason
-                              
-                          //         // Date
-                          //         Text(
-                          //       '$formattedDate - $formattedDate2',
-                          //       style: const TextStyle(fontSize: 16),
-                          //     ),
-                          //         SizedBox(
-                          //           width: 50,
-                          //           child: Text(
-                          //             holidayData.holidayName ?? '',
-                          //             maxLines: 1,
-                          //             style: const TextStyle(
-                          //                 overflow: TextOverflow.ellipsis),
-                          //           ),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ],
-                          // ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                       IconButton(
+                                    iconSize: 25,
+                                onPressed: () {}, // No action needed here
+                                icon: PopupMenuButton<String>(
+                                  icon: const Icon(Icons.more_vert),
+                                  onSelected: (String value) {
+                                    // Optional if further actions are needed after selection
+                                  },
+                                  itemBuilder: (BuildContext context) {
+                                    return [
+                                    
+                                      PopupMenuItem(
+                                        value: 'Delete',
+                                        child: ListTile(
+                                          leading: const Icon(Icons.delete),
+                                          title: const Text('Delete'),
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                           _showConfirmationDialog(
+                                              context, holidayData.sId!);
+                                      
+                                          },
+                                        ),
+                                      ),
+                                    ];
+                                  },
+                                ),
+                                                          ),
+                                
+                                Container(
+                                    padding: const EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: Text(holidayData.holidayType ?? "",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.nunito(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 12,
+                                            color: Colors.red)),
+                                  ),
+                                
+                                
+                                
+                                  
+                                ]),
+                              )
+                            ]),
+                            // child: Column(
+                            //   children: [
+                            //     type!= 'Tutor'?const SizedBox.shrink()
+                            //     :Row(
+                            //       mainAxisAlignment: MainAxisAlignment.end,
+                            //       children: [
+                            //         IconButton(
+                            //           onPressed: () {
+                            //             // Add edit functionality
+                                        // Get.to(EditHolidayScreen(
+                                        //   holiday: holidayData,
+                                        // ));
+                            //           },
+                            //           icon: const Icon(
+                            //             Icons.edit,
+                            //             color: Colors.blue,
+                            //           ),
+                            //         ),
+                            //         IconButton(
+                                      // onPressed: () {
+                                      //   // Add delete functionality
+                                      //   _showConfirmationDialog(
+                                      //       context, holidayData.sId!);
+                                      //   // holidayController.deleteHoliday(
+                                      //   //     context, holidayData.sId!);
+                                      // },
+                            //           icon: const Icon(
+                            //             Icons.delete,
+                            //             color: Colors.red,
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //     Row(
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment.spaceBetween,
+                            //       children: [
+                            //         // Colored strip and S.Name
+                            //         // Row(
+                            //         //   children: [
+                            //         //     Container(
+                            //         //       width: 5,
+                            //         //       height: 50,
+                            //         //       color: Colors.purple,
+                            //         //     ),
+                            //         //     const SizedBox(width: 8),
+                            //         //     Text(
+                            //         //       'BM133',
+                            //         //       style: TextStyle(
+                            //         //         fontWeight: FontWeight.bold,
+                            //         //         fontSize: 16,
+                            //         //       ),
+                            //         //     ),
+                            //         //   ],
+                            //         // ),
+                            //         // B.Name
+                            //         Text(
+                            //           holidayData.batchName ?? '',
+                            //           style: const TextStyle(
+                            //               overflow: TextOverflow.ellipsis),
+                            //         ),
+                            //         // Reason
+                                
+                            //         // Date
+                            //         Text(
+                            //       '$formattedDate - $formattedDate2',
+                            //       style: const TextStyle(fontSize: 16),
+                            //     ),
+                            //         SizedBox(
+                            //           width: 50,
+                            //           child: Text(
+                            //             holidayData.holidayName ?? '',
+                            //             maxLines: 1,
+                            //             style: const TextStyle(
+                            //                 overflow: TextOverflow.ellipsis),
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ],
+                            // ),
+                          ),
                         ),
                       );
                     },

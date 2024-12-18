@@ -23,8 +23,10 @@ class ParentLoginScreen extends StatelessWidget {
         child: Scaffold(
             resizeToAvoidBottomInset: true,
             appBar: AppBarHeader(
-              needGoBack: false,
-              navigateTo: () {},
+              needGoBack: true,
+              navigateTo: () {
+                Get.back()  ;
+              },
             ),
             body: Stack(
               children: [

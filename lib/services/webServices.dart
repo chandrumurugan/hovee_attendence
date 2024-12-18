@@ -166,11 +166,12 @@ class WebService {
       var fcmToken= prefs.getString("FCM_TOKEN");
       var headers = {'Content-Type': 'application/json'};
    final rolename=  prefs.getString('Rolename')??'';
+   Logger().d(rolename);
       var data = {
         "account_verification_token": accountverificationtoken,
         "otp": otp,
-        if(rolename!='Parent')
-        "fcm_token" : fcmToken
+        // if(rolename!='Parent')
+        // "fcm_token" : fcmToken
       };
       Logger().i(data);
 
@@ -488,8 +489,16 @@ class WebService {
     final box = GetStorage(); // Get an instance of GetStorage
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
+    final rolename = prefs.getString('Rolename') ?? "";
+    final parentToken = prefs.getString('PrentToken') ?? "";
+    String lastToken = "";
+         if(rolename=='Parent'){
+           lastToken = parentToken;
+         }else{
+          lastToken = token;
+         }
     try {
-      var headers = {'Authorization': "Bearer $token"};
+      var headers = {'Authorization': "Bearer $lastToken"};
       var url = Uri.parse("${baseUrl}user/getUserProfile");
       var response = await http.post(url, headers: headers);
       Logger().i(response.headers);

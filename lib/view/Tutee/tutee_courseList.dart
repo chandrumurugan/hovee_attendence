@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,15 +32,15 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
   List<Data>? filteredList = [];
   bool isLoadingcategoryList = false;
 
-   final CourseDetailController controller = Get.put(CourseDetailController());
-   final CourseController courseController = Get.put(CourseController());
+  final CourseDetailController controller = Get.put(CourseDetailController());
+  final CourseController courseController = Get.put(CourseController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fetchCourseCategory();
-    filteredfetchList('All','');
+    filteredfetchList('All', '');
   }
 
   void fetchCourseCategory() async {
@@ -62,25 +63,24 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
   }
 
   void filteredfetchList(String type, searchTerm) async {
-  setState(() {
-    isLoadingcategoryList = true;
-  });
+    setState(() {
+      isLoadingcategoryList = true;
+    });
 
-  // Fetch the data from the API with the search term
-  var response = await WebService.singleCourseListfetch(type,searchTerm);
-  if (response != null && response.statusCode == 200) {
-    setState(() {
-      filteredList = response.data; // Update the filtered list
-      isLoadingcategoryList = false;
-    });
-  } else {
-    setState(() {
-      filteredList = []; // Clear the list if no data found
-      isLoadingcategoryList = false;
-    });
+    // Fetch the data from the API with the search term
+    var response = await WebService.singleCourseListfetch(type, searchTerm);
+    if (response != null && response.statusCode == 200) {
+      setState(() {
+        filteredList = response.data; // Update the filtered list
+        isLoadingcategoryList = false;
+      });
+    } else {
+      setState(() {
+        filteredList = []; // Clear the list if no data found
+        isLoadingcategoryList = false;
+      });
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,9 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
-           Get.offAll(DashboardScreen(rolename: widget.type,));
+            Get.offAll(DashboardScreen(
+              rolename: widget.type,
+            ));
           }),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -106,30 +108,30 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                   fontWeight: FontWeight.w500,
                   fontSize: 16),
             ),
-            
+
             const SizedBox(height: 10),
-                      CategoryList(
-            categories: categories,
-            selectedIndex: selectedIndex,
-            onCategorySelected: (index) {
-              setState(() {
-                selectedIndex = index;
-              });
-              filteredfetchList(categories[index],'');
-            },
-            primaryColor: AppConstants.primaryColor, // Example primary color
-          ),
+            CategoryList(
+              categories: categories,
+              selectedIndex: selectedIndex,
+              onCategorySelected: (index) {
+                setState(() {
+                  selectedIndex = index;
+                });
+                filteredfetchList(categories[index], '');
+              },
+              primaryColor: AppConstants.primaryColor, // Example primary color
+            ),
 
             //SizedBox(height: 10,),
             SearchfiltertabBar(
-            title: 'Course List',
-            onSearchChanged: (searchTerm) {
-             filteredfetchList('',searchTerm);
-            },
-            filterOnTap: () {
-              // Implement filter logic here if needed
-            },
-          ),
+              title: 'Course List',
+              onSearchChanged: (searchTerm) {
+                filteredfetchList('', searchTerm);
+              },
+              filterOnTap: () {
+                // Implement filter logic here if needed
+              },
+            ),
             Expanded(
                 child: isLoadingcategoryList
                     ? const Center(child: CircularProgressIndicator())
@@ -140,12 +142,36 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                             // shrinkWrap: true,
                             itemCount: filteredList!.length,
                             itemBuilder: (context, index) {
-                               final course = filteredList![index];
-                              return GestureDetector(
-                                onTap: (){
-                                 controller.getClassTuteeById(context,filteredList![index].className!,filteredList![index].subject!,filteredList![index].tutorId!,filteredList![index].tutorName!);
-                                },
-                                child: CourseListContainer1(
+                              final course = filteredList![index];
+                              return Animate(
+                                effects: [
+                                  SlideEffect(
+                                    begin: Offset(-1, 0), // Start from the left
+                                    end: Offset(
+                                        0, 0), // End at the original position
+                                    curve: Curves.easeInOut,
+                                    duration: 500
+                                        .ms, // Consistent timing for each item
+                                    delay: 100.ms *
+                                        index, // Add delay between items
+                                  ),
+                                  FadeEffect(
+                                    begin: 0, // Start transparent
+                                    end: 1, // End opaque
+                                    duration: 500.ms,
+                                    delay: 100.ms * index,
+                                  ),
+                                ],
+                                child: GestureDetector(
+                                  onTap: () {
+                                    controller.getClassTuteeById(
+                                        context,
+                                        filteredList![index].className!,
+                                        filteredList![index].subject!,
+                                        filteredList![index].tutorId!,
+                                        filteredList![index].tutorName!);
+                                  },
+                                  child: CourseListContainer1(
                                     image: "",
                                     subject: filteredList![index].subject!, //
                                     subjectCode:
@@ -155,7 +181,15 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                                     group: filteredList![index].courseCode!,
                                     groupcode:
                                         "${filteredList![index].batchTimingStart!}-${filteredList![index].batchTimingEnd!}",
-                                    arrowIcon: true, className: filteredList![index].className!, tutorId: filteredList![index].tutorId!, batchname: filteredList![index].batchName!, tutorname: filteredList![index].tutorName!, type: widget.type, id: '',),
+                                    arrowIcon: true,
+                                    className: filteredList![index].className!,
+                                    tutorId: filteredList![index].tutorId!,
+                                    batchname: filteredList![index].batchName!,
+                                    tutorname: filteredList![index].tutorName!,
+                                    type: widget.type,
+                                    id: '',
+                                  ),
+                                ),
                               );
                             }))
           ],
@@ -163,6 +197,4 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
       ),
     );
   }
-
- 
 }

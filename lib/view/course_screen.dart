@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,7 +11,7 @@ import 'package:hovee_attendence/widget/course_list_container.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class TutorCourseList extends StatefulWidget {
-   final String type;
+  final String type;
   const TutorCourseList({super.key, required this.type});
 
   @override
@@ -31,10 +32,13 @@ class _TutorCourseListState extends State<TutorCourseList> {
   Widget build(BuildContext context) {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     return Scaffold(
-      appBar: AppBarHeader(needGoBack:true, navigateTo: (){
-         Get.offAll(DashboardScreen(rolename: widget.type,));
-
-      }),
+      appBar: AppBarHeader(
+          needGoBack: true,
+          navigateTo: () {
+            Get.offAll(DashboardScreen(
+              rolename: widget.type,
+            ));
+          }),
       body: Column(
         children: [
           // Header Section
@@ -81,7 +85,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
                       ),
                       Container(
                         padding: EdgeInsets.only(right: 15),
-                        width: MediaQuery.of(context).size.width* 0.9,
+                        width: MediaQuery.of(context).size.width * 0.9,
                         child: Text(
                           'Add your courses here to showcase your expertise and connect with eager learners',
                           maxLines: 2,
@@ -104,8 +108,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
             onSearchChanged: (searchTerm) {
               courseController.fetchCourseList(searchTerm: searchTerm);
             },
-            filterOnTap: () {
-            },
+            filterOnTap: () {},
           ),
           Expanded(
             child: Obx(() {
@@ -126,19 +129,44 @@ class _TutorCourseListState extends State<TutorCourseList> {
               } else {
                 // Display the list of batches
                 return ListView.separated(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
                     itemBuilder: (context, int index) {
                       final course = courseController.courseList[index];
-                      return CourseListContainer(
+                      return Animate(
+                        effects: [
+                          SlideEffect(
+                            begin: Offset(-1, 0),
+                            end: Offset(0, 0),
+                            curve: Curves.easeInOut,
+                            duration: 500.ms,
+                            delay: 100.ms * index,
+                          ),
+                          FadeEffect(
+                            begin: 0,
+                            end: 1,
+                            duration: 500.ms,
+                            delay: 100.ms * index,
+                          ),
+                        ],
+                        child: CourseListContainer(
                           arrowIcon: true,
                           image: '',
                           subject: course.subject!,
                           subjectCode: course.courseCode!,
                           std: course.className!,
                           medium: course.board!,
-                          group: course.categories ?? '',         
-                          groupcode: course.courseCode!, className: '', tutorId: '', batchname: course.batchName!, tutorname:'', type: widget.type, id: course.sId!, course: course,);
+                          group: course.categories ?? '',
+                          groupcode: course.courseCode!,
+                          className: '',
+                          tutorId: '',
+                          batchname: course.batchName!,
+                          tutorname: '',
+                          type: widget.type,
+                          id: course.sId!,
+                          course: course,
+                        ),
+                      );
                     },
                     separatorBuilder: (context, int index) {
                       return const SizedBox(

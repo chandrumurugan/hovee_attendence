@@ -293,8 +293,10 @@ class PunchView extends StatelessWidget {
     context: context,
     builder: (context) {
       return Scaffold(
-        appBar: AppBar(title: Text('QR Code Scanner')),
+        // appBar: AppBar(title: Text('QR Code Scanner')),
         body: AiBarcodeScanner(
+          hideGalleryButton: true,
+          controller: MobileScannerController(),
           onDetect: (po) {
             _onBarcodeScanned(po.barcodes.first.rawValue);
           },

@@ -179,7 +179,7 @@ class SplashController extends GetxController {
     isAppConfigFetched.value = true;
     // Fetch current location
     currentLocation.value = await locationService.getCurrentLocation();
-    _requestNotificationPermission();
+    // _requestNotificationPermission();
     final prefs = await SharedPreferences.getInstance();
       final storage = GetStorage();
     Logger().i(
@@ -228,6 +228,8 @@ class SplashController extends GetxController {
 
       // Validate token using web service
       final response = await WebService.validateToken();
+      _requestNotificationPermission();
+      
 
       if (response != null && response.tokenValid == true) {
         // Extract and save user data

@@ -60,8 +60,8 @@ class StudentDetails {
   String? phoneNumber;
   int? pincode;
   int? userType;
-  Null? otp;
-  Null? accountVerificationToken;
+  // Null? otp;
+  // Null? accountVerificationToken;
   bool? accountVerified;
   bool? accountSetup;
   String? doorNo;
@@ -75,8 +75,8 @@ class StudentDetails {
   String? idProofUrl;
   String? profileFilename;
   String? profileUrl;
-  Null? latitude;
-  Null? longitude;
+  // Null? latitude;
+  // Null? longitude;
   Location? location;
   String? qrCodeUrl;
   int? isActive;
@@ -100,8 +100,8 @@ class StudentDetails {
       this.phoneNumber,
       this.pincode,
       this.userType,
-      this.otp,
-      this.accountVerificationToken,
+      // this.otp,
+      // this.accountVerificationToken,
       this.accountVerified,
       this.accountSetup,
       this.doorNo,
@@ -115,8 +115,8 @@ class StudentDetails {
       this.idProofUrl,
       this.profileFilename,
       this.profileUrl,
-      this.latitude,
-      this.longitude,
+      // this.latitude,
+      // this.longitude,
       this.location,
       this.qrCodeUrl,
       this.isActive,
@@ -140,8 +140,8 @@ class StudentDetails {
     phoneNumber = json['phone_number'];
     pincode = json['pincode'];
     userType = json['user_type'];
-    otp = json['otp'];
-    accountVerificationToken = json['account_verification_token'];
+    // otp = json['otp'];
+    // accountVerificationToken = json['account_verification_token'];
     accountVerified = json['account_verified'];
     accountSetup = json['account_setup'];
     doorNo = json['door_no'];
@@ -155,8 +155,8 @@ class StudentDetails {
     idProofUrl = json['id_proof_url'];
     profileFilename = json['profile_filename'];
     profileUrl = json['profile_url'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
+    // latitude = json['latitude'];
+    // longitude = json['longitude'];
     location = json['location'] != null
         ? new Location.fromJson(json['location'])
         : null;
@@ -189,8 +189,8 @@ class StudentDetails {
     data['phone_number'] = this.phoneNumber;
     data['pincode'] = this.pincode;
     data['user_type'] = this.userType;
-    data['otp'] = this.otp;
-    data['account_verification_token'] = this.accountVerificationToken;
+    // data['otp'] = this.otp;
+    // data['account_verification_token'] = this.accountVerificationToken;
     data['account_verified'] = this.accountVerified;
     data['account_setup'] = this.accountSetup;
     data['door_no'] = this.doorNo;
@@ -204,8 +204,8 @@ class StudentDetails {
     data['id_proof_url'] = this.idProofUrl;
     data['profile_filename'] = this.profileFilename;
     data['profile_url'] = this.profileUrl;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
+    // data['latitude'] = this.latitude;
+    // data['longitude'] = this.longitude;
     if (this.location != null) {
       data['location'] = this.location!.toJson();
     }
@@ -303,7 +303,7 @@ class Batch {
   String? batchName;
   String? batchTeacher;
   String? fees;
-  String? batchDays;
+  dynamic? batchDays;
   String? batchTimingStart;
   String? batchTimingEnd;
 
@@ -316,7 +316,7 @@ class Batch {
     batchName = json['batch_name'];
     batchTeacher = json['batch_teacher'];
     fees = json['fees'];
-    batchDays = json['batch_days'];
+    batchDays =json['batch_days'];//json['batch_days']
      batchTimingStart = json['batch_timing_start'];
     batchTimingEnd = json['batch_timing_end'];
   }
@@ -422,7 +422,7 @@ class PartentId {
         required this.otp,
         required this.accountVerificationToken,
         required this.id,
-        required this.userId,
+        // required this.userId,
         required this.firstName,
         required this.lastName,
         required this.wowId,
@@ -449,7 +449,7 @@ class PartentId {
     final String? otp;
     final String? accountVerificationToken;
     final String? id;
-    final List<dynamic> userId;
+    // final List<dynamic> userId;
     final String? firstName;
     final String? lastName;
     final String? wowId;
@@ -477,7 +477,7 @@ class PartentId {
             otp: json["otp"],
             accountVerificationToken: json["account_verification_token"],
             id: json["_id"],
-            userId: json["userId"] == null ? [] : List<dynamic>.from(json["userId"]!.map((x) => x)),
+            // userId: json["userId"] == null ? [] : List<dynamic>.from(json["userId"]!.map((x) => x)),
             firstName: json["first_name"],
             lastName: json["last_name"],
             wowId: json["wow_id"],

@@ -234,6 +234,7 @@ class AuthControllers extends GetxController
         if (response != null) {
           Logger().i(response.data);
           otpResponse.value = response;
+          // prefs.setString("key", value)
          if( response.data!.roles!.roleName=='Parent'){
           prefs.setString('PrentToken', response.token!);
          }else{

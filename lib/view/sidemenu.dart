@@ -112,27 +112,27 @@ class SideMenu extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
-             if (!isGuest ||type=='Tutee')
-ListTile(
-  onTap: () {
-    // Close the side menu
-   Get.offAll(() =>  ParentLoginScreen());
+//              if (!isGuest ||type=='Tutee')
+// ListTile(
+//   onTap: () {
+//     // Close the side menu
+//    Get.offAll(() =>  ParentLoginScreen());
 
     
-  },
-  leading: Image.asset(
-    'assets/sidemenu/privacy.png',
-    height: 25,
-  ),
-  title: Text(
-    'Invite Parent',
-    style: GoogleFonts.nunito(
-      fontSize: 16,
-      fontWeight: FontWeight.w600,
-    ),
-  ),
-  trailing: const Icon(Icons.arrow_forward_ios),
-),
+//   },
+//   leading: Image.asset(
+//     'assets/sidemenu/privacy.png',
+//     height: 25,
+//   ),
+//   title: Text(
+//     'Invite Parent',
+//     style: GoogleFonts.nunito(
+//       fontSize: 16,
+//       fontWeight: FontWeight.w600,
+//     ),
+//   ),
+//   trailing: const Icon(Icons.arrow_forward_ios),
+// ),
 
 
             ListTile(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -87,222 +88,242 @@ class Tutorenquirlist extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final tutionCourseDetailsList =
                         classController.enquirList[index];
-                    return GestureDetector(
-                      onTap: (){
-                         Get.to(PreviewScreen(
-                data: tutionCourseDetailsList,
-                type: 'Enquire',
-                tutorname: tutionCourseDetailsList.tutorName!, type1: type, tuteename: tutionCourseDetailsList.studentName!, tuteeemail: '', tuteephn: '',
-              ));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 5),
-                        child: Card(
-                          elevation: 10,
-                          shadowColor: Colors.black,
-                          surfaceTintColor: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    const CircleAvatar(
-                                      radius: 30, // Adjust size as needed
-                                      backgroundColor:
-                                          Colors.grey, // Customize color
-                                      child: Icon(
-                                        Icons.person, // Customize icon if needed
-                                        color: Colors.white,
-                                        size: 30,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                        width:
-                                            10), // Space between avatar and details
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          _buildRow(
-                                              'Tutee name',
-                                              tutionCourseDetailsList
-                                                  .studentName),
-                                          _buildRow('Course code',
-                                              tutionCourseDetailsList.courseCode),
-                                          _buildRow('Batch name',
-                                              tutionCourseDetailsList.courseName),
-                                          _buildRow('Subject',
-                                              tutionCourseDetailsList.subject),
-                                          _buildRow('Tutor',
-                                              tutionCourseDetailsList.tutorName ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                // Display "Accept" and "Reject" buttons outside the column
-                                if ((classController.selectedTabIndex.value ==
-                                        0 &&
-                                    type == 'Tutor'))
+                    return Animate(
+                        effects: [
+                                  SlideEffect(
+                                    begin: Offset(-1, 0), // Start from the left
+                                    end: Offset(
+                                        0, 0), // End at the original position
+                                    curve: Curves.easeInOut,
+                                    duration: 500
+                                        .ms, // Consistent timing for each item
+                                    delay: 100.ms *
+                                        index, // Add delay between items
+                                  ),
+                                  FadeEffect(
+                                    begin: 0, // Start transparent
+                                    end: 1, // End opaque
+                                    duration: 500.ms,
+                                    delay: 100.ms * index,
+                                  ),
+                                ],
+                      child: GestureDetector(
+                        onTap: (){
+                           Get.to(PreviewScreen(
+                                      data: tutionCourseDetailsList,
+                                      type: 'Enquire',
+                                      tutorname: tutionCourseDetailsList.tutorName!, type1: type, tuteename: tutionCourseDetailsList.studentName!, tuteeemail: '', tuteephn: '',
+                                    ));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 5),
+                          child: Card(
+                            elevation: 10,
+                            shadowColor: Colors.black,
+                            surfaceTintColor: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Expanded(
-                                        child: InkWell(
-                                          onTap: () {
-                                            _showConfirmationDialog(
-                                                context, tutionCourseDetailsList);
-                                          },
-                                          child: Container(
-                                            width: double.infinity,
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              gradient: const LinearGradient(
-                                                colors: [
-                                                  Color(0xFFBA0161),
-                                                  Color(0xFF510270)
-                                                ],
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
-                                              ),
-                                            ),
-                                            child: Text("Accept",
-                                                textAlign: TextAlign.center,
-                                                style: GoogleFonts.nunito(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 20,
-                                                    color: Colors.white)),
-                                          ),
+                                      const CircleAvatar(
+                                        radius: 30, // Adjust size as needed
+                                        backgroundColor:
+                                            Colors.grey, // Customize color
+                                        child: Icon(
+                                          Icons.person, // Customize icon if needed
+                                          color: Colors.white,
+                                          size: 30,
                                         ),
                                       ),
                                       const SizedBox(
-                                          width: 10), // Spacing between buttons
+                                          width:
+                                              10), // Space between avatar and details
                                       Expanded(
-                                        child: InkWell(
-                                          onTap: () {
-                                            _showConfirmationDialog1(
-                                                context, tutionCourseDetailsList);
-                                          },
-                                          child: Container(
-                                            width: double.infinity,
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              gradient: const LinearGradient(
-                                                colors: [
-                                                  Color(0xFFBA0161),
-                                                  Color(0xFF510270)
-                                                ],
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
-                                              ),
-                                            ),
-                                            child: Text("Reject",
-                                                textAlign: TextAlign.center,
-                                                style: GoogleFonts.nunito(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 20,
-                                                    color: Colors.white)),
-                                          ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            _buildRow(
+                                                'Tutee name',
+                                                tutionCourseDetailsList
+                                                    .studentName),
+                                            _buildRow('Course code',
+                                                tutionCourseDetailsList.courseCode),
+                                            _buildRow('Batch name',
+                                                tutionCourseDetailsList.courseName),
+                                            _buildRow('Subject',
+                                                tutionCourseDetailsList.subject),
+                                            _buildRow('Tutor',
+                                                tutionCourseDetailsList.tutorName ),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
-                                if ((classController.selectedTabIndex.value ==
-                                        1 &&
-                                    type == 'Tutor'))
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Expanded(
-                                        child: InkWell(
-                                          onTap: () {
-                                            Get.off(() => AddEnrollmentScreen(
-                                                  tuteename:
-                                                      tutionCourseDetailsList
-                                                          .studentName!,
-                                                  batchname:
-                                                      tutionCourseDetailsList
-                                                          .courseName!,
-                                                  classname:
-                                                      tutionCourseDetailsList
-                                                          .className!,
-                                                  subject: tutionCourseDetailsList
-                                                      .subject!,
-                                                  board: tutionCourseDetailsList
-                                                      .board!,
-                                                  batchStartingTime:
-                                                      tutionCourseDetailsList
-                                                          .batchTimingStart??'',
-                                                  batchEndingTime:
-                                                      tutionCourseDetailsList
-                                                          .batchTimingEnd??'',
-                                                  tutorname:
-                                                      tutionCourseDetailsList
-                                                          .tutorName!,
-                                                  courseCodeName:
-                                                      tutionCourseDetailsList
-                                                          .courseCode!,
-                                                  fees: tutionCourseDetailsList
-                                                      .fees!,
-                                                  tutorId: tutionCourseDetailsList
-                                                      .tutorId!,
-                                                  tuteeId: tutionCourseDetailsList
-                                                      .studentId!,
-                                                  courseId:
-                                                      tutionCourseDetailsList
-                                                          .courseId!,
-                                                  batchId: tutionCourseDetailsList
-                                                      .batchId!,
-                                                  enrollmentType:
-                                                      tutionCourseDetailsList
-                                                          .enquiryType!,
-                                                  type: type,
-                                                ));
-                                          },
-                                          child: Container(
-                                            width: double.infinity,
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              gradient: const LinearGradient(
-                                                colors: [
-                                                  Color(0xFFBA0161),
-                                                  Color(0xFF510270)
-                                                ],
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  // Display "Accept" and "Reject" buttons outside the column
+                                  if ((classController.selectedTabIndex.value ==
+                                          0 &&
+                                      type == 'Tutor'))
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              _showConfirmationDialog(
+                                                  context, tutionCourseDetailsList);
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              padding: const EdgeInsets.symmetric(
+                                                  vertical: 10),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                gradient: const LinearGradient(
+                                                  colors: [
+                                                    Color(0xFFBA0161),
+                                                    Color(0xFF510270)
+                                                  ],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                ),
                                               ),
+                                              child: Text("Accept",
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.nunito(
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 20,
+                                                      color: Colors.white)),
                                             ),
-                                            child: Text("Start Enroll",
-                                                textAlign: TextAlign.center,
-                                                style: GoogleFonts.nunito(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 20,
-                                                    color: Colors.white)),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                          width: 10), // Spacing between buttons
-                                    ],
-                                  ),
-                              ],
+                                        const SizedBox(
+                                            width: 10), // Spacing between buttons
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              _showConfirmationDialog1(
+                                                  context, tutionCourseDetailsList);
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              padding: const EdgeInsets.symmetric(
+                                                  vertical: 10),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                gradient: const LinearGradient(
+                                                  colors: [
+                                                    Color(0xFFBA0161),
+                                                    Color(0xFF510270)
+                                                  ],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                ),
+                                              ),
+                                              child: Text("Reject",
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.nunito(
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 20,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  if ((classController.selectedTabIndex.value ==
+                                          1 &&
+                                      type == 'Tutor'))
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () {
+                                              Get.off(() => AddEnrollmentScreen(
+                                                    tuteename:
+                                                        tutionCourseDetailsList
+                                                            .studentName!,
+                                                    batchname:
+                                                        tutionCourseDetailsList
+                                                            .courseName!,
+                                                    classname:
+                                                        tutionCourseDetailsList
+                                                            .className!,
+                                                    subject: tutionCourseDetailsList
+                                                        .subject!,
+                                                    board: tutionCourseDetailsList
+                                                        .board!,
+                                                    batchStartingTime:
+                                                        tutionCourseDetailsList
+                                                            .batchTimingStart??'',
+                                                    batchEndingTime:
+                                                        tutionCourseDetailsList
+                                                            .batchTimingEnd??'',
+                                                    tutorname:
+                                                        tutionCourseDetailsList
+                                                            .tutorName!,
+                                                    courseCodeName:
+                                                        tutionCourseDetailsList
+                                                            .courseCode!,
+                                                    fees: tutionCourseDetailsList
+                                                        .fees!,
+                                                    tutorId: tutionCourseDetailsList
+                                                        .tutorId!,
+                                                    tuteeId: tutionCourseDetailsList
+                                                        .studentId!,
+                                                    courseId:
+                                                        tutionCourseDetailsList
+                                                            .courseId!,
+                                                    batchId: tutionCourseDetailsList
+                                                        .batchId!,
+                                                    enrollmentType:
+                                                        tutionCourseDetailsList
+                                                            .enquiryType!,
+                                                    type: type,
+                                                  ));
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              padding: const EdgeInsets.symmetric(
+                                                  vertical: 10),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                gradient: const LinearGradient(
+                                                  colors: [
+                                                    Color(0xFFBA0161),
+                                                    Color(0xFF510270)
+                                                  ],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                ),
+                                              ),
+                                              child: Text("Start Enroll",
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.nunito(
+                                                      fontWeight: FontWeight.w500,
+                                                      fontSize: 20,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                            width: 10), // Spacing between buttons
+                                      ],
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

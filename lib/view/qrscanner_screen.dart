@@ -53,8 +53,13 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('QR Code Scanner')),
+      // appBar: AppBar(title: Text('QR Code Scanner')),
       body: AiBarcodeScanner(
+        controller: MobileScannerController(
+
+
+        ),
+        hideGalleryButton: true,
         onDetect: (po){
            _onBarcodeScanned(po.barcodes.first.rawValue!);
         },

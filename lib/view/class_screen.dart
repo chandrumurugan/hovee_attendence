@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -126,54 +127,71 @@ class TutorClassList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final tutionCourseDetailsList =
                         classController.classesList[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 5),
-                      child: Card(
-                        elevation: 10,
-                        shadowColor: Colors.black,
-                        surfaceTintColor: Colors.white,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
+                    return Animate(
+                        effects: [
+                          SlideEffect(
+                            begin: Offset(-1, 0),
+                            end: Offset(0, 0),
+                            curve: Curves.easeInOut,
+                            duration: 500.ms,
+                            delay: 100.ms * index,
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildRow('Course code',
-                                  tutionCourseDetailsList.courseCode),
-
-                              _buildRow('Batch Name',
-                                  tutionCourseDetailsList.batchName),
-
-                              _buildRow('Board', tutionCourseDetailsList.board),
-
-                              _buildRow(
-                                  'Subject', tutionCourseDetailsList.subject),
-
-                              _buildRow(
-                                  'Status', tutionCourseDetailsList.status == "Public" ? "Live" : "Pending"),
-
-                              // Display the button only if selectedTabIndex is 0 (Draft tab)
-                              if (classController.selectedTabIndex.value == 0)
-                                SingleButton(
-                                  btnName: 'Go live',
-                                  onTap: () {
-                                    //  classController.updateClass(
-                                    //   context,
-                                    //   tutionCourseDetailsList.courseCode!,
-                                    //   tutionCourseDetailsList.courseId!,
-                                    //   tutionCourseDetailsList.batchId!,
-                                    //   tutionCourseDetailsList.batchName!,
-                                    //   tutionCourseDetailsList.sId,
-                                    // );
-                                    _showConfirmationDialog(context,tutionCourseDetailsList);
-                                  },
-                                ),
-                            ],
+                          FadeEffect(
+                            begin: 0,
+                            end: 1,
+                            duration: 500.ms,
+                            delay: 100.ms * index,
+                          ),
+                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 5),
+                        child: Card(
+                          elevation: 10,
+                          shadowColor: Colors.black,
+                          surfaceTintColor: Colors.white,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildRow('Course code',
+                                    tutionCourseDetailsList.courseCode),
+                      
+                                _buildRow('Batch Name',
+                                    tutionCourseDetailsList.batchName),
+                      
+                                _buildRow('Board', tutionCourseDetailsList.board),
+                      
+                                _buildRow(
+                                    'Subject', tutionCourseDetailsList.subject),
+                      
+                                _buildRow(
+                                    'Status', tutionCourseDetailsList.status == "Public" ? "Live" : "Pending"),
+                      
+                                // Display the button only if selectedTabIndex is 0 (Draft tab)
+                                if (classController.selectedTabIndex.value == 0)
+                                  SingleButton(
+                                    btnName: 'Go live',
+                                    onTap: () {
+                                      //  classController.updateClass(
+                                      //   context,
+                                      //   tutionCourseDetailsList.courseCode!,
+                                      //   tutionCourseDetailsList.courseId!,
+                                      //   tutionCourseDetailsList.batchId!,
+                                      //   tutionCourseDetailsList.batchName!,
+                                      //   tutionCourseDetailsList.sId,
+                                      // );
+                                      _showConfirmationDialog(context,tutionCourseDetailsList);
+                                    },
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

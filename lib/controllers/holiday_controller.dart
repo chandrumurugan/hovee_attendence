@@ -220,11 +220,12 @@ class HolidayController extends GetxController {
       if (response != null && response.success == true) {
          _clearData();
         fetchBatchList();
+
          Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
         ,'Holiday deleted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       // SnackBarUtils.showSuccessSnackBar(context, 'Holiday delete successfully');
         //  Get.back();
-        //  onInit();
+         onInit();
       } else {
      Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),response?.message ?? 'Failed to update Enquire',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }

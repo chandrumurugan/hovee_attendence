@@ -18,7 +18,7 @@ class BatchController extends GetxController {
 
   var branchShortNameController = ''.obs;
   var batchNameController = ''.obs;
-  var batchDaysController = ''.obs;
+var batchDaysController = "".obs;
   var batchTeacherController = ''.obs;
   var batchTimingController = ''.obs;
   var batchTimingEndController = ''.obs;
@@ -306,7 +306,7 @@ class BatchController extends GetxController {
     batchTiming.clear();
     batchTimingEnd.clear();
     maxSlots.clear();
-    batchDaysController.value = '';
+    batchDaysController.value = "";
     modeController.value = '';
     fees.clear();
   }

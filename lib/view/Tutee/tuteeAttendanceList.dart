@@ -184,7 +184,7 @@ class TuteeAttendanceList extends StatelessWidget {
                     .shrink(); // Hide calendar if no batch is selected
               }
               return Container(
-                height: MediaQuery.of(context).size.height * 0.55,
+                // height: MediaQuery.of(context).size.height * 0.55,
                 margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                 // padding: EdgeInsets.symmetric(vertical: 30),
                 decoration: BoxDecoration(

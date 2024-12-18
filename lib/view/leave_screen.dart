@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,8 +18,20 @@ class TuteeLeaveScreen extends StatelessWidget {
 
 final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
+         appBar: AppBarHeader(
+        needGoBack: true,
+        navigateTo: () {
+          Get.offAll(DashboardScreen(
+            rolename: type,
+            firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,
+          ));
+        },
+      ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -42,21 +55,21 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Get.offAll(DashboardScreen(
-                                rolename: type,
-                                firstname: firstname,
-                                lastname: lastname,
-                                wowid: wowid,
-                              ));
-                            },
-                            icon: Icon(Icons.arrow_back, color: Colors.white),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     IconButton(
+                      //       onPressed: () {
+                      //         Get.offAll(DashboardScreen(
+                      //           rolename: type,
+                      //           firstname: firstname,
+                      //           lastname: lastname,
+                      //           wowid: wowid,
+                      //         ));
+                      //       },
+                      //       icon: Icon(Icons.arrow_back, color: Colors.white),
+                      //     ),
+                      //   ],
+                      // ),
                       Image.asset(
                         'assets/tuteeHomeImg/leave 1.png',
                         height: 35,
@@ -123,7 +136,27 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
                   itemCount: leaveController.leaveList.length,
                   itemBuilder: (context, index) {
                     final leaveData = leaveController.leaveList[index];
-                    return LeaveListContainer(leave: leaveData, type: type,);
+                    return Animate(
+                      
+                        effects: [
+                                  SlideEffect(
+                                    begin: Offset(-1, 0), // Start from the left
+                                    end: Offset(
+                                        0, 0), // End at the original position
+                                    curve: Curves.easeInOut,
+                                    duration: 500
+                                        .ms, // Consistent timing for each item
+                                    delay: 100.ms *
+                                        index, // Add delay between items
+                                  ),
+                                  FadeEffect(
+                                    begin: 0, // Start transparent
+                                    end: 1, // End opaque
+                                    duration: 500.ms,
+                                    delay: 100.ms * index,
+                                  ),
+                                ],
+                      child: LeaveListContainer(leave: leaveData, type: type,));
                   },
                 ),
               );

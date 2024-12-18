@@ -11,6 +11,7 @@ import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
+import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/tutee_holiday_screen.dart';
@@ -474,7 +475,7 @@ class _ParentViewState extends State<ParentView> {
                     height: 10,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,//spaceBetween
                     children: [
                       const Text(
                         'My Children',
@@ -483,18 +484,18 @@ class _ParentViewState extends State<ParentView> {
                             fontWeight: FontWeight.w500,
                             color: Colors.black),
                       ),
-                      InkWell(
-                        onTap: () {
-                          // Get.to(() => AttendanceCourseListScreen());
-                        },
-                        child: const Text(
-                          'See All',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     // Get.to(() => AttendanceCourseListScreen());
+                      //   },
+                      //   child: const Text(
+                      //     'See All',
+                      //     style: TextStyle(
+                      //         fontSize: 16,
+                      //         fontWeight: FontWeight.w500,
+                      //         color: Colors.black),
+                      //   ),
+                      // ),
                     ],
                   ),
                Obx(() {
@@ -739,6 +740,11 @@ class _ParentViewState extends State<ParentView> {
                                           wowid: widget.wowid,
                                           ));
                                     }
+                                        if (item['title'] == 'Announcement') {
+                                      Get.to(() => AnnouncementScreen(
+                                            type: 'Tutee',
+                                          ));
+                                    }
                             },
                             child: Card(
                               elevation: 10,
@@ -790,92 +796,92 @@ class _ParentViewState extends State<ParentView> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Announcement',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          // Get.to(() => AttendanceCourseListScreen());
-                        },
-                        child: const Text(
-                          'See All',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Card(
-                                  elevation: 10,
-                                  shadowColor: Colors.black,
-                                  surfaceTintColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                      color:  Colors
-                                              .transparent, // Highlight condition
-                                      width: 2, // Border width
-                                    ),
-                                    borderRadius: BorderRadius.circular(
-                                        8), // Rounded border
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 10),
-                                    child: Row(
-                                       mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                      children: [
-                                        // CircleAvatar(
-                                        //   radius: 40,
-                                        //   child: Icon(
-                                        //     Icons.person,
-                                        //     size: 20,
-                                        //     color: Colors.black,
-                                        //   ),
-                                        // ),
-                                        Image.asset(
-                                        'assets/tutorHomeImg/Rectangle 18373.png',
-                                        //color: Colors.white,
-                                        height: 60,
-                                      ), 
-                                      const SizedBox(width: 8,),
-                                        const Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                               'John Hook',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 20.0,
-                                                color: Colors.black,
-                                              ),
-                                            ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.start,//spaceBetween
+                  //   children: [
+                  //     const Text(
+                  //       'Announcement',
+                  //       style: TextStyle(
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w500,
+                  //           color: Colors.black),
+                  //     ),
+                  //     // InkWell(
+                  //     //   onTap: () {
+                  //     //     // Get.to(() => AttendanceCourseListScreen());
+                  //     //   },
+                  //     //   child: const Text(
+                  //     //     'See All',
+                  //     //     style: TextStyle(
+                  //     //         fontSize: 16,
+                  //     //         fontWeight: FontWeight.w500,
+                  //     //         color: Colors.black),
+                  //     //   ),
+                  //     // ),
+                  //   ],
+                  // ),
+                  // Card(
+                  //                 elevation: 10,
+                  //                 shadowColor: Colors.black,
+                  //                 surfaceTintColor: Colors.white,
+                  //                 shape: RoundedRectangleBorder(
+                  //                   side: const BorderSide(
+                  //                     color:  Colors
+                  //                             .transparent, // Highlight condition
+                  //                     width: 2, // Border width
+                  //                   ),
+                  //                   borderRadius: BorderRadius.circular(
+                  //                       8), // Rounded border
+                  //                 ),
+                  //                 child: Container(
+                  //                   padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 10),
+                  //                   child: Row(
+                  //                      mainAxisAlignment:
+                  //                             MainAxisAlignment.start,
+                  //                     children: [
+                  //                       // CircleAvatar(
+                  //                       //   radius: 40,
+                  //                       //   child: Icon(
+                  //                       //     Icons.person,
+                  //                       //     size: 20,
+                  //                       //     color: Colors.black,
+                  //                       //   ),
+                  //                       // ),
+                  //                       Image.asset(
+                  //                       'assets/tutorHomeImg/Rectangle 18373.png',
+                  //                       //color: Colors.white,
+                  //                       height: 60,
+                  //                     ), 
+                  //                     const SizedBox(width: 8,),
+                  //                       const Column(
+                  //                         mainAxisAlignment:
+                  //                             MainAxisAlignment.spaceBetween,
+                  //                             crossAxisAlignment: CrossAxisAlignment.start,
+                  //                         children: [
+                  //                           Text(
+                  //                              'John Hook',
+                  //                             style: TextStyle(
+                  //                               fontWeight: FontWeight.w400,
+                  //                               fontSize: 20.0,
+                  //                               color: Colors.black,
+                  //                             ),
+                  //                           ),
                                            
-                                            Text(
-                                               'It is a long established fact that a reader\nwill be distracted by the readable content\nof a page when looking at its layout.',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 14.0,
-                                                color: Colors.black,
-                                              ),
-                                            ),
+                  //                           Text(
+                  //                              'It is a long established fact that a reader\nwill be distracted by the readable content\nof a page when looking at its layout.',
+                  //                             style: TextStyle(
+                  //                               fontWeight: FontWeight.w400,
+                  //                               fontSize: 14.0,
+                  //                               color: Colors.black,
+                  //                             ),
+                  //                           ),
                                           
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                  //                         ],
+                  //                       )
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               ),
                       
                 ],
               ),
