@@ -15,6 +15,7 @@ import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/tutee_holiday_screen.dart';
+import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -322,7 +323,7 @@ class _ParentViewState extends State<ParentView> {
                 children: [
                   InkWell(
                     onTap: () {
-                      //Get.to(() => UserProfile());
+                      Get.to(() => UserProfile(type: "Parent",));
                     },
                     child:  Container(
             padding: const EdgeInsets.fromLTRB(20, 5, 20, 40),
@@ -583,14 +584,37 @@ class _ParentViewState extends State<ParentView> {
                               color: Colors.black,
                             ),
                           ),
-                          Text(
-                            userDetails.wowId ?? '',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14.0,
-                              color: Colors.black,
-                            ),
-                          ),
+                          Text.rich(
+  TextSpan(
+    children: [
+      TextSpan(
+        text: 'ID : ',
+        style: const TextStyle(
+          color:            Colors.black, // Same color
+
+          fontWeight: FontWeight.bold, // Bold for "ID"
+          fontSize: 16,
+        ),
+      ),
+      TextSpan(
+        text: userDetails.wowId ?? '',
+        style: const TextStyle(
+          color: Colors.black, // Same color
+          fontSize: 14,
+           fontWeight: FontWeight.w400,
+        ),
+      ),
+    ],
+  ),
+),
+                          // Text(
+                          //   userDetails.wowId ?? '',
+                          //   style: const TextStyle(
+                          //     fontWeight: FontWeight.w400,
+                          //     fontSize: 14.0,
+                          //     color: Colors.black,
+                          //   ),
+                          // ),
                           Text(
                             userDetails.email ?? '',
                             style: const TextStyle(
@@ -666,6 +690,11 @@ class _ParentViewState extends State<ParentView> {
               
                           return InkWell(
                             onTap: () async {
+
+
+
+
+                              Logger().d("=====>${item['title']}");
                               if (item['title'] == 'GPS Tracking') {
                                 SharedPreferences prefs =
                                     await SharedPreferences.getInstance();
@@ -740,9 +769,12 @@ class _ParentViewState extends State<ParentView> {
                                           wowid: widget.wowid,
                                           ));
                                     }
-                                        if (item['title'] == 'Announcement') {
+                                        if (item['title'] == 'Annoucement') {
                                       Get.to(() => AnnouncementScreen(
-                                            type: 'Tutee',
+                                            type: 'Parent',
+                                               firstname: widget.firstname,
+                                          lastname: widget.lastname,
+                                          wowid: widget.wowid,
                                           ));
                                     }
                             },

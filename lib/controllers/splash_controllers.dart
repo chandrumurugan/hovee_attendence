@@ -2,7 +2,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-
 import 'package:app_links/app_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -51,20 +50,19 @@ class SplashController extends GetxController {
 
   final String parentId;
   final String phoneNumber;
-   final RxBool showSecondImage = false.obs;
+  final RxBool showSecondImage = false.obs;
 
-    //constreuct
-      SplashController({required this.parentId,required this.phoneNumber}); 
+  //constreuct
+  SplashController({required this.parentId, required this.phoneNumber});
 
   @override
   void onInit() {
     super.onInit();
     // initDeepLinks();
     //  handleDeepLinkFlow(sampleUri);
-     FirebaseMessaging.instance.getToken().then((token) {
-      print("FCM Token: $token"); 
+    FirebaseMessaging.instance.getToken().then((token) {
+      print("FCM Token: $token");
       storeFcm(token.toString());
-
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -78,25 +76,19 @@ class SplashController extends GetxController {
     });
     print('init ended');
     Future.delayed(Duration(seconds: 3), () {
-     
-        showSecondImage.value = true;
-     
+      showSecondImage.value = true;
     });
-     handleNormalAppFlow();
+    handleNormalAppFlow();
   }
 
-  void storeFcm(String fcmToken)async{
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-     await prefs.setString("FCM_TOKEN", "${fcmToken}");
-
-
+  void storeFcm(String fcmToken) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("FCM_TOKEN", "${fcmToken}");
   }
 
   // Future<void> initDeepLinks() async {
   //   try {
   //     _appLinks = AppLinks();
-     
-
 
   //     _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
   //       if (uri != null) {
@@ -119,7 +111,7 @@ class SplashController extends GetxController {
   //       deepLink.value = initialLink.toString();
   //       handleDeepLinkFlow(initialLink);
   //     }
-      
+
   //     //  else {
   //     //   handleNormalAppFlow(); // Proceed to the normal app flow
   //     // }
@@ -171,9 +163,6 @@ class SplashController extends GetxController {
     }
   }
 
-
-
-
   Future<void> handleNormalAppFlow() async {
     await fetchAppConfig();
     isAppConfigFetched.value = true;
@@ -181,7 +170,7 @@ class SplashController extends GetxController {
     currentLocation.value = await locationService.getCurrentLocation();
     // _requestNotificationPermission();
     final prefs = await SharedPreferences.getInstance();
-      final storage = GetStorage();
+    final storage = GetStorage();
     Logger().i(
         "lat====${prefs.getDouble('latitude')}------${prefs.getDouble('longitude')}");
     Logger().i("${currentLocation.value.toString()}");
@@ -190,28 +179,23 @@ class SplashController extends GetxController {
 
     final phoneNumber = prefs.getString('phoneNumber') ?? "";
     final code = prefs.getString('code') ?? "";
-     var isDeepLink =
-     storage.read('deepLink') ?? false; 
-    
+    var isDeepLink = storage.read('deepLink') ?? false;
+
     //  prefs.getBool('deepLink') ?? false;
-
-
-
 
     // Retrieve token from SharedPreferences
     final token = await getTokenFromPreferences();
 
     // Navigate based on token presence
 
-    if(isDeepLink){
-       storage.write('deepLink',false); 
-       Get.off(() => ParentOtpScreen(), arguments: {"code": code, "phoneNumber": phoneNumber});
-      
-    }else if (token.isNotEmpty) {
-       storage.write('deepLink',false); 
+    if (isDeepLink) {
+      storage.write('deepLink', false);
+      Get.off(() => ParentOtpScreen(),
+          arguments: {"code": code, "phoneNumber": phoneNumber});
+    } else if (token.isNotEmpty) {
+      storage.write('deepLink', false);
       await _validateTokenAndNavigate();
-    }
-    else {
+    } else {
       Get.off(() => const GuestHomeScreen()); // Navigate to guest home
     }
   }
@@ -229,7 +213,6 @@ class SplashController extends GetxController {
       // Validate token using web service
       final response = await WebService.validateToken();
       _requestNotificationPermission();
-      
 
       if (response != null && response.tokenValid == true) {
         // Extract and save user data
@@ -245,13 +228,14 @@ class SplashController extends GetxController {
 
         // Navigate to Dashboard
         final roleName = response.roleName ?? 'Guest';
-         if( response.roleName=='Parent'){
-         
-               parentController. getUserTokenList(response.data!.sId!);
-               }else{
-                
-               }
-        Get.off(() => DashboardScreen(rolename: roleName,firstname: validateTokenData.firstName,lastname: validateTokenData.lastName,wowid:validateTokenData.wowId));
+        if (response.roleName == 'Parent') {
+          parentController.getUserTokenList(response.data!.sId!);
+        } else {}
+        Get.off(() => DashboardScreen(
+            rolename: roleName,
+            firstname: validateTokenData.firstName,
+            lastname: validateTokenData.lastName,
+            wowid: validateTokenData.wowId));
       } else {
         // Token invalid, navigate to Login/Signup
         Get.off(() => const LoginSignUp());
@@ -265,18 +249,17 @@ class SplashController extends GetxController {
     }
   }
 
-  
-Future<void> _requestNotificationPermission() async {
-  var status = await Permission.notification.status;
-  if (status.isDenied) {
-    // Request the permission
-    if (await Permission.notification.request().isGranted) {
-      print('Notification permission granted');
-    } else {
-      print('Notification permission denied');
+  Future<void> _requestNotificationPermission() async {
+    var status = await Permission.notification.status;
+    if (status.isDenied) {
+      // Request the permission
+      if (await Permission.notification.request().isGranted) {
+        print('Notification permission granted');
+      } else {
+        print('Notification permission denied');
+      }
+    } else if (status.isGranted) {
+      print('Notification permission already granted');
     }
-  } else if (status.isGranted) {
-    print('Notification permission already granted');
   }
-}
 }

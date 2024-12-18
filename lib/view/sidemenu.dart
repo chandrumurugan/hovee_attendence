@@ -46,7 +46,7 @@ class SideMenu extends StatelessWidget {
             if (!isGuest)
               ListTile(
                 onTap: () {
-                  Get.to(() => UserProfile());
+                  Get.to(() => UserProfile(type:type ,));
                 },
                 leading: Image.asset(
                   'assets/sidemenu/viewprofile.png',
