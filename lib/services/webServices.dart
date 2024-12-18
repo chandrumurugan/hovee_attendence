@@ -37,6 +37,7 @@ import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getParenthomeModal.dart';
 import 'package:hovee_attendence/modals/getParentvalidateCodeModel.dart';
 import 'package:hovee_attendence/modals/getQrcode_model.dart';
+import 'package:hovee_attendence/modals/getRatingsListModel.dart';
 import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
@@ -123,7 +124,7 @@ class WebService {
       DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
       String formattedDate1 = DateFormat('dd/MM/yyyy').format(parsedDate1);
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var fcmToken= prefs.getString("FCM_TOKEN");
+      var fcmToken = prefs.getString("FCM_TOKEN");
       var headers = {'Content-Type': 'application/json'};
 
       var data = {
@@ -163,15 +164,13 @@ class WebService {
       String otp, String accountverificationtoken, BuildContext context) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var fcmToken= prefs.getString("FCM_TOKEN");
+      var fcmToken = prefs.getString("FCM_TOKEN");
       var headers = {'Content-Type': 'application/json'};
-   final rolename=  prefs.getString('Rolename')??'';
-   Logger().d(rolename);
+      final rolename = prefs.getString('Rolename') ?? '';
       var data = {
         "account_verification_token": accountverificationtoken,
         "otp": otp,
-        // if(rolename!='Parent')
-        // "fcm_token" : fcmToken
+       //if (fcmToken != null) "fcm_token": fcmToken
       };
       Logger().i(data);
 
@@ -299,7 +298,7 @@ class WebService {
   }
 
   static Future<SingleCourseCategoryList?> singleCourseListfetch(
-      String type,searchTerm) async {
+      String type, searchTerm) async {
     final url = Uri.parse('${baseUrl}tutee/getClassTuteeFilterList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
@@ -309,7 +308,7 @@ class WebService {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
-    var data = {"type": type,"search":searchTerm};
+    var data = {"type": type, "search": searchTerm};
     try {
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
@@ -364,7 +363,7 @@ class WebService {
     }
   }
 
- static Future<http.StreamedResponse> submitAccountSetup({
+  static Future<http.StreamedResponse> submitAccountSetup({
     required String token,
     required Map<dynamic, dynamic> personalInfo,
     required Map<dynamic, dynamic> addressInfo,
@@ -424,6 +423,7 @@ class WebService {
     // Send the request
     return await request.send();
   }
+
   static Future<http.StreamedResponse> submitAccountSetupEdit({
     required String token,
     required Map<dynamic, dynamic> personalInfo,
@@ -513,7 +513,7 @@ class WebService {
     }
   }
 
- static Future<http.StreamedResponse> submitTuteeAccountSetup({
+  static Future<http.StreamedResponse> submitTuteeAccountSetup({
     required String token,
     required Map<dynamic, dynamic> personalInfo,
     required Map<dynamic, dynamic> addressInfo,
@@ -600,7 +600,7 @@ class WebService {
 
   static Future<getAttendancePunchInModel?> getAttendancePunchIn(
       String courseId, String batchId, BuildContext context) async {
-          Logger().d("api calling");
+    Logger().d("api calling");
     final url = Uri.parse('${baseUrl}attendane/punchIn');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
@@ -611,17 +611,17 @@ class WebService {
       'Content-Type': 'application/json'
     };
     var data = {"courseId": courseId, "batchId": batchId};
-          Logger().d("api calling ==>${token}");
-            Logger().d("api calling ==>${data}");
+    Logger().d("api calling ==>${token}");
+    Logger().d("api calling ==>${data}");
     try {
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
-            Logger().d(response.body);
+      Logger().d(response.body);
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         return getAttendancePunchInModel.fromJson(result);
       } else {
-            Logger().d(response.reasonPhrase);
+        Logger().d(response.reasonPhrase);
         Map<String, dynamic> result = jsonDecode(response.body);
         SnackBarUtils.showSuccessSnackBar(
           context,
@@ -1185,10 +1185,10 @@ class WebService {
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
-   final rolename=  prefs.getString('Rolename')??'';
-    final token = rolename=='Parent'?
-    prefs.getString('PrentToken') ?? "":
-    prefs.getString('Token') ?? "";
+    final rolename = prefs.getString('Rolename') ?? '';
+    final token = rolename == 'Parent'
+        ? prefs.getString('PrentToken') ?? ""
+        : prefs.getString('Token') ?? "";
     Logger().d("${rolename}message");
     Logger().d("${token}message");
     var data = {"token": token};
@@ -1235,62 +1235,59 @@ class WebService {
   // }
   static Future<getHomeDashboardTutorModel> fetchHomeDashboardList() async {
     try {
-          final url = Uri.parse('${baseUrl}home/getHomeDashboardTutor');
-    final box = GetStorage(); // Get an instance of GetStorage
-    // Retrieve the token from storage
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('Token') ?? "";
-    Logger().d("$token");
-    final response = await http.post(
-      url, // Replace with the actual API URL
-      headers: {
-        'Authorization': 'Bearer $token', // Add the authorization token here
-        'Content-Type': 'application/json',
-      },
-    );
+      final url = Uri.parse('${baseUrl}home/getHomeDashboardTutor');
+      final box = GetStorage(); // Get an instance of GetStorage
+      // Retrieve the token from storage
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token') ?? "";
+      Logger().d("$token");
+      final response = await http.post(
+        url, // Replace with the actual API URL
+        headers: {
+          'Authorization': 'Bearer $token', // Add the authorization token here
+          'Content-Type': 'application/json',
+        },
+      );
 
-    if (response.statusCode == 200) {
-      Logger().i("200yhasuvsagvfdsfjsfvd");
-      return getHomeDashboardTutorModel.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load dashboard list');
-    }
+      if (response.statusCode == 200) {
+        Logger().i("200yhasuvsagvfdsfjsfvd");
+        return getHomeDashboardTutorModel.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load dashboard list');
+      }
     } catch (e) {
       Logger().e(e);
       throw e;
-      
     }
-
   }
 
-    static Future<GetHomeDashboardParentModel> fetchHomeDashboardParentList() async {
+  static Future<GetHomeDashboardParentModel>
+      fetchHomeDashboardParentList() async {
     try {
-          final url = Uri.parse('${baseUrl}home/getHomeDashboardTutor');
-    final box = GetStorage(); // Get an instance of GetStorage
-    // Retrieve the token from storage
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('Token') ?? "";
-    Logger().d("$token");
-    final response = await http.post(
-      url, // Replace with the actual API URL
-      headers: {
-        'Authorization': 'Bearer $token', // Add the authorization token here
-        'Content-Type': 'application/json',
-      },
-    );
+      final url = Uri.parse('${baseUrl}home/getHomeDashboardTutor');
+      final box = GetStorage(); // Get an instance of GetStorage
+      // Retrieve the token from storage
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token') ?? "";
+      Logger().d("$token");
+      final response = await http.post(
+        url, // Replace with the actual API URL
+        headers: {
+          'Authorization': 'Bearer $token', // Add the authorization token here
+          'Content-Type': 'application/json',
+        },
+      );
 
-    if (response.statusCode == 200) {
-      Logger().i("200yhasuvsagvfdsfjsfvd");
-      return GetHomeDashboardParentModel.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load dashboard list');
-    }
+      if (response.statusCode == 200) {
+        Logger().i("200yhasuvsagvfdsfjsfvd");
+        return GetHomeDashboardParentModel.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load dashboard list');
+      }
     } catch (e) {
       Logger().e(e);
       throw e;
-      
     }
-
   }
 
   static Future<getdashboardYearflowModel?> fetchHomeAttendanceList(
@@ -1838,68 +1835,67 @@ class WebService {
   }
 
   static Future<RegisterParentModel?> RegisterParent({
-  required BuildContext context,
-  required String firstName,
-  required String lastName,
-  required String email,
-  required String dob,
-  required String phNo,
-  required String pincode,
-  required String latitude,
-  required String longitude,
-  required String country,
-  required String state,
-  required String city,
-  required String street,
-  required String doorNo,
-}) async {
-  try {
-    DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
-    String formattedDate1 = DateFormat('dd/MM/yyyy').format(parsedDate1);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('Token') ?? "";
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token',
-    };
+    required BuildContext context,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String dob,
+    required String phNo,
+    required String pincode,
+    required String latitude,
+    required String longitude,
+    required String country,
+    required String state,
+    required String city,
+    required String street,
+    required String doorNo,
+  }) async {
+    try {
+      DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
+      String formattedDate1 = DateFormat('dd/MM/yyyy').format(parsedDate1);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token') ?? "";
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
 
-    var data = {
-      "first_name": firstName,
-      "last_name": lastName,
-      "email": email,
-      "dob": formattedDate1,
-      "phone_number": phNo,
-      "pincode": pincode,
-      "longitude": longitude,
-      "latitude": latitude,
-      "country": country,
-      "state": state,
-      "city": city,
-      "street": street,
-      "door_no": doorNo,
-    };
+      var data = {
+        "first_name": firstName,
+        "last_name": lastName,
+        "email": email,
+        "dob": formattedDate1,
+        "phone_number": phNo,
+        "pincode": pincode,
+        "longitude": longitude,
+        "latitude": latitude,
+        "country": country,
+        "state": state,
+        "city": city,
+        "street": street,
+        "door_no": doorNo,
+      };
 
-    var url = Uri.parse("${baseUrl}user/registerParent");
-    var response =
-        await http.post(url, body: jsonEncode(data), headers: headers);
+      var url = Uri.parse("${baseUrl}user/registerParent");
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
 
-    if (response.statusCode == 200) {
-      var result = jsonDecode(response.body);
-      return RegisterParentModel.fromJson(result);
-    } else {
-      Map<String, dynamic> result = jsonDecode(response.body);
-      SnackBarUtils.showErrorSnackBar(
-        context,
-        "${result["message"]}",
-      );
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return RegisterParentModel.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
+        SnackBarUtils.showErrorSnackBar(
+          context,
+          "${result["message"]}",
+        );
+        return null;
+      }
+    } catch (e) {
+      SnackBarUtils.showErrorSnackBar(context, "An error occurred.");
       return null;
     }
-  } catch (e) {
-    SnackBarUtils.showErrorSnackBar(context, "An error occurred.");
-    return null;
   }
-}
-
 
   static Future<getParentInviteCodeModel?> getParentInviteCode(
       String identifiers) async {
@@ -1946,17 +1942,17 @@ class WebService {
     try {
       final response = await http.post(
         url,
-       body: jsonEncode(batchData),
+        body: jsonEncode(batchData),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
       if (response.statusCode == 200) {
-          var result = jsonDecode(response.body);
+        var result = jsonDecode(response.body);
         return UpdateParentStausModel.fromJson(result);
       } else {
-         Map<String, dynamic> result = jsonDecode(response.body);
+        Map<String, dynamic> result = jsonDecode(response.body);
         return null;
       }
     } catch (e) {
@@ -1985,6 +1981,86 @@ class WebService {
       return DeleteAnnouncementModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load Notification list');
+    }
+  }
+
+  static Future<GetRatingsListModel?> updateSelectedSubcategories(
+      Map<String, dynamic> batchData) async {
+    try {
+      final url = Uri.parse('${baseUrl}rating/getRatingsList');
+      final box = GetStorage(); // Get an instance of GetStorage
+      // Retrieve the token from storage
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token') ?? "";
+      final response = await http.post(
+        url, // Replace with the actual API URL
+        body: json.encode(batchData),
+        headers: {
+          'Authorization': 'Bearer $token', // Add the authorization token here
+          'Content-Type': 'application/json',
+        },
+      );
+      Logger().i(token);
+
+      Logger().i(response.body);
+
+      if (response.statusCode == 200) {
+        return GetRatingsListModel.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load Enquir list');
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<int> submitRatings(
+      BuildContext context,
+      String tutorId,
+      String batchId,
+      String courseId,
+       String star,
+      List<String> subCategoryId,
+      String? reviews) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${prefs.getString('Token')}'
+    };
+    var data = json.encode({
+      "type": "N",
+      "tutorId": tutorId,
+      "batchId": batchId,
+      "courseId": courseId,
+       "star": star,
+      "details": subCategoryId,
+      "comments": reviews
+    });
+
+    print("data===getting as payload====>$data");
+
+    try {
+      final response = await http.post(
+          Uri.parse('${baseUrl}rating/addUserRatings'),
+          body: data,
+          headers: headers);
+      print('response================>${response.body}');
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+
+        // SnackBarUtils.showSuccessSnackBar(
+        //     context, '${responseData["message"]}');
+        return response.statusCode;
+      } else {
+        print('response================error');
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        SnackBarUtils.showErrorSnackBar(context, '${responseData["message"]}');
+
+        throw Exception("error");
+      }
+    } catch (e) {
+      print(e);
+      throw Exception("$e");
     }
   }
 }

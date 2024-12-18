@@ -208,13 +208,40 @@ class TutorId {
   String? sId;
   String? firstName;
   String? lastName;
+  String? email;
+  String? phoneNumber;
+  int? pincode;
+  String? doorNo;
+  String? street;
+  String? city;
+  String? state;
+  String? country;
 
-  TutorId({this.sId, this.firstName, this.lastName});
+  TutorId(
+      {this.sId,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.phoneNumber,
+      this.pincode,
+      this.doorNo,
+      this.street,
+      this.city,
+      this.state,
+      this.country});
 
   TutorId.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     firstName = json['first_name'];
     lastName = json['last_name'];
+    email = json['email'];
+    phoneNumber = json['phone_number'];
+    pincode = json['pincode'];
+    doorNo = json['door_no'];
+    street = json['street'];
+    city = json['city'];
+    state = json['state'];
+    country = json['country'];
   }
 
   Map<String, dynamic> toJson() {
@@ -222,6 +249,14 @@ class TutorId {
     data['_id'] = this.sId;
     data['first_name'] = this.firstName;
     data['last_name'] = this.lastName;
+    data['email'] = this.email;
+    data['phone_number'] = this.phoneNumber;
+    data['pincode'] = this.pincode;
+    data['door_no'] = this.doorNo;
+    data['street'] = this.street;
+    data['city'] = this.city;
+    data['state'] = this.state;
+    data['country'] = this.country;
     return data;
   }
 }
