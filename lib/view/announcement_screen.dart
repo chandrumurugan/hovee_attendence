@@ -15,23 +15,28 @@ import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class AnnouncementScreen extends StatelessWidget {
   final String type;
-  final String? firstname,lastname,wowid;
-  AnnouncementScreen({super.key, required this.type,this.firstname, this.lastname, this.wowid});
+  final String? firstname, lastname, wowid;
+  AnnouncementScreen(
+      {super.key,
+      required this.type,
+      this.firstname,
+      this.lastname,
+      this.wowid});
   final AnnoumentController anoumentController = Get.put(AnnoumentController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-           appBar: AppBarHeader(
-        needGoBack: true,
-        navigateTo: () {
-          Get.offAll(DashboardScreen(
-            rolename: type,
-            firstname: firstname,
-            lastname: lastname,
-            wowid: wowid,
-          ));
-        },
-      ),
+        appBar: AppBarHeader(
+          needGoBack: true,
+          navigateTo: () {
+            Get.offAll(DashboardScreen(
+              rolename: type,
+              firstname: firstname,
+              lastname: lastname,
+              wowid: wowid,
+            ));
+          },
+        ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -143,7 +148,8 @@ class AnnouncementScreen extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       _buildRow(
                                           'Title', leaveData.title, context),
@@ -163,59 +169,67 @@ class AnnouncementScreen extends StatelessWidget {
                                           '${leaveData.courseDetails!.className}',
                                           context),
                                       const SizedBox(height: 10),
-                                      _buildRow('Subject',
-                                          leaveData.courseDetails!.subject, context),
+                                      _buildRow(
+                                          'Subject',
+                                          leaveData.courseDetails!.subject,
+                                          context),
                                       const SizedBox(height: 10),
                                       _buildRow('Description',
                                           leaveData.description, context),
                                     ],
                                   ),
                                 ),
-                                SizedBox(
-                                  
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.13,
-                                  child: IconButton(
-                                    iconSize: 25,
-                                    onPressed: () {}, // No action needed here
-                                    icon: PopupMenuButton<String>(
-                                      icon: const Icon(Icons.more_vert),
-                                      onSelected: (String value) {
-                                        // Optional if further actions are needed after selection
-                                      },
-                                      itemBuilder: (BuildContext context) {
-                                        return [
-                                          if (type == 'Tutor')
+                                if (type == 'Tutor')
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.13,
+                                    child: IconButton(
+                                      iconSize: 25,
+                                      onPressed: () {}, // No action needed here
+                                      icon: PopupMenuButton<String>(
+                                        icon: const Icon(Icons.more_vert),
+                                        onSelected: (String value) {
+                                          // Optional if further actions are needed after selection
+                                        },
+                                        itemBuilder: (BuildContext context) {
+                                          return [
                                             PopupMenuItem(
                                               value: 'Edit',
                                               child: ListTile(
                                                 leading: const Icon(Icons.edit),
                                                 title: const Text('Edit'),
                                                 onTap: () {
-                                                    Navigator.pop(context); // Close the popup first
-                                                                Get.to(EditAnnouncementScreen(
-                                                     data: leaveData,
+                                                  Navigator.pop(
+                                                      context); // Close the popup first
+                                                  Get.to(EditAnnouncementScreen(
+                                                    data: leaveData,
                                                   ));
                                                 },
                                               ),
                                             ),
-                                          PopupMenuItem(
-                                            value: 'Delete',
-                                            child: ListTile(
-                                              leading: const Icon(Icons.delete),
-                                              title: const Text('Delete'),
-                                              onTap: () {
-                                                Navigator.pop(context);
-                                                 _showConfirmationDialog(
-                                                    context, leaveData.batchDetails!.sId!,leaveData.courseDetails!.sId,leaveData.announcementId);
-                                              },
+                                            PopupMenuItem(
+                                              value: 'Delete',
+                                              child: ListTile(
+                                                leading:
+                                                    const Icon(Icons.delete),
+                                                title: const Text('Delete'),
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                  _showConfirmationDialog(
+                                                      context,
+                                                      leaveData
+                                                          .batchDetails!.sId!,
+                                                      leaveData
+                                                          .courseDetails!.sId,
+                                                      leaveData.announcementId);
+                                                },
+                                              ),
                                             ),
-                                          ),
-                                        ];
-                                      },
+                                          ];
+                                        },
+                                      ),
                                     ),
                                   ),
-                                ),
                               ],
                             ),
                           ),
@@ -270,7 +284,8 @@ class AnnouncementScreen extends StatelessWidget {
     );
   }
 
-   void _showConfirmationDialog(BuildContext context, String batchId,courseId,announcementId) {
+  void _showConfirmationDialog(
+      BuildContext context, String batchId, courseId, announcementId) {
     showDialog(
       context: context,
       builder: (context) {
@@ -294,7 +309,8 @@ class AnnouncementScreen extends StatelessWidget {
           btnName2: 'Yes',
           onTap2: () {
             // Close the dialog when 'No' is clicked
-            anoumentController.deleteAnnouncement(context, batchId,courseId,announcementId);
+            anoumentController.deleteAnnouncement(
+                context, batchId, courseId, announcementId);
             // classController.tabController.animateTo(1);
             // classController.handleTabChange(1);
             Navigator.of(context).pop();

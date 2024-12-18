@@ -500,7 +500,7 @@ class UserProfileController extends GetxController
     emailController.text = userdata.email ?? "";
     dobController.text = userdata.dob ?? "";
     pincodeController.text =
-        authControllers.otpResponse.value.data!.pincode!.toString();
+        userdata.pincode.toString() ?? "";
     selectedIDProof.value = userdata.idProofLabel ?? "";
 
     //adddress
