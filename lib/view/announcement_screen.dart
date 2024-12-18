@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/annoument_controller.dart';
+import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
@@ -14,11 +15,23 @@ import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class AnnouncementScreen extends StatelessWidget {
   final String type;
-  AnnouncementScreen({super.key, required this.type});
+  final String? firstname,lastname,wowid;
+  AnnouncementScreen({super.key, required this.type,this.firstname, this.lastname, this.wowid});
   final AnnoumentController anoumentController = Get.put(AnnoumentController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+           appBar: AppBarHeader(
+        needGoBack: true,
+        navigateTo: () {
+          Get.offAll(DashboardScreen(
+            rolename: type,
+            firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,
+          ));
+        },
+      ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -42,18 +55,18 @@ class AnnouncementScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Get.offAll(DashboardScreen(
-                                  rolename: type,
-                                ));
-                              },
-                              icon: Icon(Icons.arrow_back, color: Colors.white),
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     IconButton(
+                        //       onPressed: () {
+                        //         Get.offAll(DashboardScreen(
+                        //           rolename: type,
+                        //         ));
+                        //       },
+                        //       icon: Icon(Icons.arrow_back, color: Colors.white),
+                        //     ),
+                        //   ],
+                        // ),
                         // Image.asset(
                         //   'assets/headerIcons/holiday 1 (1).png',
                         //   height: 35,

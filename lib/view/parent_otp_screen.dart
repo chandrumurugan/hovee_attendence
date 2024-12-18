@@ -122,7 +122,7 @@ class ParentOtpScreen extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                            "Enter the OTP sent to your\nmobile number or email ID",
+                                            "Submit the acceptance code\nreceived on your phone to proceed further.",//
                                             style: GoogleFonts.nunito(
                                                 fontSize: 16.0,
                                                 color: const Color(0xFF000000),

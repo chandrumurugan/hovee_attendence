@@ -19,7 +19,8 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 
 class UserProfile extends StatelessWidget {
-  UserProfile({super.key});
+  final String? type;
+  UserProfile({super.key, this.type});
   UserProfileController accountController = Get.put(UserProfileController());
   //  final splashController = Get.find<SplashController>();
 
@@ -167,6 +168,7 @@ class UserProfile extends StatelessWidget {
                               const Tab(
                                 text: 'Address',
                               ),
+                              if(type == null && type != "Parent")
                               Tab(
                                 text: accountController.userProfileResponse
                                             .value.data!.rolesId!.roleName! ==
@@ -848,7 +850,7 @@ class UserProfile extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-
+                        if(type == null && type != "Parent")
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12),

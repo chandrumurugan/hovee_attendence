@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
@@ -38,6 +39,7 @@ class ParentAccountSetupController extends GetxController
   final countryController = TextEditingController();
   final pincodesController = TextEditingController();
   final additionalInfoController = TextEditingController();
+  double? latitude, longitude;
 
   var acceptedTerms = false.obs;
   var isTickedWhatsApp = false.obs;
@@ -62,8 +64,35 @@ class ParentAccountSetupController extends GetxController
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
     _populateFieldsFromAuth();
+     _populateAddressFromLocation();
     // getUserData();
   }
+
+  void _populateAddressFromLocation() async {
+    final prefs = await SharedPreferences.getInstance();
+    Get.log("Latitude: $latitude, Longitude: $longitude");
+    latitude = prefs.getDouble('latitude');
+    longitude = prefs.getDouble('longitude');
+    try {
+      List<Placemark>? placemarks =
+          await placemarkFromCoordinates(latitude ?? 0.0, longitude ?? 0.0);
+      if (placemarks != null && placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+
+        address1Controller.text = place.subThoroughfare ?? "";
+        address2Controller.text =
+            place.thoroughfare ?? "" + "" + place.subLocality! ?? "";
+        cityController.text = place.locality ?? "";
+        stateController.text = place.administrativeArea ?? "";
+        countryController.text = place.country ?? "";
+        pincodesController.text = place.postalCode ?? "";
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+  
+
 
   void _populateFieldsFromAuth() {
     phController.text =parentController.otpResponse.value.userDetail!=null?

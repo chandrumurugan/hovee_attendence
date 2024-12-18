@@ -125,9 +125,9 @@ class SidemenuHeader extends StatelessWidget {
                   isGuest ? "Guest" :
                                     'ID : ${wowid}',
                   style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w400,
                       color: Colors.white,
-                      fontSize: 20),
+                      fontSize: 16),
                 ):
                        Text(
                         isGuest ? "ID: xxxxxxx" :
