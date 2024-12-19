@@ -123,6 +123,13 @@ class AccountSetup extends StatelessWidget {
                               if(index == 1){
                                 accountController.storePersonalInfo(context, roleId, roleTypeId);
                               }
+                               if(index == 2){
+                                 accountController.storeAddressInfo(
+                                                context,
+                                                selectedRoleTypeName,
+                                                roleId,
+                                                roleTypeId);
+                              }
                               accountController.currentTabIndex.value = index;
                               accountController.isLoading.value = false;
                               KeyboardUtil.hideKeyboard(context);

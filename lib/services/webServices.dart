@@ -37,6 +37,8 @@ import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getParenthomeModal.dart';
 import 'package:hovee_attendence/modals/getParentvalidateCodeModel.dart';
 import 'package:hovee_attendence/modals/getQrcode_model.dart';
+import 'package:hovee_attendence/modals/getRatingDashboardListModel.dart';
+import 'package:hovee_attendence/modals/getRatingTutorListModel.dart';
 import 'package:hovee_attendence/modals/getRatingsListModel.dart';
 import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
@@ -2056,6 +2058,86 @@ class WebService {
         final Map<String, dynamic> responseData = json.decode(response.body);
         SnackBarUtils.showErrorSnackBar(context, '${responseData["message"]}');
 
+        throw Exception("error");
+      }
+    } catch (e) {
+      print(e);
+      throw Exception("$e");
+    }
+  }
+
+  //   static Future<GetRatingTutorListModel> getRatings( Map<String, dynamic> batchData) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   var headers = {'Authorization': 'Bearer ${prefs.getString('Token')}'};
+  //   print('response================>${headers}');
+
+  //   try {
+  //     final response = await http.post(Uri.parse('${baseUrl}rating/getRatingTutorList'),
+  //      body: json.encode(batchData),
+  //         headers: headers);
+
+  //     if (response.statusCode == 200) {
+  //       print('response================>${response.body}');
+  //       final Map<String, dynamic> responseData = json.decode(response.body);
+  //       return GetRatingTutorListModel.fromJson(responseData);
+  //     } else {
+  //       print('response================error');
+  //       final Map<String, dynamic> responseData = json.decode(response.body);
+  //       //  SnackBarUtils.showErrorSnackBar(context, '${responseData["message"]}');
+  //       throw Exception("error");
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //     throw Exception("$e");
+  //   }
+  // }
+  static Future<GetRatingTutorListModel?> getRatings(
+      Map<String, dynamic> batchData) async {
+    try {
+      final url = Uri.parse('${baseUrl}rating/getRatingTutorList');
+      final box = GetStorage(); // Get an instance of GetStorage
+      // Retrieve the token from storage
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token') ?? "";
+      final response = await http.post(
+        url, // Replace with the actual API URL
+        body: json.encode(batchData),
+        headers: {
+          'Authorization': 'Bearer $token', // Add the authorization token here
+          'Content-Type': 'application/json',
+        },
+      );
+      Logger().i(token);
+
+      Logger().i(response.body);
+
+      if (response.statusCode == 200) {
+        return GetRatingTutorListModel.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load Enquir list');
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<GetRatingDashboardListModel > getMyRatings() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var headers = {'Authorization': 'Bearer ${prefs.getString('Token')}'};
+    print('response================>${headers}');
+
+    try {
+      final response = await http.post(Uri.parse('${baseUrl}rating/getRatingDashboardList'),
+          headers: headers);
+
+      if (response.statusCode == 200) {
+        print('response================>${response.body}');
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return GetRatingDashboardListModel .fromJson(responseData);
+      } else {
+        print('response================error');
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        //  SnackBarUtils.showErrorSnackBar(context, '${responseData["message"]}');
         throw Exception("error");
       }
     } catch (e) {

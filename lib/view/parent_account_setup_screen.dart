@@ -793,7 +793,7 @@ class ParentAccountSetupScreen extends StatelessWidget {
                                                       )
                                                     : const Center(
                                                         child: Text(
-                                                          'Next',
+                                                          'Submit',
                                                           style: TextStyle(
                                                             fontSize: 16,
                                                             fontWeight:

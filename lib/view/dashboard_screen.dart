@@ -10,7 +10,9 @@ import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
+import 'package:hovee_attendence/view/myProperties_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
+import 'package:hovee_attendence/view/ratings_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 import 'package:share_plus/share_plus.dart';
@@ -143,6 +145,9 @@ class DashboardScreen extends StatelessWidget {
         ParentView(userId: '',rolename: 'Parent',firstname: firstname,lastname: lastname,wowid: wowid,),
         Tutorenquirlist(type: rolename, fromBottomNav: false,),
         EnrollmentScreen(type: rolename, fromBottomNav: false,),
+          if (rolename=='Tutor')
+       MyRatingsScreen(fromBottomNav: false,)
+      else 
       Center(child: Text("Feature under development")),
       Center(child: Text("Feature under development")),
     ];
