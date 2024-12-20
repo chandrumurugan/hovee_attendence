@@ -76,7 +76,7 @@ class _RatingPropertyState extends State<RatingPropertyConatiner> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: Container(
-                                  width: widthPadding * 0.30,
+                                  width: widthPadding * 0.20,
                                   height: heightPadding * 0.15,
                                   // padding: EdgeInsets.all(5),
                                   child: 
@@ -159,7 +159,7 @@ class _RatingPropertyState extends State<RatingPropertyConatiner> {
                           Text('${widget.propertyShortName}',
                               textScaleFactor: 1.10,
                               style: GoogleFonts.nunito(
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.black)),
                           SizedBox(
                             width: 160,

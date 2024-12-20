@@ -44,7 +44,7 @@ class MyRatingsScreen extends StatelessWidget {
               children: [
              
                         SizedBox(
-                          height: MediaQuery.of(context).size.height*0.31,
+                          height: MediaQuery.of(context).size.height*0.30,
                           child:  RatingProfile(
                                 profileImage: null ?? "",
                                 wowId: controller.myrating!.wowId!,

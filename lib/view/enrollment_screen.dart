@@ -228,7 +228,7 @@ class EnrollmentScreen extends StatelessWidget {
                  end: Alignment.bottomCenter,
                ),
              ),
-             child: Text("Start Enroll",
+             child: Text("Share your ratings",
                  textAlign: TextAlign.center,
                  style: GoogleFonts.nunito(
                      fontWeight: FontWeight.w500,

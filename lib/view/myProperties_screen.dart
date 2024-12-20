@@ -29,7 +29,7 @@ class MypropertiesReviewScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 8),
             Text(
-              ' My Properties | Reviews',
+              ' My Class | Reviews',
               style: GoogleFonts.nunito(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,

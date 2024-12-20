@@ -348,13 +348,22 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                       ),
                     ],
                   ),
-                  CommonDropdownInputField(
-                    title: 'Batch days',
-                    controllerValue: controller.batchDaysController,
-                    selectedValue: controller.batchDaysController,
-                    items: controller.batchDays,
-                    onChanged: controller.setBatchDays,
-                  ),
+                  // CommonDropdownInputField(
+                  //   title: 'Batch days',
+                  //   controllerValue: controller.batchDaysController,
+                  //   selectedValue: controller.batchDaysController,
+                  //   items: controller.batchDays,
+                  //   onChanged: controller.setBatchDays,
+                  // ),
+                  CommonDropdownInputFieldDays(
+  title: 'Batch Days',
+  selectedValues: controller.selectedBatchDays,
+  items: controller.batchDays,
+  onChanged: (selected) {
+    print('Selected Batch Days: $selected');
+    controller.setBatchDays;
+  },
+),
                 ],
               ),
             ),

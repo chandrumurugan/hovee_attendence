@@ -53,6 +53,7 @@ var batchDaysController = "".obs;
   List<String> batchModes = [];
   Map<String, String> batchIdMap = {};
   List<String> batchName1 = [];
+ final selectedBatchDays = <String>[].obs;
 
   var selectedCourseDetails =
       Data2().obs; // Observable to store selected course details

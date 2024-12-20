@@ -131,7 +131,7 @@ class Ratingpropertycard extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: widthPadding * 0.04,
-                                vertical: heightPadding * 0.02),
+                                vertical: heightPadding * 0.00),
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                                 color: Colors.grey.shade200,
@@ -139,6 +139,7 @@ class Ratingpropertycard extends StatelessWidget {
                             child: Text(
                               propertyRR.comments!,
                               textScaleFactor: 1.2,
+                              textAlign: TextAlign.left,
                               style: GoogleFonts.nunito(
                                   fontWeight: FontWeight.w400,
                                   color: Colors.black),
@@ -148,7 +149,7 @@ class Ratingpropertycard extends StatelessWidget {
                       ),
                     ),
                   )
-                : Container(),
+                : SizedBox.shrink(),
           ],
         ),
       ),

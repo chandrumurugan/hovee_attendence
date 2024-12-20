@@ -89,22 +89,6 @@ class CommonDropdownInputField extends StatelessWidget {
                         },
                       ),
                     );
-                  // ListTile(
-                  //   title: Text(
-                  //     items[index],
-                  //     style: TextStyle(
-                  //       fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  //       color: isSelected ? Colors.blue : Colors.black,
-                  //     ),
-                  //   ),
-                  //   tileColor: isSelected ? const Color.fromARGB(255, 253, 253, 253) : null,
-                  //   onTap: () {
-                  //     selectedValue.value = items[index];
-                  //     controllerValue.value = items[index]; // Update controller value
-                  //     onChanged(items[index]);
-                  //     Navigator.of(context).pop();
-                  //   },
-                  // );
                 },
               ),
             ],
@@ -114,3 +98,96 @@ class CommonDropdownInputField extends StatelessWidget {
     );
   }
 }
+
+
+
+class CommonDropdownInputFieldDays extends StatelessWidget {
+  final String title;
+  final RxList<String> selectedValues; // Updated to RxList for multiple selections
+  final List<String> items;
+  final Function(List<String>) onChanged;
+
+  CommonDropdownInputFieldDays({
+    Key? key,
+    required this.title,
+    required this.selectedValues,
+    required this.items,
+    required this.onChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      // Display selected items joined by commas or "Select" if empty
+      String displayText = selectedValues.isEmpty
+          ? 'Select $title'
+          : selectedValues.join(', ');
+
+      return TextField(
+        decoration: InputDecoration(
+          suffixIcon: Icon(Icons.keyboard_arrow_down),
+          filled: true,
+          fillColor: Colors.grey[200],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14.0),
+            borderSide: BorderSide.none,
+          ),
+        ),
+        readOnly: true,
+        onTap: () {
+          _showMultiSelectDropdown(context);
+        },
+        controller: TextEditingController(text: displayText),
+      );
+    });
+  }
+
+  void _showMultiSelectDropdown(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Select $title",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              ListView.builder(
+                itemCount: items.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 8),
+                itemBuilder: (context, index) {
+                  final isSelected = selectedValues.contains(items[index]);
+                  return CheckboxListTile(
+                    title: Text(items[index]),
+                    value: isSelected,
+                    onChanged: (isChecked) {
+                      if (isChecked == true) {
+                        selectedValues.add(items[index]);
+                      } else {
+                        selectedValues.remove(items[index]);
+                      }
+                      onChanged(selectedValues); // Notify parent widget
+                    },
+                  );
+                },
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Done'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+

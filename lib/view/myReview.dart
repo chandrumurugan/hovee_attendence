@@ -122,7 +122,7 @@ final List<String> review;
             ],
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.12,
+            height: MediaQuery.of(context).size.height * 0.11,
             child: PageView.builder(
               controller: controller,
               itemCount: review.length,
@@ -159,9 +159,9 @@ final List<String> review;
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height: 15,
-                            ),
+                            // SizedBox(
+                            //   height: 15,
+                            // ),
                             // Generating the subcategory list
                             // ...List.generate(
                             //   review[index].length,
