@@ -33,9 +33,7 @@ final List<String> review;
                         children: [
                         ]),
                   ),
-                  SizedBox(
-                    width: 0,
-                  ),
+              
                   SuperTooltip(
                     showBarrier: true,
                     controller: _controller,
@@ -53,7 +51,7 @@ final List<String> review;
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Text(
                             "1. Authentic Reviews",
                             softWrap: true,
@@ -69,7 +67,7 @@ final List<String> review;
                             style: GoogleFonts.nunito(
                                 color: Colors.black, fontSize: 14),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Text(
                             "2. Thorough Review Screening",
                             softWrap: true,
@@ -85,7 +83,7 @@ final List<String> review;
                             style: GoogleFonts.nunito(
                                 color: Colors.black, fontSize: 14),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Text(
                             "3. Scoring-Based Rating Calculation",
                             softWrap: true,
@@ -106,7 +104,7 @@ final List<String> review;
                       ),
                     ),
                     child: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.info,
                         color: AppConstants.secondaryColor,
                       ),
@@ -122,84 +120,25 @@ final List<String> review;
             ],
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.11,
+            height: MediaQuery.of(context).size.height * 0.07,
             child: PageView.builder(
               controller: controller,
               itemCount: review.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
-                  //elevation: 20.0,
-                  //surfaceTintColor: Colors.white,
-                  color: Colors.white,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: heightPadding * .02),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: widthPadding * .04,
-                        vertical: heightPadding * .006,
-                      ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Adding the category text
-                            Container(
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: AppConstants.primaryColor),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Text(
-                                review[index],
-                                textScaleFactor: 1.2,
-                                style: GoogleFonts.nunito(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppConstants.primaryColor,
-                                ),
-                              ),
-                            ),
-                            // SizedBox(
-                            //   height: 15,
-                            // ),
-                            // Generating the subcategory list
-                            // ...List.generate(
-                            //   review[index].length,
-                            //   (indexs) => Padding(
-                            //     padding:
-                            //         const EdgeInsets.symmetric(vertical: 4.0),
-                            //     child: Row(
-                            //       crossAxisAlignment: CrossAxisAlignment.start,
-                            //       children: [
-                                    // Icon(
-                                    //   Icons.check_circle,
-                                    //   color: AppConstants.secondaryColor,
-                                    //   size: 20,
-                                    // ),
-                            //         SizedBox(
-                            //           width: 6,
-                            //         ),
-                            //         SizedBox(
-                            //           width: MediaQuery.of(context).size.width *
-                            //               0.70,
-                            //           child: Text(
-                                        
-                            //                 review[index],
-                            //             textScaleFactor: 1.1,
-                            //             style: GoogleFonts.nunito(
-                            //               fontWeight: FontWeight.w500,
-                            //               color: Colors.black.withOpacity(.5),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                         
-                          ],
-                        ),
-                      ),
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: AppConstants.primaryColor),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Text(
+                    review[index],
+                    overflow: TextOverflow.ellipsis,
+                    // ignore: deprecated_member_use
+                    textScaleFactor: 1.2,
+                    style: GoogleFonts.nunito(
+                      fontWeight: FontWeight.bold,
+                      color: AppConstants.primaryColor,
                     ),
                   ),
                 );
@@ -214,7 +153,7 @@ final List<String> review;
               effect: ExpandingDotsEffect(
                 dotHeight: ScreenUtils.calculateHeightPercentage(context, 60),
                 dotWidth: ScreenUtils.calculateWidthPercentage(context, 40),
-                dotColor: Color.fromRGBO(237, 181, 46, 0.4),
+                dotColor: const Color.fromRGBO(237, 181, 46, 0.4),
                 activeDotColor: AppConstants.primaryColor,
               ),
             ),
