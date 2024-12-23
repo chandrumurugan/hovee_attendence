@@ -700,7 +700,7 @@ class _ParentViewState extends State<ParentView> {
       // Render the "Invite Parent" card at the last index
       return InkWell(
         onTap: () {
-          Get.to(() => ParentLoginScreen(rolename: 'Parent',));
+          Get.to(() => ParentLoginScreen(rolename: 'Parent',firstname:widget.firstname ,lastname:widget.lastname ,wowid: widget.wowid,));
         },
         child: Card(
           elevation: 10,

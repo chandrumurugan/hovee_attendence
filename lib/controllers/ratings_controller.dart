@@ -13,10 +13,12 @@ import '../modals/getRatingsListModel.dart';
 class RatingsController extends GetxController {
 
 var isLoading = true.obs;
-var myreview = <RatingsData>[].obs;
+RatingsData? myreview;
 DasRatingData? myrating;
 var details = <String>[].obs;
+var reviews = <Review>[].obs;
 var ratingsCount=''.obs;
+List<String> detailsList = [];
 @override
   void onInit() {
     // TODO: implement onInit
@@ -54,27 +56,56 @@ var ratingsCount=''.obs;
     });
   }
 
-   void getReviews(String courseId) async {
+//    void getReviews(String courseId) async {
+//   try {
+//     var batchData = {
+//       "courseId": courseId,
+//     };
+//     var courseResponse = await WebService.getRatings(batchData);
+//     if (courseResponse!.data != null) {
+//       // Assign the received data to `myreview`
+//       myreview = courseResponse.data!.courseDetails!;
+      
+//       // Extract the details from each RatingsData object and store in a new list
+      // List<String> allDetails = [];
+      // for (var rating in courseResponse.data!) {
+      //   if (rating.details != null) {
+      //     allDetails.addAll(rating.details!); // Add all details to the list
+      //   }
+      // }
+
+      // details.value = allDetails; // Update your details list
+      // print("Extracted details: $allDetails");
+      
+//       // Navigate to the review screen
+//       Get.to(MypropertiesReviewScreen());
+//     } else {
+//       print('Course data is null');
+//     }
+//   } catch (e) {
+//     print('Error: $e');
+//   } finally {
+//     isLoading(false);
+//   }
+// }
+
+
+void getReviews(String courseId) async {
   try {
     var batchData = {
       "courseId": courseId,
     };
     var courseResponse = await WebService.getRatings(batchData);
     if (courseResponse!.data != null) {
-      // Assign the received data to `myreview`
-      myreview.value = courseResponse.data!;
-      
-      // Extract the details from each RatingsData object and store in a new list
-      List<String> allDetails = [];
-      for (var rating in courseResponse.data!) {
-        if (rating.details != null) {
-          allDetails.addAll(rating.details!); // Add all details to the list
-        }
-      }
+      // Store the reviews
+      myreview = courseResponse.data!;
+      reviews.value = courseResponse.data!.courseDetails!.reviews;
 
-      details.value = allDetails; // Update your details list
-      print("Extracted details: $allDetails");
-      
+      // Extract details from reviews
+      detailsList = reviews.value
+          .expand((review) => review.details)
+          .toList(); // Flatten and store all details
+
       // Navigate to the review screen
       Get.to(MypropertiesReviewScreen());
     } else {

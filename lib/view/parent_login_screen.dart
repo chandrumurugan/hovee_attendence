@@ -16,7 +16,8 @@ import 'package:share_plus/share_plus.dart';
 
 class ParentLoginScreen extends StatelessWidget {
   final String rolename;
-  ParentLoginScreen({super.key, required this.rolename});
+  final String? firstname,lastname,wowid;
+  ParentLoginScreen({super.key, required this.rolename, this.firstname, this.lastname, this.wowid});
   final ParentController parentController = Get.put(ParentController());
   @override
   Widget build(BuildContext context) {
@@ -214,7 +215,7 @@ Clipboard.setData(
                                                                     Navigator.of(
                                                                             context)
                                                                         .pop(); // Close the dialog
-                                                                        Get.off(() => DashboardScreen(rolename: 'Parent',));
+                                                                        Get.off(() => DashboardScreen(rolename: 'Parent',firstname:firstname ,lastname:lastname ,wowid: wowid,));
                                                                         }
                                                                   },
                                                                   child:
@@ -231,7 +232,7 @@ Clipboard.setData(
                                                                     Navigator.of(
                                                                             context)
                                                                         .pop(); // Close the dialog
-                                                                        Get.off(() => DashboardScreen(rolename: 'Tutee',));
+                                                                        Get.off(() =>  DashboardScreen(rolename: 'Parent',firstname:firstname ,lastname:lastname ,wowid: wowid,));
                                                                         }else{
                                                                            Share.share(
                                                                         response

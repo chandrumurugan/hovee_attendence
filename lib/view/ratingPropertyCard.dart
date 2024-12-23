@@ -10,7 +10,7 @@ import 'package:hovee_attendence/modals/getRatingTutorListModel.dart';
 import 'package:intl/intl.dart';
 
 class Ratingpropertycard extends StatelessWidget {
-  final RatingsData  propertyRR;
+  final Review   propertyRR;
    Ratingpropertycard({super.key, required this.propertyRR});
 
   @override
@@ -20,7 +20,7 @@ class Ratingpropertycard extends StatelessWidget {
    double widthPadding = MediaQuery.of(context).size.width;
     double heightPadding = MediaQuery.of(context).size.height;
     DateTime dateTime =
-        DateTime.parse(propertyRR.updatedAt!);
+        DateTime.parse(propertyRR.updatedAt!.toString());
     String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
     // String? reviewText = getReviewText();
     return Card(
@@ -97,7 +97,7 @@ class Ratingpropertycard extends StatelessWidget {
                                         ratingCount: propertyRR.ratingPoints!,
                                       ratings: propertyRR.ratingPoints!.split(','),
                                         text:
-                                            controller.details!),
+                                            controller.detailsList),
                           ),
                         ],
                       ),
