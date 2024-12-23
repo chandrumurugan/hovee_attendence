@@ -107,7 +107,7 @@ void getReviews(String courseId) async {
           .toList(); // Flatten and store all details
 
       // Navigate to the review screen
-      Get.to(MypropertiesReviewScreen());
+      Get.to(const MypropertiesReviewScreen());
     } else {
       print('Course data is null');
     }
