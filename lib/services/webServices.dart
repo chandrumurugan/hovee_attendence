@@ -494,15 +494,15 @@ class WebService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
     final rolename = prefs.getString('Rolename') ?? "";
-    final parentToken = prefs.getString('PrentToken') ?? "";
-    String lastToken = "";
-         if(rolename=='Parent'){
-           lastToken = parentToken;
-         }else{
-          lastToken = token;
-         }
+   // final parentToken = prefs.getString('PrentToken') ?? "";
+    // String lastToken = "";
+    //      if(rolename=='Parent'){
+    //        lastToken = parentToken;
+    //      }else{
+    //       lastToken = token;
+    //      }
     try {
-      var headers = {'Authorization': "Bearer $lastToken"};
+      var headers = {'Authorization': "Bearer $token"};
       var url = Uri.parse("${baseUrl}user/getUserProfile");
       var response = await http.post(url, headers: headers);
       Logger().i(response.headers);

@@ -110,8 +110,12 @@ class AccountSetupController extends GetxController
     if ((parentId== null || parentId=="")) {
     _populateFieldsFromAuth();
   } 
-    // phController.text =   parentController.otpResponse.value.userDetail!=null?
-    //     parentController.otpResponse.value.userDetail!.phoneNumber ?? '':'';
+  if ((parentId!="")) {
+    phController.text =   parentController.otpResponse.value!=null?
+        parentController.otpResponse.value.inviteNumber ?? '':'';
+  }else{
+    print("object");
+  }
     
     _populateAddressFromLocation();
   
@@ -721,6 +725,20 @@ class AccountSetupController extends GetxController
       // Extract firstName and lastName from personalInfo
       final firstName = personalInfo.value['first_name'] ?? '';
       final lastName = personalInfo.value['last_name'] ?? '';
+      
+      String? wowId;
+
+String? userData = prefs.getString('userData');
+if (userData != null) {
+  // Decode the JSON string into a map
+  Map<String, dynamic> userDataMap = jsonDecode(userData);
+
+  // Access the `wowId`
+  wowId = userDataMap['wowId'];
+}
+
+// Print or use the `wowId`
+print('Wow ID: $wowId');
 
       // Navigate based on selectedRole
       if (selectedRole == 'Parent') {
@@ -728,7 +746,7 @@ class AccountSetupController extends GetxController
               rolename: 'Parent',
               firstname: firstName,
               lastname: lastName,
-              wowid: ''
+              wowid: wowId
             ));
       } else {
         Get.offAll(() => DashboardScreen(
