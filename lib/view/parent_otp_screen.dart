@@ -229,7 +229,7 @@ class ParentOtpScreen extends StatelessWidget {
                                                 builder: (context) {
                                                   return CustomDialogBox(
                                                     title1:
-                                                        "Login Successfully",
+                                                        "Acceptance code submitted successfully",
                                                     title2: '',
                                                     subtitle: 'subtitle',
                                                     btnName: 'Ok',
@@ -253,7 +253,7 @@ class ParentOtpScreen extends StatelessWidget {
                                                                   '${value.userDetail!.firstName} ${value.userDetail!.lastName}',
                                                                 ),
                                                                 _buildRow(
-                                                                  'Wow ID',
+                                                                  'ID',
                                                                   "ID : ${value.userDetail!.wowId}",
                                                                 ),
                                                                 _buildRow(
@@ -292,10 +292,7 @@ class ParentOtpScreen extends StatelessWidget {
                                                               ),
                                                               TextButton(
                                                                 onPressed: () {
-                                                                  Get.off(() =>
-                                                                      DashboardScreen(
-                                                                          rolename:
-                                                                              'Parent'));
+                                                                   Get.to(()=>GuestHomeScreen());
                                                                   Get.back(); // Close the dialog
                                                                 },
                                                                 child: Text(
@@ -319,7 +316,7 @@ class ParentOtpScreen extends StatelessWidget {
                                                                   '${value.userDetail!.firstName} ${value.userDetail!.lastName}',
                                                                 ),
                                                                 _buildRow(
-                                                                  'Wow ID',
+                                                                  'ID',
                                                                   "ID : ${value.userDetail!.wowId}",
                                                                 ),
                                                                 _buildRow(

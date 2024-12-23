@@ -456,7 +456,7 @@ class ParentController extends GetxController {
             color: Colors.white,
             size: 40,
           ),
-          response.message!,
+          'Accepted successfully',
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
         );

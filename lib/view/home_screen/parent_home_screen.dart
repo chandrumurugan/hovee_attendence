@@ -10,6 +10,7 @@ import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
@@ -481,30 +482,33 @@ class _ParentViewState extends State<ParentView> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start, //spaceBetween
-                    children: [
-                      const Text(
-                        'My Children',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black),
-                      ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     // Get.to(() => AttendanceCourseListScreen());
-                      //   },
-                      //   child: const Text(
-                      //     'See All',
-                      //     style: TextStyle(
-                      //         fontSize: 16,
-                      //         fontWeight: FontWeight.w500,
-                      //         color: Colors.black),
-                      //   ),
-                      // ),
-                    ],
-                  ),
+                  parentController.userDetails.isNotEmpty
+                      ? Row(
+                          mainAxisAlignment:
+                              MainAxisAlignment.start, //spaceBetween
+                          children: [
+                            const Text(
+                              'My Children',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black),
+                            ),
+                            // InkWell(
+                            //   onTap: () {
+                            //     // Get.to(() => AttendanceCourseListScreen());
+                            //   },
+                            //   child: const Text(
+                            //     'See All',
+                            //     style: TextStyle(
+                            //         fontSize: 16,
+                            //         fontWeight: FontWeight.w500,
+                            //         color: Colors.black),
+                            //   ),
+                            // ),
+                          ],
+                        )
+                      : SizedBox.shrink(),
                   Obx(() {
                     // Store token for the first item if not already stored
                     if (!parentController.isLoading.value &&
@@ -524,15 +528,7 @@ class _ParentViewState extends State<ParentView> {
                     if (parentController.isLoading.value) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (parentController.userDetails.isEmpty) {
-                      return Center(
-                        child: Text(
-                          'No list found',
-                          style: GoogleFonts.nunito(
-                            color: Colors.black54,
-                            fontSize: 16,
-                          ),
-                        ),
-                      );
+                      return Center(child: SizedBox.shrink());
                     } else {
                       return ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
@@ -685,151 +681,247 @@ class _ParentViewState extends State<ParentView> {
                               color: Colors.black),
                         ),
                       ),
-                     GridView.builder(
-  shrinkWrap: true,
-  physics: const NeverScrollableScrollPhysics(),
-  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-    childAspectRatio: 1.0,
-    crossAxisCount: 3,
-    mainAxisSpacing: 10,
-    crossAxisSpacing: 10,
-  ),
-  itemCount: parentController.parentMonitorList.length + 1, // Add 1 for the extra card
-  itemBuilder: (context, int index) {
-    if (index == parentController.parentMonitorList.length) {
-      // Render the "Invite Parent" card at the last index
-      return InkWell(
-        onTap: () {
-          Get.to(() => ParentLoginScreen(rolename: 'Parent',firstname:widget.firstname ,lastname:widget.lastname ,wowid: widget.wowid,));
-        },
-        child: Card(
-          elevation: 10,
-          shadowColor: Colors.grey,
-          surfaceTintColor: Colors.white,
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: const Color.fromRGBO(246, 244, 254, 1),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.grey,
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: const Text(
-                    "Invite children",
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    } else {
-      // Render the existing items
-      final item = parentController.parentMonitorList[index];
-      return InkWell(
-        onTap: () async {
-          // Handle tap actions based on title
-          if (item['title'] == 'GPS Tracking') {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            String? userData = prefs.getString('firstUserId');
-            String? wowId, firstName;
-            if (userData != null) {
-              Map<String, dynamic> userMap = jsonDecode(userData);
-              wowId = userMap['wowId'];
-              firstName = userMap['firstName'];
-              print('User ID: $wowId, User Name: $firstName');
-            }
-            Get.to(
-              () => TrackTuteeLocation(
-                type: 'Parent',
-                firstname: widget.firstname,
-                lastname: widget.lastname,
-                wowid: widget.wowid,
-              ),
-              arguments: [
-                {
-                  "userId": wowId,
-                }
-              ],
-            );
-          }
-          // Handle other actions
-          if (item['title'] == 'Attendance') {
-            Get.to(
-              () => TuteeAttendanceList(
-                type: 'Parent',
-                firstname: widget.firstname,
-                lastname: widget.lastname,
-                wowid: widget.wowid,
-              ),
-              arguments: "Parent",
-            );
-          }
-          // Add remaining conditional checks for other titles
-        },
-        child: Card(
-          elevation: 10,
-          shadowColor: Colors.grey,
-          surfaceTintColor: Colors.white,
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: const Color.fromRGBO(246, 244, 254, 1),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: item['color']),
-                  child: Image.asset(
-                    item['image'] ?? '',
-                    color: Colors.white,
-                    height: 30,
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    item['title'] ?? '',
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-  },
-),
-
-                  
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 1.0,
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                        ),
+                        itemCount: parentController.parentMonitorList.length +
+                            1, // Add 1 for the extra card
+                        itemBuilder: (context, int index) {
+                          if (index ==
+                              parentController.parentMonitorList.length) {
+                            // Render the "Invite Parent" card at the last index
+                            return InkWell(
+                              onTap: () {
+                                Get.to(() => ParentLoginScreen(
+                                      rolename: 'Parent',
+                                      firstname: widget.firstname,
+                                      lastname: widget.lastname,
+                                      wowid: widget.wowid,
+                                    ));
+                              },
+                              child: Card(
+                                elevation: 10,
+                                shadowColor: Colors.grey,
+                                surfaceTintColor: Colors.white,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color:
+                                        const Color.fromRGBO(246, 244, 254, 1),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: Colors.grey,
+                                        ),
+                                        child: const Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                          size: 30,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: const Text(
+                                          "Invite children",
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else {
+                            // Render the existing items
+                            final item =
+                                parentController.parentMonitorList[index];
+                            return InkWell(
+                              onTap: () async {
+                                // Handle tap actions based on title
+                                if (item['title'] == 'GPS Tracking') {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  String? userData =
+                                      prefs.getString('firstUserId');
+                                  String? wowId, firstName;
+                                  if (userData != null) {
+                                    Map<String, dynamic> userMap =
+                                        jsonDecode(userData);
+                                    wowId = userMap['wowId'];
+                                    firstName = userMap['firstName'];
+                                    print(
+                                        'User ID: $wowId, User Name: $firstName');
+                                  }
+                                  parentController.userDetails.isNotEmpty
+                                      ? Get.to(
+                                          () => TrackTuteeLocation(
+                                            type: 'Parent',
+                                            firstname: widget.firstname,
+                                            lastname: widget.lastname,
+                                            wowid: widget.wowid,
+                                          ),
+                                          arguments: [
+                                            {
+                                              "userId": wowId,
+                                            }
+                                          ],
+                                        )
+                                      : SizedBox.shrink();
+                                }
+                                // Handle other actions
+                                if (item['title'] == 'Attendance') {
+                                  parentController.userDetails.isNotEmpty
+                                      ? Get.to(
+                                          () => TuteeAttendanceList(
+                                            type: 'Parent',
+                                            firstname: widget.firstname,
+                                            lastname: widget.lastname,
+                                            wowid: widget.wowid,
+                                          ),
+                                          arguments: "Parent",
+                                        )
+                                      : SnackBarUtils.showErrorSnackBar(
+                                          context,
+                                          'Invalid Phone number',
+                                        );
+                                }
+                                if (item['title'] == 'Enquiries') {
+                                  parentController.userDetails.isNotEmpty
+                                      ? Get.to(() => Tutorenquirlist(
+                                            type: 'Parent',
+                                            fromBottomNav: true,
+                                            firstname: widget.firstname,
+                                            lastname: widget.lastname,
+                                            wowid: widget.wowid,
+                                          ))
+                                      : SnackBarUtils.showErrorSnackBar(
+                                          context,
+                                          'Invalid Phone number',
+                                        );
+                                }
+                                if (item['title'] == 'Enrollment') {
+                                  parentController.userDetails.isNotEmpty
+                                      ? Get.to(() => EnrollmentScreen(
+                                            type: 'Parent',
+                                            fromBottomNav: true,
+                                            firstname: widget.firstname,
+                                            lastname: widget.lastname,
+                                            wowid: widget.wowid,
+                                          ))
+                                      : SnackBarUtils.showErrorSnackBar(
+                                          context,
+                                          'Invalid Phone number',
+                                        );
+                                }
+                                if (item['title'] == 'Leave') {
+                                  parentController.userDetails.isNotEmpty
+                                      ? Get.to(() => TuteeLeaveScreen(
+                                            type: 'Parent',
+                                            fromBottomNav: true,
+                                            firstname: widget.firstname,
+                                            lastname: widget.lastname,
+                                            wowid: widget.wowid,
+                                          ))
+                                      : SnackBarUtils.showErrorSnackBar(
+                                          context,
+                                          'Invalid Phone number',
+                                        );
+                                }
+                                if (item['title'] == 'Holiday') {
+                                  parentController.userDetails.isNotEmpty
+                                      ? Get.to(() => TuteeHolidayScreen(
+                                            type: 'Parent',
+                                            firstname: widget.firstname,
+                                            lastname: widget.lastname,
+                                            wowid: widget.wowid,
+                                          ))
+                                      : SnackBarUtils.showErrorSnackBar(
+                                          context,
+                                          'Invalid Phone number',
+                                        );
+                                }
+                                if (item['title'] == 'Annoucement') {
+                                  parentController.userDetails.isNotEmpty
+                                      ? Get.to(() => AnnouncementScreen(
+                                            type: 'Parent',
+                                            firstname: widget.firstname,
+                                            lastname: widget.lastname,
+                                            wowid: widget.wowid,
+                                          ))
+                                      : SnackBarUtils.showErrorSnackBar(
+                                          context,
+                                          'Invalid Phone number',
+                                        );
+                                }
+                                // Add remaining conditional checks for other titles
+                              },
+                              child: Card(
+                                elevation: 10,
+                                shadowColor: Colors.grey,
+                                surfaceTintColor: Colors.white,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color:
+                                        const Color.fromRGBO(246, 244, 254, 1),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 10),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color: item['color']),
+                                        child: Image.asset(
+                                          item['image'] ?? '',
+                                          color: Colors.white,
+                                          height: 30,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Text(
+                                          item['title'] ?? '',
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
                     ],
                   ),
                   const SizedBox(

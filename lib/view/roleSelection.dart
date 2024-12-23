@@ -180,10 +180,10 @@ class _RoleSelectionState extends State<RoleSelection> {
                                           if (widget.parentId != null &&
                                               widget.parentId!.isNotEmpty &&
                                               role.roleName != 'Tutee') {
-                                            SnackBarUtils.showSuccessSnackBar(
-                                              context,
-                                              'Only Tutee role is allowed in this scenario.',
-                                            );
+                                            // SnackBarUtils.showSuccessSnackBar(
+                                            //   context,
+                                            //   'Only Tutee role is allowed in this scenario.',
+                                            // );
                                             return; // Exit early, prevent selection
                                           }
 

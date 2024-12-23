@@ -6,6 +6,7 @@ class validateAndLoginParentModal {
   String? parentToken;
   String? message;
   UserDetail? userDetail;
+   String? inviteNumber;
 
   validateAndLoginParentModal(
       {this.statusCode,
@@ -14,7 +15,8 @@ class validateAndLoginParentModal {
       this.parentDetail,
       this.parentToken,
       this.message,
-      this.userDetail});
+      this.userDetail,
+      this.inviteNumber});
 
   validateAndLoginParentModal.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
@@ -28,6 +30,7 @@ class validateAndLoginParentModal {
     userDetail = json['userDetail'] != null
         ? new UserDetail.fromJson(json['userDetail'])
         : null;
+       inviteNumber = json['inviteNumber'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +46,7 @@ class validateAndLoginParentModal {
     if (this.userDetail != null) {
       data['userDetail'] = this.userDetail!.toJson();
     }
+    data['inviteNumber'] = this.inviteNumber;
     return data;
   }
 }
