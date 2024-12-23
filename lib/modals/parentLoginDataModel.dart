@@ -73,7 +73,7 @@ class ParentDetail {
   int? isDeleted;
   String? createdAt;
   String? token;
-
+  bool? parentToStudentInvite;
   ParentDetail(
       {this.location,
       this.sId,
@@ -99,7 +99,8 @@ class ParentDetail {
       this.isActive,
       this.isDeleted,
       this.createdAt,
-      this.token});
+      this.token,
+      this.parentToStudentInvite,});
 
   ParentDetail.fromJson(Map<String, dynamic> json) {
     location = json['location'] != null
@@ -129,6 +130,8 @@ class ParentDetail {
     isDeleted = json['is_deleted'];
     createdAt = json['created_at'];
     token = json['token'];
+     parentToStudentInvite = json['parent_to_student_invite'];
+    
   }
 
   Map<String, dynamic> toJson() {
@@ -160,6 +163,7 @@ class ParentDetail {
     data['is_deleted'] = this.isDeleted;
     data['created_at'] = this.createdAt;
     data['token'] = this.token;
+     data['parent_to_student_invite'] = this.parentToStudentInvite;
     return data;
   }
 }
@@ -194,8 +198,8 @@ class UserDetail {
   String? phoneNumber;
   int? pincode;
   int? userType;
-  Null? otp;
-  Null? accountVerificationToken;
+  // Null? otp;
+  // Null? accountVerificationToken;
   bool? accountVerified;
   bool? accountSetup;
   String? doorNo;
@@ -233,8 +237,8 @@ class UserDetail {
       this.phoneNumber,
       this.pincode,
       this.userType,
-      this.otp,
-      this.accountVerificationToken,
+      // this.otp,
+      // this.accountVerificationToken,
       this.accountVerified,
       this.accountSetup,
       this.doorNo,
@@ -274,8 +278,8 @@ class UserDetail {
     phoneNumber = json['phone_number'];
     pincode = json['pincode'];
     userType = json['user_type'];
-    otp = json['otp'];
-    accountVerificationToken = json['account_verification_token'];
+    // otp = json['otp']?? '';
+    // accountVerificationToken = json['account_verification_token'] ?? ';
     accountVerified = json['account_verified'];
     accountSetup = json['account_setup'];
     doorNo = json['door_no'];
@@ -317,8 +321,8 @@ class UserDetail {
     data['phone_number'] = this.phoneNumber;
     data['pincode'] = this.pincode;
     data['user_type'] = this.userType;
-    data['otp'] = this.otp;
-    data['account_verification_token'] = this.accountVerificationToken;
+    // data['otp'] = this.otp;
+    // data['account_verification_token'] = this.accountVerificationToken;
     data['account_verified'] = this.accountVerified;
     data['account_setup'] = this.accountSetup;
     data['door_no'] = this.doorNo;

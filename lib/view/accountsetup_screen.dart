@@ -1,4 +1,3 @@
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,30 +17,25 @@ class AccountSetup extends StatelessWidget {
   final String roleId;
   final String roleTypeId;
   final String selectedRoleTypeName;
-  final String selectedRole;
-  AccountSetup(
-      {super.key,
-      required this.roleId,
-      required this.roleTypeId,
-      required this.selectedRoleTypeName,
-      required this.selectedRole});
-  final authController = Get.find<AuthControllers>();
-  AccountSetupController accountController = Get.put(AccountSetupController());
+  final String? selectedRole;
+  final String? parentId;
+  AccountSetup({Key? key,required this.roleId, required this.roleTypeId, required this.selectedRoleTypeName, this.selectedRole, this.parentId});
 
   @override
   Widget build(BuildContext context) {
+   final AccountSetupController accountController = Get.put(AccountSetupController());
     final splashController = Get.find<SplashController>();
-
+    final authController = Get.find<AuthControllers>();
     return WillPopScope(
-      onWillPop: ()async{
-         return await ModalService.handleBackButtonN(context);
+      onWillPop: () async {
+        return await ModalService.handleBackButtonN(context);
       },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBarHeader(
           needGoBack: true,
-          navigateTo: () async{
-          bool isBack =   await ModalService.handleBackButtonN(context);
+          navigateTo: () async {
+            bool isBack = await ModalService.handleBackButtonN(context);
             // Navigator.pop(context);
           },
         ),
@@ -87,8 +81,8 @@ class AccountSetup extends StatelessWidget {
               ],
             ),
             Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.1),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Card(
@@ -120,15 +114,13 @@ class AccountSetup extends StatelessWidget {
                             dragStartBehavior: DragStartBehavior.down,
                             controller: accountController.tabController,
                             onTap: (int index) {
-                              if(index == 1){
-                                accountController.storePersonalInfo(context, roleId, roleTypeId);
+                              if (index == 1) {
+                                accountController.storePersonalInfo(
+                                    context, roleId, roleTypeId);
                               }
-                               if(index == 2){
-                                 accountController.storeAddressInfo(
-                                                context,
-                                                selectedRoleTypeName,
-                                                roleId,
-                                                roleTypeId);
+                              if (index == 2) {
+                                accountController.storeAddressInfo(context,
+                                    selectedRoleTypeName, roleId, roleTypeId,selectedRole);
                               }
                               accountController.currentTabIndex.value = index;
                               accountController.isLoading.value = false;
@@ -141,9 +133,12 @@ class AccountSetup extends StatelessWidget {
                               const Tab(
                                 text: 'Address',
                               ),
-                              if (selectedRoleTypeName != 'Institute')
-                                 Tab(
-                                  text: selectedRole == 'Tutee' ?'Education':'Professional',
+                              // Show this tab only if selectedRole is not "Parent"
+                              if (selectedRole != 'Parent')
+                                Tab(
+                                  text: selectedRole == 'Tutee'
+                                      ? 'Education'
+                                      : 'Professional',
                                 ),
                             ],
                             unselectedLabelColor: Colors.grey,
@@ -164,11 +159,12 @@ class AccountSetup extends StatelessWidget {
                               children: [
                                 //personal info
                                 Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
                                   child: SingleChildScrollView(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -227,8 +223,8 @@ class AccountSetup extends StatelessWidget {
                                               Container(
                                                 height: 30,
                                                 width: 1,
-                                                color:
-                                                    Colors.black.withOpacity(0.2),
+                                                color: Colors.black
+                                                    .withOpacity(0.2),
                                               ),
                                               Expanded(
                                                 child: InputTextField(
@@ -326,15 +322,17 @@ class AccountSetup extends StatelessWidget {
                                             readonly: true,
                                             isDate: true,
                                             hintText: 'Select',
-                                            initialDate: DateTime.now().subtract(
+                                            initialDate:
+                                                DateTime.now().subtract(
                                               const Duration(days: 365 * 18),
                                             ),
                                             lastDate: DateTime.now().subtract(
                                               const Duration(days: 365 * 18),
                                             ),
-                                            keyboardType: TextInputType.datetime,
-                                            controller:
-                                                accountController.dobController),
+                                            keyboardType:
+                                                TextInputType.datetime,
+                                            controller: accountController
+                                                .dobController),
                                         const SizedBox(
                                           height: 5,
                                         ),
@@ -413,11 +411,12 @@ class AccountSetup extends StatelessWidget {
                                                 r"[0-9]",
                                               ),
                                             ),
-                                            LengthLimitingTextInputFormatter(10),
+                                            LengthLimitingTextInputFormatter(
+                                                10),
                                           ],
                                           keyboardType: TextInputType.number,
-                                          controller:
-                                              accountController.pincodeController,
+                                          controller: accountController
+                                              .pincodeController,
                                         ),
                                         const SizedBox(
                                           height: 5,
@@ -505,23 +504,23 @@ class AccountSetup extends StatelessWidget {
                                                 end: Alignment.bottomCenter,
                                               ),
                                             ),
-                                            child:
-                                                accountController.isLoading.value
-                                                    ? const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      )
-                                                    : const Center(
-                                                        child: Text(
-                                                          'Next',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
+                                            child: accountController
+                                                    .isLoading.value
+                                                ? const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  )
+                                                : const Center(
+                                                    child: Text(
+                                                      'Next',
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Colors.white,
                                                       ),
+                                                    ),
+                                                  ),
                                           ),
                                         ),
                                         const SizedBox(
@@ -531,14 +530,15 @@ class AccountSetup extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-      
+
                                 //address info
                                 Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
                                   child: SingleChildScrollView(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -575,12 +575,11 @@ class AccountSetup extends StatelessWidget {
                                             hintText: 'Enter here...',
                                             keyboardType: TextInputType.name,
                                             inputFormatter: [
-                                              FilteringTextInputFormatter
-                                                          .allow(
-                                                        RegExp(
-                                                          r"[a-zA-Z0-9\s@&_,-\./']",
-                                                        ),
-                                                      ),
+                                              FilteringTextInputFormatter.allow(
+                                                RegExp(
+                                                  r"[a-zA-Z0-9\s@&_,-\./']",
+                                                ),
+                                              ),
                                             ],
                                             controller: accountController
                                                 .address1Controller),
@@ -617,9 +616,10 @@ class AccountSetup extends StatelessWidget {
                                             hintText: 'Enter here...',
                                             keyboardType: TextInputType.name,
                                             inputFormatter: [
-                                               FilteringTextInputFormatter.allow(
-      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
-    ),
+                                              FilteringTextInputFormatter.allow(
+                                                RegExp(
+                                                    r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                              ),
                                             ],
                                             controller: accountController
                                                 .address2Controller),
@@ -656,12 +656,13 @@ class AccountSetup extends StatelessWidget {
                                             hintText: 'Enter here...',
                                             keyboardType: TextInputType.name,
                                             inputFormatter: [
-                                               FilteringTextInputFormatter.allow(
-      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
-    ),
+                                              FilteringTextInputFormatter.allow(
+                                                RegExp(
+                                                    r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                              ),
                                             ],
-                                            controller:
-                                                accountController.cityController),
+                                            controller: accountController
+                                                .cityController),
                                         const SizedBox(
                                           height: 10,
                                         ),
@@ -696,8 +697,9 @@ class AccountSetup extends StatelessWidget {
                                             keyboardType: TextInputType.text,
                                             inputFormatter: [
                                               FilteringTextInputFormatter.allow(
-      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
-    ),
+                                                RegExp(
+                                                    r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                              ),
                                             ],
                                             controller: accountController
                                                 .stateController),
@@ -735,11 +737,12 @@ class AccountSetup extends StatelessWidget {
                                           keyboardType: TextInputType.name,
                                           inputFormatter: [
                                             FilteringTextInputFormatter.allow(
-      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
-    ),
+                                              RegExp(
+                                                  r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                            ),
                                           ],
-                                          controller:
-                                              accountController.countryController,
+                                          controller: accountController
+                                              .countryController,
                                         ),
                                         const SizedBox(
                                           height: 10,
@@ -781,7 +784,8 @@ class AccountSetup extends StatelessWidget {
                                                 r"[0-9]",
                                               ),
                                             ),
-                                            LengthLimitingTextInputFormatter(10),
+                                            LengthLimitingTextInputFormatter(
+                                                10),
                                           ],
                                         ),
                                         const SizedBox(
@@ -789,12 +793,12 @@ class AccountSetup extends StatelessWidget {
                                         ),
                                         InkWell(
                                           onTap: () {
-                                             KeyboardUtil.hideKeyboard(context);
+                                            KeyboardUtil.hideKeyboard(context);
                                             accountController.storeAddressInfo(
                                                 context,
                                                 selectedRoleTypeName,
                                                 roleId,
-                                                roleTypeId);
+                                                roleTypeId,selectedRole);
                                           },
                                           child: Container(
                                             height: 48,
@@ -815,23 +819,23 @@ class AccountSetup extends StatelessWidget {
                                                 end: Alignment.bottomCenter,
                                               ),
                                             ),
-                                            child:
-                                                accountController.isLoading.value
-                                                    ? const Center(
-                                                        child:
-                                                            CircularProgressIndicator(),
-                                                      )
-                                                    : const Center(
-                                                        child: Text(
-                                                          'Next',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
+                                            child: accountController
+                                                    .isLoading.value
+                                                ? const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  )
+                                                :  Center(
+                                                    child: Text(
+                                                     selectedRole != 'Parent'? 'Next':'Submit',
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Colors.white,
                                                       ),
+                                                    ),
+                                                  ),
                                           ),
                                         ),
                                         const SizedBox(
@@ -844,8 +848,7 @@ class AccountSetup extends StatelessWidget {
                                 selectedRoleTypeName == 'Institute' &&
                                         selectedRoleTypeName == ""
                                     ? Container()
-                                    : selectedRoleTypeName !=
-                                                'Institute' &&
+                                    : selectedRoleTypeName != 'Institute' &&
                                             selectedRoleTypeName != ""
                                         ? Container(
                                             padding: const EdgeInsets.symmetric(
@@ -859,7 +862,8 @@ class AccountSetup extends StatelessWidget {
                                                 children: [
                                                   ..._buildDropdowns(),
                                                   Padding(
-                                                    padding: const EdgeInsets.symmetric(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
                                                         vertical: 10),
                                                     child: Column(
                                                       crossAxisAlignment:
@@ -889,11 +893,13 @@ class AccountSetup extends StatelessWidget {
                                                             keyboardType:
                                                                 TextInputType
                                                                     .name,
-                                                                    inputFormatter: [
-                                                                       FilteringTextInputFormatter.allow(
-      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
-    ),
-                                                                    ],
+                                                            inputFormatter: [
+                                                              FilteringTextInputFormatter
+                                                                  .allow(
+                                                                RegExp(
+                                                                    r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                                              ),
+                                                            ],
                                                             controller:
                                                                 accountController
                                                                     .additionalInfoController),
@@ -901,7 +907,8 @@ class AccountSetup extends StatelessWidget {
                                                     ),
                                                   ),
                                                   _buildFileUploadSection(
-                                                      'Attach resume', 'resume'),
+                                                      'Attach resume',
+                                                      'resume'),
                                                   _buildFileUploadSection(
                                                       'Attach education certificate',
                                                       'education'),
@@ -924,12 +931,13 @@ class AccountSetup extends StatelessWidget {
                                                     ),
                                                   InkWell(
                                                     onTap: () {
-                                                       KeyboardUtil.hideKeyboard(context);
+                                                      KeyboardUtil.hideKeyboard(
+                                                          context);
                                                       accountController
                                                           .storeEducationInfo(
                                                               context,
                                                               roleId,
-                                                              roleTypeId);
+                                                              roleTypeId,selectedRole);
                                                     },
                                                     child: Container(
                                                       height: 48,
@@ -944,13 +952,14 @@ class AccountSetup extends StatelessWidget {
                                                             BorderRadius.all(
                                                           Radius.circular(8),
                                                         ),
-                                                        gradient: LinearGradient(
+                                                        gradient:
+                                                            LinearGradient(
                                                           colors: [
                                                             Color(0xFFC13584),
                                                             Color(0xFF833AB4)
                                                           ],
-                                                          begin:
-                                                              Alignment.topCenter,
+                                                          begin: Alignment
+                                                              .topCenter,
                                                           end: Alignment
                                                               .bottomCenter,
                                                         ),
@@ -964,7 +973,8 @@ class AccountSetup extends StatelessWidget {
                                                           : const Center(
                                                               child: Text(
                                                                 'Submit',
-                                                                style: TextStyle(
+                                                                style:
+                                                                    TextStyle(
                                                                   fontSize: 16,
                                                                   fontWeight:
                                                                       FontWeight
@@ -984,7 +994,7 @@ class AccountSetup extends StatelessWidget {
                                                   //   onTap: () {
                                                   // accountController
                                                   //     .storeEducationInfo(context);
-      
+
                                                   //   },
                                                   // )
                                                 ],
@@ -993,14 +1003,16 @@ class AccountSetup extends StatelessWidget {
                                           )
                                         : selectedRole == 'Tutee'
                                             ? Container(
-                                                padding: const EdgeInsets.symmetric(
-                                                    horizontal: 12),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12),
                                                 child: SingleChildScrollView(
                                                   child: Column(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Row(
                                                         children: [
@@ -1009,8 +1021,10 @@ class AccountSetup extends StatelessWidget {
                                                             style: TextStyle(
                                                               fontSize: 14,
                                                               fontWeight:
-                                                                  FontWeight.w500,
-                                                              color: Colors.black,
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.black,
                                                             ),
                                                           ),
                                                           Text(
@@ -1019,7 +1033,8 @@ class AccountSetup extends StatelessWidget {
                                                                 .nunito(
                                                               fontSize: 18,
                                                               fontWeight:
-                                                                  FontWeight.w600,
+                                                                  FontWeight
+                                                                      .w600,
                                                               color: Colors.red
                                                                   .withOpacity(
                                                                       0.6),
@@ -1049,13 +1064,20 @@ class AccountSetup extends StatelessWidget {
                                                       //     controller:
                                                       //         accountController
                                                       //             .tuteQualificationController),
-                                                                   CommonDropdownInputField(
-              title: 'Highest qualification',
-              controllerValue: accountController.tuteeHighestQualification,
-              selectedValue: accountController.tuteeHighestQualification,
-              items: accountController.tuteeQualifications,
-              onChanged: accountController.setTuteeHighestQualification,
-            ),
+                                                      CommonDropdownInputField(
+                                                        title:
+                                                            'Highest qualification',
+                                                        controllerValue:
+                                                            accountController
+                                                                .tuteeHighestQualification,
+                                                        selectedValue:
+                                                            accountController
+                                                                .tuteeHighestQualification,
+                                                        items: accountController
+                                                            .tuteeQualifications,
+                                                        onChanged: accountController
+                                                            .setTuteeHighestQualification,
+                                                      ),
                                                       const SizedBox(
                                                         height: 5,
                                                       ),
@@ -1066,8 +1088,10 @@ class AccountSetup extends StatelessWidget {
                                                             style: TextStyle(
                                                               fontSize: 14,
                                                               fontWeight:
-                                                                  FontWeight.w500,
-                                                              color: Colors.black,
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.black,
                                                             ),
                                                           ),
                                                           Text(
@@ -1076,7 +1100,8 @@ class AccountSetup extends StatelessWidget {
                                                                 .nunito(
                                                               fontSize: 18,
                                                               fontWeight:
-                                                                  FontWeight.w600,
+                                                                  FontWeight
+                                                                      .w600,
                                                               color: Colors.red
                                                                   .withOpacity(
                                                                       0.6),
@@ -1107,12 +1132,19 @@ class AccountSetup extends StatelessWidget {
                                                       //         accountController
                                                       //             .tuteclassController),
                                                       CommonDropdownInputField(
-              title: 'Class/Specialization',
-              controllerValue: accountController.tuteeSpeciallization,
-              selectedValue: accountController.tuteeSpeciallization,
-              items: accountController.tuteeSpeciallizationClass,
-              onChanged: accountController.setTuteeSpeciallization,
-            ),
+                                                        title:
+                                                            'Class/Specialization',
+                                                        controllerValue:
+                                                            accountController
+                                                                .tuteeSpeciallization,
+                                                        selectedValue:
+                                                            accountController
+                                                                .tuteeSpeciallization,
+                                                        items: accountController
+                                                            .tuteeSpeciallizationClass,
+                                                        onChanged: accountController
+                                                            .setTuteeSpeciallization,
+                                                      ),
                                                       // const SizedBox(
                                                       //   height: 5,
                                                       // ),
@@ -1163,7 +1195,7 @@ class AccountSetup extends StatelessWidget {
                                                       //     controller:
                                                       //         accountController
                                                       //             .tuteeboardController),
-                                                                      const SizedBox(
+                                                      const SizedBox(
                                                         height: 5,
                                                       ),
                                                       Row(
@@ -1173,8 +1205,10 @@ class AccountSetup extends StatelessWidget {
                                                             style: TextStyle(
                                                               fontSize: 14,
                                                               fontWeight:
-                                                                  FontWeight.w500,
-                                                              color: Colors.black,
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.black,
                                                             ),
                                                           ),
                                                           Text(
@@ -1183,7 +1217,8 @@ class AccountSetup extends StatelessWidget {
                                                                 .nunito(
                                                               fontSize: 18,
                                                               fontWeight:
-                                                                  FontWeight.w600,
+                                                                  FontWeight
+                                                                      .w600,
                                                               color: Colors.red
                                                                   .withOpacity(
                                                                       0.6),
@@ -1198,9 +1233,11 @@ class AccountSetup extends StatelessWidget {
                                                           suffix: false,
                                                           readonly: false,
                                                           inputFormatter: [
-                                                            FilteringTextInputFormatter.allow(
-      RegExp(r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
-    ),
+                                                            FilteringTextInputFormatter
+                                                                .allow(
+                                                              RegExp(
+                                                                  r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                                            ),
                                                           ],
                                                           hintText:
                                                               'Enter here...',
@@ -1214,10 +1251,15 @@ class AccountSetup extends StatelessWidget {
                                                         height: 15,
                                                       ),
                                                       InkWell(
-                                                        
                                                         onTap: () {
-                                                           KeyboardUtil.hideKeyboard(context);
-                                                          accountController.storeTuteeeducationInfo(context, roleId, roleTypeId);
+                                                          KeyboardUtil
+                                                              .hideKeyboard(
+                                                                  context);
+                                                          accountController
+                                                              .storeTuteeeducationInfo(
+                                                                  context,
+                                                                  roleId,
+                                                                  roleTypeId);
                                                         },
                                                         child: Container(
                                                           height: 48,
@@ -1230,14 +1272,18 @@ class AccountSetup extends StatelessWidget {
                                                           decoration:
                                                               const BoxDecoration(
                                                             borderRadius:
-                                                                BorderRadius.all(
-                                                              Radius.circular(8),
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  8),
                                                             ),
                                                             gradient:
                                                                 LinearGradient(
                                                               colors: [
-                                                                Color(0xFFC13584),
-                                                                Color(0xFF833AB4)
+                                                                Color(
+                                                                    0xFFC13584),
+                                                                Color(
+                                                                    0xFF833AB4)
                                                               ],
                                                               begin: Alignment
                                                                   .topCenter,
@@ -1245,28 +1291,28 @@ class AccountSetup extends StatelessWidget {
                                                                   .bottomCenter,
                                                             ),
                                                           ),
-                                                          child:
-                                                              accountController
-                                                                      .isLoading
-                                                                      .value
-                                                                  ? const Center(
-                                                                      child:
-                                                                          CircularProgressIndicator(),
-                                                                    )
-                                                                  : const Center(
-                                                                      child: Text(
-                                                                        'Submit',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.w600,
-                                                                          color: Colors
-                                                                              .white,
-                                                                        ),
-                                                                      ),
+                                                          child: accountController
+                                                                  .isLoading
+                                                                  .value
+                                                              ? const Center(
+                                                                  child:
+                                                                      CircularProgressIndicator(),
+                                                                )
+                                                              : const Center(
+                                                                  child: Text(
+                                                                    'Submit',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      color: Colors
+                                                                          .white,
                                                                     ),
+                                                                  ),
+                                                                ),
                                                         ),
                                                       ),
                                                     ],
@@ -1404,6 +1450,7 @@ class AccountSetup extends StatelessWidget {
   // }
 
   Widget _buildFileUploadSection(String title, String type) {
+    final AccountSetupController accountController = Get.put(AccountSetupController());
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Column(
@@ -1436,7 +1483,6 @@ class AccountSetup extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              
               print("Greeting values==");
               accountController.pickFile(type);
             },
@@ -1477,6 +1523,7 @@ class AccountSetup extends StatelessWidget {
   }
 
   List<Widget> _buildDropdowns() {
+    final AccountSetupController accountController = Get.put(AccountSetupController());
     return [
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),

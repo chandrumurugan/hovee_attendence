@@ -44,7 +44,7 @@ class MypropertiesReviewScreen extends StatelessWidget {
               if (controller.myreview.isEmpty) {
                 return const Center(child: Text('No Ratings Available'));
               }
-              return Container(
+              return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.800,
                 child: ListView.builder(
                   shrinkWrap: true,

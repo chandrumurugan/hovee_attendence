@@ -235,11 +235,11 @@ class AuthControllers extends GetxController
           Logger().i(response.data);
           otpResponse.value = response;
           // prefs.setString("key", value)
-         if( response.data!.roles!.roleName=='Parent'){
-          prefs.setString('PrentToken', response.token!);
-         }else{
+        //  if( response.data!.roles!.roleName=='Parent'){
+        //   prefs.setString('PrentToken', response.token!);
+        //  }else{
           prefs.setString('Token', response.token!);
-         }
+        // }
           prefs.setString('Rolename', response.data!.roles!.roleName??'');
            var validateTokendata = response.data!;
             //if(response.parentData=='true'){

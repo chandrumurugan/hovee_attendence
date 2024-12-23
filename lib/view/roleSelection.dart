@@ -12,8 +12,10 @@ import 'package:hovee_attendence/widget/gifController.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RoleSelection extends StatefulWidget {
-   final bool isFromParentOtp;
-  const RoleSelection({Key? key, required this.isFromParentOtp}) : super(key: key);
+  final bool isFromParentOtp;
+  final String? parentId;
+  const RoleSelection({Key? key, required this.isFromParentOtp, this.parentId})
+      : super(key: key);
 
   @override
   State<RoleSelection> createState() => _RoleSelectionState();
@@ -21,7 +23,6 @@ class RoleSelection extends StatefulWidget {
 
 class _RoleSelectionState extends State<RoleSelection> {
   final RoleController roleController = Get.put(RoleController());
- 
 
   String? selectedRoleId, selectedRole, selectedRoleTypeName;
   String? selectedRoleTypeId;
@@ -35,23 +36,45 @@ class _RoleSelectionState extends State<RoleSelection> {
     fetchRoles();
   }
 
-void fetchRoles() async {
-  try {
-    setState(() {
-      _isLoading = true;
-    });
+  void fetchRoles() async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
 
-    List<Role>? fetchedRoles = await WebService.getRoles();
+      List<Role>? fetchedRoles = await WebService.getRoles();
 
-     if (fetchedRoles != null) {
+      if (fetchedRoles != null) {
         setState(() async {
           roles = fetchedRoles;
 
-          // Set default selection only if coming from ParentOtpScreen
-          if (widget.isFromParentOtp) {
+          if (widget.parentId != null && widget.parentId!.isNotEmpty) {
+            // Default select "Tutee" role when parentId is not null or empty
+            var tuteeRole = fetchedRoles.firstWhere(
+              (role) => role.roleName.toLowerCase() == 'tutee',
+              orElse: () => fetchedRoles[
+                  0], // Default to the first role if "Tutee" not found
+            );
+
+            selectedRoleId = tuteeRole.id;
+            selectedRole = tuteeRole.roleName;
+            roleTypes = tuteeRole.roleTypes;
+
+            // Set default role type if available
+            if (roleTypes.isNotEmpty) {
+              selectedRoleTypeId = roleTypes.first.id;
+              selectedRoleTypeName = roleTypes.first.roleTypeName;
+            }
+
+            // Save the "Tutee" role in SharedPreferences
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('Rolename', selectedRole ?? '');
+          } else if (widget.isFromParentOtp) {
+            // Default select "Parent" role for ParentOtpScreen
             var parentRole = fetchedRoles.firstWhere(
-              (role) => role.roleName.toLowerCase() == 'Parent',
-              orElse: () => fetchedRoles[2], // Default to index 2 if "Parent" not found
+              (role) => role.roleName.toLowerCase() == 'parent',
+              orElse: () =>
+                  fetchedRoles[2], // Default to index 2 if "Parent" not found
             );
 
             selectedRoleId = parentRole.id;
@@ -72,32 +95,30 @@ void fetchRoles() async {
           _isLoading = false;
         });
       }
-  } catch (e) {
-    setState(() {
-      _isLoading = false;
-    });
-    print("Error fetching roles: $e");
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      print("Error fetching roles: $e");
+    }
   }
-}
-
-
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: ()async{
+      onWillPop: () async {
         return await ModalService.handleBackButtonN(context);
       },
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: const LogoGif() ,
+            title: const LogoGif(),
             centerTitle: true,
           ),
           body: _isLoading
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
-                child: Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Container(
@@ -119,7 +140,7 @@ void fetchRoles() async {
                             const SizedBox(
                               height: 30,
                             ),
-                         
+
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20),
                               child: Text(
@@ -130,12 +151,13 @@ void fetchRoles() async {
                                     fontSize: 24),
                               ),
                             ),
-                              const SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
                             // Roles ListView.builder
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: Card(
                                 elevation: 20,
                                 shadowColor: Colors.black,
@@ -144,69 +166,96 @@ void fetchRoles() async {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 3, vertical: 8),
                                   child: ListView.builder(
-  scrollDirection: Axis.horizontal,
-  itemCount: roles?.length ?? 0,
-  itemBuilder: (context, index) {
-    var role = roles![index];
-    bool isSelected = selectedRoleId == role.id && selectedRole == role.roleName;
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: roles?.length ?? 0,
+                                    itemBuilder: (context, index) {
+                                      var role = roles![index];
+                                      bool isSelected =
+                                          selectedRoleId == role.id &&
+                                              selectedRole == role.roleName;
 
-    return GestureDetector(
-      onTap: () async {
-        // Allow interaction only with the initially selected role
-        if (!widget.isFromParentOtp ||isSelected) {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('Rolename', role.roleName ?? '');
-          setState(() {
-            selectedRoleId = role.id;
-            roleTypes = role.roleTypes;
-            selectedRoleTypeId = null;
-            selectedRoleTypeName = null; // Reset selected role type
-            selectedRole = role.roleName;
-          });
-        }
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-        child: Card(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              gradient: isSelected
-                  ? const LinearGradient(
-                      colors: [
-                        Color(0xFFBA0161),
-                        Color(0xFF510270),
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )
-                  : null,
-            ),
-            child: Center(
-              child: Text(
-                role.roleName,
-                style: GoogleFonts.nunito(
-                  color: isSelected ? Colors.white : Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  },
-)
+                                      return GestureDetector(
+                                        onTap: () async {
+                                          // Condition to restrict access to roles other than 'Tutee'
+                                          if (widget.parentId != null &&
+                                              widget.parentId!.isNotEmpty &&
+                                              role.roleName != 'Tutee') {
+                                            SnackBarUtils.showSuccessSnackBar(
+                                              context,
+                                              'Only Tutee role is allowed in this scenario.',
+                                            );
+                                            return; // Exit early, prevent selection
+                                          }
 
+                                          // Allow interaction only with the initially selected role
+                                          if (!widget.isFromParentOtp ||
+                                              isSelected) {
+                                            SharedPreferences prefs =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                            prefs.setString('Rolename',
+                                                role.roleName ?? '');
+                                            setState(() {
+                                              selectedRoleId = role.id;
+                                              roleTypes = role.roleTypes;
+                                              selectedRoleTypeId = null;
+                                              selectedRoleTypeName =
+                                                  null; // Reset selected role type
+                                              selectedRole = role.roleName;
+                                            });
+                                          }
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 4.0),
+                                          child: Card(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10.0,
+                                                      vertical: 5),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                gradient: isSelected
+                                                    ? const LinearGradient(
+                                                        colors: [
+                                                          Color(0xFFBA0161),
+                                                          Color(0xFF510270),
+                                                        ],
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                        end: Alignment
+                                                            .bottomCenter,
+                                                      )
+                                                    : null,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  role.roleName,
+                                                  style: GoogleFonts.nunito(
+                                                    color: isSelected
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
                             // Role Types ListView.builder
                             if (roleTypes.isNotEmpty)
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: Card(
                                   elevation: 20,
                                   shadowColor: Colors.black,
@@ -223,7 +272,7 @@ void fetchRoles() async {
                                             selectedRoleTypeId == roleType.id &&
                                                 selectedRoleTypeName ==
                                                     roleType.roleTypeName;
-                                        
+
                                         return GestureDetector(
                                           onTap: () {
                                             setState(() {
@@ -237,8 +286,10 @@ void fetchRoles() async {
                                                 horizontal: 4.0),
                                             child: Card(
                                               child: Container(
-                                                padding: const EdgeInsets.symmetric(
-                                                    horizontal: 10.0, vertical: 5),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10.0,
+                                                        vertical: 5),
                                                 decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.circular(12),
@@ -248,8 +299,10 @@ void fetchRoles() async {
                                                             Color(0xFFBA0161),
                                                             Color(0xFF510270),
                                                           ],
-                                                          begin: Alignment.topCenter,
-                                                          end: Alignment.bottomCenter,
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomCenter,
                                                         )
                                                       : null,
                                                 ),
@@ -261,7 +314,8 @@ void fetchRoles() async {
                                                           ? Colors.white
                                                           : Colors.black,
                                                       fontSize: 16,
-                                                      fontWeight: FontWeight.w500,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
@@ -276,56 +330,81 @@ void fetchRoles() async {
                               ),
                             // Get It Button
 
-                              const SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: InkWell(
                                 onTap: () {
                                   // Check if selectedRoleId is null
                                   if (selectedRoleId == null) {
-                                     SnackBarUtils.showSuccessSnackBar(context,
-                                        'Please select a role.',);
+                                    SnackBarUtils.showSuccessSnackBar(
+                                      context,
+                                      'Please select a role.',
+                                    );
                                     return; // Exit early if no role is selected
                                   }
-                                      
+
                                   // Check if the selected role is 'tutor' and ensure a role type is selected
                                   if (selectedRole == 'Tutor' &&
                                       selectedRoleTypeId == null) {
-                                    SnackBarUtils.showSuccessSnackBar(context,
-                                        'Please select the role type.',);
+                                    SnackBarUtils.showSuccessSnackBar(
+                                      context,
+                                      'Please select the role type.',
+                                    );
                                     return; // Exit early if tutor is selected but no role type is selected
                                   }
-                                      
-                                   if (selectedRole == 'Tutor' &&
+
+                                  if (selectedRole == 'Tutor' &&
                                       selectedRoleTypeName == 'Institute') {
-                                    SnackBarUtils.showSuccessSnackBar(context,
-                                        'Feature under development',);
+                                    SnackBarUtils.showSuccessSnackBar(
+                                      context,
+                                      'Feature under development',
+                                    );
                                     return; // Exit early if tutor is selected but no role type is selected
                                   }
-                                      
-                                       if(selectedRole=='Parent'){
+                                  // Handle Parent role navigation based on isFromParentOtp
+                                  if (selectedRole == 'Parent') {
+                                    if (widget.isFromParentOtp) {
+                                      // Navigate to ParentAccountSetupScreen
                                       Get.to(() => ParentAccountSetupScreen());
-                                    }else{
-                                  // If we reach here, either a role is selected and it's not 'tutor', or it's 'tuttee' (which doesn't require a role type)
-                                  Get.to(() => AccountSetup(
-                                        roleId: selectedRoleId!,
-                                        roleTypeId: selectedRoleTypeId ?? '',
-                                        selectedRoleTypeName:
-                                            selectedRoleTypeName ?? '',
-                                        selectedRole: selectedRole ?? '',
-                                      ));
-                                    
-                                   
+                                    } else {
+                                      // Navigate to AccountSetup
+                                      Get.to(
+                                        () => AccountSetup(
+                                          roleId: selectedRoleId!,
+                                          roleTypeId: selectedRoleTypeId ?? '',
+                                          selectedRoleTypeName:
+                                              selectedRoleTypeName ?? '',
+                                          selectedRole: selectedRole ?? '',
+                                          parentId: widget.parentId ?? '',
+                                        ),
+                                         arguments:  widget.parentId ?? null,
+                                      );
                                     }
-                                     
+                                    return; // Exit after handling Parent role
+                                  }
+                                  // If we reach here, either a role is selected and it's not 'tutor', or it's 'tuttee' (which doesn't require a role type)
+                                  Get.to(
+                                    () => AccountSetup(
+                                      roleId: selectedRoleId!,
+                                      roleTypeId: selectedRoleTypeId ?? '',
+                                      selectedRoleTypeName:
+                                          selectedRoleTypeName ?? '',
+                                      selectedRole: selectedRole ?? '',
+                                      parentId: widget.parentId ?? '',
+                                    ),
+                                    arguments:  widget.parentId?? null,
+                                  );
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 40, vertical: 8),
                                   decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(18)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(18)),
                                     color: Colors.white,
                                   ),
                                   child: const Text(
@@ -339,16 +418,19 @@ void fetchRoles() async {
                                 ),
                               ),
                             ),
-                              const SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
                           ],
                         ),
                       ),
-                      Image.asset('assets/image 204.png',height: 250,),
+                      Image.asset(
+                        'assets/image 204.png',
+                        height: 250,
+                      ),
                     ],
                   ),
-              ),
+                ),
         ),
       ),
     );

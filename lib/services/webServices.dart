@@ -377,6 +377,7 @@ class WebService {
     String experienceCertPath = '',
     required String latitude,
     required String longitude,
+     required String parentId,
   }) async {
     var headers = {
       'Authorization': 'Bearer $token', // Pass the token for authorization
@@ -405,6 +406,7 @@ class WebService {
     //  request.fields['rolesTypeId'] = roleTypeId;
     request.fields['latitude'] = latitude;
     request.fields['longitude'] = longitude;
+     request.fields['parentId'] = parentId;
     request.headers.addAll(headers);
     Logger().i(request.fields);
 
@@ -516,12 +518,14 @@ class WebService {
   }
 
   static Future<http.StreamedResponse> submitTuteeAccountSetup({
+     required  String parentId,
     required String token,
     required Map<dynamic, dynamic> personalInfo,
     required Map<dynamic, dynamic> addressInfo,
     required Map<dynamic, dynamic> educationInfo,
     required String latitude,
     required String longitude,
+    
   }) async {
     var headers = {
       'Authorization': 'Bearer $token', // Pass the token for authorization
@@ -531,7 +535,7 @@ class WebService {
 
     var request =
         http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
-
+      Logger().i(request);
     // Add personal info
     request.fields['personal_info'] = jsonEncode(personalInfo);
 
@@ -543,6 +547,7 @@ class WebService {
     request.fields['type'] = 'N';
     request.fields['latitude'] = latitude;
     request.fields['longitude'] = longitude;
+    request.fields['parentId'] = parentId;
     request.headers.addAll(headers);
     return await request.send();
   }

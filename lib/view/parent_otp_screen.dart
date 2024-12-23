@@ -13,13 +13,14 @@ import 'package:pinput/pinput.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ParentOtpScreen extends StatelessWidget {
-   ParentOtpScreen({super.key});
- final ParentController parentController = Get.put(ParentController());
-  final ParentOtpController otpparentController = Get.put(ParentOtpController());
- 
+  ParentOtpScreen({super.key});
+  final ParentController parentController = Get.put(ParentController());
+  final ParentOtpController otpparentController =
+      Get.put(ParentOtpController());
+
   @override
   Widget build(BuildContext context) {
-    const focusedBorderColor = Colors.blue; 
+    const focusedBorderColor = Colors.blue;
     final defaultPinTheme = PinTheme(
       width: 50,
       height: 38,
@@ -122,7 +123,7 @@ class ParentOtpScreen extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                            "Submit the acceptance code\nreceived on your phone to proceed further.",//
+                                            "Submit the acceptance code\nreceived on your phone to proceed further.", //
                                             style: GoogleFonts.nunito(
                                                 fontSize: 16.0,
                                                 color: const Color(0xFF000000),
@@ -218,7 +219,7 @@ class ParentOtpScreen extends StatelessWidget {
                                           onTap: () async {
                                             var value = await parentController
                                                 .otp(context);
-                                            if (value!.statusCode == 200) {      
+                                            if (value!.statusCode == 200) {
                                               showModalBottomSheet(
                                                 isDismissible: false,
                                                 enableDrag: false,
@@ -227,48 +228,154 @@ class ParentOtpScreen extends StatelessWidget {
                                                     Colors.transparent,
                                                 builder: (context) {
                                                   return CustomDialogBox(
-                                                    title1: "Login Successfully",
+                                                    title1:
+                                                        "Login Successfully",
                                                     title2: '',
                                                     subtitle: 'subtitle',
                                                     btnName: 'Ok',
                                                     onTap: () {
-                                                      if (value.parentAccount!) {
-          Get.dialog(
-  AlertDialog(
-    title: Text('Tutee Preview'),
-    content: Column(
-      mainAxisSize: MainAxisSize.min, // To avoid stretching the dialog unnecessarily
-      children: [
-               _buildRow('Tutee name',  '${value.userDetail!.firstName} ${value.userDetail!.lastName}',),
-                                            _buildRow('Wow ID',"ID : ${value.userDetail!.wowId}"),
-                                            _buildRow('Email', value.userDetail!.email),
-                                             _buildRow('Phone number', '${value.userDetail!.phoneNumber}',),
-                                           _buildRow('DOB', value.userDetail!.dob ),
-      ],
-    ),
-    actions: [
-      TextButton(
-        onPressed: ()  {
-          parentController.updateEnrollment(
-           context,value.parentDetail!.sId!,value.userDetail!.sId!
-          );
-          Get.back(); // Close the dialog
-        },
-        child: Text('Accept'),
-      ),
-      TextButton(
-        onPressed: () {
-          Get.off(() => DashboardScreen(rolename: 'Parent'));
-          Get.back(); // Close the dialog
-        },
-        child: Text('Reject'),
-      ),
-    ],
-  ));
-                                                        
+                                                      if (value
+                                                          .parentAccount!) {
+                                                        if (value
+                                                            .parentDetail!.parentToStudentInvite!) {
+                                                          // Display the new dialog box
+                                                           Get.dialog(
+                                                              AlertDialog(
+                                                            title: Text(
+                                                                'Parent Preview'),
+                                                            content: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min, // To avoid stretching the dialog unnecessarily
+                                                              children: [
+                                                                _buildRow(
+                                                                  'Parent name',
+                                                                  '${value.userDetail!.firstName} ${value.userDetail!.lastName}',
+                                                                ),
+                                                                _buildRow(
+                                                                  'Wow ID',
+                                                                  "ID : ${value.userDetail!.wowId}",
+                                                                ),
+                                                                _buildRow(
+                                                                  'Email',
+                                                                  value
+                                                                      .userDetail!
+                                                                      .email,
+                                                                ),
+                                                                _buildRow(
+                                                                  'Phone number',
+                                                                  '${value.userDetail!.phoneNumber}',
+                                                                ),
+                                                                _buildRow(
+                                                                  'DOB',
+                                                                  value
+                                                                      .userDetail!
+                                                                      .dob,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            actions: [
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  parentController.updateParentStatus(
+                                                                      context,
+                                                                      value
+                                                                          .parentDetail!
+                                                                          .sId!,
+                                                                      value
+                                                                          .userDetail!
+                                                                          .sId!);
+                                                                  Get.back(); // Close the dialog
+                                                                },
+                                                                child: Text(
+                                                                    'Accept'),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Get.off(() =>
+                                                                      DashboardScreen(
+                                                                          rolename:
+                                                                              'Parent'));
+                                                                  Get.back(); // Close the dialog
+                                                                },
+                                                                child: Text(
+                                                                    'Reject'),
+                                                              ),
+                                                            ],
+                                                          ));
+                                                        } else {
+                                                          // Display the existing Tutee Preview dialog box
+                                                          Get.dialog(
+                                                              AlertDialog(
+                                                            title: Text(
+                                                                'Tutee Preview'),
+                                                            content: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min, // To avoid stretching the dialog unnecessarily
+                                                              children: [
+                                                                _buildRow(
+                                                                  'Tutee name',
+                                                                  '${value.userDetail!.firstName} ${value.userDetail!.lastName}',
+                                                                ),
+                                                                _buildRow(
+                                                                  'Wow ID',
+                                                                  "ID : ${value.userDetail!.wowId}",
+                                                                ),
+                                                                _buildRow(
+                                                                  'Email',
+                                                                  value
+                                                                      .userDetail!
+                                                                      .email,
+                                                                ),
+                                                                _buildRow(
+                                                                  'Phone number',
+                                                                  '${value.userDetail!.phoneNumber}',
+                                                                ),
+                                                                _buildRow(
+                                                                  'DOB',
+                                                                  value
+                                                                      .userDetail!
+                                                                      .dob,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            actions: [
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  parentController.updateEnrollment(
+                                                                      context,
+                                                                      value
+                                                                          .parentDetail!
+                                                                          .sId!,
+                                                                      value
+                                                                          .userDetail!
+                                                                          .sId!);
+                                                                  Get.back(); // Close the dialog
+                                                                },
+                                                                child: Text(
+                                                                    'Accept'),
+                                                              ),
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Get.off(() =>
+                                                                      DashboardScreen(
+                                                                          rolename:
+                                                                              'Parent'));
+                                                                  Get.back(); // Close the dialog
+                                                                },
+                                                                child: Text(
+                                                                    'Reject'),
+                                                              ),
+                                                            ],
+                                                          ));
+                                                        }
                                                       } else {
                                                         Get.offAll(() =>
-                                                            const RoleSelection(isFromParentOtp: true,));
+                                                            const RoleSelection(
+                                                              isFromParentOtp:
+                                                                  true,
+                                                            ));
                                                       }
                                                     },
                                                     icon: const Icon(
@@ -284,42 +391,43 @@ class ParentOtpScreen extends StatelessWidget {
                                             }
                                           },
                                           child: Container(
-                                            height: 48,
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 40),
-                                            decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8)),
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  Color(0xFFC13584),
-                                                  Color(0xFF833AB4)
-                                                ],
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
+                                              height: 48,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 40),
+                                              decoration: const BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8)),
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Color(0xFFC13584),
+                                                    Color(0xFF833AB4)
+                                                  ],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                ),
                                               ),
-                                            ),
-                                            child:
-                                            //  Obx(() {
-                                              const Center(
-                                                      child: Text(
-                                                        'Verify Code',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                    )
-                                            // }),
-                                          ),
+                                              child:
+                                                  //  Obx(() {
+                                                  const Center(
+                                                child: Text(
+                                                  'Verify Code',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              )
+                                              // }),
+                                              ),
                                         ),
-                                         Obx(() {
-                                          if( otpparentController.code.value.isEmpty){
+                                        Obx(() {
+                                          if (otpparentController
+                                              .code.value.isEmpty) {
                                             return const SizedBox.shrink();
                                           }
-                                         
+
                                           return Text(
                                               otpparentController.code.value);
                                         }),
@@ -388,8 +496,7 @@ class ParentOtpScreen extends StatelessWidget {
               ),
             ],
           ),
-        )
-        );
+        ));
   }
 
   Widget _buildRow(String title, String? value) {
@@ -405,7 +512,8 @@ class ParentOtpScreen extends StatelessWidget {
         ),
         Text(
           value ?? '',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
         ),
       ],
     );

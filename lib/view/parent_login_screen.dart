@@ -15,7 +15,8 @@ import 'package:hovee_attendence/view/parent_otp_screen.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ParentLoginScreen extends StatelessWidget {
-  ParentLoginScreen({super.key});
+  final String rolename;
+  ParentLoginScreen({super.key, required this.rolename});
   final ParentController parentController = Get.put(ParentController());
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class ParentLoginScreen extends StatelessWidget {
                             end: Alignment.bottomCenter,
                           ),
                         ),
-                        child: const Column(
+                        child:  Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -56,7 +57,7 @@ class ParentLoginScreen extends StatelessWidget {
                               height: 10,
                             ),
                             Text(
-                              'Invite Parent',
+                            rolename=='Tutee'?  'Invite Parent' :'Invite children',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w400,
@@ -180,6 +181,7 @@ class ParentLoginScreen extends StatelessWidget {
                                                                 TextButton(
                                                                   onPressed:
                                                                       () {
+                                                                        if(rolename=='Tutee'){
                                                                     Clipboard.setData(
                                                                         ClipboardData(
                                                                             text:
@@ -196,6 +198,24 @@ class ParentLoginScreen extends StatelessWidget {
                                                                             context)
                                                                         .pop(); // Close the dialog
                                                                         Get.off(() => DashboardScreen(rolename: 'Tutee',));
+                                                                        }else{
+Clipboard.setData(
+                                                                        ClipboardData(
+                                                                            text:
+                                                                                response.mobileDeepLink!));
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                      const SnackBar(
+                                                                        content:
+                                                                            Text('Deeplink copied to clipboard!'),
+                                                                      ),
+                                                                    );
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop(); // Close the dialog
+                                                                        Get.off(() => DashboardScreen(rolename: 'Parent',));
+                                                                        }
                                                                   },
                                                                   child:
                                                                       const Text(
@@ -204,6 +224,7 @@ class ParentLoginScreen extends StatelessWidget {
                                                                 TextButton(
                                                                   onPressed:
                                                                       () {
+                                                                        if(rolename=='Tutee'){
                                                                     Share.share(
                                                                         response
                                                                             .mobileDeepLink!);
@@ -211,6 +232,15 @@ class ParentLoginScreen extends StatelessWidget {
                                                                             context)
                                                                         .pop(); // Close the dialog
                                                                         Get.off(() => DashboardScreen(rolename: 'Tutee',));
+                                                                        }else{
+                                                                           Share.share(
+                                                                        response
+                                                                            .mobileDeepLink!);
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop(); // Close the dialog
+                                                                        Get.off(() => DashboardScreen(rolename: 'Parent',));
+                                                                        }
                                                                   },
                                                                   child: const Text(
                                                                       'Share'),

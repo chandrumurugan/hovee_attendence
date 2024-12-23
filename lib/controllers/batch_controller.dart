@@ -53,7 +53,7 @@ var batchDaysController = "".obs;
   List<String> batchModes = [];
   Map<String, String> batchIdMap = {};
   List<String> batchName1 = [];
- final selectedBatchDays = <String>[].obs;
+ RxList<String> selectedBatchDays = <String>[].obs;
 
   var selectedCourseDetails =
       Data2().obs; // Observable to store selected course details
@@ -152,7 +152,7 @@ var batchDaysController = "".obs;
     fetchBatchList();
     batchDays = getBatchDays();
     batchModes = getBatchModes();
-    _clearData();
+    clearData();
   }
 
   bool validateFields(BuildContext context) {
@@ -248,7 +248,9 @@ var batchDaysController = "".obs;
             await WebService.addBatch(batchData);
 
         if (response != null && response.success == true) {
-          _clearData();
+           batchDaysController.value = "";
+          clearData();
+           batchDaysController.value = "";
           SnackBarUtils.showSuccessSnackBar(
               context, 'Batch added successfully',);
           Get.back();
@@ -301,7 +303,7 @@ var batchDaysController = "".obs;
   void setStartTiming(String value) => batchTimingController.value = value;
   void setEndingTiming(String value) => batchTimingEndController.value = value;
 
-  void _clearData() {
+  void clearData() {
     batchName.clear();
     batchTeacherController.value = '';
     batchTiming.clear();
@@ -310,6 +312,7 @@ var batchDaysController = "".obs;
     batchDaysController.value = "";
     modeController.value = '';
     fees.clear();
+    selectedBatchDays.clear();
   }
 
   void filterBatchList() {
@@ -345,7 +348,7 @@ var batchDaysController = "".obs;
           await WebService.deleteBatch(batchData);
 
       if (response != null && response.success == true) {
-        _clearData();
+        clearData();
         fetchBatchList();
          Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
         ,'Batch delete successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
@@ -392,7 +395,7 @@ var batchDaysController = "".obs;
             await WebService.addBatch(batchData);
 
         if (response != null && response.success == true) {
-          _clearData();
+          clearData();
           SnackBarUtils.showSuccessSnackBar(
               context, 'Batch updated successfully');
           Get.back();

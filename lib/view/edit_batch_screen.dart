@@ -8,6 +8,7 @@ import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDropDownInputField.dart';
+import 'package:hovee_attendence/widget/add_days_dropdown.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:hovee_attendence/widget/multipleCheckDropDown.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
@@ -287,12 +288,22 @@ final BatchController controller = Get.put(BatchController());
                       ),
                     ],
                   ),
-                  CommonDropdownInputField(
-                    title: 'Batch days',
+                  // CommonDropdownInputField(
+                  //   title: 'Batch days',
+                  //   controllerValue: controller.batchDaysController,
+                  //   selectedValue: controller.batchDaysController,
+                  //   items: controller.batchDays,
+                  //   onChanged: controller.setBatchDays,
+                  // ),
+                  CommonDropdownInputFieldDays(
                     controllerValue: controller.batchDaysController,
-                    selectedValue: controller.batchDaysController,
+                    title: 'Batch Days',
                     items: controller.batchDays,
-                    onChanged: controller.setBatchDays,
+                    onChanged: (selected) {
+                      print('Selected Batch Days: $selected');
+                      controller.setBatchDays;
+                    },
+                    selectedValues: controller.selectedBatchDays,
                   ),
                 ],
               ),

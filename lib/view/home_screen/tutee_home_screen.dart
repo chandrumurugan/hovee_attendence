@@ -394,7 +394,7 @@ class TuteeHome extends StatelessWidget {
         return InkWell(
           onTap: () {
             // // Handle tap for the additional item
-            Get.to(() => ParentLoginScreen());
+            Get.to(() => ParentLoginScreen(rolename: 'Tutee',));
           },
           child: Card(
             elevation: 10,

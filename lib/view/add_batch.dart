@@ -8,6 +8,7 @@ import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
+import 'package:hovee_attendence/widget/add_days_dropdown.dart';
 import 'package:hovee_attendence/widget/addteacher_dropdown.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:hovee_attendence/widget/multipleCheckDropDown.dart';
@@ -28,15 +29,14 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
-     controller.batchTeacher.text = accountController
-                                                .firstNameController.text;
+    controller.batchTeacher.text = accountController.firstNameController.text;
+    controller.clearData();
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
           controller.onInit();
           Navigator.pop(context);
-          
         },
       ),
       body: SingleChildScrollView(
@@ -174,27 +174,23 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                   //   onChanged: controller.setTeacher,
                   // ),
                   Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            color: Colors.grey.shade200),
-                                        child: InputTextField(
-                                            suffix: false,
-                                            readonly: true,
-                                            hintText: 'First',
-                                            keyboardType:
-                                                TextInputType.name,
-                                            inputFormatter: [
-                                              FilteringTextInputFormatter
-                                                  .allow(
-                                                RegExp(
-                                                  r"[a-zA-Z0-9\s@&_,-\/.']",
-                                                ),
-                                              ),
-                                            ],
-                                            controller: accountController
-                                                .firstNameController),
-                                      ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.grey.shade200),
+                    child: InputTextField(
+                        suffix: false,
+                        readonly: true,
+                        hintText: 'First',
+                        keyboardType: TextInputType.name,
+                        inputFormatter: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(
+                              r"[a-zA-Z0-9\s@&_,-\/.']",
+                            ),
+                          ),
+                        ],
+                        controller: accountController.firstNameController),
+                  ),
                 ],
               ),
             ),
@@ -231,12 +227,13 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                     //suffixIcon: Icon(Icons.arrow_drop_down), // Add dropdown icon
                     onChanged: controller.setStartTiming,
                     hintText: 'Select',
-                     readonly: true,
+                    readonly: true,
                     onTap: () async {
                       // Show time picker and pass the current context
                       print("start time");
                       await _showTimePicker(context, isStartTime: true);
-                    }, controller: controller.batchTiming,
+                    },
+                    controller: controller.batchTiming,
                   ),
                 ],
               ),
@@ -277,8 +274,9 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                     readonly: true,
                     onTap: () async {
                       // Show time picker and pass the current context
-                   await _showTimePicker(context, isStartTime: false);
-                    }, controller: controller.batchTimingEnd,
+                      await _showTimePicker(context, isStartTime: false);
+                    },
+                    controller: controller.batchTimingEnd,
                   ),
                 ],
               ),
@@ -356,14 +354,15 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                   //   onChanged: controller.setBatchDays,
                   // ),
                   CommonDropdownInputFieldDays(
-  title: 'Batch Days',
-  selectedValues: controller.selectedBatchDays,
-  items: controller.batchDays,
-  onChanged: (selected) {
-    print('Selected Batch Days: $selected');
-    controller.setBatchDays;
-  },
-),
+                    controllerValue: controller.batchDaysController,
+                    title: 'Batch Days',
+                    items: controller.batchDays,
+                    onChanged: (selected) {
+                      print('Selected Batch Days: $selected');
+                      controller.setBatchDays;
+                    },
+                    selectedValues: controller.selectedBatchDays,
+                  ),
                 ],
               ),
             ),
@@ -436,13 +435,13 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                     onTap: () {},
                     prefixText: '₹ ', // Add the rupee symbol as prefix
                     suffixText: '/month', controller: controller.fees,
-                     inputFormatters: [
-                                              FilteringTextInputFormatter.allow(
-                                                RegExp(r"[0-9]"),
-                                              ),
-                                              LengthLimitingTextInputFormatter(
-                                                  10), // Restrict to 10 digits
-                                            ], // Add "/month" as suffix
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                        RegExp(r"[0-9]"),
+                      ),
+                      LengthLimitingTextInputFormatter(
+                          10), // Restrict to 10 digits
+                    ], // Add "/month" as suffix
                   ),
                 ],
               ),
@@ -462,7 +461,6 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                   .shrink(); // If no validation errors, return empty widget
             }),
             SingleButton(
-              
               btnName: 'Add',
               onTap: () {
                 controller.addBatch(context);

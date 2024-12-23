@@ -16,6 +16,7 @@ import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/parent_otp_screen.dart';
+import 'package:hovee_attendence/view/roleSelection.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,8 +33,8 @@ class ParentController extends GetxController {
 
   final logInController = TextEditingController();
 
-  var deepLink =''.obs;
- var code =''.obs;
+  var deepLink = ''.obs;
+  var code = ''.obs;
 
   final List<Map<String, dynamic>> parentMonitorList = [
     // {
@@ -78,7 +79,7 @@ class ParentController extends GetxController {
       'desc': 'Lorem Ipsum is simply dummy ',
       'color': const Color.fromRGBO(126, 113, 255, 1)
     },
-      {
+    {
       'title': 'Annoucement',
       'image': 'assets/tutorHomeImg/online-learning (1) 1.png',
       'desc': 'Lorem Ipsum is simply dummy ',
@@ -112,22 +113,22 @@ class ParentController extends GetxController {
   var otpResponse = validateAndLoginParentModal().obs;
   var loginResponse = parentLoginModal().obs;
 
-   final focusNode = FocusNode();
-    UserDetail ? childrenData   ;
+  final focusNode = FocusNode();
+  UserDetail? childrenData;
 
-    var userID=''.obs;
-    ParentData? parentdata;
+  var userID = ''.obs;
+  ParentData? parentdata;
 
-    LoginData? loginData;
-     UserDetail? userDetail;
-    
+  LoginData? loginData;
+  UserDetail? userDetail;
+
   // @override
   // void onInit() {
   //   // TODO: implement onInit
   //   super.onInit();
   //  // getUserData();
   //   //fetchHomeDashboardTuteeList();
-    
+
   // }
 
   // void fetchHomeDashboardTuteeList() async {
@@ -228,22 +229,23 @@ class ParentController extends GetxController {
     return true;
   }
 
-   bool validateOtp(BuildContext context) {
+  bool validateOtp(BuildContext context) {
     if (otpController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please enter the OTP',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the OTP',
+      );
       return false;
     }
     return true;
   }
 
-
- Future<parentLoginModal?> logIn(String identifiers,BuildContext context) async {
+  Future<parentLoginModal?> logIn(
+      String identifiers, BuildContext context) async {
     if (validateLogin(context)) {
       isLoading.value = true;
       try {
-        var response = await WebService.parentLogin(
-            identifiers,
-            context);
+        var response = await WebService.parentLogin(identifiers, context);
         if (response != null) {
           loginResponse.value = response;
           isLoading.value = false;
@@ -259,7 +261,6 @@ class ParentController extends GetxController {
       }
     }
   }
-
 
 //  void getValidateLink(String identifiers) async {
 //               var parentresponse = await WebService.getParentInviteCode(identifiers);
@@ -314,19 +315,19 @@ class ParentController extends GetxController {
 
 //   // Parse the URL
 //   Uri uri = Uri.parse(url);
-   
+
 //   // Extract the 'code' query parameter
 //   String? code1 = uri.queryParameters['code'];
-   
+
 //     prefs.setString('code', code1!);
-   
+
 //   if (code != null) {
 //     print('Extracted Code: $code1');
 //    //Get.to(() => ParentOtpScreen());
 
 //   } else {
 //     print('Code parameter not found in the URL');
-//   } 
+//   }
 //         } else {
 //           Logger().e('Failed to load AppConfig');
 //           isLoading.value = false;
@@ -339,24 +340,22 @@ class ParentController extends GetxController {
       try {
         // Logger().i("moving to otp ===>$");
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        final accountVerificationToken =Get.arguments['code'] ?? '';
+        final accountVerificationToken = Get.arguments['code'] ?? '';
         var response = await WebService.otpParent(
-            otpController.text,
-             accountVerificationToken,
-            context);
+            otpController.text, accountVerificationToken, context);
         if (response != null) {
           otpResponse.value = response;
-          userID.value=otpResponse.value.userDetail!.sId.toString();
-          userDetail=otpResponse.value.userDetail!;
+          userID.value = otpResponse.value.userDetail!.sId.toString();
+          userDetail = otpResponse.value.userDetail!;
           print(userID.value);
-            prefs.setString('Token', response.parentToken!);
-         // prefs.setString('Rolename', response.data!.roles!.roleName??'');
+          prefs.setString('Token', response.parentToken!);
+          // prefs.setString('Rolename', response.data!.roles!.roleName??'');
           //  var validateTokendata = response.parentDetail!;
           //   //if(response.parentData=='true'){
           //     fetchHomeDashboardTuteeList();
           //     getUserTokenList(response.parentDetail!.sId!);
           //  // }
-        
+
           // LoginData loginData = LoginData(
           //   firstName: validateTokendata.firstName,
           //   lastName: validateTokendata.lastName,
@@ -382,53 +381,53 @@ class ParentController extends GetxController {
   }
 
   void updateEnrollment(
-      BuildContext context, String parentId, String userId,) async {
+    BuildContext context,
+    String parentId,
+    String userId,
+  ) async {
     isLoading.value = true;
     try {
-      var batchData = {
-       "parentId":parentId,
-    "userId":userId
-      };
-        SharedPreferences prefs = await SharedPreferences.getInstance();
+      var batchData = {"parentId": parentId, "userId": userId};
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       final UpdateParentStausModel? response =
           await WebService.updateParentStatus(batchData);
 
       if (response != null && response.statusCode == 200) {
-          parentdata=response.data;
-           //fetchHomeDashboardTuteeList();
-            // getUserTokenList(response.data!.sId!);
-           // }
-           // getUserTokenList(parentId);
-      //   loginData = LoginData(
-      //       firstName: parentdata!.firstName,
-      //       lastName: parentdata!.lastName,
-      //       wowId: parentdata!.wowId,
-      //       id: parentdata!.sId
-      //     );
-      //     prefs.setString('userData', jsonEncode(loginData!.toJson()));
-      //  await getUserData();
-          Get.snackbar(
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.white,
-              size: 40,
-            ),
-           response.message!,
-            colorText: Colors.white,
-            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          );
-          Get.off(() => DashboardScreen(rolename: 'Parent'));
+        parentdata = response.data;
+        //fetchHomeDashboardTuteeList();
+        // getUserTokenList(response.data!.sId!);
+        // }
+        // getUserTokenList(parentId);
+        //   loginData = LoginData(
+        //       firstName: parentdata!.firstName,
+        //       lastName: parentdata!.lastName,
+        //       wowId: parentdata!.wowId,
+        //       id: parentdata!.sId
+        //     );
+        //     prefs.setString('userData', jsonEncode(loginData!.toJson()));
+        //  await getUserData();
+        Get.snackbar(
+          icon: const Icon(
+            Icons.check_circle,
+            color: Colors.white,
+            size: 40,
+          ),
+          response.message!,
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        );
+        Get.off(() => DashboardScreen(rolename: 'Parent'));
       } else {
         Get.snackbar(
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.white,
-              size: 40,
-            ),
-           response!.message!,
-            colorText: Colors.white,
-            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          );
+          icon: const Icon(
+            Icons.check_circle,
+            color: Colors.white,
+            size: 40,
+          ),
+          response!.message!,
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        );
       }
     } catch (e) {
       //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
@@ -437,21 +436,50 @@ class ParentController extends GetxController {
     }
   }
 
-//   Future<void> getUserData() async {
-//       SharedPreferences prefs = await SharedPreferences.getInstance();
-//  // To retrieve the data later:
-// String? jsonString = prefs.getString('userData');
-// if (jsonString != null) {
-//   try {
-//      loginData = LoginData.fromJson(jsonDecode(jsonString));
-//     print("Hello ${loginData!.firstName}, ${loginData!.lastName}");
-//     //  getUserTokenList(loginData!.id!);
-//   } catch (e) {
-//     print("Error decoding JSON: $e");
-//   }
+  void updateParentStatus(
+    BuildContext context,
+    String parentId,
+    String userId,
+  ) async {
+    isLoading.value = true;
+    try {
+      var batchData = {"parentId": parentId, "userId": userId};
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final UpdateParentStausModel? response =
+          await WebService.updateParentStatus(batchData);
 
-
-//   }
-// }
-
+      if (response != null && response.statusCode == 200) {
+        parentdata = response.data;
+        Get.snackbar(
+          icon: const Icon(
+            Icons.check_circle,
+            color: Colors.white,
+            size: 40,
+          ),
+          response.message!,
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        );
+        Get.offAll(() =>  RoleSelection(
+              isFromParentOtp: false,
+              parentId:parentId
+            ));
+      } else {
+        Get.snackbar(
+          icon: const Icon(
+            Icons.check_circle,
+            color: Colors.white,
+            size: 40,
+          ),
+          response!.message!,
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        );
+      }
+    } catch (e) {
+      //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }

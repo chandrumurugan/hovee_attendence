@@ -335,7 +335,7 @@ class ParentAccountSetupScreen extends StatelessWidget {
                                         ),
                                         InputTextField(
                                             suffix: false,
-                                            readonly: true,
+                                            readonly: false,
                                             hintText: 'Enter here...',
                                             keyboardType: TextInputType.phone,
                                             inputFormatter: [
