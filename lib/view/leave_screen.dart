@@ -166,7 +166,7 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
             ],
           ),
           
-          bottomNavigationBar: type == 'Tutor'
+          bottomNavigationBar: type == 'Tutor' || type == 'Parent'
                     ?SizedBox.fromSize()
          : SingleCustomButtom(
         btnName: 'Add Leave',

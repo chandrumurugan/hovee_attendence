@@ -29,9 +29,9 @@ class RatingsController extends GetxController {
     // isLoading(true);
 
     try {
-      var myrating = await WebService.getMyRatings();
-      if (myrating != null && myrating.statusCode == 200) {
-        myrating = myrating;
+      var myratings = await WebService.getMyRatings();
+      if (myratings != null && myratings.statusCode == 200) {
+        myrating = myratings.data;
         isLoading(false);
       } else {
         isLoading(false);

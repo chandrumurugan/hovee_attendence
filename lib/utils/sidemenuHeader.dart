@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/parent_accountsetup_controller.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/controllers/parent_dashboard_controller.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 
 class SidemenuHeader extends StatelessWidget {
@@ -27,9 +28,22 @@ class SidemenuHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthControllers>();
+     final userProfileData = Get.find<UserProfileController>();
      //final parentController = Get.find<ParentAccountSetupController>();
       //  final ParentDashboardController  parentController =Get.put(ParentDashboardController());
-    return Container(
+      return FutureBuilder(future: authController.getStoredUserData(),
+      
+      
+       builder:(context, snapshot){
+            if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator()); // Show loading indicator
+      }
+      if (snapshot.hasError) {
+        return const Center(child: Text("Error fetching user data")); // Show error message
+      }
+    if (snapshot.hasData){
+         final userData = snapshot.data!; 
+   return Container(
       key: sidemenuKey,
       height: 170,
       width: MediaQuery.of(context).size.width,
@@ -87,18 +101,18 @@ class SidemenuHeader extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              type!.isNotEmpty?
-               Text(
-                  isGuest ? "Guest" :
-                                    '${firstname} ${lastname}',
-                  style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                      fontSize: 20),
-                ):
+              // type!.isNotEmpty?
+              //  Text(
+              //     isGuest ? "Guest" :
+              //                       '${firstname} ${lastname}',
+              //     style: GoogleFonts.nunito(
+              //         fontWeight: FontWeight.w600,
+              //         color: Colors.white,
+              //         fontSize: 20),
+              //   ):
                 Text(
                   isGuest ? "Guest" :
-                 authController.loginData!=null? "${authController.loginData!.firstName} ${authController.loginData!.lastName}":'',
+                   '${userProfileData.userProfileResponse.value.data!.firstName} ${userProfileData.userProfileResponse.value.data!.lastName}',
                   style: GoogleFonts.nunito(
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -120,18 +134,18 @@ class SidemenuHeader extends StatelessWidget {
                     Container(
                       //color: Colors.amberAccent,
                       width: 180,
-                     child:  type!.isNotEmpty?
-               Text(
-                  isGuest ? "Guest" :
-                                    'ID : ${wowid}',
-                  style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                      fontSize: 16),
-                ):
+                     child: 
+              //  Text(
+              //     isGuest ? "Guest" :
+              //                       'ID : ${wowid}',
+              //     style: GoogleFonts.nunito(
+              //         fontWeight: FontWeight.w400,
+              //         color: Colors.white,
+              //         fontSize: 16),
+              //   ):
                        Text(
                         isGuest ? "ID: xxxxxxx" :
-                        authController.loginData!=null?'ID : ${authController.loginData!.wowId}':'',
+                       'ID : ${userProfileData.userProfileResponse.value.data!.wowId}',
                         overflow: TextOverflow.clip,
                         style: GoogleFonts.nunito(
                             fontWeight: FontWeight.w400,
@@ -209,5 +223,12 @@ class SidemenuHeader extends StatelessWidget {
         ],
       ),
     );
+     }
+     return const Center(child: Text("No user data found")); 
+
+       }
+       
+        );
+   
   }
 }

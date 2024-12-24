@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/modals/login_data_model.dart';
 import 'package:hovee_attendence/modals/parentLoginDataModel.dart';
 import 'package:hovee_attendence/modals/parentLoginModel.dart';
 import 'package:hovee_attendence/modals/update_parent_status_model.dart';
+import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/dashBoard.dart';
@@ -104,6 +107,7 @@ class ParentController extends GetxController {
     //   'color': const Color.fromRGBO(81, 2, 112, 1)
     // },
   ];
+  //UserProfileController
 
   var userDetails = <UserId>[].obs;
   var userStoredData = <UserId>[].obs;
@@ -121,6 +125,8 @@ class ParentController extends GetxController {
 
   LoginData? loginData;
   UserDetail? userDetail;
+
+  var userProfileResponse = UserProfileM().obs;
 
   // @override
   // void onInit() {
@@ -152,6 +158,16 @@ class ParentController extends GetxController {
   //     isLoading(false);
   //   }
   // }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+ 
+    // fetchUserProfiles();
+    
+   
+  }
 
   void getUserTokenList(String parentId) async {
     isLoading.value = true;
@@ -259,6 +275,30 @@ class ParentController extends GetxController {
         print(e);
         return null;
       }
+    }
+  }
+
+      void fetchUserProfiles() async {
+    final storage = GetStorage();
+    isLoading(true);
+    try {
+      UserProfileM? fetchProfile = await WebService.fetchUserProfile();
+      if (fetchProfile != null) {
+        userProfileResponse.value = fetchProfile;
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('firstName', fetchProfile.data!.firstName!);
+          prefs.setString('lastName', fetchProfile.data!.lastName!);
+          prefs.setString('wowId', fetchProfile.data!.wowId!);
+          prefs.setString('RoleType', fetchProfile.data!.rolesId!.roleName!);
+         
+        isLoading(false);
+      } else {
+        // SnackBarUtils.showErrorSnackBar(context, message)
+        isLoading(false);
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
     }
   }
 

@@ -10,9 +10,11 @@ import 'package:hovee_attendence/modals/getDashboardYearFlow_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getQrcode_model.dart';
+import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TutorHomeController extends GetxController {
   GlobalKey<ScaffoldState> tutorScaffoldKey = GlobalKey<ScaffoldState>();
@@ -114,16 +116,41 @@ class TutorHomeController extends GetxController {
   var dailyattendance = Rxn<Dailyattendance>();
    var homeDashboardNavList =<NavbarItems>[].obs;
    String? currentMonthYear;
-
+    var userProfileResponse = UserProfileM().obs;
     var notificationCount = 0.obs;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     Logger().i(token.read('Token') ?? "");
+    fetchUserProfiles();
     fetchQrCodeImage();
     fetchGroupedEnrollmentByBatchListItem();
     fetchHomeDashboardTuteeList();
+  }
+
+    void fetchUserProfiles() async {
+    final storage = GetStorage();
+    isLoading(true);
+    try {
+      UserProfileM? fetchProfile = await WebService.fetchUserProfile();
+      if (fetchProfile != null) {
+        userProfileResponse.value = fetchProfile;
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('firstName', fetchProfile.data!.firstName!);
+          prefs.setString('lastName', fetchProfile.data!.lastName!);
+          prefs.setString('wowId', fetchProfile.data!.wowId!);
+          prefs.setString('RoleType', fetchProfile.data!.rolesId!.roleName!);
+         
+        isLoading(false);
+      } else {
+        // SnackBarUtils.showErrorSnackBar(context, message)
+        isLoading(false);
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+    }
   }
 
   void selectBatch(Data1 batch) {

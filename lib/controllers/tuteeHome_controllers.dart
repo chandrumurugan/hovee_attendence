@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
+import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'package:hovee_attendence/services/firestoreService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
@@ -90,8 +91,8 @@ class TuteeHomeController extends GetxController with GetSingleTickerProviderSta
   var selectedIndex = 0.obs;
   var notificationList = [].obs;
   var notificationData = getMarkNotificationAsReadModel().data.obs;
-  final UserProfileController controller = Get.put(UserProfileController());
-
+  //final UserProfileController controller = Get.put(UserProfileController());
+   var userProfileResponse = UserProfileM().obs;
   String? role;
 
   final otpController = TextEditingController();
@@ -117,10 +118,34 @@ class TuteeHomeController extends GetxController with GetSingleTickerProviderSta
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
+     fetchUserProfiles();
     startTrackingTuteeLocation();
     fetchHomeDashboardTuteeList();
     //fetchNotificationsType();
     fetchAttendanceCourseList();
+  }
+
+  void fetchUserProfiles() async {
+    final storage = GetStorage();
+    isLoading(true);
+    try {
+      UserProfileM? fetchProfile = await WebService.fetchUserProfile();
+      if (fetchProfile != null) {
+        userProfileResponse.value = fetchProfile;
+         SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('firstName', fetchProfile.data!.firstName!);
+          prefs.setString('lastName', fetchProfile.data!.lastName!);
+          prefs.setString('wowId', fetchProfile.data!.wowId!);
+          prefs.setString('RoleType', fetchProfile.data!.rolesId!.roleName!);
+        isLoading(false);
+      } else {
+        // SnackBarUtils.showErrorSnackBar(context, message)
+        isLoading(false);
+      }
+    } catch (e) {
+      print(e);
+      isLoading(false);
+    }
   }
 
   //getlocationupdates of tutee

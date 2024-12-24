@@ -58,7 +58,10 @@ class AuthControllers extends GetxController
   bool get isTimerRunning => _isTimerRunning.value; // Getter for timer state
 
   RxBool isChecked = false.obs;
-  final SplashController splashController = Get.put(SplashController(parentId: '', phoneNumber: '',));
+  final SplashController splashController = Get.put(SplashController(
+    parentId: '',
+    phoneNumber: '',
+  ));
 
   LoginData? loginData;
 
@@ -66,41 +69,62 @@ class AuthControllers extends GetxController
 
   bool validateFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context, 'Please enter the first name.');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the first name.');
       return false;
     }
     if (lastNameController.text.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please enter the last name.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the last name.',
+      );
       return false;
     }
     if (emailController.text.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please enter the email.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the email.',
+      );
       return false;
     }
     // Email format validation
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
         .hasMatch(emailController.text)) {
-       SnackBarUtils.showErrorSnackBar(context,'Invalid email format',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Invalid email format',
+      );
       return false;
     }
 
     if (dobController.text.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please select the DOB.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please select the DOB.',
+      );
       return false;
     }
 
     if (phController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please enter the phone number.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the phone number.',
+      );
       return false;
     }
     // Phone number format validation (10 digits)
     if (!RegExp(r'^[0-9]{10}$').hasMatch(phController.text)) {
-        SnackBarUtils.showErrorSnackBar(context,'Invalid mobile number',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Invalid mobile number',
+      );
       return false;
     }
 
     if (pincodeController.text.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please enter the pincode.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the pincode.',
+      );
       return false;
     }
 
@@ -110,12 +134,18 @@ class AuthControllers extends GetxController
     // }
 
     if (!acceptedTerms.value) {
-      SnackBarUtils.showErrorSnackBar(context,'Please accept the checkbox to proceed',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please accept the checkbox to proceed',
+      );
       return false;
     }
 
     if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please select the Id proof',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please select the Id proof',
+      );
       return false;
     }
 
@@ -127,14 +157,20 @@ class AuthControllers extends GetxController
     String input = logInController.text.trim();
 
     if (input.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Please enter the phone number / \n email ID',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the phone number / \n email ID',
+      );
       return false;
     }
 
     // Check if the input is a phone number (10 digits)
     if (RegExp(r'^[0-9]+$').hasMatch(input)) {
       if (input.length != 10) {
-         SnackBarUtils.showErrorSnackBar(context,'Invalid Phone number',);
+        SnackBarUtils.showErrorSnackBar(
+          context,
+          'Invalid Phone number',
+        );
         return false;
       }
       return true; // It's a valid phone number
@@ -142,7 +178,10 @@ class AuthControllers extends GetxController
 
     // Check if the input is a valid email format
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(input)) {
-      SnackBarUtils.showErrorSnackBar(context,'Invalid email address.',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Invalid email address.',
+      );
       return false;
     }
 
@@ -152,7 +191,10 @@ class AuthControllers extends GetxController
 
   bool validateOtp(BuildContext context) {
     if (otpController.text.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Please enter the OTP',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the OTP',
+      );
       return false;
     }
     return true;
@@ -166,8 +208,8 @@ class AuthControllers extends GetxController
         if (response != null) {
           loginResponse.value = response;
           isLoading.value = false;
-            logInController.clear();
-            isChecked.value=false;
+          logInController.clear();
+          isChecked.value = false;
           Get.to(() => OtpScreen());
         } else {
           Logger().e('Failed to load AppConfig');
@@ -195,17 +237,17 @@ class AuthControllers extends GetxController
 
         if (response != null) {
           registerResponse.value = response;
-              phController.clear();
-     firstNameController.clear();
-      lastNameController.clear();
-       emailController.clear();
-        dobController.clear();
-         pincodeController.clear();
+          phController.clear();
+          firstNameController.clear();
+          lastNameController.clear();
+          emailController.clear();
+          dobController.clear();
+          pincodeController.clear();
           otpController.clear();
-            idProofController.clear();
-            acceptedTerms.value=false;
-            selectedIDProof.value='';
-        
+          idProofController.clear();
+          acceptedTerms.value = false;
+          selectedIDProof.value = '';
+
           isLoading.value = false;
           Get.to(() => OtpScreen());
         } else {
@@ -223,39 +265,39 @@ class AuthControllers extends GetxController
       isLoading.value = true;
       try {
         // Logger().i("moving to otp ===>$");
-         SharedPreferences prefs = await SharedPreferences.getInstance();
+        SharedPreferences prefs = await SharedPreferences.getInstance();
         var response = await WebService.otp(
             otpController.text,
-           
-            currentTabIndex.value == 0 ||  isOtpResent.value 
+            currentTabIndex.value == 0 || isOtpResent.value
                 ? loginResponse.value.accountVerificationToken!
                 : registerResponse.value.data!.accountVerificationToken!,
             context);
         if (response != null) {
           Logger().i(response.data);
           otpResponse.value = response;
-           Logger().i('AGSD€SDHDFJFGSJ ${response.token!}');
+          Logger().i('AGSD€SDHDFJFGSJ ${response.token!}');
           // prefs.setString("key", value)
-         if( response.data!.roles!.roleName=='Parent'){
-          prefs.setString('PrentToken', response.token!);
-         }else{
-            prefs.setString('PrentToken', "");
-         }
-        // else{
-          prefs.setString('Token', response.token!);
-        // }
-          prefs.setString('Rolename', response.data!.roles!.roleName??'');
-           var validateTokendata = response.data!;
-            //if(response.parentData=='true'){
-              // parentController.fetchHomeDashboardTuteeList();
-               if( response.data!.roles!.roleName=='Parent'){
-         
-               parentController. getUserTokenList(response.data!.sId!);
-               }else{
-                
-               }
-           // }
-        
+          if (response.data!.roles!.roleName == 'Parent') {
+            prefs.setString('PrentToken', response.token!);
+          } 
+          else {
+            // prefs.setString('PrentToken', "");
+            //    prefs.setString('Token', "");
+               prefs.setString('Token', response.token!);
+          }
+            //  prefs.setString('Token', response.token!);
+          // else{
+       
+          // }
+          prefs.setString('Rolename', response.data!.roles!.roleName ?? '');
+          var validateTokendata = response.data!;
+          //if(response.parentData=='true'){
+          // parentController.fetchHomeDashboardTuteeList();
+          if (response.data!.roles!.roleName == 'Parent') {
+            parentController.getUserTokenList(response.data!.sId!);
+          } else {}
+          // }
+
           LoginData loginData = LoginData(
             firstName: validateTokendata!.firstName,
             lastName: validateTokendata.lastName,
@@ -263,7 +305,7 @@ class AuthControllers extends GetxController
           );
           prefs.setString('userData', jsonEncode(loginData.toJson()));
           getUserData();
-         
+
           // box.write('Token', response.token);
           //  box.write('Rolename', response.data!.roles!.roleName);
           // var validateTokendata = response.data!;
@@ -305,7 +347,7 @@ class AuthControllers extends GetxController
   Future<void> resendOtp(BuildContext context) async {
     // Add your resend OTP logic here
     // After successful resend, restart the timer
-   
+
     try {
       var response = await WebService.resendOtp(
         context: context,
@@ -317,7 +359,7 @@ class AuthControllers extends GetxController
         isOtpResent(true);
         loginResponse.value = response;
         isLoading.value = false;
-         startTimer();
+        startTimer();
         // Get.to(() => OtpScreen());
       } else {
         Logger().e('Failed to load AppConfig');
@@ -333,17 +375,16 @@ class AuthControllers extends GetxController
     _timer?.cancel(); // Cancel timer when controller is closed
     logInController.dispose();
     phController.dispose();
-     firstNameController.dispose();
-      lastNameController.dispose();
-       emailController.dispose();
-        dobController.dispose();
-         pincodeController.dispose();
-          otpController.dispose();
-           focusNode.dispose();
-            idProofController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    dobController.dispose();
+    pincodeController.dispose();
+    otpController.dispose();
+    focusNode.dispose();
+    idProofController.dispose();
     super.onClose();
   }
-
 
   @override
   void onInit() {
@@ -354,11 +395,10 @@ class AuthControllers extends GetxController
     getUserData();
   }
 
-Future<void> saveForLaterUse() async {
+  Future<void> saveForLaterUse() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (isChecked.value) {
-      await prefs.setString(
-          'rememberUserNo',logInController.text);
+      await prefs.setString('rememberUserNo', logInController.text);
     }
   }
 
@@ -368,25 +408,60 @@ Future<void> saveForLaterUse() async {
     await prefs.setString('rememberUserNo', "");
   }
 
-Future<void> getForLaterUse() async {
+  Future<void> getForLaterUse() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    logInController.text= prefs.getString('rememberUserNo')??''; 
+    logInController.text = prefs.getString('rememberUserNo') ?? '';
   }
-  
+
   Future<void> getUserData() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
- // To retrieve the data later:
-String? jsonString = await prefs.getString('userData');
-if (jsonString != null) {
-  try {
-     loginData = LoginData.fromJson(jsonDecode(jsonString));
-    print("Hello ${loginData!.firstName}, ${loginData!.lastName}");
-  } catch (e) {
-    print("Error decoding JSON: $e");
-  }
-
-
-  }
-  
-  }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // To retrieve the data later:
+    String? jsonString = await prefs.getString('userData');
+    if (jsonString != null) {
+      try {
+        loginData = LoginData.fromJson(jsonDecode(jsonString));
+        print("Hello ${loginData!.firstName}, ${loginData!.lastName}");
+      } catch (e) {
+        print("Error decoding JSON: $e");
+      }
     }
+  }
+
+  Future<UserDataq> getStoredUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String firstName = prefs.getString('firstName') ?? '';
+    String lastName = prefs.getString('lastName') ?? '';
+    String wowId = prefs.getString('wowId') ?? '';
+    String RoleType = prefs.getString('RoleType') ?? '';
+    return UserDataq(
+      firstName: firstName,
+      lastName: lastName,
+      wowId: wowId,
+      roleType: RoleType,
+    );
+  }
+}
+
+class UserDataq {
+  final String firstName;
+  final String lastName;
+  final String wowId;
+  final String roleType;
+
+  UserDataq({
+    required this.firstName,
+    required this.lastName,
+    required this.wowId,
+    required this.roleType,
+  });
+
+  // Factory method to create a UserData object from a map
+  factory UserDataq.fromMap(Map<String, dynamic> map) {
+    return UserDataq(
+      firstName: map['firstName'] ?? '',
+      lastName: map['lastName'] ?? '',
+      wowId: map['wowId'] ?? '',
+      roleType: map['RoleType'] ?? '',
+    );
+  }
+}

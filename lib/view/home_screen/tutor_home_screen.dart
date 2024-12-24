@@ -17,6 +17,7 @@ import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/validateTokenModel.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
@@ -53,6 +54,7 @@ class TutorHome extends StatelessWidget {
   final TuteeHomeController tuteecontroller = Get.put(TuteeHomeController());
   final NotificationController noticontroller =
       Get.put(NotificationController());
+      final userProfileData = Get.put(UserProfileController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,7 +165,7 @@ class TutorHome extends StatelessWidget {
           backgroundColor: Colors.white,
         ),
         body: Obx(() {
-          if (controller.isLoading.value) {
+          if (controller.isLoading.value || userProfileData.isLoading.value) {
             // Call your refresh logic here, e.g., re-fetch data
             // Reset the refresh state
             return const Center(child: CircularProgressIndicator());

@@ -93,34 +93,36 @@ class AccountSetupController extends GetxController
   List<String> skills = [];
   final box = GetStorage();
   double? latitude, longitude;
-  String? selectedRole ;
-    String? parentId;
-    final parentController = Get.find<ParentController>();
-    LoginData? loginData;
+  String? selectedRole;
+  String? parentId;
+  final parentController = Get.find<ParentController>();
+  LoginData? loginData;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    final args = Get.arguments??''; 
+    final args = Get.arguments ?? '';
     parentId = args;
     //selectedRole = args?['selectedRole'];
     print("Parent ID: $parentId");
     //print("Selected Role: $selectedRole");
     authControllers = Get.find<AuthControllers>();
-   tabController = TabController(length: selectedRole == 'Parent'? 2:3, vsync: this);
-   print(parentId);
-    if ((parentId== null || parentId=="")) {
-    _populateFieldsFromAuth();
-  } 
-  if ((parentId!="")) {
-    phController.text =   parentController.otpResponse.value!=null?
-        parentController.otpResponse.value.inviteNumber ?? '':'';
-  }else{
-    print("object");
-  }
-    
+    tabController =
+        TabController(length: selectedRole == 'Parent' ? 2 : 3, vsync: this);
+    print(parentId);
+    if ((parentId == null || parentId == "")) {
+      _populateFieldsFromAuth();
+    }
+    if ((parentId != "")) {
+      phController.text = parentController.otpResponse.value != null
+          ? parentController.otpResponse.value.inviteNumber ?? ''
+          : '';
+    } else {
+      print("object");
+    }
+
     _populateAddressFromLocation();
-  
+
     //loadAppConfigData();
     qualifications = getQualifications();
     techs = getTechs();
@@ -130,10 +132,11 @@ class AccountSetupController extends GetxController
     tuteeSpeciallizationClass = getSkills();
   }
 
-  void tap()  {
-  if(selectedRole == 'Parent'){
-     tabController = TabController(length: selectedRole == 'Parent'?2:3, vsync: this);
-  }
+  void tap() {
+    if (selectedRole == 'Parent') {
+      tabController =
+          TabController(length: selectedRole == 'Parent' ? 2 : 3, vsync: this);
+    }
     tabController = TabController(length: 3, vsync: this);
   }
 
@@ -445,12 +448,12 @@ class AccountSetupController extends GetxController
   //   if (selectedRoleTypeName == 'I Run an Institute') {
   //     submitAccountSetup(roleId, roleTypeId,selectedRole,context);
   //   }
-    
+
   //   // Check for 'Parent' condition and call submitAccountSetup
   //   if (selectedRole == 'Parent') {
   //     submitAccountSetup(roleId, roleTypeId,selectedRole, context,);
   //   }
-    
+
   //   // If the role is not 'I Run an Institute', navigate to tab 2
   //   if (selectedRoleTypeName != 'I Run an Institute') {
   //     tabController.animateTo(2);
@@ -459,7 +462,7 @@ class AccountSetupController extends GetxController
   // }
 
   void storeAddressInfo(BuildContext context, String selectedRoleTypeName,
-      String roleId, String roleTypeId,selectedRole) {
+      String roleId, String roleTypeId, selectedRole) {
     if (validateAddressInfo(context)) {
       String address = "${address1Controller.text}, "
           "${address2Controller.text}, "
@@ -477,20 +480,18 @@ class AccountSetupController extends GetxController
         "phone_number": phController.text,
         "address": address,
       };
-      if(selectedRole=='Parent'){
-        submitAccountSetup(roleId, roleTypeId,selectedRole, context);
-      }else{
-
-      
-      selectedRoleTypeName == 'I Run an Institute'
-          ? submitAccountSetup(roleId, roleTypeId,selectedRole, context)
-          : Container();
-      selectedRoleTypeName != 'I Run an Institute'
-          ? tabController.animateTo(2)
-          : Container();
+      if (selectedRole == 'Parent') {
+        submitAccountSetup(roleId, roleTypeId, selectedRole, context);
+      } else {
+        selectedRoleTypeName == 'I Run an Institute'
+            ? submitAccountSetup(roleId, roleTypeId, selectedRole, context)
+            : Container();
+        selectedRoleTypeName != 'I Run an Institute'
+            ? tabController.animateTo(2)
+            : Container();
       }
     }
-  } 
+  }
 
   // Validation method
   bool validateFields(BuildContext context) {
@@ -573,7 +574,7 @@ class AccountSetupController extends GetxController
   }
 
   void storeEducationInfo(
-      BuildContext context, String roleId, String roleTypeId,selectedRole) {
+      BuildContext context, String roleId, String roleTypeId, selectedRole) {
     if (!validateAllTabs(context)) {
     } else {
       if (validateFields(context)) {
@@ -584,7 +585,12 @@ class AccountSetupController extends GetxController
           "teaching_experience": teachingExperience.value,
           "additional_info": additionalInfoController.text,
         };
-        submitAccountSetup(roleId, roleTypeId,selectedRole, context,);
+        submitAccountSetup(
+          roleId,
+          roleTypeId,
+          selectedRole,
+          context,
+        );
       }
     }
   }
@@ -600,68 +606,65 @@ class AccountSetupController extends GetxController
           // "select_board": tuteeboardController.text,
           "organization_name": tuteorganizationController.text
         };
-        submitTuteeAccountSetup(roleId,parentId, context);
+        submitTuteeAccountSetup(roleId, parentId, context);
       }
     }
   }
 
   Future<void> submitTuteeAccountSetup(
-      String roleId,parentId, BuildContext context) async {
+      String roleId, parentId, BuildContext context) async {
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     //final token = box.read('Token') ?? '';
     Logger().i(personalInfo.value);
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
-   
+
     latitude = prefs.getDouble('latitude');
     longitude = prefs.getDouble('longitude');
     isLoading.value = true;
-      Logger().i("Latitude====>: ${latitude}, Longitude: ${longitude}");
+    Logger().i("Latitude====>: ${latitude}, Longitude: ${longitude}");
     try {
       http.StreamedResponse response = await WebService.submitTuteeAccountSetup(
-          token: token, // Add the actual token here
-          personalInfo: personalInfo.value,
-          addressInfo: addressInfo.value,
-          educationInfo: tuteEducationInfo.value,
-          latitude: latitude.toString(),
-          longitude: longitude.toString(),
-          parentId: parentId,
-          );
+        token: token, // Add the actual token here
+        personalInfo: personalInfo.value,
+        addressInfo: addressInfo.value,
+        educationInfo: tuteEducationInfo.value,
+        latitude: latitude.toString(),
+        longitude: longitude.toString(),
+        parentId: parentId,
+      );
       if (response.statusCode == 200) {
-     
         String responseBody = await response.stream.bytesToString();
         print(responseBody);
-         final jsonResponse = jsonDecode(responseBody);
+        final jsonResponse = jsonDecode(responseBody);
         final parentToken = jsonResponse['tuteeToken'];
 
         // Store the parentToken in SharedPreferences
-        parentId!=""?
-        await prefs.setString('Token', parentToken ?? ''):'';
-          //  prefs.setString('Token', responseBody. ?? "");
+        parentId != "" ? await prefs.setString('Token', parentToken ?? '') : '';
+        //  prefs.setString('Token', responseBody. ?? "");
         SnackBarUtils.showSuccessSnackBar(
             context, "Account setup successfully completed.");
-                  // Extract firstName and lastName from personalInfo
-      final firstName = personalInfo.value['first_name'] ?? '';
-      final lastName = personalInfo.value['last_name'] ?? '';
-      
-      String? wowId =prefs.getString("WowId") ?? "";
+        // Extract firstName and lastName from personalInfo
+        final firstName = personalInfo.value['first_name'] ?? '';
+        final lastName = personalInfo.value['last_name'] ?? '';
 
- loginData = LoginData(
-            firstName: firstName,
-            lastName: lastName,
-            wowId: wowId,
-          );
-         await prefs.setString('userData', jsonEncode(loginData!.toJson()));
-         print('Wow ID: ${loginData!.toJson().toString()}');
+        String? wowId = prefs.getString("WowId") ?? "";
+
+        loginData = LoginData(
+          firstName: firstName,
+          lastName: lastName,
+          wowId: wowId,
+        );
+        await prefs.setString('userData', jsonEncode(loginData!.toJson()));
+        print('Wow ID: ${loginData!.toJson().toString()}');
 // Print or use the `wowId`
-print('Wow ID: $wowId');
+        print('Wow ID: $wowId');
         Get.offAll(() => DashboardScreen(
-              rolename: 'Tutee',
-               firstname: firstName,
-              lastname: lastName,
-              wowid: wowId
-            ));
+            rolename: 'Tutee',
+            firstname: firstName,
+            lastname: lastName,
+            wowid: wowId));
         //Get.offAll(() => TutorHome());
         // Handle success (e.g., show a success message)
       } else {
@@ -669,7 +672,7 @@ print('Wow ID: $wowId');
         // Handle failure (e.g., show an error message)
       }
     } catch (e) {
-        Logger().e(e);
+      Logger().e(e);
       print(e);
     } finally {
       isLoading.value = false;
@@ -710,85 +713,89 @@ print('Wow ID: $wowId');
     }
   }
 
-  Future<void> submitAccountSetup(
-    String roleId, String roleTypeId, String selectedRole, BuildContext context) async {
-  final box = GetStorage(); // Get an instance of GetStorage
-  final prefs = await SharedPreferences.getInstance();
-  final token = prefs.getString('Token') ?? "";
-  print(token);
+  Future<void> submitAccountSetup(String roleId, String roleTypeId,
+      String selectedRole, BuildContext context) async {
+    final box = GetStorage(); // Get an instance of GetStorage
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    print(token);
 
-  // Retrieve latitude and longitude
-  latitude = prefs.getDouble('latitude');
-  longitude = prefs.getDouble('longitude');
-  Get.log("Latitude: $latitude, Longitude: $longitude");
+    // Retrieve latitude and longitude
+    latitude = prefs.getDouble('latitude');
+    longitude = prefs.getDouble('longitude');
+    Get.log("Latitude: $latitude, Longitude: $longitude");
 
-  isLoading.value = true;
+    isLoading.value = true;
 
-  try {
-    // Call the API using the WebService
-    http.StreamedResponse response = await WebService.submitAccountSetup(
-      token: token, // Add the actual token here
-      personalInfo: personalInfo.value,
-      addressInfo: addressInfo.value,
-      educationInfo: educationInfo.value,
-      resumePath: '',
-      educationCertPath: '',
-      experienceCertPath: '',
-      latitude: latitude.toString(),
-      longitude: longitude.toString(), parentId: '',
-    );
+    try {
+      // Call the API using the WebService
+      http.StreamedResponse response = await WebService.submitAccountSetup(
+        token: token, // Add the actual token here
+        personalInfo: personalInfo.value,
+        addressInfo: addressInfo.value,
+        educationInfo: educationInfo.value,
+        resumePath: '',
+        educationCertPath: '',
+        experienceCertPath: '',
+        latitude: latitude.toString(),
+        longitude: longitude.toString(), parentId: '',
+      );
 
-    // Handle the response
-    if (response.statusCode == 200) {
-      String responseBody = await response.stream.bytesToString();
-      print(responseBody);
+      // Handle the response
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        print(responseBody);
+        // String responseBody = await response.stream.bytesToString();
+        print(responseBody);
+        final jsonResponse = jsonDecode(responseBody);
+        var parentToken = jsonResponse["userDetails"]['token'];
 
-      // Extract firstName and lastName from personalInfo
-      final firstName = personalInfo.value['first_name'] ?? '';
-      final lastName = personalInfo.value['last_name'] ?? '';
-      
-      String? wowId;
+        // Extract firstName and lastName from personalInfo
+        final firstName = personalInfo.value['first_name'] ?? '';
+        final lastName = personalInfo.value['last_name'] ?? '';
 
-String? userData = prefs.getString('userData');
-if (userData != null) {
-  // Decode the JSON string into a map
-  Map<String, dynamic> userDataMap = jsonDecode(userData);
+        String? wowId;
 
-  // Access the `wowId`
-  wowId = userDataMap['wowId'];
-}
+        String? userData = prefs.getString('userData');
+        if (userData != null) {
+          // Decode the JSON string into a map
+          Map<String, dynamic> userDataMap = jsonDecode(userData);
+
+          // Access the `wowId`
+          wowId = userDataMap['wowId'];
+        }
 
 // Print or use the `wowId`
-print('Wow ID: $wowId');
+        // print('Wow ID: $wowId');
 
-      // Navigate based on selectedRole
-      if (selectedRole == 'Parent') {
-        Get.off(() => DashboardScreen(
+        // Navigate based on selectedRole
+        if (selectedRole == 'Parent') {
+          prefs.setString("PrentToken", parentToken);
+
+          Get.off(() => DashboardScreen(
               rolename: 'Parent',
               firstname: firstName,
               lastname: lastName,
-              wowid: wowId
-            ));
-      } else {
-        Get.offAll(() => DashboardScreen(
+              wowid: wowId));
+        } else {
+          prefs.setString("PrentToken", "");
+          Get.offAll(() => DashboardScreen(
               rolename: 'Tutor',
               firstname: firstName,
               lastname: lastName,
-              wowid: wowId
-            ));
+              wowid: wowId));
+        }
+      } else {
+        print(response.statusCode);
+        // Handle failure (e.g., show an error message)
       }
-    } else {
-      print(response.statusCode);
-      // Handle failure (e.g., show an error message)
+    } catch (e) {
+      print('Error occurred: $e');
+      // Handle any exception (e.g., network failure)
+    } finally {
+      isLoading.value = false;
     }
-  } catch (e) {
-    print('Error occurred: $e');
-    // Handle any exception (e.g., network failure)
-  } finally {
-    isLoading.value = false;
   }
-}
-
 
   bool validateAllTabs(BuildContext context) {
     // Validate Personal Info

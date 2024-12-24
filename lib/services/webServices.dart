@@ -494,15 +494,15 @@ class WebService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
     final rolename = prefs.getString('Rolename') ?? "";
-   // final parentToken = prefs.getString('PrentToken') ?? "";
-    // String lastToken = "";
-    //      if(rolename=='Parent'){
-    //        lastToken = parentToken;
-    //      }else{
-    //       lastToken = token;
-    //      }
+   final parentToken = prefs.getString('PrentToken') ?? "";
+    String lastToken = "";
+         if(rolename=='Parent'){
+           lastToken = parentToken;
+         }else{
+          lastToken = token;
+         }
     try {
-      var headers = {'Authorization': "Bearer $token"};
+      var headers = {'Authorization': "Bearer $lastToken"};
       var url = Uri.parse("${baseUrl}user/getUserProfile");
       var response = await http.post(url, headers: headers);
       Logger().i(response.headers);
@@ -1377,14 +1377,23 @@ class WebService {
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('Token') ?? "";
+        final token = prefs.getString('Token') ?? "";
+    final rolename = prefs.getString('Rolename') ?? "";
+   final parentToken = prefs.getString('PrentToken') ?? "";
+    String lastToken = "";
+         if(rolename=='Parent'){
+           lastToken = parentToken;
+         }else{
+          lastToken = token;
+         }
+    // final token = prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
         url,
         body: json.encode(batchData),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer $lastToken',
         },
       );
       if (response.statusCode == 200) {

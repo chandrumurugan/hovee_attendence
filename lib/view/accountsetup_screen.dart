@@ -355,7 +355,8 @@ class AccountSetup extends StatelessWidget {
                                                 hintText: 'Select',
                                                 initialDate: DateTime
                                                     .now(), // No restriction for initial date
-                                                lastDate: DateTime(3000), // Allows any date up to today
+                                                lastDate:DateTime
+                                                    .now(), // Allows any date up to today
                                                 keyboardType:
                                                     TextInputType.datetime,
                                                 controller: accountController
