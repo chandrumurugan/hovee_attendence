@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/login_data_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
@@ -95,6 +96,7 @@ class AccountSetupController extends GetxController
   String? selectedRole ;
     String? parentId;
     final parentController = Get.find<ParentController>();
+    LoginData? loginData;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -634,12 +636,31 @@ class AccountSetupController extends GetxController
         final parentToken = jsonResponse['tuteeToken'];
 
         // Store the parentToken in SharedPreferences
-        await prefs.setString('Token', parentToken);
+        parentId!=""?
+        await prefs.setString('Token', parentToken ?? ''):'';
           //  prefs.setString('Token', responseBody. ?? "");
         SnackBarUtils.showSuccessSnackBar(
             context, "Account setup successfully completed.");
+                  // Extract firstName and lastName from personalInfo
+      final firstName = personalInfo.value['first_name'] ?? '';
+      final lastName = personalInfo.value['last_name'] ?? '';
+      
+      String? wowId =prefs.getString("WowId") ?? "";
+
+ loginData = LoginData(
+            firstName: firstName,
+            lastName: lastName,
+            wowId: wowId,
+          );
+         await prefs.setString('userData', jsonEncode(loginData!.toJson()));
+         print('Wow ID: ${loginData!.toJson().toString()}');
+// Print or use the `wowId`
+print('Wow ID: $wowId');
         Get.offAll(() => DashboardScreen(
               rolename: 'Tutee',
+               firstname: firstName,
+              lastname: lastName,
+              wowid: wowId
             ));
         //Get.offAll(() => TutorHome());
         // Handle success (e.g., show a success message)
@@ -751,6 +772,9 @@ print('Wow ID: $wowId');
       } else {
         Get.offAll(() => DashboardScreen(
               rolename: 'Tutor',
+              firstname: firstName,
+              lastname: lastName,
+              wowid: wowId
             ));
       }
     } else {

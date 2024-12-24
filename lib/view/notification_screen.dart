@@ -15,7 +15,8 @@ import 'package:hovee_attendence/widget/cateory_widget.dart';
 
 class NotificationScreen extends StatelessWidget {
   final String type;
-  NotificationScreen({super.key, required this.type});
+  final String? firstname,lastname,wowid;
+  NotificationScreen({super.key, required this.type, this.firstname, this.lastname, this.wowid});
   //final NotificationController controller = Get.put(NotificationController());
   final NotificationController attendanceCourseListController =
       Get.put(NotificationController());
@@ -28,6 +29,7 @@ class NotificationScreen extends StatelessWidget {
           navigateTo: () {
             Get.offAll(DashboardScreen(
               rolename: type,
+              firstname:firstname ,lastname:lastname ,wowid: wowid,
             ));
           }),
       body: Padding(

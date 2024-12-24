@@ -12,6 +12,7 @@ import 'package:hovee_attendence/widget/add_days_dropdown.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:hovee_attendence/widget/multipleCheckDropDown.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
+import 'package:logger/logger.dart';
 
 class EditBatchScreen extends StatelessWidget {
   final Data2 batch;
@@ -20,6 +21,7 @@ final BatchController controller = Get.put(BatchController());
 
   @override
   Widget build(BuildContext context) {
+    Logger().i("getting runtime==?>>>${batch.batchDays}");
      controller.batchName.text = batch.batchName ?? '';
     controller.batchTeacherController.value = batch.batchTeacher ?? '';
     controller.batchTimingController.value = batch.batchTimingStart ?? '';
@@ -27,7 +29,7 @@ final BatchController controller = Get.put(BatchController());
     controller.batchTiming.text=batch.batchTimingStart ?? '';
     controller.batchTimingEnd.text=batch.batchTimingEnd ?? '';
     controller.maxSlots.text = batch.batchMaximumSlots.toString();
-    controller.batchDaysController.value = batch.batchDays;
+    controller.batchDaysController.value = batch.batchDays.toString();
     controller.modeController.value = batch.batchMode ?? '';
     controller.fees.text = batch.fees.toString();
      Size size = MediaQuery.sizeOf(context);

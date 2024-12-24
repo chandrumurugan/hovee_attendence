@@ -11,7 +11,8 @@ import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class TutorBatchList extends StatelessWidget {
   final String type;
-  TutorBatchList({super.key, required this.type});
+   final String? firstname,lastname,wowid;
+  TutorBatchList({super.key, required this.type, this.firstname, this.lastname, this.wowid});
   final BatchController batchController = Get.put(BatchController());
 
   @override
@@ -45,7 +46,7 @@ class TutorBatchList extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
-                               Get.offAll(DashboardScreen(rolename: type,));
+                               Get.offAll(DashboardScreen(rolename: type, firstname:firstname ,lastname:lastname ,wowid:wowid,));
                             },
                             icon: Icon(Icons.arrow_back, color: Colors.white),
                           ),

@@ -19,11 +19,18 @@ class AccountSetup extends StatelessWidget {
   final String selectedRoleTypeName;
   final String? selectedRole;
   final String? parentId;
-  AccountSetup({Key? key,required this.roleId, required this.roleTypeId, required this.selectedRoleTypeName, this.selectedRole, this.parentId});
+  AccountSetup(
+      {Key? key,
+      required this.roleId,
+      required this.roleTypeId,
+      required this.selectedRoleTypeName,
+      this.selectedRole,
+      this.parentId});
 
   @override
   Widget build(BuildContext context) {
-   final AccountSetupController accountController = Get.put(AccountSetupController());
+    final AccountSetupController accountController =
+        Get.put(AccountSetupController());
     final splashController = Get.find<SplashController>();
     final authController = Get.find<AuthControllers>();
     return WillPopScope(
@@ -119,8 +126,12 @@ class AccountSetup extends StatelessWidget {
                                     context, roleId, roleTypeId);
                               }
                               if (index == 2) {
-                                accountController.storeAddressInfo(context,
-                                    selectedRoleTypeName, roleId, roleTypeId,selectedRole);
+                                accountController.storeAddressInfo(
+                                    context,
+                                    selectedRoleTypeName,
+                                    roleId,
+                                    roleTypeId,
+                                    selectedRole);
                               }
                               accountController.currentTabIndex.value = index;
                               accountController.isLoading.value = false;
@@ -317,22 +328,39 @@ class AccountSetup extends StatelessWidget {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        InputTextField(
-                                            suffix: true,
-                                            readonly: true,
-                                            isDate: true,
-                                            hintText: 'Select',
-                                            initialDate:
-                                                DateTime.now().subtract(
-                                              const Duration(days: 365 * 18),
-                                            ),
-                                            lastDate: DateTime.now().subtract(
-                                              const Duration(days: 365 * 18),
-                                            ),
-                                            keyboardType:
-                                                TextInputType.datetime,
-                                            controller: accountController
-                                                .dobController),
+                                        parentId == ""
+                                            ? InputTextField(
+                                                suffix: true,
+                                                readonly: true,
+                                                isDate: true,
+                                                hintText: 'Select',
+                                                initialDate:
+                                                    DateTime.now().subtract(
+                                                  const Duration(
+                                                      days: 365 * 18),
+                                                ),
+                                                lastDate:
+                                                    DateTime.now().subtract(
+                                                  const Duration(
+                                                      days: 365 * 18),
+                                                ),
+                                                keyboardType:
+                                                    TextInputType.datetime,
+                                                controller: accountController
+                                                    .dobController)
+                                            : InputTextField(
+                                                suffix: true,
+                                                readonly: true,
+                                                isDate: true,
+                                                hintText: 'Select',
+                                                initialDate: DateTime
+                                                    .now(), // No restriction for initial date
+                                                lastDate: DateTime(3000), // Allows any date up to today
+                                                keyboardType:
+                                                    TextInputType.datetime,
+                                                controller: accountController
+                                                    .dobController,
+                                              ),
                                         const SizedBox(
                                           height: 5,
                                         ),
@@ -362,7 +390,7 @@ class AccountSetup extends StatelessWidget {
                                         ),
                                         InputTextField(
                                             suffix: false,
-                                            readonly: false,
+                                            readonly: true,
                                             hintText: 'Enter here...',
                                             keyboardType: TextInputType.phone,
                                             inputFormatter: [
@@ -374,6 +402,20 @@ class AccountSetup extends StatelessWidget {
                                             ],
                                             controller:
                                                 accountController.phController),
+                                        // InputTextField(
+                                        //     suffix: false,
+                                        //     readonly: false,
+                                        //     hintText: 'Enter here...',
+                                        //     keyboardType: TextInputType.phone,
+                                        //     inputFormatter: [
+                                        //       FilteringTextInputFormatter.allow(
+                                        //         RegExp(r"[0-9]"),
+                                        //       ),
+                                        //       LengthLimitingTextInputFormatter(
+                                        //           10), // Restrict to 10 digits
+                                        //     ],
+                                        //     controller:
+                                        //         accountController.phController),
                                         const SizedBox(
                                           height: 5,
                                         ),
@@ -798,7 +840,8 @@ class AccountSetup extends StatelessWidget {
                                                 context,
                                                 selectedRoleTypeName,
                                                 roleId,
-                                                roleTypeId,selectedRole);
+                                                roleTypeId,
+                                                selectedRole);
                                           },
                                           child: Container(
                                             height: 48,
@@ -825,9 +868,11 @@ class AccountSetup extends StatelessWidget {
                                                     child:
                                                         CircularProgressIndicator(),
                                                   )
-                                                :  Center(
+                                                : Center(
                                                     child: Text(
-                                                     selectedRole != 'Parent'? 'Next':'Submit',
+                                                      selectedRole != 'Parent'
+                                                          ? 'Next'
+                                                          : 'Submit',
                                                       style: TextStyle(
                                                         fontSize: 16,
                                                         fontWeight:
@@ -937,7 +982,8 @@ class AccountSetup extends StatelessWidget {
                                                           .storeEducationInfo(
                                                               context,
                                                               roleId,
-                                                              roleTypeId,selectedRole);
+                                                              roleTypeId,
+                                                              selectedRole);
                                                     },
                                                     child: Container(
                                                       height: 48,
@@ -1450,7 +1496,8 @@ class AccountSetup extends StatelessWidget {
   // }
 
   Widget _buildFileUploadSection(String title, String type) {
-    final AccountSetupController accountController = Get.put(AccountSetupController());
+    final AccountSetupController accountController =
+        Get.put(AccountSetupController());
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Column(
@@ -1523,7 +1570,8 @@ class AccountSetup extends StatelessWidget {
   }
 
   List<Widget> _buildDropdowns() {
-    final AccountSetupController accountController = Get.put(AccountSetupController());
+    final AccountSetupController accountController =
+        Get.put(AccountSetupController());
     return [
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),

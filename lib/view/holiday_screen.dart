@@ -17,7 +17,8 @@ import 'package:logger/logger.dart';
 
 class HolidayScreen extends StatelessWidget {
   final String type;
-  HolidayScreen({super.key, required this.type});
+   final String? firstname,lastname,wowid;
+  HolidayScreen({super.key, required this.type, this.firstname, this.lastname, this.wowid});
   final HolidayController holidayController = Get.put(HolidayController());
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,9 @@ class HolidayScreen extends StatelessWidget {
         navigateTo: () {
           Get.offAll(DashboardScreen(
             rolename: type,
+             firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,
           ));
         },
       ),

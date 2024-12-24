@@ -18,8 +18,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class StudentAttendanceList extends StatelessWidget {
   final String type;
-  // final StudentAttendanceController controller;
-  StudentAttendanceList({super.key, required this.type});
+    final String? firstname,lastname,wowid;
+  StudentAttendanceList({super.key, required this.type, this.firstname, this.lastname, this.wowid});
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +51,7 @@ class StudentAttendanceList extends StatelessWidget {
         navigateTo: () {
           Get.offAll(DashboardScreen(
             rolename: type,
+            firstname: firstname,lastname: lastname,wowid: wowid,
           ));
         },
       ),

@@ -6,9 +6,10 @@ import 'package:hovee_attendence/controllers/parent_dashboard_controller.dart';
 
 class HomePageHeader extends StatelessWidget {
   @override
-  HomePageHeader({super.key, required this.title, required this.userType});
+  HomePageHeader({super.key, required this.title, required this.userType, this.firstName, this.lastName, this.wowId});
   final String title;
   final String userType;
+  final String? firstName,lastName,wowId;
   @override
   Widget build(BuildContext context) {
     final AuthControllers authController = Get.put(AuthControllers());
@@ -171,8 +172,9 @@ class HomePageHeader extends StatelessWidget {
                                           duration: 500.ms,
                                         ),
                                       ],
-                                      child: Text(
-                                        '${authController.loginData!.firstName} ${authController.loginData!.lastName}',
+                                      child:
+                                       Text(
+                                        '${firstName} ${lastName}',
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 20.0,
@@ -296,7 +298,7 @@ class HomePageHeader extends StatelessWidget {
                                 duration: 500.ms,
                               ),
                             ],
-                            child: Text('ID: ${authController.loginData!.wowId!}',
+                            child: Text('ID: ${wowId!}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 13.0,

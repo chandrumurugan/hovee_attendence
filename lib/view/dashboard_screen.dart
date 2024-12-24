@@ -138,9 +138,9 @@ class DashboardScreen extends StatelessWidget {
   List<Widget> _buildScreens() {
     return [
        if (rolename=='Tutee')
-        TuteeHome()
+        TuteeHome(firstname: firstname,lastname: lastname,wowid: wowid,)
       else if (rolename=='Tutor')
-        TutorHome()
+        TutorHome(firstname: firstname,lastname: lastname,wowid: wowid,)
       else if(rolename=='Parent')
         ParentView(userId: '',rolename: 'Parent',firstname: firstname,lastname: lastname,wowid: wowid,),
         Tutorenquirlist(type: rolename, fromBottomNav: false,),

@@ -14,7 +14,8 @@ import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class TutorClassList extends StatelessWidget {
   final String type;
-  TutorClassList({super.key, required this.type});
+  final String? firstname,lastname,wowid;
+  TutorClassList({super.key, required this.type, this.firstname, this.lastname, this.wowid});
 
   final ClassController classController = Get.put(ClassController());
   @override
@@ -23,8 +24,7 @@ class TutorClassList extends StatelessWidget {
       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
-            Get.offAll(DashboardScreen(rolename: type,));
-
+            Get.offAll(DashboardScreen(rolename: type, firstname:firstname ,lastname:lastname ,wowid:wowid,));
           }),
       body: Column(
         children: [

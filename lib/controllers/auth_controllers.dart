@@ -234,10 +234,14 @@ class AuthControllers extends GetxController
         if (response != null) {
           Logger().i(response.data);
           otpResponse.value = response;
+           Logger().i('AGSD€SDHDFJFGSJ ${response.token!}');
           // prefs.setString("key", value)
-        //  if( response.data!.roles!.roleName=='Parent'){
-        //   prefs.setString('PrentToken', response.token!);
-        //  }else{
+         if( response.data!.roles!.roleName=='Parent'){
+          prefs.setString('PrentToken', response.token!);
+         }else{
+            prefs.setString('PrentToken', "");
+         }
+        // else{
           prefs.setString('Token', response.token!);
         // }
           prefs.setString('Rolename', response.data!.roles!.roleName??'');
@@ -372,7 +376,7 @@ Future<void> getForLaterUse() async {
   Future<void> getUserData() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
  // To retrieve the data later:
-String? jsonString = prefs.getString('userData');
+String? jsonString = await prefs.getString('userData');
 if (jsonString != null) {
   try {
      loginData = LoginData.fromJson(jsonDecode(jsonString));

@@ -12,7 +12,8 @@ import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class TutorCourseList extends StatefulWidget {
   final String type;
-  const TutorCourseList({super.key, required this.type});
+  final String? firstname,lastname,wowid;
+  const TutorCourseList({super.key, required this.type, this.firstname, this.lastname, this.wowid});
 
   @override
   State<TutorCourseList> createState() => _TutorCourseListState();
@@ -37,6 +38,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
           navigateTo: () {
             Get.offAll(DashboardScreen(
               rolename: widget.type,
+              firstname:widget.firstname ,lastname:widget.lastname ,wowid:widget. wowid,
             ));
           }),
       body: Column(

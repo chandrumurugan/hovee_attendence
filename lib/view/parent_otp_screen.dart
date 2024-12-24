@@ -239,9 +239,10 @@ class ParentOtpScreen extends StatelessWidget {
                                                         if (value
                                                             .parentDetail!.parentToStudentInvite!) {
                                                           // Display the new dialog box
+                                                          Navigator.pop(context);
                                                            Get.dialog(
                                                               AlertDialog(
-                                                            title: Text(
+                                                            title: const Text(
                                                                 'Parent Preview'),
                                                             content: Column(
                                                               mainAxisSize:
@@ -254,7 +255,7 @@ class ParentOtpScreen extends StatelessWidget {
                                                                 ),
                                                                 _buildRow(
                                                                   'ID',
-                                                                  "ID : ${value.userDetail!.wowId}",
+                                                                  "${value.userDetail!.wowId}",
                                                                 ),
                                                                 _buildRow(
                                                                   'Email',
@@ -287,15 +288,21 @@ class ParentOtpScreen extends StatelessWidget {
                                                                           .sId!);
                                                                   Get.back(); // Close the dialog
                                                                 },
-                                                                child: Text(
+                                                                child: const Text(
                                                                     'Accept'),
                                                               ),
                                                               TextButton(
-                                                                onPressed: () {
-                                                                   Get.to(()=>GuestHomeScreen());
-                                                                  Get.back(); // Close the dialog
+                                                                onPressed:  () {
+                                                                  Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const GuestHomeScreen()),
+            );
+                                                                  //  Get.off(() =>
+                                                                  //     const GuestHomeScreen(
+                                                                  //        ));
+                                                                //  Get.back(); // Close the dialog
                                                                 },
-                                                                child: Text(
+                                                                child: const Text(
                                                                     'Reject'),
                                                               ),
                                                             ],
@@ -304,7 +311,7 @@ class ParentOtpScreen extends StatelessWidget {
                                                           // Display the existing Tutee Preview dialog box
                                                           Get.dialog(
                                                               AlertDialog(
-                                                            title: Text(
+                                                            title: const Text(
                                                                 'Tutee Preview'),
                                                             content: Column(
                                                               mainAxisSize:
@@ -317,7 +324,7 @@ class ParentOtpScreen extends StatelessWidget {
                                                                 ),
                                                                 _buildRow(
                                                                   'ID',
-                                                                  "ID : ${value.userDetail!.wowId}",
+                                                                  "${value.userDetail!.wowId}",
                                                                 ),
                                                                 _buildRow(
                                                                   'Email',
@@ -350,7 +357,7 @@ class ParentOtpScreen extends StatelessWidget {
                                                                           .sId!);
                                                                   Get.back(); // Close the dialog
                                                                 },
-                                                                child: Text(
+                                                                child: const Text(
                                                                     'Accept'),
                                                               ),
                                                               TextButton(
@@ -361,7 +368,7 @@ class ParentOtpScreen extends StatelessWidget {
                                                                               'Parent'));
                                                                   Get.back(); // Close the dialog
                                                                 },
-                                                                child: Text(
+                                                                child: const Text(
                                                                     'Reject'),
                                                               ),
                                                             ],
@@ -509,7 +516,7 @@ class ParentOtpScreen extends StatelessWidget {
         ),
         Text(
           value ?? '',
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
         ),
       ],

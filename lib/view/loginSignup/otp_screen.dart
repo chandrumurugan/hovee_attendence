@@ -306,7 +306,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                                             "Tutor") {
                                                           Get.offAll(() =>
                                                               DashboardScreen(rolename: value.data!.roles!
-                                                                .roleName!,));
+                                                                .roleName!,firstname: value.data!.firstName,lastname: value.data!.lastName,wowid: value.data!.wowId,));
                                                           //Get.offAll(() => TutorHome());
                                                         } else if (value
                                                                 .data!
@@ -316,7 +316,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                                           //Tutee
                                                           Get.offAll(() =>
                                                               DashboardScreen(rolename: value.data!.roles!
-                                                                .roleName!,));
+                                                                .roleName!,firstname: value.data!.firstName,lastname: value.data!.lastName,wowid: value.data!.wowId,));
                                                          // Get.offAll(() => TuteeHome());
                                                         }else{
                                                           Get.offAll(() =>

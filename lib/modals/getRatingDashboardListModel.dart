@@ -90,19 +90,24 @@ class DasRatingData {
 class Ratings {
   String? averageRating;
   int? totalRatings;
-  List<String>? details;
+  List<BestReviews>? bestReviews;
   List<CourseDetails>? courseDetails;
 
   Ratings(
       {this.averageRating,
       this.totalRatings,
-      this.details,
+      this.bestReviews,
       this.courseDetails});
 
   Ratings.fromJson(Map<String, dynamic> json) {
     averageRating = json['averageRating'];
     totalRatings = json['totalRatings'];
-    details = json['details'].cast<String>();
+    if (json['bestReviews'] != null) {
+      bestReviews = <BestReviews>[];
+      json['bestReviews'].forEach((v) {
+        bestReviews!.add(new BestReviews.fromJson(v));
+      });
+    }
     if (json['courseDetails'] != null) {
       courseDetails = <CourseDetails>[];
       json['courseDetails'].forEach((v) {
@@ -115,11 +120,32 @@ class Ratings {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['averageRating'] = this.averageRating;
     data['totalRatings'] = this.totalRatings;
-    data['details'] = this.details;
+    if (this.bestReviews != null) {
+      data['bestReviews'] = this.bestReviews!.map((v) => v.toJson()).toList();
+    }
     if (this.courseDetails != null) {
       data['courseDetails'] =
           this.courseDetails!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class BestReviews {
+  String? ratingPoints;
+  List<String>? details;
+
+  BestReviews({this.ratingPoints, this.details});
+
+  BestReviews.fromJson(Map<String, dynamic> json) {
+    ratingPoints = json['ratingPoints'];
+    details = json['details'].cast<String>();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['ratingPoints'] = this.ratingPoints;
+    data['details'] = this.details;
     return data;
   }
 }

@@ -51,7 +51,7 @@ class MyRatingsScreen extends StatelessWidget {
                 const Divider(),
                 controller.myrating != null
                     ? MyReviews(
-                        review: controller.myrating!.ratings!.details!,
+                        review: controller.myrating!.ratings!.bestReviews!,
                       )
                     : const SizedBox.shrink(),
                 Padding(

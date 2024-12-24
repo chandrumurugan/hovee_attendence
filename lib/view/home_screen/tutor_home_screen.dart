@@ -42,7 +42,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TutorHome extends StatelessWidget {
-  TutorHome({super.key});
+  final String? firstname, lastname, wowid;
+  TutorHome({super.key, this.firstname, this.lastname, this.wowid});
   final TutorHomeController controller = Get.put(TutorHomeController());
   final EnquirDetailController classController =
       Get.put(EnquirDetailController());
@@ -105,7 +106,9 @@ class TutorHome extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
-                          Get.to(() => NotificationScreen(type: 'Tutor',));
+                          Get.to(() => NotificationScreen(type: 'Tutor',  firstname: firstname,
+              lastname: lastname,
+              wowid: wowid));
                         },
                         child: Image.asset(
                           'assets/appbar/bell 5.png',
@@ -175,6 +178,9 @@ class TutorHome extends StatelessWidget {
                           child: HomePageHeader(
                             title: 'Attendance Monitoring',
                             userType: "Tutor",
+                            firstName: firstname,
+                            lastName: lastname,
+                            wowId: wowid,
                           ),
                         ),
                         SizedBox(
@@ -270,42 +276,60 @@ class TutorHome extends StatelessWidget {
                                     onTap: () {
                                       // Navigate to different screens based on the title
                                       if (item.name == 'Batches') {
-                                        Get.to(() => TutorBatchList(type: 'Tutor',));
+                                        Get.to(() => TutorBatchList(type: 'Tutor',firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,));
                                       } else if (item.name == 'Courses') {
                                         Get.to(() =>
-                                            const TutorCourseList(type: 'Tutor'));
+                                             TutorCourseList(type: 'Tutor',firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,));
                                       } else if (item.name == 'Attendance') {
                                         Get.to(
                                             () =>
-                                                StudentAttendanceList(type: 'Tutor'),
+                                                StudentAttendanceList(type: 'Tutor',firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,),
                                             arguments: "Tutor");
                                       } else if (item.name == 'Tution Classes') {
-                                        Get.to(() => TutorClassList(type: 'Tutor',));
+                                        Get.to(() => TutorClassList(type: 'Tutor',firstname:firstname ,lastname:lastname ,wowid:wowid,));
                                       } else if (item.name == 'Enquires') {
                                         classController.onInit();
                                         Get.to(() => Tutorenquirlist(
-                                            type: 'Tutor', fromBottomNav: true));
+                                            type: 'Tutor', fromBottomNav: true,firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,));
                                       } else if (item.name == 'Enrollments') {
                                         enrollmentController.onInit();
                                         Get.to(() => EnrollmentScreen(
-                                            type: 'Tutor', fromBottomNav: true));
+                                            type: 'Tutor', fromBottomNav: true,firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,));
                                       }
                                          else if (item.name == 'Holiday') {
                                         Get.to(() =>
-                                             HolidayScreen(type: 'Tutor'));
+                                             HolidayScreen(type: 'Tutor', firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,));
                                       } 
                                         else if (item.name == 'Miss Punch') {
                                         Get.to(() =>
-                                             MspScreen(type: 'Tutor', fromBottomNav: true,));
+                                             MspScreen(type: 'Tutor', fromBottomNav: true, firstname:firstname ,lastname:lastname ,wowid: wowid,));
                                       } 
                                       else if (item.name == 'Leave') {
                                     Get.to(() =>  TuteeLeaveScreen(
                                           type: 'Tutor', fromBottomNav: true,
+                                          firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,
                                         ));
                                   }
                                    else if (item.name == 'Announcement') {
                                     Get.to(() =>  AnnouncementScreen(
                                           type: 'Tutor',
+                                          firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,
                                         ));
                                   }
                                        else {
@@ -411,8 +435,8 @@ class TutorHome extends StatelessWidget {
                 label: const Text('Share'),
               ),
               const SizedBox(height: 16),
-              const SizedBox(height: 16),
-              const SizedBox(height: 16),
+              // const SizedBox(height: 16),
+              // const SizedBox(height: 16),
             ],
           ),
         );

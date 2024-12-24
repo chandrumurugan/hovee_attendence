@@ -16,7 +16,8 @@ import 'package:logger/logger.dart';
 class MspScreen extends StatelessWidget {
   final String type;
    final bool fromBottomNav;
-  MspScreen({super.key, required this.type, required this.fromBottomNav});
+    final String? firstname,lastname,wowid;
+  MspScreen({super.key, required this.type, required this.fromBottomNav, this.firstname, this.lastname, this.wowid});
   final MspController mspController = Get.put(MspController());
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class MspScreen extends StatelessWidget {
         navigateTo: () {
           Get.offAll(DashboardScreen(
             rolename: type,
+              firstname:firstname ,lastname:lastname ,wowid: wowid,
           ));
         },
       ),

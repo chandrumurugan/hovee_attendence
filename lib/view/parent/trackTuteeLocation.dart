@@ -53,7 +53,7 @@ class TrackTuteeLocation extends StatelessWidget {
               circles: {
                 Circle(
                   circleId: const CircleId("target_radius"),
-                  center: controller.targetLocation.value,
+                  center:  controller.targetLocation.value ?? LatLng(0.0, 0.0),
                   radius: 200, // Radius in meters
                   fillColor: Colors.blue.withOpacity(0.2),
                   strokeColor: Colors.blue,

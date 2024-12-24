@@ -3,11 +3,14 @@
 
 //     }
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/login_data_model.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'package:hovee_attendence/services/firestoreService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
@@ -627,11 +630,25 @@ class UserProfileController extends GetxController
       // Handle the response
       if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
-        // print(responseBody);
-        // SnackBarUtils.showSuccessSnackBar(
-        //     context, "Account setup successfully completed.");
+        final firstName = personalInfo.value['first_name'] ?? '';
+      final lastName = personalInfo.value['last_name'] ?? '';
+      
+      String? wowId =prefs.getString("WowId") ?? "";
+
+ LoginData loginData = LoginData(
+            firstName: firstName,
+            lastName: lastName,
+            wowId: wowId,
+          );
+         await prefs.setString('userData', jsonEncode(loginData!.toJson()));
+         print('Wow ID: ${loginData!.toJson().toString()}');
+// Print or use the `wowId`
+print('Wow ID: $wowId');
         Get.offAll(() => DashboardScreen(
               rolename: 'Tutor',
+                firstname: firstName,
+              lastname: lastName,
+              wowid: wowId
             ));
         //Get.offAll(() => TutorHome());
         // Handle success (e.g., show a success message)
@@ -769,8 +786,25 @@ class UserProfileController extends GetxController
         print(responseBody);
         SnackBarUtils.showSuccessSnackBar(
             context, "Account setup successfully completed.");
+                final firstName = personalInfo.value['first_name'] ?? '';
+      final lastName = personalInfo.value['last_name'] ?? '';
+      
+      String? wowId =prefs.getString("WowId") ?? "";
+
+ LoginData loginData = LoginData(
+            firstName: firstName,
+            lastName: lastName,
+            wowId: wowId,
+          );
+         await prefs.setString('userData', jsonEncode(loginData!.toJson()));
+         print('Wow ID: ${loginData!.toJson().toString()}');
+// Print or use the `wowId`
+print('Wow ID: $wowId');
         Get.offAll(() => DashboardScreen(
               rolename: 'Tutee',
+                firstname: firstName,
+              lastname: lastName,
+              wowid: wowId
             ));
         //Get.offAll(() => TutorHome());
         // Handle success (e.g., show a success message)

@@ -379,7 +379,7 @@ void _showOtpDialog(BuildContext context, String enrollmentId) {
                 controller.updateEnrollment(context,enrollmentId, 'Approved', otp);
               controller. otpController.clear(); // Clear the OTP field
     GetStorage().remove('otpCode');
-                 Get.offAll(DashboardScreen(rolename: type,));
+                 Get.offAll(DashboardScreen(rolename: type,firstname:firstname ,lastname:lastname ,wowid: wowid,));
               } else {
                  SnackBarUtils.showSuccessSnackBar(context,'Please enter OTP',);
               }

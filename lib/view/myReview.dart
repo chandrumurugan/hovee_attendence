@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/modals/getRatingDashboardListModel.dart';
 import 'package:super_tooltip/super_tooltip.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 class MyReviews extends StatelessWidget {
    MyReviews({super.key, required this.review});
-final List<String> review;
+final List<BestReviews> review;
  final controller = PageController(viewportFraction: 1.0);
   final _controller = SuperTooltipController();
   @override
@@ -119,32 +120,65 @@ final List<String> review;
               ),
             ],
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.07,
-            child: PageView.builder(
-              controller: controller,
-              itemCount: review.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          color: AppConstants.primaryColor),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Text(
-                    review[index],
-                    overflow: TextOverflow.ellipsis,
-                    // ignore: deprecated_member_use
-                    textScaleFactor: 1.2,
-                    style: GoogleFonts.nunito(
-                      fontWeight: FontWeight.bold,
-                      color: AppConstants.primaryColor,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+       ... List.generate(
+          review[0].details!.length,
+                (indexs) => Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.check_circle,
+                                      color: AppConstants.secondaryColor,
+                                      size: 20,
+                                    ),
+                                    SizedBox(
+                                      width: 6,
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.84,
+                                      child: Text(
+                                       review[0].details![indexs],
+                                        textScaleFactor: 1.1,
+                                        style: GoogleFonts.nunito(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black.withOpacity(.5),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+        )
+          // SizedBox(
+          //   height: MediaQuery.of(context).size.height * 0.07,
+          //   child: PageView.builder(
+          //     controller: controller,
+          //     itemCount: review.length,
+          //     itemBuilder: (BuildContext context, int index) {
+          //       return Container(
+          //         padding: const EdgeInsets.all(5),
+          //         decoration: BoxDecoration(
+          //             border: Border.all(
+          //                 color: AppConstants.primaryColor),
+          //             borderRadius: BorderRadius.circular(8)),
+          //         child: Text(
+          //           review[index].toString(),
+          //           overflow: TextOverflow.ellipsis,
+          //           // ignore: deprecated_member_use
+          //           textScaleFactor: 1.2,
+          //           style: GoogleFonts.nunito(
+          //             fontWeight: FontWeight.bold,
+          //             color: AppConstants.primaryColor,
+          //           ),
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
+          ,
           SizedBox(
             height: 15,
             child: SmoothPageIndicator(

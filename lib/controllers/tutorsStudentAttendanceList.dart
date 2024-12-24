@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
+import 'package:hovee_attendence/controllers/track_tutee_controller.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
@@ -67,7 +68,7 @@ class StudentAttendanceController extends GetxController {
 
   //  var absentDates = <DateTime>{}.obs;
   //  var presentDates = <DateTime>{}.obs;
-
+ final TrackTuteeLocationController trackTuteeLocationController = Get.put(TrackTuteeLocationController());
   @override
   void onInit() {
     // TODO: implement onInit
@@ -105,6 +106,7 @@ class StudentAttendanceController extends GetxController {
            fetchStudentsList(selectedBatchIN.value!.batchId!, '', currentMonth);
           }else{
            fetchTutteAttendanceList(selectedBatchIN.value!.batchId!, '', currentMonth);
+           //trackTuteeLocationController.fetchBatchLocationList(selectedBatchIN.value!.batchId!,);
           }
         }
         Logger().i(batchList.length);

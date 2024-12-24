@@ -786,7 +786,10 @@ class _ParentViewState extends State<ParentView> {
                                             }
                                           ],
                                         )
-                                      : SizedBox.shrink();
+                                      : SnackBarUtils.showErrorSnackBar(
+                                          context,
+                                          'Child profile not linked to your account.',
+                                        );
                                 }
                                 // Handle other actions
                                 if (item['title'] == 'Attendance') {
@@ -802,76 +805,56 @@ class _ParentViewState extends State<ParentView> {
                                         )
                                       : SnackBarUtils.showErrorSnackBar(
                                           context,
-                                          'Invalid Phone number',
+                                          'Child profile not linked to your account.',
                                         );
                                 }
                                 if (item['title'] == 'Enquiries') {
-                                  parentController.userDetails.isNotEmpty
-                                      ? Get.to(() => Tutorenquirlist(
+                                  Get.to(() => Tutorenquirlist(
                                             type: 'Parent',
                                             fromBottomNav: true,
                                             firstname: widget.firstname,
                                             lastname: widget.lastname,
                                             wowid: widget.wowid,
-                                          ))
-                                      : SnackBarUtils.showErrorSnackBar(
-                                          context,
-                                          'Invalid Phone number',
-                                        );
+                                          ));
+                                      
                                 }
                                 if (item['title'] == 'Enrollment') {
-                                  parentController.userDetails.isNotEmpty
-                                      ? Get.to(() => EnrollmentScreen(
+                                   Get.to(() => EnrollmentScreen(
                                             type: 'Parent',
                                             fromBottomNav: true,
                                             firstname: widget.firstname,
                                             lastname: widget.lastname,
                                             wowid: widget.wowid,
-                                          ))
-                                      : SnackBarUtils.showErrorSnackBar(
-                                          context,
-                                          'Invalid Phone number',
-                                        );
+                                          ));
+                                      
                                 }
                                 if (item['title'] == 'Leave') {
-                                  parentController.userDetails.isNotEmpty
-                                      ? Get.to(() => TuteeLeaveScreen(
+                                   Get.to(() => TuteeLeaveScreen(
                                             type: 'Parent',
                                             fromBottomNav: true,
                                             firstname: widget.firstname,
                                             lastname: widget.lastname,
                                             wowid: widget.wowid,
                                           ))
-                                      : SnackBarUtils.showErrorSnackBar(
-                                          context,
-                                          'Invalid Phone number',
-                                        );
+                                      ;
                                 }
                                 if (item['title'] == 'Holiday') {
-                                  parentController.userDetails.isNotEmpty
-                                      ? Get.to(() => TuteeHolidayScreen(
+                                  Get.to(() => TuteeHolidayScreen(
                                             type: 'Parent',
                                             firstname: widget.firstname,
                                             lastname: widget.lastname,
                                             wowid: widget.wowid,
                                           ))
-                                      : SnackBarUtils.showErrorSnackBar(
-                                          context,
-                                          'Invalid Phone number',
-                                        );
+                                      ;
                                 }
                                 if (item['title'] == 'Annoucement') {
-                                  parentController.userDetails.isNotEmpty
-                                      ? Get.to(() => AnnouncementScreen(
+                                   Get.to(() => AnnouncementScreen(
                                             type: 'Parent',
                                             firstname: widget.firstname,
                                             lastname: widget.lastname,
                                             wowid: widget.wowid,
                                           ))
-                                      : SnackBarUtils.showErrorSnackBar(
-                                          context,
-                                          'Invalid Phone number',
-                                        );
+                                      ;
                                 }
                                 // Add remaining conditional checks for other titles
                               },

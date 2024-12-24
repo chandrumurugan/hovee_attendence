@@ -18,7 +18,8 @@ import 'package:hovee_attendence/widget/course_list_container.dart';
 
 class GetTopicsCourses extends StatefulWidget {
   final String type;
-  const GetTopicsCourses({super.key, required this.type});
+   final String? firstname,lastname,wowid;
+  const GetTopicsCourses({super.key, required this.type, this.firstname, this.lastname, this.wowid});
 
   @override
   State<GetTopicsCourses> createState() => _GetTopicsCoursesState();
@@ -91,6 +92,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
           navigateTo: () {
             Get.offAll(DashboardScreen(
               rolename: widget.type,
+              firstname:widget. firstname,lastname:widget. lastname,wowid: widget.wowid,
             ));
           }),
       body: Padding(

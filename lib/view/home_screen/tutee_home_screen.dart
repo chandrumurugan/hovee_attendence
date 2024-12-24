@@ -37,7 +37,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class TuteeHome extends StatelessWidget {
-  const TuteeHome({super.key});
+  final String? firstname, lastname, wowid;
+  const TuteeHome({super.key, this.firstname, this.lastname, this.wowid});
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +107,9 @@ class TuteeHome extends StatelessWidget {
                         onTap: () {
                           Get.to(() => NotificationScreen(
                                 type: 'Tutee',
+                                  firstname: firstname,
+              lastname: lastname,
+              wowid: wowid
                               ));
                         },
                         child: Image.asset(
@@ -186,6 +190,9 @@ class TuteeHome extends StatelessWidget {
                       child: HomePageHeader(
                         title: 'Attendance Monitoring',
                         userType: "Tutee",
+                        firstName: firstname,
+                        lastName: lastname,
+                        wowId: wowid,
                       ),
                     ),
                     // SizedBox(
@@ -452,8 +459,9 @@ class TuteeHome extends StatelessWidget {
                                     if (item.name == 'Course list') {
                                       var box = GetStorage();
                                       Logger().i("${box.read('Token')}");
-                                      Get.to(() => const GetTopicsCourses(
+                                      Get.to(() =>  GetTopicsCourses(
                                             type: 'Tutee',
+                                            firstname:firstname ,lastname:lastname ,wowid: wowid,
                                           ));
                                     }
                                     if (item.name == 'Enquires') {
@@ -461,6 +469,7 @@ class TuteeHome extends StatelessWidget {
                                       Get.to(() => Tutorenquirlist(
                                             type: 'Tutee',
                                             fromBottomNav: true,
+                                            firstname:firstname ,lastname:lastname ,wowid: wowid,
                                           ));
                                     }
                                     if (item.name == 'Enrollments') {
@@ -468,12 +477,14 @@ class TuteeHome extends StatelessWidget {
                                       Get.to(() => EnrollmentScreen(
                                             type: 'Tutee',
                                             fromBottomNav: true,
+                                            firstname:firstname ,lastname:lastname ,wowid: wowid,
                                           ));
                                     }
                                     if (item.name == 'Attendance') {
                                       Get.to(
                                           () => TuteeAttendanceList(
                                                 type: 'Tutee',
+                                                 firstname:firstname ,lastname:lastname ,wowid: wowid,
                                               ),
                                           arguments: "Tutee");
                                     }
@@ -481,21 +492,26 @@ class TuteeHome extends StatelessWidget {
                                       Get.to(() => TuteeLeaveScreen(
                                             type: 'Tutee',
                                             fromBottomNav: true,
+                                             firstname:firstname ,lastname:lastname ,wowid: wowid,
                                           ));
                                     }
                                     if (item.name == 'Miss Punch') {
                                       Get.to(() => MspScreen(
                                             type: 'Tutee',
                                             fromBottomNav: true,
+                                             firstname:firstname ,lastname:lastname ,wowid: wowid,
                                           ));
                                     }
                                     if (item.name == 'Holiday') {
                                       Get.to(() =>
-                                          TuteeHolidayScreen(type: 'Tutee'));
+                                          TuteeHolidayScreen(type: 'Tutee',firstname: firstname,
+            lastname: lastname,
+            wowid: wowid,));
                                     }
                                     if (item.name == 'Announcement') {
                                       Get.to(() => AnnouncementScreen(
                                             type: 'Tutee',
+                                            firstname:firstname ,lastname:lastname ,wowid: wowid,
                                           ));
                                     }
                                   },

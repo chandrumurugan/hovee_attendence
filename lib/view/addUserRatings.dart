@@ -127,6 +127,9 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                       //type: '',
                       //fromBottomNav: true,
                       rolename: 'Tutee',
+                        firstname: widget.firstName,
+              lastname: widget.lastName,
+              wowid:''
                     ));
               },
               icon: const Icon(

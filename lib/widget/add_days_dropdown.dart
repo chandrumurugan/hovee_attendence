@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:logger/logger.dart';
 
 class CommonDropdownInputFieldDays extends StatelessWidget {
   final String title;
@@ -23,6 +24,8 @@ class CommonDropdownInputFieldDays extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Use Obx to ensure that TextField observes controllerValue
+    Logger().i("12345678==>${controllerValue.value}");
+    selectedValues.value = controllerValue.value.split(', ');
     return Obx(() {
       String displayText = selectedValues.isEmpty
           ? 'Select' // Show "Select" if no item is selected

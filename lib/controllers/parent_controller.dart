@@ -233,7 +233,7 @@ class ParentController extends GetxController {
     if (otpController.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Please enter the OTP',
+        'Please enter the acceptance code',
       );
       return false;
     }
@@ -349,6 +349,7 @@ class ParentController extends GetxController {
           userDetail = otpResponse.value.userDetail!;
           print(userID.value);
           prefs.setString('Token', response.parentToken!);
+          prefs.setString('WowId', otpResponse.value.userDetail!.wowId!);
           // prefs.setString('Rolename', response.data!.roles!.roleName??'');
           //  var validateTokendata = response.parentDetail!;
           //   //if(response.parentData=='true'){

@@ -18,8 +18,8 @@ class TrackTuteeLocationController extends GetxController {
   late GoogleMapController _mapController;
 
   var tuteeLocation = Rxn<LatLng>();
-  //var targetLocation = Rxn<LatLng>();
-  var targetLocation = const LatLng(13.039422387848779,80.22285977520232).obs;
+  var targetLocation = Rxn<LatLng>();
+  //var targetLocation = const LatLng(13.039422387848779,80.22285977520232).obs;
 
   var distance = 0.0.obs;
   var polyline = <Polyline>[].obs;
@@ -42,9 +42,9 @@ class TrackTuteeLocationController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    Logger().i("getting valiues fro argumets==>${argumentData[0]['userId']}");
+    //Logger().i("getting valiues fro argumets==>${argumentData[0]['userId']}");
    
-    //fetchGroupedEnrollmentByBatchListItem();
+    fetchGroupedEnrollmentByBatchListItem();
     getTuteeLocation();
   }
     void setMapController(GoogleMapController controller) {
@@ -59,10 +59,11 @@ class TrackTuteeLocationController extends GetxController {
     try {
       getTuteeLiveLocation("${argumentData[0]['userId']}").listen((data) async {
         if (data['location'] != null) {
-          LatLng location = const LatLng(13.043303, 80.213260);
-              // LatLng(data['location']['lat'], data['location']['long']);
+          LatLng location = 
+          //const LatLng(13.043303, 80.213260);
+               LatLng(data['location']['lat'], data['location']['long']);
           tuteeLocation.value = location;
-
+          
           name = data['name'];
           updateMarkers(name);
           await fetchRoadRoute();
@@ -113,7 +114,7 @@ class TrackTuteeLocationController extends GetxController {
             logicalSize: const Size(150, 150),
             imageSize: const Size(400, 400),
           ),
-          position: targetLocation.value,
+          position: targetLocation.value!,
           infoWindow: const InfoWindow(title: "Tution Location"),
         ),
       };
@@ -137,8 +138,8 @@ class TrackTuteeLocationController extends GetxController {
       distance.value = Geolocator.distanceBetween(
             tuteeLocation.value!.latitude,
             tuteeLocation.value!.longitude,
-            targetLocation.value.latitude,
-            targetLocation.value.longitude,
+            targetLocation.value!.latitude,
+            targetLocation.value!.longitude,
           ) /
           1000; // Convert to kilometers
       updatePolyline();
@@ -150,7 +151,7 @@ class TrackTuteeLocationController extends GetxController {
       polyline.value = [
         Polyline(
           polylineId: const PolylineId("route"),
-          points: [tuteeLocation.value!, targetLocation.value],
+          points: [tuteeLocation.value!, targetLocation.value!],
           color: Colors.blue,
           width: 5,
         ),
@@ -168,7 +169,7 @@ class TrackTuteeLocationController extends GetxController {
       final origin =
           "${tuteeLocation.value!.latitude},${tuteeLocation.value!.longitude}";
       final destination =
-          "${targetLocation.value.latitude},${targetLocation.value.longitude}";
+          "${targetLocation.value!.latitude},${targetLocation.value!.longitude}";
       final url =
           "https://maps.googleapis.com/maps/api/directions/json?origin=$origin&destination=$destination&key=$apiKey";
 
