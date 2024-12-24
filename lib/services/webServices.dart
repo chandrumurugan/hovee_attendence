@@ -2128,7 +2128,7 @@ class WebService {
     }
   }
 
-  static Future<GetRatingDashboardListModel > getMyRatings() async {
+  static Future<GetRatingDashboardListModel? > getMyRatings() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var headers = {'Authorization': 'Bearer ${prefs.getString('Token')}'};
     print('response================>${headers}');
@@ -2145,11 +2145,14 @@ class WebService {
         print('response================error');
         final Map<String, dynamic> responseData = json.decode(response.body);
         //  SnackBarUtils.showErrorSnackBar(context, '${responseData["message"]}');
-        throw Exception("error");
+        // throw Exception("error");
+        return null;
       }
     } catch (e) {
-      print(e);
-      throw Exception("$e");
+      // print(e);
+      // throw Exception("$e");
+      Logger().e(e);
+      return null;
     }
   }
 }

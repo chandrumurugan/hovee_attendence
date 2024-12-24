@@ -64,7 +64,7 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
         // Parse and update the details list
         selectedSubcategories = result.data!.details ?? [];
       }
-      await Future.delayed(Duration(seconds: 1));
+      // await Future.delayed(Duration(seconds: 1));
       // Mock data for selected subcategories
       setState(() {
         selectedSubcategories = result!.data!.details ?? [];
@@ -110,6 +110,9 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
             _commentController.text)
         .then((value) {
       if (value == 200) {
+            setState(() {
+      isLoading = false;
+    });
         showModalBottomSheet(
           isDismissible: false,
           enableDrag: false,
@@ -149,8 +152,10 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
   Widget build(BuildContext context) {
     double widthPadding = MediaQuery.of(context).size.width;
     double heightPadding = MediaQuery.of(context).size.height;
+    
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
@@ -159,7 +164,7 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Text(
               'Ratings & Reviews',
               style: GoogleFonts.nunito(
@@ -195,12 +200,12 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                           imageUrl: "",
                           fit: BoxFit.fitWidth,
                           errorWidget: (context, url, error) =>
-                              Icon(Icons.person),
+                              const Icon(Icons.person),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: Column(
@@ -232,13 +237,13 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: [
                   Center(
@@ -257,9 +262,9 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                           direction: Axis.horizontal,
                           allowHalfRating: false,
                           itemCount: 5,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                           itemBuilder: (context, _) =>
-                              Icon(Icons.star, color: Colors.amber),
+                              const Icon(Icons.star, color: Colors.amber),
                           onRatingUpdate: (rating) async {
                             setState(() {
                               baseRating = rating - 1;
@@ -303,7 +308,7 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                                 color: Colors.white),
                           ),
                           SizedBox(width: widthPadding * .010),
-                          Icon(Icons.star, color: Colors.white),
+                          const Icon(Icons.star, color: Colors.white),
                         ],
                       ),
                     ),
@@ -311,23 +316,23 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 15, child: Divider()),
+            const SizedBox(height: 15, child: Divider()),
             if (showSubCategoriesList)
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (isLoading)
-                      Center(child: CircularProgressIndicator())
+                      const Center(child: CircularProgressIndicator())
                     else if (selectedSubcategories.isNotEmpty)
                       ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: selectedSubcategories.length,
                         itemBuilder: (context, index) {
                           final subcategory = selectedSubcategories[index];
@@ -349,20 +354,20 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                         },
                       )
                     else
-                      Center(child: Text("No subcategories available")),
+                      const Center(child: Text("No subcategories available")),
                   ],
                 ),
               ),
             Visibility(
               visible: showSubCategoriesList,
-              child: SizedBox(
+              child: const SizedBox(
                 height: 18,
                 child: Center(
                   child: Divider(),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 6,
             ),
             Padding(
@@ -484,7 +489,7 @@ class RemoveVerificationModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       color: Colors.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -497,7 +502,7 @@ class RemoveVerificationModal extends StatelessWidget {
                 color: Colors.grey.shade400,
                 borderRadius: BorderRadius.circular(12)),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Text(
@@ -505,7 +510,7 @@ class RemoveVerificationModal extends StatelessWidget {
             style: GoogleFonts.nunito(
                 fontSize: 18, fontWeight: FontWeight.w600, color: Colors.black),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(
@@ -514,7 +519,7 @@ class RemoveVerificationModal extends StatelessWidget {
             style: GoogleFonts.nunito(
                 fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Padding(
@@ -529,7 +534,7 @@ class RemoveVerificationModal extends StatelessWidget {
                   child: Container(
                     // height: 50,
                     // width: ,
-                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: AppConstants.primaryColor)),
@@ -552,7 +557,7 @@ class RemoveVerificationModal extends StatelessWidget {
                   child: Container(
                     // height: 50,
                     // width: ,
-                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
                     decoration: BoxDecoration(
                       color: AppConstants.primaryColor,
                       borderRadius: BorderRadius.circular(8),
