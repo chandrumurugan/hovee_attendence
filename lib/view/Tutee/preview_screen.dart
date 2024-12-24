@@ -507,16 +507,19 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16),
                           ),
-                          Text(
-  type == 'Course'
-      ? (data!.workingDays?.join(', ') ?? '')
-      : (data!.batchDays  ?? ''),
-  style: GoogleFonts.nunito(
-    color: Colors.black,
-    fontWeight: FontWeight.w400,
-    fontSize: 16,
-  ),
-)
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width*0.6,
+                            child: Text(
+                              type == 'Course'
+                                  ? (data!.workingDays?.join(', ') ?? '')
+                                  : (data!.batchDays  ?? ''),
+                              style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                              ),
+                            ),
+                          )
 
                         ],
                       ),

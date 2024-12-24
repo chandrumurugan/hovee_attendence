@@ -298,7 +298,7 @@ class HomePageHeader extends StatelessWidget {
                                 duration: 500.ms,
                               ),
                             ],
-                            child: Text('ID: ${wowId!}',
+                            child: Text('ID: ${wowId ??''}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 13.0,

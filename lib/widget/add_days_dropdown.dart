@@ -23,9 +23,12 @@ class CommonDropdownInputFieldDays extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Use Obx to ensure that TextField observes controllerValue
-    Logger().i("12345678==>${controllerValue.value}");
-    selectedValues.value = controllerValue.value.split(', ');
+    // Ensure selectedValues updates correctly
+    selectedValues.value = controllerValue.value
+        .split(', ')
+        .where((item) => item.isNotEmpty) // Remove empty strings
+        .toList();
+
     return Obx(() {
       String displayText = selectedValues.isEmpty
           ? 'Select' // Show "Select" if no item is selected
@@ -33,7 +36,7 @@ class CommonDropdownInputFieldDays extends StatelessWidget {
 
       return TextField(
         decoration: InputDecoration(
-          suffixIcon: Icon(Icons.keyboard_arrow_down), // Down arrow icon
+          suffixIcon: const Icon(Icons.keyboard_arrow_down), // Down arrow icon
           filled: true,
           fillColor: Colors.grey[200],
           border: OutlineInputBorder(
@@ -45,7 +48,6 @@ class CommonDropdownInputFieldDays extends StatelessWidget {
         onTap: () {
           _showDropdown(context);
         },
-        // Use TextEditingController directly to bind with controllerValue
         controller: TextEditingController(text: displayText),
       );
     });
@@ -61,30 +63,30 @@ class CommonDropdownInputFieldDays extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Select $title", style: TextStyle(fontWeight: FontWeight.bold)),
-              // Use Column and map over items to create CheckboxListTile
+              Text("Select $title", style: const TextStyle(fontWeight: FontWeight.bold)),
               ...items.map((item) {
-                final isSelected = selectedValues.contains(item);
                 return Obx(() {
                   return SizedBox(
                     height: 33,
                     child: CheckboxListTile(
-                      contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
                       title: Text(item),
                       value: selectedValues.contains(item),
                       onChanged: (bool? value) {
                         if (value == true) {
-                          selectedValues.add(item); // Add to selected values
+                          if (!selectedValues.contains(item)) {
+                            selectedValues.add(item); // Add to selected values
+                          }
                         } else {
                           selectedValues.remove(item); // Remove from selected values
                         }
-                        controllerValue.value = selectedValues.join(', '); // Update the controller value
+                        controllerValue.value = selectedValues.join(', ').trim(); // Update the controller value
                         onChanged(selectedValues); // Notify listeners of the updated selection
                       },
                     ),
                   );
                 });
-              }).toList(), // Converting the map result to a list
+              }).toList(),
             ],
           ),
         );

@@ -53,17 +53,17 @@ class BatchListConatiner extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
               const SizedBox(height: 20),
-              _buildRow('Batch Name', batch.batchName),
+              _buildRow('Batch Name', batch.batchName,context),
               const SizedBox(height: 10),
-              _buildRow('Tutor', batch.batchTeacher),
+              _buildRow('Tutor', batch.batchTeacher,context),
               const SizedBox(height: 10),
-              _buildRow('Timing', '${batch.batchTimingStart} - ${batch.batchTimingEnd}'),
+              _buildRow('Timing', '${batch.batchTimingStart} - ${batch.batchTimingEnd}',context),
               const SizedBox(height: 10),
-              _buildRow('Days', batch.batchDays.toString()),
+              _buildRow('Days', batch.batchDays.toString(),context),
               const SizedBox(height: 10),
-              _buildRow('Mode', batch.batchMode),
+              _buildRow('Mode', batch.batchMode,context),
               const SizedBox(height: 10),
-              _buildRow('Fees', '${batch.fees}'),
+              _buildRow('Fees', '${batch.fees}',context),
               Divider(),
               TextButton(
                 onPressed: () {
@@ -85,7 +85,7 @@ class BatchListConatiner extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(String title, String? value) {
+  Widget _buildRow(String title, String? value,BuildContext context) {
     final displayValue = title == 'Fees' ? '₹ ${value ?? 'N/A'} /month' : value ?? 'N/A';
 
     return Row(
@@ -99,12 +99,15 @@ class BatchListConatiner extends StatelessWidget {
             fontSize: 14,
           ),
         ),
-        Text(
-          displayValue,
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-            fontSize: 14,
+        SizedBox(
+          width: MediaQuery.of(context).size.width*0.5,
+          child: Text(
+            displayValue,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
+            ),
           ),
         ),
       ],

@@ -57,7 +57,10 @@ class Data1 {
     remarks = json['remarks'];
     board = json['board'];
     batchList = json['batchList'].cast<String>();
-    workingDays = json['working_days'].cast<String>();
+    // workingDays = json['working_days'].cast<String>();
+   workingDays = (json['working_days'] as List<dynamic>?)
+    ?.map((e) => e.toString()) // Convert each element to a String
+    .toList();
     noOfBatches = json['No_of_batches'];
     address = json['address'];
   }

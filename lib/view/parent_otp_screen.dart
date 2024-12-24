@@ -220,34 +220,27 @@ class ParentOtpScreen extends StatelessWidget {
                                             var value = await parentController
                                                 .otp(context);
                                             if (value!.statusCode == 200) {
-                                              showModalBottomSheet(
-                                                isDismissible: false,
-                                                enableDrag: false,
-                                                context: context,
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                builder: (context) {
-                                                  return CustomDialogBox(
-                                                    title1:
-                                                        "Acceptance code submitted successfully",
-                                                    title2: '',
-                                                    subtitle: 'subtitle',
-                                                    btnName: 'Ok',
-                                                    onTap: () {
-                                                      if (value
-                                                          .parentAccount!) {
-                                                        if (value
-                                                            .parentDetail!.parentToStudentInvite!) {
-                                                          // Display the new dialog box
-                                                          Navigator.pop(context);
-                                                           Get.dialog(
-                                                              AlertDialog(
+                                              Get.bottomSheet(
+                                                CustomDialogBox(
+                                                  title1:
+                                                      "Acceptance code submitted successfully",
+                                                  title2: '',
+                                                  subtitle: 'subtitle',
+                                                  btnName: 'Ok',
+                                                  onTap: () {
+                                                    if (value.parentAccount!) {
+                                                      if (value.parentDetail!
+                                                          .parentToStudentInvite!) {
+                                                        // Display the new dialog box
+                                                        Get.back(); // Close the bottom sheet
+                                                        Get.dialog(
+                                                          AlertDialog(
                                                             title: const Text(
                                                                 'Parent Preview'),
                                                             content: Column(
                                                               mainAxisSize:
                                                                   MainAxisSize
-                                                                      .min, // To avoid stretching the dialog unnecessarily
+                                                                      .min,
                                                               children: [
                                                                 _buildRow(
                                                                   'Parent name',
@@ -292,31 +285,28 @@ class ParentOtpScreen extends StatelessWidget {
                                                                     'Accept'),
                                                               ),
                                                               TextButton(
-                                                                onPressed:  () {
-                                                                  Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const GuestHomeScreen()),
-            );
-                                                                  //  Get.off(() =>
-                                                                  //     const GuestHomeScreen(
-                                                                  //        ));
-                                                                //  Get.back(); // Close the dialog
+                                                                onPressed: () {
+                                                                  print(
+                                                                      "object");
+                                                                  Get.off(() =>
+                                                                      const GuestHomeScreen());
                                                                 },
                                                                 child: const Text(
                                                                     'Reject'),
                                                               ),
                                                             ],
-                                                          ));
-                                                        } else {
-                                                          // Display the existing Tutee Preview dialog box
-                                                          Get.dialog(
-                                                              AlertDialog(
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        // Display the existing Tutee Preview dialog box
+                                                        Get.dialog(
+                                                          AlertDialog(
                                                             title: const Text(
                                                                 'Tutee Preview'),
                                                             content: Column(
                                                               mainAxisSize:
                                                                   MainAxisSize
-                                                                      .min, // To avoid stretching the dialog unnecessarily
+                                                                      .min,
                                                               children: [
                                                                 _buildRow(
                                                                   'Tutee name',
@@ -372,25 +362,29 @@ class ParentOtpScreen extends StatelessWidget {
                                                                     'Reject'),
                                                               ),
                                                             ],
-                                                          ));
-                                                        }
-                                                      } else {
-                                                        Get.offAll(() =>
-                                                            const RoleSelection(
-                                                              isFromParentOtp:
-                                                                  true,
-                                                            ));
+                                                          ),
+                                                        );
                                                       }
-                                                    },
-                                                    icon: const Icon(
-                                                      Icons.check,
-                                                      color: Colors.white,
-                                                    ),
-                                                    color:
-                                                        const Color(0xFF833AB4),
-                                                    singleBtn: true,
-                                                  );
-                                                },
+                                                    } else {
+                                                      Get.offAll(() =>
+                                                          const RoleSelection(
+                                                            isFromParentOtp:
+                                                                true,
+                                                          ));
+                                                    }
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.check,
+                                                    color: Colors.white,
+                                                  ),
+                                                  color:
+                                                      const Color(0xFF833AB4),
+                                                  singleBtn: true,
+                                                ),
+                                                isDismissible: false,
+                                                enableDrag: false,
+                                                backgroundColor:
+                                                    Colors.transparent,
                                               );
                                             }
                                           },

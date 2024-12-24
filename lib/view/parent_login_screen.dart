@@ -232,7 +232,7 @@ Clipboard.setData(
                                                                     Navigator.of(
                                                                             context)
                                                                         .pop(); // Close the dialog
-                                                                        Get.off(() =>  DashboardScreen(rolename: 'Tutee',firstname:firstname ,lastname:lastname ,wowid: wowid,));
+                                                                        Get.off(() =>  DashboardScreen(rolename: 'Tutee',firstname:firstname??'' ,lastname:lastname??'' ,wowid: wowid??'',));
                                                                         }else{
                                                                            Share.share(
                                                                         response
@@ -240,7 +240,7 @@ Clipboard.setData(
                                                                     Navigator.of(
                                                                             context)
                                                                         .pop(); // Close the dialog
-                                                                        Get.off(() => DashboardScreen(rolename: 'Parent',firstname:firstname ,lastname:lastname ,wowid: wowid,));
+                                                                        Get.off(() => DashboardScreen(rolename: 'Parent',firstname:firstname ??'',lastname:lastname??'' ,wowid: wowid??'',));
                                                                         }
                                                                   },
                                                                   child: const Text(

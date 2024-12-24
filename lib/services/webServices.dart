@@ -1782,11 +1782,19 @@ class WebService {
       String identifiers, BuildContext context) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      final token = prefs.getString('PrentToken') ?? "";
+       final token = prefs.getString('Token') ?? "";
+    final rolename = prefs.getString('Rolename') ?? "";
+   final parentToken = prefs.getString('PrentToken') ?? "";
+    String lastToken = "";
+         if(rolename=='Parent'){
+           lastToken = parentToken;
+         }else{
+          lastToken = token;
+         }
+     // final token = prefs.getString('PrentToken') ?? "";
       var headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer $lastToken',
       };
       var data = {"phone_number": identifiers};
       var url = Uri.parse("${baseUrl}user/generateInvitationLink");
