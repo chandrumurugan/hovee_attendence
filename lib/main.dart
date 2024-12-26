@@ -8,6 +8,7 @@ import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/addEnquery_controller.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/dashBoard_controllers.dart';
+import 'package:hovee_attendence/controllers/network_controller.dart';
 import 'package:hovee_attendence/controllers/parent_accountsetup_controller.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/controllers/parent_dashboard_controller.dart';
@@ -26,6 +27,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 bool _initialUriIsHandled = false;
 
@@ -74,6 +76,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+   Get.put(NetworkController());
   Get.put(AuthControllers());
   // Get.put(UserProfileController());
   runApp(const MyApp());
@@ -257,6 +260,17 @@ class _MyAppState extends State<MyApp> {
       initialBinding: MyBindings(),
       title: 'Attendence',
       debugShowCheckedModeBanner: false,
+      
+      
+   builder: (context, child) {
+        return Overlay(
+          initialEntries: [
+            OverlayEntry(
+              builder: (context) => child ?? const SizedBox.shrink(),
+            ),
+          ],
+        );
+      },
       home: SplashScreen(
         parentId: code,
         phoneNumber: phoneNumber,
