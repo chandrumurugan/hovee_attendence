@@ -68,7 +68,7 @@ var batchDaysController = "".obs;
   var searchKey = ''.obs;
  UserProfileController accountController = Get.put(UserProfileController());
   // Method to fetch batch list
-//   void fetchBatchList() async {
+//   void fetchBatchList() async {o
 //   try {
 //     isLoading(true);
 //     var batchResponse = await WebService.fetchBatchList();
@@ -96,20 +96,19 @@ var batchDaysController = "".obs;
 //   }
 // }
 
+
+
   void fetchBatchList({String searchTerm = ''}) async {
-    try {
-      isLoading(true);
-      var batchResponse = await WebService.fetchBatchList(
-          searchTerm); // Pass the searchTerm to the API
+  try {
+    isLoading.value = true; // Start loading
+    var batchResponse = await WebService.fetchBatchList(searchTerm);
 
-      if (batchResponse.data != null) {
-        batchList.value = batchResponse.data!;
-        totalCount.value = batchResponse.totalBatches ?? 0;
-        activeCount.value = batchResponse.activeBatches ?? 0;
-        inactiveCount.value = batchResponse.inactiveBatches ?? 0;
-
-        // Extract only batch names for the dropdown
-        batchName1 =
+    if (batchResponse.data != null) {
+      batchList.value = batchResponse.data!;
+      totalCount.value = batchResponse.totalBatches ?? 0;
+      activeCount.value = batchResponse.activeBatches ?? 0;
+      inactiveCount.value = batchResponse.inactiveBatches ?? 0;
+            batchName1 =
             batchResponse.data!.map((batch) => batch.batchName ?? '').toList();
 
         // Map batch names to their IDs for later retrieval
@@ -122,13 +121,17 @@ var batchDaysController = "".obs;
         final storage = GetStorage();
         storage.write(
             'batchList', batchResponse.data!.map((e) => e.toJson()).toList());
-      }
-    } catch (e) {
-      // Handle errors if needed
-    } finally {
-      isLoading(false);
+    } else {
+      batchList.clear();
     }
+  } catch (e) {
+    batchList.clear(); // Clear the list on error
+    print('Error fetching batch list: $e');
+  } finally {
+    isLoading.value = false; // Stop loading
   }
+}
+
 
   void fetchBatchDetails(String batchName) {
     var batch = batchList.firstWhere(
@@ -272,6 +275,8 @@ var batchDaysController = "".obs;
           SnackBarUtils.showSuccessSnackBar(
               context, 'Batch added successfully',);
           Get.back();
+          // fetchBatchList();
+          isLoading.value = true;
           onInit();
         } else {
           SnackBarUtils.showErrorSnackBar(

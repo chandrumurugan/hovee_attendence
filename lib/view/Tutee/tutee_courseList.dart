@@ -87,6 +87,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
   Widget build(BuildContext context) {
     // final AddEnqueryController controller = Get.put(AddEnqueryController());
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {

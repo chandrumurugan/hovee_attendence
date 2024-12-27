@@ -20,7 +20,10 @@ class AddUserRatingsScreen extends StatefulWidget {
       phNo,
       tutorId,
       batchId,
-      courseId;
+      courseId,
+      classname,
+      subject,courtsecode,board
+      ;
 
   const AddUserRatingsScreen(
       {Key? key,
@@ -31,7 +34,7 @@ class AddUserRatingsScreen extends StatefulWidget {
       this.phNo,
       this.tutorId,
       this.batchId,
-      this.courseId})
+      this.courseId, this.classname, this.subject, this.courtsecode, this.board})
       : super(key: key);
 
   @override
@@ -228,6 +231,18 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                                 fontWeight: FontWeight.w800,
                                 color: Colors.black.withOpacity(.5))),
                         Text("${widget.phNo}",
+                            style: GoogleFonts.nunito(
+                                fontWeight: FontWeight.w800,
+                                color: Colors.black.withOpacity(.5))),
+                                 Text("${widget.classname}",
+                            style: GoogleFonts.nunito(
+                                fontWeight: FontWeight.w800,
+                                color: Colors.black.withOpacity(.5))),
+                                     Text("${widget.courtsecode}",
+                            style: GoogleFonts.nunito(
+                                fontWeight: FontWeight.w800,
+                                color: Colors.black.withOpacity(.5))),
+                                    Text("${widget.board}",
                             style: GoogleFonts.nunito(
                                 fontWeight: FontWeight.w800,
                                 color: Colors.black.withOpacity(.5))),

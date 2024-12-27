@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/login_data_model.dart';
+import 'package:hovee_attendence/services/liveLocationService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
@@ -27,6 +30,16 @@ class AccountSetupController extends GetxController
   late TabController tabController;
   var currentTabIndex = 0.obs;
   RxBool isLoading = false.obs;
+
+  //address map
+  var latitudeL = 0.0.obs;
+  var longitudeL = 0.0.obs;
+  var marker = Rxn<Marker>();
+  late GoogleMapController mapController;
+  var focusNode = FocusNode();
+  var isMapInteracting = false.obs;
+  var mapHeight = 250.0.obs;
+  final TextEditingController autoCompleteController = TextEditingController();
 
   ///personal info
   final phController = TextEditingController();
@@ -128,8 +141,10 @@ class AccountSetupController extends GetxController
     } else {
       print("object");
     }
-      fetchAppConfig();
-    _populateAddressFromLocation();
+
+ fetchAppConfig();
+    // _populateAddressFromLocation();
+    // getCurrentLocation();
 
     //loadAppConfigData();
     qualifications = getQualifications();
@@ -139,6 +154,97 @@ class AccountSetupController extends GetxController
     skills = getSkills();
     tuteeSpeciallizationClass = getSkills();
   }
+
+  //addresslocation map
+
+    void getCurrentLocation() async {
+    isLoading.value = true; // Show loader
+    try {
+      // Position position = await Geolocator.getCurrentPosition(
+      //   desiredAccuracy: LocationAccuracy.high,
+      // );
+
+      LatLng? position =await LocationService.getCurrentLocation() ?? const LatLng(0, 0);
+      latitudeL.value = position.latitude;
+      longitudeL.value = position.longitude;
+
+      mapController.animateCamera(
+        CameraUpdate.newLatLng(
+          LatLng(latitudeL.value, longitudeL.value),
+        ),
+      );
+
+      setMarker(LatLng(latitudeL.value, longitudeL.value));
+    } catch (e) {
+      Logger().e("Error getting current location: $e");
+    } finally {
+      isLoading.value = false; // Hide loader
+    }
+  }
+
+  void onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    getCurrentLocation();
+  }
+
+  void onMarkerDragEnd(LatLng position) {
+    latitudeL.value = position.latitude;
+    longitudeL.value = position.longitude;
+    updateLocationDetails(latitudeL.value, longitudeL.value);
+  }
+
+  void updateLocationDetails(double lat, double lng) async {
+    latitudeL.value = lat;
+    longitudeL.value = lng;
+    latitude = lat;
+    longitude = lng;
+    try {
+      List<Placemark>? placemarks =
+          await placemarkFromCoordinates(latitude ?? 0.0, longitude ?? 0.0);
+      if (placemarks != null && placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+
+        address1Controller.text = place.subThoroughfare ?? "";
+        address2Controller.text =
+            place.thoroughfare ?? "" + "" + place.subLocality! ?? "";
+        cityController.text = place.locality ?? "";
+        stateController.text = place.administrativeArea ?? "";
+        countryController.text = place.country ?? "";
+        pincodesController.text = place.postalCode ?? "";
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+    print("Updated location: ($lat, $lng)");
+  }
+
+  void setMarker(LatLng position) {
+    marker.value = Marker(
+      markerId: const MarkerId('selected-location'),
+      position: position,
+      draggable: true,
+      onDragEnd: onMarkerDragEnd,
+    );
+    updateLocationDetails(position.latitude, position.longitude);
+  }
+
+  void zoomIn() {
+    mapController.animateCamera(CameraUpdate.zoomIn());
+  }
+
+  void zoomOut() {
+    mapController.animateCamera(CameraUpdate.zoomOut());
+  }
+
+  void handleAutoCompleteSelection(Prediction prediction) async {
+    latitudeL.value = double.parse(prediction.lat!);
+    longitudeL.value = double.parse(prediction.lng!);
+    mapController.animateCamera(
+      CameraUpdate.newLatLng(LatLng(latitudeL.value, longitudeL.value)),
+    );
+    setMarker(LatLng(latitudeL.value, longitudeL.value));
+  }
+  //
 
   void tap() {
     if (selectedRole == 'Parent') {

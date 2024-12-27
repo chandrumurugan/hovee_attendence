@@ -69,7 +69,7 @@ class CourseListContainer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
                           subject,
@@ -79,41 +79,34 @@ class CourseListContainer extends StatelessWidget {
                               fontSize: 15),
                         ),
                         const SizedBox(
-                          width: 10,
+                          width: 30,
                         ),
-                        // Container(
-                        //   height: 15,
-                        //   width: 1.5,
-                        //   color: Colors.black.withOpacity(0.5),
-                        // ),
+                       Container(
+                          height: 15,
+                          width: 1.5,
+                          color: Colors.black.withOpacity(0.5),
+                        ),
+                       
                         const SizedBox(
-                          width: 10,
+                          width: 30,
                         ),
-                        Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          // Add edit functionality
-                         Get.to(EditCourseScreen(batch:course,));
-                        },
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.blue,
+
+                        type=='Tutor'?
+                         Text(
+                          "$batchname",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14),
+                        ):
+                        Text(
+                          "$subjectCode /month",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14),
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          // Add delete functionality
-                          courseController.deleteCourse(context, id);
-                        },
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
-                  ),
+                        
                         //  type=='Tutor'?
                         //  Text(
                         //   "$batchname",
@@ -170,29 +163,8 @@ class CourseListContainer extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        Container(
-                          height: 15,
-                          width: 1.5,
-                          color: Colors.black.withOpacity(0.5),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-            type=='Tutor'?
-                         Text(
-                          "$batchname",
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14),
-                        ):
-                        Text(
-                          "$subjectCode /month",
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14),
-                        ),
+                       
+            
                       ],
                     ),
                     const SizedBox(
@@ -201,15 +173,18 @@ class CourseListContainer extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        group != null
-                            ? Text(
-                                group,
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 15),
-                              )
-                            : Container(),
+                      
+                            // Visibility(
+                            //   visible:   group != null,
+                            //   child: Text(
+                            //       group,
+                            //       style: const TextStyle(
+                            //           color: Colors.black,
+                            //           fontWeight: FontWeight.w400,
+                            //           fontSize: 15),
+                            //     ),
+                            // ),
+                          
                         Text(
                           groupcode,
                           style: const TextStyle(
@@ -217,6 +192,31 @@ class CourseListContainer extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               fontSize: 14),
                         ),
+                        Row(
+                  // mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          // Add edit functionality
+                         Get.to(EditCourseScreen(batch:course,));
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          // Add delete functionality
+                          courseController.deleteCourse(context, id);
+                        },
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
                       ],
                     ),
                     Row(
@@ -247,30 +247,35 @@ class CourseListContainer extends StatelessWidget {
 ):Container(),
 
 
-                        arrowIcon
-                            ? IconButton(
-                                onPressed: () {
-                                  // Navigate to course details screen
-                                  type=='Tutee'?
-                                   controller. getClassTuteeById(
-                                       context,className,subject,tutorId,tutorname,subjectCode,batchMaximumSlots,batchTimingStart,batchTimingEnd):Container();
-                                },
-                                icon: const Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 20,
-                                ))
-                            : InkWell(
-                                onTap: () {},
-                                child: const CircleAvatar(
-                                  radius: 25,
-                                  backgroundColor: AppConstants.primaryColor,
-                                  child: Text(
-                                    'Punch',
-                                    style: TextStyle(
-                                        fontSize: 11, color: Colors.white),
+                        // arrowIcon
+                        //     ? IconButton(
+                        //         onPressed: () {
+                        //           // Navigate to course details screen
+                        //           type=='Tutee'?
+                        //            controller. getClassTuteeById(
+                        //                context,className,subject,tutorId,tutorname):Container();
+                        //         },
+                        //         icon: const Icon(
+                        //           Icons.arrow_forward_ios_rounded,
+                        //           size: 20,
+                        //         ))
+                        //     :
+
+                             Visibility(
+                              visible: !arrowIcon,
+                               child: InkWell(
+                                  onTap: () {},
+                                  child: const CircleAvatar(
+                                    radius: 25,
+                                    backgroundColor: AppConstants.primaryColor,
+                                    child: Text(
+                                      'Punch',
+                                      style: TextStyle(
+                                          fontSize: 11, color: Colors.white),
+                                    ),
                                   ),
                                 ),
-                              ),
+                             ),
                       ],
                     ),
                   ],
@@ -451,15 +456,15 @@ class CourseListContainer1 extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        group != null
-                            ? Text(
-                                group,
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 15),
-                              )
-                            : Container(),
+                        // group != null
+                        //     ? Text(
+                        //         group,
+                        //         style: const TextStyle(
+                        //             color: Colors.black,
+                        //             fontWeight: FontWeight.w400,
+                        //             fontSize: 15),
+                        //       )
+                        //     : Container(),
                         Text(
                           groupcode,
                           style: const TextStyle(

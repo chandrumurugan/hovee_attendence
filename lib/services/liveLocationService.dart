@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationService {
 
-    Future<LatLng?> getCurrentLocation() async {
+ static   Future<LatLng?> getCurrentLocation() async {
     try {
       Position position = await determinePosition();
             final prefs = await SharedPreferences.getInstance();

@@ -181,7 +181,8 @@ class _TutorClassFormState extends State<TutorClassForm> {
           keyboardType: TextInputType.text,
           hintText: 'Batch Name',  // Optional hint text
           onTap: () {},  // Action on tap, if needed
-          controller: controller.batchNameController1,  // Additional controller if needed
+          controller: controller.batchNameController1, 
+          readonly: true, // Additional controller if needed
         );
       }),
                 ],

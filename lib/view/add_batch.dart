@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hovee_attendence/controllers/add_batch_controller.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
@@ -11,9 +9,7 @@ import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/widget/add_days_dropdown.dart';
 import 'package:hovee_attendence/widget/addteacher_dropdown.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
-import 'package:hovee_attendence/widget/multipleCheckDropDown.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
-import 'package:intl/intl.dart';
 
 class TutorAddBatchScreen extends StatefulWidget {
   const TutorAddBatchScreen({super.key});
@@ -579,4 +575,54 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
       }
     }
   }
+
+// Future<void> _showTimePicker(BuildContext context,
+//     {required bool isStartTime}) async {
+//   // Show the time picker dialog
+//   TimeOfDay? pickedTime = await showTimePicker(
+//     context: context,
+//     initialTime: TimeOfDay.now(),
+//   );
+
+//   if (pickedTime != null) {
+//     if (isStartTime) {
+//       // Update the start time
+//       controller.batchTiming.text = pickedTime.format(context);
+//     } else {
+//       // Parse the existing start time
+//       TimeOfDay? startTime;
+//       if (controller.batchTiming.text.isNotEmpty) {
+//         final startTimeParts = controller.batchTiming.text
+//             .replaceAll(RegExp('[^0-9:]'), '')
+//             .split(':');
+//         if (startTimeParts.length == 2) {
+//           int hour = int.parse(startTimeParts[0]);
+//           int minute = int.parse(startTimeParts[1]);
+//           startTime = TimeOfDay(hour: hour, minute: minute);
+//         }
+//       }
+
+//       // Validate the end time against the start time
+//       if (startTime != null) {
+//         if (pickedTime.hour < startTime.hour ||
+//             (pickedTime.hour == startTime.hour &&
+//                 pickedTime.minute <= startTime.minute)) {
+//           Get.snackbar(
+//             // "Invalid Time",
+//             "End time must be later than the start time.",
+//             snackPosition: SnackPosition.BOTTOM,
+//             backgroundColor: Colors.red,
+//             colorText: Colors.white,
+//           );
+//           return;
+//         }
+//       }
+
+//       // Update the end time if valid
+//       controller.batchTimingEnd.text = pickedTime.format(context);
+//     }
+//   }
+// }
+
+
 }

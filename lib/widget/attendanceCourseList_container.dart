@@ -5,6 +5,7 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/view/punch_view.dart';
+import 'package:intl/intl.dart';
 
 class AttendancecourselistContainer extends StatelessWidget {
   final CourseList? attendanceCourse;
@@ -37,29 +38,29 @@ class AttendancecourselistContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    attendanceCourse!.course!.courseCode??'',
+                    attendanceCourse!.course!.courseCode ?? '',
                     style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
-                  attendanceCourse!.course!.className!=null?
-                  SizedBox(
-                       width: MediaQuery.of(context).size.width * 0.4,
-                    child: Text(
-                      "${attendanceCourse!.course!.className!} - ${attendanceCourse!.course!.subject!}",
-                      maxLines: 2, // Restrict to one line
-                      overflow: TextOverflow
-                          .ellipsis, // Add ellipsis if the text overflows
-                      style: GoogleFonts.nunito(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                  ):SizedBox.shrink(),
+                  attendanceCourse!.course!.className != null
+                      ? SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          child: Text(
+                            "${attendanceCourse!.course!.className!} - ${attendanceCourse!.course!.subject!}",
+                            maxLines: 2, // Restrict to one line
+                            overflow: TextOverflow
+                                .ellipsis, // Add ellipsis if the text overflows
+                            style: GoogleFonts.nunito(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                        )
+                      : SizedBox.shrink(),
                   Text(
                     "${attendanceCourse!.batch!.batchTimingStart} - ${attendanceCourse!.batch!.batchTimingEnd}",
-                    
                     style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -72,18 +73,94 @@ class AttendancecourselistContainer extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      //Get.to(() =>QRScannerScreen(className: attendanceCourse.course!.className!, courseId:attendanceCourse.course!.sId!, batchId:attendanceCourse.batch!.sId!, batchStartTime: attendanceCourse.batch!.batchTimingStart!, batchEndTime: attendanceCourse.batch!.batchTimingEnd!, subjectName: attendanceCourse.course!.subject!, courseCode: attendanceCourse.course!.courseCode!,));
-                      Get.to(() => PunchView(
-                            className: attendanceCourse!.course!.className!,
-                            courseId: attendanceCourse!.course!.sId!,
-                            batchId: attendanceCourse!.batch!.sId!,
-                            batchStartTime:
-                                attendanceCourse!.batch!.batchTimingStart!,
-                            batchEndTime:
-                                attendanceCourse!.batch!.batchTimingEnd!,
-                            subjectName: attendanceCourse!.course!.subject!,
-                            courseCode: attendanceCourse!.course!.courseCode!,
-                          ));
+                      // final currentTime = DateTime.now();
+                      // final startTime = DateTime.parse(
+                      //     attendanceCourse!.batch!.batchTimingStart!);
+
+                      // // Calculate the allowed start time (30 minutes before the batch start time)
+                      // final allowedStartTime =
+                      //     startTime.subtract(Duration(minutes: 30));
+
+                      // if (currentTime.isBefore(allowedStartTime)) {
+                      // Get.snackbar(
+                      //     'Attendance can only be started 30 minutes before the start time.');
+                      // } else if (currentTime.isAfter(startTime)) {
+                      // Get.snackbar(
+                      //     'The class has already started. Proceeding with late attendance.');
+
+                      //   //Get.to(() =>QRScannerScreen(className: attendanceCourse.course!.className!, courseId:attendanceCourse.course!.sId!, batchId:attendanceCourse.batch!.sId!, batchStartTime: attendanceCourse.batch!.batchTimingStart!, batchEndTime: attendanceCourse.batch!.batchTimingEnd!, subjectName: attendanceCourse.course!.subject!, courseCode: attendanceCourse.course!.courseCode!,));
+                      //   Get.to(() => PunchView(
+                      //         className: attendanceCourse!.course!.className!,
+                      //         courseId: attendanceCourse!.course!.sId!,
+                      //         batchId: attendanceCourse!.batch!.sId!,
+                      //         batchStartTime:
+                      //             attendanceCourse!.batch!.batchTimingStart!,
+                      //         batchEndTime:
+                      //             attendanceCourse!.batch!.batchTimingEnd!,
+                      //         subjectName: attendanceCourse!.course!.subject!,
+                      //         courseCode: attendanceCourse!.course!.courseCode!,
+                      //       ));
+                      // }
+                      final currentTime = DateTime.now();
+                      final dateFormat = DateFormat(
+                          "HH:mm"); // Change this to match your date format
+
+                      // Parse batch timing start
+                      DateTime? startTime;
+                      try {
+                        startTime = dateFormat
+                            .parse(attendanceCourse!.batch!.batchTimingStart!);
+                        startTime = DateTime(
+                            currentTime.year,
+                            currentTime.month,
+                            currentTime.day,
+                            startTime.hour,
+                            startTime.minute);
+                      } catch (e) {
+                        Get.snackbar(
+                            'Attendance can only be started 30 minutes before the start time.',backgroundColor: AppConstants.secondaryColor,colorText: Colors.white);
+                        return;
+                      }
+
+                      // Calculate allowed start time (30 minutes before batch start time)
+                      final allowedStartTime =
+                          startTime.subtract(Duration(minutes: 30));
+
+                      if (currentTime.isBefore(allowedStartTime)) {
+                        // Too early to start
+                        Get.snackbar(
+                            'Attendance can only be started 30 minutes before the start time.',backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
+                      } else if (currentTime.isAfter(startTime)) {
+                        // Late attendance
+                        Get.snackbar(
+                            'The class has already started. Proceeding with late attendance.',backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
+
+                        // Navigate to PunchView
+                        Get.to(() => PunchView(
+                              className: attendanceCourse!.course!.className!,
+                              courseId: attendanceCourse!.course!.sId!,
+                              batchId: attendanceCourse!.batch!.sId!,
+                              batchStartTime:
+                                  attendanceCourse!.batch!.batchTimingStart!,
+                              batchEndTime:
+                                  attendanceCourse!.batch!.batchTimingEnd!,
+                              subjectName: attendanceCourse!.course!.subject!,
+                              courseCode: attendanceCourse!.course!.courseCode!,
+                            ));
+                      } else {
+                        // On time to start
+                        Get.to(() => PunchView(
+                              className: attendanceCourse!.course!.className!,
+                              courseId: attendanceCourse!.course!.sId!,
+                              batchId: attendanceCourse!.batch!.sId!,
+                              batchStartTime:
+                                  attendanceCourse!.batch!.batchTimingStart!,
+                              batchEndTime:
+                                  attendanceCourse!.batch!.batchTimingEnd!,
+                              subjectName: attendanceCourse!.course!.subject!,
+                              courseCode: attendanceCourse!.course!.courseCode!,
+                            ));
+                      }
                     },
                     child: const CircleAvatar(
                       radius: 25,

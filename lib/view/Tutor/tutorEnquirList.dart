@@ -311,7 +311,7 @@ class Tutorenquirlist extends StatelessWidget {
                                                   end: Alignment.bottomCenter,
                                                 ),
                                               ),
-                                              child: Text("Start Enroll",
+                                              child: Text("Enroll now",
                                                   textAlign: TextAlign.center,
                                                   style: GoogleFonts.nunito(
                                                       fontWeight: FontWeight.w500,

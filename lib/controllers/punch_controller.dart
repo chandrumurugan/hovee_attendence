@@ -87,7 +87,7 @@ class PunchController extends GetxController {
       //    Logger().i('-=: $latitude ----$longitude');
 
 // Update the current location with non-nullable values
-      currentLocation.value = await locationService.getCurrentLocation();
+      currentLocation.value = await LocationService.getCurrentLocation();
 
       // Get.log("Latitude: $latitude, Longitude: $longitude");
       Logger().i('-=: ${currentLocation.value}');

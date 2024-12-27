@@ -167,7 +167,7 @@ class SplashController extends GetxController {
     await fetchAppConfig();
     isAppConfigFetched.value = true;
     // Fetch current location
-    currentLocation.value = await locationService.getCurrentLocation();
+    currentLocation.value = await LocationService.getCurrentLocation();
     // _requestNotificationPermission();
     final prefs = await SharedPreferences.getInstance();
     final storage = GetStorage();
