@@ -7,16 +7,16 @@ import 'package:hovee_attendence/controllers/ratings_controller.dart';
 import 'package:hovee_attendence/modals/getRatingTutorListModel.dart';
 import 'package:intl/intl.dart';
 
-class Ratingpropertycard extends StatelessWidget {
-  final Review propertyRR;
-  Ratingpropertycard({super.key, required this.propertyRR});
+class Ratingcard extends StatelessWidget {
+  final Review classReviewData;
+  Ratingcard({super.key, required this.classReviewData});
 
   @override
   Widget build(BuildContext context) {
     final RatingsController controller = Get.put(RatingsController());
     double widthPadding = MediaQuery.of(context).size.width;
     double heightPadding = MediaQuery.of(context).size.height;
-    DateTime dateTime = DateTime.parse(propertyRR.updatedAt!.toString());
+    DateTime dateTime = DateTime.parse(classReviewData.updatedAt!.toString());
     String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
     // String? reviewText = getReviewText();
     return Card(
@@ -40,8 +40,8 @@ class Ratingpropertycard extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         backgroundColor: Colors.grey[200],
-                        backgroundImage: propertyRR == []
-                            ? CachedNetworkImageProvider("${propertyRR}")
+                        backgroundImage: classReviewData == []
+                            ? CachedNetworkImageProvider("${classReviewData}")
                             : null,
                         radius: 35,
                         child: const Center(
@@ -52,7 +52,7 @@ class Ratingpropertycard extends StatelessWidget {
                         width: MediaQuery.sizeOf(context).width * 0.030,
                       ),
                       Text(
-                          "${propertyRR.userId!.firstName} ${propertyRR.userId!.lastName}",
+                          "${classReviewData.userId!.firstName} ${classReviewData.userId!.lastName}",
                           textScaleFactor: 1.2,
                           style: GoogleFonts.nunito(
                               fontWeight: FontWeight.w700,
@@ -79,7 +79,7 @@ class Ratingpropertycard extends StatelessWidget {
               child: Row(
                 children: [
                   RatingBarIndicator(
-                    rating: double.parse(propertyRR.ratingPoints!),
+                    rating: double.parse(classReviewData.ratingPoints!),
                     itemBuilder: (context, index) => const Icon(
                       Icons.star,
                       color: Colors.amber,
@@ -104,7 +104,7 @@ class Ratingpropertycard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          '${double.parse(propertyRR.ratingPoints!)}',
+                          '${double.parse(classReviewData.ratingPoints!)}',
                           textScaler: const TextScaler.linear(1.0),
                           style: GoogleFonts.nunito(
                               fontWeight: FontWeight.w700, color: Colors.white),
@@ -127,7 +127,7 @@ class Ratingpropertycard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: List.generate(
-                  propertyRR.details.length,
+                  classReviewData.details.length,
                   (index) => Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -143,7 +143,7 @@ class Ratingpropertycard extends StatelessWidget {
                       // The detail text
                       Expanded(
                         child: Text(
-                          propertyRR.details[index],
+                          classReviewData.details[index],
                           textScaleFactor: 1.1,
                           style: GoogleFonts.nunito(
                             fontWeight: FontWeight.w500,
@@ -158,12 +158,12 @@ class Ratingpropertycard extends StatelessWidget {
             ),
 
             Visibility(
-              visible:  propertyRR.comments!.isNotEmpty,
+              visible:  classReviewData.comments!.isNotEmpty,
               child: const Divider(
                 thickness: 2.0,
               ),
             ),
-            propertyRR.comments!.isNotEmpty
+            classReviewData.comments!.isNotEmpty
                 ? Container(
                     padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.sizeOf(context).width * 0.030,
@@ -191,7 +191,7 @@ class Ratingpropertycard extends StatelessWidget {
                                 color: Colors.grey.shade200,
                                 borderRadius: BorderRadius.circular(12.0)),
                             child: Text(
-                              propertyRR.comments!,
+                              classReviewData.comments!,
                               textScaleFactor: 1.2,
                               textAlign: TextAlign.left,
                               style: GoogleFonts.nunito(

@@ -73,10 +73,6 @@ class TutorHome extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       controller.tutorScaffoldKey.currentState!.openDrawer();
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => const SideMenu()));
                     },
                     child: Image.asset(
                       'assets/appbar/Group 2322.png',
@@ -86,15 +82,6 @@ class TutorHome extends StatelessWidget {
                   const SizedBox(
                     width: 30,
                   ),
-                  const LogoGif()
-                  // SvgPicture.asset(
-                  //   'assets/appbar/hovee_attendance_app_icon_.svg',
-                  //   height: 40,
-                  // ),
-                  // Image.asset(
-                  //   'assets/appConstantImg/colorlogoword.png',
-                  //   height: 30,
-                  // ),
                 ],
               ),
               Container(
@@ -166,8 +153,6 @@ class TutorHome extends StatelessWidget {
         ),
         body: Obx(() {
           if (controller.isLoading.value || userProfileData.isLoading.value) {
-            // Call your refresh logic here, e.g., re-fetch data
-            // Reset the refresh state
             return const Center(child: CircularProgressIndicator());
           }
           return SingleChildScrollView(
@@ -220,23 +205,6 @@ class TutorHome extends StatelessWidget {
                           ],
                         );
                       }),
-
-                      // controller.dailyattendance.value != null
-                      // ? Padding(
-                      //     padding: const EdgeInsets.all(5.0),
-                      //     child: Text(
-                      //       'Daily Attendance',
-                      //       style: GoogleFonts.nunito(
-                      //           fontSize: 18, fontWeight: FontWeight.w700),
-                      //     ),
-                      //   )
-                      //     : Container(),
-                      // controller.dailyattendance.value != null
-                      //     ? ChartApp()
-                      //     : Container(),
-                      // const SizedBox(
-                      //   height: 20,
-                      // ),
                       Obx(() {
                         if (controller.isLoading.value) {
                           return const SizedBox.shrink();
@@ -448,13 +416,6 @@ class TutorHome extends StatelessWidget {
             children: [
               const SizedBox(height: 16),
               Image.memory(qrCodeUrl!),
-              // CachedNetworkImage(
-              //   imageUrl: qrCodeUrl,
-              //   placeholder: (context, url) => CircularProgressIndicator(),
-              //   errorWidget: (context, url, error) => Icon(Icons.error),
-              //   width: 200,
-              //   height: 200,
-              // ),
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 onPressed: () {
@@ -464,8 +425,6 @@ class TutorHome extends StatelessWidget {
                 label: const Text('Share'),
               ),
               const SizedBox(height: 16),
-              // const SizedBox(height: 16),
-              // const SizedBox(height: 16),
             ],
           ),
         );

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +16,9 @@ import 'package:hovee_attendence/view/add_msp_screen.dart';
 import 'package:hovee_attendence/view/dashBoard.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
+import 'package:hovee_attendence/view/parent/trackTuteeLocation.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -27,7 +31,7 @@ class TuteeAttendanceList extends StatelessWidget {
   final MspController mspController = Get.put(MspController());
   @override
   Widget build(BuildContext context) {
-    
+   //final  trackTuteeLocationController = Get.put(TrackTuteeLocationController());
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
@@ -58,12 +62,6 @@ class TuteeAttendanceList extends StatelessWidget {
                       surfaceTintColor: Colors.white,
                       child: Container(
                         width: MediaQuery.sizeOf(context).width * 0.7,
-                        // decoration: const BoxDecoration(
-                        //   borderRadius: BorderRadius.all(Radius.circular(8)),
-                        //   image: DecorationImage(
-                        //       image: AssetImage('assets/Course_BG_Banner.png'),
-                        //       fit: BoxFit.cover),
-                        // ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -73,44 +71,6 @@ class TuteeAttendanceList extends StatelessWidget {
                                 return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
                               } else {
                                 return
-                                    //  DropdownButtonFormField<Data1>(
-                                    //     dropdownColor: AppConstants.primaryColor,
-                                    //     icon: const Icon(
-                                    //       Icons.arrow_drop_down_circle_rounded,
-                                    //       color: Colors.white,
-                                    //     ),
-                                    //     style: GoogleFonts.nunito(
-                                    //       fontSize: 19,
-                                    //       fontWeight: FontWeight.w400,
-                                    //       color: Colors.white,
-                                    //     ),
-                                    //     decoration: InputDecoration(
-                                    //       suffixIconColor: Colors.white,
-                                    //       alignLabelWithHint: true,
-                                    //       border: InputBorder.none,
-                                    //       labelText: 'Select batch',
-                                    //       labelStyle: GoogleFonts.nunito(
-                                    //         fontSize: 15,
-                                    //         fontWeight: FontWeight.w400,
-                                    //         color: Colors.white,
-                                    //       ),
-                                    //     ),
-                                    //     value: controller.selectedBatchIN.value,
-                                    //     items: controller.batchList.map((Data1 batch) {
-                                    //       return DropdownMenuItem<Data1>(
-                                    //         value: batch,
-                                    //         child: Text(batch.batchName!),
-                                    //       );
-                                    //     }).toList(),
-                                    //     onChanged: (newBatch) {
-                                    //       if (newBatch != null) {
-                                    //         controller.selectBatch(newBatch);
-                                    //         controller.isBatchSelected.value = true;
-                                    //         // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
-                                    //         // Replace with your actual method to fetch batch-related data
-                                    //       }
-                                    //     },
-                                    //   );
                                     CustomDropdown(
                                   itemsListPadding: EdgeInsets.zero,
                                   listItemPadding: const EdgeInsets.symmetric(
@@ -142,11 +102,6 @@ class TuteeAttendanceList extends StatelessWidget {
                                 );
                               }
                             }),
-
-                            // const SizedBox(
-                            //   height: 20,
-                            // ),
-                            //tabl
                           ],
                         ),
                       ),
@@ -230,19 +185,6 @@ class TuteeAttendanceList extends StatelessWidget {
                     controller.onDateSelectedTutee(selectedDay);
                     controller.setFocusedDay(focusedDay);
                   },
-                  //               eventLoader: (day) {
-                  //                 // final normalizedDay =
-                  //                 //     DateTime(day.year, day.month, day.day);
-                  //                 // return controller.missPunchDates.any((missPunchDate) =>
-                  //                 //         missPunchDate.year == normalizedDay.year &&
-                  //                 //         missPunchDate.month == normalizedDay.month &&
-                  //                 //         missPunchDate.day == normalizedDay.day)
-                  //                 //     ? ['Miss Punch']
-                  //                 //     : [];
-
-                  //                   final normalizedDay = DateTime(day.year, day.month, day.day);
-                  // return controller.missPunchDates.contains(normalizedDay) ? ['Miss Punch'] : [];
-                  //               },
                   onPageChanged: (focusedDay) {
                     controller.setFocusedDay(focusedDay);
                     controller.onMonthSelectedTutee(focusedDay);
@@ -251,7 +193,9 @@ class TuteeAttendanceList extends StatelessWidget {
                     // Send the  month to the API
                     // controller.sendMonthToApi(monthAbbreviation);
                   },
-                  calendarBuilders: CalendarBuilders(
+                  calendarBuilders: 
+                 
+                  CalendarBuilders(
                     defaultBuilder: (context, day, focusedDay) {
                       // Check if the day is a miss punch date
                       if (controller.missPunchDates
@@ -331,6 +275,7 @@ class TuteeAttendanceList extends StatelessWidget {
                     },
                   ),
                 ),
+                
               );
             }),
             const SizedBox(
@@ -637,6 +582,59 @@ class TuteeAttendanceList extends StatelessWidget {
             //   searchOnTap: () {},
             //   filterOnTap: () {},
             // ),
+             Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10,vertical: 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "GPS Tracker",
+                                style: GoogleFonts.nunito(
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                 SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  String? userData =
+                                      prefs.getString('firstUserId');
+                                  String? wowId, firstName;
+                                  if (userData != null) {
+                                    Map<String, dynamic> userMap =
+                                        jsonDecode(userData);
+                                    wowId = userMap['wowId'];
+                                    firstName = userMap['firstName'];
+                                    print(
+                                        'User ID: $wowId, User Name: $firstName');
+                                  }
+                                  Get.to(
+                                          () => TrackTuteeLocation(
+                                            type: 'Parent',
+                                            // firstname: widget.firstname,
+                                            // lastname: widget.lastname,
+                                            // wowid: widget.wowid,
+                                          ),
+                                          arguments: [
+                                            {
+                                              "userId": wowId.toString(),
+                                            }
+                                          ],
+                                        );
+                                },
+                                child: Text(
+                                  "View GPS",
+                                  style: GoogleFonts.nunito(
+                                      color: const Color(0xFFFF9900),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
@@ -825,4 +823,22 @@ class TuteeAttendanceList extends StatelessWidget {
       ],
     );
   }
+
+  Widget _buildDateContainer(DateTime day, Color color) {
+  return Container(
+    margin: const EdgeInsets.all(4.0),
+    decoration: BoxDecoration(
+      color: color, // Dynamic background color
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+    alignment: Alignment.center,
+    child: Text(
+      '${day.day}', // Display the day number
+      style: const TextStyle(
+        color: Colors.white,
+      ),
+    ),
+  );
+}
+
 }

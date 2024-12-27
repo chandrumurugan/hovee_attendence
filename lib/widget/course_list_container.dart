@@ -24,6 +24,9 @@ class CourseListContainer extends StatelessWidget {
   final String type;
   final String id;
   final Data1 course;
+  final String batchMaximumSlots;
+  final String batchTimingStart;
+  final String batchTimingEnd;
   CourseListContainer(
       {super.key,
       required this.image,
@@ -36,7 +39,7 @@ class CourseListContainer extends StatelessWidget {
       required this.arrowIcon,
       required this.className,
       required this.tutorId,
-      required this.batchname, required this.tutorname, required this.type, required this.id, required this.course});
+      required this.batchname, required this.tutorname, required this.type, required this.id, required this.course, required this.batchMaximumSlots, required this.batchTimingStart, required this.batchTimingEnd});
 
   final CourseDetailController controller = Get.put(CourseDetailController());
   final CourseController courseController = Get.put(CourseController());
@@ -250,7 +253,7 @@ class CourseListContainer extends StatelessWidget {
                                   // Navigate to course details screen
                                   type=='Tutee'?
                                    controller. getClassTuteeById(
-                                       context,className,subject,tutorId,tutorname):Container();
+                                       context,className,subject,tutorId,tutorname,subjectCode,batchMaximumSlots,batchTimingStart,batchTimingEnd):Container();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_forward_ios_rounded,
@@ -296,6 +299,9 @@ class CourseListContainer1 extends StatelessWidget {
   final String tutorname;
   final String type;
   final String id;
+    final String batchMaximumSlots;
+  final String batchTimingStart;
+  final String batchTimingEnd;
   CourseListContainer1(
       {super.key,
       required this.image,
@@ -308,7 +314,7 @@ class CourseListContainer1 extends StatelessWidget {
       required this.arrowIcon,
       required this.className,
       required this.tutorId,
-      required this.batchname, required this.tutorname, required this.type, required this.id,});
+      required this.batchname, required this.tutorname, required this.type, required this.id, required this.batchMaximumSlots, required this.batchTimingStart, required this.batchTimingEnd,});
 
   final CourseDetailController controller = Get.put(CourseDetailController());
   final CourseController courseController = Get.put(CourseController());
@@ -497,7 +503,7 @@ class CourseListContainer1 extends StatelessWidget {
                                   // Navigate to course details screen
                                   type=='Tutee'?
                                    controller. getClassTuteeById(
-                                       context,className,subject,tutorId,tutorname):Container();
+                                       context,className,subject,tutorId,tutorname,subjectCode,batchMaximumSlots,batchTimingStart,batchTimingEnd):Container();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_forward_ios_rounded,

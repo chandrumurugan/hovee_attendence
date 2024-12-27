@@ -78,36 +78,6 @@ class TrackTuteeLocation extends StatelessWidget {
                 ),
               ),
             ),
-            // DropdownButton<Data1>(
-            //             value: controller.selectedBatchIN.value,
-            //             hint:  Text('Select'),
-            //             icon: const Icon(Icons.arrow_drop_down),
-            //             iconSize: 24,
-            //             elevation: 16,
-            //             style: const TextStyle(
-            //                 fontSize: 12,
-            //                 fontWeight: FontWeight.w500,
-            //                 color: Colors.black),
-            //             underline: Container(
-            //               height: 0,
-            //               color: Colors.transparent,
-            //             ),
-            //             onChanged: (newBatch) {
-            //               if (newBatch != null) {
-            //                 controller.selectBatch(newBatch);
-            //                 controller.isBatchSelected.value = true;
-            //                 controller.fetchBatchLocationList(
-            //                   newBatch.batchId!,
-            //                 );
-            //               }
-            //             },
-            //             items: controller.batchList.map((Data1 batch) {
-            //               return DropdownMenuItem<Data1>(
-            //                 value: batch,
-            //                 child: Text(batch.batchName!),
-            //               );
-            //             }).toList(),
-            //           )
           ],
         );
       }),

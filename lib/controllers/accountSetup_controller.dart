@@ -47,6 +47,7 @@ class AccountSetupController extends GetxController
   final countryController = TextEditingController();
   final pincodesController = TextEditingController();
   final additionalInfoController = TextEditingController();
+  final tutionController = TextEditingController();
 
   //tutee
   final tuteQualificationController = TextEditingController();
@@ -65,7 +66,9 @@ class AccountSetupController extends GetxController
   // Dropdown values tutee
   var tuteeHighestQualification = ''.obs;
   var tuteeSpeciallization = ''.obs;
-
+   var boardController = ''.obs;
+    var classController = ''.obs;
+      var subjectController = ''.obs;
   // Additional info text field
   var additionalInfo = ''.obs;
 
@@ -97,6 +100,11 @@ class AccountSetupController extends GetxController
   String? parentId;
   final parentController = Get.find<ParentController>();
   LoginData? loginData;
+  List<String> board = [];
+   RxList<String> classList = <String>[].obs;
+   RxList<String> subject = <String>[].obs;
+   var appConfig = AppConfig().obs;
+    List<String> batchName = [];
   @override
   void onInit() {
     // TODO: implement onInit
@@ -120,7 +128,7 @@ class AccountSetupController extends GetxController
     } else {
       print("object");
     }
-
+      fetchAppConfig();
     _populateAddressFromLocation();
 
     //loadAppConfigData();
@@ -539,6 +547,13 @@ class AccountSetupController extends GetxController
       );
       return false;
     }
+    if (tutionController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the tution name.",
+      );
+      return false;
+    }
     return true;
   }
 
@@ -550,10 +565,24 @@ class AccountSetupController extends GetxController
       );
       return false;
     }
-    if (tuteeSpeciallization.value.isEmpty) {
+     if (boardController.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        "Please select class/specialization.",
+        "Please select board.",
+      );
+      return false;
+    }
+    if (classController.value.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please select class.",
+      );
+      return false;
+    }
+     if (subjectController.value.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please select subject.",
       );
       return false;
     }
@@ -584,6 +613,7 @@ class AccountSetupController extends GetxController
           "working_tech": workingTech.value,
           "teaching_experience": teachingExperience.value,
           "additional_info": additionalInfoController.text,
+          "tution_name": tutionController.text,
         };
         submitAccountSetup(
           roleId,
@@ -602,8 +632,9 @@ class AccountSetupController extends GetxController
       if (validateTuteEducationInfo(context)) {
         tuteEducationInfo.value = {
           "highest_qualification": tuteeHighestQualification.value,
-          "select_class": tuteeSpeciallization.value,
-          // "select_board": tuteeboardController.text,
+          "select_class": classController.value,
+          "select_board": boardController.value,
+           "select_subject": subjectController.value,
           "organization_name": tuteorganizationController.text
         };
         submitTuteeAccountSetup(roleId, parentId, context);
@@ -848,4 +879,75 @@ class AccountSetupController extends GetxController
     // All validations passed
     return true;
   }
+
+  Future<void> fetchAppConfig() async {
+    try {
+      var response = await WebService.fetchAppConfig();
+      if (response != null) {
+        appConfig.value = response;
+        
+        // Store the response data in GetStorage
+        final storage = GetStorage();
+        storage.write('appConfig', response.toJson());
+batchName = (storage.read<List<dynamic>>('batchList') ?? [])
+    .map((item) => item.toString()) 
+    .toList();
+        // Create board list by explicitly casting each part of the chain
+        board = response.data?.studentCategory
+            ?.expand((category) => category.label?.labelData ?? [])
+            .map((labelData) => labelData.board ?? '')
+            .where((board) => board.isNotEmpty)
+            .toSet() // Removes duplicates
+            .cast<String>() // Ensures all items are strings
+            .toList() ?? [];
+
+        Logger().i('AppConfig loaded successfully');
+      } else {
+        Logger().e('Failed to load AppConfig');
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+   void updateClassList(String board) {
+    boardController.value = board;
+    classList.value = appConfig.value.data?.studentCategory
+            ?.expand((category) => category.label?.labelData ?? [])
+            .where((labelData) => labelData.board == board)
+            .expand((labelData) => labelData.classes ?? [])
+            .map((classItem) => classItem.className ?? '')
+            .where((className) => className.isNotEmpty)
+            .toSet() // Removes duplicates
+            .cast<String>() // Ensures all items are strings
+            .toList() ?? [];
+  }
+
+  void updateSubjectList(String className) {
+    classController.value = className;
+    subject.value = appConfig.value.data?.studentCategory
+            ?.expand((category) => category.label?.labelData ?? [])
+            .expand((labelData) => labelData.classes ?? [])
+            .where((classItem) => classItem.className == className)
+            .expand((classItem) => classItem.subjects ?? [])
+            .map((subject) => subject.name ?? '')
+            .where((subjectName) => subjectName.isNotEmpty)
+            .toSet()
+            .cast<String>()
+            .toList() ?? [];
+  }
+
+     void setBoard(String value) {
+  boardController.value = value;
+   updateClassList(value);
+}
+
+void setClass(String value) {
+  classController.value = value;
+   updateSubjectList(value);
+}
+
+void setSubject(String value) {
+  subjectController.value = value;
+}
 }

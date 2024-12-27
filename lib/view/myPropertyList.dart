@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/ratings_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
-import 'package:hovee_attendence/widget/ratingsPropertiesContainer.dart';
+import 'package:hovee_attendence/widget/ratingsContainer.dart';
 
-class Mypropertylist extends StatelessWidget {
-  const Mypropertylist({super.key});
+class MyReviewClasslist extends StatelessWidget {
+  const MyReviewClasslist({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +60,10 @@ class Mypropertylist extends StatelessWidget {
                       onTap: () {
                         controller.getReviews(course.sId!);
                       },
-                      child: RatingPropertyConatiner(
-                        propertyImage: null ?? '',
-                        propertyAddress: address,
-                        propertyShortName: course.subject!,
+                      child: RatingConatiner(
+                        reviewImage: null ?? '',
+                        reviewAddress: address,
+                        reviewShortName: course.subject!,
                         expectedRent: course.subject!,
                         userRatedCount: controller.myrating!.ratings!.averageRating!,
                         userRating: controller.myrating!.ratings!.totalRatings != null

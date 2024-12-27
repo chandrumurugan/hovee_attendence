@@ -26,7 +26,8 @@ var batchDaysController = "".obs;
   var modeController = ''.obs;
   var feesController = ''.obs;
   var monthController = ''.obs;
-
+  final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
   final branchShortName = TextEditingController();
 
   final batchName = TextEditingController();
@@ -196,6 +197,21 @@ var batchDaysController = "".obs;
       SnackBarUtils.showErrorSnackBar(context, 'Fees is required');
       return false;
     }
+
+     if (startDateController.text.isEmpty) {
+      SnackBarUtils.showSuccessSnackBar(
+        context,
+        'Start Date is required',
+      );
+      return false;
+    }
+    if (endDateController.text.isEmpty) {
+      SnackBarUtils.showSuccessSnackBar(
+        context,
+        'End date is required',
+      );
+      return false;
+    }
     return true;
   }
 
@@ -242,6 +258,8 @@ var batchDaysController = "".obs;
           'month': fees.text,
           "type": "N",
           "batchId": "",
+           "start_date": startDateController.text,
+          "end_date": endDateController.text,
         };
 
         final AddBatchDataModel? response =
@@ -387,8 +405,8 @@ var batchDaysController = "".obs;
           "institudeId": "",
           "institude_name": "",
           "teacherId": "",
-          "start_date": "2024-11-28",
-          "end_date": "2024-11-29"
+           "start_date": startDateController.text,
+          "end_date": endDateController.text,
         };
 
         final AddBatchDataModel? response =

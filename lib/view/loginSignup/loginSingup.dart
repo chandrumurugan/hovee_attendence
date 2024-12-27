@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
@@ -14,7 +15,7 @@ import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/utils/keyboardUtils.dart';
 import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
-
+import 'package:country_code_picker/country_code_picker.dart';
 class LoginSignUp extends StatelessWidget {
   const LoginSignUp({super.key});
 
@@ -67,13 +68,6 @@ class LoginSignUp extends StatelessWidget {
                         SizedBox(
                           height: 15,
                         ),
-                        // const Text(
-                        //   'Lorem Ipsum is simply dummy text\n of the printing and typesetting industry',
-                        //   style: TextStyle(
-                        //       color: Colors.white,
-                        //       fontWeight: FontWeight.w400,
-                        //       fontSize: 16),
-                        // ),
                       ],
                     ),
                   ),
@@ -122,17 +116,6 @@ class LoginSignUp extends StatelessWidget {
                                 horizontal: 15.0, vertical: 10),
                             child: InkWell(
                               onTap: () {
-                                // controller.signInWithGoogle().then((value) {
-                                //   if (value.user!.uid.isNotEmpty) {
-                                //     if (context.mounted) {
-                                //       Navigator.pushReplacement(
-                                //           context,
-                                //           MaterialPageRoute(
-                                //               builder: (context) =>
-                                //                   const ChatRoom()));
-                                //     }
-                                //   }
-                                // });
                               },
                               child: Image.asset(
                                 'assets/appConstantImg/loginSignupI/google_2504739.png',
@@ -563,21 +546,108 @@ class LoginSignUp extends StatelessWidget {
                                           const SizedBox(
                                             height: 5,
                                           ),
-                                          InputTextField(
-                                            suffix: false,
-                                            readonly: false,
-                                            hintText: 'Enter here...',
-                                            keyboardType: TextInputType.number,
-                                            inputFormatter: [
-                                              FilteringTextInputFormatter.allow(
-                                                RegExp(r"[0-9]"),
-                                              ),
-                                              LengthLimitingTextInputFormatter(
-                                                  10), // Restrict to 10 digits
-                                            ],
-                                            controller:
-                                                authController.phController,
+                                          SizedBox(
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Stack(
+                                                  alignment: Alignment.center,
+                                                  children: [
+                                                    Container(
+                                                      width:
+                                                          70, // Ensure the Container has a width
+                                                      height:
+                                                          46, // Make the height same as the parent SizedBox
+                                                      decoration: BoxDecoration(
+                                                        color: Color(0xffD9D9D9)
+                                                            .withOpacity(0.4),
+                                                        borderRadius: BorderRadius.circular(12),
+                                                      ),
+                                                    ),
+                                                    CountryCodePicker(
+                                                      onChanged: print,
+                                                      countryList:authController. country_codes,
+                                                      initialSelection:
+                                                          'IN', // Changed to 'IN' for India
+                                                      favorite: [
+                                                        '+91'
+                                                      ], // Added '+91' for India as favorite
+                                                      showCountryOnly: false,
+                                                      showOnlyCountryWhenClosed: false,
+                                                      alignLeft: false,
+                                                      showFlag: false,
+                                                      padding: EdgeInsets.all(
+                                                          0), // Add padding if needed
+                                                      textStyle: TextStyle(
+                                                          color: Colors
+                                                              .black), // Adjust text style if needed
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Expanded(
+                                                  // Use Expanded to fill the remaining space
+                                                  child: InputTextField(
+                                                                  suffix: false,
+                                                                  readonly: false,
+                                                                  hintText: 'Enter here...',
+                                                                  keyboardType: TextInputType.number,
+                                                                  inputFormatter: [
+                                                                    FilteringTextInputFormatter.allow(
+                                                                      RegExp(r"[0-9]"),
+                                                                    ),
+                                                                    LengthLimitingTextInputFormatter(
+                                                                        10), // Restrict to 10 digits
+                                                                  ],
+                                                                  controller:
+                                                                      authController.phController,
+                                                                ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
+                                    //       Row(
+                                    //         children: [
+                                    //           CountryCodePicker(
+                                    //   onChanged: print,
+                                    //   countryList:authController. country_codes,
+                                    //   initialSelection:
+                                    //       'IN', // Changed to 'IN' for India
+                                    //   favorite: [
+                                    //     '+91'
+                                    //   ], // Added '+91' for India as favorite
+                                    //   showCountryOnly: false,
+                                    //   showOnlyCountryWhenClosed: false,
+                                    //   alignLeft: false,
+                                    //   showFlag: false,
+                                    //   padding: EdgeInsets.all(
+                                    //       0), // Add padding if needed
+                                    //   textStyle: TextStyle(
+                                    //       color: Colors
+                                    //           .black), // Adjust text style if needed
+                                    // ),
+                                    //           Expanded(
+                                    //             child: InputTextField(
+                                    //               suffix: false,
+                                    //               readonly: false,
+                                    //               hintText: 'Enter here...',
+                                    //               keyboardType: TextInputType.number,
+                                    //               inputFormatter: [
+                                    //                 FilteringTextInputFormatter.allow(
+                                    //                   RegExp(r"[0-9]"),
+                                    //                 ),
+                                    //                 LengthLimitingTextInputFormatter(
+                                    //                     10), // Restrict to 10 digits
+                                    //               ],
+                                    //               controller:
+                                    //                   authController.phController,
+                                    //             ),
+                                    //           ),
+                                    //         ],
+                                    //       ),
+                                         
                                           const SizedBox(
                                             height: 5,
                                           ),

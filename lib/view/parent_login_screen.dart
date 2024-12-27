@@ -126,16 +126,15 @@ class ParentLoginScreen extends StatelessWidget {
                                                 suffix: false,
                                                 readonly: false,
                                                 inputFormatter: [
-                                                  FilteringTextInputFormatter
-                                                      .allow(
-                                                    RegExp(
-                                                      r"[a-zA-Z0-9\s@&_,-\/.']",
-                                                    ),
-                                                  ),
+                                                 FilteringTextInputFormatter.allow(
+                                                RegExp(r"[0-9]"),
+                                              ),
+                                              LengthLimitingTextInputFormatter(
+                                                  10),
                                                 ],
                                                 hintText: 'Enter here...',
                                                 keyboardType:
-                                                    TextInputType.emailAddress,
+                                                    TextInputType.phone,
                                                 controller: parentController
                                                     .logInController,
                                               ),

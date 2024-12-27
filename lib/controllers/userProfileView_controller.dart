@@ -51,7 +51,7 @@ class UserProfileController extends GetxController
   final pincodesController = TextEditingController();
     final additionalInfoController = TextEditingController();
       final tuteorganizationController = TextEditingController();
-
+     final tutionController = TextEditingController();
   //education info
   // Dropdown values
   var highestQualification = ''.obs;
@@ -106,6 +106,16 @@ class UserProfileController extends GetxController
    double? latitude, longitude;
 
    var tuteEducationInfo = {}.obs;
+
+    var boardController = ''.obs;
+    var classController = ''.obs;
+      var subjectController = ''.obs;
+
+      List<String> board1 = [];
+   RxList<String> classList = <String>[].obs;
+   RxList<String> subject = <String>[].obs;
+   var appConfig = AppConfig().obs;
+    List<String> batchName = [];
 
   void setHighestQualification(String value) =>
       highestQualification.value = value;
@@ -343,6 +353,13 @@ class UserProfileController extends GetxController
       );
       return false;
     }
+     if (tutionController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the tution name',
+      );
+      return false;
+    }
     return true;
   }
 
@@ -360,6 +377,7 @@ class UserProfileController extends GetxController
      tuteeQualifications = getTuteeQualifications();
     fetchUserProfiles();
     _loadDropdownData();
+    fetchAppConfig();
   }
 
   void _loadDropdownData() async {
@@ -521,16 +539,21 @@ class UserProfileController extends GetxController
     additionalInfoController.text=userdata.qualificationDetails.isNotEmpty
         ? userdata.qualificationDetails[0].additionalInfo ?? ""
         : "";
-
+      tutionController.text=userdata.qualificationDetails.isNotEmpty
+        ? userdata.qualificationDetails[0].tutionName ?? ""
+        : "";
     //  education info
     highestQualifications.value = userdata.qualificationDetails.isNotEmpty
         ? userdata.qualificationDetails[0].highestQualification ?? ""
         : "";
-    QualificationClass.value = userdata.qualificationDetails.isNotEmpty
+    classController.value = userdata.qualificationDetails.isNotEmpty
         ? userdata.qualificationDetails[0].selectClass ?? ""
         : "";
-    board.value = userdata.qualificationDetails.isNotEmpty
+    boardController.value = userdata.qualificationDetails.isNotEmpty
         ? userdata.qualificationDetails[0].selectBoard ?? ""
+        : "";
+         subjectController.value = userdata.qualificationDetails.isNotEmpty
+        ? userdata.qualificationDetails[0].selectSubject ?? ""
         : "";
     organizationName.value = userdata.qualificationDetails.isNotEmpty
         ? userdata.qualificationDetails[0].organizationName ?? ""
@@ -553,6 +576,16 @@ class UserProfileController extends GetxController
         : "";
     additionalInfo.value = userdata.qualificationDetails.isNotEmpty
         ? userdata.qualificationDetails[0].additionalInfo ?? ""
+        : "";
+
+        resumePath.value = userdata.qualificationDetails.isNotEmpty
+        ? userdata.qualificationDetails[0].attachResume ?? ""
+        : "";
+         educationCertPath.value = userdata.qualificationDetails.isNotEmpty
+        ? userdata.qualificationDetails[0].attachEducationCertificate ?? ""
+        : "";
+          experienceCertPath.value = userdata.qualificationDetails.isNotEmpty
+        ? userdata.qualificationDetails[0].attachExperienceCertificate ?? ""
         : "";
   }
 
@@ -621,9 +654,9 @@ class UserProfileController extends GetxController
           personalInfo: personalInfo.value,
           addressInfo: addressInfo.value,
           educationInfo: educationInfo.value,
-          resumePath: '',
-          educationCertPath: '',
-          experienceCertPath: '',
+          resumePath: resumePath.value,
+          educationCertPath: educationCertPath.value,
+          experienceCertPath: experienceCertPath.value,
           latitude: latitude.toString(),
           longitude: longitude.toString());
 
@@ -675,6 +708,7 @@ print('Wow ID: $wowId');
           "working_tech": workingTech.value,
           "teaching_experience": teachingExperience.value,
           "additional_info": additionalInfoController.text,
+          "tution_name": tutionController.text,
         };
         submitAccountSetup(context);
       }
@@ -731,10 +765,24 @@ print('Wow ID: $wowId');
       );
       return false;
     }
-    if (QualificationClass.value.isEmpty) {
+     if (boardController.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        "Please select class/specialization.",
+        "Please select board.",
+      );
+      return false;
+    }
+    if (classController.value.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please select class.",
+      );
+      return false;
+    }
+     if (subjectController.value.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please select subject.",
       );
       return false;
     }
@@ -818,5 +866,76 @@ print('Wow ID: $wowId');
       isLoading.value = false;
     }
   }
+
+   Future<void> fetchAppConfig() async {
+    try {
+      var response = await WebService.fetchAppConfig();
+      if (response != null) {
+        appConfig.value = response;
+        
+        // Store the response data in GetStorage
+        final storage = GetStorage();
+        storage.write('appConfig', response.toJson());
+batchName = (storage.read<List<dynamic>>('batchList') ?? [])
+    .map((item) => item.toString()) 
+    .toList();
+        // Create board list by explicitly casting each part of the chain
+        board1 = response.data?.studentCategory
+            ?.expand((category) => category.label?.labelData ?? [])
+            .map((labelData) => labelData.board ?? '')
+            .where((board) => board.isNotEmpty)
+            .toSet() // Removes duplicates
+            .cast<String>() // Ensures all items are strings
+            .toList() ?? [];
+
+        Logger().i('AppConfig loaded successfully');
+      } else {
+        Logger().e('Failed to load AppConfig');
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+   void updateClassList(String board) {
+    boardController.value = board;
+    classList.value = appConfig.value.data?.studentCategory
+            ?.expand((category) => category.label?.labelData ?? [])
+            .where((labelData) => labelData.board == board)
+            .expand((labelData) => labelData.classes ?? [])
+            .map((classItem) => classItem.className ?? '')
+            .where((className) => className.isNotEmpty)
+            .toSet() // Removes duplicates
+            .cast<String>() // Ensures all items are strings
+            .toList() ?? [];
+  }
+
+  void updateSubjectList(String className) {
+    classController.value = className;
+    subject.value = appConfig.value.data?.studentCategory
+            ?.expand((category) => category.label?.labelData ?? [])
+            .expand((labelData) => labelData.classes ?? [])
+            .where((classItem) => classItem.className == className)
+            .expand((classItem) => classItem.subjects ?? [])
+            .map((subject) => subject.name ?? '')
+            .where((subjectName) => subjectName.isNotEmpty)
+            .toSet()
+            .cast<String>()
+            .toList() ?? [];
+  }
+
+     void setBoard(String value) {
+  boardController.value = value;
+   updateClassList(value);
+}
+
+void setClass(String value) {
+  classController.value = value;
+   updateSubjectList(value);
+}
+
+void setSubject(String value) {
+  subjectController.value = value;
+}
 
 }

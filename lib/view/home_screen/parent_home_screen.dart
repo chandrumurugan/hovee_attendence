@@ -58,44 +58,6 @@ class _ParentViewState extends State<ParentView> {
   final ParentAccountSetupController controller =
       Get.put(ParentAccountSetupController(), permanent: true);
          final UserProfileController userProfileData = Get.put(UserProfileController());
-// final ParentController parentController =
-//       Get.put(ParentController(), permanent: true);
-  // String? wowId, firstName; 
-
-  // void fetchHomeDashboardTuteeList() async {
-  //   try {
-  //     setState(() {
-  //      controller.   isLoading (true);
-  //     });
-
-  //     var homeDashboardResponse = await WebService.fetchHomeDashboardParentList();
-  //     if (homeDashboardResponse != null) {
-  //       Logger().i("getting printed ===>${homeDashboardResponse.partentId!.id!}");
-  //       controller.homeDashboardNavList.value = homeDashboardResponse.navbarItems!;
-  //     //  controller.  studentDetails.value = homeDashboardResponse.studentDetails!;
-  //     //   // Extracting notification count
-  //     //   //var studentDetails = homeDashboardResponse!.studentDetails;
-  //     //   if (controller.studentDetails.value != null &&controller. studentDetails.value.isNotEmpty) {
-  //     //     // Getting the unreadNotificationCount of the first student
-  //     //  controller.   homeDashboardCourseList.value = controller .studentDetails![0].courseList!;
-  //     //   }
-  //       getUserTokenList(homeDashboardResponse.partentId!.id!);
-  //       controller.    loginData.value = ParentDataq(
-  //           firstName: homeDashboardResponse.partentId!.firstName,
-  //           lastName: homeDashboardResponse.partentId!.lastName,
-  //           wowId: homeDashboardResponse.partentId!.wowId,
-  //           id: homeDashboardResponse.partentId!.id
-  //         );
-  //     }
-  //   } catch (e) {
-  //     // Get.snackbar('Failed to fetch batches');
-
-  //     Logger().e("getting==>${e}");
-  //   } finally {
-  //     controller.  isLoading(false);
-  //   }
-  // }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -103,63 +65,6 @@ class _ParentViewState extends State<ParentView> {
     Logger().i("${widget.firstname}message");
     //fetchHomeDashboardTuteeList();
   }
-  //  void getUserTokenList(String parentId) async {
-  //   controller.  isLoading.value = true;
-  //   try {
-  //     var batchData = {
-  //       "parentId": parentId,
-  //     };
-
-  //     // Fetch the data from the WebService
-  //     final getUserTokenListModel? response =
-  //         await WebService.getUserTokenList(batchData);
-
-  //     if (response != null && response.statusCode == 200) {
-  //       // Get the userId list from the response
-  //     controller.    userDetails.value = response.data!.userId!;
-  //       List<UserId>? userIds = response.data?.userId;
-
-  //       if (userIds != null && userIds.isNotEmpty) {
-  //         // Get the first UserId object (index 0)
-  //         UserId firstUser = userIds[0];
-
-  //         // Convert UserId object to JSON string
-  //         String userJson = firstUser.toJson().toString();
-
-  //         // Save the JSON string in SharedPreferences
-  //         SharedPreferences prefs = await SharedPreferences.getInstance();
-  //         String? userDataJson = prefs.getString('firstUserId');
-
-  //         if (userDataJson != null) {
-  //           // Decode the JSON string into a Map
-  //           Map<String, dynamic> userMap = jsonDecode(userDataJson);
-
-  //           // Retrieve the wowId and name from the Map
-  //           String wowId = userMap['wowId'];
-  //           String name = userMap['name'];
-  //           String token = userMap['token '];
-  //           prefs.setString('Token', token);
-  //           // Debugging: Check if the values are retrieved correctly
-  //           print('User ID: $wowId, User Name: $name');
-  //         } else {
-  //           print('No user data found in SharedPreferences');
-  //         }
-
-  //         // userDetails.value = firstUser.sId!;
-  //       } else {
-  //         // Handle empty userId list
-  //         print('UserId list is empty');
-  //       }
-  //     } else {
-  //       // Handle API failure or response error
-  //       print('Failed to fetch user token list');
-  //     }
-  //   } catch (e) {
-  //     print('Error: $e');
-  //   } finally {
-  //   controller.    isLoading.value = false;
-  //   }
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -285,37 +190,6 @@ class _ParentViewState extends State<ParentView> {
           backgroundColor: Colors.white,
         ),
         body:
-            //  StreamBuilder<Map<String, dynamic>>(
-            //   stream: _locationService.getStudentLiveLocation(userId: widget.userId),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return const Center(child: CircularProgressIndicator());
-            //     }
-
-            //     if (!snapshot.hasData || snapshot.data?['location'] == null) {
-            //       return const Center(child: Text("Location not available"));
-            //     }
-
-            //     final location = snapshot.data!['location'];
-            //     _studentLocation = LatLng(location['lat'], location['lng']);
-
-            //     return GoogleMap(
-            //       initialCameraPosition: CameraPosition(
-            //         target: _studentLocation!,
-            //         zoom: 15,
-            //       ),
-            //       markers: _studentLocation != null
-            //           ? {
-            //               Marker(
-            //                 markerId: const MarkerId("student"),
-            //                 position: _studentLocation!,
-            //                 infoWindow: const InfoWindow(title: "Student Location"),
-            //               ),
-            //             }
-            //           : {},
-            //     );
-            //   },
-            // ),
             Obx(() {
           if (parentController.isLoading.value || userProfileData.isLoading.value ) {
             // Call your refresh logic here, e.g., re-fetch data
@@ -342,167 +216,6 @@ class _ParentViewState extends State<ParentView> {
                           wowId: widget.wowid,
                         ),
                       ),
-                  // InkWell(
-                  //   onTap: () {
-                  //     // Get.to(() => UserProfile(
-                  //     //       type: "Parent",
-                  //     //     ));
-                  //     HomePageHeader(
-                  //         title: 'Attendance Monitoring',
-                  //         userType: "Tutor",
-                  //         firstName: firstname,
-                  //         lastName: lastname,
-                  //         wowId: wowid,
-                  //       ),
-                  //   },
-                  //   child: Container(
-                  //       padding: const EdgeInsets.fromLTRB(20, 5, 20, 40),
-                  //       decoration: const BoxDecoration(
-                  //         image: DecorationImage(
-                  //             fit: BoxFit.cover,
-                  //             image: AssetImage(
-                  //               'assets/tutorHomeImg/Homepage_bg_banner (1).png',
-                  //             )),
-                  //         borderRadius: BorderRadius.all(Radius.circular(12)),
-                  //         gradient: LinearGradient(
-                  //           colors: [Color(0xFFC13584), Color(0xFF833AB4)],
-                  //           begin: Alignment.topCenter,
-                  //           end: Alignment.bottomCenter,
-                  //         ),
-                  //       ),
-                  //       child: Column(
-                  //         crossAxisAlignment: CrossAxisAlignment.start,
-                  //         children: [
-                  //           const SizedBox(
-                  //             height: 10,
-                  //           ),
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Column(
-                  //                 mainAxisAlignment: MainAxisAlignment.center,
-                  //                 crossAxisAlignment: CrossAxisAlignment.start,
-                  //                 children: [
-                  //                   Row(
-                  //                     mainAxisSize: MainAxisSize.min,
-                  //                     children: [
-                  //                       const CircleAvatar(
-                  //                         radius: 35,
-                  //                         // Optional: Set a background color
-                  //                         //backgroundColor: Colors.grey[200],
-                  //                         child: Icon(
-                  //                           Icons
-                  //                               .person, // Correct usage: provide IconData directly
-                  //                           size:
-                  //                               36, // Adjust the icon size as needed
-                  //                           color: Colors
-                  //                               .black, // Set the icon color
-                  //                         ),
-                  //                       ),
-                  //                       const SizedBox(
-                  //                         width: 10,
-                  //                       ),
-
-                  //                       Column(
-                  //                         crossAxisAlignment:
-                  //                             CrossAxisAlignment.start,
-                  //                         children: [
-                  //                           Text(
-                  //                               '${widget.firstname ?? ""} ${widget.lastname ?? ""}',
-                  //                               style: const TextStyle(
-                  //                                 fontWeight: FontWeight.w400,
-                  //                                 fontSize: 20.0,
-                  //                                 color: Colors.white,
-                  //                               )),
-                  //                           Text('Parent',
-                  //                               style: const TextStyle(
-                  //                                 fontWeight: FontWeight.w400,
-                  //                                 fontSize: 18.0,
-                  //                                 color: Colors.amber,
-                  //                               )),
-                  //                         ],
-                  //                       ),
-                  //                       // const SizedBox(
-                  //                       //   width: 10,
-                  //                       // ),
-                  //                     ],
-                  //                   ),
-                  //                   const SizedBox(
-                  //                     height: 5,
-                  //                   ),
-                  //                   Row(
-                  //                     mainAxisSize: MainAxisSize.min,
-                  //                     children: [
-                  //                       Container(
-                  //                         padding: const EdgeInsets.symmetric(
-                  //                             horizontal: 10, vertical: 3),
-                  //                         decoration: BoxDecoration(
-                  //                             borderRadius:
-                  //                                 BorderRadius.circular(20),
-                  //                             color: Colors.green),
-                  //                         child: Row(
-                  //                           children: [
-                  //                             const Text('0',
-                  //                                 style: TextStyle(
-                  //                                   fontWeight: FontWeight.w500,
-                  //                                   fontSize: 10.0,
-                  //                                   color: Colors.white,
-                  //                                 )),
-                  //                             Image.asset(
-                  //                                 'assets/tutorHomeImg/star 1.png')
-                  //                           ],
-                  //                         ),
-                  //                       ),
-                  //                       const SizedBox(
-                  //                         width: 10,
-                  //                       ),
-                  //                       Container(
-                  //                         height: 15,
-                  //                         width: 1,
-                  //                         color: Colors.white,
-                  //                       ),
-                  //                       const SizedBox(
-                  //                         width: 10,
-                  //                       ),
-                  //                       // userType=='Parent'?
-                  //                       // Text(
-                  //                       //         '${parentController.loginData!.value.wowId}',
-                  //                       //     style: const TextStyle(
-                  //                       //       fontWeight: FontWeight.w400,
-                  //                       //       fontSize: 13.0,
-                  //                       //       color: Colors.white,
-                  //                       //     )):
-
-                  //                       Text('ID: ${widget.wowid ?? ''}',
-                  //                           style: const TextStyle(
-                  //                             fontWeight: FontWeight.w400,
-                  //                             fontSize: 13.0,
-                  //                             color: Colors.white,
-                  //                           )),
-                  //                     ],
-                  //                   ),
-                  //                 ],
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           Padding(
-                  //             padding: const EdgeInsets.symmetric(
-                  //                 horizontal: 10.0, vertical: 5),
-                  //             child: Text(
-                  //               'Attendance Monitoring',
-                  //               style: const TextStyle(
-                  //                   fontSize: 16,
-                  //                   fontWeight: FontWeight.w500,
-                  //                   color: Colors.white),
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       )),
-                  //   // HomePageHeader(
-                  //   //   title: 'Attendance Monitoring',
-                  //   //   userType: "Parent",
-                  //   // ),
-                  // ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -518,18 +231,6 @@ class _ParentViewState extends State<ParentView> {
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black),
                             ),
-                            // InkWell(
-                            //   onTap: () {
-                            //     // Get.to(() => AttendanceCourseListScreen());
-                            //   },
-                            //   child: const Text(
-                            //     'See All',
-                            //     style: TextStyle(
-                            //         fontSize: 16,
-                            //         fontWeight: FontWeight.w500,
-                            //         color: Colors.black),
-                            //   ),
-                            // ),
                           ],
                         )
                       : SizedBox.shrink(),
@@ -806,7 +507,7 @@ class _ParentViewState extends State<ParentView> {
                                           ),
                                           arguments: [
                                             {
-                                              "userId": wowId,
+                                              "userId": wowId.toString(),
                                             }
                                           ],
                                         )
@@ -934,92 +635,6 @@ class _ParentViewState extends State<ParentView> {
                   const SizedBox(
                     height: 10,
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.start,//spaceBetween
-                  //   children: [
-                  //     const Text(
-                  //       'Announcement',
-                  //       style: TextStyle(
-                  //           fontSize: 16,
-                  //           fontWeight: FontWeight.w500,
-                  //           color: Colors.black),
-                  //     ),
-                  //     // InkWell(
-                  //     //   onTap: () {
-                  //     //     // Get.to(() => AttendanceCourseListScreen());
-                  //     //   },
-                  //     //   child: const Text(
-                  //     //     'See All',
-                  //     //     style: TextStyle(
-                  //     //         fontSize: 16,
-                  //     //         fontWeight: FontWeight.w500,
-                  //     //         color: Colors.black),
-                  //     //   ),
-                  //     // ),
-                  //   ],
-                  // ),
-                  // Card(
-                  //                 elevation: 10,
-                  //                 shadowColor: Colors.black,
-                  //                 surfaceTintColor: Colors.white,
-                  //                 shape: RoundedRectangleBorder(
-                  //                   side: const BorderSide(
-                  //                     color:  Colors
-                  //                             .transparent, // Highlight condition
-                  //                     width: 2, // Border width
-                  //                   ),
-                  //                   borderRadius: BorderRadius.circular(
-                  //                       8), // Rounded border
-                  //                 ),
-                  //                 child: Container(
-                  //                   padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 10),
-                  //                   child: Row(
-                  //                      mainAxisAlignment:
-                  //                             MainAxisAlignment.start,
-                  //                     children: [
-                  //                       // CircleAvatar(
-                  //                       //   radius: 40,
-                  //                       //   child: Icon(
-                  //                       //     Icons.person,
-                  //                       //     size: 20,
-                  //                       //     color: Colors.black,
-                  //                       //   ),
-                  //                       // ),
-                  //                       Image.asset(
-                  //                       'assets/tutorHomeImg/Rectangle 18373.png',
-                  //                       //color: Colors.white,
-                  //                       height: 60,
-                  //                     ),
-                  //                     const SizedBox(width: 8,),
-                  //                       const Column(
-                  //                         mainAxisAlignment:
-                  //                             MainAxisAlignment.spaceBetween,
-                  //                             crossAxisAlignment: CrossAxisAlignment.start,
-                  //                         children: [
-                  //                           Text(
-                  //                              'John Hook',
-                  //                             style: TextStyle(
-                  //                               fontWeight: FontWeight.w400,
-                  //                               fontSize: 20.0,
-                  //                               color: Colors.black,
-                  //                             ),
-                  //                           ),
-
-                  //                           Text(
-                  //                              'It is a long established fact that a reader\nwill be distracted by the readable content\nof a page when looking at its layout.',
-                  //                             style: TextStyle(
-                  //                               fontWeight: FontWeight.w400,
-                  //                               fontSize: 14.0,
-                  //                               color: Colors.black,
-                  //                             ),
-                  //                           ),
-
-                  //                         ],
-                  //                       )
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //               ),
                 ],
               ),
             ),

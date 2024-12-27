@@ -146,12 +146,15 @@ class QualificationDetail {
     required this.updatedAt,
     required this.teachingexperience,
     this.iV,
+    this.tutionName,
+    this.selectSubject
   });
 
   final String? id;
   final String? highestQualification;
   String? selectBoard;
   String? selectClass;
+   String? selectSubject;
   final String? organizationName;
   final String? userId;
   final String? teachingSkillSet;
@@ -164,7 +167,7 @@ class QualificationDetail {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   int? iV;
-
+  final String? tutionName;
   factory QualificationDetail.fromJson(Map<String, dynamic> json) {
     return QualificationDetail(
       id: json["_id"],
@@ -183,6 +186,8 @@ class QualificationDetail {
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
       teachingexperience: json["teaching_experience"],
       iV: json['__v'], // Use ':' to assign values
+      tutionName: json['tution_name'],
+       selectSubject: json['select_subject'],
     );
   }
 
@@ -204,7 +209,8 @@ class QualificationDetail {
     data['created_at'] = this.createdAt?.toIso8601String(); // Convert DateTime to string
     data['updated_at'] = this.updatedAt?.toIso8601String(); // Convert DateTime to string
     data['__v'] = this.iV;
-
+     data['tution_name'] = this.tutionName;
+       data['select_subject'] = this.selectSubject;
     return data;
   }
 }

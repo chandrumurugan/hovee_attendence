@@ -68,7 +68,8 @@ class StudentAttendanceController extends GetxController {
 
   //  var absentDates = <DateTime>{}.obs;
   //  var presentDates = <DateTime>{}.obs;
- final TrackTuteeLocationController trackTuteeLocationController = Get.put(TrackTuteeLocationController());
+// final  trackTuteeLocationController = Get.find<TrackTuteeLocationController>();
+//final  trackTuteeLocationController = Get.put(TrackTuteeLocationController());
   @override
   void onInit() {
     // TODO: implement onInit
@@ -106,7 +107,10 @@ class StudentAttendanceController extends GetxController {
            fetchStudentsList(selectedBatchIN.value!.batchId!, '', currentMonth);
           }else{
            fetchTutteAttendanceList(selectedBatchIN.value!.batchId!, '', currentMonth);
-           //trackTuteeLocationController.fetchBatchLocationList(selectedBatchIN.value!.batchId!,);
+          // if (type.value=='Parent'){
+          //        trackTuteeLocationController.fetchBatchLocationList(selectedBatchIN.value!.batchId!,);
+          //  }
+           
           }
         }
         Logger().i(batchList.length);
@@ -128,6 +132,9 @@ class StudentAttendanceController extends GetxController {
        String currentMonth = DateFormat('MMM').format(DateTime.now());
 
     fetchTutteAttendanceList(selectedBatchIN.value!.batchId!,'',currentMonth);
+    //  if (type.value=='Parent'){
+    //              trackTuteeLocationController.fetchBatchLocationList(selectedBatchIN.value!.batchId!,);
+    //        }
   }
 
   void setFocusedDay(DateTime date) {
@@ -196,7 +203,7 @@ class StudentAttendanceController extends GetxController {
           })
           .toSet():'';
     
-  print("===========>${missPunchDates.value}");
+  print("Miss punch===========>${missPunchDates.value}");
    dataTutee!.absent!=null?
     absentDates.value = dataTutee!.absent!
           .map((date) {
@@ -212,6 +219,7 @@ class StudentAttendanceController extends GetxController {
             return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
           })
           .toSet():'';
+           print("Present===========>${presentDates.value}");
           dataTutee!.leave!=null?
            leaveDates.value = dataTutee!.leave!
           .map((date) {
@@ -219,12 +227,14 @@ class StudentAttendanceController extends GetxController {
             return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
           })
           .toSet():'';
+           print("Leave===========>${leaveDates.value}");
            holidayDates.value = dataTutee!.holidays!
           .map((date) {
                     final parsedDate = DateFormat('dd-MM-yyyy').parse(date.holidayDate!);
             return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
           })
           .toSet();
+           print("Holiday===========>${holidayDates.value}");
         attendanceData.value = [
           AttendanceData(
               category: "All",
@@ -300,7 +310,7 @@ class StudentAttendanceController extends GetxController {
     // Check if a batch is selected and fetch attendance
     if (selectedBatchIN.value != null) {
       fetchTutteAttendanceList(
-          selectedBatchIN.value!.batchId!, formattedDate, monthAbbreviation);
+          selectedBatchIN.value!.batchId!, '', monthAbbreviation);
     }
   }
 }

@@ -152,8 +152,10 @@ class Tutorenquirlist extends StatelessWidget {
                                                 'Tutee name',
                                                 tutionCourseDetailsList
                                                     .studentName),
-                                            _buildRow('Course code',
-                                                tutionCourseDetailsList.courseCode),
+                                            _buildRow('Class',
+                                                tutionCourseDetailsList.className),
+                                                 _buildRow('Board',
+                                                tutionCourseDetailsList.board),
                                             _buildRow('Batch name',
                                                 tutionCourseDetailsList.courseName),
                                             _buildRow('Subject',
@@ -250,7 +252,7 @@ class Tutorenquirlist extends StatelessWidget {
                                         Expanded(
                                           child: InkWell(
                                             onTap: () {
-                                              Get.off(() => AddEnrollmentScreen(
+                                              Get.to(() => AddEnrollmentScreen(
                                                     tuteename:
                                                         tutionCourseDetailsList
                                                             .studentName!,

@@ -15,6 +15,7 @@ import 'package:hovee_attendence/controllers/parent_dashboard_controller.dart';
 import 'package:hovee_attendence/controllers/ratings_controller.dart';
 import 'package:hovee_attendence/controllers/role_controller.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
+import 'package:hovee_attendence/controllers/track_tutee_controller.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorsStudentAttendanceList.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
@@ -54,6 +55,7 @@ class MyBindings extends Bindings {
     Get.lazyPut<ParentAccountSetupController>(() => ParentAccountSetupController());
     Get.lazyPut<ParentDashboardController>(() => ParentDashboardController());
      Get.lazyPut(() => RatingsController(), fenix: true);
+      Get.lazyPut<TrackTuteeLocationController>(() => TrackTuteeLocationController());
   }
 }
 

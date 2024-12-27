@@ -181,14 +181,6 @@ class _OtpScreenState extends State<OtpScreen> {
                                                 fontSize: 16.0,
                                                 color: const Color(0xFF000000),
                                                 fontWeight: FontWeight.w600)),
-                                        // Text(
-                                        //   'Enter the otp sent to +91 ${authController.currentTabIndex == 0 ? authController.logInController.text : authController.phController.text}',
-                                        //   style: const TextStyle(
-                                        //     fontSize: 12,
-                                        //     fontWeight: FontWeight.w400,
-                                        //     color: Colors.grey,
-                                        //   ),
-                                        // )
                                       ],
                                     ),
                                     const SizedBox(
@@ -219,11 +211,6 @@ class _OtpScreenState extends State<OtpScreen> {
                                           controller:
                                               authController.otpController,
                                           focusNode: authController.focusNode,
-                                          // androidSmsAutofillMethod:
-                                          //     AndroidSmsAutofillMethod
-                                          //         .smsUserConsentApi,
-                                          // listenForMultipleSmsOnAndroid:
-                                          //     true,
                                           defaultPinTheme: defaultPinTheme,
                                           separatorBuilder: (index) =>
                                               const SizedBox(width: 8),
@@ -232,10 +219,6 @@ class _OtpScreenState extends State<OtpScreen> {
                                                 ? null
                                                 : null;
                                           },
-                                          // onClipboardFound: (value) {
-                                          //   debugPrint('onClipboardFound: $value');
-                                          //   pinController.setText(value);
-                                          // },
                                           hapticFeedbackType:
                                               HapticFeedbackType.lightImpact,
                                           onCompleted: (pin) {
@@ -449,64 +432,6 @@ class _OtpScreenState extends State<OtpScreen> {
             ],
           ),
         )
-
-        // Stack(
-        //   alignment: AlignmentDirectional.center,
-        //   children: [
-        //     SingleChildScrollView(
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.center,
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           Container(
-        //             padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20,top: 10),
-        //             width: MediaQuery.sizeOf(context).width,
-        //             height: MediaQuery.sizeOf(context).height * 0.24,
-        //             decoration: const BoxDecoration(
-        //               image: DecorationImage(
-        //                   image: AssetImage('assets/image 194.png'),
-        //                   fit: BoxFit.cover),
-        //               gradient: LinearGradient(
-        //                 colors: [Color(0xFFC13584), Color(0xFF833AB4)],
-        //                 begin: Alignment.topCenter,
-        //                 end: Alignment.bottomCenter,
-        //               ),
-        //             ),
-        //             child: const Column(
-        //               crossAxisAlignment: CrossAxisAlignment.start,
-        //               mainAxisAlignment: MainAxisAlignment.start,
-        //               children: [
-        //                 SizedBox(
-        //                   height: 5,
-        //                 ),
-        //                 Text(
-        //                   'Welcome !',
-        //                   style: TextStyle(
-        //                       color: Colors.white,
-        //                       fontWeight: FontWeight.w400,
-        //                       fontSize: 24),
-        //                 ),
-        //                 SizedBox(
-        //                   height: 15,
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //           Column(
-        //             children: [
-        //               Image.asset(
-        //                 'assets/appConstantImg/loginSignupI/image 203.png',
-        //                 height: 150,
-        //               )
-        //             ],
-        //           )
-        //         ],
-        //       ),
-        //     ),
-
-        //   ],
-        // ),
-
         );
   }
 }

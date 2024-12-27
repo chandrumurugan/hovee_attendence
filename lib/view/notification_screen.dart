@@ -50,9 +50,9 @@ class NotificationScreen extends StatelessWidget {
             const SizedBox(height: 10),
             Obx(() {
               if (attendanceCourseListController.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(child: SizedBox.shrink());
               } else if (attendanceCourseListController
-                  .notificationList.isEmpty) {
+                  .categories.isEmpty) {
                 // Display "No data found" when the list is empty
                 return const SizedBox.shrink();
               } else {
@@ -124,7 +124,8 @@ class NotificationScreen extends StatelessWidget {
                                 child: Card(
                                     elevation: 10,
                                     shadowColor: Colors.black,
-                                    surfaceTintColor: Colors.white,
+                                    surfaceTintColor: notification.isRead?   Colors.white:AppConstants.secondaryColor.withOpacity(0.5)
+                              ,
                                     child: ListTile(
                                       leading: const CircleAvatar(
                                         radius: 20, // Adjust size as needed

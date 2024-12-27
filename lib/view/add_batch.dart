@@ -202,7 +202,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                   Row(
                     children: [
                       const Text(
-                        'Batch Timing Start',
+                        'Batch start time',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -246,7 +246,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                   Row(
                     children: [
                       const Text(
-                        'Batch Timing End',
+                        'Batch end time',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -289,7 +289,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                   Row(
                     children: [
                       const Text(
-                        'Maximum slots',
+                        'Batch maximum slos',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -443,6 +443,96 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                           10), // Restrict to 10 digits
                     ], // Add "/month" as suffix
                   ),
+                  Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
+              child: Row(
+                children: [
+                  const Text(
+                    'Start Date',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    '*',
+                    style: GoogleFonts.nunito(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red.withOpacity(0.6),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
+              child: InputTextField(
+                suffix: true,
+                readonly: true,
+                isDate: true,
+                hintText: 'Select',
+                initialDate: DateTime.now(),
+                firstDate:
+                    DateTime.now(), // Sets the minimum selectable date to today
+                lastDate:
+                    DateTime(2100), // You can set this to a far future date
+                keyboardType: TextInputType.datetime,
+                controller: controller.startDateController,
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
+              child: Row(
+                children: [
+                  const Text(
+                    'End Date',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    '*',
+                    style: GoogleFonts.nunito(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red.withOpacity(0.6),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
+              child: InputTextField(
+                  suffix: true,
+                  readonly: true,
+                  isDate: true,
+                  hintText: 'Select',
+                 initialDate: DateTime.now(),
+                firstDate:
+                    DateTime.now(), // Sets the minimum selectable date to today
+                lastDate:
+                    DateTime(2100),
+                  keyboardType: TextInputType.datetime,
+                  controller: controller.endDateController),
+            ),
                 ],
               ),
             ),

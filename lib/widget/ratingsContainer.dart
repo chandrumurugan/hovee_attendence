@@ -4,21 +4,21 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 
-class RatingPropertyConatiner extends StatefulWidget {
-  final String propertyImage;
-  final String propertyAddress;
-  final String propertyShortName;
+class RatingConatiner extends StatefulWidget {
+  final String reviewImage;
+  final String reviewAddress;
+  final String reviewShortName;
   final String expectedRent;
   final String userRatedCount;
 
   final dynamic userRating;
   final String propertyCategory;
   final bool? isEnrolled;
-  RatingPropertyConatiner({
+  RatingConatiner({
     super.key,
-    required this.propertyImage,
-    required this.propertyAddress,
-    required this.propertyShortName,
+    required this.reviewImage,
+    required this.reviewAddress,
+    required this.reviewShortName,
     required this.expectedRent,
     required this.userRatedCount,
     required this.userRating,
@@ -27,10 +27,10 @@ class RatingPropertyConatiner extends StatefulWidget {
   });
 
   @override
-  State<RatingPropertyConatiner> createState() => _RatingPropertyState();
+  State<RatingConatiner> createState() => _RatingPropertyState();
 }
 
-class _RatingPropertyState extends State<RatingPropertyConatiner> {
+class _RatingPropertyState extends State<RatingConatiner> {
   bool isFavourite = true;
   void onTapFavourite() {
     isFavourite = !isFavourite;
@@ -82,10 +82,10 @@ class _RatingPropertyState extends State<RatingPropertyConatiner> {
                                   child: 
                                   CircleAvatar(
             backgroundColor: Colors.grey[200], 
-            child: widget.propertyImage.isEmpty ? Center(child: Icon(Icons.person),) : null ,
+            child: widget.reviewImage.isEmpty ? Center(child: Icon(Icons.person),) : null ,
             backgroundImage:
-            widget.propertyImage.isNotEmpty ? 
-                CachedNetworkImageProvider("${widget.propertyImage}") : null,
+            widget.reviewImage.isNotEmpty ? 
+                CachedNetworkImageProvider("${widget.reviewImage}") : null,
             radius: 35,
           ),
                                 ),
@@ -124,29 +124,6 @@ class _RatingPropertyState extends State<RatingPropertyConatiner> {
                                 ),
                             ],
                           ),
-    
-                          // RichText(
-                          //   textScaleFactor: 1.2,
-                          //   text: TextSpan(
-                          //     style: GoogleFonts.nunito(
-                          //       color: Colors.black,
-                          //     ),
-                          //     children: <TextSpan>[
-                          //       TextSpan(
-                          //         text: '₹${widget.expectedRent}/',
-                          //         style: GoogleFonts.nunito(
-                          //             fontWeight: FontWeight.w600,
-                          //             color: AppColors.secondary_color),
-                          //       ),
-                          //       TextSpan(
-                          //         text: 'month',
-                          //         style: GoogleFonts.nunito(
-                          //             fontWeight: FontWeight.w500,
-                          //             color: Colors.black.withOpacity(0.5)),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
                         ],
                       ),
                       SizedBox(
@@ -156,14 +133,14 @@ class _RatingPropertyState extends State<RatingPropertyConatiner> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         // mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('${widget.propertyShortName}',
+                          Text('${widget.reviewShortName}',
                               textScaleFactor: 1.10,
                               style: GoogleFonts.nunito(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black)),
                           SizedBox(
                             width: 160,
-                            child: Text('${widget.propertyAddress}.',
+                            child: Text('${widget.reviewAddress}.',
                                 overflow: TextOverflow.clip,
                                 softWrap: true,
                                 textScaleFactor: 1.0,
@@ -171,12 +148,6 @@ class _RatingPropertyState extends State<RatingPropertyConatiner> {
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black.withOpacity(.5))),
                           ),
-                          // Text('${widget.city}',
-                          //     textScaleFactor: 1.0,
-                          //     style: GoogleFonts.nunito(
-                          //         fontWeight: FontWeight.w500,
-                          //         color: Colors.black.withOpacity(.5))),
-                          // SizedBox(height: heightPadding * .009),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -200,16 +171,6 @@ class _RatingPropertyState extends State<RatingPropertyConatiner> {
                                       color: Colors.black)),
                             ],
                           ),
-    
-                          // Text(
-                          //   '${widget.userRating} Rated',
-                          //   textScaleFactor: 1.2,
-                          //   style: GoogleFonts.nunito(
-                          //     fontSize: 12,
-                          //     fontWeight: FontWeight.w500,
-                          //     color: Colors.black.withOpacity(.5),
-                          //   ),
-                          // ),
                         ],
                       ),
                     ],

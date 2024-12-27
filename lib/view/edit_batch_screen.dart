@@ -8,6 +8,7 @@ import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDropDownInputField.dart';
+import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/widget/add_days_dropdown.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:hovee_attendence/widget/multipleCheckDropDown.dart';
@@ -32,6 +33,8 @@ final BatchController controller = Get.put(BatchController());
     controller.batchDaysController.value = batch.batchDays.toString();
     controller.modeController.value = batch.batchMode ?? '';
     controller.fees.text = batch.fees.toString();
+    controller.startDateController.text = batch.startDate.toString();
+    controller.endDateController.text = batch.endDate.toString();
      Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBarHeader(
@@ -233,7 +236,7 @@ final BatchController controller = Get.put(BatchController());
                   Row(
                     children: [
                       const Text(
-                        'Maximum slots',
+                        'Batch maximum slos',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -387,6 +390,96 @@ final BatchController controller = Get.put(BatchController());
                                                   10), // Restrict to 10 digits
                                             ], // Add "/month" as suffix
                   ),
+                                    Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
+              child: Row(
+                children: [
+                  const Text(
+                    'Start Date',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    '*',
+                    style: GoogleFonts.nunito(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red.withOpacity(0.6),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
+              child: InputTextField(
+                suffix: true,
+                readonly: true,
+                isDate: true,
+                hintText: 'Select',
+                initialDate: DateTime.now(),
+                firstDate:
+                    DateTime.now(), // Sets the minimum selectable date to today
+                lastDate:
+                    DateTime(2100), // You can set this to a far future date
+                keyboardType: TextInputType.datetime,
+                controller: controller.startDateController,
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
+              child: Row(
+                children: [
+                  const Text(
+                    'End Date',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    '*',
+                    style: GoogleFonts.nunito(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red.withOpacity(0.6),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
+              child: InputTextField(
+                  suffix: true,
+                  readonly: true,
+                  isDate: true,
+                  hintText: 'Select',
+                 initialDate: DateTime.now(),
+                firstDate:
+                    DateTime.now(), // Sets the minimum selectable date to today
+                lastDate:
+                    DateTime(2100),
+                  keyboardType: TextInputType.datetime,
+                  controller: controller.endDateController),
+            ),
                 ],
               ),
             ),

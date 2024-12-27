@@ -154,68 +154,6 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                     ),
                   )
           ,
-          // Padding(
-          //           padding: const EdgeInsets.symmetric(horizontal: 14.0),
-          //           child: Container(
-          //             padding: const EdgeInsets.symmetric(
-          //                 horizontal: 10, vertical: 20),
-          //             decoration: BoxDecoration(
-          //                 color: 
-                             
-          //                      Colors.white),
-          //             child: Row(
-          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //               children: [
-          //                 Text(
-          //                   "Gender",
-          //                   style: GoogleFonts.nunito(
-          //                       color: Colors.black,
-          //                       fontWeight: FontWeight.w400,
-          //                       fontSize: 16),
-          //                 ),
-          //                 Text(
-          //                   '',
-          //                   style: GoogleFonts.nunito(
-          //                       color: Colors.black,
-          //                       fontWeight: FontWeight.w400,
-          //                       fontSize: 16),
-          //                 )
-          //               ],
-          //             ),
-          //           ),
-          //         )
-          // ,
-          // Padding(
-          //           padding: const EdgeInsets.symmetric(horizontal: 14.0),
-          //           child: Container(
-          //             padding: const EdgeInsets.symmetric(
-          //                 horizontal: 10, vertical: 20),
-          //             decoration: BoxDecoration(
-          //                 color: 
-                             
-          //                      Colors.grey.shade300),
-          //             child: Row(
-          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //               children: [
-          //                 Text(
-          //                   "Occupation Status",
-          //                   style: GoogleFonts.nunito(
-          //                       color: Colors.black,
-          //                       fontWeight: FontWeight.w400,
-          //                       fontSize: 16),
-          //                 ),
-          //                 Text(
-          //                  '',
-          //                   style: GoogleFonts.nunito(
-          //                       color: Colors.black,
-          //                       fontWeight: FontWeight.w400,
-          //                       fontSize: 16),
-          //                 )
-          //               ],
-          //             ),
-          //           ),
-          //         )
-          // ,
           Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 14.0),
                     child: Container(
@@ -247,37 +185,6 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                     ),
                   )
           ,
-          // Padding(
-          //           padding: const EdgeInsets.symmetric(horizontal: 14.0),
-          //           child: Container(
-          //             padding: const EdgeInsets.symmetric(
-          //                 horizontal: 10, vertical: 20),
-          //             decoration: BoxDecoration(
-          //                 color: 
-                             
-          //                      Colors.grey.shade300),
-          //             child: Row(
-          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //               children: [
-          //                 Text(
-          //                   "Languages Known",
-          //                   style: GoogleFonts.nunito(
-          //                       color: Colors.black,
-          //                       fontWeight: FontWeight.w400,
-          //                       fontSize: 16),
-          //                 ),
-          //                 Text(
-          //                  '',
-          //                   style: GoogleFonts.nunito(
-          //                       color: Colors.black,
-          //                       fontWeight: FontWeight.w400,
-          //                       fontSize: 16),
-          //                 )
-          //               ],
-          //             ),
-          //           ),
-          //         )
-          // ,
            type1=='Tutee'
                           ?
           Padding(
@@ -311,37 +218,6 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                     ),
                   ):Container()
           ,
-          // Padding(
-          //           padding: const EdgeInsets.symmetric(horizontal: 14.0),
-          //           child: Container(
-          //             padding: const EdgeInsets.symmetric(
-          //                 horizontal: 10, vertical: 20),
-          //             decoration: BoxDecoration(
-          //                 color: 
-                             
-          //                      Colors.white),
-          //             child: Row(
-          //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //               children: [
-          //                 Text(
-          //                   "Board",
-          //                   style: GoogleFonts.nunito(
-          //                       color: Colors.black,
-          //                       fontWeight: FontWeight.w400,
-          //                       fontSize: 16),
-          //                 ),
-          //                 Text(
-          //                   data!.board!,
-          //                   style: GoogleFonts.nunito(
-          //                       color: Colors.black,
-          //                       fontWeight: FontWeight.w400,
-          //                       fontSize: 16),
-          //                 )
-          //               ],
-          //             ),
-          //           ),
-          //         )
-          // ,
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(

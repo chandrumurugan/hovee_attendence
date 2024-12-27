@@ -38,7 +38,7 @@ class CourseDetailController extends GetxController {
     }
   
   void getClassTuteeById(BuildContext context, String className, String subject,
-      String TutorId,tutorname) async {
+      String TutorId,tutorname,fees,MaxSlots,startDate,endDate) async {
      
     isLoading.value = true;
    
@@ -60,6 +60,7 @@ class CourseDetailController extends GetxController {
         // Pass response data to CourseDetailScreen
         Get.to(CourseDetailScreen(
           data: response.data!, tutorname: tutorname,
+          fees: fees.toString(), maxSlots: MaxSlots, startDate: startDate, endDate: endDate ,
         ));
       } else {
          SnackBarUtils.showSuccessSnackBar(context,

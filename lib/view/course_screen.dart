@@ -119,15 +119,31 @@ class _TutorCourseListState extends State<TutorCourseList> {
               } else if (courseController.courseList.isEmpty) {
                 print(courseController.courseList);
                 // Display "No data found" when the list is empty
-                return Center(
-                  child: Text(
-                    'No data found',
-                    style: GoogleFonts.nunito(
-                      color: Colors.black54,
-                      fontSize: 16,
-                    ),
-                  ),
-                );
+                return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Image.asset(
+                                'assets/logo/No_Verification_Found_Image_app.png',
+                                height: 200,
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Center(
+                                  child: Text(
+                                "No listing found",
+                                style: GoogleFonts.nunito(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              )),
+                            ],
+                          ),
+                        );
               } else {
                 // Display the list of batches
                 return ListView.separated(
@@ -166,7 +182,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
                           tutorname: '',
                           type: widget.type,
                           id: course.sId!,
-                          course: course,
+                          course: course, batchMaximumSlots: '', batchTimingStart: '', batchTimingEnd: '',
                         ),
                       );
                     },

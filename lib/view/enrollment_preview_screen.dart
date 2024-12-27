@@ -15,6 +15,18 @@ class EnRollmentPreviewScreen extends StatelessWidget {
   final CourseDetailController controller = Get.put(CourseDetailController());
   @override
   Widget build(BuildContext context) {
+     String Tutionaddress = "${data!.tutorId!.doorNo}, "
+            "${data!.tutorId!.street}, "
+            "${data!.tutorId!.city}, "
+            "${data!.tutorId!.state}, "
+            "${data!.tutorId!.country} - "
+            "${data!.tutorId!.pincode}";
+             String studentaddress = "${data!.studentId!.doorNo}, "
+            "${data!.studentId!.street}, "
+            "${data!.studentId!.city}, "
+            "${data!.studentId!.state}, "
+            "${data!.studentId!.country} - "
+            "${data!.studentId!.pincode}";
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
@@ -539,6 +551,90 @@ class EnRollmentPreviewScreen extends StatelessWidget {
             //       ],
             //     ),
             //   ),
+              Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Tutee Location',
+                style: GoogleFonts.nunito(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Container(
+                        height: 44,
+                        width: 47,
+                        decoration: BoxDecoration(
+                            color: Color(0xffD9D9D9).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(8)),
+                            child: Icon(Icons.location_on,size: 40,color: Colors.red,),
+                      ),
+                    ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Text(
+                     studentaddress ??'',
+                      style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+             Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Tution Location',
+                style: GoogleFonts.nunito(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Container(
+                        height: 44,
+                        width: 47,
+                        decoration: BoxDecoration(
+                            color: Color(0xffD9D9D9).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(8)),
+                            child: Icon(Icons.location_on,size: 40,color: Colors.red,),
+                      ),
+                    ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Text(
+                     Tutionaddress ??'',
+                      style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

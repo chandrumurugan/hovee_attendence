@@ -162,28 +162,28 @@ class UserProfile extends StatelessWidget {
                             },
                             tabs: [
                               const Tab(
-                                text: 'Personal',
+                                text: 'Personal info',
                                 // child: Text("Personal info",style: GoogleFonts.nunito(color: Colors.black),textAlign: TextAlign.center,),
                               ),
                               const Tab(
-                                text: 'Address',
+                                text: 'Address info',
                               ),
                               if(type == null && type != "Parent")
                               Tab(
                                 text: accountController.userProfileResponse
                                             .value.data!.rolesId!.roleName! ==
                                         'Tutee'
-                                    ? 'Education'
-                                    : 'Professional',
+                                    ? 'Education info'
+                                    : 'Professional info',
                               ),
                             ],
                             unselectedLabelColor: Colors.grey,
-                            unselectedLabelStyle: const TextStyle(
-                              fontSize: 14,
+                            unselectedLabelStyle:  TextStyle(
+                              fontSize: MediaQuery.of(context).size.width * 0.030,
                               fontWeight: FontWeight.w500,
                             ),
-                            labelStyle: const TextStyle(
-                              fontSize: 14,
+                            labelStyle:  TextStyle(
+                              fontSize: MediaQuery.of(context).size.width * 0.030,
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                             ),
@@ -3522,75 +3522,144 @@ class UserProfile extends StatelessWidget {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+        Column(
+                                                             children: [
+                                                                   Row(
+                                                           children: [
+                                                             const Text(
+                                                               'Choose a board',
+                                                               style: TextStyle(
+                                                                 fontSize: 14,
+                                                                 fontWeight: FontWeight.w500,
+                                                                 color: Colors.black,
+                                                               ),
+                                                             ),
+                                                             Text(
+                                                               '*',
+                                                               style: GoogleFonts.nunito(
+                                                                 fontSize: 18,
+                                                                 fontWeight: FontWeight.w600,
+                                                                 color: Colors.red.withOpacity(0.6),
+                                                               ),
+                                                             ),
+                                                           ],
+                                                                   ),
+                                                                   Obx(() => CommonDropdownInputField(
+                                                               title: 'board',
+                                                               controllerValue: accountController.boardController.value.obs,
+                                                               selectedValue: accountController.boardController.value.obs,
+                                                               items: accountController.board1,
+                                                               onChanged: accountController.setBoard,
+                                                             )),
+                                                             ],
+                                                           ),
+                                                            Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  const Text(
-                    'Class/Specialization',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    '*',
-                    style: GoogleFonts.nunito(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red.withOpacity(0.6),
-                    ),
-                  ),
-                ],
+        Row(
+          children: [
+            const Text(
+              'Select a class',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
               ),
-              const SizedBox(
-                height: 5,
+            ),
+            Text(
+              '*',
+              style: GoogleFonts.nunito(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.red.withOpacity(0.6),
               ),
-              CommonDropdownInputField(
-                title: 'Teaching skill set',
-                controllerValue: accountController.QualificationClass,
-                selectedValue: accountController.QualificationClass,
-                items: accountController.tuteeSpeciallizationClass,
-                onChanged: accountController.setTeachingSkills,
-              ),
-              // InkWell(
-              //                                 onTap: () {
-
-              //                                 },
-              //                                 child: Container(
-              //                                   height: 55,
-              //                                   alignment: Alignment.centerLeft,
-              //                                   padding: const EdgeInsets.only(
-              //                                       top: 10,
-              //                                       bottom: 10,
-              //                                       left: 12),
-              //                                   decoration: BoxDecoration(
-              //                                       color: Colors.grey[200],
-              //                                       borderRadius:
-              //                                           BorderRadius.circular(
-              //                                               15)),
-              //                                   child: accountController
-              //                                           .QualificationClass
-              //                                           .value
-              //                                           .isNotEmpty
-              //                                       ? Text(accountController
-              //                                           .QualificationClass.value)
-              //                                       : Text(
-              //                                           "Select",
-              //                                           style: TextStyle(
-              //                                               color:
-              //                                                   Colors.grey[400],
-              //                                               fontWeight:
-              //                                                   FontWeight.w400)),
-              //                                 ),
-              //                               ),
+            ),
+          ],
+        ),
+        Obx(() => CommonDropdownInputField(
+              title: 'Class',
+              controllerValue: accountController.classController.value.obs,
+              selectedValue: accountController.classController.value.obs,
+              items: accountController.classList,
+              onChanged: accountController.setClass,
+            )),
             ],
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
+          child: Column(
+            children: [
+        Row(
+          children: [
+            const Text(
+              'Choose a subject',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+            Text(
+              '*',
+              style: GoogleFonts.nunito(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.red.withOpacity(0.6),
+              ),
+            ),
+          ],
+        ),
+        Obx(() => CommonDropdownInputField(
+              title: 'subject',
+              controllerValue: accountController.subjectController.value.obs,
+              selectedValue: accountController.subjectController.value.obs,
+              items: accountController.subject,
+              onChanged: accountController.setSubject,
+            )),
+            ],
+          ),
+        ),
+                                                      // Row(
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(vertical: 10),
+        //   child: Column(
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       Row(
+        //         children: [
+        //           const Text(
+        //             'Class/Specialization',
+        //             style: TextStyle(
+        //               fontSize: 14,
+        //               fontWeight: FontWeight.w500,
+        //               color: Colors.black,
+        //             ),
+        //           ),
+        //           Text(
+        //             '*',
+        //             style: GoogleFonts.nunito(
+        //               fontSize: 18,
+        //               fontWeight: FontWeight.w600,
+        //               color: Colors.red.withOpacity(0.6),
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //       const SizedBox(
+        //         height: 5,
+        //       ),
+        //       CommonDropdownInputField(
+        //         title: 'Teaching skill set',
+        //         controllerValue: accountController.QualificationClass,
+        //         selectedValue: accountController.QualificationClass,
+        //         items: accountController.tuteeSpeciallizationClass,
+        //         onChanged: accountController.setTeachingSkills,
+        //       ),
+        //     ],
+        //   ),
+        // ),
         // Padding(
         //   padding: const EdgeInsets.symmetric(vertical: 10),
         //   child: Column(
@@ -4061,6 +4130,42 @@ class UserProfile extends StatelessWidget {
             ],
           ),
         ),
+         Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Tution name',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+
+              if (accountController.validationMessages.isNotEmpty)
+                Column(
+                  children: accountController.validationMessages
+                      .map((msg) => Text(
+                            msg,
+                            style: const TextStyle(color: Colors.red),
+                          ))
+                      .toList(),
+                ),
+              InputTextField(
+                suffix: false,
+                readonly: false,
+                hintText: 'Enter your country',
+                keyboardType: TextInputType.name,
+                controller: accountController.tutionController,
+              ),
+            ],
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Column(
@@ -4094,37 +4199,6 @@ class UserProfile extends StatelessWidget {
                 keyboardType: TextInputType.name,
                 controller: accountController.additionalInfoController,
               ),
-              //  InkWell(
-              //                                 onTap: () {
-
-              //                                 },
-              //                                 child: Container(
-              //                                   height: 55,
-              //                                   alignment: Alignment.centerLeft,
-              //                                   padding: const EdgeInsets.only(
-              //                                       top: 10,
-              //                                       bottom: 10,
-              //                                       left: 12),
-              //                                   decoration: BoxDecoration(
-              //                                       color: Colors.grey[200],
-              //                                       borderRadius:
-              //                                           BorderRadius.circular(
-              //                                               15)),
-              //                                   child: accountController
-              //                                           .additionalInfo
-              //                                           .value
-              //                                           .isNotEmpty
-              //                                       ? Text(accountController
-              //                                           .additionalInfo.value)
-              //                                       : Text(
-              //                                           "Enter here...",
-              //                                           style: TextStyle(
-              //                                               color:
-              //                                                   Colors.grey[400],
-              //                                               fontWeight:
-              //                                                   FontWeight.w400)),
-              //                                 ),
-              //                               ),
             ],
           ),
         ),

@@ -257,57 +257,8 @@ class TuteeHome extends StatelessWidget {
                                       }
                                     },
                                   );
-
-                                  //  DropdownButtonFormField<Data1>(
-                                  //   dropdownColor: AppConstants.primaryColor,
-                                  //   icon: const Icon(
-                                  //     Icons.arrow_drop_down_circle_rounded,
-                                  //     color: Colors.white,
-                                  //   ),
-                                  //   style: GoogleFonts.nunito(
-                                  //     fontSize: 19,
-                                  //     fontWeight: FontWeight.w400,
-                                  //     color: Colors.white,
-                                  //   ),
-                                  //   decoration: InputDecoration(
-                                  //     suffixIconColor: Colors.white,
-                                  //     alignLabelWithHint: true,
-                                  //     border: InputBorder.none,
-                                  //     labelText: 'Select batch',
-                                  //     labelStyle: GoogleFonts.nunito(
-                                  //       fontSize: 15,
-                                  //       fontWeight: FontWeight.w400,
-                                  //       color: Colors.white,
-                                  //     ),
-                                  //   ),
-                                  //   value: controller1.selectedBatchIN.value,
-                                  //   items: controller1.batchList
-                                  //       .map((Data1 batch) {
-                                  //     return DropdownMenuItem<Data1>(
-                                  //       value: batch,
-                                  //       child: Text(batch.batchName!),
-                                  //     );
-                                  //   }).toList(),
-                                  //   onChanged: (newBatch) {
-                                  //     if (newBatch != null) {
-                                  // controller1.selectBatch(newBatch);
-                                  // controller1.isBatchSelected.value =
-                                  //     true;
-                                  // controller1.fetchBatchList(
-                                  //   newBatch.batchId!,
-                                  // );
-                                  //       // controller.fetchGroupedEnrollmentByBatchList(newBatch.batchId!,newBatch.startDate!);
-                                  //       // Replace with your actual method to fetch batch-related data
-                                  //     }
-                                  //   },
-                                  // );
                                 }
                               }),
-
-                              // const SizedBox(
-                              //   height: 20,
-                              // ),
-                              //tabl
                             ],
                           ),
                         ),
@@ -582,35 +533,6 @@ class TuteeHome extends StatelessWidget {
                   ],
                 ),
               ),
-              //  Positioned(
-              //     left: 20,
-              //     right: 20,
-              //     top: MediaQuery.sizeOf(context).height * 0.18,
-              //     child:
-              //     const LineChartSample(userType: 'Tutee',)),
-              //           FutureBuilder<List<ChartData>>(
-              //   future: futureChartData,
-              //   builder: (context, snapshot) {
-              //     if (snapshot.connectionState == ConnectionState.waiting) {
-              //       return Center(child: CircularProgressIndicator());
-              //     } else if (snapshot.hasError) {
-              //       return Center(child: Text('Error: ${snapshot.error}'));
-              //     } else {
-              //       final List<ChartData> chartData = snapshot.data!;
-              //       return SfCartesianChart(
-              //         primaryXAxis: CategoryAxis(),
-              //         series: <ChartSeries>[
-              //           LineSeries<ChartData, String>(
-              //             dataSource: chartData,
-              //             xValueMapper: (ChartData data, _) => data.x,
-              //             yValueMapper: (ChartData data, _) => data.y,
-              //           )
-              //         ],
-              //       );
-              //     }
-              //   },
-              // ),
-              // )
             ],
           ),
         );

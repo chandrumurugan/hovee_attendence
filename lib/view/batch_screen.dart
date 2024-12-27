@@ -164,15 +164,31 @@ class TutorBatchList extends StatelessWidget {
             if (batchController.isLoading.value) {
               return Center(child: CircularProgressIndicator());
             } else if (batchController.batchList.isEmpty) {
-              return Center(
-                child: Text(
-                  'No list found',
-                  style: GoogleFonts.nunito(
-                    color: Colors.black54,
-                    fontSize: 16,
-                  ),
-                ),
-              );
+              return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Image.asset(
+                                'assets/logo/No_Verification_Found_Image_app.png',
+                                height: 200,
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Center(
+                                  child: Text(
+                                "No listing found",
+                                style: GoogleFonts.nunito(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
+                              )),
+                            ],
+                          ),
+                        );
             } else {
               return Expanded(
                 child: ListView.builder(

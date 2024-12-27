@@ -10,7 +10,7 @@ import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
-import 'package:hovee_attendence/view/myProperties_screen.dart';
+import 'package:hovee_attendence/view/myReview_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
 import 'package:hovee_attendence/view/ratings_screen.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';

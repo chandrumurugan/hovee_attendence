@@ -24,8 +24,8 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
   GlobalKey<ScaffoldState> guestScaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = false;
   Data? guestHomeData;
-  int mycount = 0; 
-   int _currentIndexSlider = 0;
+  int mycount = 0;
+  int _currentIndexSlider = 0;
   @override
   void initState() {
     super.initState();
@@ -47,24 +47,28 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
     }
   }
 
-   final List<Map<String, String>> testimonials = [
+  final List<Map<String, String>> testimonials = [
     {
       "name": "John Hook",
       "location": "Chennai",
-      "image": "assets/tutorHomeImg/Rectangle 18373.png", // Replace with your image URL
-      "text": "It is a long-established fact that a reader will be distracted by the readable content of a page when looking."
+      "image":
+          "assets/tutorHomeImg/Rectangle 18373.png", // Replace with your image URL
+      "text":
+          "It is a long-established fact that a reader will be distracted by the readable content of a page when looking."
     },
     {
       "name": "Jane Doe",
       "location": "Mumbai",
       "image": "assets/tutorHomeImg/Rectangle 18373.png",
-      "text": "The quick brown fox jumps over the lazy dog, providing an example of a sentence that uses every letter."
+      "text":
+          "The quick brown fox jumps over the lazy dog, providing an example of a sentence that uses every letter."
     },
     {
       "name": "Emily Smith",
       "location": "Bangalore",
       "image": "assets/tutorHomeImg/Rectangle 18373.png",
-      "text": "Flutter is an open-source UI software development toolkit created by Google."
+      "text":
+          "Flutter is an open-source UI software development toolkit created by Google."
     },
   ];
 
@@ -136,51 +140,60 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                   height: 180,
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
-                                      // color: Colors.amber,
-                                      borderRadius: BorderRadius.circular(20),
-                                      gradient: const LinearGradient(colors: [
-                                        Color(0xFFBA0161),
-                                        Color(0xFF510270)
-                                      ]),
-                                      image: DecorationImage(image: AssetImage("assets/bgImage/detailpagebanner.jpg"), fit: BoxFit.cover),),
-                                  child:Padding(
+                                    // color: Colors.amber,
+                                    borderRadius: BorderRadius.circular(20),
+                                    gradient: const LinearGradient(colors: [
+                                      Color(0xFFBA0161),
+                                      Color(0xFF510270)
+                                    ]),
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/bgImage/detailpagebanner.jpg"),
+                                        fit: BoxFit.cover),
+                                  ),
+                                  child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'Attendence !',
-                                                    style: GoogleFonts.nunito(
-                                                        color: Colors.white,
-                                                        fontWeight: FontWeight.w400,
-                                                        fontSize: 24),
-                                                  ),
-                                                  SizedBox(height: 4,),
-                                                  Row(
-                                                    children: [
-                                                      SizedBox(
-                                                          width: MediaQuery.of(context).size.width *
-                                            0.6,
-                                                        child: Text(
-                                                          'Track student attendance in real-time with live location updates. Designed for schools, coaching centers, and institutions.',
-                                                          style: GoogleFonts.nunito(
-                                                              color: Colors.white,
-                                                              fontWeight: FontWeight.w400,
-                                                              fontSize: 12),
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        width: 15,
-                                                      ),
-                                                      
-                                                    ],
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  )
-                                                ],
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Attendence !',
+                                          style: GoogleFonts.nunito(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 24),
+                                        ),
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.6,
+                                              child: Text(
+                                                'Track student attendance in real-time with live location updates. Designed for schools, coaching centers, and institutions.',
+                                                style: GoogleFonts.nunito(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12),
                                               ),
+                                            ),
+                                            const SizedBox(
+                                              width: 15,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                   //  ClipRRect(
                                   //     borderRadius: BorderRadius.circular(20),
@@ -208,10 +221,13 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                         color: const Color(0xFF31302D),
                                       ),
                                       child: Center(
-                                        child: Text("2/3",style: GoogleFonts.nunito(
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.w400,
-                                                                fontSize: 16),),
+                                        child: Text(
+                                          "2/3",
+                                          style: GoogleFonts.nunito(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -242,104 +258,59 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             ],
                           ),
                         ),
-                       Container(
-  margin: const EdgeInsets.only(top: 10),
-  height: 120, // Increased height to accommodate the text
-  width: MediaQuery.of(context).size.width,
-  padding: const EdgeInsets.symmetric(horizontal: 10),
-  child: Stack(
-    clipBehavior: Clip.none, // Allow the images to overflow the container
-    children: List.generate(
-      guestHomeData!.teacherList.length, // Use the dynamic length
-      (index) {
-        return Positioned(
-          left: index * 70.0, // Adjust the spacing between items
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.blueAccent, // Add dynamic colors if needed
-                backgroundImage: AssetImage(
-                  'assets/Ellipse 261.png', // Use a dynamic image if required
-                ),
-              ),
-              const SizedBox(height: 5), // Add spacing between the image and text
-              SizedBox(
-                width: MediaQuery.of(context).size.width*0.2,
-                child: Text(
-                  guestHomeData!.teacherList[index].teacherName, // Dynamic name
-                  style: const TextStyle(fontSize: 14), // Adjust font size if needed
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.clip, // Center align text
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    ),
-  ),
-),
- // Container(
-                        //   margin: const EdgeInsets.only(top: 10),
-                        //   height: 80,
-                        //   width: MediaQuery.of(context).size.width,
-                        //   padding: const EdgeInsets.symmetric(horizontal: 10),
-                        //   child: const Stack(children: [
-                        //     CircleAvatar(
-                        //       radius: 40,
-                        //       backgroundColor: Colors.blueAccent,
-                        //       backgroundImage: AssetImage('assets/Ellipse 261.png'),
-                        //     ),
-                        //     Positioned(
-                        //       left: 70, // Align to the right of the Stack
-                        //       child: CircleAvatar(
-                        //         radius: 40,
-                        //         backgroundColor: Colors.amber,
-                        //         backgroundImage:
-                        //             AssetImage('assets/Ellipse 261.png'),
-                        //       ),
-                        //     ),
-                        //     Positioned(
-                        //       left: 140, // Align to the right of the Stack
-                        //       child: CircleAvatar(
-                        //         radius: 40,
-                        //         backgroundColor: Colors.brown,
-                        //         backgroundImage:
-                        //             AssetImage('assets/Ellipse 261.png'),
-                        //       ),
-                        //     ),
-                        //     Positioned(
-                        //       left: 210, // Align to the right of the Stack
-                        //       child: CircleAvatar(
-                        //         radius: 40,
-                        //         backgroundColor: Colors.green,
-                        //         backgroundImage:
-                        //             AssetImage('assets/Ellipse 261.png'),
-                        //       ),
-                        //     ),
-                        //     Positioned(
-                        //       left: 280, // Align to the right of the Stack
-                        //       child: CircleAvatar(
-                        //         radius: 40,
-                        //         backgroundColor: Colors.blue,
-                        //         backgroundImage:
-                        //             AssetImage('assets/Ellipse 261.png'),
-                        //       ),
-                        //     ),
-                        //     Positioned(
-                        //       left: 350, // Align to the right of the Stack
-                        //       child: CircleAvatar(
-                        //         radius: 40,
-                        //         backgroundColor: Colors.blue,
-                        //         backgroundImage:
-                        //             AssetImage('assets/Ellipse 261.png'),
-                        //       ),
-                        //     )
-                        //   ]),
-                        // ),
-                         Padding(
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          height:
+                              120, // Increased height to accommodate the text
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Stack(
+                            clipBehavior: Clip
+                                .none, // Allow the images to overflow the container
+                            children: List.generate(
+                              guestHomeData!
+                                  .teacherList.length, // Use the dynamic length
+                              (index) {
+                                return Positioned(
+                                  left: index *
+                                      70.0, // Adjust the spacing between items
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const CircleAvatar(
+                                        radius: 40,
+                                        backgroundColor: Colors
+                                            .blueAccent, // Add dynamic colors if needed
+                                        backgroundImage: AssetImage(
+                                          'assets/Ellipse 261.png', // Use a dynamic image if required
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                          height:
+                                              5), // Add spacing between the image and text
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
+                                        child: Text(
+                                          guestHomeData!.teacherList[index]
+                                              .teacherName, // Dynamic name
+                                          style: const TextStyle(
+                                              fontSize:
+                                                  14), // Adjust font size if needed
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow
+                                              .clip, // Center align text
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 15),
                           child: Row(
@@ -364,32 +335,35 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                         ),
                         Container(
                           height: 270,
-          decoration: BoxDecoration(
-            color: Colors.white,
-           // border: Border.all(color: Colors.blue, width: 2),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: GridView.count(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            childAspectRatio: 2,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            children: [
-              _buildStepCard('assets/edit 1.png', "Registration"),
-              _buildStepCard('assets/search (1) 1.png', "Search Using Map"),
-              _buildStepCard('assets/diploma 1.png', "Enrollments"),
-               _buildStepCard('assets/edit 1.png', "Enquiry"),
-                _buildStepCard('assets/edit 1.png', "Attendance"),
-                _buildStepCard('assets/star 2.png', "Ratings"),
-            ],
-          ),
-        ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            // border: Border.all(color: Colors.blue, width: 2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: GridView.count(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            crossAxisCount: 2,
+                            childAspectRatio: 2,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            children: [
+                              _buildStepCard(
+                                  'assets/edit 1.png', "Registration"),
+                              _buildStepCard('assets/search (1) 1.png',
+                                  "Search Using Map"),
+                              _buildStepCard(
+                                  'assets/diploma 1.png', "Enrollments"),
+                              _buildStepCard('assets/edit 1.png', "Enquiry"),
+                              _buildStepCard('assets/edit 1.png', "Attendance"),
+                              _buildStepCard('assets/star 2.png', "Ratings"),
+                            ],
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10,vertical: 0),
+                              horizontal: 10, vertical: 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -401,9 +375,8 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                     fontWeight: FontWeight.bold),
                               ),
                               InkWell(
-                                onTap: (){
-                                   Get.to(() => LoginSignUp(
-                                        ));
+                                onTap: () {
+                                  Get.to(() => LoginSignUp());
                                 },
                                 child: Text(
                                   "See all",
@@ -416,7 +389,9 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Container(
                             height: 220,
                             width: MediaQuery.of(context).size.width,
@@ -486,14 +461,16 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                         fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.w400)),
-                                                            SizedBox(height: 8,),
-                                                           FivePointedStar( 
-              onChange: (count) { 
-                setState(() { 
-                  mycount = count; 
-                }); 
-              }, 
-            ), 
+                                                SizedBox(
+                                                  height: 8,
+                                                ),
+                                                FivePointedStar(
+                                                  onChange: (count) {
+                                                    setState(() {
+                                                      mycount = count;
+                                                    });
+                                                  },
+                                                ),
                                               ],
                                             ),
                                           ],
@@ -535,222 +512,172 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        // Card(
-                        //   elevation: 10,
-                        //   shadowColor: Colors.black,
-                        //   surfaceTintColor: Colors.white,
-                        //   shape: RoundedRectangleBorder(
-                        //     side: const BorderSide(
-                        //       color: Colors.transparent, // Highlight condition
-                        //       width: 2, // Border width
-                        //     ),
-                        //     borderRadius:
-                        //         BorderRadius.circular(8), // Rounded border
-                        //   ),
-                        //   child: Container(
-                        //     padding: const EdgeInsets.symmetric(
-                        //         horizontal: 12, vertical: 10),
-                            // child: Row(
-                            //   mainAxisAlignment: MainAxisAlignment.start,
-                            //   children: [
-                            //     // CircleAvatar(
-                            //     //   radius: 40,
-                            //     //   child: Icon(
-                            //     //     Icons.person,
-                            //     //     size: 20,
-                            //     //     color: Colors.black,
-                            //     //   ),
-                            //     // ),
-                                // Image.asset(
-                                //   'assets/tutorHomeImg/Rectangle 18373.png',
-                                //   //color: Colors.white,
-                                //   height: 60,
-                                // ),
-                            //     const SizedBox(
-                            //       width: 8,
-                            //     ),
-                            //     const Column(
-                            //       mainAxisAlignment:
-                            //           MainAxisAlignment.spaceBetween,
-                            //       crossAxisAlignment: CrossAxisAlignment.start,
-                            //       children: [
-                            //         Text(
-                            //           'John Hook',
-                            //           style: TextStyle(
-                            //             fontWeight: FontWeight.w400,
-                            //             fontSize: 20.0,
-                            //             color: Colors.black,
-                            //           ),
-                            //         ),
-                            //         Text(
-                            //           'It is a long established fact that a reader\nwill be distracted by the readable content\nof a page when looking at its layout.',
-                            //           style: TextStyle(
-                            //             fontWeight: FontWeight.w400,
-                            //             fontSize: 14.0,
-                            //             color: Colors.black,
-                            //           ),
-                            //         ),
-                            //       ],
-                            //     )
-                            //   ],
-                            // ),
-                        //   ),
-                        // ),]
-CarouselSlider(
-            options: CarouselOptions(
-              height: MediaQuery.of(context).size.height * 0.2,
-              enableInfiniteScroll: false,
-              enlargeCenterPage: true,
-              viewportFraction: 0.9,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _currentIndexSlider = index;
-                });
-              },
-            ),
-            items: testimonials.map((testimonial) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    padding: EdgeInsets.all(16),
-                    margin: EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 4,
-                          offset: Offset(2, 2),
+                        CarouselSlider(
+                          options: CarouselOptions(
+                            height: MediaQuery.of(context).size.height * 0.2,
+                            enableInfiniteScroll: false,
+                            enlargeCenterPage: true,
+                            viewportFraction: 0.9,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _currentIndexSlider = index;
+                              });
+                            },
+                          ),
+                          items: testimonials.map((testimonial) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                  padding: EdgeInsets.all(16),
+                                  margin: EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(16),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 4,
+                                        offset: Offset(2, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Stack(
+                                                children: [
+                                                  CircleAvatar(
+                                                    backgroundImage: AssetImage(
+                                                      testimonial["image"]!,
+                                                    ),
+                                                    radius: 40,
+                                                  ),
+                                                  Positioned(
+                                                    top: 0,
+                                                    right: 0,
+                                                    child: CircleAvatar(
+                                                      backgroundColor:
+                                                          Colors.orange,
+                                                      radius: 10,
+                                                      child: Icon(
+                                                        Icons.format_quote,
+                                                        size: 12,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(width: 10),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        testimonial["name"]!,
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 4),
+                                                      Text(
+                                                        testimonial[
+                                                            "location"]!,
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          color:
+                                                              Colors.grey[600],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.5,
+                                                    child: Text(
+                                                      testimonial["text"]!,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.grey[600],
+                                                      ),
+                                                      maxLines: 4,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
                         ),
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Stack(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage: AssetImage(
-                                        testimonial["image"]!,
-                                      ),
-                                      radius: 40,
-                                    ),
-                                    Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.orange,
-                                        radius: 10,
-                                        child: Icon(
-                                          Icons.format_quote,
-                                          size: 12,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(width: 10),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          testimonial["name"]!,
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(width: 4),
-                                        Text(
-                                          testimonial["location"]!,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey[600],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width *
-                                              0.5,
-                                      child: Text(
-                                        testimonial["text"]!,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey[600],
-                                        ),
-                                        maxLines: 4,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                        SizedBox(height: 16),
+                        // Indicator
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            testimonials.length,
+                            (index) => AnimatedContainer(
+                              duration: Duration(milliseconds: 300),
+                              margin: EdgeInsets.symmetric(horizontal: 4),
+                              width: _currentIndexSlider == index ? 12 : 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: _currentIndexSlider == index
+                                    ? Colors.red
+                                    : Colors.grey,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
                             ),
-                          ],
+                          ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }).toList(),
-          ),
-          SizedBox(height: 16),
-          // Indicator
-          Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        testimonials.length,
-        (index) => AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          margin: EdgeInsets.symmetric(horizontal: 4),
-          width: _currentIndexSlider == index ? 12 : 8,
-          height: 8,
-          decoration: BoxDecoration(
-            color: _currentIndexSlider == index ? Colors.red : Colors.grey,
-            borderRadius: BorderRadius.circular(4),
-          
-          ),
-        ),
-      ),
-    ),
-    SizedBox(width: 16), // Add spacing between dots and the count
-    // Numeric Indicator
+                        SizedBox(
+                            width:
+                                16), // Add spacing between dots and the count
+                        // Numeric Indicator
 
-
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 20),
                           child: Container(
                             // height: 80,
                             width: MediaQuery.of(context).size.width,
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                                 borderRadius:
-                                                BorderRadius.circular(10),
-
+                                borderRadius: BorderRadius.circular(10),
                                 gradient: LinearGradient(colors: [
-                              const Color(0xFFBA0161).withOpacity(0.1),
-                              const Color(0xFFBA0161).withOpacity(0.1),
-                            ])),
+                                  const Color(0xFFBA0161).withOpacity(0.1),
+                                  const Color(0xFFBA0161).withOpacity(0.1),
+                                ])),
                             child: Row(children: [
                               Container(
-                               
                                 child: Image.asset(
-                                        "assets/bgImage/iMockup - iPhone 14.png",
-                                        fit: BoxFit.cover,
-                                      ),
+                                  "assets/bgImage/iMockup - iPhone 14.png",
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              const SizedBox(width: 20,),
+                              const SizedBox(
+                                width: 20,
+                              ),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -765,31 +692,34 @@ CarouselSlider(
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
-                                      child:  Text(
-                                        'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-                                        style:  GoogleFonts.nunito(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400)
-                                      ),
+                                      child: Text(
+                                          'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
+                                          style: GoogleFonts.nunito(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400)),
                                     ),
-
                                     Container(
-                                      margin: const EdgeInsets.only(top: 10),
-                                      padding: const EdgeInsets.all(10),
-                                      width: 120,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
+                                        margin: const EdgeInsets.only(top: 10),
+                                        padding: const EdgeInsets.all(10),
+                                        width: 120,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
                                                 BorderRadius.circular(20),
-
-                                        gradient: const LinearGradient(
-                                          begin: Alignment.topCenter,end: Alignment.bottomCenter,
-                                          colors: [
-                                          Color(0xFFBA0161),
-                                          Color(0xFF510270),  
-                                        ])
-                                      ),
-                                      child: Center(child: Text("SHARE",style: GoogleFonts.nunito(color: Colors.white),),))
+                                            gradient: const LinearGradient(
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                colors: [
+                                                  Color(0xFFBA0161),
+                                                  Color(0xFF510270),
+                                                ])),
+                                        child: Center(
+                                          child: Text(
+                                            "SHARE",
+                                            style: GoogleFonts.nunito(
+                                                color: Colors.white),
+                                          ),
+                                        ))
                                   ],
                                 ),
                               )
@@ -846,7 +776,7 @@ CarouselSlider(
                 children: [
                   Icon(Icons.search, color: Colors.white),
                   SizedBox(width: 16),
-                 // Icon(Icons.g_translate, color: Colors.white),
+                  // Icon(Icons.g_translate, color: Colors.white),
                 ],
               ),
             ],
@@ -873,13 +803,12 @@ CarouselSlider(
                     'Chennai, India',
                     style: TextStyle(color: Colors.white70),
                   ),
-                  
                 ],
               ),
             ],
           ),
         ),
-         Positioned(
+        Positioned(
           top: 100,
           right: 70,
           child: CircleAvatar(
@@ -892,32 +821,24 @@ CarouselSlider(
                 padding: const EdgeInsets.all(5),
                 child: Center(
                   child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // SvgPicture.asset(
-                          //   'assets/appConstantImg/app_icon.svg',
-                          //   height: 40,
-                          // ),
-                          Image.asset(
-                            'assets/guest_logo.jpg',
-                            height: 72,
-                          ),
-                        ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/guest_logo.jpg',
+                        height: 72,
                       ),
+                    ],
+                  ),
                 ),
               ),
             ),
-            // child: CircleAvatar(
-            //   radius: 30,
-            //   child: const LogoGif(), // Replace with your image
-            // ),
           ),
         ),
       ],
     );
   }
 
-   Widget _buildStepCard(String image, String title) {
+  Widget _buildStepCard(String image, String title) {
     return Container(
       decoration: BoxDecoration(
         color: Color(0xffF0E6F5),
@@ -933,26 +854,25 @@ CarouselSlider(
       child: Row(
         //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(width: 8,),
+          SizedBox(
+            width: 8,
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
               height: 40,
-              child: Image.asset(
-                fit: BoxFit.contain,
-                image.toString()),
+              child: Image.asset(fit: BoxFit.contain, image.toString()),
             ),
           ),
-
           SizedBox(
-            width: MediaQuery.of(context).size.width*0.2,
+            width: MediaQuery.of(context).size.width * 0.2,
             child: Text(
               title,
-             style: GoogleFonts.lato(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+              style: GoogleFonts.lato(
+                color: Colors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -1091,26 +1011,6 @@ CarouselSlider(
             ),
           ),
           backgroundColor: Colors.white),
-      // BottomNavigationBarItem(
-      //     label: 'Rating',
-      //     activeIcon: Container(
-      //       padding: const EdgeInsets.all(5),
-      //       decoration: BoxDecoration(
-      //           gradient: const LinearGradient(
-      //             colors: [Color(0xFFC13584), Color(0xFF833AB4)],
-      //             begin: Alignment.topCenter,
-      //             end: Alignment.bottomCenter,
-      //           ),
-      //           borderRadius: BorderRadius.circular(8)),
-      //       child: Image.asset(
-      //         'assets/bottomBar/Vector (4).png',
-      //         color: Colors.white,
-      //         width: 50,
-      //         height: 50,
-      //       ),
-      //     ),
-      //     icon: Image.asset('assets/bottomBar/Vector (4).png'),
-      //     backgroundColor: Colors.white),
       BottomNavigationBarItem(
           label: 'Plan',
           activeIcon: Container(

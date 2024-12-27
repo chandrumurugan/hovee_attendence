@@ -99,7 +99,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: InputTextField(
                   suffix: false,
-                  readonly: false,
+                  readonly: true,
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
@@ -289,7 +289,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: InputTextField(
                   suffix: false,
-                  readonly: false,
+                  readonly: true,
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
@@ -336,7 +336,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: InputTextField(
                   suffix: false,
-                  readonly: false,
+                  readonly: true,
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
@@ -383,7 +383,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: InputTextField(
                   suffix: false,
-                  readonly: false,
+                  readonly: true,
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
@@ -430,7 +430,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: InputTextField(
                   suffix: false,
-                  readonly: false,
+                  readonly: true,
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
@@ -445,53 +445,53 @@ class AddEnrollmentScreen extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
-              child: Row(
-                children: [
-                  const Text(
-                    'Class course code',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    '*',
-                    style: GoogleFonts.nunito(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red.withOpacity(0.6),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: InputTextField(
-                  suffix: false,
-                  readonly: false,
-                  inputFormatter: [
-                    FilteringTextInputFormatter.allow(
-                      RegExp(
-                        r"[a-zA-Z0-9@&_,-\/.']",
-                      ),
-                    ),
-                  ],
-                  hintText: 'Enter here...',
-                  keyboardType: TextInputType.emailAddress,
-                  controller: controller.coureseCodeController),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
+            // Padding(
+            //   padding:
+            //       const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+            //   child: Row(
+            //     children: [
+            //       const Text(
+            //         'Class course code',
+            //         style: TextStyle(
+            //           fontSize: 14,
+            //           fontWeight: FontWeight.w500,
+            //           color: Colors.black,
+            //         ),
+            //       ),
+            //       Text(
+            //         '*',
+            //         style: GoogleFonts.nunito(
+            //           fontSize: 18,
+            //           fontWeight: FontWeight.w600,
+            //           color: Colors.red.withOpacity(0.6),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
+            // Padding(
+            //   padding:
+            //       const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+            //   child: InputTextField(
+            //       suffix: false,
+            //       readonly: true,
+            //       inputFormatter: [
+            //         FilteringTextInputFormatter.allow(
+            //           RegExp(
+            //             r"[a-zA-Z0-9@&_,-\/.']",
+            //           ),
+            //         ),
+            //       ],
+            //       hintText: 'Enter here...',
+            //       keyboardType: TextInputType.emailAddress,
+            //       controller: controller.coureseCodeController),
+            // ),
+            // const SizedBox(
+            //   height: 5,
+            // ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
@@ -524,7 +524,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: InputTextField(
                   suffix: false,
-                  readonly: false,
+                  readonly: true,
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
@@ -563,7 +563,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: InputTextField(
                   suffix: false,
-                  readonly: false,
+                  readonly: true,
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(

@@ -171,7 +171,11 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                                         filteredList![index].className!,
                                         filteredList![index].subject!,
                                         filteredList![index].tutorId!,
-                                        filteredList![index].tutorName!);
+                                        filteredList![index].tutorName!,filteredList![index].fees!,
+                                        filteredList![index].batchMaximumSlots!,
+                                         filteredList![index].batchTimingStart!,
+                                         filteredList![index].batchTimingEnd!,
+                                        );
                                   },
                                   child: CourseListContainer1(
                                     image: "",
@@ -189,7 +193,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                                     batchname: filteredList![index].batchName!,
                                     tutorname: filteredList![index].tutorName!,
                                     type: widget.type,
-                                    id: '',
+                                    id: '', batchMaximumSlots: filteredList![index].batchMaximumSlots!, batchTimingStart:  filteredList![index].batchTimingStart!, batchTimingEnd: filteredList![index].batchTimingEnd!,
                                   ),
                                 ),
                               );

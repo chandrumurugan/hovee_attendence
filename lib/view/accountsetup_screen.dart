@@ -91,7 +91,7 @@ class AccountSetup extends StatelessWidget {
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * 0.1),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: Card(
                   elevation: 10,
                   shadowColor: Colors.black,
@@ -101,7 +101,7 @@ class AccountSetup extends StatelessWidget {
                     return Container(
                       height: selectedRole == 'Tutee'
                           ? accountController.currentTabIndex.value == 2
-                              ? MediaQuery.of(context).size.height * 0.55
+                              ? MediaQuery.of(context).size.height * 0.70
                               : MediaQuery.of(context).size.height * 0.7
                           : accountController.currentTabIndex.value == 2
                               ? MediaQuery.of(context).size.height * 0.7
@@ -138,27 +138,27 @@ class AccountSetup extends StatelessWidget {
                               KeyboardUtil.hideKeyboard(context);
                             },
                             tabs: [
-                              const Tab(
+                               const Tab(
                                 text: 'Personal info',
                               ),
-                              const Tab(
-                                text: 'Address',
+                               const Tab(
+                                text: 'Address info',
                               ),
                               // Show this tab only if selectedRole is not "Parent"
                               if (selectedRole != 'Parent')
                                 Tab(
                                   text: selectedRole == 'Tutee'
-                                      ? 'Education'
-                                      : 'Professional',
+                                      ? 'Education info'
+                                      : 'Professional info',
                                 ),
                             ],
                             unselectedLabelColor: Colors.grey,
-                            unselectedLabelStyle: const TextStyle(
-                              fontSize: 14,
+                            unselectedLabelStyle:  TextStyle(
+                              fontSize: MediaQuery.of(context).size.width * 0.030,
                               fontWeight: FontWeight.w500,
                             ),
-                            labelStyle: const TextStyle(
-                              fontSize: 14,
+                            labelStyle:  TextStyle(
+                              fontSize: MediaQuery.of(context).size.width * 0.030,
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                             ),
@@ -874,7 +874,7 @@ class AccountSetup extends StatelessWidget {
                                                       selectedRole != 'Parent'
                                                           ? 'Next'
                                                           : 'Submit',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                         fontSize: 16,
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -907,6 +907,63 @@ class AccountSetup extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   ..._buildDropdowns(),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        vertical: 10),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            const Text(
+                                                              'Tution name',
+                                                              style: TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight.w500,
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                             Text(
+                  '*',
+                  style: GoogleFonts.nunito(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red.withOpacity(0.6),
+                  ),
+                ),
+                                                          ],
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        InputTextField(
+                                                            suffix: false,
+                                                            readonly: false,
+                                                            hintText:
+                                                                'Enter here...',
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .name,
+                                                            inputFormatter: [
+                                                              FilteringTextInputFormatter
+                                                                  .allow(
+                                                                RegExp(
+                                                                    r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                                              ),
+                                                            ],
+                                                            controller:
+                                                                accountController
+                                                                    .tutionController),
+                                                      ],
+                                                    ),
+                                                  ),
                                                   Padding(
                                                     padding: const EdgeInsets
                                                         .symmetric(
@@ -1128,70 +1185,150 @@ class AccountSetup extends StatelessWidget {
                                                       const SizedBox(
                                                         height: 5,
                                                       ),
-                                                      Row(
-                                                        children: [
-                                                          const Text(
-                                                            'Class/Specialization',
-                                                            style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            '*',
-                                                            style: GoogleFonts
-                                                                .nunito(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color: Colors.red
-                                                                  .withOpacity(
-                                                                      0.6),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
+                                                           Column(
+                                                             children: [
+                                                                   Row(
+                                                           children: [
+                                                             const Text(
+                                                               'Choose a board',
+                                                               style: TextStyle(
+                                                                 fontSize: 14,
+                                                                 fontWeight: FontWeight.w500,
+                                                                 color: Colors.black,
+                                                               ),
+                                                             ),
+                                                             Text(
+                                                               '*',
+                                                               style: GoogleFonts.nunito(
+                                                                 fontSize: 18,
+                                                                 fontWeight: FontWeight.w600,
+                                                                 color: Colors.red.withOpacity(0.6),
+                                                               ),
+                                                             ),
+                                                           ],
+                                                                   ),
+                                                                   Obx(() => CommonDropdownInputField(
+                                                               title: 'board',
+                                                               controllerValue: accountController.boardController.value.obs,
+                                                               selectedValue: accountController.boardController.value.obs,
+                                                               items: accountController.board,
+                                                               onChanged: accountController.setBoard,
+                                                             )),
+                                                             ],
+                                                           ),
+                                                            Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
+          child: Column(
+            children: [
+        Row(
+          children: [
+            const Text(
+              'Select a class',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+            Text(
+              '*',
+              style: GoogleFonts.nunito(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.red.withOpacity(0.6),
+              ),
+            ),
+          ],
+        ),
+        Obx(() => CommonDropdownInputField(
+              title: 'Class',
+              controllerValue: accountController.classController.value.obs,
+              selectedValue: accountController.classController.value.obs,
+              items: accountController.classList,
+              onChanged: accountController.setClass,
+            )),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
+          child: Column(
+            children: [
+        Row(
+          children: [
+            const Text(
+              'Choose a subject',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+            Text(
+              '*',
+              style: GoogleFonts.nunito(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.red.withOpacity(0.6),
+              ),
+            ),
+          ],
+        ),
+        Obx(() => CommonDropdownInputField(
+              title: 'subject',
+              controllerValue: accountController.subjectController.value.obs,
+              selectedValue: accountController.subjectController.value.obs,
+              items: accountController.subject,
+              onChanged: accountController.setSubject,
+            )),
+            ],
+          ),
+        ),
+                                                      // Row(
+                                                      //   children: [
+                                                      //     const Text(
+                                                      //       'Class/Specialization',
+                                                      //       style: TextStyle(
+                                                      //         fontSize: 14,
+                                                      //         fontWeight:
+                                                      //             FontWeight
+                                                      //                 .w500,
+                                                      //         color:
+                                                      //             Colors.black,
+                                                      //       ),
+                                                      //     ),
+                                                      //     Text(
+                                                      //       '*',
+                                                      //       style: GoogleFonts
+                                                      //           .nunito(
+                                                      //         fontSize: 18,
+                                                      //         fontWeight:
+                                                      //             FontWeight
+                                                      //                 .w600,
+                                                      //         color: Colors.red
+                                                      //             .withOpacity(
+                                                      //                 0.6),
+                                                      //       ),
+                                                      //     ),
+                                                      //   ],
+                                                      // ),
                                                       const SizedBox(
                                                         height: 10,
                                                       ),
-                                                      // InputTextField(
-                                                      //     suffix: false,
-                                                      //     readonly: false,
-                                                      //     inputFormatter: [
-                                                      //       FilteringTextInputFormatter
-                                                      //           .allow(
-                                                      //         RegExp(
-                                                      //           r"[a-zA-Z0-9@&_,-\.']",
-                                                      //         ),
-                                                      //       ),
-                                                      //     ],
-                                                      //     hintText:
-                                                      //         'Select',
-                                                      //     keyboardType:
-                                                      //         TextInputType
-                                                      //             .emailAddress,
-                                                      //     controller:
-                                                      //         accountController
-                                                      //             .tuteclassController),
-                                                      CommonDropdownInputField(
-                                                        title:
-                                                            'Class/Specialization',
-                                                        controllerValue:
-                                                            accountController
-                                                                .tuteeSpeciallization,
-                                                        selectedValue:
-                                                            accountController
-                                                                .tuteeSpeciallization,
-                                                        items: accountController
-                                                            .tuteeSpeciallizationClass,
-                                                        onChanged: accountController
-                                                            .setTuteeSpeciallization,
-                                                      ),
+                                                      // CommonDropdownInputField(
+                                                      //   title:
+                                                      //       'Class/Specialization',
+                                                      //   controllerValue:
+                                                      //       accountController
+                                                      //           .tuteeSpeciallization,
+                                                      //   selectedValue:
+                                                      //       accountController
+                                                      //           .tuteeSpeciallization,
+                                                      //   items: accountController
+                                                      //       .tuteeSpeciallizationClass,
+                                                      //   onChanged: accountController
+                                                      //       .setTuteeSpeciallization,
+                                                      // ),
                                                       // const SizedBox(
                                                       //   height: 5,
                                                       // ),

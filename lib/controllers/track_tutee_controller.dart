@@ -57,7 +57,8 @@ class TrackTuteeLocationController extends GetxController {
 
   void getTuteeLocation() async {
     try {
-      getTuteeLiveLocation("${argumentData[0]['userId']}").listen((data) async {
+        var userId = argumentData[0]['userId'].toString();
+      getTuteeLiveLocation(userId).listen((data) async {
         if (data['location'] != null) {
           LatLng location = 
           //const LatLng(13.043303, 80.213260);

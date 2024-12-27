@@ -7,7 +7,7 @@ import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/view/myPropertyList.dart';
 import 'package:hovee_attendence/view/myReview.dart';
 import 'package:hovee_attendence/widget/rating_profile.dart';
-import 'package:hovee_attendence/widget/ratingsPropertiesContainer.dart';
+import 'package:hovee_attendence/widget/ratingsContainer.dart';
 
 class MyRatingsScreen extends StatelessWidget {
   final bool fromBottomNav;
@@ -74,7 +74,7 @@ class MyRatingsScreen extends StatelessWidget {
                       TextButton(
                         onPressed: () {
                           print("object");
-                          Get.to(const Mypropertylist());
+                          Get.to(const MyReviewClasslist());
                         },
                         child: Text(' See all',
                             style: GoogleFonts.nunito(
@@ -96,12 +96,12 @@ class MyRatingsScreen extends StatelessWidget {
                         controller.getReviews(controller
                             .myrating!.ratings!.courseDetails![index].sId!);
                       },
-                      child: RatingPropertyConatiner(
-                        propertyImage: null ?? '',
-                        propertyAddress:
+                      child: RatingConatiner(
+                        reviewImage: null ?? '',
+                        reviewAddress:
                             //'${propertyRR!.propertyDetails!.location!.street!},${propertyRR!.propertyDetails!.location!.city!}',
                             address,
-                        propertyShortName: controller
+                        reviewShortName: controller
                             .myrating!.ratings!.courseDetails![index].subject!,
                         expectedRent: controller
                             .myrating!.ratings!.courseDetails![index].subject!,

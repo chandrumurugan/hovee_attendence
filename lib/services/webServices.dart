@@ -435,9 +435,9 @@ class WebService {
     required Map<dynamic, dynamic> educationInfo,
     // required String roleId,
     //  required String roleTypeId,
-    String resumePath = '',
-    String educationCertPath = '',
-    String experienceCertPath = '',
+   required String resumePath,
+   required String educationCertPath,
+   required String experienceCertPath,
     required String latitude,
     required String longitude,
   }) async {
@@ -461,9 +461,9 @@ class WebService {
     // Add other fields
     request.fields['type'] = 'U';
     //  request.fields['id_proof'] = '';
-    //  request.fields['resume'] = '';
-    //  request.fields['education_certificate'] = '';
-    //  request.fields['experience_certificate'] = '';
+     request.fields['resume'] = resumePath;
+     request.fields['education_certificate'] =educationCertPath;
+     request.fields['experience_certificate'] =experienceCertPath;
     //  request.fields['rolesId'] = roleId;
     //  request.fields['rolesTypeId'] = roleTypeId;
     request.fields['latitude'] = latitude;
