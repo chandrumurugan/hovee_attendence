@@ -118,6 +118,9 @@ class AccountSetupController extends GetxController
    RxList<String> subject = <String>[].obs;
    var appConfig = AppConfig().obs;
     List<String> batchName = [];
+
+    var isFirstTime = true.obs;
+    var isLocationSearched = false.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -153,11 +156,13 @@ class AccountSetupController extends GetxController
     tuteeQualifications = getTuteeQualifications();
     skills = getSkills();
     tuteeSpeciallizationClass = getSkills();
+      // getCurrentLocation();
   }
 
   //addresslocation map
 
     void getCurrentLocation() async {
+        if (!isFirstTime.value) return;
     isLoading.value = true; // Show loader
     try {
       // Position position = await Geolocator.getCurrentPosition(
@@ -175,6 +180,8 @@ class AccountSetupController extends GetxController
       );
 
       setMarker(LatLng(latitudeL.value, longitudeL.value));
+       isFirstTime.value = false;
+      //  isLocationSearched.value = true;
     } catch (e) {
       Logger().e("Error getting current location: $e");
     } finally {
@@ -184,7 +191,7 @@ class AccountSetupController extends GetxController
 
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
-    getCurrentLocation();
+  
   }
 
   void onMarkerDragEnd(LatLng position) {
@@ -198,6 +205,7 @@ class AccountSetupController extends GetxController
     longitudeL.value = lng;
     latitude = lat;
     longitude = lng;
+    
     try {
       List<Placemark>? placemarks =
           await placemarkFromCoordinates(latitude ?? 0.0, longitude ?? 0.0);
@@ -219,13 +227,18 @@ class AccountSetupController extends GetxController
   }
 
   void setMarker(LatLng position) {
-    marker.value = Marker(
+    latitudeL.value = position.latitude;
+    longitudeL.value = position.longitude;
+    if(!isLocationSearched.value){
+       marker.value = Marker(
       markerId: const MarkerId('selected-location'),
       position: position,
       draggable: true,
       onDragEnd: onMarkerDragEnd,
     );
-    updateLocationDetails(position.latitude, position.longitude);
+    updateLocationDetails(position.latitude, position.longitude);  
+    }
+ 
   }
 
   void zoomIn() {
@@ -237,12 +250,15 @@ class AccountSetupController extends GetxController
   }
 
   void handleAutoCompleteSelection(Prediction prediction) async {
+     isLocationSearched.value = false;
     latitudeL.value = double.parse(prediction.lat!);
     longitudeL.value = double.parse(prediction.lng!);
     mapController.animateCamera(
       CameraUpdate.newLatLng(LatLng(latitudeL.value, longitudeL.value)),
     );
+    
     setMarker(LatLng(latitudeL.value, longitudeL.value));
+      isLocationSearched.value = true;
   }
   //
 

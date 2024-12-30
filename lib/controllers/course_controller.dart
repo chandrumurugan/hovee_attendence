@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/modals/add_course_data_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
@@ -325,11 +326,21 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
         //  Get.back();
         //  onInit();
       } else {
-        SnackBarUtils.showErrorSnackBar(
-            context, response?.message ?? 'Failed to delete course');
+      Get.snackbar(response?.message ?? "");
+       
+        // SnackBarUtils.showErrorSnackBar(
+        //     // ignore: use_build_context_synchronously
+        //     context, response?.message ?? 'Failed to delete course');
       }
     } catch (e) {
-      SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+         Get.snackbar(e.toString().replaceFirst("Exception: ", "") ?? "",backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
+      
+        // SnackBarUtils.showErrorSnackBar(
+        //     // ignore: use_build_context_synchronously
+        //     context, e.toString() );
+      // SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+     
+      Logger().e("delete course==>${e}");
     } finally {
       isLoading.value = false;
     }

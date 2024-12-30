@@ -3,15 +3,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/controllers/class_controller.dart';
-import 'package:hovee_attendence/controllers/course_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDropDownInputField.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
-import 'package:hovee_attendence/widget/input_form_filed.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
-import 'package:hovee_attendence/widget/view_textfiled.dart';
 
 class TutorClassForm extends StatefulWidget {
   const TutorClassForm({super.key});
@@ -25,6 +21,7 @@ class _TutorClassFormState extends State<TutorClassForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
@@ -149,6 +146,35 @@ class _TutorClassFormState extends State<TutorClassForm> {
             //     ),
             //   );
             // }),
+
+            Obx(() {
+              if(!controller.isSelected.value){
+                    return SizedBox.shrink();
+              }
+
+              return  Card(
+                color: Colors.white,surfaceTintColor: Colors.white,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Batch Name: ${controller.selectedCourseData.value.batchName ?? 'N/A'}', style: TextStyle(fontSize: 18)),
+                      Text('Course Code: ${controller.selectedCourseData.value.courseCode ?? 'N/A'}', style: TextStyle(fontSize: 18)),
+                      Text('Board: ${controller.selectedCourseData.value?.board ?? 'N/A'}', style: TextStyle(fontSize: 18)),
+                   
+                      Text('Subject: ${controller.selectedCourseData.value?.batchId ?? 'N/A'}', style: TextStyle(fontSize: 18)),
+                      // Add more fields as necessary
+                    ],
+                  ),
+                ),
+              );
+              
+            }),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),

@@ -1366,7 +1366,9 @@ class WebService {
     if (response.statusCode == 200) {
       return deleteBatchDataModel.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to load Notification list');
+      var result = deleteBatchDataModel.fromJson(json.decode(response.body));
+        // Get.snackbar(result.message.toString());
+      throw Exception(result.message.toString());
     }
   }
 

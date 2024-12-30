@@ -13,9 +13,9 @@ import 'package:hovee_attendence/widgets/details_header.dart';
 
 class CourseDetailScreen extends StatelessWidget {
   final Data1? data;
-  final String tutorname,fees,maxSlots,startDate,endDate;
+  final String tutorname,fees,maxSlots,startDate,endDate,address;
   
-  CourseDetailScreen({super.key, required this.data,required this.tutorname, required this.fees, required this.maxSlots, required this.startDate, required this.endDate});
+  CourseDetailScreen({super.key, required this.data,required this.tutorname, required this.fees, required this.maxSlots, required this.startDate, required this.endDate, required this.address});
 
   final CourseDetailController controller = Get.put(CourseDetailController());
 
@@ -76,7 +76,7 @@ class CourseDetailScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DeatilHeader(
-                  subject: data!.subject!, Coursecode: tutorname),
+                  subject: data!.subject!, Coursecode: tutorname, address: address,),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(

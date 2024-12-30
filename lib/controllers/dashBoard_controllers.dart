@@ -4,11 +4,15 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:logger/logger.dart';
 
 class DashboardController extends GetxController {
    var selectedIndex = 0.obs; // Observable for selected index
   late PageController pageController; // PageController instance
   GlobalKey<ScaffoldState> tuteeScaffoldKey = GlobalKey<ScaffoldState>();
+  RxList<int> navigationStack = <int>[].obs;
+
+
 
   Uint8List? qrcodeImageData;
   var isLoading = true.obs;
@@ -19,8 +23,7 @@ class DashboardController extends GetxController {
     super.onInit();
     pageController = PageController();
     fetchQrCodeImage();
-      _navigationStack.clear();
-    _navigationStack.add(selectedIndex.value);
+       navigationStack.add(selectedIndex.value);
   }
 
   void fetchQrCodeImage() async {
@@ -63,11 +66,29 @@ class DashboardController extends GetxController {
   }
 
   void onItemTapped(int index) {
-     if (_navigationStack.isEmpty || _navigationStack.last != index) {
-      _navigationStack.add(index);
+    Logger().d("getting nabvigation value==>${navigationStack.value}");
+    // selectedIndex.value = index;
+    // pageController.jumpToPage(index);
+        if (navigationStack.isEmpty || navigationStack.last != index) {
+      navigationStack.add(index); // Push the new index to the stack
+      selectedIndex.value = index;
+      pageController.jumpToPage(index);
+    }else{
+      Logger().i("getting not back");
     }
-    selectedIndex.value = index;
-    pageController.jumpToPage(index);
+  }
+
+    Future<bool> handleBackButton() async {
+    if (navigationStack.length > 1) {
+      // Pop the last index and navigate to the previous index
+      navigationStack.removeLast();
+      int previousIndex = navigationStack.last;
+      selectedIndex.value = previousIndex;
+      pageController.jumpToPage(previousIndex);
+      return false; // Indicate that the back action was handled
+    } else {
+      return true; // Allow the system back action (exit app)
+    }
   }
 
   @override

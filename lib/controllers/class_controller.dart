@@ -11,6 +11,7 @@ import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_class_screen.dart';
 import 'package:hovee_attendence/view/class_screen.dart';
+import 'package:logger/logger.dart';
 
 class ClassController extends GetxController  with GetTickerProviderStateMixin {
   var courseCodeController = ''.obs;
@@ -23,6 +24,7 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
   List<String> batchName = [];
 
   var isLoading = true.obs;
+  var isSelected = false.obs;
 
   var validationMessages = <String>[].obs;
 
@@ -150,7 +152,7 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
       var tutionCourseResponse = await WebService.fetchTuitionCourseList();
       if (tutionCourseResponse.data != null) {
         tutionCourseList.value = tutionCourseResponse.data!;
-        courseCode = tutionCourseResponse.data!.map((course) => course.courseCode ?? '').toList();
+        courseCode = tutionCourseResponse.data!.map((course) => course.courseCode! + " - " + course.subject! ?? '').toList();
       }
     } catch (e) {
       print('Error: $e');
@@ -220,12 +222,18 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
 
   // Method to handle course code selection
   void onSelectCourseCode(String courseCode) {
-    selectedCourseCode.value = courseCode;
+    isSelected.value = false;
+      Logger().d(courseCode);
+ 
+    selectedCourseCode.value = courseCode.replaceAll(RegExp(r" - .*$"), "");
+       Logger().d(selectedCourseCode.value);
     selectedCourseData.value = tutionCourseList.firstWhere(
-      (course) => course.courseCode == courseCode,
+      (course) => course.courseCode == courseCode.replaceAll(RegExp(r" - .*$"), ""),
       orElse: () => TutionData(),
     );
      batchNameController1.text = selectedCourseData.value.batchName ?? '';
+        isSelected.value = true;
+
      print(batchNameController1.text);
   }
 

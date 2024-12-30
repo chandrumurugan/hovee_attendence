@@ -4,8 +4,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DeatilHeader extends StatelessWidget {
- final String subject,Coursecode;
-   const DeatilHeader({super.key,required this.subject,required this.Coursecode,
+ // ignore: non_constant_identifier_names
+ final String subject,Coursecode,address;
+   const DeatilHeader({super.key,required this.subject,required this.Coursecode, required this.address,
   });
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,14 @@ class DeatilHeader extends StatelessWidget {
                       ),
                       const SizedBox(
                         height: 10,
-                      )
+                      ),
+                          Text(
+                       address,
+                        style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14),
+                      ),
                     ],
                   ),
                 ],
@@ -73,14 +81,14 @@ class DeatilHeader extends StatelessWidget {
             ),
             Container(
               color: Colors.white,
-              height: 50,
+              height: 80,
             )
           ],
         ),
         Positioned(
             left: 15,
             right: 15,
-            bottom: 10,
+            bottom: 15,
             child: Container(
                 padding: const EdgeInsets.all(15),
                 width: MediaQuery.sizeOf(context).width,
