@@ -64,7 +64,7 @@ class Data {
   String? status;
   String? createdAt;
   bool? alreadyEnrollment;
-
+   String? tutionName;
   Data(
       {this.enquiryId,
       this.courseName,
@@ -93,7 +93,8 @@ class Data {
       this.enquiryType,
       this.status,
       this.createdAt,
-      this.alreadyEnrollment});
+      this.alreadyEnrollment,
+      this.tutionName});
 
   Data.fromJson(Map<String, dynamic> json) {
     enquiryId = json['enquiryId'];
@@ -124,6 +125,7 @@ class Data {
     status = json['status'];
     createdAt = json['createdAt'];
     alreadyEnrollment = json['already_enrollment'];
+     tutionName = json['tution_name'];
   }
 
   Map<String, dynamic> toJson() {
@@ -156,6 +158,7 @@ class Data {
     data['status'] = this.status;
     data['createdAt'] = this.createdAt;
     data['already_enrollment'] = this.alreadyEnrollment;
+   data['tution_name'] = this.tutionName;
     return data;
   }
 }

@@ -226,6 +226,8 @@ class Tutorenquirlist extends StatelessWidget {
                                                 tutionCourseDetailsList.subject),
                                             _buildRow('Tutor',
                                                 tutionCourseDetailsList.tutorName ),
+                                                 _buildRow('Tution name',
+                                                tutionCourseDetailsList.tutionName ),
                                           ],
                                         ),
                                       ),

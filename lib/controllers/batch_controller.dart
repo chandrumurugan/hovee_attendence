@@ -336,6 +336,8 @@ var batchDaysController = "".obs;
     modeController.value = '';
     fees.clear();
     selectedBatchDays.clear();
+      startDateController.clear();
+   endDateController.clear();
   }
 
   void filterBatchList() {

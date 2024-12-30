@@ -59,6 +59,9 @@ class PunchController extends GetxController {
   String? name;
   UserProfileController accountController = Get.put(UserProfileController());
   var draggablePosition = Rx<Offset>(Offset(50, 50));
+  final String? batchname;
+
+  PunchController({this.batchname});
 
   @override
   void onInit() {
@@ -68,6 +71,7 @@ class PunchController extends GetxController {
     getCurrentLocation();
     // targetLocation.value!.latitude!=0.0;
     // targetLocation.value!.longitude!=0.0;
+    print(batchname);
   }
 
   Future<void> setInatlizeLocation() async {
@@ -324,7 +328,7 @@ class PunchController extends GetxController {
 
           // After the dialog is dismissed, navigate to the next page
           Future.delayed(const Duration(milliseconds: 1500), () {
-            Get.to(() => TuteeAttendanceList(type: 'Tutee'));
+            Get.to(() => TuteeAttendanceList(type: 'Tutee',batchname:batchname));
           });
         } else {
           // Show error if the API call failed

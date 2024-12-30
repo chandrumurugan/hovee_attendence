@@ -411,6 +411,36 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                     ),
                   )
           ,
+           Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 20),
+                      decoration: BoxDecoration(
+                          color: 
+                             
+                               Colors.grey.shade300),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Tution name",
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          ),
+                          Text(
+                         data!.tutionName!??'',
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          )
+                        ],
+                      ),
+                    ),
+          ),
           type=="Course"?
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -648,9 +678,10 @@ final CourseDetailController controller = Get.put(CourseDetailController());
         ? SingleCustomButtom(
             btnName: 'Enroll now', // Named argument
             isPadded: false,       // Named argument
-            onTap: () {
+            onTap: data!.alreadyEnrollment=='false'?
+            () {
               onPreviewCallbackEnroll!();
-            },
+            }:(){},
           )
         : SizedBox.shrink(),
     );

@@ -146,6 +146,9 @@ class TutorDetails {
 
 class BatchGroupList {
   String? batchName;
+  String? batchMode;
+  String? startDate;
+  String? endDate;
   String? batchId;
   String? batchTiming;
   int? availableSlots;
@@ -153,6 +156,9 @@ class BatchGroupList {
 
   BatchGroupList(
       {this.batchName,
+      this.batchMode,
+      this.startDate,
+      this.endDate,
       this.batchId,
       this.batchTiming,
       this.availableSlots,
@@ -160,6 +166,9 @@ class BatchGroupList {
 
   BatchGroupList.fromJson(Map<String, dynamic> json) {
     batchName = json['batch_name'];
+    batchMode = json['batch_mode'];
+    startDate = json['start_date'];
+    endDate = json['end_date'];
     batchId = json['batchId'];
     batchTiming = json['batch_timing'];
     availableSlots = json['availableSlots'];
@@ -169,6 +178,9 @@ class BatchGroupList {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['batch_name'] = this.batchName;
+    data['batch_mode'] = this.batchMode;
+    data['start_date'] = this.startDate;
+    data['end_date'] = this.endDate;
     data['batchId'] = this.batchId;
     data['batch_timing'] = this.batchTiming;
     data['availableSlots'] = this.availableSlots;

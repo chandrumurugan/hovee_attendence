@@ -65,7 +65,9 @@ class StudentAttendanceController extends GetxController {
 
     //tutor
     RxSet<DateTime> holidayDatesTutor = RxSet<DateTime>();
+     final String? batchname;
 
+  StudentAttendanceController({this.batchname});
   //  var absentDates = <DateTime>{}.obs;
   //  var presentDates = <DateTime>{}.obs;
 // final  trackTuteeLocationController = Get.find<TrackTuteeLocationController>();
@@ -79,6 +81,7 @@ class StudentAttendanceController extends GetxController {
     selectedBatchStartDate.value = DateTime.now();
     //  Logger().i("123456==>$type");
     type.value = Get.arguments ?? "Tutee";
+    print(batchname);
   }
   // void setType(String value){
   //   Logger().i("1234567890==>$value");
@@ -107,10 +110,6 @@ class StudentAttendanceController extends GetxController {
            fetchStudentsList(selectedBatchIN.value!.batchId!, '', currentMonth);
           }else{
            fetchTutteAttendanceList(selectedBatchIN.value!.batchId!, '', currentMonth);
-          // if (type.value=='Parent'){
-          //        trackTuteeLocationController.fetchBatchLocationList(selectedBatchIN.value!.batchId!,);
-          //  }
-           
           }
         }
         Logger().i(batchList.length);

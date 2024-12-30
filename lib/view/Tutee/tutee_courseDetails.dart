@@ -283,6 +283,110 @@ class CourseDetailScreen extends StatelessWidget {
                   ],
                 ),
               ),
+                 Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Container(
+                        height: 44,
+                        width: 47,
+                        decoration: BoxDecoration(
+                            color: Color(0xffD9D9D9).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(8)),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Batch mode',
+                          style: GoogleFonts.nunito(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Column(
+  children: data!.batchGroupList!
+      .map((batch) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
+              batch.batchMode!, // Replace with the desired key
+              style: GoogleFonts.nunito(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+              ),
+            ),
+          ))
+      .toList(),
+)
+
+                      ],
+                    )
+                  ],
+                ),
+              ),
+                               Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Container(
+                        height: 44,
+                        width: 47,
+                        decoration: BoxDecoration(
+                            color: Color(0xffD9D9D9).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(8)),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Batch Dates',
+                          style: GoogleFonts.nunito(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Column(
+  children: data!.batchGroupList!
+      .map((batch) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Row(
+              children: [
+                Text(
+                  batch.startDate!, // Replace with the desired key
+                  style: GoogleFonts.nunito(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                  ),
+                ),
+                 Text(
+                  ' - ${batch.endDate!}', // Replace with the desired key
+                  style: GoogleFonts.nunito(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ))
+      .toList(),
+)
+
+                      ],
+                    )
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(

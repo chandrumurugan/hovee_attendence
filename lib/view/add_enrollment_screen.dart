@@ -241,7 +241,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: InputTextField(
                   suffix: false,
-                  readonly: false,
+                  readonly: true,
                   inputFormatter: [
                     FilteringTextInputFormatter.allow(
                       RegExp(

@@ -25,9 +25,9 @@ import 'package:table_calendar/table_calendar.dart';
 class TuteeAttendanceList extends StatelessWidget {
   final String type;
   final StudentAttendanceController controller;
-    final String? firstname,lastname,wowid;
-  TuteeAttendanceList({super.key, required this.type, this.firstname, this.lastname, this.wowid})
-      : controller = Get.put(StudentAttendanceController());
+    final String? firstname,lastname,wowid,batchname;
+  TuteeAttendanceList({super.key, required this.type, this.firstname, this.lastname, this.wowid, this.batchname})
+      : controller = Get.put(StudentAttendanceController(batchname: batchname));
   final MspController mspController = Get.put(MspController());
   @override
   Widget build(BuildContext context) {

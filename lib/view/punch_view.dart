@@ -25,8 +25,7 @@ class PunchView extends StatelessWidget {
       required this.courseId,
       required this.batchId,
       required this.batchStartTime,
-      required this.batchEndTime, required this.subjectName, required this.courseCode});
-  final PunchController _controller = Get.put(PunchController());
+      required this.batchEndTime, required this.subjectName, required this.courseCode, this.batchname});
   final String className;
   final String courseId;
   final String batchId;
@@ -34,14 +33,18 @@ class PunchView extends StatelessWidget {
   final String batchEndTime;
   final String subjectName;
   final String courseCode;
+  final String? batchname;
+  
   @override
   Widget build(BuildContext context) {
+     final PunchController _controller = Get.put(PunchController(batchname: batchname));
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
           Get.back();
           print("object");
+            print(batchname);
         },
       ),
       body: Stack(
@@ -307,6 +310,7 @@ class PunchView extends StatelessWidget {
 }
 
 void _onBarcodeScanned(String? scannedData) async {
+  final PunchController _controller = Get.put(PunchController(batchname: batchname));
   if (scannedData == null) return;
 
   // Extract latitude and longitude

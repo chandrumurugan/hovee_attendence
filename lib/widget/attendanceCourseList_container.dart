@@ -37,6 +37,13 @@ class AttendancecourselistContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                   Text(
+                    "${attendanceCourse!.batch!.batchName}",
+                    style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
                   Text(
                     attendanceCourse!.course!.courseCode ?? '',
                     style: GoogleFonts.nunito(
@@ -59,6 +66,7 @@ class AttendancecourselistContainer extends StatelessWidget {
                           ),
                         )
                       : SizedBox.shrink(),
+                      
                   Text(
                     "${attendanceCourse!.batch!.batchTimingStart} - ${attendanceCourse!.batch!.batchTimingEnd}",
                     style: GoogleFonts.nunito(
@@ -146,6 +154,7 @@ class AttendancecourselistContainer extends StatelessWidget {
                                   attendanceCourse!.batch!.batchTimingEnd!,
                               subjectName: attendanceCourse!.course!.subject!,
                               courseCode: attendanceCourse!.course!.courseCode!,
+                              batchname:attendanceCourse!.batch!.batchName!
                             ));
                       } else {
                         // On time to start

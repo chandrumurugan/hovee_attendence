@@ -61,7 +61,7 @@ class Data2 {
   Null? institudeId;
   String? startDate;
   Null? teacherId;
-
+ 
   Data2(
       {this.sId,
       this.batchName,
