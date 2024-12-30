@@ -17,13 +17,14 @@ class EnrollmentScreen extends StatelessWidget {
   final String type;
   final bool fromBottomNav;
   final String? firstname, lastname, wowid;
+   final VoidCallback? onDashBoardBack;
   EnrollmentScreen({
     super.key,
     required this.type,
     this.fromBottomNav = true,
     this.firstname,
     this.lastname,
-    this.wowid,
+    this.wowid, this.onDashBoardBack,
   });
   final EnrollmentController controller = Get.put(EnrollmentController());
   //final NotificationController notificontroller = Get.put(NotificationController());
@@ -39,12 +40,18 @@ class EnrollmentScreen extends StatelessWidget {
         appBar: AppBarHeader(
             needGoBack: fromBottomNav,
             navigateTo: () {
-              Get.offAll(DashboardScreen(
-                rolename: type,
-                firstname: firstname,
-                lastname: lastname,
-                wowid: wowid,
-              ));
+            if (fromBottomNav && onDashBoardBack != null) {
+            // Call onDashBoardBack if navigating from bottom navigation
+            onDashBoardBack!();
+          } else {
+            // Navigate to Dashboard if not from bottom navigation
+            Get.offAll(DashboardScreen(
+              rolename: type,
+              firstname: firstname,
+              lastname: lastname,
+              wowid: wowid,
+            ));
+          }
             }),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,6 +121,21 @@ class EnrollmentScreen extends StatelessWidget {
                             Get.to(EnRollmentPreviewScreen(
                               data: enrollmentList,
                               type: 'Enquire',
+                              role:type,
+                               onPreviewCallbackAccept:(){
+                                       _showOtpDialog(
+                                                      context,
+                                                      enrollmentList
+                                                          .sId!);
+                                      },
+                                      onPreviewCallbackReject:(){
+                                          controller.updateEnrollment(
+                                                      context,
+                                                      enrollmentList.sId!,
+                                                      'Rejected',
+                                                      enrollmentList
+                                                          .enquiryCode!);
+                                      },
                             ));
                           },
                           child: Padding(
@@ -264,7 +286,7 @@ class EnrollmentScreen extends StatelessWidget {
                                               child: InkWell(
                                                 onTap: () {
                                                   String address =
-                                                      '${enrollmentList.tutorId.doorNo} ${enrollmentList.tutorId.street}${enrollmentList.tutorId.city}${enrollmentList.tutorId.state}${enrollmentList.tutorId.country}';
+                                                      '${enrollmentList.tutorId.doorNo}, ${enrollmentList.tutorId.street}, ${enrollmentList.tutorId.city}, ${enrollmentList.tutorId.state}, ${enrollmentList.tutorId.country}';
                                                   Get.to(AddUserRatingsScreen(
                                                     firstName: enrollmentList
                                                         .tutorId.firstName,

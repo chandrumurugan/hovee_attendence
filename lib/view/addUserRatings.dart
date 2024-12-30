@@ -238,10 +238,10 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                             style: GoogleFonts.nunito(
                                 fontWeight: FontWeight.w800,
                                 color: Colors.black.withOpacity(.5))),
-                                     Text("${widget.courtsecode}",
-                            style: GoogleFonts.nunito(
-                                fontWeight: FontWeight.w800,
-                                color: Colors.black.withOpacity(.5))),
+                            //          Text("${widget.courtsecode}",
+                            // style: GoogleFonts.nunito(
+                            //     fontWeight: FontWeight.w800,
+                            //     color: Colors.black.withOpacity(.5))),
                                     Text("${widget.board}",
                             style: GoogleFonts.nunito(
                                 fontWeight: FontWeight.w800,

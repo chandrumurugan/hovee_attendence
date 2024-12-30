@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/ratings_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/myPropertyList.dart';
 import 'package:hovee_attendence/view/myReview.dart';
 import 'package:hovee_attendence/widget/rating_profile.dart';
@@ -11,7 +12,10 @@ import 'package:hovee_attendence/widget/ratingsContainer.dart';
 
 class MyRatingsScreen extends StatelessWidget {
   final bool fromBottomNav;
-  MyRatingsScreen({super.key, required this.fromBottomNav});
+    final String type;
+     final VoidCallback? onDashBoardBack;
+
+  MyRatingsScreen({super.key, required this.fromBottomNav, required this.type, this.onDashBoardBack,});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,15 @@ class MyRatingsScreen extends StatelessWidget {
         appBar: AppBarHeader(
             needGoBack: fromBottomNav,
             navigateTo: () {
-              //  Get.offAll(DashboardScreen(rolename: type,firstname: firstname,lastname: lastname,wowid: wowid,));
+             if (fromBottomNav && onDashBoardBack != null) {
+            // Call onDashBoardBack if navigating from bottom navigation
+            onDashBoardBack!();
+          } else {
+            // Navigate to Dashboard if not from bottom navigation
+            Get.offAll(DashboardScreen(
+              rolename: type,
+            ));
+          }
             }),
         body: Obx(() {
           if (controller.isLoading.value) {

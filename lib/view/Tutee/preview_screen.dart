@@ -4,10 +4,12 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/courseDetails_controller.dart';
+import 'package:hovee_attendence/controllers/enquir_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
+import 'package:hovee_attendence/widget/doubleCustombtn.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 import 'package:hovee_attendence/widgets/preview_header.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
@@ -19,13 +21,20 @@ class PreviewScreen extends StatelessWidget {
   final String tuteename;
   final String tuteeemail;
   final String tuteephn;
-  PreviewScreen({super.key, required this.data, required this.type, required this.tutorname, required this.type1, required this.tuteename, required this.tuteeemail, required this.tuteephn});
+    final VoidCallback? onPreviewCallbackAccept;
+     final VoidCallback? onPreviewCallbackReject;
+     final VoidCallback? onPreviewCallbackEnroll;
 
+  PreviewScreen({super.key, required this.data, required this.type, required this.tutorname, required this.type1, required this.tuteename, required this.tuteeemail, required this.tuteephn, this.onPreviewCallbackAccept, this.onPreviewCallbackReject, this.onPreviewCallbackEnroll});
+ 
    
 final CourseDetailController controller = Get.put(CourseDetailController());
+ final EnquirDetailController classController =
+      Get.put(EnquirDetailController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
@@ -498,33 +507,152 @@ final CourseDetailController controller = Get.put(CourseDetailController());
               ),
             ),
             ],
-          )
+          ),
          // :Container()
-           
+         SizedBox(height: 8,),
+            if ((
+                                      type1 == 'Tutor' && data.status=='Pending'))
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                 Navigator.of(context).pop();
+                                               onPreviewCallbackAccept!();
+                                              },
+                                              child: Container(
+                                                width: double.infinity,
+                                                padding: const EdgeInsets.symmetric(
+                                                    vertical: 10),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  gradient: const LinearGradient(
+                                                    colors: [
+                                                      Color(0xFFBA0161),
+                                                      Color(0xFF510270)
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                  ),
+                                                ),
+                                                child: Text("Accept",
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.nunito(
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 20,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                              width: 10), // Spacing between buttons
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                 Navigator.of(context).pop();
+                                              onPreviewCallbackReject!();
+                                              },
+                                              child: Container(
+                                                width: double.infinity,
+                                                padding: const EdgeInsets.symmetric(
+                                                    vertical: 10),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  gradient: const LinearGradient(
+                                                    colors: [
+                                                      Color(0xFFBA0161),
+                                                      Color(0xFF510270)
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                  ),
+                                                ),
+                                                child: Text("Reject",
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.nunito(
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 20,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                     SizedBox(height: 10,),
+                                    //   if(type!= 'Course')
+                                    //    if ((data.status=='Approved' &&
+                                    //   type1 == 'Tutor'))
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.end,
+                                    //   children: [
+                                    //     Expanded(
+                                    //       child: InkWell(
+                                    //         onTap: () {
+                                              
+                                    //          onPreviewCallbackEnroll!();
+                                    //         },
+                                    //         child: Container(
+                                    //           width: double.infinity,
+                                    //           padding: const EdgeInsets.symmetric(
+                                    //               vertical: 10),
+                                    //           decoration: BoxDecoration(
+                                    //             borderRadius:
+                                    //                 BorderRadius.circular(8),
+                                    //             gradient: const LinearGradient(
+                                    //               colors: [
+                                    //                 Color(0xFFBA0161),
+                                    //                 Color(0xFF510270)
+                                    //               ],
+                                    //               begin: Alignment.topCenter,
+                                    //               end: Alignment.bottomCenter,
+                                    //             ),
+                                    //           ),
+                                    //           child: Text("Enroll now",
+                                    //               textAlign: TextAlign.center,
+                                    //               style: GoogleFonts.nunito(
+                                    //                   fontWeight: FontWeight.w500,
+                                    //                   fontSize: 20,
+                                    //                   color: Colors.white)),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //     const SizedBox(
+                                    //         width: 10), // Spacing between buttons
+                                    //   ],
+                                    // ),
+                                    // SizedBox.shrink()
           ],
         ),
        
       ),
-       bottomNavigationBar: type == 'Course'
-      ? SingleCustomButtom(
-          btnName: 'Submit',
-          isPadded: false,
-          onTap: () {
-            final storage = GetStorage();
-            final studentId = storage.read('id');
-            print(data!.courseId!);
-            print(studentId);
-            print(data!.tutorId!);
-            // controller.addEnquirs(
-            //   context,
-            //   data!.courseId!,
-            //   studentId,
-            //   data!.tutorId!,
-            // );
-            _showConfirmationDialog(context,data!.courseId!,studentId,data!.tutorId!);
-          },
-        )
-      : null,
+   bottomNavigationBar: type == 'Course'
+    ? SingleCustomButtom(
+        btnName: 'Submit', // Named argument
+        isPadded: false,   // Named argument
+        onTap: () {
+          final storage = GetStorage();
+          final studentId = storage.read('id');
+          print(data!.courseId!);
+          print(studentId);
+          print(data!.tutorId!);
+          _showConfirmationDialog(context, data!.courseId!, studentId, data!.tutorId!);
+        },
+      )
+    : data.status == 'Approved'
+        ? SingleCustomButtom(
+            btnName: 'Enroll now', // Named argument
+            isPadded: false,       // Named argument
+            onTap: () {
+              onPreviewCallbackEnroll!();
+            },
+          )
+        : SizedBox.shrink(),
     );
     
   }

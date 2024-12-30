@@ -26,7 +26,8 @@ class AddEnrollmentScreen extends StatelessWidget {
       courseId,
       batchId,
       enrollmentType,
-      type;
+      type,
+      batchEndDate;
   AddEnrollmentScreen(
       {super.key,
       required this.tuteename,
@@ -44,7 +45,7 @@ class AddEnrollmentScreen extends StatelessWidget {
       required this.courseId,
       required this.batchId,
       required this.enrollmentType,
-      required this.type});
+      required this.type, required this.batchEndDate});
   final EnrollmentController controller = Get.put(EnrollmentController());
   @override
   Widget build(BuildContext context) {
@@ -58,6 +59,7 @@ class AddEnrollmentScreen extends StatelessWidget {
     controller.batchTimingController.text =
         '$batchStartingTime - $batchEndingTime';
     controller.branchController.text = batchname;
+    controller.endDateController.text = batchEndDate;
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,

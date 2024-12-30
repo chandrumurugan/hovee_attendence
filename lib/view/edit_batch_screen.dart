@@ -236,7 +236,7 @@ final BatchController controller = Get.put(BatchController());
                   Row(
                     children: [
                       const Text(
-                        'Batch maximum slos',
+                        'Batch maximum slots',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,

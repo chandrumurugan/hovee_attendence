@@ -18,7 +18,8 @@ class Tutorenquirlist extends StatelessWidget {
   final String type;
    final bool fromBottomNav;
    final String? firstname,lastname,wowid;
-  Tutorenquirlist({super.key, required this.type, this.fromBottomNav = true, this.firstname, this.lastname, this.wowid});
+   final VoidCallback? onDashBoardBack;
+  Tutorenquirlist({super.key, required this.type, this.fromBottomNav = true, this.firstname, this.lastname, this.wowid, this.onDashBoardBack});
 
   final EnquirDetailController classController =
       Get.put(EnquirDetailController());
@@ -30,7 +31,18 @@ class Tutorenquirlist extends StatelessWidget {
        AppBarHeader(
           needGoBack:  fromBottomNav,
           navigateTo: () {
-             Get.offAll(DashboardScreen(rolename: type,firstname: firstname,lastname: lastname,wowid: wowid,));
+           if (fromBottomNav && onDashBoardBack != null) {
+            // Call onDashBoardBack if navigating from bottom navigation
+            onDashBoardBack!();
+          } else {
+            // Navigate to Dashboard if not from bottom navigation
+            Get.offAll(DashboardScreen(
+              rolename: type,
+              firstname: firstname,
+              lastname: lastname,
+              wowid: wowid,
+            ));
+          }
           }),
       body: 
       Column(
@@ -113,6 +125,58 @@ class Tutorenquirlist extends StatelessWidget {
                                       data: tutionCourseDetailsList,
                                       type: 'Enquire',
                                       tutorname: tutionCourseDetailsList.tutorName!, type1: type, tuteename: tutionCourseDetailsList.studentName!, tuteeemail: '', tuteephn: '',
+                                      onPreviewCallbackAccept:(){
+                                          _showConfirmationDialog(
+                                                  context, tutionCourseDetailsList);
+                                      },
+                                      onPreviewCallbackReject:(){
+                                          _showConfirmationDialog1(
+                                                  context, tutionCourseDetailsList);
+                                      },
+                                      onPreviewCallbackEnroll:(){
+                                         Get.to(() => AddEnrollmentScreen(
+                                                    tuteename:
+                                                        tutionCourseDetailsList
+                                                            .studentName!,
+                                                    batchname:
+                                                        tutionCourseDetailsList
+                                                            .courseName!,
+                                                    classname:
+                                                        tutionCourseDetailsList
+                                                            .className!,
+                                                    subject: tutionCourseDetailsList
+                                                        .subject!,
+                                                    board: tutionCourseDetailsList
+                                                        .board!,
+                                                    batchStartingTime:
+                                                        tutionCourseDetailsList
+                                                            .batchTimingStart??'',
+                                                    batchEndingTime:
+                                                        tutionCourseDetailsList
+                                                            .batchTimingEnd??'',
+                                                    tutorname:
+                                                        tutionCourseDetailsList
+                                                            .tutorName!,
+                                                    courseCodeName:
+                                                        tutionCourseDetailsList
+                                                            .courseCode!,
+                                                    fees: tutionCourseDetailsList
+                                                        .fees!,
+                                                    tutorId: tutionCourseDetailsList
+                                                        .tutorId!,
+                                                    tuteeId: tutionCourseDetailsList
+                                                        .studentId!,
+                                                    courseId:
+                                                        tutionCourseDetailsList
+                                                            .courseId!,
+                                                    batchId: tutionCourseDetailsList
+                                                        .batchId!,
+                                                    enrollmentType:
+                                                        tutionCourseDetailsList
+                                                            .enquiryType!,
+                                                    type: type,  batchEndDate: tutionCourseDetailsList.batchEndDate!,
+                                                  ));
+                                      },
                                     ));
                         },
                         child: Padding(
@@ -292,7 +356,7 @@ class Tutorenquirlist extends StatelessWidget {
                                                     enrollmentType:
                                                         tutionCourseDetailsList
                                                             .enquiryType!,
-                                                    type: type,
+                                                    type: type, batchEndDate: tutionCourseDetailsList.batchEndDate??'',
                                                   ));
                                             },
                                             child: Container(
@@ -393,70 +457,72 @@ class Tutorenquirlist extends StatelessWidget {
   //   );
   // }
 
-  void _showConfirmationDialog(
-      BuildContext context, dynamic tutionCourseDetailsList) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return CustomDialogBox(
-          title1: 'Would you like to accept this enquiry?',
-          title2: '',
-          subtitle: 'Do you want to accept this Enquiry?',
-          icon: const Icon(Icons.help_outline, color: Colors.white),
-          color: const Color(0xFF833AB4), // Set the primary color
-          color1: const Color(0xFF833AB4), // Optional gradient color
-          singleBtn: false, // Show both 'Yes' and 'No' buttons
-          btnName: 'No',
-          onTap: () {
-            // Call the updateClass method when 'Yes' is clicked
-            Navigator.of(context).pop();
-          },
-          btnName2: 'Yes',
-          onTap2: () {
-            // Close the dialog when 'No' is clicked
-            classController.updateEnquire(
-              context,
-                tutionCourseDetailsList.enquiryId!, 'Approved');
-                // classController.tabController.animateTo(1);
-                // classController.handleTabChange(1);
-            Navigator.of(context).pop(); // Close the dialog after update
-          },
-        );
+ void _showConfirmationDialog(
+    BuildContext context, dynamic tutionCourseDetailsList) {
+  Get.dialog(
+    CustomDialogBox(
+      title1: 'Would you like to accept this enquiry?',
+      title2: '',
+      subtitle: 'Do you want to accept this Enquiry?',
+      icon: const Icon(Icons.help_outline, color: Colors.white),
+      color: const Color(0xFF833AB4), // Set the primary color
+      color1: const Color(0xFF833AB4), // Optional gradient color
+      singleBtn: false, // Show both 'Yes' and 'No' buttons
+      btnName: 'No',
+      onTap: () {
+        // Close the dialog when 'No' is clicked
+        Get.back();
       },
-    );
-  }
+      btnName2: 'Yes',
+      onTap2: () {
+        // Call the updateClass method when 'Yes' is clicked
+        classController.updateEnquire(
+          context,
+          tutionCourseDetailsList.enquiryId!,
+          'Approved',
+        );
+        // Close the dialog after update
+        Get.back();
+      },
+    ),
+    barrierDismissible: false, // Prevent closing the dialog by tapping outside
+  );
+}
 
-  void _showConfirmationDialog1(
-      BuildContext context, dynamic tutionCourseDetailsList) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return CustomDialogBox(
-          title1: 'Would you like to reject this enquiry?',
-          title2: '',
-          subtitle: 'Do you want to reject this Enquiry?',
-          icon: const Icon(Icons.help_outline, color: Colors.white),
-          color: const Color(0xFF833AB4), // Set the primary color
-          color1: const Color(0xFF833AB4), // Optional gradient color
-          singleBtn: false, // Show both 'Yes' and 'No' buttons
-          btnName: 'No',
-          onTap: () {
-            // Call the updateClass method when 'Yes' is clicked
-            Navigator.of(context).pop();
-          },
-          btnName2: 'Yes',
-          onTap2: () {
-            // Close the dialog when 'No' is clicked
-            classController.updateEnquire(
-              context,
-                tutionCourseDetailsList.enquiryId!, 'Rejected');
-                  classController.tabController.animateTo(2);
-            Navigator.of(context).pop(); // Close the dialog after update
-          },
-        );
+
+ void _showConfirmationDialog1(
+    BuildContext context, dynamic tutionCourseDetailsList) {
+  Get.dialog(
+    CustomDialogBox(
+      title1: 'Would you like to reject this enquiry?',
+      title2: '',
+      subtitle: 'Do you want to reject this Enquiry?',
+      icon: const Icon(Icons.help_outline, color: Colors.white),
+      color: const Color(0xFF833AB4), // Set the primary color
+      color1: const Color(0xFF833AB4), // Optional gradient color
+      singleBtn: false, // Show both 'Yes' and 'No' buttons
+      btnName: 'No',
+      onTap: () {
+        // Close the dialog when 'No' is clicked
+        Get.back();
       },
-    );
-  }
+      btnName2: 'Yes',
+      onTap2: () {
+        // Call the updateClass method when 'Yes' is clicked
+        classController.updateEnquire(
+          context,
+          tutionCourseDetailsList.enquiryId!,
+          'Rejected',
+        );
+        classController.tabController.animateTo(2);
+        // Close the dialog after update
+        Get.back();
+      },
+    ),
+    barrierDismissible: false, // Prevent accidental dismissal
+  );
+}
+
 
   //  void _showConfirmationDialog1(
   //     BuildContext context, dynamic tutionCourseDetailsList) {
@@ -487,4 +553,5 @@ class Tutorenquirlist extends StatelessWidget {
   //     },
   //   );
   // }
+  
 }

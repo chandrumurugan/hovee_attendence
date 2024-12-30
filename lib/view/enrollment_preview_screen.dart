@@ -11,7 +11,10 @@ import 'package:hovee_attendence/widgets/preview_header.dart';
 class EnRollmentPreviewScreen extends StatelessWidget {
   final Data? data;
   final String type;
-  EnRollmentPreviewScreen({super.key, this.data, required this.type});
+    final String? role;
+     final VoidCallback? onPreviewCallbackAccept;
+     final VoidCallback? onPreviewCallbackReject;
+  EnRollmentPreviewScreen({super.key, this.data, required this.type, this.role, this.onPreviewCallbackAccept, this.onPreviewCallbackReject});
   final CourseDetailController controller = Get.put(CourseDetailController());
   @override
   Widget build(BuildContext context) {
@@ -635,9 +638,96 @@ class EnRollmentPreviewScreen extends StatelessWidget {
                 ],
               ),
             ),
-          ],
-        ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            if (
+                                                role == 'Tutee' && data!.status=='Pending') ...[
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                      Navigator.of(context).pop();
+                                                 onPreviewCallbackAccept!();
+                                                  },
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      gradient: LinearGradient(
+                                                        colors: const [
+                                                          Color(0xFFBA0161),
+                                                          Color(0xFF510270)
+                                                        ],
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                        end: Alignment
+                                                            .bottomCenter,
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      "Submit",
+                                                      textAlign: TextAlign.center,
+                                                      style: GoogleFonts.nunito(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 20,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                      Navigator.of(context).pop();
+                                                 onPreviewCallbackReject!();
+                                                  },
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 10),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      gradient: LinearGradient(
+                                                        colors: const [
+                                                          Color(0xFFBA0161),
+                                                          Color(0xFF510270)
+                                                        ],
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                        end: Alignment
+                                                            .bottomCenter,
+                                                      ),
+                                                    ),
+                                                    child: Text(
+                                                      "Reject",
+                                                      textAlign: TextAlign.center,
+                                                      style: GoogleFonts.nunito(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 20,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                                ]
+                        ],
+                      ),
+            ),
+        SizedBox(height: 10,)
+          ]
       ),
-    );
+    ));
   }
 }

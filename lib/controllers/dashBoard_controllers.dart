@@ -13,11 +13,14 @@ class DashboardController extends GetxController {
   Uint8List? qrcodeImageData;
   var isLoading = true.obs;
   var  qrcodeImage;
+   List<int> _navigationStack = [];
   @override
   void onInit() {
     super.onInit();
     pageController = PageController();
     fetchQrCodeImage();
+      _navigationStack.clear();
+    _navigationStack.add(selectedIndex.value);
   }
 
   void fetchQrCodeImage() async {
@@ -60,20 +63,33 @@ class DashboardController extends GetxController {
   }
 
   void onItemTapped(int index) {
+     if (_navigationStack.isEmpty || _navigationStack.last != index) {
+      _navigationStack.add(index);
+    }
     selectedIndex.value = index;
     pageController.jumpToPage(index);
   }
-  //  void onItemTapped(int index) {
-  //   // Allow only the "Home" tab (index 0) to be clicked
-  //   if (index == 0) {
-  //     selectedIndex.value = index;
-  //     pageController.jumpToPage(index);
-  //   }
-  // }
 
   @override
   void onClose() {
     pageController.dispose();
     super.onClose();
   }
+
+   void navigateFunc() {
+  if (_navigationStack.isNotEmpty) { // Check if the stack is not empty
+    // Remove the last element and navigate to the previous bottom tab
+    _navigationStack.removeLast();
+    
+    // Check again to ensure there's still an element in the stack
+    if (_navigationStack.isNotEmpty) {
+      selectedIndex = _navigationStack.last.obs;
+      pageController.jumpToPage(selectedIndex.value);
+    }
+  } else {
+    // Handle the case when the navigation stack is empty, if needed
+    print("Navigation stack is empty, cannot navigate back.");
+  }
+}
+
 }

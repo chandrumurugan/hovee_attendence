@@ -38,42 +38,39 @@ class CourseDetailScreen extends StatelessWidget {
                 
         //       ));
         //     }),
-         bottomNavigationBar: DoubleCustomButtom(
-    btnName1: "Call now",
-    isPadded: false,
-    onTap1: () {
-      _showConfirmationDialog(
-        context,
-        () {
-          // Navigate to the inquiry preview page
-          // Proceed to submit the inquiry
-          controller.makePhoneCall(
-            controller.phoneNumber!,
+        bottomNavigationBar: DoubleCustomButtom(
+  btnName1: "Call now",
+  isPadded: false,
+  onTap1: () {
+    _showConfirmationDialog(
+      context,
+      () {
+        controller.makePhoneCall(controller.phoneNumber!);
+      },
+    );
+  },
+  btnName2: "Enquire Now",
+  onTap2: data!.alreadyExits == false
+      ? () {
+          _showConfirmationDialog1(
+            context,
+            () {
+              Get.to(PreviewScreen(
+                data: data,
+                type: 'Course',
+                tutorname: tutorname,
+                type1: '',
+                tuteename: '',
+                tuteeemail: '',
+                tuteephn: '',
+              ));
+            },
           );
-        },
-      );
-    },
-    btnName2: "Enquire Now",
-    onTap2: () {
-       _showConfirmationDialog1(
-        context,
-        () {
-          // Navigate to the inquiry preview page
-          // Proceed to submit the inquiry
-          Get.to(PreviewScreen(
-        data: data,
-        type: 'Course',
-        tutorname: tutorname,
-        type1: '',
-        tuteename: '',
-        tuteeemail: '',
-        tuteephn: '',
-      ));
-        },
-      );
-     
-    },
-  ),
+        }
+      :(){},
+  isButton2Enabled: data!.alreadyExits == false,  // Disable the button if alreadyExits is true
+),
+
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,7 +233,7 @@ class CourseDetailScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "₹ $fees /month",
+                          " $fees /month",
                           style: GoogleFonts.nunito(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
