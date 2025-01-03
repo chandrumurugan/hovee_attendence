@@ -65,9 +65,9 @@ class BatchListConatiner extends StatelessWidget {
               const SizedBox(height: 10),
               _buildRow('Fees', '${batch.fees}',context),
                 const SizedBox(height: 10),
-               _buildRow('BatchStartDate', '${batch.startDate ??''}',context),
+               _buildRow('Batch StartDate', '${batch.startDate ??''}',context),
                 const SizedBox(height: 10),
-                _buildRow('BatchEndDate', '${batch.endDate??''}',context),
+                _buildRow('Batch EndDate', '${batch.endDate??''}',context),
               Divider(),
               TextButton(
                 onPressed: () {

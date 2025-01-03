@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hovee_attendence/controllers/enquir_controller.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/holiday_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
@@ -37,7 +38,8 @@ class NotificationController extends GetxController {
    final EnrollmentController enrollmentController = Get.put(EnrollmentController());
 
     var notificationCount = 0.obs;
-
+  final EnquirDetailController classController =
+      Get.put(EnquirDetailController());
   @override
   void onInit() {
     super.onInit();
@@ -47,23 +49,27 @@ class NotificationController extends GetxController {
      print("object1");
   }
 
-  // void fetchNotificationsType() async {
-  //   isLoading(true);
-
-  //   var response = await WebService.fetchNotificationsType();
-
-  //   if (response.isNotEmpty) {
-  //     categories.value= response;
-  //     isLoading(false); 
-  //      final storage = GetStorage();
-  //     // role =storage.read('role');
-  //      SharedPreferences prefs = await SharedPreferences.getInstance();
-  //      role = prefs.getString('Rolename') ?? '';
-  //     filteredNotifications('Announcements',role!,false);
-  //   } else {
-  //     isLoading(false);
-  //   }
+  // void getRole() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   role = prefs.getString('Rolename') ?? '';
+  //   fetchNotifications(role!,false);
   // }
+
+  void fetchNotifications(String role, bool isRead) async {
+    //  SharedPreferences prefs = await SharedPreferences.getInstance();
+    // role = prefs.getString('Rolename') ?? '';
+    isLoading(true);
+    var batchData = {"role": role, "isRead ": false};
+    var response = await WebService.getNotifications(batchData);
+    if (response != null && response.statusCode == 200) {
+      //notificationList.value =response.data!;
+      notificationCount.value=response.unreadCount!;
+      isLoading(false);
+    } else {
+      notificationList.clear();
+      isLoading(false);
+    }
+  }
 
   void fetchNotificationsType() async {
   isLoading(true);
@@ -84,6 +90,7 @@ class NotificationController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     role = prefs.getString('Rolename') ?? '';
     filteredNotifications('Enquiry', role!, false);
+    //filteredNotifications('Enrollment', role!, false);
   } else {
     isLoading(false);
   }
@@ -96,9 +103,9 @@ class NotificationController extends GetxController {
     isLoading(true);
     var batchData = {"role": role, "type": type, "isRead ": false};
     var response = await WebService.getNotifications(batchData);
-    if (response != null && response!.statusCode == 200) {
+    if (response != null && response.statusCode == 200) {
       notificationList.value =response.data!;
-      notificationCount.value=response.unreadCount!;
+     // notificationCount.value=response.unreadCount!;
       isLoading(false);
     } else {
       notificationList.clear();
@@ -106,7 +113,61 @@ class NotificationController extends GetxController {
     }
   }
 
-  void fetchMarkedNotification(String notificationId, String type, String msgtype) async {
+//   void fetchMarkedNotification(String notificationId, String type, String msgtype) async {
+//   isLoading(true);
+//   var batchData = {"notificationId": notificationId};
+//   var response = await WebService.FetchMarkedNotification(batchData);
+//   final storage = GetStorage();
+
+//   if (response != null && response.statusCode == 200) {
+//     notificationData.value = response.data!;
+
+//     // Extract only the code using a regular expression
+//     final message = notificationData.value!.message ?? "";
+//     final regex = RegExp(r'\b\d{6}\b'); // Matches a 6-digit number
+//     final match = regex.firstMatch(message);
+
+//     if (match != null) {
+//       otpController.text = match.group(0)!; // Store only the code in otpController
+//       storage.write('otpCode', otpController.text); // Store OTP in GetStorage
+//       print("Stored OTP: ${otpController.text}");
+//     } else {
+//       otpController.text = ""; // Handle if code is not found
+//     }
+
+//     isLoading(false);
+
+//     if (msgtype == 'Enquiry') {
+//       Get.off(() => Tutorenquirlist(type: role!, fromBottomNav: true,));
+//     }  if (msgtype == 'Enrollment') {
+//       enrollmentController.onInit();
+//       Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,));
+//     }
+//      if (msgtype == 'Leave') {
+//       Get.off(() => TuteeLeaveScreen(type: role!, fromBottomNav: true,));
+//     } 
+//      if (msgtype == 'Miss Punch') {
+//       Get.off(() => MspScreen(type: role!, fromBottomNav: true,));
+//     } 
+//       if (msgtype == 'Announcements') {
+//       Get.off(() => AnnouncementScreen(type: role!,));
+//     } 
+//      if (msgtype == 'Holiday') {
+//       if(role=='Tutor'){
+//       Get.off(() => HolidayController());
+//     } else{
+//        Get.off(() => TuteeHolidayScreen(type: role!,));
+//     }
+//   } else {
+//     notificationList.clear();
+//     isLoading(false);
+//   }
+// }
+
+//   }
+
+
+void fetchMarkedNotification(String notificationId, String type, String msgtype) async {
   isLoading(true);
   var batchData = {"notificationId": notificationId};
   var response = await WebService.FetchMarkedNotification(batchData);
@@ -117,6 +178,7 @@ class NotificationController extends GetxController {
 
     // Extract only the code using a regular expression
     final message = notificationData.value!.message ?? "";
+     final head = notificationData.value!.head ?? "";
     final regex = RegExp(r'\b\d{6}\b'); // Matches a 6-digit number
     final match = regex.firstMatch(message);
 
@@ -128,38 +190,51 @@ class NotificationController extends GetxController {
       otpController.text = ""; // Handle if code is not found
     }
 
+    // Extract the last word from the message
+    final lastWordRegex = RegExp(r'\b(\w+)\b$'); // Matches the last word
+    final lastWordMatch = lastWordRegex.firstMatch(head);
+    final lastWord = lastWordMatch?.group(0);
+
+    if (lastWord != null) {
+      print("Last word in message: $lastWord");
+
+      // Perform actions based on the last word
+      if (lastWord != null && msgtype == 'Enrollment') {
+        Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,lastWord:lastWord ,),arguments:lastWord);
+      }
+      // Add more conditions for other last words and msgtypes if needed
+    }
+
     isLoading(false);
 
-    if (msgtype == 'Enquiry') {
-      Get.off(() => Tutorenquirlist(type: role!, fromBottomNav: true,));
-    }  if (msgtype == 'Enrollment') {
-      enrollmentController.onInit();
-      Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,));
+    if (lastWord != null && msgtype == 'Enquiry') {
+      Get.off(() => Tutorenquirlist(type: role!, fromBottomNav: true,),arguments:lastWord);
     }
-     if (msgtype == 'Leave') {
+    // if (msgtype == 'Enrollment') {
+    //   enrollmentController.onInit();
+    //   Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,));
+    // }
+    if (msgtype == 'Leave') {
       Get.off(() => TuteeLeaveScreen(type: role!, fromBottomNav: true,));
-    } 
-     if (msgtype == 'Miss Punch') {
+    }
+    if (msgtype == 'Miss Punch') {
       Get.off(() => MspScreen(type: role!, fromBottomNav: true,));
-    } 
-      if (msgtype == 'Announcements') {
+    }
+    if (msgtype == 'Announcements') {
       Get.off(() => AnnouncementScreen(type: role!,));
-    } 
-     if (msgtype == 'Holiday') {
-      if(role=='Tutor'){
-      Get.off(() => HolidayController());
-    } else{
-       Get.off(() => TuteeHolidayScreen(type: role!,));
+    }
+    if (msgtype == 'Holiday') {
+      if (role == 'Tutor') {
+        Get.off(() => HolidayController());
+      } else {
+        Get.off(() => TuteeHolidayScreen(type: role!,));
+      }
     }
   } else {
     notificationList.clear();
     isLoading(false);
   }
 }
-
-  }
-
-
 
     void setSelectedIndex(int index) {
       

@@ -27,7 +27,8 @@ class AddEnrollmentScreen extends StatelessWidget {
       batchId,
       enrollmentType,
       type,
-      batchEndDate;
+      batchEndDate,
+      batchMode;
   AddEnrollmentScreen(
       {super.key,
       required this.tuteename,
@@ -45,7 +46,7 @@ class AddEnrollmentScreen extends StatelessWidget {
       required this.courseId,
       required this.batchId,
       required this.enrollmentType,
-      required this.type, required this.batchEndDate});
+      required this.type, required this.batchEndDate, required this.batchMode});
   final EnrollmentController controller = Get.put(EnrollmentController());
   @override
   Widget build(BuildContext context) {
@@ -60,6 +61,7 @@ class AddEnrollmentScreen extends StatelessWidget {
         '$batchStartingTime - $batchEndingTime';
     controller.branchController.text = batchname;
     controller.endDateController.text = batchEndDate;
+    controller.modeController.text = batchMode;
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
@@ -148,7 +150,7 @@ class AddEnrollmentScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: InputTextField(
                 suffix: true,
-                readonly: true,
+                readonly: false,
                 isDate: true,
                 hintText: 'Select',
                 initialDate: DateTime.now(),
@@ -194,7 +196,7 @@ class AddEnrollmentScreen extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: InputTextField(
-                  suffix: true,
+                  suffix: false,
                   readonly: true,
                   isDate: true,
                   hintText: 'Select',
@@ -581,6 +583,44 @@ class AddEnrollmentScreen extends StatelessWidget {
             ),
             const SizedBox(
               height: 5,
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+              child: Row(
+                children: [
+                  const Text(
+                    'Batch mode',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: InputTextField(
+                  suffix: false,
+                  readonly: true,
+                  inputFormatter: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(
+                        r"[a-zA-Z0-9@&_,-\/.']",
+                      ),
+                    ),
+                  ],
+                  hintText: 'Enter here...',
+                  keyboardType: TextInputType.emailAddress,
+                   prefixText: '', // Add the rupee symbol as prefix
+                    suffixText: '',
+                  controller: controller.modeController),
             ),
           ],
         ),

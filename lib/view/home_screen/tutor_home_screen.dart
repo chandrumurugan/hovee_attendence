@@ -44,7 +44,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TutorHome extends StatelessWidget {
   final String? firstname, lastname, wowid;
-  TutorHome({super.key, this.firstname, this.lastname, this.wowid});
+   final VoidCallback onDashBoardBack;
+  TutorHome({super.key, this.firstname, this.lastname, this.wowid, required this.onDashBoardBack});
   final TutorHomeController controller = Get.put(TutorHomeController());
   final EnquirDetailController classController =
       Get.put(EnquirDetailController());
@@ -52,9 +53,9 @@ class TutorHome extends StatelessWidget {
       Get.put(EnrollmentController());
   final SplashController splashController = Get.find();
   final TuteeHomeController tuteecontroller = Get.put(TuteeHomeController());
-  final NotificationController noticontroller =
-      Get.put(NotificationController());
       final userProfileData = Get.put(UserProfileController());
+      final NotificationController noticontroller =
+      Get.put(NotificationController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,10 +99,14 @@ class TutorHome extends StatelessWidget {
                         InkWell(
                           onTap: () {
                             Get.to(() => NotificationScreen(
-                                type: 'Tutor',
-                                firstname: firstname,
-                                lastname: lastname,
-                                wowid: wowid));
+        type: 'Tutor',
+        firstname: firstname,
+        lastname: lastname,
+        wowid: wowid,
+      ))?.then((_) {
+    // Refresh notification count when returning to TutorHome
+    noticontroller.fetchNotificationsType();
+  });
                           },
                           child: Image.asset(
                             'assets/appbar/bell 5.png',

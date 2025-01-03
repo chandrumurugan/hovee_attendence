@@ -9,6 +9,7 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/punch_controller.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/qrscanner_screen.dart';
 import 'package:hovee_attendence/widget/addres_indicator.dart';
 import 'package:hovee_attendence/widget/button_splash.dart';
@@ -25,7 +26,7 @@ class PunchView extends StatelessWidget {
       required this.courseId,
       required this.batchId,
       required this.batchStartTime,
-      required this.batchEndTime, required this.subjectName, required this.courseCode, this.batchname});
+      required this.batchEndTime, required this.subjectName, required this.courseCode, this.batchname, this.wowId});
   final String className;
   final String courseId;
   final String batchId;
@@ -34,10 +35,11 @@ class PunchView extends StatelessWidget {
   final String subjectName;
   final String courseCode;
   final String? batchname;
+   final String? wowId;
   
   @override
   Widget build(BuildContext context) {
-     final PunchController _controller = Get.put(PunchController(batchname: batchname));
+     final PunchController _controller = Get.put(PunchController(batchname: batchname,batchId: batchId));
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
@@ -301,7 +303,7 @@ class PunchView extends StatelessWidget {
           hideGalleryButton: true,
           controller: MobileScannerController(),
           onDetect: (po) {
-            _onBarcodeScanned(po.barcodes.first.rawValue);
+            _onBarcodeScanned(po.barcodes.first.rawValue,context);
           },
         ),
       );
@@ -309,22 +311,73 @@ class PunchView extends StatelessWidget {
   );
 }
 
-void _onBarcodeScanned(String? scannedData) async {
+// void _onBarcodeScanned(String? scannedData) async {
+//   final PunchController _controller = Get.put(PunchController(batchname: batchname));
+//   if (scannedData == null) return;
+
+//   // Extract latitude and longitude
+//   final latitude = _extractCoordinate(scannedData, 'latitude');
+//   final longitude = _extractCoordinate(scannedData, 'longitude');
+
+//   // Store in SharedPreferences
+//   if (latitude != null && longitude != null) {
+//     await _saveCoordinatesToPreferences(latitude, longitude);
+//   }
+
+//   _controller.hasScanned.value = true;
+//   Get.back(result: _controller.hasScanned.value);
+// }
+
+void _onBarcodeScanned(String? scannedData,BuildContext context) async {
   final PunchController _controller = Get.put(PunchController(batchname: batchname));
   if (scannedData == null) return;
 
-  // Extract latitude and longitude
+  // Extract wowId, latitude, and longitude
+  final wowIdFromCode = _extractWowId(scannedData);
   final latitude = _extractCoordinate(scannedData, 'latitude');
   final longitude = _extractCoordinate(scannedData, 'longitude');
 
-  // Store in SharedPreferences
-  if (latitude != null && longitude != null) {
-    await _saveCoordinatesToPreferences(latitude, longitude);
+  if (wowIdFromCode == null) {
+      Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
+        ,'Invalid QR Code',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+    return;
+  }
+
+  // Validate wowId
+  if (wowIdFromCode == wowId) {
+    if (latitude != null && longitude != null) {
+      // Store in SharedPreferences
+      await _saveCoordinatesToPreferences(latitude, longitude);
+       SnackBarUtils.showSuccessSnackBar(
+          context,
+          'Location saved successfully',
+        );
+    } else {
+       SnackBarUtils.showErrorSnackBar(
+          context,
+          'Invalid QR Code',
+        );
+    }
+  } else {
+      SnackBarUtils.showErrorSnackBar(
+          context,
+          'WowID does not match.',
+        );
   }
 
   _controller.hasScanned.value = true;
   Get.back(result: _controller.hasScanned.value);
 }
+
+String? _extractWowId(String code) {
+  final regex = RegExp(r'/(\d+)$');
+  final match = regex.firstMatch(code);
+  if (match != null) {
+    return match.group(1);
+  }
+  return null;
+}
+
 
 double? _extractCoordinate(String code, String type) {
   final regex = RegExp('$type=([0-9.]+)');

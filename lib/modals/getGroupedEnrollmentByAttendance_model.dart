@@ -121,12 +121,14 @@ class AttendanceDetails {
   String? punchOutTime;
   String? attendanceStatus;
   String? punchInDate;
+   String? rollNo;
 
   AttendanceDetails(
       {this.studentId,
       this.studentName,
       this.punchInTime,
       this.punchOutTime,
+       this.rollNo,
       this.attendanceStatus,
       this.punchInDate});
 
@@ -137,6 +139,7 @@ class AttendanceDetails {
     punchOutTime = json['punchOutTime'];
     attendanceStatus = json['attendanceStatus'];
     punchInDate = json['punchInDate'];
+     rollNo = json['roll_no'];
   }
 
   Map<String, dynamic> toJson() {
@@ -147,6 +150,7 @@ class AttendanceDetails {
     data['punchOutTime'] = this.punchOutTime;
     data['attendanceStatus'] = this.attendanceStatus;
     data['punchInDate'] = this.punchInDate;
+     data['roll_no'] = this.rollNo;
     return data;
   }
 }

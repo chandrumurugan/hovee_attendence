@@ -47,6 +47,8 @@ class CourseController extends GetxController {
 
   var filteredCourseList = [].obs; // Filtered list for display
   var searchKey = ''.obs;
+  List<String> batchNamebyCourse = [];
+   RxBool initialLoad = true.obs;
   // Method to fetch batch list
 //   void fetchCourseList() async {
 //   try {
@@ -83,7 +85,8 @@ class CourseController extends GetxController {
 
   void fetchCourseList({String searchTerm = ''}) async {
   try {
-    isLoading(true);
+     isLoading.value=true;
+     initialLoad.value=true;
     var courseResponse = await WebService.fetchCourseList(searchTerm);
     if (courseResponse.data != null) {
       print('Course data fetched: ${courseResponse.data}');
@@ -107,7 +110,41 @@ class CourseController extends GetxController {
     print('Error: $e');
     //  SnackBarUtils.showSuccessSnackBar(context,'Failed to fetch course');
   } finally {
-    isLoading(false);
+     isLoading.value=false;
+     initialLoad.value=false;
+  }
+}
+
+ void fetchBatchList({String searchTerm = '', String type = ''}) async {
+  try {
+    isLoading.value = true; // Start loading
+
+    // Prepare the request payload
+    final requestPayload = {
+      'searchTerm': searchTerm,
+       'key': 'Course',
+    };
+
+    // Fetch batch list from the API
+    var batchResponse = await WebService.fetchBatchList(requestPayload);
+
+    if (batchResponse.data != null) {
+    
+      // Update batch naes based on the type
+     
+        batchNamebyCourse = batchResponse.data!
+            .map((batch) => batch.batchName ?? '')
+            .toList();
+      
+
+      // Map batch names to their IDs for later retrieval
+    } else {
+     
+    }
+  } catch (e) {
+    print('Error fetching batch list: $e');
+  } finally {
+    isLoading.value = false; // Stop loading
   }
 }
 
@@ -135,6 +172,7 @@ class CourseController extends GetxController {
     super.onInit();
     fetchCourseList();
     fetchAppConfig();
+    fetchBatchList();
     _clearData();
   }
 

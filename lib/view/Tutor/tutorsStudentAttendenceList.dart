@@ -435,191 +435,120 @@ class StudentAttendanceList extends StatelessWidget {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Container(
-                // padding: EdgeInsets.symmetric(horizontal: 12),
-                // decoration: BoxDecoration(
-                //   borderRadius: BorderRadius.circular(12),
-                //   border: Border.all(color: Colors.black),
-                // ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Name',
-                              style: GoogleFonts.nunito(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black)),
-                          //      Text('Date',
-                          // style: GoogleFonts.nunito(
-                          //     fontSize: 17,
-                          //     fontWeight: FontWeight.w700,
-                          //     color: Colors.black)),
-                          Text('Punch in',
-                              style: GoogleFonts.nunito(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black)),
-                          Text('Punch out',
-                              style: GoogleFonts.nunito(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black)),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                    Obx(() {
-                      // Check if attendance data is available and load it dynamically
-                      if (controller.isLoadingList.value) {
-                        return const CircularProgressIndicator();
-                      } else if (controller.data?.attendanceDetails != null &&
-                          controller.data!.attendanceDetails!.isNotEmpty) {
-                        return ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: controller.data!.attendanceDetails!.length,
-                          itemBuilder: (context, index) {
-                            final attendance =
-                                controller.data!.attendanceDetails![index];
-
-                            //    DateTime dateTime1 = DateTime.parse(attendance.punchInTime!);
-                            //    DateTime dateTime2 = DateTime.parse(attendance.punchOutTime!);
-
-                            //    String punchINTime = DateFormat("hh:mm a").format(dateTime1);
-                            //    String punchOUTTime = DateFormat("hh:mm a").format(dateTime2);
-                            //  DateTime dateTime = DateFormat("dd/MM/yyyy").parse(controller.data!.date!);
-                            //  String formattedDate = DateFormat("ddMMMyy").format(dateTime);
-
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15.0, vertical: 5),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(attendance.studentName!,
-                                      style: GoogleFonts.nunito(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black)),
-                                  //       Text(formattedDate,
-                                  // style: GoogleFonts.nunito(
-                                  //     fontSize: 16,
-                                  //     fontWeight: FontWeight.w500,
-                                  //     color: Colors.black)),
-                                  attendance.punchInTime != null
-                                      ? Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 20),
-                                          child: Image.asset(
-                                            "assets/appbar/check.png",
-                                            height: 25,
-                                            width: 25,
-                                          ),
-                                        )
-                                      : const Text("-"),
-                                  // Text(attendance.punchInTime ?? "-",
-                                  //     style: GoogleFonts.nunito(
-                                  //         fontSize: 16,
-                                  //         fontWeight: FontWeight.w500,
-                                  //         color: Colors.black)),
-                                  attendance.punchOutTime != null
-                                      ? Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 20),
-                                          child: Image.asset(
-                                            "assets/appbar/check.png",
-                                            height: 25,
-                                            width: 25,
-                                          ),
-                                        )
-                                      : const Text("-"),
-                                  // Text(attendance.punchOutTime ?? "-",
-                                  //     style: GoogleFonts.nunito(
-                                  //         fontSize: 16,
-                                  //         fontWeight: FontWeight.w500,
-                                  //         color: Colors.black)),
-                                ],
-                              ),
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return const Divider(); // Divider between items except the last one
-                          },
-                        );
-                      } else {
-                        return const Text(
-                            'No attendance data available for the selected date.');
-                      }
-                    }),
-                  ],
-                ),
+           Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 12),
+  child: Container(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text('Name',
+                    style: GoogleFonts.nunito(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black)),
               ),
-            ),
+              Expanded(
+                flex: 1,
+                child: Text('Roll No',
+                    style: GoogleFonts.nunito(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black)),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text('Punch in',
+                    style: GoogleFonts.nunito(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black)),
+              ),
+              Expanded(
+                flex: 1,
+                child: Text('Punch out',
+                    style: GoogleFonts.nunito(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black)),
+              ),
+            ],
+          ),
+        ),
+        const Divider(),
+        Obx(() {
+          if (controller.isLoadingList.value) {
+            return const CircularProgressIndicator();
+          } else if (controller.data?.attendanceDetails != null &&
+              controller.data!.attendanceDetails!.isNotEmpty) {
+            return Table(
+              columnWidths: const {
+                0: FlexColumnWidth(1), // Name column width
+                1: FlexColumnWidth(1), // Roll No column width
+                2: FlexColumnWidth(1), // Punch in column width
+                3: FlexColumnWidth(1), // Punch out column width
+              },
+              // border: TableBorder.symmetric(
+              //   inside: BorderSide(color: Colors.grey, width: 0.5),
+              // ),
+              children: [
+                for (var attendance in controller.data!.attendanceDetails!)
+                  TableRow(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(attendance.studentName!,
+                            style: GoogleFonts.nunito(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(attendance.rollNo!,
+                            style: GoogleFonts.nunito(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black)),
+                      ),
+                      Center(
+                        child: attendance.punchInTime != null
+                            ? Image.asset(
+                                "assets/appbar/check.png",
+                                height: 25,
+                                width: 25,
+                              )
+                            : const Text("-"),
+                      ),
+                      Center(
+                        child: attendance.punchOutTime != null
+                            ? Image.asset(
+                                "assets/appbar/check.png",
+                                height: 25,
+                                width: 25,
+                              )
+                            : const Text("-"),
+                      ),
+                    ],
+                  ),
+              ],
+            );
+          } else {
+            return const Text(
+                'No attendance data available for the selected date.');
+          }
+        }),
+      ],
+    ),
+  ),
+),
 
-            //  const ChartApp(),
-
-            // const SizedBox(height: 10,),
-
-            // Obx(() {
-            //   // Check if attendance data is available and load it dynamically
-            //   if (controller.isLoadingList.value) {
-            //     return const CircularProgressIndicator();
-            //   } else if (controller.data?.attendanceDetails != null &&
-            //       controller.data!.attendanceDetails!.isNotEmpty) {
-            //     return Column(
-            //       children:
-            //           controller.data!.attendanceDetails!.map((attendance) {
-            //         DateTime dateTime1 =
-            //             DateTime.parse(attendance.punchInTime!);
-            //         DateTime dateTime2 =
-            //             DateTime.parse(attendance.punchOutTime!);
-
-            //         String punchINTime =
-            //             DateFormat("hh:mm a").format(dateTime1);
-            //         String punchOUTTime =
-            //             DateFormat("hh:mm a").format(dateTime2);
-
-            //         return Padding(
-            //           padding: const EdgeInsets.symmetric(
-            //               horizontal: 15.0, vertical: 5),
-            //           child: Row(
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             children: [
-            //               Text(attendance.studentName ?? '',
-            //                   style: GoogleFonts.nunito(
-            //                       fontSize: 16,
-            //                       fontWeight: FontWeight.w500,
-            //                       color: Colors.black)),
-            //               Text(punchINTime ?? '-',
-            //                   style: GoogleFonts.nunito(
-            //                       fontSize: 16,
-            //                       fontWeight: FontWeight.w500,
-            //                       color: Colors.black)),
-            //               Text(punchOUTTime ?? '-',
-            //                   style: GoogleFonts.nunito(
-            //                       fontSize: 16,
-            //                       fontWeight: FontWeight.w500,
-            //                       color: Colors.black)),
-            //             ],
-            //           ),
-            //         );
-            //       }).toList(),
-            //     );
-            //   } else {
-            //     return const Text(
-            //         'No attendance data available for the selected date.');
-            //   }
-            // }),
           ],
         ),
       ),

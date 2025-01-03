@@ -60,6 +60,7 @@ import 'package:hovee_attendence/modals/update_parent_status_model.dart';
 import 'package:hovee_attendence/modals/validateTokenModel.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
+import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -253,16 +254,15 @@ class WebService {
     }
   }
 
-  static Future<getBatchListModel> fetchBatchList(String searchitems) async {
+  static Future<getBatchListModel> fetchBatchList( Map<String, dynamic> batchData) async {
     final url = Uri.parse('${baseUrl}batch/getBatchList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
-    var data = {"searchKey": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
-      body: jsonEncode(data),
+      body: jsonEncode(batchData),
       headers: {
         'Authorization': 'Bearer $token', // Add the authorization token here
         'Content-Type': 'application/json',
@@ -509,7 +509,14 @@ class WebService {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         return UserProfileM.fromJson(data);
-      } else {
+      } 
+      else if (response.statusCode == 401) {
+      // Clear session data
+      await prefs.clear();
+      // Navigate to the login screen
+      Get.to(() => LoginSignUp());
+      return null;
+    }else {
         return null;
       }
     } catch (e) {
@@ -643,18 +650,19 @@ class WebService {
   }
 
   static Future<getAttendancePunchInModel?> getAttendancePunchOut(
-      BuildContext context) async {
+      BuildContext context,String batchId) async {
     final url = Uri.parse('${baseUrl}attendane/punchOut');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
+     var data = { "batchId": batchId};
     final token = prefs.getString('Token') ?? "";
     var headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
-      var response = await http.post(url, headers: headers);
+      var response = await http.post(url, headers: headers,body:jsonEncode(data), );
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         return getAttendancePunchInModel.fromJson(result);
@@ -689,6 +697,13 @@ class WebService {
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
       return getGroupedEnrollmentByBatch.fromJson(result);
+    }
+     else if (response.statusCode == 401) {
+      // Clear session data
+      await prefs.clear();
+      // Navigate to the login screen
+      Get.to(() => LoginSignUp());
+      return null;
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
       // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
@@ -928,6 +943,13 @@ class WebService {
 
     if (response.statusCode == 200) {
       return getQrcodeModel.fromJson(json.decode(response.body));
+    }
+     else if (response.statusCode == 401) {
+      // Clear session data
+      await prefs.clear();
+      // Navigate to the login screen
+      Get.to(() => LoginSignUp());
+      return null!;
     } else {
       throw Exception('Failed to load attendanceCourse list');
     }
@@ -1005,6 +1027,7 @@ class WebService {
     if (response.statusCode == 200) {
       return getEnquiryListModel.fromJson(json.decode(response.body));
     } else {
+      Logger().i("getting val;uegegbjhgsdfjs");
       throw Exception('Failed to load Enquir list');
     }
   }
@@ -1317,7 +1340,14 @@ class WebService {
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
       return getdashboardYearflowModel.fromJson(result);
-    } else {
+    }  else if (response.statusCode == 401) {
+      // Clear session data
+      await prefs.clear();
+      // Navigate to the login screen
+      Get.to(() => LoginSignUp());
+      return null;
+    }
+    else {
       Map<String, dynamic> result = jsonDecode(response.body);
       // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
       return null;

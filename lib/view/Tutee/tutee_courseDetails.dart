@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/courseDetails_controller.dart';
@@ -55,6 +56,9 @@ class CourseDetailScreen extends StatelessWidget {
           _showConfirmationDialog1(
             context,
             () {
+                 final storage = GetStorage();
+                         String email=  storage.read('email');
+       String phnno= storage.read('phoneNumber');
               Get.to(PreviewScreen(
                 data: data,
                 type: 'Course',
@@ -62,7 +66,7 @@ class CourseDetailScreen extends StatelessWidget {
                 type1: '',
                 tuteename: '',
                 tuteeemail: '',
-                tuteephn: '',
+                tuteephn: '', tutionName: data!.tuitionName!, email: email, phno: phnno,
               ));
             },
           );
@@ -151,18 +155,23 @@ class CourseDetailScreen extends StatelessWidget {
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width*0.7,
-                          child: Text(
-                            data!.workingDays?.join(', ') ??
-                                'No working days available',
-                            style: GoogleFonts.nunito(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
+                    SizedBox(
+  width: MediaQuery.of(context).size.width * 0.7,
+  child: Text(
+  (data!.workingDays != null
+      ? (data!.workingDays as List<dynamic>)
+          .map((e) => e.toString())
+          .join(', ')
+      : 'No working days available'),
+  style: GoogleFonts.nunito(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: Colors.grey,
+  ),
+),
+
+),
+
                       ],
                     )
                   ],
@@ -382,6 +391,44 @@ class CourseDetailScreen extends StatelessWidget {
       .toList(),
 )
 
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Container(
+                        height: 44,
+                        width: 47,
+                        decoration: BoxDecoration(
+                            color: Color(0xffD9D9D9).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(8)),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Tution name',
+                          style: GoogleFonts.nunito(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          data!.tuitionName??'',
+                          style: GoogleFonts.nunito(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey,
+                          ),
+                        )
                       ],
                     )
                   ],

@@ -35,13 +35,14 @@ class ParentView extends StatefulWidget {
   String userId;
   String rolename;
   final String? firstname, lastname, wowid;
+   final VoidCallback onDashBoardBack;
   ParentView({
     Key? key,
     required this.userId,
     required this.rolename,
     this.firstname,
     this.lastname,
-    this.wowid,
+    this.wowid, required this.onDashBoardBack,
   }) : super(key: key);
 
   @override

@@ -113,7 +113,7 @@ class AccountSetup extends StatelessWidget {
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.1),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Card(
                     elevation: 10,
                     shadowColor: Colors.black,
@@ -123,7 +123,7 @@ class AccountSetup extends StatelessWidget {
                       return Container(
                         height: selectedRole == 'Tutee'
                             ? accountController.currentTabIndex.value == 2
-                                ? MediaQuery.of(context).size.height * 0.55
+                                ? MediaQuery.of(context).size.height * 0.80
                                 : MediaQuery.of(context).size.height * 0.7
                             : accountController.currentTabIndex.value == 2
                                 ? MediaQuery.of(context).size.height * 0.7
@@ -221,11 +221,11 @@ class AccountSetup extends StatelessWidget {
                               ],
                               unselectedLabelColor: Colors.grey,
                               unselectedLabelStyle:  TextStyle(
-                                fontSize: MediaQuery.of(context).size.width *0.032,
+                                fontSize: MediaQuery.of(context).size.width *0.030,
                                 fontWeight: FontWeight.w500,
                               ),
                               labelStyle:  TextStyle(
-                               fontSize: MediaQuery.of(context).size.width *0.032,
+                               fontSize: MediaQuery.of(context).size.width *0.030,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black,
                               ),
@@ -705,9 +705,9 @@ class AccountSetup extends StatelessWidget {
                                                                   8.0)),
                                                       child: GoogleMap(
                                                         initialCameraPosition:
-                                                            const CameraPosition(
+                                                             CameraPosition(
                                                           target:
-                                                              LatLng(0.0, 0.0),
+                                                              LatLng(accountController.latitudeL.value?? 0.0 ,accountController.longitudeL.value?? 0.0),
                                                           zoom: 10,
                                                         ),
                                                         onMapCreated:
@@ -2111,10 +2111,11 @@ class AccountSetup extends StatelessWidget {
         googleAPIKey: "AIzaSyCe2-5wVLxW2xSeQpqVzVCEt9n3ppUAwXA",
         inputDecoration: InputDecoration(
           hintText: "Search your location",
-          filled: true,
+          filled: false,
           fillColor: Colors.grey.withOpacity(0.2),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14.0),
+            borderSide: BorderSide.none
           ),
           suffixIcon: const Icon(Icons.search),
         ),

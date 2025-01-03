@@ -32,7 +32,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 class TuteeHome extends StatelessWidget {
   final String? firstname, lastname, wowid;
-  const TuteeHome({super.key, this.firstname, this.lastname, this.wowid});
+    final VoidCallback onDashBoardBack;
+  const TuteeHome({super.key, this.firstname, this.lastname, this.wowid, required this.onDashBoardBack});
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +117,8 @@ class TuteeHome extends StatelessWidget {
                       Obx(() => Positioned(
                             right: 1,
                             top: 1,
-                            child: noticontroller.notificationCount.value > 0
+                            child: 
+                            noticontroller.notificationCount.value > 0
                                 ? Container(
                                     padding: const EdgeInsets.all(2),
                                     decoration: BoxDecoration(

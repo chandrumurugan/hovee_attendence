@@ -472,7 +472,7 @@ class ChartApp1 extends StatelessWidget {
                           Container(
                             height: 18,
                             width: 18,
-                            color: Color(0xff2E5BB5),
+                            color: Colors.orange[400],
                           ),
                           SizedBox(
                             width: 10,
@@ -985,6 +985,7 @@ class _LineChartSampleState extends State<LineChartSample> {
                                         axisLine: AxisLine(width: 1),
                                         majorGridLines:
                                             MajorGridLines(width: 0.4),
+                                            interval: 5,
                                       ),
                                     ),
                                   ),

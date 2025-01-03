@@ -59,9 +59,9 @@ class PunchController extends GetxController {
   String? name;
   UserProfileController accountController = Get.put(UserProfileController());
   var draggablePosition = Rx<Offset>(Offset(50, 50));
-  final String? batchname;
+  final String? batchname,batchId,wowId;
 
-  PunchController({this.batchname});
+  PunchController({this.batchname,this.batchId,this.wowId});
 
   @override
   void onInit() {
@@ -72,6 +72,8 @@ class PunchController extends GetxController {
     // targetLocation.value!.latitude!=0.0;
     // targetLocation.value!.longitude!=0.0;
     print(batchname);
+     print(wowId);
+    
   }
 
   Future<void> setInatlizeLocation() async {
@@ -317,7 +319,7 @@ class PunchController extends GetxController {
         }
       } else {
         final getAttendancePunchInModel? response =
-            await WebService.getAttendancePunchOut(context);
+            await WebService.getAttendancePunchOut(context,batchId);
 
         if (response != null && response.success == true) {
           // API call was successful, update state and show success message
@@ -328,7 +330,7 @@ class PunchController extends GetxController {
 
           // After the dialog is dismissed, navigate to the next page
           Future.delayed(const Duration(milliseconds: 1500), () {
-            Get.to(() => TuteeAttendanceList(type: 'Tutee',batchname:batchname));
+            Get.to(() => TuteeAttendanceList(type: 'Tutee',batchname:batchname),arguments: batchname);
           });
         } else {
           // Show error if the API call failed

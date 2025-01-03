@@ -152,7 +152,8 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
       var tutionCourseResponse = await WebService.fetchTuitionCourseList();
       if (tutionCourseResponse.data != null) {
         tutionCourseList.value = tutionCourseResponse.data!;
-        courseCode = tutionCourseResponse.data!.map((course) => course.courseCode! + " - " + course.subject! ?? '').toList();
+        courseCode = tutionCourseResponse.data!.map((course) => course.courseCode! + " - " + course.subject! ?? '' + " - " + course.className! ?? '').toList();
+        print(courseCode);
       }
     } catch (e) {
       print('Error: $e');

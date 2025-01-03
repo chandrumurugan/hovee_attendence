@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/msp_controller.dart';
@@ -27,7 +28,7 @@ class TuteeAttendanceList extends StatelessWidget {
   final StudentAttendanceController controller;
     final String? firstname,lastname,wowid,batchname;
   TuteeAttendanceList({super.key, required this.type, this.firstname, this.lastname, this.wowid, this.batchname})
-      : controller = Get.put(StudentAttendanceController(batchname: batchname));
+      : controller = Get.put(StudentAttendanceController());
   final MspController mspController = Get.put(MspController());
   @override
   Widget build(BuildContext context) {
@@ -66,42 +67,71 @@ class TuteeAttendanceList extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             // const SizedBox(height: 10),
-                            Obx(() {
-                              if (controller.isLoading.value) {
-                                return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
-                              } else {
-                                return
-                                    CustomDropdown(
-                                  itemsListPadding: EdgeInsets.zero,
-                                  listItemPadding: const EdgeInsets.symmetric(
-                                      vertical: 6, horizontal: 10),
-                                  hintText: 'Select batch',
-                                  items: controller.batchList
-                                      .map((batch) => batch.batchName ?? '')
-                                      .toList(),
-                                  initialItem: controller
-                                      .selectedBatchIN.value?.batchName,
-                                  onChanged: (String? selectedValue) {
-                                    if (selectedValue != null) {
-                                      final selectedBatch =
-                                          controller.batchList.firstWhere(
-                                        (batch) =>
-                                            batch.batchName == selectedValue,
-                                      );
-                                      controller.selectBatch(selectedBatch);
-                                      controller.isBatchSelected.value = true;
-                                      controller.fetchStudentsList(
-                                        selectedBatch.batchId!,
-                                        selectedBatch.startDate??'',
-                                        DateFormat('MMM')
-                                            .format(DateTime.now()),
-                                      );
+                            // Obx(() {
+                            //   if (controller.isLoading.value) {
+                            //     return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                            //   } else {
+                            //     return
+                            //         CustomDropdown(
+                            //       itemsListPadding: EdgeInsets.zero,
+                            //       listItemPadding: const EdgeInsets.symmetric(
+                            //           vertical: 6, horizontal: 10),
+                            //       hintText: 'Select batch',
+                            //       items: controller.batchList
+                            //           .map((batch) => batch.batchName ?? '')
+                            //           .toList(),
+                            //       initialItem: controller
+                            //           .selectedBatchIN.value?.batchName,
+                            //       onChanged: (String? selectedValue) {
+                            //         if (selectedValue != null) {
+                            //           final selectedBatch =
+                            //               controller.batchList.firstWhere(
+                            //             (batch) =>
+                            //                 batch.batchName == selectedValue,
+                            //           );
+                            //           controller.selectBatch(selectedBatch);
+                            //           controller.isBatchSelected.value = true;
+                            //           controller.fetchStudentsList(
+                            //             selectedBatch.batchId!,
+                            //             selectedBatch.startDate??'',
+                            //             DateFormat('MMM')
+                            //                 .format(DateTime.now()),
+                            //           );
                                       
-                                    }
-                                  },
-                                );
-                              }
-                            }),
+                            //         }
+                            //       },
+                            //     );
+                            //   }
+                            // }),
+                           Obx(() {
+  if (controller.isLoading.value) {
+    return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+  } else {
+    return CustomDropdown(
+      itemsListPadding: EdgeInsets.zero,
+      listItemPadding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+      hintText: 'Select batch',
+      items: controller.batchList.map((batch) => batch.batchName ?? '').toList(),
+      initialItem: controller.selectedBatchIN.value?.batchName,
+      onChanged: (String? selectedValue) {
+        if (selectedValue != null) {
+          final selectedBatch = controller.batchList.firstWhere(
+            (batch) => batch.batchName == selectedValue,
+          );
+          controller.selectBatch(selectedBatch);
+          controller.isBatchSelected.value = true;
+          controller.fetchStudentsList(
+            selectedBatch.batchId!,
+            selectedBatch.startDate ?? '',
+            DateFormat('MMM').format(DateTime.now()),
+          );
+        }
+      },
+    );
+  }
+}),
+
+
                           ],
                         ),
                       ),
@@ -187,11 +217,13 @@ class TuteeAttendanceList extends StatelessWidget {
                   },
                   onPageChanged: (focusedDay) {
                     controller.setFocusedDay(focusedDay);
-                    controller.onMonthSelectedTutee(focusedDay);
-                    // Format the month as an abbreviation (e.g., "Nov" for November)
-
-                    // Send the  month to the API
-                    // controller.sendMonthToApi(monthAbbreviation);
+                    //controller.onMonthSelectedTutee(focusedDay);
+                      String monthAbbreviation = DateFormat('MMM').format(focusedDay);
+       controller.fetchTutteAttendanceList(
+        controller.selectedBatchIN.value!.batchId!, // Pass batchId
+        '', // Adjust based on API requirements
+        monthAbbreviation,
+      );
                   },
                   calendarBuilders: 
                  
@@ -582,6 +614,7 @@ class TuteeAttendanceList extends StatelessWidget {
             //   searchOnTap: () {},
             //   filterOnTap: () {},
             // ),
+            type=='Parent'?
              Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10,vertical: 0),
@@ -634,7 +667,7 @@ class TuteeAttendanceList extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ),
+                        ):SizedBox.shrink(),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
@@ -647,154 +680,145 @@ class TuteeAttendanceList extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Column headers
-                          Expanded(
-                            child: Text('Date',
-                                style: GoogleFonts.nunito(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black)),
-                          ),
-                          Expanded(
-                            child: Text('Punch In',
-                                style: GoogleFonts.nunito(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black)),
-                          ),
-                          Expanded(
-                            child: Text('Punch Out',
-                                style: GoogleFonts.nunito(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black)),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Divider(),
-                    Obx(() {
-                      // Check if attendance data is available and load it dynamically
-                      if (controller.isLoadingList.value) {
-                        return const CircularProgressIndicator();
-                      } else if (controller.dataTutee?.attendanceDetails !=
-                              null &&
-                          controller.dataTutee!.attendanceDetails!.isNotEmpty) {
-                        return ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount:
-                              controller.dataTutee!.attendanceDetails!.length,
-                          itemBuilder: (context, index) {
-                            final attendance =
-                                controller.dataTutee!.attendanceDetails![index];
-
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15.0, vertical: 5),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  // Name
-                                  Expanded(
-                                    child: Text(
-                                      attendance.punchInDate ?? '',
-                                      style: GoogleFonts.nunito(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  // Time In
-                                  Expanded(
-                                    child: attendance.punchInTime != null &&
-                                            attendance.punchInTime!.isNotEmpty
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 20),
-                                            child: Image.asset(
-                                              "assets/appbar/check.png",
-                                              height: 25,
-                                              width: 25,
-                                            ),
-                                          )
-                                        : IconButton(
-                                            icon: const Icon(Icons.edit,
-                                                color: Colors.blue),
-                                            onPressed: () {
-                                              // Handle edit action for punch in time
-                                              mspController
-                                                  .navigateToAddHolidatScreen();
-                                              print(
-                                                  'Edit Punch In Time for index $index');
-                                            },
-                                          ),
-                                  ),
-                                  // Time Out
-                                  Expanded(
-                                    child: attendance.punchOutTime != null &&
-                                            attendance.punchOutTime!.isNotEmpty
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 20),
-                                            child: Image.asset(
-                                              "assets/appbar/check.png",
-                                              height: 25,
-                                              width: 25,
-                                            ),
-                                          )
-                                        : IconButton(
-                                            icon: const Icon(Icons.edit,
-                                                color: Colors.blue),
-                                            onPressed: () {
-                                              // Handle edit action for punch out time
-                                              Get.to(() => AddMspScreen(
-                                                    data: attendance.batchList,
-                                                    date:
-                                                        attendance.punchInDate!,
-                                                    id: attendance
-                                                        .batchList!.userId!,
-                                                    batchId: attendance
-                                                        .batchList!.sId!,
-                                                    attendanceID: attendance
-                                                        .attendanceId!,
-                                                  ));
-                                              print(
-                                                  'Edit Punch Out Time for index $index');
-                                            },
-                                          ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return const Divider(); // Divider between items except the last one
-                          },
-                        );
-                      } else {
-                        return const Text(
-                            'No attendance data available for the selected date.');
-                      }
-                    }),
-                  ],
-                ),
+  padding: const EdgeInsets.symmetric(horizontal: 12),
+  child: Container(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Column headers
+              Expanded(
+                child: Text('Date',
+                    style: GoogleFonts.nunito(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black)),
               ),
-            )
+              Expanded(
+                child: Text('Punch In',
+                    style: GoogleFonts.nunito(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black)),
+              ),
+              Expanded(
+                child: Text('Punch Out',
+                    style: GoogleFonts.nunito(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black)),
+              ),
+            ],
+          ),
+        ),
+        const Divider(),
+        Obx(() {
+          // Check if attendance data is available and load it dynamically
+          if (controller.isLoadingList.value) {
+            return const CircularProgressIndicator();
+          } else if (controller.dataTutee?.attendanceDetails != null &&
+              controller.dataTutee!.attendanceDetails!.isNotEmpty) {
+            return ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: controller.dataTutee!.attendanceDetails!.length,
+              itemBuilder: (context, index) {
+                final attendance =
+                    controller.dataTutee!.attendanceDetails![index];
+
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Date
+                      Expanded(
+                        child: Text(
+                          attendance.punchInDate ?? '',
+                          style: GoogleFonts.nunito(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      // Punch In
+                      Expanded(
+                        child: attendance.punchInTime != null &&
+                                attendance.punchInTime!.isNotEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Image.asset(
+                                  "assets/appbar/check.png",
+                                  height: 25,
+                                  width: 25,
+                                ),
+                              )
+                            : IconButton(
+                                icon: const Icon(Icons.edit,
+                                    color: Colors.blue),
+                                onPressed: () {
+                                  // Handle edit action for punch in time
+                                  mspController.navigateToAddHolidatScreen();
+                                  print(
+                                      'Edit Punch In Time for index $index');
+                                },
+                              ),
+                      ),
+                      // Punch Out
+                      Expanded(
+                        child: attendance.punchOutTime != null &&
+                                attendance.punchOutTime!.isNotEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Image.asset(
+                                  "assets/appbar/check.png",
+                                  height: 25,
+                                  width: 25,
+                                ),
+                              )
+                            : IconButton(
+                                icon: const Icon(Icons.edit,
+                                    color: Colors.blue),
+                                onPressed: () {
+                                  // Handle edit action for punch out time
+                                  Get.to(() => AddMspScreen(
+                                        data: attendance.batchList,
+                                        date: attendance.punchInDate!,
+                                        id: attendance.batchList!.userId!,
+                                        batchId: attendance.batchList!.sId!,
+                                        attendanceID:
+                                            attendance.attendanceId!,
+                                      ));
+                                  print(
+                                      'Edit Punch Out Time for index $index');
+                                },
+                              ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return const Divider(); // Divider between items except the last one
+              },
+            );
+          } else {
+            return const Text(
+                'No attendance data available for the selected date.');
+          }
+        }),
+      ],
+    ),
+  ),
+),
+
           ],
         ),
       ),

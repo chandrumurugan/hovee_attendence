@@ -60,7 +60,10 @@ class MyReviewScreen extends StatelessWidget {
                                           .reviews.value[0].ratingPoints!,
                                       userRating: controller.ratingsCount.value,
                                       propertyCategory: controller
-                                          .myreview!.courseDetails!.subject!,
+                                          .myreview!.courseDetails!.subject!, batchName:controller
+                                          .myreview!.courseDetails!.batchName!, board:controller
+                                          .myreview!.courseDetails!.board!, className: controller
+                                          .myreview!.courseDetails!.className!,
                                     ),
                                     Text(
                                       'Tutee list',

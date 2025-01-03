@@ -118,6 +118,7 @@ class TutorHomeController extends GetxController {
    String? currentMonthYear;
     var userProfileResponse = UserProfileM().obs;
     var notificationCount = 0.obs;
+     var wowId;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -233,9 +234,11 @@ class TutorHomeController extends GetxController {
       isLoading(true);
       var qrcodeResponse = await WebService.fetchQrCode();
       print("API Response: ${qrcodeResponse.data}");
-
+       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (qrcodeResponse.data != null) {
         qrcodeImage = qrcodeResponse.data!.qrCode??'';
+        wowId=qrcodeResponse.data!.wowId??'';
+         prefs.setString('QRWowId', wowId?? '');
         try {
           qrcodeImage =
               qrcodeImage.replaceFirst(RegExp(r'data:image\/\w+;base64,'), '');
@@ -244,6 +247,7 @@ class TutorHomeController extends GetxController {
             // Decode the base64 string to Uint8List
             qrcodeImageData = base64Decode(qrcodeImage);
             print("Decoded QR Code Image Data: $qrcodeImageData");
+            print("WowID Data: $wowId");
           } else {
             print("Error: Base64 QR Code string is empty.");
           }

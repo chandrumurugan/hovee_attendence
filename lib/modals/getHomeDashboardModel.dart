@@ -275,9 +275,10 @@ class Course {
   String? subject;
   String? courseCode;
   String? remarks;
+  String? tutorWowId;
 
   Course(
-      {this.sId, this.className, this.subject, this.courseCode, this.remarks});
+      {this.sId, this.className, this.subject, this.courseCode, this.remarks,this.tutorWowId});
 
   Course.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -285,6 +286,7 @@ class Course {
     subject = json['subject'];
     courseCode = json['course_code'];
     remarks = json['remarks'];
+    tutorWowId = json['tutor_wow_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -294,6 +296,7 @@ class Course {
     data['subject'] = this.subject;
     data['course_code'] = this.courseCode;
     data['remarks'] = this.remarks;
+    data['tutor_wow_id'] = this.tutorWowId;
     return data;
   }
 }

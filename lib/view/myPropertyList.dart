@@ -69,7 +69,7 @@ class MyReviewClasslist extends StatelessWidget {
                         userRating: controller.myrating!.ratings!.totalRatings != null
                             ? controller.myrating!.ratings!.totalRatings!
                             : "0.0",
-                        propertyCategory: course.subject!,
+                        propertyCategory: course.subject!, batchName: course.batchName!, board: course.board!, className: course.className!,
                       ),
                     );
                   },

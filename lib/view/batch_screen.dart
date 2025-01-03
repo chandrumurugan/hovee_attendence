@@ -11,8 +11,13 @@ import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class TutorBatchList extends StatelessWidget {
   final String type;
-   final String? firstname,lastname,wowid;
-  TutorBatchList({super.key, required this.type, this.firstname, this.lastname, this.wowid});
+  final String? firstname, lastname, wowid;
+  TutorBatchList(
+      {super.key,
+      required this.type,
+      this.firstname,
+      this.lastname,
+      this.wowid});
   final BatchController batchController = Get.put(BatchController());
 
   @override
@@ -46,7 +51,12 @@ class TutorBatchList extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
-                               Get.offAll(DashboardScreen(rolename: type, firstname:firstname ,lastname:lastname ,wowid:wowid,));
+                              Get.offAll(DashboardScreen(
+                                rolename: type,
+                                firstname: firstname,
+                                lastname: lastname,
+                                wowid: wowid,
+                              ));
                             },
                             icon: Icon(Icons.arrow_back, color: Colors.white),
                           ),
@@ -163,32 +173,33 @@ class TutorBatchList extends StatelessWidget {
           Obx(() {
             if (batchController.isLoading.value) {
               return Center(child: CircularProgressIndicator());
+            } else if (batchController.initialLoad.value) {
+              return Center(
+                  child:
+                      CircularProgressIndicator()); // Show loader during initial load
             } else if (batchController.batchList.isEmpty) {
               return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Image.asset(
-                                'assets/logo/No_Verification_Found_Image_app.png',
-                                height: 200,
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Center(
-                                  child: Text(
-                                "No listing found",
-                                style: GoogleFonts.nunito(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600),
-                              )),
-                            ],
-                          ),
-                        );
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  children: [
+                    SizedBox(height: 30),
+                    Image.asset(
+                      'assets/logo/No_Verification_Found_Image_app.png',
+                      height: 200,
+                    ),
+                    SizedBox(height: 30),
+                    Center(
+                      child: Text(
+                        "No listing found",
+                        style: GoogleFonts.nunito(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             } else {
               return Expanded(
                 child: ListView.builder(
@@ -202,7 +213,7 @@ class TutorBatchList extends StatelessWidget {
                 ),
               );
             }
-          })
+          }),
         ],
       ),
       bottomNavigationBar: SingleCustomButtom(

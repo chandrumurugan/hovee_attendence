@@ -130,7 +130,7 @@ class TutorAddCourseScreen extends StatelessWidget {
                       title: 'batch name',
                       controllerValue: courseController.batchNameController,
                       selectedValue: courseController.batchNameController,
-                      items: controller.batchName1,
+                      items: courseController.batchNamebyCourse,
                       onChanged: courseController.setBatchName,
                     ),
                   ],

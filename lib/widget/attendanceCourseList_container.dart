@@ -74,6 +74,14 @@ class AttendancecourselistContainer extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
+                  SizedBox(height: 5,),
+                  Text(
+                    "ID:${attendanceCourse!.course!.tutorWowId??''}",
+                    style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
                 ],
               ),
               Column(
@@ -154,8 +162,9 @@ class AttendancecourselistContainer extends StatelessWidget {
                                   attendanceCourse!.batch!.batchTimingEnd!,
                               subjectName: attendanceCourse!.course!.subject!,
                               courseCode: attendanceCourse!.course!.courseCode!,
-                              batchname:attendanceCourse!.batch!.batchName!
-                            ));
+                              batchname:attendanceCourse!.batch!.batchName!,
+                              wowId: attendanceCourse!.course!.tutorWowId,
+                            ),arguments:attendanceCourse!.course!.tutorWowId );
                       } else {
                         // On time to start
                         Get.to(() => PunchView(
@@ -168,7 +177,8 @@ class AttendancecourselistContainer extends StatelessWidget {
                                   attendanceCourse!.batch!.batchTimingEnd!,
                               subjectName: attendanceCourse!.course!.subject!,
                               courseCode: attendanceCourse!.course!.courseCode!,
-                            ));
+                              wowId: attendanceCourse!.course!.tutorWowId,
+                            ),arguments:attendanceCourse!.course!.tutorWowId );
                       }
                     },
                     child: const CircleAvatar(

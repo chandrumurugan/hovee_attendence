@@ -21,11 +21,14 @@ class PreviewScreen extends StatelessWidget {
   final String tuteename;
   final String tuteeemail;
   final String tuteephn;
+   final String tutionName;
+   final String email;
+   final String phno;
     final VoidCallback? onPreviewCallbackAccept;
      final VoidCallback? onPreviewCallbackReject;
      final VoidCallback? onPreviewCallbackEnroll;
 
-  PreviewScreen({super.key, required this.data, required this.type, required this.tutorname, required this.type1, required this.tuteename, required this.tuteeemail, required this.tuteephn, this.onPreviewCallbackAccept, this.onPreviewCallbackReject, this.onPreviewCallbackEnroll});
+  PreviewScreen({super.key, required this.data, required this.type, required this.tutorname, required this.type1, required this.tuteename, required this.tuteeemail, required this.tuteephn, this.onPreviewCallbackAccept, this.onPreviewCallbackReject, this.onPreviewCallbackEnroll, required this.tutionName, required this.email, required this.phno});
  
    
 final CourseDetailController controller = Get.put(CourseDetailController());
@@ -39,6 +42,7 @@ final CourseDetailController controller = Get.put(CourseDetailController());
         needGoBack: true,
         navigateTo: () {
           Navigator.pop(context);
+          print(data);
         },
       ),
       body: SingleChildScrollView(
@@ -120,8 +124,15 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16),
                           ),
+                          type=='Course'?
                           Text(
-                            controller.email!,
+                           data.tuteeInformation.email??'',
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          ):Text(
+                           data.studentEmail??'',
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,
@@ -151,8 +162,15 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16),
                           ),
+                           type=='Course'?
                           Text(
-                         controller.phoneNumber!,
+                        data.tuteeInformation.phoneNumber??'',
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16),
+                          ):Text(
+                        data.studentPhoneNo??'',
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,
@@ -397,7 +415,7 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                             child: Text(
                               type == 'Course'
                                   ? (data!.workingDays?.join(', ') ?? '')
-                                  : (data!.batchDays  ?? ''),
+                                  : (data!.batchDays?.join(', ')  ?? ''),
                               style: GoogleFonts.nunito(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,
@@ -431,7 +449,7 @@ final CourseDetailController controller = Get.put(CourseDetailController());
                                 fontSize: 16),
                           ),
                           Text(
-                         data!.tutionName!??'',
+                         tutionName ??'',
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,
@@ -663,8 +681,8 @@ final CourseDetailController controller = Get.put(CourseDetailController());
       ),
    bottomNavigationBar: type == 'Course'
     ? SingleCustomButtom(
-        btnName: 'Submit', // Named argument
-        isPadded: false,   // Named argument
+        btnName: 'Submit',
+        isPadded: false,
         onTap: () {
           final storage = GetStorage();
           final studentId = storage.read('id');
@@ -674,16 +692,19 @@ final CourseDetailController controller = Get.put(CourseDetailController());
           _showConfirmationDialog(context, data!.courseId!, studentId, data!.tutorId!);
         },
       )
-    : data.status == 'Approved'
+    : data.status == 'Approved' && type1=='Tutor'
         ? SingleCustomButtom(
-            btnName: 'Enroll now', // Named argument
-            isPadded: false,       // Named argument
-            onTap: data!.alreadyEnrollment=='false'?
-            () {
-              onPreviewCallbackEnroll!();
-            }:(){},
+            btnName: 'Enroll now',
+            isPadded: false,
+            onTap: data!.alreadyEnrollment == false
+                ? () {
+                    onPreviewCallbackEnroll!();
+                  }
+                : (){}, // Disable onTap
+           isDisabled: data.alreadyEnrollment== true,
           )
         : SizedBox.shrink(),
+
     );
     
   }

@@ -46,7 +46,7 @@ class Data {
   String? batchId;
   String? batchTimingStart;
   String? batchTimingEnd;
-  String? batchDays;
+  List<String>? batchDays;
   String? batchMaximumSlots;
   Null? batchName;
   String? batchStartDate;
@@ -65,6 +65,8 @@ class Data {
   String? createdAt;
   bool? alreadyEnrollment;
    String? tutionName;
+    String? studentEmail;
+  String? studentPhoneNo;
   Data(
       {this.enquiryId,
       this.courseName,
@@ -94,7 +96,9 @@ class Data {
       this.status,
       this.createdAt,
       this.alreadyEnrollment,
-      this.tutionName});
+      this.tutionName,
+      this.studentEmail,
+      this.studentPhoneNo,});
 
   Data.fromJson(Map<String, dynamic> json) {
     enquiryId = json['enquiryId'];
@@ -107,7 +111,14 @@ class Data {
     batchId = json['batchId'];
     batchTimingStart = json['batch_timing_start'];
     batchTimingEnd = json['batch_timing_end'];
-    batchDays = json['batch_days'];
+    // Handling String or List for batch_days
+    if (json['batch_days'] != null) {
+      if (json['batch_days'] is String) {
+        batchDays = [json['batch_days']]; // Convert String to List
+      } else if (json['batch_days'] is List) {
+        batchDays = List<String>.from(json['batch_days']); // Convert List<dynamic> to List<String>
+      }
+    }
     batchMaximumSlots = json['batch_maximum_slots'];
     batchName = json['batchName'];
     batchStartDate = json['batch_start_date'];
@@ -126,6 +137,8 @@ class Data {
     createdAt = json['createdAt'];
     alreadyEnrollment = json['already_enrollment'];
      tutionName = json['tution_name'];
+      studentEmail = json['studentEmail'];
+    studentPhoneNo = json['studentPhone_no'];
   }
 
   Map<String, dynamic> toJson() {
@@ -159,6 +172,8 @@ class Data {
     data['createdAt'] = this.createdAt;
     data['already_enrollment'] = this.alreadyEnrollment;
    data['tution_name'] = this.tutionName;
+   data['studentEmail'] = this.studentEmail;
+    data['studentPhone_no'] = this.studentPhoneNo;
     return data;
   }
 }

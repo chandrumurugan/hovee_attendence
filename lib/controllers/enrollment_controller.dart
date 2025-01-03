@@ -33,6 +33,7 @@ class EnrollmentController extends GetxController
   final batchTimingController = TextEditingController();
   final startDateController = TextEditingController();
   final endDateController = TextEditingController();
+   final modeController = TextEditingController();
 
   late TabController tabController;
 
@@ -45,38 +46,50 @@ class EnrollmentController extends GetxController
 
   final AttendanceCourseListController attendanceCourseListController =
       Get.put(AttendanceCourseListController());
+  String? lastWord;
 
   @override
-  void onInit() {
-    super.onInit();
-    // Initialize TabController with three tabs
-    tabController = TabController(length: 3, vsync: this);
-    selectedTabIndex.value = 0;
-    fetchEnrollmentList("Pending");
-    attendanceCourseListController.fetchAttendanceCourseList();
-    startDateController.clear();
-    endDateController.clear();
-    // tabController.addListener(() {
-    //   selectedTabIndex.value = tabController.index;
+void onInit() {
+  super.onInit();
+ lastWord=  Get.arguments?? '';
+ print(lastWord);
+  // Initialize TabController with three tabs
+  tabController = TabController(length: 3, vsync: this);
 
-    //   // Update type based on the selected tab index
-    //   String type;
-    //   if (tabController.index == 0) {
-    //     type = "Pending";
-    //   } else if (tabController.index == 1) {
-    //     type = "Approved";
-    //   } else {
-    //     type = "Rejected";
-    //   }
+  // Set the default selected tab index to 0 (Pending)
+  selectedTabIndex.value = 0;
 
-    //   // Fetch the list based on the selected type
-    //   fetchEnrollmentList(type);
-    // });
+  // Fetch the enrollment list for the default tab
+  
 
-    // // Initially load "Pending" list
-    // fetchEnrollmentList("Pending");
-    //  attendanceCourseListController.fetchAttendanceCourseList();
+  // Fetch attendance course list
+  attendanceCourseListController.fetchAttendanceCourseList();
+
+  // Clear start and end date controllers
+  startDateController.clear();
+  endDateController.clear();
+   
+  // Check if `lastWord` is not null and not an empty string
+  if (lastWord =='Approved' && lastWord != null && lastWord!.isNotEmpty) {
+    // Change tab index to 1 (Approved)
+    selectedTabIndex.value = 1;
+    tabController.animateTo(1);
+
+    // Fetch approved data list
+    fetchEnrollmentList("Approved");
   }
+  else if (lastWord =='Rejected' &&lastWord != null && lastWord!.isNotEmpty) {
+    // Change tab index to 1 (Approved)
+    selectedTabIndex.value = 2;
+    tabController.animateTo(2);
+
+    // Fetch approved data list
+    fetchEnrollmentList("Rejected");
+  }else{
+     fetchEnrollmentList("Pending");
+  }
+}
+
 
   void handleTabChange(int index) {
     // Determine the type based on the selected tab index

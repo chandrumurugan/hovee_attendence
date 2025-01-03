@@ -65,13 +65,8 @@ class StudentAttendanceController extends GetxController {
 
     //tutor
     RxSet<DateTime> holidayDatesTutor = RxSet<DateTime>();
-     final String? batchname;
+     String? batchname;
 
-  StudentAttendanceController({this.batchname});
-  //  var absentDates = <DateTime>{}.obs;
-  //  var presentDates = <DateTime>{}.obs;
-// final  trackTuteeLocationController = Get.find<TrackTuteeLocationController>();
-//final  trackTuteeLocationController = Get.put(TrackTuteeLocationController());
   @override
   void onInit() {
     // TODO: implement onInit
@@ -80,46 +75,86 @@ class StudentAttendanceController extends GetxController {
     selectedBatchStartDate.value = DateTime.now();
     selectedBatchStartDate.value = DateTime.now();
     //  Logger().i("123456==>$type");
-    type.value = Get.arguments ?? "Tutee";
+    final args = Get.arguments ?? "Tutee";
+    type.value=args;
+    batchname=args;
     print(batchname);
   }
-  // void setType(String value){
-  //   Logger().i("1234567890==>$value");
-  //   type = value;
+  
+  // void fetchBatch() async {
+  //   // print(type);
+  //   isLoading(true);
+  //   try {
+  //     var response = await WebService.fetchGroupedEnrollmentByBatch();
+  //     Logger().i(response);
+  //     if (response != null && response.data != null) {
+  //       batchList.clear();
+  //       batchList.addAll(response.data!);
+  //       // Set the first item as the default value
+  //       if (batchList.isNotEmpty) {
+  //         selectedBatchIN.value = batchList.first;
+  //         isBatchSelected.value = true;
+  //         print(selectedBatchIN.value);
+  //         String currentMonth = DateFormat('MMM').format(DateTime.now());
+  //         Logger().i("gettuijhsdhqddqwedkjwqegd345678==>${type.value}");
+  //         if(type.value=='Tutor'){
 
+  //          fetchStudentsList(selectedBatchIN.value!.batchId!, '', currentMonth);
+  //         }else{
+  //          fetchTutteAttendanceList(selectedBatchIN.value!.batchId!, '', currentMonth);
+  //         }
+  //       }
+  //       Logger().i(batchList.length);
+  //       isLoading(false);
+  //     }
+  //   } catch (e) {
+  //     isLoading(false);
+  //     print(e);
+  //   }
   // }
 
   void fetchBatch() async {
-    // print(type);
-    isLoading(true);
-    try {
-      var response = await WebService.fetchGroupedEnrollmentByBatch();
-      Logger().i(response);
-      if (response != null && response.data != null) {
-        batchList.clear();
-        batchList.addAll(response.data!);
-        // Set the first item as the default value
-        if (batchList.isNotEmpty) {
+  isLoading(true);
+  try {
+    var response = await WebService.fetchGroupedEnrollmentByBatch();
+    Logger().i(response);
+    if (response != null && response.data != null) {
+      batchList.clear();
+      batchList.addAll(response.data!);
+      
+      // If the batch list is not empty, try to find a batch that matches the batchname
+      if (batchList.isNotEmpty) {
+        // Try to find the batch by name
+        final matchedBatch = batchList.firstWhere(
+          (batch) => batch.batchName == batchname,
+          orElse: () => batchList.first,
+        );
+
+        if (matchedBatch != null) {
+          selectedBatchIN.value = matchedBatch;
+          isBatchSelected.value = true;
+        } else {
+          // Set the first item in the list if no match found
           selectedBatchIN.value = batchList.first;
           isBatchSelected.value = true;
-          print(selectedBatchIN.value);
-          String currentMonth = DateFormat('MMM').format(DateTime.now());
-          Logger().i("gettuijhsdhqddqwedkjwqegd345678==>${type.value}");
-          if(type.value=='Tutor'){
-
-           fetchStudentsList(selectedBatchIN.value!.batchId!, '', currentMonth);
-          }else{
-           fetchTutteAttendanceList(selectedBatchIN.value!.batchId!, '', currentMonth);
-          }
         }
-        Logger().i(batchList.length);
-        isLoading(false);
+
+        String currentMonth = DateFormat('MMM').format(DateTime.now());
+        Logger().i("type==>${type.value}");
+        if (type.value == 'Tutor') {
+          fetchStudentsList(selectedBatchIN.value!.batchId!, '', currentMonth);
+        } else {
+          fetchTutteAttendanceList(selectedBatchIN.value!.batchId!, '', currentMonth);
+        }
       }
-    } catch (e) {
+      Logger().i(batchList.length);
       isLoading(false);
-      print(e);
     }
+  } catch (e) {
+    isLoading(false);
+    print(e);
   }
+}
 
   void selectBatch(Data1 batch) {
     selectedBatchIN.value = batch;

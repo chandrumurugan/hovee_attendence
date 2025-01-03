@@ -16,17 +16,18 @@ import 'package:pinput/pinput.dart';
 class EnrollmentScreen extends StatelessWidget {
   final String type;
   final bool fromBottomNav;
-  final String? firstname, lastname, wowid;
+  final String? firstname, lastname, wowid,lastWord;
    final VoidCallback? onDashBoardBack;
+   final EnrollmentController controller;
   EnrollmentScreen({
     super.key,
     required this.type,
     this.fromBottomNav = true,
     this.firstname,
     this.lastname,
-    this.wowid, this.onDashBoardBack,
-  });
-  final EnrollmentController controller = Get.put(EnrollmentController());
+    this.wowid, this.onDashBoardBack, this.lastWord,
+  }): controller = Get.put(EnrollmentController(),permanent: true);
+  //final EnrollmentController controller = Get.put(EnrollmentController());
   //final NotificationController notificontroller = Get.put(NotificationController());
   final TuteeHomeController attendanceCourseListController =
       Get.put(TuteeHomeController());
@@ -68,17 +69,33 @@ class EnrollmentScreen extends StatelessWidget {
               ),
             ),
             // Tabs for Active and Inactive
-            TabBar(
-              controller: controller.tabController,
-              tabs: const [
-                Tab(text: 'Pending'),
-                Tab(text: 'Accepted'),
-                Tab(text: 'Rejected'),
-              ],
-              onTap: (value) {
-                controller.handleTabChange(value);
-              },
-            ),
+            // TabBar(
+            //   controller: controller.tabController,
+            //   tabs: const [
+            //     Tab(text: 'Pending'),
+            //     Tab(text: 'Accepted'),
+            //     Tab(text: 'Rejected'),
+            //   ],
+            //   onTap: (value) {
+            //     controller.handleTabChange(value);
+            //   },
+            // ),
+             GetBuilder<EnrollmentController>(
+  init: EnrollmentController(),
+  builder: (controller) {
+    return TabBar(
+      controller: controller.tabController,
+      tabs: const [
+        Tab(text: 'Pending'),
+        Tab(text: 'Accepted'),
+        Tab(text: 'Rejected'),
+      ],
+      onTap: (value) {
+        controller.handleTabChange(value);
+      },
+    );
+  },
+),
             // Display List based on the selected tab
             Expanded(
               child: Obx(() {

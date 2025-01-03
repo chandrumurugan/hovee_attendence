@@ -24,16 +24,19 @@ class getQrcodeModel {
 
 class Data {
   String? qrCode;
+  String? wowId;
 
-  Data({this.qrCode});
+  Data({this.qrCode, this.wowId});
 
   Data.fromJson(Map<String, dynamic> json) {
     qrCode = json['qrCode'];
+    wowId = json['wow_id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['qrCode'] = this.qrCode;
+    data['wow_id'] = this.wowId;
     return data;
   }
 }

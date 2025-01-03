@@ -164,10 +164,18 @@ class _TutorClassFormState extends State<TutorClassForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Batch Name: ${controller.selectedCourseData.value.batchName ?? 'N/A'}', style: TextStyle(fontSize: 18)),
+                       Text('Batch Mode: ${controller.selectedCourseData.value.batchMode ?? 'N/A'}', style: TextStyle(fontSize: 18)),
+                       Text(
+  'Fees : ${controller.selectedCourseData.value.fees != null ? '₹ ${controller.selectedCourseData.value.fees} /month' : 'N/A'}', 
+  style: TextStyle(fontSize: 18),
+),
+
+                          Text('Batch Date: ${controller.selectedCourseData.value.startDate ?? 'N/A'} - ${controller.selectedCourseData.value.endDate ?? 'N/A'}', style: TextStyle(fontSize: 18)),
+                           Text('Batch Time: ${controller.selectedCourseData.value.batchTimingStart ?? 'N/A'} - ${controller.selectedCourseData.value.batchTimingEnd ?? 'N/A'}', style: TextStyle(fontSize: 18)),
                       Text('Course Code: ${controller.selectedCourseData.value.courseCode ?? 'N/A'}', style: TextStyle(fontSize: 18)),
                       Text('Board: ${controller.selectedCourseData.value?.board ?? 'N/A'}', style: TextStyle(fontSize: 18)),
-                   
-                      Text('Subject: ${controller.selectedCourseData.value?.batchId ?? 'N/A'}', style: TextStyle(fontSize: 18)),
+                       Text('Classname: ${controller.selectedCourseData.value?.className ?? 'N/A'}', style: TextStyle(fontSize: 18)),
+                      Text('Subject: ${controller.selectedCourseData.value?.subject ?? 'N/A'}', style: TextStyle(fontSize: 18)),
                       // Add more fields as necessary
                     ],
                   ),

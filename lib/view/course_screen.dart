@@ -113,88 +113,91 @@ class _TutorCourseListState extends State<TutorCourseList> {
             filterOnTap: () {},
           ),
           Expanded(
-            child: Obx(() {
-              if (courseController.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
-              } else if (courseController.courseList.isEmpty) {
-                print(courseController.courseList);
-                // Display "No data found" when the list is empty
-                return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Image.asset(
-                                'assets/logo/No_Verification_Found_Image_app.png',
-                                height: 200,
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Center(
-                                  child: Text(
-                                "No listing found",
-                                style: GoogleFonts.nunito(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600),
-                              )),
-                            ],
-                          ),
-                        );
-              } else {
-                // Display the list of batches
-                return ListView.separated(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemBuilder: (context, int index) {
-                      final course = courseController.courseList[index];
-                      return Animate(
-                        effects: [
-                          SlideEffect(
-                            begin: Offset(-1, 0),
-                            end: Offset(0, 0),
-                            curve: Curves.easeInOut,
-                            duration: 500.ms,
-                            delay: 100.ms * index,
-                          ),
-                          FadeEffect(
-                            begin: 0,
-                            end: 1,
-                            duration: 500.ms,
-                            delay: 100.ms * index,
-                          ),
-                        ],
-                        child: CourseListContainer(
-                          arrowIcon: true,
-                          image: '',
-                          subject: course.subject!,
-                          subjectCode: course.courseCode!,
-                          std: course.className!,
-                          medium: course.board!,
-                          group: course.categories ?? '',
-                          groupcode: course.courseCode!,
-                          className: '',
-                          tutorId: '',
-                          batchname: course.batchName!,
-                          tutorname: '',
-                          type: widget.type,
-                          id: course.sId!,
-                          course: course, batchMaximumSlots: '', batchTimingStart: '', batchTimingEnd: '',
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, int index) {
-                      return const SizedBox(
-                        height: 1,
-                      );
-                    },
-                    itemCount: courseController.courseList.length);
-              }
-            }),
-          )
+  child: Obx(() {
+    if (courseController.isLoading.value) {
+      return Center(child: CircularProgressIndicator());
+    } else if (courseController.initialLoad.value) {
+      // Show loader during the initial load
+      return Center(child: CircularProgressIndicator());
+    } else if (courseController.courseList.isEmpty) {
+      // Display "No data found" only after the initial load is complete
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          children: [
+            SizedBox(height: 30),
+            Image.asset(
+              'assets/logo/No_Verification_Found_Image_app.png',
+              height: 200,
+            ),
+            SizedBox(height: 30),
+            Center(
+              child: Text(
+                "No listing found",
+                style: GoogleFonts.nunito(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
+      // Display the list of courses
+      return ListView.separated(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        itemBuilder: (context, int index) {
+          final course = courseController.courseList[index];
+          return Animate(
+            effects: [
+              SlideEffect(
+                begin: Offset(-1, 0),
+                end: Offset(0, 0),
+                curve: Curves.easeInOut,
+                duration: 500.ms,
+                delay: 100.ms * index,
+              ),
+              FadeEffect(
+                begin: 0,
+                end: 1,
+                duration: 500.ms,
+                delay: 100.ms * index,
+              ),
+            ],
+            child: CourseListContainer(
+              arrowIcon: true,
+              image: '',
+              subject: course.subject!,
+              subjectCode: course.courseCode!,
+              std: course.className!,
+              medium: course.board!,
+              group: course.categories ?? '',
+              groupcode: course.courseCode!,
+              className: '',
+              tutorId: '',
+              batchname: course.batchName!,
+              tutorname: '',
+              type: widget.type,
+              id: course.sId!,
+              course: course,
+              batchMaximumSlots: '',
+              batchTimingStart: '',
+              batchTimingEnd: '',
+            ),
+          );
+        },
+        separatorBuilder: (context, int index) {
+          return const SizedBox(height: 1);
+        },
+        itemCount: courseController.courseList.length,
+      );
+    }
+  }),
+),
+
         ],
       ),
       // Bottom Button

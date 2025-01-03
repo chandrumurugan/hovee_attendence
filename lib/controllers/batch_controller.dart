@@ -15,7 +15,7 @@ import 'package:intl/intl.dart';
 class BatchController extends GetxController {
   var batchList = [].obs;
   var isLoading = true.obs;
-
+  RxBool initialLoad = true.obs;
   var branchShortNameController = ''.obs;
   var batchNameController = ''.obs;
 var batchDaysController = "".obs;
@@ -54,6 +54,7 @@ var batchDaysController = "".obs;
   List<String> batchModes = [];
   Map<String, String> batchIdMap = {};
   List<String> batchName1 = [];
+  
  RxList<String> selectedBatchDays = <String>[].obs;
 
   var selectedCourseDetails =
@@ -98,29 +99,41 @@ var batchDaysController = "".obs;
 
 
 
-  void fetchBatchList({String searchTerm = ''}) async {
+  void fetchBatchList({String searchTerm = '', String type = ''}) async {
   try {
     isLoading.value = true; // Start loading
-    var batchResponse = await WebService.fetchBatchList(searchTerm);
+    initialLoad.value=true;
+    // Prepare the request payload
+    final requestPayload = {
+      'searchTerm': searchTerm,
+    };
+
+    // Fetch batch list from the API
+    var batchResponse = await WebService.fetchBatchList(requestPayload);
 
     if (batchResponse.data != null) {
       batchList.value = batchResponse.data!;
       totalCount.value = batchResponse.totalBatches ?? 0;
       activeCount.value = batchResponse.activeBatches ?? 0;
       inactiveCount.value = batchResponse.inactiveBatches ?? 0;
-            batchName1 =
-            batchResponse.data!.map((batch) => batch.batchName ?? '').toList();
 
-        // Map batch names to their IDs for later retrieval
-        batchIdMap = {
-          for (var batch in batchResponse.data!)
-            batch.batchName ?? '': batch.sId ?? ''
-        };
+      // Update batch names based on the type
+      
+        batchName1 = batchResponse.data!
+            .map((batch) => batch.batchName ?? '')
+            .toList();
+      
 
-        // Store data in GetStorage if needed
-        final storage = GetStorage();
-        storage.write(
-            'batchList', batchResponse.data!.map((e) => e.toJson()).toList());
+      // Map batch names to their IDs for later retrieval
+      batchIdMap = {
+        for (var batch in batchResponse.data!)
+          batch.batchName ?? '': batch.sId ?? ''
+      };
+
+      // Store data in GetStorage if needed
+      final storage = GetStorage();
+      storage.write(
+          'batchList', batchResponse.data!.map((e) => e.toJson()).toList());
     } else {
       batchList.clear();
     }
@@ -129,8 +142,10 @@ var batchDaysController = "".obs;
     print('Error fetching batch list: $e');
   } finally {
     isLoading.value = false; // Stop loading
+     initialLoad.value=false;
   }
 }
+
 
 
   void fetchBatchDetails(String batchName) {

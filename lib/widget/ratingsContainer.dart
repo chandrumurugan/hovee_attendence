@@ -10,7 +10,9 @@ class RatingConatiner extends StatefulWidget {
   final String reviewShortName;
   final String expectedRent;
   final String userRatedCount;
-
+  final String batchName;
+  final String board;
+  final String className;
   final dynamic userRating;
   final String propertyCategory;
   final bool? isEnrolled;
@@ -23,7 +25,7 @@ class RatingConatiner extends StatefulWidget {
     required this.userRatedCount,
     required this.userRating,
     required this.propertyCategory,
-    this.isEnrolled,
+    this.isEnrolled, required this.batchName, required this.board, required this.className,
   });
 
   @override
@@ -138,6 +140,41 @@ class _RatingPropertyState extends State<RatingConatiner> {
                               style: GoogleFonts.nunito(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black)),
+                                    Text('${widget.batchName}',
+                              textScaleFactor: 1.10,
+                             style: GoogleFonts.nunito(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black)),
+                                  Row(
+                          children: [
+                            Text(
+                              widget.className,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 15),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              height: 1,
+                              width: 10,
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              widget.board,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14),
+                            ),
+                            
+                          ],
+                        ),
                           SizedBox(
                             width: 160,
                             child: Text('${widget.reviewAddress}.',

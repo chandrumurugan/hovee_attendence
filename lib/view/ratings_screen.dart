@@ -127,7 +127,11 @@ class MyRatingsScreen extends StatelessWidget {
                             //     .tenants!.current!.reviews?.quarter1?.rating
                             : "0.0", //propertyRR!.overallRating!.toDouble()
                         propertyCategory: controller
-                            .myrating!.ratings!.courseDetails![index].subject!,
+                            .myrating!.ratings!.courseDetails![index].subject!, batchName: controller
+                            .myrating!.ratings!.courseDetails![index].batchName!,
+                            board: controller
+                            .myrating!.ratings!.courseDetails![index].board!, className: controller
+                            .myrating!.ratings!.courseDetails![index].className!,
                       ),
                     );
                   },

@@ -21,7 +21,7 @@ class EnquirDetailController extends GetxController
  
           // final tuteeController = TextEditingController();
   
-  
+ String? lastWord;
 
   @override
   void onClose() {
@@ -29,17 +29,56 @@ class EnquirDetailController extends GetxController
     super.onClose();
     tabController.dispose();
   }
-  @override
+//   @override
+//   void onInit() {
+//     super.onInit();
+//    print("object");
+//     lastWord=  Get.arguments?? 'Tutee';
+//     tabController = TabController(length: 3, vsync: this);
+//     selectedTabIndex.value=0;
+//     print(selectedTabIndex.value);
+   
+//       // Check if `lastWord` is not null and not an empty string
+//   if (lastWord =='Approved' && lastWord!.isNotEmpty) {
+//     // Change tab index to 1 (Approved)
+//     selectedTabIndex.value = 1;
+//     tabController.animateTo(1);
+
+//     // Fetch approved data list
+//     fetchEnquirList("Approved");
+//   }
+//  else if (lastWord =='Rejected' &&lastWord!.isNotEmpty) {
+//     // Change tab index to 1 (Approved)
+//     selectedTabIndex.value = 2;
+//     tabController.animateTo(2);
+
+//     // Fetch approved data list
+//     fetchEnquirList("Rejected");
+//   }else{
+//      fetchEnquirList("Pending");
+//   }
+//   }
+
+
+ @override
   void onInit() {
     super.onInit();
-   print("object");
-    tabController = TabController(length: 3, vsync: this);
-    selectedTabIndex.value=0;
-    print(selectedTabIndex.value);
-    // Initially load "Pending" list
-    fetchEnquirList("Pending");
-  }
 
+    lastWord = Get.arguments ?? 'Tutee';
+    tabController = TabController(length: 3, vsync: this);
+
+    if (lastWord == 'Approved') {
+      selectedTabIndex.value = 1;
+      tabController.animateTo(1);
+      fetchEnquirList("Approved");
+    } else if (lastWord == 'Rejected') {
+      selectedTabIndex.value = 2;
+      tabController.animateTo(2);
+      fetchEnquirList("Rejected");
+    } else {
+      fetchEnquirList("Pending");
+    }
+  }
     void handleTabChange(int index) {
     // Determine the type based on the selected tab index
     String type = _getTypeFromIndex(index);
@@ -53,6 +92,8 @@ class EnquirDetailController extends GetxController
 
     fetchEnquirList(type);
   }
+
+  
 
   String _getTypeFromIndex(int index) {
     switch (index) {
@@ -68,13 +109,12 @@ class EnquirDetailController extends GetxController
   }
 
    void fetchEnquirList(String type) async {
-    Logger().i("getting val;uegegbjhgsdfjs");
+    
     try {
       isLoading(true);
 
       var batchData = {"status": type};
       var classesResponse = await WebService.fetchEnquireList(batchData);
-
       if (classesResponse.data != null) {
         enquirList.value = classesResponse.data!;
       }

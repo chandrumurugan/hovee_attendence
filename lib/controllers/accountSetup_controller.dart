@@ -147,8 +147,7 @@ class AccountSetupController extends GetxController
 
  fetchAppConfig();
     // _populateAddressFromLocation();
-    // getCurrentLocation();
-
+   // getCurrentLocation();
     //loadAppConfigData();
     qualifications = getQualifications();
     techs = getTechs();
@@ -156,7 +155,7 @@ class AccountSetupController extends GetxController
     tuteeQualifications = getTuteeQualifications();
     skills = getSkills();
     tuteeSpeciallizationClass = getSkills();
-      // getCurrentLocation();
+       //getCurrentLocation();
   }
 
   //addresslocation map
@@ -191,7 +190,7 @@ class AccountSetupController extends GetxController
 
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
-  
+    getCurrentLocation();
   }
 
   void onMarkerDragEnd(LatLng position) {

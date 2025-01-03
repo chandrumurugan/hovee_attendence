@@ -37,7 +37,8 @@ class Data1 {
   int? noOfBatches;
   String? address;
   bool? alreadyExits;
-
+  String? tuitionName;
+  TuteeInformation? tuteeInformation;
   Data1(
       {this.tutorId,
       this.tutorDetails,
@@ -52,7 +53,9 @@ class Data1 {
       this.workingDays,
       this.noOfBatches,
       this.address,
-      this.alreadyExits});
+      this.alreadyExits,
+       this.tuitionName,
+        this.tuteeInformation});
 
   Data1.fromJson(Map<String, dynamic> json) {
     tutorId = json['TutorId'];
@@ -76,6 +79,10 @@ class Data1 {
     noOfBatches = json['No_of_batches'];
     address = json['address'];
     alreadyExits = json['alreadyExits'];
+     tuitionName = json['tuitionName'];
+      tuteeInformation = json['tuteeInformation'] != null
+        ? new TuteeInformation.fromJson(json['tuteeInformation'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -99,6 +106,10 @@ class Data1 {
     data['No_of_batches'] = this.noOfBatches;
     data['address'] = this.address;
     data['alreadyExits'] = this.alreadyExits;
+    data['tuitionName'] = this.tuitionName;
+     if (this.tuteeInformation != null) {
+      data['tuteeInformation'] = this.tuteeInformation!.toJson();
+    }
     return data;
   }
 }
@@ -185,6 +196,28 @@ class BatchGroupList {
     data['batch_timing'] = this.batchTiming;
     data['availableSlots'] = this.availableSlots;
     data['isAvailable'] = this.isAvailable;
+    return data;
+  }
+}
+
+class TuteeInformation {
+  String? sId;
+  String? email;
+  String? phoneNumber;
+
+  TuteeInformation({this.sId, this.email, this.phoneNumber});
+
+  TuteeInformation.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    email = json['email'];
+    phoneNumber = json['phone_number'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['email'] = this.email;
+    data['phone_number'] = this.phoneNumber;
     return data;
   }
 }

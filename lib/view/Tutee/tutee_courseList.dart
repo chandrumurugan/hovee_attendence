@@ -195,7 +195,11 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                                     batchname: filteredList![index].batchName!,
                                     tutorname: filteredList![index].tutorName!,
                                     type: widget.type,
-                                    id: '', batchMaximumSlots: filteredList![index].batchMaximumSlots!, batchTimingStart:  filteredList![index].batchTimingStart!, batchTimingEnd: filteredList![index].batchTimingEnd!, address:    filteredList![index].tutorAddress!,
+                                    id: '',
+                                     batchMaximumSlots: filteredList![index].batchMaximumSlots ?? '', 
+                                     batchTimingStart:  filteredList![index].batchTimingStart??'', 
+                                     batchTimingEnd: filteredList![index].batchTimingEnd??'',
+                                      address:    filteredList![index].tutorAddress ??'',
                                   ),
                                 ),
                               );
