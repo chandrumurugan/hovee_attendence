@@ -365,136 +365,64 @@ class Tutorenquirlist extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                      if ((classController
-                                                  .selectedTabIndex.value ==
-                                              1 &&
-                                          type == 'Tutor'))
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Expanded(
-                                              child: InkWell(
-                                                onTap: tutionCourseDetailsList
-                                                            .alreadyEnrollment ==
-                                                        true
-                                                    ? null // Disable the button
-                                                    : () {
-                                                        Get.to(() =>
-                                                            AddEnrollmentScreen(
-                                                              tuteename:
-                                                                  tutionCourseDetailsList
-                                                                      .studentName!,
-                                                              batchname:
-                                                                  tutionCourseDetailsList
-                                                                      .courseName!,
-                                                              classname:
-                                                                  tutionCourseDetailsList
-                                                                      .className!,
-                                                              subject:
-                                                                  tutionCourseDetailsList
-                                                                      .subject!,
-                                                              board:
-                                                                  tutionCourseDetailsList
-                                                                      .board!,
-                                                              batchStartingTime:
-                                                                  tutionCourseDetailsList
-                                                                          .batchTimingStart ??
-                                                                      '',
-                                                              batchEndingTime:
-                                                                  tutionCourseDetailsList
-                                                                          .batchTimingEnd ??
-                                                                      '',
-                                                              tutorname:
-                                                                  tutionCourseDetailsList
-                                                                      .tutorName!,
-                                                              courseCodeName:
-                                                                  tutionCourseDetailsList
-                                                                      .courseCode!,
-                                                              fees:
-                                                                  tutionCourseDetailsList
-                                                                      .fees!,
-                                                              tutorId:
-                                                                  tutionCourseDetailsList
-                                                                      .tutorId!,
-                                                              tuteeId:
-                                                                  tutionCourseDetailsList
-                                                                      .studentId!,
-                                                              courseId:
-                                                                  tutionCourseDetailsList
-                                                                      .courseId!,
-                                                              batchId:
-                                                                  tutionCourseDetailsList
-                                                                      .batchId!,
-                                                              enrollmentType:
-                                                                  tutionCourseDetailsList
-                                                                      .enquiryType!,
-                                                              type: type,
-                                                              batchEndDate:
-                                                                  tutionCourseDetailsList
-                                                                          .batchEndDate ??
-                                                                      '',
-                                                              batchMode:
-                                                                  tutionCourseDetailsList
-                                                                      .batchMode!,
-                                                            ));
-                                                      },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 10),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    gradient: tutionCourseDetailsList
-                                                                .alreadyEnrollment ==
-                                                            true
-                                                        ? const LinearGradient(
-                                                            colors: [
-                                                              Colors.grey,
-                                                              Colors.grey
-                                                            ], // Disabled button colors
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter,
-                                                          )
-                                                        : const LinearGradient(
-                                                            colors: [
-                                                              Color(0xFFBA0161),
-                                                              Color(0xFF510270)
-                                                            ], // Active button colors
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter,
-                                                          ),
-                                                  ),
-                                                  child: Text(
-                                                    "Enroll now",
-                                                    textAlign: TextAlign.center,
-                                                    style: GoogleFonts.nunito(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 20,
-                                                      color: tutionCourseDetailsList
-                                                                  .alreadyEnrollment ==
-                                                              true
-                                                          ? Colors.grey
-                                                              .shade400 // Disabled text color
-                                                          : Colors
-                                                              .white, // Active text color
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                                width:
-                                                    10), // Spacing between buttons
-                                          ],
-                                        ),
+                                      if ((classController.selectedTabIndex.value == 1 && type == 'Tutor') &&
+    !tutionCourseDetailsList.alreadyEnrollment!)
+  Row(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      Expanded(
+        child: InkWell(
+          onTap: () {
+            Get.to(() => AddEnrollmentScreen(
+                  tuteename: tutionCourseDetailsList.studentName!,
+                  batchname: tutionCourseDetailsList.courseName!,
+                  classname: tutionCourseDetailsList.className!,
+                  subject: tutionCourseDetailsList.subject!,
+                  board: tutionCourseDetailsList.board!,
+                  batchStartingTime:
+                      tutionCourseDetailsList.batchTimingStart ?? '',
+                  batchEndingTime:
+                      tutionCourseDetailsList.batchTimingEnd ?? '',
+                  tutorname: tutionCourseDetailsList.tutorName!,
+                  courseCodeName: tutionCourseDetailsList.courseCode!,
+                  fees: tutionCourseDetailsList.fees!,
+                  tutorId: tutionCourseDetailsList.tutorId!,
+                  tuteeId: tutionCourseDetailsList.studentId!,
+                  courseId: tutionCourseDetailsList.courseId!,
+                  batchId: tutionCourseDetailsList.batchId!,
+                  enrollmentType: tutionCourseDetailsList.enquiryType!,
+                  type: type,
+                  batchEndDate: tutionCourseDetailsList.batchEndDate ?? '',
+                  batchMode: tutionCourseDetailsList.batchMode!,
+                ));
+          },
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              gradient: const LinearGradient(
+                colors: [Color(0xFFBA0161), Color(0xFF510270)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            child: Text(
+              "Enroll now",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.nunito(
+                fontWeight: FontWeight.w500,
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(width: 10), // Spacing between buttons
+    ],
+  )
+
                                     ],
                                   ),
                                 ),

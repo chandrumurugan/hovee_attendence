@@ -228,7 +228,7 @@ class AccountSetupController extends GetxController
   void setMarker(LatLng position) {
     latitudeL.value = position.latitude;
     longitudeL.value = position.longitude;
-    if(!isLocationSearched.value){
+    //if(!isLocationSearched.value){
        marker.value = Marker(
       markerId: const MarkerId('selected-location'),
       position: position,
@@ -236,7 +236,7 @@ class AccountSetupController extends GetxController
       onDragEnd: onMarkerDragEnd,
     );
     updateLocationDetails(position.latitude, position.longitude);  
-    }
+   // }
  
   }
 

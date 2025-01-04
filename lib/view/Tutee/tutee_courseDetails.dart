@@ -280,13 +280,59 @@ class CourseDetailScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          maxSlots,
+              maxSlots, // Replace with the desired key
+              style: GoogleFonts.nunito(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+              ),
+            ),
+                        
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Container(
+                        height: 44,
+                        width: 47,
+                        decoration: BoxDecoration(
+                            color: Color(0xffD9D9D9).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(8)),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Available slots',
                           style: GoogleFonts.nunito(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: Colors.grey,
+                            color: Colors.black,
                           ),
-                        )
+                        ),
+                              Column(
+  children: data!.batchGroupList!
+      .map((batch) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
+              batch.availableSlots.toString(), // Replace with the desired key
+              style: GoogleFonts.nunito(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+              ),
+            ),
+          ))
+      .toList(),
+)
                       ],
                     )
                   ],

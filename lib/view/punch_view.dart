@@ -223,24 +223,22 @@ class PunchView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(38),
                   color: AppConstants.primaryColor,
                 ),
-                child: Obx(
-                  () => Center(
-                    child: _controller.hasScanned.value
-                        
-                          ? regularText(
-                      text: _controller.punchedIn.value
-                          ? 'Punch Out'
-                          : 'Punch In',
-                      fontSize: 12,
-                      color: Colors.white,
-                    )
-                  : Icon(
-                      Icons.qr_code_scanner,
-                      size: 40,
-                      color: Colors.white,
-                    ), // 
-                  ),
-                ),
+               child: Obx(
+  () => Center(
+    child: _controller.hasScanned.value
+      ? regularText(
+          text: _controller.punchedIn.value ? 'Punch Out' : 'Punch In',
+          fontSize: 12,
+          color: Colors.white,
+        )
+      : Icon(
+          Icons.qr_code_scanner,
+          size: 40,
+          color: Colors.white,
+        ),
+  ),
+),
+
               ),
             ),
           ),
@@ -311,24 +309,8 @@ class PunchView extends StatelessWidget {
   );
 }
 
-// void _onBarcodeScanned(String? scannedData) async {
-//   final PunchController _controller = Get.put(PunchController(batchname: batchname));
-//   if (scannedData == null) return;
 
-//   // Extract latitude and longitude
-//   final latitude = _extractCoordinate(scannedData, 'latitude');
-//   final longitude = _extractCoordinate(scannedData, 'longitude');
-
-//   // Store in SharedPreferences
-//   if (latitude != null && longitude != null) {
-//     await _saveCoordinatesToPreferences(latitude, longitude);
-//   }
-
-//   _controller.hasScanned.value = true;
-//   Get.back(result: _controller.hasScanned.value);
-// }
-
-void _onBarcodeScanned(String? scannedData,BuildContext context) async {
+void _onBarcodeScanned(String? scannedData, BuildContext context) async {
   final PunchController _controller = Get.put(PunchController(batchname: batchname));
   if (scannedData == null) return;
 
@@ -338,8 +320,16 @@ void _onBarcodeScanned(String? scannedData,BuildContext context) async {
   final longitude = _extractCoordinate(scannedData, 'longitude');
 
   if (wowIdFromCode == null) {
-      Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
-        ,'Invalid QR Code',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+    Get.snackbar(
+      icon: Icon(
+        Icons.info,
+        color: Colors.white,
+        size: 40,
+      ),
+      'Invalid QR Code',
+      colorText: Colors.white,
+      backgroundColor: Color.fromRGBO(186, 1, 97, 1),
+    );
     return;
   }
 
@@ -348,26 +338,32 @@ void _onBarcodeScanned(String? scannedData,BuildContext context) async {
     if (latitude != null && longitude != null) {
       // Store in SharedPreferences
       await _saveCoordinatesToPreferences(latitude, longitude);
-       SnackBarUtils.showSuccessSnackBar(
-          context,
-          'Location saved successfully',
-        );
+      // SnackBarUtils.showSuccessSnackBar(
+      //   context,
+      //   'Location saved successfully',
+      // );
+
+      // Set the hasScanned value to true only when conditions are met
+      _controller.hasScanned.value = true;
     } else {
-       SnackBarUtils.showErrorSnackBar(
-          context,
-          'Invalid QR Code',
-        );
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Invalid QR Code',
+      );
     }
   } else {
-      SnackBarUtils.showErrorSnackBar(
-          context,
-          'WowID does not match.',
-        );
+    SnackBarUtils.showErrorSnackBar(
+      context,
+      'Invalid QR Code',
+    );
   }
 
-  _controller.hasScanned.value = true;
-  Get.back(result: _controller.hasScanned.value);
+  // Ensure that Get.back is called after setting hasScanned value
+  if (_controller.hasScanned.value) {
+    Get.back(result: _controller.hasScanned.value);
+  }
 }
+
 
 String? _extractWowId(String code) {
   final regex = RegExp(r'/(\d+)$');

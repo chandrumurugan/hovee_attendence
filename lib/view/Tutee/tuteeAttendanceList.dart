@@ -171,143 +171,143 @@ class TuteeAttendanceList extends StatelessWidget {
                 return const SizedBox
                     .shrink(); // Hide calendar if no batch is selected
               }
-              return Container(
-                // height: MediaQuery.of(context).size.height * 0.55,
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                // padding: EdgeInsets.symmetric(vertical: 30),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.black)),
-                child: TableCalendar(
-                  firstDay: DateTime(2024, 1, 1),
-                  lastDay: DateTime(2025, 12, 31),
-                  focusedDay: controller.selectedBatchStartDate.value!,
-                  rangeStartDay: controller.selectedBatchStartDate.value,
-                  rangeEndDay: controller.selectedBatchEndDate.value,
-                  calendarFormat: CalendarFormat.month,
-                  startingDayOfWeek: StartingDayOfWeek.monday,
-                  headerStyle: const HeaderStyle(
-                    formatButtonVisible: false,
-                    titleCentered: true,
-                  ),
-                  calendarStyle: const CalendarStyle(
-                    markerDecoration: BoxDecoration(
-                      color: Colors.red, // Color for miss punch markers
-                      shape: BoxShape.circle,
+              return GetBuilder<StudentAttendanceController>(
+    builder: (_) => Container(
+                  // height: MediaQuery.of(context).size.height * 0.55,
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  // padding: EdgeInsets.symmetric(vertical: 30),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.black)),
+                  child: TableCalendar(
+                    firstDay: DateTime(2024, 1, 1),
+                    lastDay: DateTime(2025, 12, 31),
+                    focusedDay: controller.selectedBatchStartDate.value!,
+                    rangeStartDay: controller.selectedBatchStartDate.value,
+                    rangeEndDay: controller.selectedBatchEndDate.value,
+                    calendarFormat: CalendarFormat.month,
+                    startingDayOfWeek: StartingDayOfWeek.monday,
+                    headerStyle: const HeaderStyle(
+                      formatButtonVisible: false,
+                      titleCentered: true,
                     ),
-                    markersAlignment: Alignment.bottomCenter,
-                    markersMaxCount: 1,
-                    rangeHighlightColor: AppConstants.primaryColor,
-                    withinRangeTextStyle: TextStyle(color: Colors.white),
-                    // selectedDecoration: BoxDecoration(
-                    //   color:
-                    //       Colors.blue, // Customize the color for selected date
-                    //   shape: BoxShape.circle,
-                    // ),
-                    // outsideRangeTextStyle: TextStyle(color: Colors.grey),
-                  ),
-              
-
-                  selectedDayPredicate: (day) {
-                    return isSameDay(controller.selectedDay.value, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
-                    controller.onDateSelectedTutee(selectedDay);
-                    controller.setFocusedDay(focusedDay);
-                  },
-                  onPageChanged: (focusedDay) {
-                    controller.setFocusedDay(focusedDay);
-                    //controller.onMonthSelectedTutee(focusedDay);
-                      String monthAbbreviation = DateFormat('MMM').format(focusedDay);
-       controller.fetchTutteAttendanceList(
-        controller.selectedBatchIN.value!.batchId!, // Pass batchId
-        '', // Adjust based on API requirements
-        monthAbbreviation,
-      );
-                  },
-                  calendarBuilders: 
-                 
-                  CalendarBuilders(
-                    defaultBuilder: (context, day, focusedDay) {
-                      // Check if the day is a miss punch date
-                      if (controller.missPunchDates
-                          .contains(DateTime(day.year, day.month, day.day))) {
-                        return Container(
-                          margin: const EdgeInsets.all(4.0),
-                          decoration: BoxDecoration(
-                            color: Colors.orange[400], // Background color for miss punch dates
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            '${day.day}', // Display the day
-                            style: const TextStyle(
-                                color: Colors.white), // Text style
-                          ),
-                        );
-                      }
-
-                      if (controller.absentDates
-                          .contains(DateTime(day.year, day.month, day.day))) {
-                        return Container(
-                            margin: const EdgeInsets.all(4.0),
-                          decoration: BoxDecoration(
-                               color: const Color(0xffAD0F60), // Background color for miss punch dates
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                                 alignment: Alignment.center,
-                          child: Center(child: Text('${day.day}', style: const TextStyle(
-                                color: Colors.white),)),
-                        );
-                      }
-
-                      // Highlight Present dates
-                      if (controller.presentDates
-                          .contains(DateTime(day.year, day.month, day.day))) {
-                        return Container(
-                            margin: const EdgeInsets.all(4.0),
-                          decoration: BoxDecoration(
-                             color: Colors.green, // Background color for miss punch dates
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                            alignment: Alignment.center,
-                          child: Center(child: Text('${day.day}', style: const TextStyle(
-                                color: Colors.white),)),
-                        );
-                      }
-
-                      if (controller.leaveDates
-                          .contains(DateTime(day.year, day.month, day.day))) {
-                        return Container(
-                            margin: const EdgeInsets.all(4.0),
-                          decoration: BoxDecoration(
-                             color:Colors.blue, // Background color for miss punch dates
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                            alignment: Alignment.center,
-                          child: Center(child: Text('${day.day}', style: const TextStyle(
-                                color: Colors.white),)),
-                        );
-                      }
-                      if (controller.holidayDates
-                          .contains(DateTime(day.year, day.month, day.day))) {
-                        return Container(
-                            margin: const EdgeInsets.all(4.0),
-                          decoration: BoxDecoration(
-                             color:Colors.amber, // Background color for miss punch dates
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                            alignment: Alignment.center,
-                          child: Center(child: Text('${day.day}', style: const TextStyle(
-                                color: Colors.white),)),
-                        );
-                      }
-                      // Return default appearance for other dates
-                      return null;
+                    calendarStyle: const CalendarStyle(
+                      markerDecoration: BoxDecoration(
+                        color: Colors.red, // Color for miss punch markers
+                        shape: BoxShape.circle,
+                      ),
+                      markersAlignment: Alignment.bottomCenter,
+                      markersMaxCount: 1,
+                      rangeHighlightColor: AppConstants.primaryColor,
+                      withinRangeTextStyle: TextStyle(color: Colors.white),
+                    ),
+                    selectedDayPredicate: (day) {
+                      return isSameDay(controller.selectedDay.value, day);
                     },
-                  ),
-                ),
+                    onDaySelected: (selectedDay, focusedDay) {
+                      controller.onDateSelectedTutee(selectedDay);
+                      controller.setFocusedDay(focusedDay);
+                    },
+                    onPageChanged: (focusedDay) {
+                     // controller.setFocusedDay(focusedDay);
+                      controller.onMonthSelectedTutee(focusedDay);
+                      //   String monthAbbreviation = DateFormat('MMM').format(focusedDay);
+                      //  controller.fetchTutteAttendanceList(
+                      //   controller.selectedBatchIN.value!.batchId!, // Pass batchId
+                      //   '', // Adjust based on API requirements
+                      //   monthAbbreviation,
+                      // );
+      //                  controller.setFocusedDay(focusedDay);
+
+      //   // Fetch new data for the updated month
+      // String monthAbbreviation = DateFormat('MMM').format(focusedDay);
+      //   final selectedDate = DateFormat('dd-MM-yyyy').format(focusedDay);
+      //   controller.fetchTutteAttendanceList(controller.selectedBatchIN.value!.batchId!, '', monthAbbreviation);
+                    },
+                    calendarBuilders: 
+                   
+                    CalendarBuilders(
+                      defaultBuilder: (context, day, focusedDay) {
+                        // Check if the day is a miss punch date
+                        if (controller.missPunchDates
+                            .contains(DateTime(day.year, day.month, day.day))) {
+                          return Container(
+                            margin: const EdgeInsets.all(4.0),
+                            decoration: BoxDecoration(
+                              color: Colors.orange[400], // Background color for miss punch dates
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '${day.day}', // Display the day
+                              style: const TextStyle(
+                                  color: Colors.white), // Text style
+                            ),
+                          );
+                        }
                 
+                        if (controller.absentDates
+                            .contains(DateTime(day.year, day.month, day.day))) {
+                          return Container(
+                              margin: const EdgeInsets.all(4.0),
+                            decoration: BoxDecoration(
+                                 color: const Color(0xffAD0F60), // Background color for miss punch dates
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                                   alignment: Alignment.center,
+                            child: Center(child: Text('${day.day}', style: const TextStyle(
+                                  color: Colors.white),)),
+                          );
+                        }
+                
+                        // Highlight Present dates
+                        if (controller.presentDates
+                            .contains(DateTime(day.year, day.month, day.day))) {
+                          return Container(
+                              margin: const EdgeInsets.all(4.0),
+                            decoration: BoxDecoration(
+                               color: Colors.green, // Background color for miss punch dates
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                              alignment: Alignment.center,
+                            child: Center(child: Text('${day.day}', style: const TextStyle(
+                                  color: Colors.white),)),
+                          );
+                        }
+                
+                        if (controller.leaveDates
+                            .contains(DateTime(day.year, day.month, day.day))) {
+                          return Container(
+                              margin: const EdgeInsets.all(4.0),
+                            decoration: BoxDecoration(
+                               color:Colors.blue, // Background color for miss punch dates
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                              alignment: Alignment.center,
+                            child: Center(child: Text('${day.day}', style: const TextStyle(
+                                  color: Colors.white),)),
+                          );
+                        }
+                        if (controller.holidayDates
+                            .contains(DateTime(day.year, day.month, day.day))) {
+                          return Container(
+                              margin: const EdgeInsets.all(4.0),
+                            decoration: BoxDecoration(
+                               color:Colors.amber, // Background color for miss punch dates
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                              alignment: Alignment.center,
+                            child: Center(child: Text('${day.day}', style: const TextStyle(
+                                  color: Colors.white),)),
+                          );
+                        }
+                        // Return default appearance for other dates
+                        return null;
+                      },
+                    ),
+                  ),
+                  
+                ),
               );
             }),
             const SizedBox(

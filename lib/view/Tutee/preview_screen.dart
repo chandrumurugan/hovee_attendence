@@ -692,18 +692,17 @@ final CourseDetailController controller = Get.put(CourseDetailController());
           _showConfirmationDialog(context, data!.courseId!, studentId, data!.tutorId!);
         },
       )
-    : data.status == 'Approved' && type1=='Tutor'
-        ? SingleCustomButtom(
-            btnName: 'Enroll now',
-            isPadded: false,
-            onTap: data!.alreadyEnrollment == false
-                ? () {
-                    onPreviewCallbackEnroll!();
-                  }
-                : (){}, // Disable onTap
-           isDisabled: data.alreadyEnrollment== true,
-          )
-        : SizedBox.shrink(),
+    : data.status == 'Approved' && type1 == 'Tutor' && data.alreadyEnrollment == false
+    ? SingleCustomButtom(
+        btnName: 'Enroll now',
+        isPadded: false,
+        onTap: () {
+          onPreviewCallbackEnroll!();
+        },
+        isDisabled: false, // The button is always enabled since it's not displayed when already enrolled
+      )
+    : SizedBox.shrink(),
+
 
     );
     

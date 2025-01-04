@@ -148,8 +148,8 @@ class AttendancecourselistContainer extends StatelessWidget {
                             'Attendance can only be started 30 minutes before the start time.',backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
                       } else if (currentTime.isAfter(startTime)) {
                         // Late attendance
-                        Get.snackbar(
-                            'The class has already started. Proceeding with late attendance.',backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
+                        // Get.snackbar(
+                        //     'The class has already started. Proceeding with late attendance.',backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
 
                         // Navigate to PunchView
                         Get.to(() => PunchView(

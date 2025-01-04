@@ -210,7 +210,7 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                   ),
                   const SizedBox(width: 10),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.7,
+                    width: MediaQuery.of(context).size.width * 0.65,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

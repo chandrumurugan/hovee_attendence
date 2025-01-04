@@ -173,6 +173,7 @@ class StudentAttendanceController extends GetxController {
 
   void setFocusedDay(DateTime date) {
     focusedDay.value = date;
+    //update();
   }
 
   void fetchStudentsList(

@@ -69,6 +69,7 @@ class PunchController extends GetxController {
     targetLocation.value = LatLng(targetLat ?? 0.0, targetLong ?? 0.0);
     setInatlizeLocation();
     getCurrentLocation();
+     loadPunchState();
     // targetLocation.value!.latitude!=0.0;
     // targetLocation.value!.longitude!=0.0;
     print(batchname);
@@ -304,6 +305,7 @@ class PunchController extends GetxController {
         if (response != null && response.success == true) {
           // API call was successful, update state and show success message
           punchedIn.value = true;
+          await savePunchState(punchedIn.value);
           buttonLoader(false);
           showAnimatedDialog('Punched in successfully!',
               "assets/images/success_punching.png",context);
@@ -324,6 +326,7 @@ class PunchController extends GetxController {
         if (response != null && response.success == true) {
           // API call was successful, update state and show success message
           punchedIn.value = false;
+           await savePunchState(punchedIn.value);
           buttonLoader(false);
           showAnimatedDialog('Punched out successfully!',
               "assets/images/success_punching.png", context);
@@ -440,4 +443,15 @@ class PunchController extends GetxController {
   void updateDraggablePosition(Offset delta) {
     draggablePosition.value += delta;
   }
+
+  Future<void> loadPunchState() async {
+  final prefs = await SharedPreferences.getInstance();
+  final storedState = prefs.getBool('punchedIn') ?? false; // Default to false
+  punchedIn.value = storedState;
+}
+
+Future<void> savePunchState(bool state) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('punchedIn', state);
+}
 }
