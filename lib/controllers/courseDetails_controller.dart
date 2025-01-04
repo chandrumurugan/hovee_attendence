@@ -50,7 +50,7 @@ class CourseDetailController extends GetxController {
         'TutorId': TutorId,
       };
 
-      final getClassTuteeByIdModel? response =
+      final GetClassTuteeByIdModel? response =
           await WebService.getClassTuteeById(batchData);
 
       if (response != null && response.statusCode == 200) {

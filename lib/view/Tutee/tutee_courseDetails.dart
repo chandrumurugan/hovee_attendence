@@ -155,22 +155,19 @@ class CourseDetailScreen extends StatelessWidget {
                             color: Colors.black,
                           ),
                         ),
-                    SizedBox(
+                   SizedBox(
   width: MediaQuery.of(context).size.width * 0.7,
   child: Text(
-  (data!.workingDays != null
-      ? (data!.workingDays as List<dynamic>)
-          .map((e) => e.toString())
-          .join(', ')
-      : 'No working days available'),
-  style: GoogleFonts.nunito(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    color: Colors.grey,
+    data!.workingDays?.toString() ?? 'No working days available',
+    style: GoogleFonts.nunito(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: Colors.grey,
+    ),
   ),
 ),
 
-),
+
 
                       ],
                     )

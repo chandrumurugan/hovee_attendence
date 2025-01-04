@@ -180,8 +180,8 @@ class Tutorenquirlist extends StatelessWidget {
                                         tutorname:
                                             tutionCourseDetailsList.tutorName!,
                                         courseCodeName:
-                                            tutionCourseDetailsList.courseCode!,
-                                        fees: tutionCourseDetailsList.fees!,
+                                            tutionCourseDetailsList.courseCode??'',
+                                        fees: tutionCourseDetailsList.fees??'',
                                         tutorId:
                                             tutionCourseDetailsList.tutorId!,
                                         tuteeId:

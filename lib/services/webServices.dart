@@ -873,7 +873,7 @@ class WebService {
     }
   }
 
-  static Future<getClassTuteeByIdModel?> getClassTuteeById(
+  static Future<GetClassTuteeByIdModel?> getClassTuteeById(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
         "${baseUrl}tutee/getClassTuteeById"); // Replace with the actual endpoint
@@ -891,7 +891,7 @@ class WebService {
         },
       );
       if (response.statusCode == 200) {
-        return getClassTuteeByIdModel.fromJson(json.decode(response.body));
+        return GetClassTuteeByIdModel.fromJson(json.decode(response.body));
       } else {
         return null;
       }

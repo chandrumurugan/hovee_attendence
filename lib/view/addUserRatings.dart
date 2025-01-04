@@ -50,6 +50,7 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
   bool isLoading = false;
    int? ratingPayload;
   final TextEditingController _commentController = TextEditingController();
+  String categoryName = '';
 
   Future<void> updateSelectedSubcategories(int rating) async {
     var batchData = {
@@ -66,6 +67,7 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
       if (result != null && result.data != null) {
         // Parse and update the details list
         selectedSubcategories = result.data!.details ?? [];
+        categoryName = result.data!.status!;
       }
       // await Future.delayed(Duration(seconds: 1));
       // Mock data for selected subcategories
@@ -345,28 +347,47 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                     if (isLoading)
                       const Center(child: CircularProgressIndicator())
                     else if (selectedSubcategories.isNotEmpty)
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: selectedSubcategories.length,
-                        itemBuilder: (context, index) {
-                          final subcategory = selectedSubcategories[index];
-                          return Row(
-                            children: [
-                              Checkbox(
-                                value: selectedCheckboxes[subcategory] ?? false,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    selectedCheckboxes[subcategory] =
-                                        value ?? false;
-                                    updateFinalRating();
-                                  });
-                                },
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                           Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  categoryName,
+                                  style: GoogleFonts.nunito(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black),
+                                ),
                               ),
-                              Text(subcategory),
-                            ],
-                          );
-                        },
+                            ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: selectedSubcategories.length,
+                            itemBuilder: (context, index) {
+                              final subcategory = selectedSubcategories[index];
+                              return Row(
+                                children: [
+                                  Checkbox(
+                                    value: selectedCheckboxes[subcategory] ?? false,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        selectedCheckboxes[subcategory] =
+                                            value ?? false;
+                                        updateFinalRating();
+                                      });
+                                    },
+                                  ),
+                                  Text(subcategory),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
                       )
                     else
                       const Center(child: Text("No subcategories available")),

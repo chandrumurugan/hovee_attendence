@@ -48,7 +48,7 @@ class Data {
   String? batchTimingEnd;
   List<String>? batchDays;
   String? batchMaximumSlots;
-  Null? batchName;
+  String? batchName;
   String? batchStartDate;
   String? batchEndDate;
   String? batchMode;
