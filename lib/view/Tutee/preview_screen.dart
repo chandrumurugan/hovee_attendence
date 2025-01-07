@@ -53,13 +53,13 @@ final CourseDetailController controller = Get.put(CourseDetailController());
               bgImage:
                   'assets/bgImage/teacherModel-removebg-preview-removebg-preview.jpg',
               title: data!.subject!,
-              subtitle: tutorname,
+              subtitle: 'Tutor name: ${tutorname}',
               ratingCount: '4.8',
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Text(
-                'Tutee Preview Details',
+                'Tutee Details',
                 style: GoogleFonts.nunito(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,

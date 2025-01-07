@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
@@ -1274,6 +1276,25 @@ class AuthControllers extends GetxController
   }
 ];
 
+  RxBool isGLoading = false.obs;
+
+   List<String> scopes = <String>[
+  'email',
+  'https://www.googleapis.com/auth/contacts.readonly',
+];
+
+   final FirebaseAuth _auth = FirebaseAuth.instance;
+  late final GoogleSignIn _googleSignIn;
+
+  AuthControllers() {
+    _googleSignIn = GoogleSignIn(
+      scopes: <String>[
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    );
+  }
+
 
   bool validateFields(BuildContext context) {
     if (firstNameController.text.isEmpty) {
@@ -1648,6 +1669,45 @@ class AuthControllers extends GetxController
       roleType: RoleType,
     );
   }
+
+  Future<User?> signInWithGoogle() async {
+   
+      isGLoading = true.obs;
+   
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        print('Successfully signed in with Google: ${user.uid}');
+
+        String? token = await user.getIdToken();
+        print('Firebase User Token: $token');
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('signedin_with_google', true);
+
+        // Save the token securely
+        await prefs.setString('user_token', token!);
+
+        print("google token $token");
+         await prefs.setString('google_token', token);
+      }
+      return user;
+    } catch (e) {
+      print('Failed to sign in with Google: $e');
+    }
+  }
 }
 
 class UserDataq {
@@ -1672,4 +1732,6 @@ class UserDataq {
       roleType: map['RoleType'] ?? '',
     );
   }
+
+  
 }

@@ -257,6 +257,14 @@ class TutorHome extends StatelessWidget {
                                 return InkWell(
                                   onTap: () {
                                     // Navigate to different screens based on the title
+                                    if (item.name == 'Tutor') {
+                                      Get.to(() => TutorBatchList(
+                                            type: 'Tutor',
+                                            firstname: firstname,
+                                            lastname: lastname,
+                                            wowid: wowid,
+                                          ));
+                                    }
                                     if (item.name == 'Batches') {
                                       Get.to(() => TutorBatchList(
                                             type: 'Tutor',

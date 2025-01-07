@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,12 +12,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/splash_controllers.dart';
+import 'package:hovee_attendence/modals/googleSignInModel.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
+import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/utils/keyboardUtils.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:hovee_attendence/view/roleSelection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginSignUp extends StatelessWidget {
   const LoginSignUp({super.key});
 
@@ -86,12 +95,14 @@ class LoginSignUp extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                              width: MediaQuery.of(context).size.width * 0.35,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.35,
                                   color: Colors.grey.shade400,
                                   height: 2,
                                 ),
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.0),
                                   child: Text(
                                     'OR',
                                     style: TextStyle(
@@ -101,12 +112,21 @@ class LoginSignUp extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  width: MediaQuery.of(context).size.width * 0.35,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.35,
                                   color: Colors.grey.shade400,
                                   height: 2,
                                 ),
                               ],
                             ),
+                          ),
+                        ),
+                        Text(
+                          "Login with",
+                          style: GoogleFonts.nunito(
+                            fontSize: 12,
+                            color: Colors.black.withOpacity(0.5),
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         Visibility(
@@ -115,7 +135,54 @@ class LoginSignUp extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 15.0, vertical: 10),
                             child: InkWell(
-                              onTap: () {
+                              onTap: () async {
+                                var googleResponse =
+                                    await authController.signInWithGoogle();
+                                    print(googleResponse);
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                    var deviceType = Platform.isAndroid ? 'Android' : 'Ios';
+                                String? token =
+                                    prefs.getString('google_token') ?? '';
+                                    print(token);
+                                var response = await WebService.googleSignIn(
+                                    token,deviceType, context);
+                                if (response != null) {
+                                  authController.isGLoading = false.obs;
+                                   prefs.setString('Token', response.data!.token!);
+                                  showModalBottomSheet(
+                                      backgroundColor: Colors.transparent,
+                                      isDismissible: false,
+                                      enableDrag: false,
+                                      context: context,
+                                      builder: (context) {
+                                        return CustomDialogBox(
+                                            title1:response is GoogleSignInModel ? "Registered" :'Logged In',
+                                            title2: 'successfully !',
+                                            subtitle: 'subtitle',
+                                            btnName: 'Ok',
+                                            onTap: () {
+                                              // if(response.data.userdetails.)
+                                              Navigator.pop(context);
+                                              if (response.data!.accountSetup! && response.data!.accountVerified!) {
+                                                          Get.offAll(() =>
+                                                              DashboardScreen(rolename: '',));
+                                                      
+                          
+                                                      } else {
+                                                        Get.offAll(() =>
+                                                            const RoleSelection(isFromParentOtp: false,));
+                                                      }
+                                            },
+                                            icon: Icon(
+                                              Icons.check,
+                                              color: Colors.white,
+                                            ),
+                                            color: Colors.green,
+                                            singleBtn: true);
+                                      });
+                                }
+                                authController.isGLoading = false.obs;
                               },
                               child: Image.asset(
                                 'assets/appConstantImg/loginSignupI/google_2504739.png',
@@ -138,8 +205,8 @@ class LoginSignUp extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.1),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Card(
@@ -149,7 +216,8 @@ class LoginSignUp extends StatelessWidget {
                   color: Colors.white,
                   child: Obx(() {
                     return Container(
-                      height: authController.currentTabIndex.value == 0 || authController.tabController.index == 0
+                      height: authController.currentTabIndex.value == 0 ||
+                              authController.tabController.index == 0
                           ? 265
                           : MediaQuery.of(context).size.height * 0.7,
                       width: MediaQuery.sizeOf(context).width,
@@ -167,14 +235,13 @@ class LoginSignUp extends StatelessWidget {
                             dragStartBehavior: DragStartBehavior.down,
                             controller: authController.tabController,
                             onTap: (int index) {
-                              if(index == 1){
-                                 authController.tabController.animateTo(1); 
+                              if (index == 1) {
+                                authController.tabController.animateTo(1);
                               }
-                             
+
                               authController.currentTabIndex.value = index;
                               authController.isLoading.value = false;
                               KeyboardUtil.hideKeyboard(context);
-                              
                             },
                             tabs: const [
                               Tab(
@@ -203,7 +270,8 @@ class LoginSignUp extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 12),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -232,51 +300,123 @@ class LoginSignUp extends StatelessWidget {
                                             ),
                                           ],
                                           hintText: 'Enter here...',
-                                          keyboardType: TextInputType.emailAddress,
+                                          keyboardType:
+                                              TextInputType.emailAddress,
                                           controller:
                                               authController.logInController,
                                         ),
                                         // const SizedBox(
                                         //   height: 20,
                                         // ),
-                                            Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            color: Colors.white,
-                            width: 30,
-                            child: Checkbox(
-                              value: authController.isChecked.value,
-                              checkColor: Colors.white,
-                              activeColor: AppConstants.secondaryColor,
-                              onChanged: (bool? value) {
-                                
-                                  authController.isChecked.value = value!;
-                                  if (authController.isChecked.value) {
-                                   authController.saveForLaterUse();
-                                  } else {
-                                    print("getting true");
-                                    authController.removeLaterUse();
-                                  }
-                               
-                              },
-                            ),
-                          ),
-                          SizedBox(width: 0),
-                          Text(
-                            "Remember me",
-                            style: GoogleFonts.nunito(
-                              fontSize: 12.0,
-                              color: Colors.black.withOpacity(0.6),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 14.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                color: Colors.white,
+                                                width: 30,
+                                                child: Checkbox(
+                                                  value: authController
+                                                      .isChecked.value,
+                                                  checkColor: Colors.white,
+                                                  activeColor: AppConstants
+                                                      .secondaryColor,
+                                                  onChanged: (bool? value) {
+                                                    authController.isChecked
+                                                        .value = value!;
+                                                    if (authController
+                                                        .isChecked.value) {
+                                                      authController
+                                                          .saveForLaterUse();
+                                                    } else {
+                                                      print("getting true");
+                                                      authController
+                                                          .removeLaterUse();
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                              const SizedBox(width: 0),
+                                              Text(
+                                                "Remember me",
+                                                style: GoogleFonts.nunito(
+                                                  fontSize: 12.0,
+                                                  color: Colors.black
+                                                      .withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        //                     const Padding(
+                                        //                       padding: EdgeInsets.symmetric(
+                                        //                           horizontal: 20),
+                                        //                       child: Divider(),
+                                        //                     ),
+                                        //                     const SizedBox(
+                                        //                       height: 10,
+                                        //                     ),
+                                        //                       Text(
+                                        //   "Login with",
+                                        //   style: GoogleFonts.nunito(
+                                        //     fontSize: 12,
+                                        //     color: Colors.black.withOpacity(0.5),
+                                        //     fontWeight: FontWeight.w500,
+                                        //   ),
+                                        // ),
+                                        // SizedBox(
+                                        //   height: 10,
+                                        // ),
+                                        // GestureDetector(
+                                        //   onTap: () async {
+                                        // var googleResponse = await _signInWithGoogle();
+                                        // var response = await WebService.googleSignin(
+                                        //     displayName: googleResponse!.displayName!,
+                                        //     email: googleResponse.email!,
+                                        //     photoUrl: googleResponse.photoURL!);
+                                        // if (response != null) {
+                                        //    authController. isGLoading = false.obs;
+                                        //   // showModalBottomSheet(
+                                        //   //     backgroundColor: Colors.transparent,
+                                        //   //     isDismissible: false,
+                                        //   //     enableDrag: false,
+                                        //   //     context: context,
+                                        //   //     builder: (context) {
+                                        //   //       return CustomDialogBox(
+                                        //   //           title1:response is GoogleUserModal ? "Registered" :'Logged In',
+                                        //   //           title2: 'successfully !',
+                                        //   //           subtitle: 'subtitle',
+                                        //   //           btnName: 'Ok',
+                                        //   //           onTap: () {
+                                        //   //             // if(response.data.userdetails.)
+                                        //   //             Navigator.pop(context);
+
+                                        //   //           },
+                                        //   //           icon: Icon(
+                                        //   //             Icons.check,
+                                        //   //             color: Colors.white,
+                                        //   //           ),
+                                        //   //           color: Colors.green,
+                                        //   //           singleBtn: true);
+                                        //   //     });
+                                        // }
+                                        //  authController. isGLoading = false.obs;
+                                        //   },
+                                        //   child: const SizedBox(
+                                        //     height: 36,
+                                        //     child: Center(
+                                        //       child: Image(
+                                        //         image: AssetImage("assets/icons/google_icon.png"),
+                                        //       ),
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             InkWell(
                                               onTap: () async {
@@ -292,8 +432,9 @@ class LoginSignUp extends StatelessWidget {
                                                   horizontal: 40,
                                                 ),
                                                 decoration: const BoxDecoration(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(8)),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(8)),
                                                   gradient: LinearGradient(
                                                     colors: [
                                                       Color(0xFFC13584),
@@ -322,27 +463,28 @@ class LoginSignUp extends StatelessWidget {
                                                       ),
                                               ),
                                             ),
-
-                                             InkWell(
-                                          onTap: (){
-                                            Get.to(()=>GuestHomeScreen());
-                                          },
-                                           child: Text(
-                                                                       "Maybe later",
-                                                                       style: GoogleFonts.nunito(
-                                                                         fontSize: 15.0,
-                                                                         color: Colors.blue,
-                                                                       ),
-                                                                     ),
-                                         ),
+                                            InkWell(
+                                              onTap: () {
+                                                Get.to(() =>
+                                                    const GuestHomeScreen());
+                                              },
+                                              child: Text(
+                                                "Maybe later",
+                                                style: GoogleFonts.nunito(
+                                                  fontSize: 15.0,
+                                                  color: Colors.blue,
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
-                                        SizedBox(height: 10,),
-                                        
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
                                       ],
                                     ),
                                   ),
-      
+
                                   //signup component
                                   Container(
                                     padding: const EdgeInsets.symmetric(
@@ -372,8 +514,8 @@ class LoginSignUp extends StatelessWidget {
                                                 style: GoogleFonts.nunito(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600,
-                                                  color:
-                                                      Colors.red.withOpacity(0.6),
+                                                  color: Colors.red
+                                                      .withOpacity(0.6),
                                                 ),
                                               ),
                                             ],
@@ -452,8 +594,8 @@ class LoginSignUp extends StatelessWidget {
                                                 style: GoogleFonts.nunito(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600,
-                                                  color:
-                                                      Colors.red.withOpacity(0.6),
+                                                  color: Colors.red
+                                                      .withOpacity(0.6),
                                                 ),
                                               ),
                                             ],
@@ -465,7 +607,8 @@ class LoginSignUp extends StatelessWidget {
                                               suffix: false,
                                               readonly: false,
                                               inputFormatter: [
-                                                FilteringTextInputFormatter.allow(
+                                                FilteringTextInputFormatter
+                                                    .allow(
                                                   RegExp(
                                                     r"[a-zA-Z0-9@&_,-\/.']",
                                                   ),
@@ -474,8 +617,8 @@ class LoginSignUp extends StatelessWidget {
                                               hintText: 'Enter here...',
                                               keyboardType:
                                                   TextInputType.emailAddress,
-                                              controller:
-                                                  authController.emailController),
+                                              controller: authController
+                                                  .emailController),
                                           const SizedBox(
                                             height: 5,
                                           ),
@@ -494,8 +637,8 @@ class LoginSignUp extends StatelessWidget {
                                                 style: GoogleFonts.nunito(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600,
-                                                  color:
-                                                      Colors.red.withOpacity(0.6),
+                                                  color: Colors.red
+                                                      .withOpacity(0.6),
                                                 ),
                                               ),
                                             ],
@@ -537,8 +680,8 @@ class LoginSignUp extends StatelessWidget {
                                                 style: GoogleFonts.nunito(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600,
-                                                  color:
-                                                      Colors.red.withOpacity(0.6),
+                                                  color: Colors.red
+                                                      .withOpacity(0.6),
                                                 ),
                                               ),
                                             ],
@@ -548,7 +691,8 @@ class LoginSignUp extends StatelessWidget {
                                           ),
                                           SizedBox(
                                             child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Stack(
                                                   alignment: Alignment.center,
@@ -559,95 +703,104 @@ class LoginSignUp extends StatelessWidget {
                                                       height:
                                                           46, // Make the height same as the parent SizedBox
                                                       decoration: BoxDecoration(
-                                                        color: Color(0xffD9D9D9)
+                                                        color: const Color(
+                                                                0xffD9D9D9)
                                                             .withOpacity(0.4),
-                                                        borderRadius: BorderRadius.circular(12),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
                                                       ),
                                                     ),
                                                     CountryCodePicker(
                                                       onChanged: print,
-                                                      countryList:authController. country_codes,
+                                                      countryList:
+                                                          authController
+                                                              .country_codes,
                                                       initialSelection:
                                                           'IN', // Changed to 'IN' for India
                                                       favorite: [
                                                         '+91'
                                                       ], // Added '+91' for India as favorite
                                                       showCountryOnly: false,
-                                                      showOnlyCountryWhenClosed: false,
+                                                      showOnlyCountryWhenClosed:
+                                                          false,
                                                       alignLeft: false,
                                                       showFlag: false,
-                                                      padding: EdgeInsets.all(
+                                                      padding: const EdgeInsets
+                                                          .all(
                                                           0), // Add padding if needed
-                                                      textStyle: TextStyle(
+                                                      textStyle: const TextStyle(
                                                           color: Colors
                                                               .black), // Adjust text style if needed
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 4,
                                                 ),
                                                 Expanded(
                                                   // Use Expanded to fill the remaining space
                                                   child: InputTextField(
-                                                                  suffix: false,
-                                                                  readonly: false,
-                                                                  hintText: 'Enter here...',
-                                                                  keyboardType: TextInputType.number,
-                                                                  inputFormatter: [
-                                                                    FilteringTextInputFormatter.allow(
-                                                                      RegExp(r"[0-9]"),
-                                                                    ),
-                                                                    LengthLimitingTextInputFormatter(
-                                                                        10), // Restrict to 10 digits
-                                                                  ],
-                                                                  controller:
-                                                                      authController.phController,
-                                                                ),
+                                                    suffix: false,
+                                                    readonly: false,
+                                                    hintText: 'Enter here...',
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    inputFormatter: [
+                                                      FilteringTextInputFormatter
+                                                          .allow(
+                                                        RegExp(r"[0-9]"),
+                                                      ),
+                                                      LengthLimitingTextInputFormatter(
+                                                          10), // Restrict to 10 digits
+                                                    ],
+                                                    controller: authController
+                                                        .phController,
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                           ),
-                                    //       Row(
-                                    //         children: [
-                                    //           CountryCodePicker(
-                                    //   onChanged: print,
-                                    //   countryList:authController. country_codes,
-                                    //   initialSelection:
-                                    //       'IN', // Changed to 'IN' for India
-                                    //   favorite: [
-                                    //     '+91'
-                                    //   ], // Added '+91' for India as favorite
-                                    //   showCountryOnly: false,
-                                    //   showOnlyCountryWhenClosed: false,
-                                    //   alignLeft: false,
-                                    //   showFlag: false,
-                                    //   padding: EdgeInsets.all(
-                                    //       0), // Add padding if needed
-                                    //   textStyle: TextStyle(
-                                    //       color: Colors
-                                    //           .black), // Adjust text style if needed
-                                    // ),
-                                    //           Expanded(
-                                    //             child: InputTextField(
-                                    //               suffix: false,
-                                    //               readonly: false,
-                                    //               hintText: 'Enter here...',
-                                    //               keyboardType: TextInputType.number,
-                                    //               inputFormatter: [
-                                    //                 FilteringTextInputFormatter.allow(
-                                    //                   RegExp(r"[0-9]"),
-                                    //                 ),
-                                    //                 LengthLimitingTextInputFormatter(
-                                    //                     10), // Restrict to 10 digits
-                                    //               ],
-                                    //               controller:
-                                    //                   authController.phController,
-                                    //             ),
-                                    //           ),
-                                    //         ],
-                                    //       ),
-                                         
+                                          //       Row(
+                                          //         children: [
+                                          //           CountryCodePicker(
+                                          //   onChanged: print,
+                                          //   countryList:authController. country_codes,
+                                          //   initialSelection:
+                                          //       'IN', // Changed to 'IN' for India
+                                          //   favorite: [
+                                          //     '+91'
+                                          //   ], // Added '+91' for India as favorite
+                                          //   showCountryOnly: false,
+                                          //   showOnlyCountryWhenClosed: false,
+                                          //   alignLeft: false,
+                                          //   showFlag: false,
+                                          //   padding: EdgeInsets.all(
+                                          //       0), // Add padding if needed
+                                          //   textStyle: TextStyle(
+                                          //       color: Colors
+                                          //           .black), // Adjust text style if needed
+                                          // ),
+                                          //           Expanded(
+                                          //             child: InputTextField(
+                                          //               suffix: false,
+                                          //               readonly: false,
+                                          //               hintText: 'Enter here...',
+                                          //               keyboardType: TextInputType.number,
+                                          //               inputFormatter: [
+                                          //                 FilteringTextInputFormatter.allow(
+                                          //                   RegExp(r"[0-9]"),
+                                          //                 ),
+                                          //                 LengthLimitingTextInputFormatter(
+                                          //                     10), // Restrict to 10 digits
+                                          //               ],
+                                          //               controller:
+                                          //                   authController.phController,
+                                          //             ),
+                                          //           ),
+                                          //         ],
+                                          //       ),
+
                                           const SizedBox(
                                             height: 5,
                                           ),
@@ -666,8 +819,8 @@ class LoginSignUp extends StatelessWidget {
                                                 style: GoogleFonts.nunito(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600,
-                                                  color:
-                                                      Colors.red.withOpacity(0.6),
+                                                  color: Colors.red
+                                                      .withOpacity(0.6),
                                                 ),
                                               ),
                                             ],
@@ -685,11 +838,12 @@ class LoginSignUp extends StatelessWidget {
                                                   r"[0-9]",
                                                 ),
                                               ),
-                                              LengthLimitingTextInputFormatter(10),
+                                              LengthLimitingTextInputFormatter(
+                                                  10),
                                             ],
                                             keyboardType: TextInputType.number,
-                                            controller:
-                                                authController.pincodeController,
+                                            controller: authController
+                                                .pincodeController,
                                           ),
                                           const SizedBox(
                                             height: 5,
@@ -699,14 +853,19 @@ class LoginSignUp extends StatelessWidget {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Expanded(
-                                                child: CheckboxListTile.adaptive(
+                                                child:
+                                                    CheckboxListTile.adaptive(
                                                   value: authController
                                                       .acceptedTerms.value,
-                                                   contentPadding: const EdgeInsets.symmetric(horizontal: 0), 
-                                                  activeColor: AppConstants.secondaryColor,
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 0),
+                                                  activeColor: AppConstants
+                                                      .secondaryColor,
                                                   onChanged: (bool? newValue) {
-                                                    authController
-                                                            .acceptedTerms.value =
+                                                    authController.acceptedTerms
+                                                            .value =
                                                         newValue ?? false;
                                                   },
                                                   controlAffinity:
@@ -724,11 +883,11 @@ class LoginSignUp extends StatelessWidget {
                                                       fontSize: 13,
                                                       color: Colors.black
                                                           .withOpacity(0.5),
-                                                      fontWeight: FontWeight.w500,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
                                                   ),
                                                 ),
-                                                
                                               ),
                                             ],
                                           ),
@@ -804,10 +963,11 @@ class LoginSignUp extends StatelessWidget {
                                                     : Text(
                                                         "Tap to select the ID proof",
                                                         style: TextStyle(
-                                                            color:
-                                                                Colors.grey[400],
+                                                            color: Colors
+                                                                .grey[400],
                                                             fontWeight:
-                                                                FontWeight.w400)),
+                                                                FontWeight
+                                                                    .w400)),
                                               ),
                                             ),
                                           ),
@@ -829,7 +989,8 @@ class LoginSignUp extends StatelessWidget {
                                                   ),
                                                   children: [
                                                     TextSpan(
-                                                      text: 'Terms & Conditions',
+                                                      text:
+                                                          'Terms & Conditions',
                                                       style: GoogleFonts.nunito(
                                                         fontSize: 12,
                                                         color: Colors.blue,
@@ -856,7 +1017,8 @@ class LoginSignUp extends StatelessWidget {
                                                   MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Row(
-                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: [
                                                     Text(
                                                       'Get updates on ',
@@ -869,7 +1031,8 @@ class LoginSignUp extends StatelessWidget {
                                                       ),
                                                     ),
                                                     const Icon(
-                                                        FontAwesomeIcons.whatsapp,
+                                                        FontAwesomeIcons
+                                                            .whatsapp,
                                                         color: Colors.green),
                                                     Text(
                                                       ' WhatsApp',
@@ -883,7 +1046,7 @@ class LoginSignUp extends StatelessWidget {
                                                     ),
                                                   ],
                                                 ),
-      
+
                                                 // Add some spacing between text and switch
                                                 SizedBox(
                                                   height: 25,
@@ -895,7 +1058,8 @@ class LoginSignUp extends StatelessWidget {
                                                       //     AppConstants
                                                       //         .secondaryColor,
                                                       value: authController
-                                                          .isTickedWhatsApp.value,
+                                                          .isTickedWhatsApp
+                                                          .value,
                                                       onChanged: (value) {
                                                         authController
                                                                 .isTickedWhatsApp
@@ -917,7 +1081,8 @@ class LoginSignUp extends StatelessWidget {
                                             },
                                             child: Container(
                                               height: 48,
-                                              padding: const EdgeInsets.symmetric(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
                                                 horizontal: 40,
                                                 vertical: 12,
                                               ),
@@ -934,23 +1099,23 @@ class LoginSignUp extends StatelessWidget {
                                                   end: Alignment.bottomCenter,
                                                 ),
                                               ),
-                                              child:
-                                                  authController.isLoading.value
-                                                      ? const Center(
-                                                          child:
-                                                              CircularProgressIndicator(),
-                                                        )
-                                                      : const Center(
-                                                          child: Text(
-                                                            'Submit',
-                                                            style: TextStyle(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight.w600,
-                                                              color: Colors.white,
-                                                            ),
-                                                          ),
+                                              child: authController
+                                                      .isLoading.value
+                                                  ? const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    )
+                                                  : const Center(
+                                                      child: Text(
+                                                        'Submit',
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.white,
                                                         ),
+                                                      ),
+                                                    ),
                                             ),
                                           ),
                                           const SizedBox(

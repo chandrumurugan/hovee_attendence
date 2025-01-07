@@ -390,6 +390,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                                 )
                                               : TextButton(
                                                   onPressed: () {
+                                                    authController.otpController.clear();
                                                     authController
                                                         .resendOtp(context);
                                                   },

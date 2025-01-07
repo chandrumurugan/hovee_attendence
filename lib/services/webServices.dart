@@ -45,6 +45,7 @@ import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/modals/getbatchlocation.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
+import 'package:hovee_attendence/modals/googleSignInModel.dart';
 import 'package:hovee_attendence/modals/guestHome_modal.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
@@ -2201,6 +2202,39 @@ class WebService {
       // print(e);
       // throw Exception("$e");
       Logger().e(e);
+      return null;
+    }
+  }
+
+  static Future<GoogleSignInModel?> googleSignIn(
+      String idToken, String type, BuildContext context) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var headers = {'Content-Type': 'application/json'};
+      var data = {
+        "idToken": idToken,
+        "type": type
+      };
+      Logger().i(data);
+
+      var url = Uri.parse("${baseUrl}user/googleSignIn");
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
+      Logger().i(response.body);
+
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return GoogleSignInModel.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
+
+        return null;
+      }
+    } catch (e) {
       return null;
     }
   }

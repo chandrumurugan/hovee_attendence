@@ -195,7 +195,7 @@ class AccountSetup extends StatelessWidget {
                                 text: 'Address info',
                               ),
                               // Show this tab only if selectedRole is not "Parent"
-                              if (selectedRole != 'Parent')
+                              if (selectedRole != 'Parent' && selectedRoleTypeName!= 'Institute' && selectedRole == 'Tutor')
                                 Tab(
                                   text: selectedRole == 'Tutee'
                                       ? 'Education info'
@@ -1107,7 +1107,7 @@ class AccountSetup extends StatelessWidget {
                                                   : Center(
                                                       child: Text(
                                                         selectedRole !=
-                                                                'Parent'
+                                                                'Parent' &&  selectedRoleTypeName!= 'Institute' && selectedRole == 'Tutor'
                                                             ? 'Next'
                                                             : 'Submit',
                                                         style:
@@ -1129,12 +1129,15 @@ class AccountSetup extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                selectedRoleTypeName == 'Institute' &&
-                                        selectedRoleTypeName == ""
-                                    ? Container()
-                                    : selectedRoleTypeName != 'Institute' &&
-                                            selectedRoleTypeName != ""
-                                        ? Container(
+                                // selectedRoleTypeName == 'Institute' &&
+                                //         selectedRoleTypeName == ""
+                                //     ? Container()
+                                //     :
+                                    // selectedRoleTypeName != 'Institute' &&
+                                    //         selectedRoleTypeName != ""
+                                    //     ? 
+                                      selectedRoleTypeName!= 'Institute' && selectedRole == 'Tutor'?
+                                        Container(
                                             padding:
                                                 const EdgeInsets.symmetric(
                                                     horizontal: 12),

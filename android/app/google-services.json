@@ -12,7 +12,20 @@
           "package_name": "com.example.hovee_attendence"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "751210563328-uaijaavvbpqpls5gpecubotijv05gvfh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hovee_attendence",
+            "certificate_hash": "8bca2af2ca7ee5668919edc022ed97a786bee9c5"
+          }
+        },
+        {
+          "client_id": "751210563328-blg8n0qcdl7a2nphnq4ui0jsofb70tr4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDf_PiBWr8U_fpfODRHQYog5v3GA9M5YY0"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751210563328-blg8n0qcdl7a2nphnq4ui0jsofb70tr4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "751210563328-g5tai08dr1nefkr0726tklou1jfaiodd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hoveeAtt.organization"
+              }
+            }
+          ]
         }
       }
     }

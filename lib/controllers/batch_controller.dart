@@ -105,7 +105,7 @@ var batchDaysController = "".obs;
     initialLoad.value=true;
     // Prepare the request payload
     final requestPayload = {
-      'searchTerm': searchTerm,
+      'searchKey': searchTerm,
     };
 
     // Fetch batch list from the API

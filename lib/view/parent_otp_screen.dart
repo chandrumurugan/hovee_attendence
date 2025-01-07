@@ -228,149 +228,120 @@ class ParentOtpScreen extends StatelessWidget {
                                                   subtitle: 'subtitle',
                                                   btnName: 'Ok',
                                                   onTap: () {
-                                                    if (value.parentAccount!) {
-                                                      if (value.parentDetail!
-                                                          .parentToStudentInvite!) {
-                                                        // Display the new dialog box
-                                                        Get.back(); // Close the bottom sheet
-                                                        Get.dialog(
-                                                          AlertDialog(
-                                                            title: const Text(
-                                                                'Parent Preview'),
-                                                            content: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                _buildRow(
-                                                                  'Parent name',
-                                                                  '${value.userDetail!.firstName} ${value.userDetail!.lastName}',
-                                                                ),
-                                                                _buildRow(
-                                                                  'ID',
-                                                                  "${value.userDetail!.wowId}",
-                                                                ),
-                                                                _buildRow(
-                                                                  'Email',
-                                                                  value
-                                                                      .userDetail!
-                                                                      .email,
-                                                                ),
-                                                                _buildRow(
-                                                                  'Phone number',
-                                                                  '${value.userDetail!.phoneNumber}',
-                                                                ),
-                                                                _buildRow(
-                                                                  'DOB',
-                                                                  value
-                                                                      .userDetail!
-                                                                      .dob,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            actions: [
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  parentController.updateParentStatus(
-                                                                      context,
-                                                                      value
-                                                                          .parentDetail!
-                                                                          .sId!,
-                                                                      value
-                                                                          .userDetail!
-                                                                          .sId!);
-                                                                  Get.back(); // Close the dialog
-                                                                },
-                                                                child: const Text(
-                                                                    'Accept'),
-                                                              ),
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  print(
-                                                                      "object");
-                                                                  Get.off(() =>
-                                                                      const GuestHomeScreen());
-                                                                },
-                                                                child: const Text(
-                                                                    'Reject'),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        );
-                                                      } else {
-                                                        // Display the existing Tutee Preview dialog box
-                                                        Get.dialog(
-                                                          AlertDialog(
-                                                            title: const Text(
-                                                                'Tutee Preview'),
-                                                            content: Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                _buildRow(
-                                                                  'Tutee name',
-                                                                  '${value.userDetail!.firstName} ${value.userDetail!.lastName}',
-                                                                ),
-                                                                _buildRow(
-                                                                  'ID',
-                                                                  "${value.userDetail!.wowId}",
-                                                                ),
-                                                                _buildRow(
-                                                                  'Email',
-                                                                  value
-                                                                      .userDetail!
-                                                                      .email,
-                                                                ),
-                                                                _buildRow(
-                                                                  'Phone number',
-                                                                  '${value.userDetail!.phoneNumber}',
-                                                                ),
-                                                                _buildRow(
-                                                                  'DOB',
-                                                                  value
-                                                                      .userDetail!
-                                                                      .dob,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            actions: [
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  parentController.updateEnrollment(
-                                                                      context,
-                                                                      value
-                                                                          .parentDetail!
-                                                                          .sId!,
-                                                                      value
-                                                                          .userDetail!
-                                                                          .sId!);
-                                                                  Get.back(); // Close the dialog
-                                                                },
-                                                                child: const Text(
-                                                                    'Accept'),
-                                                              ),
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  Get.off(() =>
-                                                                      DashboardScreen(
-                                                                          rolename:
-                                                                              'Parent'));
-                                                                  Get.back(); // Close the dialog
-                                                                },
-                                                                child: const Text(
-                                                                    'Reject'),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        );
-                                                      }
-                                                    } else {
+                                                   if (value.parentAccount!) {
+  if (value.parentDetail!.parentToStudentInvite!) {
+    // Display the Parent Preview dialog box (instead of Tutee Preview)
+    Get.back(); // Close the bottom sheet
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Parent Preview'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildRow(
+              'Parent name',
+              '${value.userDetail!.firstName} ${value.userDetail!.lastName}',
+            ),
+            _buildRow(
+              'ID',
+              "${value.userDetail!.wowId}",
+            ),
+            _buildRow(
+              'Email',
+              value.userDetail!.email,
+            ),
+            _buildRow(
+              'Phone number',
+              '${value.userDetail!.phoneNumber}',
+            ),
+            _buildRow(
+              'DOB',
+              value.userDetail!.dob,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              parentController.updateParentStatus(
+                context,
+                value.parentDetail!.sId!,
+                value.userDetail!.sId!,
+              );
+              Get.back(); // Close the dialog
+            },
+            child: const Text('Accept'),
+          ),
+          TextButton(
+            onPressed: () {
+              print("object");
+              Get.off(() => const GuestHomeScreen());
+            },
+            child: const Text('Reject'),
+          ),
+        ],
+      ),
+    );
+  } else {
+    // Display the Tutee Preview dialog box
+    Get.back(); // Close the bottom sheet
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Tutee Preview'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildRow(
+              'Tutee name',
+              '${value.userDetail!.firstName} ${value.userDetail!.lastName}',
+            ),
+            _buildRow(
+              'ID',
+              "${value.userDetail!.wowId}",
+            ),
+            _buildRow(
+              'Email',
+              value.userDetail!.email,
+            ),
+            _buildRow(
+              'Phone number',
+              '${value.userDetail!.phoneNumber}',
+            ),
+            _buildRow(
+              'DOB',
+              value.userDetail!.dob,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              parentController.updateEnrollment(
+                context,
+                value.parentDetail!.sId!,
+                value.userDetail!.sId!,
+              );
+              Get.back(); // Close the dialog
+            },
+            child: const Text('Accept'),
+          ),
+          TextButton(
+            onPressed: () {
+              print("object");
+              Get.off(() => const GuestHomeScreen());
+            },
+            child: const Text('Reject'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+ else {
                                                       Get.offAll(() =>
                                                           const RoleSelection(
-                                                            isFromParentOtp:
-                                                                true,
-                                                          ));
+                                                              isFromParentOtp:
+                                                                  true));
                                                     }
                                                   },
                                                   icon: const Icon(

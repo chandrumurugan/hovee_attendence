@@ -427,7 +427,7 @@ class StudentAttendanceList extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
-                'Student list',
+                'Tutee list',
                 style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,

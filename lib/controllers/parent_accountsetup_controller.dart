@@ -16,6 +16,7 @@ import 'package:hovee_attendence/services/liveLocationService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
+import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -394,8 +395,10 @@ class ParentAccountSetupController extends GetxController
       ),
       TextButton(
         onPressed: () {
-          Get.off(() => DashboardScreen(rolename: 'Parent'));
-          Get.back(); // Close the dialog
+         print(
+                                                                      "object");
+                                                                  Get.off(() =>
+                                                                      const GuestHomeScreen());
         },
         child: Text('Reject'),
       ),

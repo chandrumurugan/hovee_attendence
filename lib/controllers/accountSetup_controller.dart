@@ -611,7 +611,10 @@ class AccountSetupController extends GetxController
       };
       if (selectedRole == 'Parent') {
         submitAccountSetup(roleId, roleTypeId, selectedRole, context);
-      } else {
+      }else if(selectedRoleTypeName== 'Institute' && selectedRole == 'Tutor'){
+        submitAccountSetup(roleId, roleTypeId, selectedRole, context);
+      }
+       else {
         selectedRoleTypeName == 'I Run an Institute'
             ? submitAccountSetup(roleId, roleTypeId, selectedRole, context)
             : Container();

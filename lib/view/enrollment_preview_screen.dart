@@ -45,7 +45,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
               bgImage:
                   'assets/bgImage/teacherModel-removebg-preview-removebg-preview.jpg',
               title: data!.courseId!.subject!,
-              subtitle: data!.tutorName ?? '',
+              subtitle: 'Tutor name: ${data!.tutorId!.firstName} ${data!.tutorId!.lastName}',
               ratingCount: '4.8',
             ),
             Padding(

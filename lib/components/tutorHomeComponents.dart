@@ -406,7 +406,7 @@ class ChartApp1 extends StatelessWidget {
                           Container(
                               height: 18,
                             width: 18,
-                            color: Colors.orange,
+                            color: Color(0xffAD0F60),
                           ),
                           SizedBox(
                             width: 10,
@@ -428,7 +428,7 @@ class ChartApp1 extends StatelessWidget {
                           Container(
                              height: 18,
                             width: 18,
-                            color: Colors.purple,
+                            color: Colors.green,
                           ),
                           SizedBox(
                             width: 10,
@@ -450,7 +450,7 @@ class ChartApp1 extends StatelessWidget {
                           Container(
                               height: 18,
                             width: 18,
-                            color: Color(0xff014EA9),
+                            color: Colors.blue,
                           ),
                           SizedBox(
                             width: 10,
@@ -472,7 +472,7 @@ class ChartApp1 extends StatelessWidget {
                           Container(
                             height: 18,
                             width: 18,
-                            color: Colors.orange[400],
+                            color: Colors.orange[500],
                           ),
                           SizedBox(
                             width: 10,

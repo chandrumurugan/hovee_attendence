@@ -408,9 +408,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           fromBottomNav: true,
           type: 'Tutor',
           onDashBoardBack: () => _navigateBack(),
-        )
-      else
-        const Center(child: Text("Feature under development")),
+        ),
+      // else
+      //   const Center(child: Text("Feature under development")),
       const Center(child: Text("Feature under development")),
     ];
   }
@@ -430,6 +430,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _buildBottomNavItem(label: 'Home', iconPath: 'assets/bottomBar/Group (4).png'),
       _buildBottomNavItem(label: 'Enquiries', iconPath: 'assets/bottomBar/user (1) 1.png'),
       _buildBottomNavItem(label: 'Enrollments', iconPath: 'assets/bottomBar/online-learning 1.png'),
+       if (widget.rolename == 'Tutor')
       _buildBottomNavItem(label: 'Rating', iconPath: 'assets/bottomBar/Vector (4).png'),
       _buildBottomNavItem(label: 'Plan', iconPath: 'assets/bottomBar/Vector (2).png'),
     ];

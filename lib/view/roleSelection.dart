@@ -359,10 +359,17 @@ class _RoleSelectionState extends State<RoleSelection> {
 
                                   if (selectedRole == 'Tutor' &&
                                       selectedRoleTypeName == 'Institute') {
-                                    SnackBarUtils.showSuccessSnackBar(
-                                      context,
-                                      'Feature under development',
-                                    );
+                                    Get.to(
+                                    () => AccountSetup(
+                                      roleId: selectedRoleId!,
+                                      roleTypeId: selectedRoleTypeId ?? '',
+                                      selectedRoleTypeName:
+                                          selectedRoleTypeName ?? '',
+                                      selectedRole: selectedRole ?? '',
+                                      parentId: widget.parentId ?? '',
+                                    ),
+                                    arguments:  widget.parentId?? null,
+                                  );
                                     return; // Exit early if tutor is selected but no role type is selected
                                   }
                                   // Handle Parent role navigation based on isFromParentOtp
