@@ -51,6 +51,7 @@ class SplashController extends GetxController {
   final String parentId;
   final String phoneNumber;
   final RxBool showSecondImage = false.obs;
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   //constreuct
   SplashController({required this.parentId, required this.phoneNumber});
@@ -60,10 +61,12 @@ class SplashController extends GetxController {
     super.onInit();
     // initDeepLinks();
     //  handleDeepLinkFlow(sampleUri);
-    FirebaseMessaging.instance.getToken().then((token) {
-      print("FCM Token: $token");
-      storeFcm(token.toString());
-    });
+
+    // FirebaseMessaging.instance.getToken().then((token) {
+    //   print("FCM Token: $token");
+    //   storeFcm(token.toString());
+    // });
+     initializeFirebaseMessaging();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("Received a foreground message: ${message.data.toString()}");
@@ -80,6 +83,36 @@ class SplashController extends GetxController {
     });
     handleNormalAppFlow();
   }
+  void initializeFirebaseMessaging() async {
+  try {
+    // Request permission for notifications
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+      
+      // Retrieve FCM token
+      String? fcmToken = await messaging.getToken();
+      print('FCM Token: $fcmToken');
+      storeFcm(fcmToken!);
+
+      // Retrieve APNS token
+      String? apnsToken = await messaging.getAPNSToken();
+      print('APNS Token: $apnsToken');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  } catch (e) {
+    print('Error initializing Firebase Messaging: $e');
+  }
+}
 
   void storeFcm(String fcmToken) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
