@@ -378,7 +378,7 @@ class ParentAccountSetupController extends GetxController
           'Phone number',
           '${parentController.userDetail!.phoneNumber}',
         ),
-        _buildRow('Dob', parentController.userDetail!.dob!),
+        _buildRow('DOB', parentController.userDetail!.dob!),
       ],
     ),
     actions: [
