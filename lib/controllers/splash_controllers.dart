@@ -179,7 +179,7 @@ class SplashController extends GetxController {
 
     final phoneNumber = prefs.getString('phoneNumber') ?? "";
     final code = prefs.getString('code') ?? "";
-    var isDeepLink =  true;
+    var isDeepLink = storage.read('deepLink') ?? false;
 
     //  prefs.getBool('deepLink') ?? false;
 
