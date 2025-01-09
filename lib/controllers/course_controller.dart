@@ -364,14 +364,44 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
         //  Get.back();
         //  onInit();
       } else {
-      Get.snackbar(response?.message ?? "");
+              Get.snackbar(
+          response?.message ?? "",
+          icon: const Icon(Icons.info, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          messageText:  SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                response?.message ?? "",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+      //Get.snackbar(response?.message ?? "");
        
         // SnackBarUtils.showErrorSnackBar(
         //     // ignore: use_build_context_synchronously
         //     context, response?.message ?? 'Failed to delete course');
       }
     } catch (e) {
-         Get.snackbar(e.toString().replaceFirst("Exception: ", "") ?? "",backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
+      Get.snackbar(
+         e.toString().replaceFirst("Exception: ", "") ?? "",
+          icon: const Icon(Icons.info, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          messageText:  SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                e.toString().replaceFirst("Exception: ", "") ?? "",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+        // Get.snackbar(e.toString().replaceFirst("Exception: ", "") ?? "",backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
       
         // SnackBarUtils.showErrorSnackBar(
         //     // ignore: use_build_context_synchronously

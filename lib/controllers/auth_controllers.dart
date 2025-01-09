@@ -1505,11 +1505,12 @@ class AuthControllers extends GetxController
         SharedPreferences prefs = await SharedPreferences.getInstance();
          final args = Get.arguments ?? false;
     isGoogleSignIn = args;
-    String AccountVerificationToken=prefs.getString("AccountVerificationToken")??'';
+   // String AccountVerificationToken=prefs.getString("AccountVerificationToken")??'';
+    Logger().i("respadfnaif${prefs.getString("AccountVerificationToken")??''}");
         var response = await WebService.otp(
             otpController.text,
           isGoogleSignIn! ? 
-          AccountVerificationToken:
+          prefs.getString("AccountVerificationToken")??'':
       // accController.loginResponse!.otp!
             currentTabIndex.value == 0 || isOtpResent.value
                 ? loginResponse.value.accountVerificationToken!
@@ -1594,6 +1595,7 @@ class AuthControllers extends GetxController
       String AccountVerificationToken=prefs.getString("AccountVerificationToken")??'';
        final args = Get.arguments ?? false;
     isGoogleSignIn = args;
+      Logger().i("otp ${prefs.getString("AccountVerificationToken")??''}");
       var response = await WebService.resendOtp(
         context: context,
         accountToken:  isGoogleSignIn! ? 
@@ -1608,6 +1610,8 @@ class AuthControllers extends GetxController
         loginResponse.value = response;
         otpController.text =response.otp!;
          await prefs.setString("OTP", response.otp!);
+         await prefs.setString("AccountVerificationToken", response.accountVerificationToken!);
+           Logger().i("resend ${prefs.getString("AccountVerificationToken")??''}");
         isLoading.value = false;
         startTimer(); 
         update();

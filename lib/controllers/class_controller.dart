@@ -13,7 +13,7 @@ import 'package:hovee_attendence/view/add_class_screen.dart';
 import 'package:hovee_attendence/view/class_screen.dart';
 import 'package:logger/logger.dart';
 
-class ClassController extends GetxController  with GetTickerProviderStateMixin {
+class ClassController extends GetxController with GetTickerProviderStateMixin {
   var courseCodeController = ''.obs;
   var fullAddress = ''.obs;
 
@@ -28,23 +28,23 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
 
   var validationMessages = <String>[].obs;
 
-   var selectedTabIndex = 0.obs;
+  var selectedTabIndex = 0.obs;
 
-   var classesList = <TutionData>[].obs;
+  var classesList = <TutionData>[].obs;
 
-    late TabController tabController;
+  late TabController tabController;
 
-    var tutionCourseList = [].obs;
+  var tutionCourseList = [].obs;
 
-    var selectedCourseCode = ''.obs; // Holds the selected course code
+  var selectedCourseCode = ''.obs; // Holds the selected course code
   var selectedCourseData = TutionData().obs;
 
- final batchNameController1 = TextEditingController();
+  final batchNameController1 = TextEditingController();
 
   final CourseController courseController = Get.put(CourseController());
   final BatchController controller = Get.put(BatchController());
 
- @override
+  @override
   void onInit() {
     super.onInit();
     // Initialize TabController with three tabs
@@ -67,13 +67,13 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
     // Initially load "Pending" list
     fetchClassesList("Draft");
     fetchCourseList();
-     _clearData();
+    _clearData();
   }
 
-    void handleTabChange(int index) {
+  void handleTabChange(int index) {
     // Determine the type based on the selected tab index
     String type = _getTypeFromIndex(index);
-     selectedTabIndex.value = index;
+    selectedTabIndex.value = index;
 
     // Fetch the list for the selected type
     fetchClassesList(type);
@@ -94,7 +94,7 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
     }
   }
 
- void fetchClassesList(String type) async {
+  void fetchClassesList(String type) async {
     try {
       var batchData = {
         "type": type,
@@ -111,40 +111,63 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
     }
   }
 
+  void updateClass(BuildContext context, String courseCode, courseId, batchId,
+      batchName, tuitionId) async {
+    isLoading.value = true;
+    try {
+      var batchData = {
+        "type": "U",
+        "tuitionId": tuitionId,
+        "course_code": courseCode,
+        "courseId": courseId,
+        "batchId": batchId,
+        "batch_name": batchName,
+        "status": "Public"
+      };
+      final AddClassDataModel? response =
+          await WebService.updateClass(batchData);
 
-  void  updateClass(BuildContext context,String courseCode,courseId,batchId,batchName,tuitionId ) async  {
-      isLoading.value = true;
-      try {
-        var batchData = {
-          "type": "U",
-          "tuitionId": tuitionId,
-          "course_code": courseCode,
-          "courseId": courseId,
-          "batchId": batchId,
-          "batch_name": batchName,
-          "status": "Public"
-        };
-        final AddClassDataModel? response =
-            await WebService.updateClass(batchData);
+      if (response != null && response.statusCode == 200) {
+        Get.snackbar(
+          'Your class is now live',
+          icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          messageText: const SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                'Your class is now live',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
 
-        if (response != null && response.statusCode == 200) {
-        Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        ,'Your class is now live',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
-       // onInit();
-          tabController.animateTo(1);
-                                    handleTabChange(1);
+        // onInit();
+        tabController.animateTo(1);
+        handleTabChange(1);
         //  String currentType = selectedTabIndex.value == 0 ? "Draft" : "Public";
         // fetchClassesList(currentType);
-        } else {
-          Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),response?.message ?? 'Failed to update Enquire',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
-        }
-      } catch (e) {
-        //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
-      } finally {
-        isLoading.value = false;
+      } else {
+        Get.snackbar(
+          icon: const Icon(
+            Icons.info,
+            color: Colors.white,
+            size: 40,
+          ),
+          response?.message ?? 'Failed to update Enquire',
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        );
       }
-   
+    } catch (e) {
+      //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
+
 //  // Update the fetchCourseList method to populate courseCode list
   void fetchCourseList() async {
     try {
@@ -152,7 +175,12 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
       var tutionCourseResponse = await WebService.fetchTuitionCourseList();
       if (tutionCourseResponse.data != null) {
         tutionCourseList.value = tutionCourseResponse.data!;
-        courseCode = tutionCourseResponse.data!.map((course) => course.courseCode! + " - " + course.subject! ?? '' + " - " + course.className! ?? '').toList();
+        courseCode = tutionCourseResponse.data!
+            .map((course) =>
+                course.courseCode! + " - " + course.subject! ??
+                '' + " - " + course.className! ??
+                '')
+            .toList();
         print(courseCode);
       }
     } catch (e) {
@@ -165,11 +193,17 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
   bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (courseCodeController.value.isEmpty) {
-        SnackBarUtils.showErrorSnackBar(context,'Course code is required',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Course code is required',
+      );
       return false;
     }
     if (batchNameController1.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context,'Batch name is required',);
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Batch name is required',
+      );
       return false;
     }
     return true;
@@ -194,18 +228,26 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
             await WebService.addClass(batchData);
 
         if (response != null && response.success == true) {
-         _clearData();
-           SnackBarUtils.showSuccessSnackBar(context,'Class added successfully',);
+          _clearData();
+          SnackBarUtils.showSuccessSnackBar(
+            context,
+            'Class added successfully',
+          );
           // Get.snackbar( 'Class added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           Get.back();
           //onInit();
-           fetchClassesList("Draft");
+          fetchClassesList("Draft");
         } else {
-            SnackBarUtils.showSuccessSnackBar(context,
-              response?.message ?? 'Failed to add Class',);
+          SnackBarUtils.showSuccessSnackBar(
+            context,
+            response?.message ?? 'Failed to add Class',
+          );
         }
       } catch (e) {
-         SnackBarUtils.showSuccessSnackBar(context, 'Error: $e',);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          'Error: $e',
+        );
       } finally {
         isLoading.value = false;
       }
@@ -217,37 +259,35 @@ class ClassController extends GetxController  with GetTickerProviderStateMixin {
   }
 
   void navigateToAddCourseScreen() {
-    Get.to(() => TutorClassForm());
+    Get.to(() => const TutorClassForm());
   }
- 
 
   // Method to handle course code selection
   void onSelectCourseCode(String courseCode) {
     isSelected.value = false;
-      Logger().d(courseCode);
- 
+    Logger().d(courseCode);
+
     selectedCourseCode.value = courseCode.replaceAll(RegExp(r" - .*$"), "");
-       Logger().d(selectedCourseCode.value);
+    Logger().d(selectedCourseCode.value);
     selectedCourseData.value = tutionCourseList.firstWhere(
-      (course) => course.courseCode == courseCode.replaceAll(RegExp(r" - .*$"), ""),
+      (course) =>
+          course.courseCode == courseCode.replaceAll(RegExp(r" - .*$"), ""),
       orElse: () => TutionData(),
     );
-     batchNameController1.text = selectedCourseData.value.batchName ?? '';
-        isSelected.value = true;
+    batchNameController1.text = selectedCourseData.value.batchName ?? '';
+    isSelected.value = true;
 
-     print(batchNameController1.text);
+    print(batchNameController1.text);
   }
 
- @override
+  @override
   void onClose() {
     tabController.dispose();
     super.onClose();
   }
 
-   void _clearData(){
-         batchNameController1.clear();
-        courseCodeController.value='';
-    }
-
-    
+  void _clearData() {
+    batchNameController1.clear();
+    courseCodeController.value = '';
+  }
 }

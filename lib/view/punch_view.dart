@@ -320,16 +320,31 @@ void _onBarcodeScanned(String? scannedData, BuildContext context) async {
   final longitude = _extractCoordinate(scannedData, 'longitude');
 
   if (wowIdFromCode == null) {
-    Get.snackbar(
-      icon: Icon(
-        Icons.info,
-        color: Colors.white,
-        size: 40,
+    // Get.snackbar(
+    //   icon: Icon(
+    //     Icons.info,
+    //     color: Colors.white,
+    //     size: 40,
+    //   ),
+    //   'Invalid QR Code',
+    //   colorText: Colors.white,
+    //   backgroundColor: Color.fromRGBO(186, 1, 97, 1),
+    // );
+     Get.snackbar(
+         'Invalid QR Code',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+       'Invalid QR Code',
+        style: TextStyle(color: Colors.white, fontSize: 16),
       ),
-      'Invalid QR Code',
-      colorText: Colors.white,
-      backgroundColor: Color.fromRGBO(186, 1, 97, 1),
-    );
+    ),
+  ),
+);
     return;
   }
 

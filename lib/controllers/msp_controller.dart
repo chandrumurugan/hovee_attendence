@@ -142,7 +142,7 @@ class MspController extends GetxController {
         final addMspModel? response = await WebService.addMSP(batchData);
 
         if (response != null && response.success == true) {
-          Get.offAll(DashboardScreen(rolename: 'Tutee',));
+          Get.offAll(const DashboardScreen(rolename: 'Tutee',));
           onInit();
           _clearData();
           SnackBarUtils.showSuccessSnackBar(
@@ -217,12 +217,42 @@ class MspController extends GetxController {
         if (response != null && response.success == true) {
           if(response.data!.status=='Accepted'){
              fetchBatchList();
-         Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white,'MSP accepted successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+              Get.snackbar(
+       'MSP accepted successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:   const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      'MSP accepted successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+        // Get.snackbar(icon: const Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white,'MSP accepted successfully',backgroundColor: const Color.fromRGBO(186, 1, 97, 1),);
 
           }
           else{
              fetchBatchList();
-               Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white,'MSP rejected successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+              Get.snackbar(
+       'MSP rejected successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:   const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      'MSP rejected successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+               //Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white,'MSP rejected successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           }
         } else {
           // SnackBarUtils.showErrorSnackBar(
@@ -251,12 +281,57 @@ class MspController extends GetxController {
 
       // Notify listeners about the updated list
       mspDataList.refresh(); // Ensures the UI is updated
-  Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white, 'MSP deleted successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       Get.snackbar(
+       'MSP deleted successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:   const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      'MSP deleted successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+  //Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white, 'MSP deleted successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } else {
-      Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),colorText: Colors.white,  'Failed to deleted MSP',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+       Get.snackbar(
+       'Failed to deleted MSP',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:   const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      'Failed to deleted MSP',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+      //Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),colorText: Colors.white,  'Failed to deleted MSP',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     }
   } catch (e) {
-    Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+            Get.snackbar(
+       'Error: $e',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:   SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      'Error: $e',
+        style: const TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+   // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
   } finally {
     isLoading.value = false;
   }

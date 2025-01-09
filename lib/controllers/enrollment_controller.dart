@@ -157,41 +157,86 @@ void onInit() {
         if (response != null && response.statusCode == 200) {
           //SnackBarUtils.showSuccessSnackBar(context, 'Enrollment submitted successfully',);
           Get.snackbar(
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.white,
-              size: 40,
-            ),
-            'Enrollment submitted successfully',
-            colorText: Colors.white,
-            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          );
+         'Enrollment submitted successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        'Enrollment submitted successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+          // Get.snackbar(
+          //   icon: const Icon(
+          //     Icons.check_circle,
+          //     color: Colors.white,
+          //     size: 40,
+          //   ),
+          //   'Enrollment submitted successfully',
+          //   colorText: Colors.white,
+          //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          // );
           Get.delete<EnrollmentController>();
           Get.off(() => EnrollmentScreen(
                 type: entrollmentType,
               ));
         } else {
           // SnackBarUtils.showSuccessSnackBar(context, response?.message ?? 'Failed to add Enrollment',);
-          Get.snackbar(
-            icon: const Icon(
-              Icons.info,
-              color: Colors.white,
-              size: 40,
-            ),
-            response?.message ?? 'Failed to add Enrollment',
-            colorText: Colors.white,
-            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          );
+                    Get.snackbar(
+         response?.message ?? 'Failed to add Enrollment',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        response?.message ?? 'Failed to add Enrollment',
+        style: const TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+          // Get.snackbar(
+          //   icon: const Icon(
+          //     Icons.info,
+          //     color: Colors.white,
+          //     size: 40,
+          //   ),
+          //   response?.message ?? 'Failed to add Enrollment',
+          //   colorText: Colors.white,
+          //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          // );
         }
       } catch (e) {
-        Get.snackbar(
-          icon: const Icon(
-            Icons.info,
-            color: Colors.white,
-            size: 40,
-          ),
-          'Error: $e',
-        );
+         Get.snackbar(
+         'Error: $e',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+       'Error: $e',
+        style: const TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+        // Get.snackbar(
+        //   icon: const Icon(
+        //     Icons.info,
+        //     color: Colors.white,
+        //     size: 40,
+        //   ),
+        //   'Error: $e',
+        // );
       } finally {
         isLoading.value = false;
       }
@@ -235,29 +280,59 @@ void onInit() {
         if (response.data!.status == 'Approved') {
           // SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
           Get.snackbar(
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.white,
-              size: 40,
-            ),
-            'You are enrolled successfully',
-            colorText: Colors.white,
-            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          );
+         'You are enrolled successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+       'You are enrolled successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+          // Get.snackbar(
+          //   icon: const Icon(
+          //     Icons.check_circle,
+          //     color: Colors.white,
+          //     size: 40,
+          //   ),
+          //   'You are enrolled successfully',
+          //   colorText: Colors.white,
+          //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          // );
           fetchEnrollmentList('Pending');
           tabController.animateTo(1);
           handleTabChange(1);
         } else {
-          Get.snackbar(
-            icon: const Icon(
-              Icons.check_circle,
-              color: Colors.white,
-              size: 40,
-            ),
-            'Enrollement rejected successfully',
-            colorText: Colors.white,
-            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          );
+           Get.snackbar(
+         'Enrollement rejected successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+       'Enrollement rejected successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+          // Get.snackbar(
+          //   icon: const Icon(
+          //     Icons.check_circle,
+          //     color: Colors.white,
+          //     size: 40,
+          //   ),
+          //   'Enrollement rejected successfully',
+          //   colorText: Colors.white,
+          //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          // );
           //SnackBarUtils.showSuccessSnackBar(context,'Enrollement rejected successfully',);
           tabController.animateTo(2);
           handleTabChange(2);

@@ -390,14 +390,44 @@ var batchDaysController = "".obs;
       if (response != null && response.success == true) {
         clearData();
         fetchBatchList();
-         Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        ,'Batch delete successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        Get.snackbar(
+          'Batch delete successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText: const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        'Batch delete successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+        //  Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        // ,'Batch delete successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         //SnackBarUtils.showSuccessSnackBar(context, 'Batch delete successfully');
         //  Get.back();
         //  onInit();
       } else {
-         Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
-        ,'fail to delete batch',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        Get.snackbar(
+          'fail to delete batch',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText: const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        'fail to delete batch',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+        //  Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
+        // ,'fail to delete batch',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
     } catch (e) {
       SnackBarUtils.showErrorSnackBar(context, 'Error: $e');

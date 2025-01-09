@@ -226,15 +226,60 @@ class TuteeLeaveController extends GetxController {
           Get.back();
           fetchBatchList();
           _clearData();
-          Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        ,'Leave updated  successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+                        Get.snackbar(
+       'Leave updated  successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:   const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      'Leave updated  successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+        //   Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        // ,'Leave updated  successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
          
         } else {
-          SnackBarUtils.showErrorSnackBar(
-              context, response?.message ?? 'Failed to updated batch');
+          Get.snackbar(
+       response?.message ?? 'Failed to updated batch',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      response?.message ?? 'Failed to updated batch',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+          // SnackBarUtils.showErrorSnackBar(
+          //     context, response?.message ?? 'Failed to updated batch');
         }
       } catch (e) {
-        SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+         Get.snackbar(
+      'Error: $e',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      'Error: $e',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+        //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
       } finally {
         isLoading.value = false;
       }
@@ -259,13 +304,58 @@ class TuteeLeaveController extends GetxController {
 
       // Notify listeners about the updated list
       leaveList.refresh(); // Ensures the UI is updated
-        Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,), 'Leave deleted  successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+     Get.snackbar(
+      "Leave deleted  successfully",
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      "Leave deleted  successfully",
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+       // Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,), 'Leave deleted  successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
            //Get.off(()=> TuteeLeaveScreen(type: 'Tutee',));
       } else {
-         Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),colorText: Colors.white, response?.message ?? 'Failed to delete leave',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        Get.snackbar(
+       response?.message ?? 'Failed to updated batch',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      response?.message ?? 'Failed to updated batch',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+        // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),colorText: Colors.white, response?.message ?? 'Failed to delete leave',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
       } catch (e) {
-         Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        Get.snackbar(
+       'Error: $e',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor:  Color.fromRGBO(186, 1, 97, 1),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      'Error: $e',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+        // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       } finally {
         isLoading.value = false;
       }
@@ -286,12 +376,42 @@ class TuteeLeaveController extends GetxController {
         
           if(response.data!.status=='Accepted'){
              fetchBatchList();
-         Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),'Leave accepted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+             Get.snackbar(
+      "Leave accepted successfully",
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      "Leave accepted successfully",
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+        // Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),'Leave accepted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
 
           }
           else{
              fetchBatchList();
-              Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),'Leave rejected successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+              Get.snackbar(
+      "Leave rejected successfully",
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      "Leave rejected successfully",
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+             // Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),'Leave rejected successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           }
         // fetchEnquirList('Pending');
         //       //Get.off(()=>TutorClassList());

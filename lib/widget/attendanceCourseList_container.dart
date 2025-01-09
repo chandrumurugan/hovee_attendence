@@ -133,8 +133,24 @@ class AttendancecourselistContainer extends StatelessWidget {
                             startTime.hour,
                             startTime.minute);
                       } catch (e) {
-                        Get.snackbar(
-                            'Attendance can only be started 30 minutes before the start time.',backgroundColor: AppConstants.secondaryColor,colorText: Colors.white);
+                         Get.snackbar(
+         'Attendance can only be started 30 minutes before the start time.',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+       'Attendance can only be started 30 minutes before the start time.',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+                        
+                        // Get.snackbar(
+                        //     'Attendance can only be started 30 minutes before the start time.',backgroundColor: AppConstants.secondaryColor,colorText: Colors.white);
                         return;
                       }
 
@@ -144,8 +160,23 @@ class AttendancecourselistContainer extends StatelessWidget {
 
                       if (currentTime.isBefore(allowedStartTime)) {
                         // Too early to start
-                        Get.snackbar(
-                            'Attendance can only be started 30 minutes before the start time.',backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
+                         Get.snackbar(
+         'Attendance can only be started 30 minutes before the start time.',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+       'Attendance can only be started 30 minutes before the start time.',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+                        // Get.snackbar(
+                        //     'Attendance can only be started 30 minutes before the start time.',backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
                       } else if (currentTime.isAfter(startTime)) {
                         // Late attendance
                         // Get.snackbar(

@@ -93,6 +93,8 @@ class _OtpScreenState extends State<OtpScreen> {
    return WillPopScope(
   onWillPop: () async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    authController
+                                                      .resend.value =false;
     prefs.setString('OTP', "");
     Get.back(result: {
       'phnNumber': widget.phnNumber,
@@ -106,6 +108,8 @@ class _OtpScreenState extends State<OtpScreen> {
             needGoBack: isGoogleSignIn! ? true : false,
             navigateTo: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
+               authController
+                                                      .resend.value =false;
               prefs.setString('OTP', "");
               Get.back(result: {
                 'phnNumber': widget.phnNumber,

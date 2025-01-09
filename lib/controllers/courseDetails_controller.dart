@@ -89,18 +89,63 @@ class CourseDetailController extends GetxController {
           await WebService.addEnquirs(batchData);
 
       if (response != null && response.statusCode == 200) {
+                Get.snackbar(
+          'Enquiry submited successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText: const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        'Enquiry submited successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
          //SnackBarUtils.showSuccessSnackBar(context,'Enquiry submited successfully',);
-         Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        ,'Enquiry submited successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        //  Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        // ,'Enquiry submited successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
         Get.delete<EnquirDetailController>();
          Get.off(() => Tutorenquirlist(type: 'Tutee', fromBottomNav: true,)); 
       } else {
-        Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        ,'Enquiry already submitted',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        Get.snackbar(
+          'Enquiry already submitted',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText: const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        'Enquiry already submitted',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+        // Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
+        // ,'Enquiry already submitted',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
     } catch (e) {
-       Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
-        ,'Error: $e',);
+          Get.snackbar(
+         'Error: $e',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        'Error: $e',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+      //  Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
+      //   ,'Error: $e',);
     } finally {
       isLoading.value = false;
     }

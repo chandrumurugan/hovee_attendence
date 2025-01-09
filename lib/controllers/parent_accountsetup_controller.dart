@@ -465,28 +465,58 @@ class ParentAccountSetupController extends GetxController
       
           prefs.setString('userData', jsonEncode(loginData!.toJson()));
        await getUserData();
-        Get.snackbar(
-          icon: const Icon(
-            Icons.check_circle,
-            color: Colors.white,
-            size: 40,
-          ),
-          response.message!,
-          colorText: Colors.white,
-          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-        );
+        // Get.snackbar(
+        //   icon: const Icon(
+        //     Icons.check_circle,
+        //     color: Colors.white,
+        //     size: 40,
+        //   ),
+        //   response.message!,
+        //   colorText: Colors.white,
+        //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        // );
+                Get.snackbar(
+       response.message!,
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:   SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+       response.message!,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
         Get.off(() => DashboardScreen(rolename: 'Parent',firstname:parentdata!.firstName,lastname: parentdata!.lastName,wowid: parentdata!.wowId,));
       } else {
-        Get.snackbar(
-          icon: const Icon(
-            Icons.check_circle,
-            color: Colors.white,
-            size: 40,
-          ),
-          response!.message!,
-          colorText: Colors.white,
-          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-        );
+        // Get.snackbar(
+        //   icon: const Icon(
+        //     Icons.check_circle,
+        //     color: Colors.white,
+        //     size: 40,
+        //   ),
+        //   response!.message!,
+        //   colorText: Colors.white,
+        //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        // );
+                Get.snackbar(
+       response!.message!,
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:   SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+       response!.message!,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
       }
     } catch (e) {
       //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');

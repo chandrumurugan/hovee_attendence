@@ -6,13 +6,17 @@ class APIConfig {
   static String urlsConfig() {
     switch (environmentBuild) {
       case Environments.DEVELOPMENT:
-        return "https://express.insakal.com/api/";
+        return "https://api.hoveeattendance.com/api/";
+        //"https://express.insakal.com/api/";
       case Environments.UAT:
-        return "https://express.insakal.com/api/";
+        return "https://api.hoveeattendance.com/api/";
+        //"https://express.insakal.com/api/";
       case Environments.PRO:
-        return "https://express.insakal.com/api/";
+        return "https://api.hoveeattendance.com/api/";
+        //"https://express.insakal.com/api/";
       default:
-        return "https://express.insakal.com/api/";
+        return "https://api.hoveeattendance.com/api/";
+        //"https://express.insakal.com/api/";
     }
   }
 
