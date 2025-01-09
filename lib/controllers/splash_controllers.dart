@@ -78,7 +78,7 @@ class SplashController extends GetxController {
       // Handle the message and navigate to specific screen if necessary
     });
     print('init ended');
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       showSecondImage.value = true;
     });
     handleNormalAppFlow();
@@ -229,7 +229,7 @@ class SplashController extends GetxController {
       storage.write('deepLink', false);
       await _validateTokenAndNavigate();
     } else {
-      Get.off(() => const GuestHomeScreen()); // Navigate to guest home
+      Get.off(() =>  const GuestHomeScreen()); // Navigate to guest home
     }
   }
 

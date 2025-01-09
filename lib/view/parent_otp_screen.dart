@@ -341,7 +341,7 @@ class ParentOtpScreen extends StatelessWidget {
                                                       Get.offAll(() =>
                                                           const RoleSelection(
                                                               isFromParentOtp:
-                                                                  true));
+                                                                  true, isGoogleSignIn: false,));
                                                     }
                                                   },
                                                   icon: const Icon(

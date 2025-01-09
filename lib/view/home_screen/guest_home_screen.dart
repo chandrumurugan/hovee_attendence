@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/guestHome_controller.dart';
 import 'package:hovee_attendence/modals/guestHome_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutee/tutee_courseList.dart';
@@ -26,6 +27,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
   Data? guestHomeData;
   int mycount = 0;
   int _currentIndexSlider = 0;
+  final GuesthomeController guestController = Get.put(GuesthomeController());
   @override
   void initState() {
     super.initState();

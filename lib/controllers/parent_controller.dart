@@ -503,7 +503,7 @@ class ParentController extends GetxController {
         );
         Get.offAll(() =>  RoleSelection(
               isFromParentOtp: false,
-              parentId:parentId
+              parentId:parentId, isGoogleSignIn: false,
             ));
       } else {
         Get.snackbar(

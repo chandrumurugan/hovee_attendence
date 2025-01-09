@@ -8,6 +8,7 @@ import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/addEnquery_controller.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/dashBoard_controllers.dart';
+import 'package:hovee_attendence/controllers/guestHome_controller.dart';
 import 'package:hovee_attendence/controllers/network_controller.dart';
 import 'package:hovee_attendence/controllers/parent_accountsetup_controller.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
@@ -56,6 +57,8 @@ class MyBindings extends Bindings {
     Get.lazyPut<ParentDashboardController>(() => ParentDashboardController());
      Get.lazyPut(() => RatingsController(), fenix: true);
       Get.lazyPut<TrackTuteeLocationController>(() => TrackTuteeLocationController());
+       Get.lazyPut<GuesthomeController>(() => GuesthomeController());
+      
   }
 }
 
@@ -80,55 +83,10 @@ void main() async {
   ]);
    Get.put(NetworkController());
   Get.put(AuthControllers());
-  // Get.put(UserProfileController());
+ //Get.put(UserProfileController());
   runApp(const MyApp());
 }
 
-// class MyApp extends StatelessWidget {
-//    final AppLinks _appLinks = AppLinks();
-//    MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetMaterialApp(
-//       initialBinding: MyBindings(),
-//       title: 'Attendence',
-//       debugShowCheckedModeBanner: false,
-//       home: SplashScreen(onInitializationComplete: _handleAppInitialization),
-//     );
-//   }
-
-//     Future<void> _handleAppInitialization() async {
-//       Logger().i("App initialized");
-// final SplashController splashController = Get.find<SplashController>();
-// Uri? deepLink = await _fetchDeepLink();
-//   Logger().i(deepLink == null);
-// if (deepLink != null) {
-//   splashController.handleDeepLinkFlow(deepLink);
-// } else {
-
-//   splashController.handleNormalAppFlow();
-// }
-//   }
-
-//     Future<Uri?> _fetchDeepLink() async {
-//     try {
-//       //    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
-//       //   debugPrint('onAppLink: $uri');
-//       //   Logger().i("$uri");
-
-//       //   openAppLink(uri.toString());
-//       // });
-//       Logger().i("fetchDeepLink ====>${_appLinks.uriLinkStream.first}");
-//       return await _appLinks.uriLinkStream.first;
-
-//     } catch (e) {
-//       Logger().e(e);
-
-//       return null;
-//     }
-//   }
-// }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -138,6 +96,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+    final GlobalKey<NavigatorState> _navKey = GlobalKey<NavigatorState>();
   late AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSubscription;
   Uri? _initialUri;
@@ -211,26 +170,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  // Map<String, String>? _parseDeepLink(Uri uri) {
-  //   try {
-  //     final code = uri.queryParameters['code']?.split('/phone').first;
-  //     final phoneDetails = uri.queryParameters['code']?.split('/phone').last;
-
-  //     String? phoneNumber;
-  //     if (phoneDetails != null && phoneDetails.startsWith('?')) {
-  //       phoneNumber = Uri.parse('https://dummy$phoneDetails')
-  //           .queryParameters['phoneNumber'];
-  //     }
-
-  //     if (code != null && phoneNumber != null) {
-  //       return {'code': code, 'phoneNumber': phoneNumber};
-  //     }
-  //   } catch (e) {
-  //     Logger().e(e);
-  //     // print("Error parsing deep link: $e");
-  //   }
-  //   return null;
-  // }
   Map<String, String>? _parseDeepLink(Uri uri) {
   try {
     // Extract the "code" parameter
@@ -259,8 +198,12 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      navigatorKey: _navKey,
       initialBinding: MyBindings(),
       title: 'Attendence',
+      onInit: () {
+          
+      },
       debugShowCheckedModeBanner: false,
       
       

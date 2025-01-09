@@ -51,6 +51,7 @@ import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/parentLoginDataModel.dart';
 import 'package:hovee_attendence/modals/parentLoginModel.dart';
+import 'package:hovee_attendence/modals/phonenumberVerfication_model.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
 import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
@@ -2238,4 +2239,33 @@ class WebService {
       return null;
     }
   }
+
+   static Future<PhoneNumberVerifiedModel?> phoneNumberVerified(
+      String identifiers, BuildContext context) async {
+    try {
+       SharedPreferences prefs = await SharedPreferences.getInstance();
+      var headers = {'Authorization': 'Bearer ${prefs.getString('Token')}','Content-Type': 'application/json'};
+      var data = {"phone_number": identifiers};
+      var url = Uri.parse("${baseUrl}user/phoneNumberVerified");
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
+      Logger().i(response.bodyBytes);
+      Logger().i(response.body);
+
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return PhoneNumberVerifiedModel.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
 }

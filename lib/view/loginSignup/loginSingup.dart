@@ -138,49 +138,75 @@ class LoginSignUp extends StatelessWidget {
                               onTap: () async {
                                 var googleResponse =
                                     await authController.signInWithGoogle();
-                                    print(googleResponse);
+                                print(googleResponse);
                                 SharedPreferences prefs =
                                     await SharedPreferences.getInstance();
-                                    var deviceType = Platform.isAndroid ? 'Android' : 'Ios';
+                                var deviceType =
+                                    Platform.isAndroid ? 'Android' : 'Ios';
                                 String? token =
                                     prefs.getString('google_token') ?? '';
-                                    print(token);
+                                print(token);
                                 var response = await WebService.googleSignIn(
-                                    token,deviceType, context);
+                                    token, deviceType, context);
                                 if (response != null) {
                                   authController.isGLoading = false.obs;
-                                   prefs.setString('Token', response.data!.token!);
+                                  prefs.setString(
+                                      'Token', response.data!.token!);
+                                  prefs.setString(
+                                      'UserEmail', response.data!.user!.email!);
+                                  // Split the full name into first and last name
+                                  String fullName = response.data!.user!.name!;
+                                  List<String> nameParts = fullName.split(' ');
+
+// Ensure there are at least two parts (first name and last name)
+                                  String firstName =
+                                      nameParts.isNotEmpty ? nameParts[0] : '';
+                                  String lastName =
+                                      nameParts.length > 1 ? nameParts[1] : '';
+
+// Save the first and last names separately
+                                  prefs.setString('UserName', firstName);
+                                  prefs.setString('UserLastName', lastName);
+                                   String title1 = response.data!.accountSetup! == false
+                                                  ? 'Registered' 
+                                                  : 'Logged in';
                                   showModalBottomSheet(
-                                      backgroundColor: Colors.transparent,
-                                      isDismissible: false,
-                                      enableDrag: false,
-                                      context: context,
-                                      builder: (context) {
-                                        return CustomDialogBox(
-                                            title1:response is GoogleSignInModel ? "Registered" :'Logged In',
-                                            title2: 'successfully !',
-                                            subtitle: 'subtitle',
-                                            btnName: 'Ok',
-                                            onTap: () {
-                                              // if(response.data.userdetails.)
-                                              Navigator.pop(context);
-                                              if (response.data!.accountSetup! && response.data!.accountVerified!) {
-                                                          Get.offAll(() =>
-                                                              DashboardScreen(rolename: '',));
-                                                      
-                          
-                                                      } else {
-                                                        Get.offAll(() =>
-                                                            const RoleSelection(isFromParentOtp: false,));
-                                                      }
-                                            },
-                                            icon: Icon(
-                                              Icons.check,
-                                              color: Colors.white,
-                                            ),
-                                            color: Colors.green,
-                                            singleBtn: true);
-                                      });
+                                    isDismissible: false,
+                                    enableDrag: false,
+                                    context: context,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) {
+                                      return CustomDialogBox(
+                                        title1: title1,
+                                        title2: "successfully !",
+                                        subtitle: 'subtitle',
+                                        btnName: 'Ok',
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          if (response.data!.accountSetup! &&
+                                              response.data!.accountVerified!) {
+                                            print(response
+                                                .data!.user!.role!.roleName!);
+                                            Get.offAll(() => DashboardScreen(
+                                                rolename: response.data!.user!
+                                                    .role!.roleName!));
+                                          } else {
+                                            Get.offAll(
+                                                () => const RoleSelection(
+                                                      isFromParentOtp: false,
+                                                      isGoogleSignIn: true,
+                                                    ));
+                                          }
+                                        },
+                                        icon: const Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                        ),
+                                        color: const Color(0xFF833AB4),
+                                        singleBtn: true,
+                                      );
+                                    },
+                                  );
                                 }
                                 authController.isGLoading = false.obs;
                               },

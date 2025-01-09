@@ -13,10 +13,12 @@ import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDropDownInputField.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/utils/keyboardUtils.dart';
+import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart' as path;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountSetup extends StatelessWidget {
   final String roleId;
@@ -24,20 +26,45 @@ class AccountSetup extends StatelessWidget {
   final String selectedRoleTypeName;
   final String? selectedRole;
   final String? parentId;
+  final bool? isGoogleSignIn;
   AccountSetup(
       {Key? key,
       required this.roleId,
       required this.roleTypeId,
       required this.selectedRoleTypeName,
       this.selectedRole,
-      this.parentId});
+      this.parentId,
+      this.isGoogleSignIn});
 
   @override
   Widget build(BuildContext context) {
     final AccountSetupController accountController =
-        Get.put(AccountSetupController());
+        Get.put(AccountSetupController(isGoogleSignIn: isGoogleSignIn));
     final splashController = Get.find<SplashController>();
     final authController = Get.find<AuthControllers>();
+    final args = Get.arguments;
+    // Load shared preferences data and set it to controllers
+    Future<void> loadSharedPreferences() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? firstName = prefs.getString('UserName') ?? '';
+      String? lastName = prefs.getString('UserLastName') ?? '';
+      String? email = prefs.getString('UserEmail') ?? '';
+
+      isGoogleSignIn!
+          ? accountController.firstNameController.text = firstName
+          : accountController.firstNameController.text;
+      isGoogleSignIn!
+          ? accountController.lastNameController.text = lastName
+          : accountController.lastNameController.text;
+      isGoogleSignIn!
+          ? accountController.emailController.text = email
+          : accountController.emailController.text;
+    }
+
+    // Call loadSharedPreferences when the widget is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadSharedPreferences();
+    });
     return WillPopScope(
       onWillPop: () async {
         return await ModalService.handleBackButtonN(context);
@@ -253,8 +280,8 @@ class AccountSetup extends StatelessWidget {
                                               style: GoogleFonts.nunito(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w600,
-                                                color: Colors.red
-                                                    .withOpacity(0.6),
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
                                               ),
                                             ),
                                           ],
@@ -272,7 +299,9 @@ class AccountSetup extends StatelessWidget {
                                               Expanded(
                                                 child: InputTextField(
                                                     suffix: false,
-                                                    readonly: false,
+                                                    readonly: isGoogleSignIn!
+                                                        ? true
+                                                        : false,
                                                     hintText: 'First',
                                                     keyboardType:
                                                         TextInputType.name,
@@ -296,7 +325,9 @@ class AccountSetup extends StatelessWidget {
                                               Expanded(
                                                 child: InputTextField(
                                                   suffix: false,
-                                                  readonly: false,
+                                                  readonly: isGoogleSignIn!
+                                                      ? true
+                                                      : false,
                                                   hintText: 'Last',
                                                   keyboardType:
                                                       TextInputType.name,
@@ -308,9 +339,8 @@ class AccountSetup extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ],
-                                                  controller:
-                                                      accountController
-                                                          .lastNameController,
+                                                  controller: accountController
+                                                      .lastNameController,
                                                 ),
                                               ),
                                             ],
@@ -334,8 +364,8 @@ class AccountSetup extends StatelessWidget {
                                               style: GoogleFonts.nunito(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w600,
-                                                color: Colors.red
-                                                    .withOpacity(0.6),
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
                                               ),
                                             ),
                                           ],
@@ -345,10 +375,10 @@ class AccountSetup extends StatelessWidget {
                                         ),
                                         InputTextField(
                                             suffix: false,
-                                            readonly: false,
+                                            readonly:
+                                                isGoogleSignIn! ? true : false,
                                             inputFormatter: [
-                                              FilteringTextInputFormatter
-                                                  .allow(
+                                              FilteringTextInputFormatter.allow(
                                                 RegExp(
                                                   r"[a-zA-Z0-9@&_,-\/.']",
                                                 ),
@@ -377,8 +407,8 @@ class AccountSetup extends StatelessWidget {
                                               style: GoogleFonts.nunito(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w600,
-                                                color: Colors.red
-                                                    .withOpacity(0.6),
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
                                               ),
                                             ),
                                           ],
@@ -438,8 +468,8 @@ class AccountSetup extends StatelessWidget {
                                               style: GoogleFonts.nunito(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w600,
-                                                color: Colors.red
-                                                    .withOpacity(0.6),
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
                                               ),
                                             ),
                                           ],
@@ -448,34 +478,63 @@ class AccountSetup extends StatelessWidget {
                                           height: 5,
                                         ),
                                         InputTextField(
-                                            suffix: false,
-                                            readonly: true,
-                                            hintText: 'Enter here...',
-                                            keyboardType: TextInputType.phone,
-                                            inputFormatter: [
-                                              FilteringTextInputFormatter
-                                                  .allow(
-                                                RegExp(r"[0-9]"),
-                                              ),
-                                              LengthLimitingTextInputFormatter(
-                                                  10), // Restrict to 10 digits
-                                            ],
-                                            controller: accountController
-                                                .phController),
+                                          showVerifiedIcon:
+                                              isGoogleSignIn! ? true : false,
+                                          isDate: false,
+                                          suffix:
+                                              isGoogleSignIn! ? false : false,
+                                          readonly:
+                                              isGoogleSignIn! 
+      ? (accountController.accountVerified == true ? true : false) 
+      : true,
+                                          hintText: 'Enter here...',
+                                          keyboardType: TextInputType.phone,
+                                          inputFormatter: [
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(r"[0-9]")),
+                                            LengthLimitingTextInputFormatter(
+                                                10), // Restrict to 10 digits
+                                          ],
+                                          controller:
+                                              accountController.phController,
+                                          accountVerified: accountController
+                                                  .accountVerified ==
+                                              true,
+                                          onVerifiedIconPressed: () {
+                                            if (accountController
+                                                    .accountVerified ==
+                                                false) {
+                                              // Allow function execution only if not verified
+                                              print("Verified icon clicked");
+                                              accountController
+                                                  .phoneNumberVerified(
+                                                      accountController
+                                                          .phController.text,
+                                                      context);
+                                            } else {
+                                              print(
+                                                  "Account already verified, action not allowed.");
+                                            }
+                                          },
+                                        ),
+
                                         // InputTextField(
-                                        //     suffix: false,
-                                        //     readonly: false,
+                                        //    showVerifiedIcon: true,
+                                        //   isDate: false,
+                                        //     suffix: isGoogleSignIn!? false:true,
+                                        //     readonly: isGoogleSignIn!? false:true,
                                         //     hintText: 'Enter here...',
                                         //     keyboardType: TextInputType.phone,
                                         //     inputFormatter: [
-                                        //       FilteringTextInputFormatter.allow(
+                                        //       FilteringTextInputFormatter
+                                        //           .allow(
                                         //         RegExp(r"[0-9]"),
                                         //       ),
                                         //       LengthLimitingTextInputFormatter(
                                         //           10), // Restrict to 10 digits
                                         //     ],
-                                        //     controller:
-                                        //         accountController.phController),
+                                        //     controller: accountController
+                                        //         .phController),
                                         const SizedBox(
                                           height: 5,
                                         ),
@@ -494,8 +553,8 @@ class AccountSetup extends StatelessWidget {
                                               style: GoogleFonts.nunito(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w600,
-                                                color: Colors.red
-                                                    .withOpacity(0.6),
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
                                               ),
                                             ),
                                           ],
@@ -538,8 +597,8 @@ class AccountSetup extends StatelessWidget {
                                               style: GoogleFonts.nunito(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w600,
-                                                color: Colors.red
-                                                    .withOpacity(0.6),
+                                                color:
+                                                    Colors.red.withOpacity(0.6),
                                               ),
                                             ),
                                           ],
@@ -550,24 +609,20 @@ class AccountSetup extends StatelessWidget {
                                         InkWell(
                                           onTap: () {
                                             print("gretting values==");
-                                            ModalService
-                                                .openIDProofModalSheet(
-                                                    context,
-                                                    splashController,
-                                                    accountController);
+                                            ModalService.openIDProofModalSheet(
+                                                context,
+                                                splashController,
+                                                accountController);
                                           },
                                           child: Container(
                                             height: 55,
                                             alignment: Alignment.centerLeft,
                                             padding: const EdgeInsets.only(
-                                                top: 10,
-                                                bottom: 10,
-                                                left: 12),
+                                                top: 10, bottom: 10, left: 12),
                                             decoration: BoxDecoration(
                                                 color: Colors.grey[200],
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                        15)),
+                                                    BorderRadius.circular(15)),
                                             child: accountController
                                                     .selectedIDProof
                                                     .value
@@ -577,8 +632,7 @@ class AccountSetup extends StatelessWidget {
                                                 : Text(
                                                     "Tap to select the ID proof",
                                                     style: TextStyle(
-                                                        color:
-                                                            Colors.grey[400],
+                                                        color: Colors.grey[400],
                                                         fontWeight:
                                                             FontWeight.w400)),
                                           ),
@@ -588,16 +642,38 @@ class AccountSetup extends StatelessWidget {
                                         ),
                                         InkWell(
                                           onTap: () {
-                                            KeyboardUtil.hideKeyboard(
-                                                context);
-                                            accountController
-                                                .storePersonalInfo(context,
-                                                    roleId, roleTypeId);
+                                            // Hide the keyboard when tapping
+                                            KeyboardUtil.hideKeyboard(context);
+
+                                            // Check the GoogleSignIn status and account verification status
+                                            if (isGoogleSignIn == true &&
+                                                accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is true and account is verified, store personal info
+                                              accountController
+                                                  .storePersonalInfo(context,
+                                                      roleId, roleTypeId);
+                                            } else if (isGoogleSignIn == true &&
+                                                !accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is true but account is not verified, show verification message
+                                              SnackBarUtils.showErrorSnackBar(
+                                                context,
+                                                "Please verify your phone number",
+                                              );
+                                            } else if (isGoogleSignIn ==
+                                                    false &&
+                                                !accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is false and account is not verified, store personal info
+                                              accountController
+                                                  .storePersonalInfo(context,
+                                                      roleId, roleTypeId);
+                                            }
                                           },
                                           child: Container(
                                             height: 48,
-                                            padding:
-                                                const EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                               horizontal: 40,
                                               vertical: 12,
                                             ),
@@ -608,7 +684,7 @@ class AccountSetup extends StatelessWidget {
                                               gradient: LinearGradient(
                                                 colors: [
                                                   Color(0xFFC13584),
-                                                  Color(0xFF833AB4)
+                                                  Color(0xFF833AB4),
                                                 ],
                                                 begin: Alignment.topCenter,
                                                 end: Alignment.bottomCenter,
@@ -633,6 +709,51 @@ class AccountSetup extends StatelessWidget {
                                                   ),
                                           ),
                                         ),
+
+                                        // InkWell(
+                                        //   onTap: () {
+                                        //     KeyboardUtil.hideKeyboard(context);
+                                        //     accountController.storePersonalInfo(
+                                        //         context, roleId, roleTypeId);
+                                        //   },
+                                        //   child: Container(
+                                        //     height: 48,
+                                        //     padding: const EdgeInsets.symmetric(
+                                        //       horizontal: 40,
+                                        //       vertical: 12,
+                                        //     ),
+                                        //     decoration: const BoxDecoration(
+                                        //       borderRadius: BorderRadius.all(
+                                        //         Radius.circular(8),
+                                        //       ),
+                                        //       gradient: LinearGradient(
+                                        //         colors: [
+                                        //           Color(0xFFC13584),
+                                        //           Color(0xFF833AB4)
+                                        //         ],
+                                        //         begin: Alignment.topCenter,
+                                        //         end: Alignment.bottomCenter,
+                                        //       ),
+                                        //     ),
+                                        //     child: accountController
+                                        //             .isLoading.value
+                                        //         ? const Center(
+                                        //             child:
+                                        //                 CircularProgressIndicator(),
+                                        //           )
+                                        //         : const Center(
+                                        //             child: Text(
+                                        //               'Next',
+                                        //               style: TextStyle(
+                                        //                 fontSize: 16,
+                                        //                 fontWeight:
+                                        //                     FontWeight.w600,
+                                        //                 color: Colors.white,
+                                        //               ),
+                                        //             ),
+                                        //           ),
+                                        //   ),
+                                        // ),
                                         const SizedBox(
                                           height: 16,
                                         ),
@@ -640,7 +761,7 @@ class AccountSetup extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                            
+
                                 //address info
                                 Container(
                                   padding: const EdgeInsets.symmetric(
@@ -648,7 +769,7 @@ class AccountSetup extends StatelessWidget {
                                   child: GestureDetector(
                                     onVerticalDragUpdate: (details) {
                                       // Detect dragging on the map
-                            
+
                                       if (details.localPosition.dy <=
                                           accountController.mapHeight.value) {
                                         // setState(() {
@@ -663,8 +784,8 @@ class AccountSetup extends StatelessWidget {
                                       // setState(() {
                                       //   _isMapInteracting = false;
                                       // });
-                                      accountController
-                                          .isMapInteracting.value = true;
+                                      accountController.isMapInteracting.value =
+                                          true;
                                     },
                                     child: SingleChildScrollView(
                                       physics: accountController
@@ -716,8 +837,7 @@ class AccountSetup extends StatelessWidget {
                                                       child: GoogleMap(
                                                         scrollGesturesEnabled:
                                                             true,
-                                                        mapType:
-                                                            MapType.normal,
+                                                        mapType: MapType.normal,
                                                         initialCameraPosition:
                                                             CameraPosition(
                                                           target: LatLng(
@@ -734,16 +854,17 @@ class AccountSetup extends StatelessWidget {
                                                         onMapCreated:
                                                             accountController
                                                                 .onMapCreated,
-                                                        markers: accountController
-                                                                    .marker
-                                                                    .value !=
-                                                                null
-                                                            ? {
-                                                                accountController
-                                                                    .marker
-                                                                    .value!
-                                                              }
-                                                            : {},
+                                                        markers:
+                                                            accountController
+                                                                        .marker
+                                                                        .value !=
+                                                                    null
+                                                                ? {
+                                                                    accountController
+                                                                        .marker
+                                                                        .value!
+                                                                  }
+                                                                : {},
                                                         onTap: (position) {
                                                           accountController
                                                               .setMarker(
@@ -751,9 +872,11 @@ class AccountSetup extends StatelessWidget {
                                                         },
                                                         zoomControlsEnabled:
                                                             false,
-                                                             gestureRecognizers: Set()
-                                                    ..add(Factory<EagerGestureRecognizer>(
-                                                        () => EagerGestureRecognizer())),
+                                                        gestureRecognizers: Set()
+                                                          ..add(Factory<
+                                                                  EagerGestureRecognizer>(
+                                                              () =>
+                                                                  EagerGestureRecognizer())),
                                                       ),
                                                     ),
                                                   ),
@@ -783,8 +906,8 @@ class AccountSetup extends StatelessWidget {
                                                           mini: true,
                                                           child: const Icon(
                                                               Icons.zoom_in,
-                                                              color: Colors
-                                                                  .white),
+                                                              color:
+                                                                  Colors.white),
                                                         ),
                                                         const SizedBox(
                                                             height: 10),
@@ -797,8 +920,8 @@ class AccountSetup extends StatelessWidget {
                                                           mini: true,
                                                           child: const Icon(
                                                               Icons.zoom_out,
-                                                              color: Colors
-                                                                  .white),
+                                                              color:
+                                                                  Colors.white),
                                                         ),
                                                       ],
                                                     ),
@@ -836,8 +959,7 @@ class AccountSetup extends StatelessWidget {
                                               suffix: false,
                                               readonly: false,
                                               hintText: 'Enter here...',
-                                              keyboardType:
-                                                  TextInputType.name,
+                                              keyboardType: TextInputType.name,
                                               inputFormatter: [
                                                 FilteringTextInputFormatter
                                                     .allow(
@@ -879,8 +1001,7 @@ class AccountSetup extends StatelessWidget {
                                               suffix: false,
                                               readonly: false,
                                               hintText: 'Enter here...',
-                                              keyboardType:
-                                                  TextInputType.name,
+                                              keyboardType: TextInputType.name,
                                               inputFormatter: [
                                                 FilteringTextInputFormatter
                                                     .allow(
@@ -921,8 +1042,7 @@ class AccountSetup extends StatelessWidget {
                                               suffix: false,
                                               readonly: false,
                                               hintText: 'Enter here...',
-                                              keyboardType:
-                                                  TextInputType.name,
+                                              keyboardType: TextInputType.name,
                                               inputFormatter: [
                                                 FilteringTextInputFormatter
                                                     .allow(
@@ -963,8 +1083,7 @@ class AccountSetup extends StatelessWidget {
                                               suffix: false,
                                               readonly: false,
                                               hintText: 'Enter here...',
-                                              keyboardType:
-                                                  TextInputType.text,
+                                              keyboardType: TextInputType.text,
                                               inputFormatter: [
                                                 FilteringTextInputFormatter
                                                     .allow(
@@ -1007,8 +1126,7 @@ class AccountSetup extends StatelessWidget {
                                             hintText: 'Enter here...',
                                             keyboardType: TextInputType.name,
                                             inputFormatter: [
-                                              FilteringTextInputFormatter
-                                                  .allow(
+                                              FilteringTextInputFormatter.allow(
                                                 RegExp(
                                                     r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
                                               ),
@@ -1047,13 +1165,11 @@ class AccountSetup extends StatelessWidget {
                                             suffix: false,
                                             readonly: false,
                                             hintText: 'Enter here...',
-                                            keyboardType:
-                                                TextInputType.number,
+                                            keyboardType: TextInputType.number,
                                             controller: accountController
                                                 .pincodesController,
                                             inputFormatter: [
-                                              FilteringTextInputFormatter
-                                                  .allow(
+                                              FilteringTextInputFormatter.allow(
                                                 RegExp(
                                                   r"[0-9]",
                                                 ),
@@ -1068,7 +1184,31 @@ class AccountSetup extends StatelessWidget {
                                           InkWell(
                                             onTap: () {
                                               KeyboardUtil.hideKeyboard(
-                                                  context);
+                                                  context);                               // Check the GoogleSignIn status and account verification status
+                                            if (isGoogleSignIn == true &&
+                                                accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is true and account is verified, store personal info
+                                             accountController
+                                                  .storeAddressInfo(
+                                                      context,
+                                                      selectedRoleTypeName,
+                                                      roleId,
+                                                      roleTypeId,
+                                                      selectedRole);
+                                            } else if (isGoogleSignIn == true &&
+                                                !accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is true but account is not verified, show verification message
+                                              SnackBarUtils.showErrorSnackBar(
+                                                context,
+                                                "Please verify your phone number",
+                                              );
+                                            } else if (isGoogleSignIn ==
+                                                    false &&
+                                                !accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is false and account is not verified, store personal info
                                               accountController
                                                   .storeAddressInfo(
                                                       context,
@@ -1076,6 +1216,7 @@ class AccountSetup extends StatelessWidget {
                                                       roleId,
                                                       roleTypeId,
                                                       selectedRole);
+                                            }
                                             },
                                             child: Container(
                                               height: 48,
@@ -1085,8 +1226,7 @@ class AccountSetup extends StatelessWidget {
                                                 vertical: 12,
                                               ),
                                               decoration: const BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.all(
+                                                borderRadius: BorderRadius.all(
                                                   Radius.circular(8),
                                                 ),
                                                 gradient: LinearGradient(
@@ -1107,11 +1247,14 @@ class AccountSetup extends StatelessWidget {
                                                   : Center(
                                                       child: Text(
                                                         selectedRole !=
-                                                                'Parent' &&  selectedRoleTypeName!= 'Institute' && selectedRole == 'Tutor'
+                                                                    'Parent' &&
+                                                                selectedRoleTypeName !=
+                                                                    'Institute' &&
+                                                                selectedRole ==
+                                                                    'Tutor'
                                                             ? 'Next'
                                                             : 'Submit',
-                                                        style:
-                                                            const TextStyle(
+                                                        style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight:
                                                               FontWeight.w600,
@@ -1133,14 +1276,248 @@ class AccountSetup extends StatelessWidget {
                                 //         selectedRoleTypeName == ""
                                 //     ? Container()
                                 //     :
-                                    // selectedRoleTypeName != 'Institute' &&
-                                    //         selectedRoleTypeName != ""
-                                    //     ? 
-                                      selectedRoleTypeName!= 'Institute' && selectedRole == 'Tutor'?
-                                        Container(
-                                            padding:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 12),
+                                // selectedRoleTypeName != 'Institute' &&
+                                //         selectedRoleTypeName != ""
+                                //     ?
+                                selectedRoleTypeName != 'Institute' &&
+                                        selectedRole == 'Tutor'
+                                    ? Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12),
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              ..._buildDropdowns(),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Row(
+                                                      children: [
+                                                        const Text(
+                                                          'Tution name',
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          '*',
+                                                          style: GoogleFonts
+                                                              .nunito(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: Colors.red
+                                                                .withOpacity(
+                                                                    0.6),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    InputTextField(
+                                                        suffix: false,
+                                                        readonly: false,
+                                                        hintText:
+                                                            'Enter here...',
+                                                        keyboardType:
+                                                            TextInputType.name,
+                                                        inputFormatter: [
+                                                          FilteringTextInputFormatter
+                                                              .allow(
+                                                            RegExp(
+                                                                r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                                          ),
+                                                        ],
+                                                        controller:
+                                                            accountController
+                                                                .tutionController),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    const Text(
+                                                      'Additional info',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    InputTextField(
+                                                        suffix: false,
+                                                        readonly: false,
+                                                        hintText:
+                                                            'Enter here...',
+                                                        keyboardType:
+                                                            TextInputType.name,
+                                                        inputFormatter: [
+                                                          FilteringTextInputFormatter
+                                                              .allow(
+                                                            RegExp(
+                                                                r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                                          ),
+                                                        ],
+                                                        controller:
+                                                            accountController
+                                                                .additionalInfoController),
+                                                  ],
+                                                ),
+                                              ),
+                                              _buildFileUploadSection(
+                                                  'Attach resume', 'resume'),
+                                              _buildFileUploadSection(
+                                                  'Attach education certificate',
+                                                  'education'),
+                                              _buildFileUploadSection(
+                                                  'Attach experience certificate',
+                                                  'experience'),
+                                              if (accountController
+                                                  .validationMessages
+                                                  .isNotEmpty)
+                                                Column(
+                                                  children: accountController
+                                                      .validationMessages
+                                                      .map((msg) => Text(
+                                                            msg,
+                                                            style:
+                                                                const TextStyle(
+                                                                    color: Colors
+                                                                        .red),
+                                                          ))
+                                                      .toList(),
+                                                ),
+                                              InkWell(
+                                                onTap: () {
+                                                  KeyboardUtil.hideKeyboard(
+                                                      context);
+                                                
+                                                                                              if (isGoogleSignIn == true &&
+                                                accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is true and account is verified, store personal info
+                                              accountController
+                                                      .storeEducationInfo(
+                                                          context,
+                                                          roleId,
+                                                          roleTypeId,
+                                                          selectedRole);
+                                            } else if (isGoogleSignIn == true &&
+                                                !accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is true but account is not verified, show verification message
+                                              SnackBarUtils.showErrorSnackBar(
+                                                context,
+                                                "Please verify your phone number",
+                                              );
+                                            } else if (isGoogleSignIn ==
+                                                    false &&
+                                                !accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is false and account is not verified, store personal info
+                                               accountController
+                                                      .storeEducationInfo(
+                                                          context,
+                                                          roleId,
+                                                          roleTypeId,
+                                                          selectedRole);
+                                            }
+                                                },
+                                                child: Container(
+                                                  height: 48,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    horizontal: 40,
+                                                    vertical: 12,
+                                                  ),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(8),
+                                                    ),
+                                                    gradient: LinearGradient(
+                                                      colors: [
+                                                        Color(0xFFC13584),
+                                                        Color(0xFF833AB4)
+                                                      ],
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                    ),
+                                                  ),
+                                                  child: accountController
+                                                          .isLoading.value
+                                                      ? const Center(
+                                                          child:
+                                                              CircularProgressIndicator(),
+                                                        )
+                                                      : const Center(
+                                                          child: Text(
+                                                            'Submit',
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 16,
+                                              ),
+
+                                              // SingleButton(
+                                              //   btnName: 'Add',
+                                              //   onTap: () {
+                                              // accountController
+                                              //     .storeEducationInfo(context);
+
+                                              //   },
+                                              // )
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : selectedRole == 'Tutee'
+                                        ? Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12),
                                             child: SingleChildScrollView(
                                               child: Column(
                                                 mainAxisAlignment:
@@ -1148,25 +1525,132 @@ class AccountSetup extends StatelessWidget {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  ..._buildDropdowns(),
+                                                  Row(
+                                                    children: [
+                                                      const Text(
+                                                        'Highest qualification',
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        '*',
+                                                        style:
+                                                            GoogleFonts.nunito(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.red
+                                                              .withOpacity(0.6),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  // InputTextField(
+                                                  //     suffix: false,
+                                                  //     readonly: false,
+                                                  //     inputFormatter: [
+                                                  //       FilteringTextInputFormatter
+                                                  //           .allow(
+                                                  //         RegExp(
+                                                  //           r"[a-zA-Z0-9@&_,-\.']",
+                                                  //         ),
+                                                  //       ),
+                                                  //     ],
+                                                  //     hintText:
+                                                  //         'Select',
+                                                  //     keyboardType:
+                                                  //         TextInputType
+                                                  //             .emailAddress,
+                                                  //     controller:
+                                                  //         accountController
+                                                  //             .tuteQualificationController),
+                                                  CommonDropdownInputField(
+                                                    title:
+                                                        'Highest qualification',
+                                                    controllerValue:
+                                                        accountController
+                                                            .tuteeHighestQualification,
+                                                    selectedValue: accountController
+                                                        .tuteeHighestQualification,
+                                                    items: accountController
+                                                        .tuteeQualifications,
+                                                    onChanged: accountController
+                                                        .setTuteeHighestQualification,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Choose a board',
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            '*',
+                                                            style: GoogleFonts
+                                                                .nunito(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color: Colors.red
+                                                                  .withOpacity(
+                                                                      0.6),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Obx(() =>
+                                                          CommonDropdownInputField(
+                                                            title: 'board',
+                                                            controllerValue:
+                                                                accountController
+                                                                    .boardController
+                                                                    .value
+                                                                    .obs,
+                                                            selectedValue:
+                                                                accountController
+                                                                    .boardController
+                                                                    .value
+                                                                    .obs,
+                                                            items:
+                                                                accountController
+                                                                    .board,
+                                                            onChanged:
+                                                                accountController
+                                                                    .setBoard,
+                                                          )),
+                                                    ],
+                                                  ),
                                                   Padding(
                                                     padding: const EdgeInsets
                                                         .symmetric(
+                                                        horizontal: 5.0,
                                                         vertical: 10),
                                                     child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
                                                       children: [
-                                                        const SizedBox(
-                                                          height: 5,
-                                                        ),
                                                         Row(
                                                           children: [
                                                             const Text(
-                                                              'Tution name',
-                                                              style:
-                                                                  TextStyle(
+                                                              'Select a class',
+                                                              style: TextStyle(
                                                                 fontSize: 14,
                                                                 fontWeight:
                                                                     FontWeight
@@ -1177,9 +1661,8 @@ class AccountSetup extends StatelessWidget {
                                                             ),
                                                             Text(
                                                               '*',
-                                                              style:
-                                                                  GoogleFonts
-                                                                      .nunito(
+                                                              style: GoogleFonts
+                                                                  .nunito(
                                                                 fontSize: 18,
                                                                 fontWeight:
                                                                     FontWeight
@@ -1192,117 +1675,291 @@ class AccountSetup extends StatelessWidget {
                                                             ),
                                                           ],
                                                         ),
-                                                        const SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        InputTextField(
-                                                            suffix: false,
-                                                            readonly: false,
-                                                            hintText:
-                                                                'Enter here...',
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .name,
-                                                            inputFormatter: [
-                                                              FilteringTextInputFormatter
-                                                                  .allow(
-                                                                RegExp(
-                                                                    r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
-                                                              ),
-                                                            ],
-                                                            controller:
-                                                                accountController
-                                                                    .tutionController),
+                                                        Obx(() =>
+                                                            CommonDropdownInputField(
+                                                              title: 'Class',
+                                                              controllerValue:
+                                                                  accountController
+                                                                      .classController
+                                                                      .value
+                                                                      .obs,
+                                                              selectedValue:
+                                                                  accountController
+                                                                      .classController
+                                                                      .value
+                                                                      .obs,
+                                                              items:
+                                                                  accountController
+                                                                      .classList,
+                                                              onChanged:
+                                                                  accountController
+                                                                      .setClass,
+                                                            )),
                                                       ],
                                                     ),
                                                   ),
                                                   Padding(
                                                     padding: const EdgeInsets
                                                         .symmetric(
+                                                        horizontal: 5.0,
                                                         vertical: 10),
                                                     child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
                                                       children: [
-                                                        const SizedBox(
-                                                          height: 5,
-                                                        ),
-                                                        const Text(
-                                                          'Additional info',
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500,
-                                                            color:
-                                                                Colors.black,
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        InputTextField(
-                                                            suffix: false,
-                                                            readonly: false,
-                                                            hintText:
-                                                                'Enter here...',
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .name,
-                                                            inputFormatter: [
-                                                              FilteringTextInputFormatter
-                                                                  .allow(
-                                                                RegExp(
-                                                                    r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                                        Row(
+                                                          children: [
+                                                            const Text(
+                                                              'Choose a subject',
+                                                              style: TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: Colors
+                                                                    .black,
                                                               ),
-                                                            ],
-                                                            controller:
-                                                                accountController
-                                                                    .additionalInfoController),
+                                                            ),
+                                                            Text(
+                                                              '*',
+                                                              style: GoogleFonts
+                                                                  .nunito(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: Colors
+                                                                    .red
+                                                                    .withOpacity(
+                                                                        0.6),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Obx(() =>
+                                                            CommonDropdownInputField(
+                                                              title: 'subject',
+                                                              controllerValue:
+                                                                  accountController
+                                                                      .subjectController
+                                                                      .value
+                                                                      .obs,
+                                                              selectedValue:
+                                                                  accountController
+                                                                      .subjectController
+                                                                      .value
+                                                                      .obs,
+                                                              items:
+                                                                  accountController
+                                                                      .subject,
+                                                              onChanged:
+                                                                  accountController
+                                                                      .setSubject,
+                                                            )),
                                                       ],
                                                     ),
                                                   ),
-                                                  _buildFileUploadSection(
-                                                      'Attach resume',
-                                                      'resume'),
-                                                  _buildFileUploadSection(
-                                                      'Attach education certificate',
-                                                      'education'),
-                                                  _buildFileUploadSection(
-                                                      'Attach experience certificate',
-                                                      'experience'),
-                                                  if (accountController
-                                                      .validationMessages
-                                                      .isNotEmpty)
-                                                    Column(
-                                                      children: accountController
-                                                          .validationMessages
-                                                          .map((msg) => Text(
-                                                                msg,
-                                                                style: const TextStyle(
-                                                                    color: Colors
-                                                                        .red),
-                                                              ))
-                                                          .toList(),
-                                                    ),
+                                                  // Row(
+                                                  //   children: [
+                                                  //     const Text(
+                                                  //       'Class/Specialization',
+                                                  //       style: TextStyle(
+                                                  //         fontSize: 14,
+                                                  //         fontWeight:
+                                                  //             FontWeight
+                                                  //                 .w500,
+                                                  //         color: Colors
+                                                  //             .black,
+                                                  //       ),
+                                                  //     ),
+                                                  //     Text(
+                                                  //       '*',
+                                                  //       style: GoogleFonts
+                                                  //           .nunito(
+                                                  //         fontSize: 18,
+                                                  //         fontWeight:
+                                                  //             FontWeight
+                                                  //                 .w600,
+                                                  //         color: Colors
+                                                  //             .red
+                                                  //             .withOpacity(
+                                                  //                 0.6),
+                                                  //       ),
+                                                  //     ),
+                                                  //   ],
+                                                  // ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  // InputTextField(
+                                                  //     suffix: false,
+                                                  //     readonly: false,
+                                                  //     inputFormatter: [
+                                                  //       FilteringTextInputFormatter
+                                                  //           .allow(
+                                                  //         RegExp(
+                                                  //           r"[a-zA-Z0-9@&_,-\.']",
+                                                  //         ),
+                                                  //       ),
+                                                  //     ],
+                                                  //     hintText:
+                                                  //         'Select',
+                                                  //     keyboardType:
+                                                  //         TextInputType
+                                                  //             .emailAddress,
+                                                  //     controller:
+                                                  //         accountController
+                                                  //             .tuteclassController),
+                                                  // CommonDropdownInputField(
+                                                  //   title:
+                                                  //       'Class/Specialization',
+                                                  //   controllerValue:
+                                                  //       accountController
+                                                  //           .tuteeSpeciallization,
+                                                  //   selectedValue:
+                                                  //       accountController
+                                                  //           .tuteeSpeciallization,
+                                                  //   items: accountController
+                                                  //       .tuteeSpeciallizationClass,
+                                                  //   onChanged:
+                                                  //       accountController
+                                                  //           .setTuteeSpeciallization,
+                                                  // ),
+                                                  // const SizedBox(
+                                                  //   height: 5,
+                                                  // ),
+                                                  // Row(
+                                                  //   children: [
+                                                  //     const Text(
+                                                  //       'Board',
+                                                  //       style: TextStyle(
+                                                  //         fontSize: 14,
+                                                  //         fontWeight:
+                                                  //             FontWeight.w500,
+                                                  //         color: Colors.black,
+                                                  //       ),
+                                                  //     ),
+                                                  //     Text(
+                                                  //       '*',
+                                                  //       style: GoogleFonts
+                                                  //           .nunito(
+                                                  //         fontSize: 18,
+                                                  //         fontWeight:
+                                                  //             FontWeight.w600,
+                                                  //         color: Colors.red
+                                                  //             .withOpacity(
+                                                  //                 0.6),
+                                                  //       ),
+                                                  //     ),
+                                                  //   ],
+                                                  // ),
+                                                  // const SizedBox(
+                                                  //   height: 10,
+                                                  // ),
+                                                  // InputTextField(
+                                                  //     suffix: false,
+                                                  //     readonly: false,
+                                                  //     inputFormatter: [
+                                                  //       FilteringTextInputFormatter
+                                                  //           .allow(
+                                                  //         RegExp(
+                                                  //           r"[a-zA-Z0-9@&_,-\.']",
+                                                  //         ),
+                                                  //       ),
+                                                  //     ],
+                                                  //     hintText:
+                                                  //         'Enter your board',
+                                                  //     keyboardType:
+                                                  //         TextInputType
+                                                  //             .emailAddress,
+                                                  //     controller:
+                                                  //         accountController
+                                                  //             .tuteeboardController),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      const Text(
+                                                        'Name of school/college',
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        '*',
+                                                        style:
+                                                            GoogleFonts.nunito(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.red
+                                                              .withOpacity(0.6),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  InputTextField(
+                                                      suffix: false,
+                                                      readonly: false,
+                                                      inputFormatter: [
+                                                        FilteringTextInputFormatter
+                                                            .allow(
+                                                          RegExp(
+                                                              r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                                        ),
+                                                      ],
+                                                      hintText: 'Enter here...',
+                                                      keyboardType:
+                                                          TextInputType
+                                                              .emailAddress,
+                                                      controller: accountController
+                                                          .tuteorganizationController),
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
                                                   InkWell(
                                                     onTap: () {
-                                                      KeyboardUtil
-                                                          .hideKeyboard(
-                                                              context);
-                                                      accountController
-                                                          .storeEducationInfo(
+                                                      KeyboardUtil.hideKeyboard(
+                                                          context);
+                                                  
+                                                       if (isGoogleSignIn == true &&
+                                                accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is true and account is verified, store personal info
+                                                accountController
+                                                          .storeTuteeeducationInfo(
                                                               context,
                                                               roleId,
-                                                              roleTypeId,
-                                                              selectedRole);
+                                                              roleTypeId);
+                                            } else if (isGoogleSignIn == true &&
+                                                !accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is true but account is not verified, show verification message
+                                              SnackBarUtils.showErrorSnackBar(
+                                                context,
+                                                "Please verify your phone number",
+                                              );
+                                            } else if (isGoogleSignIn ==
+                                                    false &&
+                                                !accountController
+                                                    .accountVerified.value) {
+                                              // If GoogleSignIn is false and account is not verified, store personal info
+                                                  accountController
+                                                          .storeTuteeeducationInfo(
+                                                              context,
+                                                              roleId,
+                                                              roleTypeId);
+                                            }
                                                     },
                                                     child: Container(
                                                       height: 48,
-                                                      padding:
-                                                          const EdgeInsets
-                                                              .symmetric(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
                                                         horizontal: 40,
                                                         vertical: 12,
                                                       ),
@@ -1324,559 +1981,36 @@ class AccountSetup extends StatelessWidget {
                                                               .bottomCenter,
                                                         ),
                                                       ),
-                                                      child:
-                                                          accountController
-                                                                  .isLoading
-                                                                  .value
-                                                              ? const Center(
-                                                                  child:
-                                                                      CircularProgressIndicator(),
-                                                                )
-                                                              : const Center(
-                                                                  child: Text(
-                                                                    'Submit',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight.w600,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                  ),
+                                                      child: accountController
+                                                              .isLoading.value
+                                                          ? const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            )
+                                                          : const Center(
+                                                              child: Text(
+                                                                'Submit',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Colors
+                                                                      .white,
                                                                 ),
+                                                              ),
+                                                            ),
                                                     ),
                                                   ),
                                                   const SizedBox(
                                                     height: 16,
                                                   ),
-                            
-                                                  // SingleButton(
-                                                  //   btnName: 'Add',
-                                                  //   onTap: () {
-                                                  // accountController
-                                                  //     .storeEducationInfo(context);
-                            
-                                                  //   },
-                                                  // )
                                                 ],
                                               ),
                                             ),
                                           )
-                                        : selectedRole == 'Tutee'
-                                            ? Container(
-                                                padding: const EdgeInsets
-                                                    .symmetric(
-                                                    horizontal: 12),
-                                                child: SingleChildScrollView(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          const Text(
-                                                            'Highest qualification',
-                                                            style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: Colors
-                                                                  .black,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            '*',
-                                                            style: GoogleFonts
-                                                                .nunito(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color: Colors
-                                                                  .red
-                                                                  .withOpacity(
-                                                                      0.6),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      // InputTextField(
-                                                      //     suffix: false,
-                                                      //     readonly: false,
-                                                      //     inputFormatter: [
-                                                      //       FilteringTextInputFormatter
-                                                      //           .allow(
-                                                      //         RegExp(
-                                                      //           r"[a-zA-Z0-9@&_,-\.']",
-                                                      //         ),
-                                                      //       ),
-                                                      //     ],
-                                                      //     hintText:
-                                                      //         'Select',
-                                                      //     keyboardType:
-                                                      //         TextInputType
-                                                      //             .emailAddress,
-                                                      //     controller:
-                                                      //         accountController
-                                                      //             .tuteQualificationController),
-                                                      CommonDropdownInputField(
-                                                        title:
-                                                            'Highest qualification',
-                                                        controllerValue:
-                                                            accountController
-                                                                .tuteeHighestQualification,
-                                                        selectedValue:
-                                                            accountController
-                                                                .tuteeHighestQualification,
-                                                        items: accountController
-                                                            .tuteeQualifications,
-                                                        onChanged:
-                                                            accountController
-                                                                .setTuteeHighestQualification,
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      Column(
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              const Text(
-                                                                'Choose a board',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      14,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                '*',
-                                                                style:
-                                                                    GoogleFonts
-                                                                        .nunito(
-                                                                  fontSize:
-                                                                      18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: Colors
-                                                                      .red
-                                                                      .withOpacity(
-                                                                          0.6),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Obx(() =>
-                                                              CommonDropdownInputField(
-                                                                title:
-                                                                    'board',
-                                                                controllerValue:
-                                                                    accountController
-                                                                        .boardController
-                                                                        .value
-                                                                        .obs,
-                                                                selectedValue:
-                                                                    accountController
-                                                                        .boardController
-                                                                        .value
-                                                                        .obs,
-                                                                items:
-                                                                    accountController
-                                                                        .board,
-                                                                onChanged:
-                                                                    accountController
-                                                                        .setBoard,
-                                                              )),
-                                                        ],
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal:
-                                                                    5.0,
-                                                                vertical: 10),
-                                                        child: Column(
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                const Text(
-                                                                  'Select a class',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: Colors
-                                                                        .black,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  '*',
-                                                                  style: GoogleFonts
-                                                                      .nunito(
-                                                                    fontSize:
-                                                                        18,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    color: Colors
-                                                                        .red
-                                                                        .withOpacity(
-                                                                            0.6),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Obx(() =>
-                                                                CommonDropdownInputField(
-                                                                  title:
-                                                                      'Class',
-                                                                  controllerValue:
-                                                                      accountController
-                                                                          .classController
-                                                                          .value
-                                                                          .obs,
-                                                                  selectedValue:
-                                                                      accountController
-                                                                          .classController
-                                                                          .value
-                                                                          .obs,
-                                                                  items: accountController
-                                                                      .classList,
-                                                                  onChanged:
-                                                                      accountController
-                                                                          .setClass,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal:
-                                                                    5.0,
-                                                                vertical: 10),
-                                                        child: Column(
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                const Text(
-                                                                  'Choose a subject',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: Colors
-                                                                        .black,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  '*',
-                                                                  style: GoogleFonts
-                                                                      .nunito(
-                                                                    fontSize:
-                                                                        18,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    color: Colors
-                                                                        .red
-                                                                        .withOpacity(
-                                                                            0.6),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Obx(() =>
-                                                                CommonDropdownInputField(
-                                                                  title:
-                                                                      'subject',
-                                                                  controllerValue:
-                                                                      accountController
-                                                                          .subjectController
-                                                                          .value
-                                                                          .obs,
-                                                                  selectedValue:
-                                                                      accountController
-                                                                          .subjectController
-                                                                          .value
-                                                                          .obs,
-                                                                  items: accountController
-                                                                      .subject,
-                                                                  onChanged:
-                                                                      accountController
-                                                                          .setSubject,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      // Row(
-                                                      //   children: [
-                                                      //     const Text(
-                                                      //       'Class/Specialization',
-                                                      //       style: TextStyle(
-                                                      //         fontSize: 14,
-                                                      //         fontWeight:
-                                                      //             FontWeight
-                                                      //                 .w500,
-                                                      //         color: Colors
-                                                      //             .black,
-                                                      //       ),
-                                                      //     ),
-                                                      //     Text(
-                                                      //       '*',
-                                                      //       style: GoogleFonts
-                                                      //           .nunito(
-                                                      //         fontSize: 18,
-                                                      //         fontWeight:
-                                                      //             FontWeight
-                                                      //                 .w600,
-                                                      //         color: Colors
-                                                      //             .red
-                                                      //             .withOpacity(
-                                                      //                 0.6),
-                                                      //       ),
-                                                      //     ),
-                                                      //   ],
-                                                      // ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      // InputTextField(
-                                                      //     suffix: false,
-                                                      //     readonly: false,
-                                                      //     inputFormatter: [
-                                                      //       FilteringTextInputFormatter
-                                                      //           .allow(
-                                                      //         RegExp(
-                                                      //           r"[a-zA-Z0-9@&_,-\.']",
-                                                      //         ),
-                                                      //       ),
-                                                      //     ],
-                                                      //     hintText:
-                                                      //         'Select',
-                                                      //     keyboardType:
-                                                      //         TextInputType
-                                                      //             .emailAddress,
-                                                      //     controller:
-                                                      //         accountController
-                                                      //             .tuteclassController),
-                                                      // CommonDropdownInputField(
-                                                      //   title:
-                                                      //       'Class/Specialization',
-                                                      //   controllerValue:
-                                                      //       accountController
-                                                      //           .tuteeSpeciallization,
-                                                      //   selectedValue:
-                                                      //       accountController
-                                                      //           .tuteeSpeciallization,
-                                                      //   items: accountController
-                                                      //       .tuteeSpeciallizationClass,
-                                                      //   onChanged:
-                                                      //       accountController
-                                                      //           .setTuteeSpeciallization,
-                                                      // ),
-                                                      // const SizedBox(
-                                                      //   height: 5,
-                                                      // ),
-                                                      // Row(
-                                                      //   children: [
-                                                      //     const Text(
-                                                      //       'Board',
-                                                      //       style: TextStyle(
-                                                      //         fontSize: 14,
-                                                      //         fontWeight:
-                                                      //             FontWeight.w500,
-                                                      //         color: Colors.black,
-                                                      //       ),
-                                                      //     ),
-                                                      //     Text(
-                                                      //       '*',
-                                                      //       style: GoogleFonts
-                                                      //           .nunito(
-                                                      //         fontSize: 18,
-                                                      //         fontWeight:
-                                                      //             FontWeight.w600,
-                                                      //         color: Colors.red
-                                                      //             .withOpacity(
-                                                      //                 0.6),
-                                                      //       ),
-                                                      //     ),
-                                                      //   ],
-                                                      // ),
-                                                      // const SizedBox(
-                                                      //   height: 10,
-                                                      // ),
-                                                      // InputTextField(
-                                                      //     suffix: false,
-                                                      //     readonly: false,
-                                                      //     inputFormatter: [
-                                                      //       FilteringTextInputFormatter
-                                                      //           .allow(
-                                                      //         RegExp(
-                                                      //           r"[a-zA-Z0-9@&_,-\.']",
-                                                      //         ),
-                                                      //       ),
-                                                      //     ],
-                                                      //     hintText:
-                                                      //         'Enter your board',
-                                                      //     keyboardType:
-                                                      //         TextInputType
-                                                      //             .emailAddress,
-                                                      //     controller:
-                                                      //         accountController
-                                                      //             .tuteeboardController),
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          const Text(
-                                                            'Name of school/college',
-                                                            style: TextStyle(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: Colors
-                                                                  .black,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            '*',
-                                                            style: GoogleFonts
-                                                                .nunito(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color: Colors
-                                                                  .red
-                                                                  .withOpacity(
-                                                                      0.6),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      InputTextField(
-                                                          suffix: false,
-                                                          readonly: false,
-                                                          inputFormatter: [
-                                                            FilteringTextInputFormatter
-                                                                .allow(
-                                                              RegExp(
-                                                                  r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
-                                                            ),
-                                                          ],
-                                                          hintText:
-                                                              'Enter here...',
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .emailAddress,
-                                                          controller:
-                                                              accountController
-                                                                  .tuteorganizationController),
-                                                      const SizedBox(
-                                                        height: 15,
-                                                      ),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          KeyboardUtil
-                                                              .hideKeyboard(
-                                                                  context);
-                                                          accountController
-                                                              .storeTuteeeducationInfo(
-                                                                  context,
-                                                                  roleId,
-                                                                  roleTypeId);
-                                                        },
-                                                        child: Container(
-                                                          height: 48,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                            horizontal: 40,
-                                                            vertical: 12,
-                                                          ),
-                                                          decoration:
-                                                              const BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(
-                                                              Radius.circular(
-                                                                  8),
-                                                            ),
-                                                            gradient:
-                                                                LinearGradient(
-                                                              colors: [
-                                                                Color(
-                                                                    0xFFC13584),
-                                                                Color(
-                                                                    0xFF833AB4)
-                                                              ],
-                                                              begin: Alignment
-                                                                  .topCenter,
-                                                              end: Alignment
-                                                                  .bottomCenter,
-                                                            ),
-                                                          ),
-                                                          child: accountController
-                                                                  .isLoading
-                                                                  .value
-                                                              ? const Center(
-                                                                  child:
-                                                                      CircularProgressIndicator(),
-                                                                )
-                                                              : const Center(
-                                                                  child: Text(
-                                                                    'Submit',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight.w600,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 16,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                            : Container()
+                                        : Container()
                               ],
                             ),
                           )

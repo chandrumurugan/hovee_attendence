@@ -68,6 +68,10 @@ class AuthControllers extends GetxController
 
   final ParentController parentController = Get.put(ParentController());
 
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+
+   RxBool resend = false.obs;
+
    List<Map<String, String>> country_codes = [
   {
     "name": "Afghanistan",
@@ -1284,7 +1288,9 @@ class AuthControllers extends GetxController
 ];
 
    final FirebaseAuth _auth = FirebaseAuth.instance;
-  late final GoogleSignIn _googleSignIn;
+  
+
+    bool? isGoogleSignIn;
 
   AuthControllers() {
     _googleSignIn = GoogleSignIn(
@@ -1294,6 +1300,8 @@ class AuthControllers extends GetxController
       ],
     );
   }
+
+  //final accController = Get.put(AccountSetupController());
 
 
   bool validateFields(BuildContext context) {
@@ -1439,7 +1447,7 @@ class AuthControllers extends GetxController
           isLoading.value = false;
           logInController.clear();
           isChecked.value = false;
-          Get.to(() => OtpScreen());
+          Get.to(() => const OtpScreen());
         } else {
           Logger().e('Failed to load AppConfig');
           isLoading.value = false;
@@ -1478,7 +1486,7 @@ class AuthControllers extends GetxController
           selectedIDProof.value = '';
 
           isLoading.value = false;
-          Get.to(() => OtpScreen());
+          Get.to(() => const OtpScreen());
         } else {
           Logger().e('Failed to load AppConfig');
           isLoading.value = false;
@@ -1495,8 +1503,14 @@ class AuthControllers extends GetxController
       try {
         // Logger().i("moving to otp ===>$");
         SharedPreferences prefs = await SharedPreferences.getInstance();
+         final args = Get.arguments ?? false;
+    isGoogleSignIn = args;
+    String AccountVerificationToken=prefs.getString("AccountVerificationToken")??'';
         var response = await WebService.otp(
             otpController.text,
+          isGoogleSignIn! ? 
+          AccountVerificationToken:
+      // accController.loginResponse!.otp!
             currentTabIndex.value == 0 || isOtpResent.value
                 ? loginResponse.value.accountVerificationToken!
                 : registerResponse.value.data!.accountVerificationToken!,
@@ -1519,6 +1533,7 @@ class AuthControllers extends GetxController
        
           // }
           prefs.setString('Rolename', response.data!.roles!.roleName ?? '');
+           prefs.setString('accountVerified', response.accountVerified.toString());
           var validateTokendata = response.data!;
           //if(response.parentData=='true'){
           // parentController.fetchHomeDashboardTuteeList();
@@ -1574,21 +1589,28 @@ class AuthControllers extends GetxController
 
   // Function to resend OTP
   Future<void> resendOtp(BuildContext context) async {
-    // Add your resend OTP logic here
-    // After successful resend, restart the timer
-
-    try {
+   try {
+       SharedPreferences prefs = await SharedPreferences.getInstance();
+      String AccountVerificationToken=prefs.getString("AccountVerificationToken")??'';
+       final args = Get.arguments ?? false;
+    isGoogleSignIn = args;
       var response = await WebService.resendOtp(
         context: context,
-        accountToken: currentTabIndex.value == 0
+        accountToken:  isGoogleSignIn! ? 
+          AccountVerificationToken:
+         currentTabIndex.value == 0
             ? loginResponse.value.accountVerificationToken!
             : registerResponse.value.data!.accountVerificationToken!,
       );
       if (response != null) {
         isOtpResent(true);
+        resend(true);
         loginResponse.value = response;
+        otpController.text =response.otp!;
+         await prefs.setString("OTP", response.otp!);
         isLoading.value = false;
-        startTimer();
+        startTimer(); 
+        update();
         // Get.to(() => OtpScreen());
       } else {
         Logger().e('Failed to load AppConfig');
@@ -1708,6 +1730,12 @@ class AuthControllers extends GetxController
       print('Failed to sign in with Google: $e');
     }
   }
+
+  Future<void> logout() async {
+  await _googleSignIn.signOut();
+  print("User logged out successfully");
+}
+  
 }
 
 class UserDataq {
@@ -1733,5 +1761,6 @@ class UserDataq {
     );
   }
 
-  
+
+
 }

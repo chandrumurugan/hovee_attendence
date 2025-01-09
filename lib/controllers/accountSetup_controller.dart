@@ -8,13 +8,16 @@ import 'package:google_places_flutter/model/prediction.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/parent_controller.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/login_data_model.dart';
+import 'package:hovee_attendence/modals/phonenumberVerfication_model.dart';
 import 'package:hovee_attendence/services/liveLocationService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
+import 'package:hovee_attendence/view/loginSignup/otp_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
@@ -24,9 +27,9 @@ import 'package:geocoding/geocoding.dart';
 
 class AccountSetupController extends GetxController
     with GetTickerProviderStateMixin {
-  // final AuthControllers authControllers = Get.put(AuthControllers());
+   final  authControllers = Get.find<AuthControllers>();
 
-  late AuthControllers authControllers;
+  //late AuthControllers authControllers;
   late TabController tabController;
   var currentTabIndex = 0.obs;
   RxBool isLoading = false.obs;
@@ -121,21 +124,38 @@ class AccountSetupController extends GetxController
 
     var isFirstTime = true.obs;
     var isLocationSearched = false.obs;
+
+  bool? isGoogleSignIn;
+  RxBool accountVerified = false.obs;
+
+  AccountSetupController({this.isGoogleSignIn});
+   PhnData? loginResponse;
+
+    var isPhoneNumberVerified = false.obs;
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    final args = Get.arguments ?? '';
-    parentId = args;
-    //selectedRole = args?['selectedRole'];
+    final args = Get.arguments;
+
+  if (args != null && args is Map) {
+    parentId = args['parentId'] ?? '';
+    isGoogleSignIn = args['isGoogleSignIn'] ?? false;
+
     print("Parent ID: $parentId");
-    //print("Selected Role: $selectedRole");
-    authControllers = Get.find<AuthControllers>();
+    print("isGoogleSignIn: $isGoogleSignIn");
+  } else {
+    print("No arguments passed or arguments format is invalid.");
+  }
+   final authControllers = Get.put(AuthControllers());
     tabController =
         TabController(length: selectedRole == 'Parent' ? 2 : 3, vsync: this);
     print(parentId);
-    if ((parentId == null || parentId == "")) {
+    if ((parentId == null)) {
       _populateFieldsFromAuth();
+    }
+    if(isGoogleSignIn==false){
+       _populateFieldsFromAuth();
     }
     if ((parentId != "")) {
       phController.text = parentController.otpResponse.value != null
@@ -1024,6 +1044,8 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
             .toSet() // Removes duplicates
             .cast<String>() // Ensures all items are strings
             .toList() ?? [];
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+           
 
         Logger().i('AppConfig loaded successfully');
       } else {
@@ -1074,4 +1096,60 @@ void setClass(String value) {
 void setSubject(String value) {
   subjectController.value = value;
 }
+
+  void phoneNumberVerified(String identifiers, BuildContext context) async {
+    if (validateLogin(context)) {
+      isLoading.value = true;
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var response = await WebService.phoneNumberVerified(identifiers, context);
+        if (response != null) {
+          loginResponse = response.data;
+        await prefs.setString("OTP", response.data!.otp!);
+        await prefs.setString("AccountVerificationToken", response.data!.accountVerificationToken!);
+          isPhoneNumberVerified.value = true;
+          isLoading.value = false;
+          phController.clear();
+       final result=  await Get.to(() => OtpScreen(phnNumber: identifiers,),arguments: isGoogleSignIn,);
+        if (result != null) {
+    phController.text = result['phnNumber']; // Update phone number
+  accountVerified.value = result['accountVerified'];
+  }
+        } else {
+          Logger().e('Failed to load AppConfig');
+          isLoading.value = false;
+          isPhoneNumberVerified.value = false;
+        }
+      } catch (e) {
+        isPhoneNumberVerified.value = false;
+        Logger().e(e);
+      }
+    }
+  }
+
+  bool validateLogin(BuildContext context) {
+    String input = phController.text.trim();
+
+    if (input.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the phone number',
+      );
+      return false;
+    }
+
+    // Check if the input is a phone number (10 digits)
+    if (RegExp(r'^[0-9]+$').hasMatch(input)) {
+      if (input.length != 10) {
+        SnackBarUtils.showErrorSnackBar(
+          context,
+          'Invalid Phone number',
+        );
+        return false;
+      }
+      return true; // It's a valid phone number
+    }
+    // If the input is a valid email
+    return true;
+  }
 }

@@ -14,7 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RoleSelection extends StatefulWidget {
   final bool isFromParentOtp;
   final String? parentId;
-  const RoleSelection({Key? key, required this.isFromParentOtp, this.parentId})
+   final bool isGoogleSignIn;
+  const RoleSelection({Key? key, required this.isFromParentOtp, this.parentId, required this.isGoogleSignIn})
       : super(key: key);
 
   @override
@@ -368,7 +369,10 @@ class _RoleSelectionState extends State<RoleSelection> {
                                       selectedRole: selectedRole ?? '',
                                       parentId: widget.parentId ?? '',
                                     ),
-                                    arguments:  widget.parentId?? null,
+                                    arguments: {
+    'parentId': widget.parentId ?? null,
+    'isGoogleSignIn': widget.isGoogleSignIn, // or false, based on your logic
+  },
                                   );
                                     return; // Exit early if tutor is selected but no role type is selected
                                   }
@@ -387,8 +391,13 @@ class _RoleSelectionState extends State<RoleSelection> {
                                               selectedRoleTypeName ?? '',
                                           selectedRole: selectedRole ?? '',
                                           parentId: widget.parentId ?? '',
+                                          isGoogleSignIn:widget.isGoogleSignIn
                                         ),
-                                         arguments:  widget.parentId ?? null,
+                                        arguments: {
+    'parentId': widget.parentId ?? null,
+    'isGoogleSignIn': widget.isGoogleSignIn, // or false, based on your logic
+  },
+                                         
                                       );
                                     }
                                     return; // Exit after handling Parent role
@@ -402,8 +411,12 @@ class _RoleSelectionState extends State<RoleSelection> {
                                           selectedRoleTypeName ?? '',
                                       selectedRole: selectedRole ?? '',
                                       parentId: widget.parentId ?? '',
+                                      isGoogleSignIn:widget.isGoogleSignIn
                                     ),
-                                    arguments:  widget.parentId?? null,
+                                   arguments: {
+    'parentId': widget.parentId ?? null,
+    'isGoogleSignIn': widget.isGoogleSignIn, // or false, based on your logic
+  },
                                   );
                                 },
                                 child: Container(

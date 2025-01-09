@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
@@ -220,10 +221,12 @@ class SideMenu extends StatelessWidget {
             ),
             if (!isGuest)
               Obx(() {
+               
                 var logout = authController.currentTabIndex.value;
                 return ListTile(
                   onTap: () async {
                     // _logoutPopup(context);
+                    await authController.logout();
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
                     bool islogut = await ModalService.handleBackButton(context);
@@ -235,6 +238,7 @@ class SideMenu extends StatelessWidget {
                       authController.currentTabIndex.value == 0;
                       Get.offAll(() => const LoginSignUp());
                     } else {}
+                    
                   },
                   leading: const Icon(
                     Icons.logout_rounded,
