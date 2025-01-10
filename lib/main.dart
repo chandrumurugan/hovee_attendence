@@ -4,6 +4,7 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hovee_attendence/config/appConfig.dart';
 import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/addEnquery_controller.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
@@ -75,6 +76,7 @@ void main() async {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     final NotificationService notificationService = NotificationService();
   await notificationService.initialize();
+   APIConfig.environmentBuild = Environments.DEVELOPMENT;
    await GetStorage.init();
    
   SystemChrome.setPreferredOrientations([

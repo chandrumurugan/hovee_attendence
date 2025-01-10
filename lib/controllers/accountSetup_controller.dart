@@ -314,9 +314,10 @@ class AccountSetupController extends GetxController
   }
 
   void _populateFieldsFromAuth() {
-    Logger().i(
-        "getting idprrof value==>${authControllers.otpResponse.value.data!.idProof ?? ''}");
-    phController.text =
+    // Logger().i(
+    //     "getting idprrof value==>${authControllers.otpResponse.value.data!.idProof ?? ''}");
+    if(authControllers.otpResponse.value.data != null){
+       phController.text =
         authControllers.otpResponse.value.data!.phoneNumber ?? '';
     firstNameController.text =
         authControllers.otpResponse.value.data!.firstName ?? '';
@@ -329,7 +330,9 @@ class AccountSetupController extends GetxController
     selectedIDProof.value =
         authControllers.otpResponse.value.data!.idProof ?? '';
     idProofController.text =
-        authControllers.otpResponse.value.data!.idProof ?? '';
+        authControllers.otpResponse.value.data!.idProof ?? '';  
+    }
+ 
   }
 
   List<String> getQualifications() {

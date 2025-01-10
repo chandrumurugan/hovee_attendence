@@ -1294,6 +1294,7 @@ class AuthControllers extends GetxController
 
   AuthControllers() {
     _googleSignIn = GoogleSignIn(
+      clientId: "751210563328-g5tai08dr1nefkr0726tklou1jfaiodd.apps.googleusercontent.com",
       scopes: <String>[
         'email',
         'https://www.googleapis.com/auth/contacts.readonly',
