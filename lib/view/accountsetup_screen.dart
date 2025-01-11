@@ -299,9 +299,7 @@ class AccountSetup extends StatelessWidget {
                                               Expanded(
                                                 child: InputTextField(
                                                     suffix: false,
-                                                    readonly: isGoogleSignIn!
-                                                        ? true
-                                                        : false,
+                                                    readonly: false,
                                                     hintText: 'First',
                                                     keyboardType:
                                                         TextInputType.name,
@@ -325,9 +323,7 @@ class AccountSetup extends StatelessWidget {
                                               Expanded(
                                                 child: InputTextField(
                                                   suffix: false,
-                                                  readonly: isGoogleSignIn!
-                                                      ? true
-                                                      : false,
+                                                  readonly:  false,
                                                   hintText: 'Last',
                                                   keyboardType:
                                                       TextInputType.name,
