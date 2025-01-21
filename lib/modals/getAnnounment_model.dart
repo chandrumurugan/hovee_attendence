@@ -97,10 +97,10 @@ class BatchDetails {
   String? updatedAt;
   int? iV;
   String? endDate;
-  Null? institudeId;
+  String? institudeId;
   String? institudeName;
   String? startDate;
-  Null? teacherId;
+  String? teacherId;
 
   BatchDetails(
       {this.sId,

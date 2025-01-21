@@ -316,7 +316,7 @@ class PunchController extends GetxController {
           buttonLoader(false);
           SnackBarUtils.showSuccessSnackBar(
             context,
-            response!.message!,
+            response!.message ?? '',
           );
         }
       } else {

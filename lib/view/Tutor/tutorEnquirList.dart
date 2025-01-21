@@ -146,9 +146,9 @@ class Tutorenquirlist extends StatelessWidget {
                               Get.to(PreviewScreen(
                                 data: tutionCourseDetailsList,
                                 type: 'Enquire',
-                                tutorname: tutionCourseDetailsList.tutorName!,
+                                tutorname: tutionCourseDetailsList.tutorName ?? '',
                                 type1: type,
-                                tuteename: tutionCourseDetailsList.studentName!,
+                                tuteename: tutionCourseDetailsList.studentName ?? '',
                                 tuteeemail: '',
                                 tuteephn: '',
                                 onPreviewCallbackAccept: () {
@@ -162,14 +162,14 @@ class Tutorenquirlist extends StatelessWidget {
                                 onPreviewCallbackEnroll: () {
                                   Get.to(() => AddEnrollmentScreen(
                                         tuteename: tutionCourseDetailsList
-                                            .studentName!,
+                                            .studentName ?? '',
                                         batchname:
-                                            tutionCourseDetailsList.courseName!,
+                                            tutionCourseDetailsList.courseName ?? '',
                                         classname:
-                                            tutionCourseDetailsList.className!,
+                                            tutionCourseDetailsList.className ?? '',
                                         subject:
-                                            tutionCourseDetailsList.subject!,
-                                        board: tutionCourseDetailsList.board!,
+                                            tutionCourseDetailsList.subject ?? '',
+                                        board: tutionCourseDetailsList.board ?? '',
                                         batchStartingTime:
                                             tutionCourseDetailsList
                                                     .batchTimingStart ??
@@ -178,29 +178,29 @@ class Tutorenquirlist extends StatelessWidget {
                                                 .batchTimingEnd ??
                                             '',
                                         tutorname:
-                                            tutionCourseDetailsList.tutorName!,
+                                            tutionCourseDetailsList.tutorName ?? '',
                                         courseCodeName:
                                             tutionCourseDetailsList.courseCode??'',
                                         fees: tutionCourseDetailsList.fees??'',
                                         tutorId:
-                                            tutionCourseDetailsList.tutorId!,
+                                            tutionCourseDetailsList.tutorId ?? '',
                                         tuteeId:
-                                            tutionCourseDetailsList.studentId!,
+                                            tutionCourseDetailsList.studentId ?? '',
                                         courseId:
-                                            tutionCourseDetailsList.courseId!,
+                                            tutionCourseDetailsList.courseId ?? '',
                                         batchId:
-                                            tutionCourseDetailsList.batchId!,
+                                            tutionCourseDetailsList.batchId ?? '',
                                         enrollmentType: tutionCourseDetailsList
-                                            .enquiryType!,
+                                            .enquiryType ?? '',
                                         type: type,
                                         batchEndDate: tutionCourseDetailsList
-                                            .batchEndDate!,
+                                            .batchEndDate ?? '',
                                         batchMode:
-                                            tutionCourseDetailsList.batchMode!,
+                                            tutionCourseDetailsList.batchMode ?? '',
                                       ));
                                 },
-                                tutionName: tutionCourseDetailsList.tutionName!,
-                                email: email,
+                                tutionName: tutionCourseDetailsList.tutionName ?? '',
+                                email: email ,
                                 phno: phnno,
                               ));
                             },
@@ -374,26 +374,26 @@ class Tutorenquirlist extends StatelessWidget {
         child: InkWell(
           onTap: () {
             Get.to(() => AddEnrollmentScreen(
-                  tuteename: tutionCourseDetailsList.studentName!,
-                  batchname: tutionCourseDetailsList.courseName!,
-                  classname: tutionCourseDetailsList.className!,
-                  subject: tutionCourseDetailsList.subject!,
-                  board: tutionCourseDetailsList.board!,
+                  tuteename: tutionCourseDetailsList.studentName ?? '',
+                  batchname: tutionCourseDetailsList.courseName ?? '',
+                  classname: tutionCourseDetailsList.className ?? '',
+                  subject: tutionCourseDetailsList.subject ?? '',
+                  board: tutionCourseDetailsList.board ?? '',
                   batchStartingTime:
                       tutionCourseDetailsList.batchTimingStart ?? '',
                   batchEndingTime:
                       tutionCourseDetailsList.batchTimingEnd ?? '',
-                  tutorname: tutionCourseDetailsList.tutorName!,
-                  courseCodeName: tutionCourseDetailsList.courseCode!,
-                  fees: tutionCourseDetailsList.fees!,
-                  tutorId: tutionCourseDetailsList.tutorId!,
-                  tuteeId: tutionCourseDetailsList.studentId!,
-                  courseId: tutionCourseDetailsList.courseId!,
-                  batchId: tutionCourseDetailsList.batchId!,
-                  enrollmentType: tutionCourseDetailsList.enquiryType!,
+                  tutorname: tutionCourseDetailsList.tutorName ?? '',
+                  courseCodeName: tutionCourseDetailsList.courseCode ?? '',
+                  fees: tutionCourseDetailsList.fees ?? '',
+                  tutorId: tutionCourseDetailsList.tutorId ?? '',
+                  tuteeId: tutionCourseDetailsList.studentId ?? '',
+                  courseId: tutionCourseDetailsList.courseId ?? '',
+                  batchId: tutionCourseDetailsList.batchId ?? '',
+                  enrollmentType: tutionCourseDetailsList.enquiryType ?? '',
                   type: type,
                   batchEndDate: tutionCourseDetailsList.batchEndDate ?? '',
-                  batchMode: tutionCourseDetailsList.batchMode!,
+                  batchMode: tutionCourseDetailsList.batchMode ?? '',
                 ));
           },
           child: Container(

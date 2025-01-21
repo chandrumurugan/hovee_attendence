@@ -234,6 +234,8 @@ class SideMenu extends StatelessWidget {
                       // box.remove("Token");
                       prefs.remove('Token');
                       prefs.remove('PrentToken');
+                      prefs.remove("PrentToken");
+
                       authController.tabController.animateTo(0);
                       authController.currentTabIndex.value == 0;
                       Get.offAll(() => const LoginSignUp());

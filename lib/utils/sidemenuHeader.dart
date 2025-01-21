@@ -28,7 +28,7 @@ class SidemenuHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthControllers>();
-     final userProfileData = Get.find<UserProfileController>();
+     final UserProfileController userProfileData = Get.put(UserProfileController());
      //final parentController = Get.find<ParentAccountSetupController>();
       //  final ParentDashboardController  parentController =Get.put(ParentDashboardController());
       return FutureBuilder(future: authController.getStoredUserData(),

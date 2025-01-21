@@ -14,8 +14,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class RoleSelection extends StatefulWidget {
   final bool isFromParentOtp;
   final String? parentId;
-   final bool isGoogleSignIn;
-  const RoleSelection({Key? key, required this.isFromParentOtp, this.parentId, required this.isGoogleSignIn})
+  final bool isGoogleSignIn;
+  const RoleSelection(
+      {Key? key,
+      required this.isFromParentOtp,
+      this.parentId,
+      required this.isGoogleSignIn})
       : super(key: key);
 
   @override
@@ -360,20 +364,10 @@ class _RoleSelectionState extends State<RoleSelection> {
 
                                   if (selectedRole == 'Tutor' &&
                                       selectedRoleTypeName == 'Institute') {
-                                    Get.to(
-                                    () => AccountSetup(
-                                      roleId: selectedRoleId!,
-                                      roleTypeId: selectedRoleTypeId ?? '',
-                                      selectedRoleTypeName:
-                                          selectedRoleTypeName ?? '',
-                                      selectedRole: selectedRole ?? '',
-                                      parentId: widget.parentId ?? '',
-                                    ),
-                                    arguments: {
-    'parentId': widget.parentId ?? null,
-    'isGoogleSignIn': widget.isGoogleSignIn, // or false, based on your logic
-  },
-                                  );
+                                    SnackBarUtils.showSuccessSnackBar(
+                                      context,
+                                      'Feature under development.',
+                                    );
                                     return; // Exit early if tutor is selected but no role type is selected
                                   }
                                   // Handle Parent role navigation based on isFromParentOtp
@@ -385,38 +379,53 @@ class _RoleSelectionState extends State<RoleSelection> {
                                       // Navigate to AccountSetup
                                       Get.to(
                                         () => AccountSetup(
-                                          roleId: selectedRoleId!,
-                                          roleTypeId: selectedRoleTypeId ?? '',
-                                          selectedRoleTypeName:
-                                              selectedRoleTypeName ?? '',
-                                          selectedRole: selectedRole ?? '',
-                                          parentId: widget.parentId ?? '',
-                                          isGoogleSignIn:widget.isGoogleSignIn
-                                        ),
+                                            roleId: selectedRoleId!,
+                                            roleTypeId:
+                                                selectedRoleTypeId ?? '',
+                                            selectedRoleTypeName:
+                                                selectedRoleTypeName ?? '',
+                                            selectedRole: selectedRole ?? '',
+                                            parentId: widget.parentId ?? '',
+                                            isGoogleSignIn:
+                                                widget.isGoogleSignIn),
                                         arguments: {
-    'parentId': widget.parentId ?? null,
-    'isGoogleSignIn': widget.isGoogleSignIn, // or false, based on your logic
-  },
-                                         
+                                          'parentId': widget.parentId ?? null,
+                                          'isGoogleSignIn': widget
+                                              .isGoogleSignIn, // or false, based on your logic
+                                        },
                                       );
                                     }
                                     return; // Exit after handling Parent role
                                   }
+                                  if (selectedRole == 'Hostel') {
+                                    SnackBarUtils.showSuccessSnackBar(
+                                      context,
+                                      'Feature under development.',
+                                    );
+                                    return;
+                                  }
+                                   if (selectedRole == 'Hosteller') {
+                                    SnackBarUtils.showSuccessSnackBar(
+                                      context,
+                                      'Feature under development.',
+                                    );
+                                    return;
+                                  }
                                   // If we reach here, either a role is selected and it's not 'tutor', or it's 'tuttee' (which doesn't require a role type)
                                   Get.to(
                                     () => AccountSetup(
-                                      roleId: selectedRoleId!,
-                                      roleTypeId: selectedRoleTypeId ?? '',
-                                      selectedRoleTypeName:
-                                          selectedRoleTypeName ?? '',
-                                      selectedRole: selectedRole ?? '',
-                                      parentId: widget.parentId ?? '',
-                                      isGoogleSignIn:widget.isGoogleSignIn
-                                    ),
-                                   arguments: {
-    'parentId': widget.parentId ?? null,
-    'isGoogleSignIn': widget.isGoogleSignIn, // or false, based on your logic
-  },
+                                        roleId: selectedRoleId!,
+                                        roleTypeId: selectedRoleTypeId ?? '',
+                                        selectedRoleTypeName:
+                                            selectedRoleTypeName ?? '',
+                                        selectedRole: selectedRole ?? '',
+                                        parentId: widget.parentId ?? '',
+                                        isGoogleSignIn: widget.isGoogleSignIn),
+                                    arguments: {
+                                      'parentId': widget.parentId ?? null,
+                                      'isGoogleSignIn': widget
+                                          .isGoogleSignIn, // or false, based on your logic
+                                    },
                                   );
                                 },
                                 child: Container(

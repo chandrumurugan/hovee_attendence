@@ -58,9 +58,9 @@ class Data2 {
   String? batchShortName;
   String? branchName;
   String? endDate;
-  Null? institudeId;
+  String? institudeId;
   String? startDate;
-  Null? teacherId;
+  String? teacherId;
  
   Data2(
       {this.sId,

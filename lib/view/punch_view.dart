@@ -320,16 +320,6 @@ void _onBarcodeScanned(String? scannedData, BuildContext context) async {
   final longitude = _extractCoordinate(scannedData, 'longitude');
 
   if (wowIdFromCode == null) {
-    // Get.snackbar(
-    //   icon: Icon(
-    //     Icons.info,
-    //     color: Colors.white,
-    //     size: 40,
-    //   ),
-    //   'Invalid QR Code',
-    //   colorText: Colors.white,
-    //   backgroundColor: Color.fromRGBO(186, 1, 97, 1),
-    // );
      Get.snackbar(
          'Invalid QR Code',
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
@@ -381,9 +371,10 @@ void _onBarcodeScanned(String? scannedData, BuildContext context) async {
 
 
 String? _extractWowId(String code) {
-  final regex = RegExp(r'/(\d+)$');
+  final regex = RegExp(r'/([\w\d]+)$');
   final match = regex.firstMatch(code);
   if (match != null) {
+    Logger().i("${match} message}");
     return match.group(1);
   }
   return null;

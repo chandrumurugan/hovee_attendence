@@ -927,7 +927,8 @@ class AccountSetupController extends GetxController
         print(responseBody);
         final jsonResponse = jsonDecode(responseBody);
         var parentToken = jsonResponse["userDetails"]['token'];
-
+       String parentId = jsonResponse["userDetails"]["_id"];
+       print(parentId);
         // Extract firstName and lastName from personalInfo
         final firstName = personalInfo.value['first_name'] ?? '';
         final lastName = personalInfo.value['last_name'] ?? '';
@@ -949,7 +950,7 @@ class AccountSetupController extends GetxController
         // Navigate based on selectedRole
         if (selectedRole == 'Parent') {
           prefs.setString("PrentToken", parentToken);
-
+         //parentController.getUserTokenList(parentId);
           Get.off(() => DashboardScreen(
               rolename: 'Parent',
               firstname: firstName,
