@@ -177,6 +177,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                                          filteredList![index].batchTimingStart!,
                                          filteredList![index].batchTimingEnd!,
                                          filteredList![index].tutorAddress!,
+                                        filteredList![index].courseId! ,
                                         );
                                   },
                                   child: CourseListContainer1(
@@ -199,7 +200,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                                      batchMaximumSlots: filteredList![index].batchMaximumSlots ?? '', 
                                      batchTimingStart:  filteredList![index].batchTimingStart??'', 
                                      batchTimingEnd: filteredList![index].batchTimingEnd??'',
-                                      address:    filteredList![index].tutorAddress ??'',
+                                      address:    filteredList![index].tutorAddress ??'', courseId: filteredList![index].courseId!,
                                   ),
                                 ),
                               );

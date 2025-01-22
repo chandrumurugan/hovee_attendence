@@ -18,7 +18,9 @@ class EnRollmentPreviewScreen extends StatelessWidget {
   final CourseDetailController controller = Get.put(CourseDetailController());
   @override
   Widget build(BuildContext context) {
-     String Tutionaddress = "${data!.tutorId!.doorNo}, "
+     String Tutionaddress = data!.institudeId!=null?
+     data!.institudeId!.address?? '' :
+     "${data!.tutorId!.doorNo}, "
             "${data!.tutorId!.street}, "
             "${data!.tutorId!.city}, "
             "${data!.tutorId!.state}, "

@@ -21,7 +21,7 @@ class UserProfileM {
 }
 
 class UserData {
-    UserData({
+    UserData( {
         required this.id,
         required this.firstName,
         required this.lastName,
@@ -54,6 +54,7 @@ class UserData {
         required this.rolesId,
         required this.rolesTypeId,
         required this.qualificationDetails,
+       required this.institudeId,
     });
 
     final String? id;
@@ -88,6 +89,7 @@ class UserData {
     final RolesId? rolesId;
     final String? rolesTypeId;
     final List<QualificationDetail> qualificationDetails;
+    final String? institudeId;
 
     factory UserData.fromJson(Map<String, dynamic> json){ 
         return UserData(
@@ -122,7 +124,8 @@ class UserData {
             token: json["token"],
             rolesId: json["rolesId"] == null ? null : RolesId.fromJson(json["rolesId"]),
             rolesTypeId: json["rolesTypeId"],
-            qualificationDetails: json["qualificationDetails"] == null ? [] : List<QualificationDetail>.from(json["qualificationDetails"]!.map((x) => QualificationDetail.fromJson(x))),
+            qualificationDetails: json["qualificationDetails"] == null ? [] : List<QualificationDetail>.from(json["qualificationDetails"]!.map((x) => QualificationDetail.fromJson(x))), institudeId: json['institudeId'],
+            
         );
     }
 

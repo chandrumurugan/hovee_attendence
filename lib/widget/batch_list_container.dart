@@ -22,7 +22,9 @@ class BatchListConatiner extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-                Row(
+              batch.institudeId!=null?
+               SizedBox.shrink()
+               : Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       IconButton(

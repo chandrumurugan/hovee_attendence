@@ -38,7 +38,7 @@ class CourseDetailController extends GetxController {
     }
   
   void getClassTuteeById(BuildContext context, String className, String subject,
-      String TutorId,tutorname,fees,MaxSlots,startDate,endDate,String address) async {
+      String TutorId,tutorname,fees,MaxSlots,startDate,endDate,String address,String courseId) async {
      
     isLoading.value = true;
    
@@ -48,6 +48,7 @@ class CourseDetailController extends GetxController {
         'className': className,
         'subject': subject,
         'TutorId': TutorId,
+        'courseId':courseId,
       };
 
       final GetClassTuteeByIdModel? response =
@@ -59,7 +60,7 @@ class CourseDetailController extends GetxController {
 
         // Pass response data to CourseDetailScreen
         Get.to(CourseDetailScreen(
-          data: response.data!, tutorname: tutorname,
+          data: response.data!, tutorname: response.data!.tutorDetails!.firstName!,
           fees: fees.toString(), maxSlots: MaxSlots, startDate: startDate, endDate: endDate, address: address ,
         ));
       } else {

@@ -360,6 +360,7 @@ class ParentAccountSetupController extends GetxController
           registerResponse.value = response;
          var validateTokendata = response.data!;
             await prefs.setString('PrentToken',response.data!.token ?? "") ;
+            Logger().i("fafgnkanfgaklj${prefs.getString('PrentToken')?? ''}");
             //if(response.parentData=='true'){
           isLoading.value = false;
           Get.dialog(

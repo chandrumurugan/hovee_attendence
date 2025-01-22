@@ -220,7 +220,7 @@ class _ParentViewState extends State<ParentView> {
                   const SizedBox(
                     height: 10,
                   ),
-                  parentController.userDetails.isNotEmpty
+                  parentController.userDetails.value.isNotEmpty
                       ? Row(
                           mainAxisAlignment:
                               MainAxisAlignment.start, //spaceBetween
@@ -238,7 +238,7 @@ class _ParentViewState extends State<ParentView> {
                   Obx(() {
                     // Store token for the first item if not already stored
                     if (!parentController.isLoading.value &&
-                        parentController.userDetails.isNotEmpty) {
+                        parentController.userDetails.value.isNotEmpty) {
                       WidgetsBinding.instance.addPostFrameCallback((_) async {
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();

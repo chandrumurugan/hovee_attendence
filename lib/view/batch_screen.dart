@@ -216,7 +216,8 @@ class TutorBatchList extends StatelessWidget {
           }),
         ],
       ),
-      bottomNavigationBar: SingleCustomButtom(
+      bottomNavigationBar:  
+      SingleCustomButtom(
         btnName: 'Add',
         isPadded: false,
         onTap: () {

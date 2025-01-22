@@ -878,7 +878,7 @@ class WebService {
   static Future<GetClassTuteeByIdModel?> getClassTuteeById(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
-        "${baseUrl}tutee/getClassTuteeById"); // Replace with the actual endpoint
+        "${baseUrl}tutee/getClassTuteeByIds"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();

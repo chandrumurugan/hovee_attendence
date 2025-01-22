@@ -136,7 +136,7 @@ class Data {
   String? entrollmentType;
   String? createdAt;
   int? iV;
-
+  InstitudeId? institudeId;
   Data(
       {this.sId,
       this.tutorId,
@@ -151,7 +151,8 @@ class Data {
       this.status,
       this.entrollmentType,
       this.createdAt,
-      this.iV});
+      this.iV,
+      this.institudeId,});
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -174,6 +175,9 @@ class Data {
     entrollmentType = json['entrollmentType'];
     createdAt = json['createdAt'];
     iV = json['__v'];
+     institudeId = json['institudeId'] != null
+        ? new InstitudeId.fromJson(json['institudeId'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -200,6 +204,9 @@ class Data {
     data['entrollmentType'] = this.entrollmentType;
     data['createdAt'] = this.createdAt;
     data['__v'] = this.iV;
+     if (this.institudeId != null) {
+      data['institudeId'] = this.institudeId!.toJson();
+    }
     return data;
   }
 }
@@ -319,6 +326,108 @@ class BatchId {
     data['batch_timing_start'] = this.batchTimingStart;
     data['batch_timing_end'] = this.batchTimingEnd;
     data['fees'] = this.fees;
+    return data;
+  }
+
+
+}
+  class InstitudeId {
+  String? sId;
+  String? institudeName;
+  String? registerNo;
+  String? address;
+  String? branchShortName;
+  String? doorNo;
+  String? pincode;
+  String? street;
+  String? country;
+  String? city;
+  String? state;
+  String? landmark;
+  String? institudeFilename;
+  String? institudeUrl;
+  String? userId;
+  String? qrCode;
+  String? status;
+  int? isActive;
+  int? isDeleted;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+
+  InstitudeId(
+      {this.sId,
+      this.institudeName,
+      this.registerNo,
+      this.address,
+      this.branchShortName,
+      this.doorNo,
+      this.pincode,
+      this.street,
+      this.country,
+      this.city,
+      this.state,
+      this.landmark,
+      this.institudeFilename,
+      this.institudeUrl,
+      this.userId,
+      this.qrCode,
+      this.status,
+      this.isActive,
+      this.isDeleted,
+      this.createdAt,
+      this.updatedAt,
+      this.iV});
+
+  InstitudeId.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    institudeName = json['institude_name'];
+    registerNo = json['register_no'];
+    address = json['address'];
+    branchShortName = json['branch_short_name'];
+    doorNo = json['door_no'];
+    pincode = json['pincode'];
+    street = json['street'];
+    country = json['country'];
+    city = json['city'];
+    state = json['state'];
+    landmark = json['landmark'];
+    institudeFilename = json['institude_filename'];
+    institudeUrl = json['institude_url'];
+    userId = json['userId'];
+    qrCode = json['qr_code'];
+    status = json['status'];
+    isActive = json['is_active'];
+    isDeleted = json['is_deleted'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['institude_name'] = this.institudeName;
+    data['register_no'] = this.registerNo;
+    data['address'] = this.address;
+    data['branch_short_name'] = this.branchShortName;
+    data['door_no'] = this.doorNo;
+    data['pincode'] = this.pincode;
+    data['street'] = this.street;
+    data['country'] = this.country;
+    data['city'] = this.city;
+    data['state'] = this.state;
+    data['landmark'] = this.landmark;
+    data['institude_filename'] = this.institudeFilename;
+    data['institude_url'] = this.institudeUrl;
+    data['userId'] = this.userId;
+    data['qr_code'] = this.qrCode;
+    data['status'] = this.status;
+    data['is_active'] = this.isActive;
+    data['is_deleted'] = this.isDeleted;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['__v'] = this.iV;
     return data;
   }
 }

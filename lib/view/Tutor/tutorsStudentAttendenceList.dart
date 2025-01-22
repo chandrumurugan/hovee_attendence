@@ -447,23 +447,23 @@ class StudentAttendanceList extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: Text('Name',
                     style: GoogleFonts.nunito(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                         color: Colors.black)),
               ),
+              // Expanded(
+              //   flex: 1,
+              //   child: Text('Roll No',
+              //       style: GoogleFonts.nunito(
+              //           fontSize: 17,
+              //           fontWeight: FontWeight.w700,
+              //           color: Colors.black)),
+              // ),
               Expanded(
-                flex: 1,
-                child: Text('Roll No',
-                    style: GoogleFonts.nunito(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black)),
-              ),
-              Expanded(
-                flex: 1,
+                flex: 2,
                 child: Text('Punch in',
                     style: GoogleFonts.nunito(
                         fontSize: 17,
@@ -471,7 +471,7 @@ class StudentAttendanceList extends StatelessWidget {
                         color: Colors.black)),
               ),
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: Text('Punch out',
                     style: GoogleFonts.nunito(
                         fontSize: 17,
@@ -489,10 +489,10 @@ class StudentAttendanceList extends StatelessWidget {
               controller.data!.attendanceDetails!.isNotEmpty) {
             return Table(
               columnWidths: const {
-                0: FlexColumnWidth(1), // Name column width
-                1: FlexColumnWidth(1), // Roll No column width
-                2: FlexColumnWidth(1), // Punch in column width
-                3: FlexColumnWidth(1), // Punch out column width
+                0: FlexColumnWidth(1.5), // Name column width
+               // 1: FlexColumnWidth(1), // Roll No column width
+                1: FlexColumnWidth(0.9), // Punch in column width
+                2: FlexColumnWidth(2), // Punch out column width
               },
               // border: TableBorder.symmetric(
               //   inside: BorderSide(color: Colors.grey, width: 0.5),
@@ -509,14 +509,14 @@ class StudentAttendanceList extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black)),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(attendance.rollNo!,
-                            style: GoogleFonts.nunito(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black)),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      //   child: Text(attendance.rollNo!,
+                      //       style: GoogleFonts.nunito(
+                      //           fontSize: 16,
+                      //           fontWeight: FontWeight.w500,
+                      //           color: Colors.black)),
+                      // ),
                       Center(
                         child: attendance.punchInTime != null
                             ? Image.asset(

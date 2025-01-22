@@ -120,7 +120,7 @@ class UserProfile extends StatelessWidget {
                                 TextSpan(
                                   children: [
                                     TextSpan(
-                                      text: 'ID : ',
+                                      text:  accountController.userProfileResponse.value.data!.institudeId!=null? 'Reg no :':'ID : ',
                                       style: const TextStyle(
                                         color: AppConstants.secondaryColor,
                                         fontWeight:

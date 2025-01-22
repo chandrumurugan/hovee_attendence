@@ -950,12 +950,12 @@ class AccountSetupController extends GetxController
         // Navigate based on selectedRole
         if (selectedRole == 'Parent') {
           prefs.setString("PrentToken", parentToken);
-         //parentController.getUserTokenList(parentId);
+         parentController.getUserTokenList(parentId);
           Get.off(() => DashboardScreen(
               rolename: 'Parent',
               firstname: firstName,
               lastname: lastName,
-              wowid: wowId));
+              wowid: wowId),arguments: parentId);
         } else {
           prefs.setString("PrentToken", "");
           Get.offAll(() => DashboardScreen(

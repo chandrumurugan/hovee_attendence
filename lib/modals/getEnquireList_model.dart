@@ -67,6 +67,7 @@ class Data {
    String? tutionName;
     String? studentEmail;
   String? studentPhoneNo;
+  String? institudeId;
   Data(
       {this.enquiryId,
       this.courseName,
@@ -98,7 +99,8 @@ class Data {
       this.alreadyEnrollment,
       this.tutionName,
       this.studentEmail,
-      this.studentPhoneNo,});
+      this.studentPhoneNo,
+      this.institudeId});
 
   Data.fromJson(Map<String, dynamic> json) {
     enquiryId = json['enquiryId'];
@@ -139,6 +141,7 @@ class Data {
      tutionName = json['tution_name'];
       studentEmail = json['studentEmail'];
     studentPhoneNo = json['studentPhone_no'];
+    institudeId = json['institudeId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -174,6 +177,7 @@ class Data {
    data['tution_name'] = this.tutionName;
    data['studentEmail'] = this.studentEmail;
     data['studentPhone_no'] = this.studentPhoneNo;
+     data['institudeId'] = this.institudeId;
     return data;
   }
 }

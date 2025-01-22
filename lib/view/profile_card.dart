@@ -314,7 +314,14 @@ class HomePageHeader extends StatelessWidget {
                                 duration: 500.ms,
                               ),
                             ],
-                            child: Text('ID: ${userProfileData.userProfileResponse.value.data!.wowId ??''}',
+                            child:userProfileData.userProfileResponse.value.data!.institudeId!=null?
+                            Text( 'Reg no: ${userProfileData.userProfileResponse.value.data!.wowId ??''}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 13.0,
+                                  color: Colors.white,
+                                ))
+                            : Text( 'ID: ${userProfileData.userProfileResponse.value.data!.wowId ??''}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 13.0,

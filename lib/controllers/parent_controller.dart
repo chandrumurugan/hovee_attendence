@@ -127,6 +127,7 @@ class ParentController extends GetxController {
   UserDetail? userDetail;
 
   var userProfileResponse = UserProfileM().obs;
+  String? parentId;
 
   // @override
   // void onInit() {
@@ -165,7 +166,8 @@ class ParentController extends GetxController {
     super.onInit();
  
     // fetchUserProfiles();
-    
+    // parentId = Get.arguments ?? '';
+    // getUserTokenList(parentId!);
    
   }
 

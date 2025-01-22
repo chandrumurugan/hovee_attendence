@@ -43,7 +43,7 @@ class Data1 {
   String? createdAt;
   String? updatedAt;
   int? iV;
-
+ String? institudeId;
   Data1(
       {this.batchName,
       this.categories,
@@ -59,7 +59,8 @@ class Data1 {
       this.sId,
       this.createdAt,
       this.updatedAt,
-      this.iV});
+      this.iV,
+      this.institudeId,});
 
   Data1.fromJson(Map<String, dynamic> json) {
     batchName = json['batch_name'];
@@ -77,6 +78,7 @@ class Data1 {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     iV = json['__v'];
+    institudeId = json['institudeId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -96,6 +98,7 @@ class Data1 {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['__v'] = this.iV;
+    data['institudeId'] = this.institudeId;
     return data;
   }
 }
