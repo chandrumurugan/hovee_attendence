@@ -512,7 +512,12 @@ class BatchList {
     batchTimingEnd = json['batch_timing_end'];
     batchTimingStartMinutes = json['batch_timing_start_minutes'];
     batchTimingEndMinutes = json['batch_timing_end_minutes'];
-    batchDays = json['batch_days'];
+    //batchDays = json['batch_days'];
+     batchDays: json["batch_days"] == null
+    ? []
+    : (json["batch_days"] is String
+        ? json["batch_days"].split(', ') // Handle string case
+        : List<String>.from(json["batch_days"])); // Handle list case
     batchMode = json['batch_mode'];
     fees = json['fees'];
     month = json['month'];

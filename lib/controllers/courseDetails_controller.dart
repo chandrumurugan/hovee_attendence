@@ -60,7 +60,7 @@ class CourseDetailController extends GetxController {
 
         // Pass response data to CourseDetailScreen
         Get.to(CourseDetailScreen(
-          data: response.data!, tutorname: response.data!.tutorDetails!.firstName!,
+          data: response.data!, tutorname: response.data!.tutorDetails!.firstName ?? '',
           fees: fees.toString(), maxSlots: MaxSlots, startDate: startDate, endDate: endDate, address: address ,
         ));
       } else {

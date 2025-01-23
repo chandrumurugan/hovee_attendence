@@ -297,13 +297,16 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
+import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
+import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/ratings_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
   final String rolename;
@@ -328,11 +331,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
    int _backButtonPressedCount = 0;
     final NotificationController noticontroller =
       Get.put(NotificationController());
+        UserProfileM? userProfileResponse;
+        ValueNotifier<bool> isLoading = ValueNotifier(false);
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    fetchUserProfiles();
   }
 
   @override
@@ -411,7 +417,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       // else
       //   const Center(child: Text("Feature under development")),
-      const Center(child: Text("Feature under development")),
+      userProfileResponse!.data!.institudeId!=null?
+      SizedBox.shrink()
+      :const Center(child: Text("Feature under development")),
     ];
   }
 
@@ -432,6 +440,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _buildBottomNavItem(label: 'Enrollments', iconPath: 'assets/bottomBar/online-learning 1.png'),
        if (widget.rolename == 'Tutor')
       _buildBottomNavItem(label: 'Rating', iconPath: 'assets/bottomBar/Vector (4).png'),
+    if (userProfileResponse?.data?.institudeId == null)
       _buildBottomNavItem(label: 'Plan', iconPath: 'assets/bottomBar/Vector (2).png'),
     ];
   }
@@ -475,68 +484,100 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
       final TutorHomeController controller = Get.put(TutorHomeController());
        final TuteeHomeController tuteecontroller = Get.put(TuteeHomeController());
-    return WillPopScope(
-     onWillPop: () async {
-        if (_navigationStack.length > 0) {
-          // Navigate to the previous bottom tab
-          setState(() {
-            _navigationStack.removeLast();
-            _selectedIndex = _navigationStack.last;
-
-            // _selectedIndex -= 1;
-          });
-          _pageController.jumpToPage(_selectedIndex);
-          return false; // Prevent default back behavior
-        } else {
-          // Handle exit confirmation logic
-          if (_backButtonPressedCount == 1) {
-             return await ModalService.handleBackButtonN(context);
-          } else {
-            // Show snack bar for back button press hint
-            _backButtonPressedCount++;
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Press back again to exit'),
-                duration: Duration(seconds: 1),
-              ),
-            );
-            Future.delayed(const Duration(seconds: 2), () {
-              _backButtonPressedCount = 0;
-            });
-            return false; // Prevent default back behavior
-          }
-        }
-      },
-      child: Scaffold(
-        body: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: isLoading,
+      builder: (context, loading, child) {
+      return WillPopScope(
+       onWillPop: () async {
+          if (_navigationStack.length > 0) {
+            // Navigate to the previous bottom tab
             setState(() {
-              _selectedIndex = index;
+              _navigationStack.removeLast();
+              _selectedIndex = _navigationStack.last;
+      
+              // _selectedIndex -= 1;
             });
-          },
-          children: _buildScreens(),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          selectedLabelStyle: const TextStyle(
-            fontSize: 12,
-            color: AppConstants.secondaryColor,
+            _pageController.jumpToPage(_selectedIndex);
+            return false; // Prevent default back behavior
+          } else {
+            // Handle exit confirmation logic
+            if (_backButtonPressedCount == 1) {
+               return await ModalService.handleBackButtonN(context);
+            } else {
+              // Show snack bar for back button press hint
+              _backButtonPressedCount++;
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Press back again to exit'),
+                  duration: Duration(seconds: 1),
+                ),
+              );
+              Future.delayed(const Duration(seconds: 2), () {
+                _backButtonPressedCount = 0;
+              });
+              return false; // Prevent default back behavior
+            }
+          }
+        },
+        child: Scaffold(
+          body: loading
+              ? Center(child: CircularProgressIndicator())
+         : PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            children: _buildScreens(),
           ),
-          unselectedLabelStyle: const TextStyle(
-            fontSize: 12,
-            color: Colors.grey,
+          bottomNavigationBar:loading
+              ? Center(child: CircularProgressIndicator())
+         :
+           BottomNavigationBar(
+            backgroundColor: Colors.white,
+            selectedLabelStyle: const TextStyle(
+              fontSize: 12,
+              color: AppConstants.secondaryColor,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+            items: _navBarsItems(),
+            currentIndex: _selectedIndex,
+            selectedItemColor: AppConstants.secondaryColor,
+            unselectedItemColor: Colors.grey,
+            onTap: _onItemTapped,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
           ),
-          items: _navBarsItems(),
-          currentIndex: _selectedIndex,
-          selectedItemColor: AppConstants.secondaryColor,
-          unselectedItemColor: Colors.grey,
-          onTap: _onItemTapped,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
         ),
-      ),
+      );
+      }
     );
+  }
+
+
+void fetchUserProfiles() async { 
+  isLoading.value = true;// Start loading
+    try {
+      UserProfileM? fetchProfile = await WebService.fetchUserProfile();
+      if (fetchProfile != null) {
+        userProfileResponse = fetchProfile;
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('firstName', fetchProfile.data!.firstName!);
+        prefs.setString('lastName', fetchProfile.data!.lastName!);
+        prefs.setString('wowId', fetchProfile.data!.wowId!);
+        prefs.setString('RoleType', fetchProfile.data!.rolesId!.roleName!);
+      } else {
+        // Handle error or no data case
+      }
+    } catch (e) {
+      print(e);
+    } finally { 
+       isLoading.value = false;// Stop loading
+    }
   }
 }
