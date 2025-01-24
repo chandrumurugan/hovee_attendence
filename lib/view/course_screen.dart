@@ -185,7 +185,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
               course: course,
               batchMaximumSlots: '',
               batchTimingStart: '',
-              batchTimingEnd: '',
+              batchTimingEnd: '', instituteId: course.institudeId ?? '',
             ),
           );
         },
@@ -201,13 +201,23 @@ class _TutorCourseListState extends State<TutorCourseList> {
         ],
       ),
       // Bottom Button
-      bottomNavigationBar: SingleCustomButtom(
+      bottomNavigationBar:
+       Obx(() {
+         if (courseController.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            }
+           else if (courseController.instituteId ==null || courseController.instituteId == '') {
+              return SingleCustomButtom(
         btnName: 'Add',
         isPadded: false,
         onTap: () {
           courseController.navigateToAddCourseScreen();
         },
-      ),
+      );
+            } else  {
+              return SizedBox.shrink();
+            }
+             }),
     );
   }
 }

@@ -571,6 +571,7 @@ void fetchUserProfiles() async {
         prefs.setString('lastName', fetchProfile.data!.lastName!);
         prefs.setString('wowId', fetchProfile.data!.wowId!);
         prefs.setString('RoleType', fetchProfile.data!.rolesId!.roleName!);
+        prefs.setString('InstituteId', fetchProfile.data!.institudeId ?? '');
       } else {
         // Handle error or no data case
       }

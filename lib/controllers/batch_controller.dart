@@ -11,6 +11,7 @@ import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_batch.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BatchController extends GetxController {
   var batchList = [].obs;
@@ -68,6 +69,7 @@ var batchDaysController = "".obs;
   var filteredBatchList = [].obs; // Filtered list for display
   var searchKey = ''.obs;
  UserProfileController accountController = Get.put(UserProfileController());
+ var instituteId =''.obs;
   // Method to fetch batch list
 //   void fetchBatchList() async {o
 //   try {
@@ -134,6 +136,8 @@ var batchDaysController = "".obs;
       final storage = GetStorage();
       storage.write(
           'batchList', batchResponse.data!.map((e) => e.toJson()).toList());
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+       instituteId.value=   prefs.getString('InstituteId') ?? '';
     } else {
       batchList.clear();
     }

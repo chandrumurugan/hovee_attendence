@@ -27,6 +27,7 @@ class CourseListContainer extends StatelessWidget {
   final String batchMaximumSlots;
   final String batchTimingStart;
   final String batchTimingEnd;
+  final String instituteId;
   CourseListContainer(
       {super.key,
       required this.image,
@@ -39,7 +40,7 @@ class CourseListContainer extends StatelessWidget {
       required this.arrowIcon,
       required this.className,
       required this.tutorId,
-      required this.batchname, required this.tutorname, required this.type, required this.id, required this.course, required this.batchMaximumSlots, required this.batchTimingStart, required this.batchTimingEnd});
+      required this.batchname, required this.tutorname, required this.type, required this.id, required this.course, required this.batchMaximumSlots, required this.batchTimingStart, required this.batchTimingEnd, required this.instituteId});
 
   final CourseDetailController controller = Get.put(CourseDetailController());
   final CourseController courseController = Get.put(CourseController());
@@ -192,6 +193,7 @@ class CourseListContainer extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               fontSize: 14),
                         ),
+                      courseController. instituteId==null || courseController.instituteId == ''?
                         Row(
                   // mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -216,7 +218,7 @@ class CourseListContainer extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
+                  ):SizedBox.shrink(),
                       ],
                     ),
                     Row(

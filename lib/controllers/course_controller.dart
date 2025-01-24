@@ -13,6 +13,7 @@ import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_course_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -49,6 +50,7 @@ class CourseController extends GetxController {
   var searchKey = ''.obs;
   List<String> batchNamebyCourse = [];
    RxBool initialLoad = true.obs;
+    var instituteId =''.obs;
   // Method to fetch batch list
 //   void fetchCourseList() async {
 //   try {
@@ -102,7 +104,8 @@ class CourseController extends GetxController {
       final storage = GetStorage();
       storage.write('courseList',courseResponse.data!.map((batch) => batch.courseCode ?? '').toList());
       storage.write('courseCode', courseCodes);
-
+ SharedPreferences prefs = await SharedPreferences.getInstance();
+       instituteId.value=   prefs.getString('InstituteId') ?? '';
     } else {
       print('Course data is null');
     }

@@ -12,6 +12,7 @@ import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_class_screen.dart';
 import 'package:hovee_attendence/view/class_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ClassController extends GetxController with GetTickerProviderStateMixin {
   var courseCodeController = ''.obs;
@@ -43,6 +44,8 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
 
   final CourseController courseController = Get.put(CourseController());
   final BatchController controller = Get.put(BatchController());
+
+  var instituteId =''.obs;
 
   @override
   void onInit() {
@@ -104,6 +107,8 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
       if (classesResponse.data != null) {
         classesList.value = classesResponse.data!;
       }
+       SharedPreferences prefs = await SharedPreferences.getInstance();
+       instituteId.value=   prefs.getString('InstituteId') ?? '';
     } catch (e) {
       // Handle errors if needed
     } finally {

@@ -196,7 +196,7 @@ class TutorClassList extends StatelessWidget {
                                       'Status', tutionCourseDetailsList.status == "Public" ? "Live" : "Pending"),
                         
                                   // Display the button only if selectedTabIndex is 0 (Draft tab)
-                                  if (classController.selectedTabIndex.value == 0)
+                                  if (classController.instituteId ==null || classController.instituteId == '' && classController.selectedTabIndex.value == 0)
                                     SingleButton(
                                       btnName: 'Go live',
                                       onTap: () {
@@ -225,13 +225,22 @@ class TutorClassList extends StatelessWidget {
           )
         ],
       ),
-      bottomNavigationBar: SingleCustomButtom(
+      bottomNavigationBar:   Obx(() {
+         if (classController.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            }
+           else if (classController.instituteId ==null || classController.instituteId == '') {
+              return SingleCustomButtom(
         btnName: 'Add',
         isPadded: false,
         onTap: () {
           classController.navigateToAddCourseScreen();
         },
-      ),
+      );
+            } else  {
+              return SizedBox.shrink();
+            }
+             }),
     );
   }
 

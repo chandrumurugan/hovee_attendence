@@ -279,7 +279,7 @@ class Tutorenquirlist extends StatelessWidget {
                                       if ((classController
                                                   .selectedTabIndex.value ==
                                               0 &&
-                                          type == 'Tutor'))
+                                          type == 'Tutor' &&tutionCourseDetailsList.institudeId==null))
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
@@ -366,7 +366,7 @@ class Tutorenquirlist extends StatelessWidget {
                                           ],
                                         ),
                                       if ((classController.selectedTabIndex.value == 1 && type == 'Tutor') &&
-    !tutionCourseDetailsList.alreadyEnrollment!)
+    !tutionCourseDetailsList.alreadyEnrollment! &&tutionCourseDetailsList.institudeId==null)
   Row(
     mainAxisAlignment: MainAxisAlignment.end,
     children: [

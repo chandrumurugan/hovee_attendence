@@ -574,7 +574,7 @@ class PreviewScreen extends StatelessWidget {
             SizedBox(
               height: 8,
             ),
-            if ((type1 == 'Tutor' && data.status == 'Pending'))
+            if ((type1 == 'Tutor' && data.status == 'Pending' &&data.institudeId==null))
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -700,7 +700,7 @@ class PreviewScreen extends StatelessWidget {
             )
           : data.status == 'Approved' &&
                   type1 == 'Tutor' &&
-                  data.alreadyEnrollment == false
+                  data.alreadyEnrollment == false &&data.institudeId==null
               ? SingleCustomButtom(
                   btnName: 'Enroll now',
                   isPadded: false,
