@@ -11,6 +11,7 @@ import 'package:hovee_attendence/modals/getAnnounment_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_annouments_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AnnoumentController extends GetxController {
   var announmentBatchList = <BatchData>[].obs;
@@ -32,6 +33,7 @@ class AnnoumentController extends GetxController {
   var validationMessages = <String>[].obs;
 
   final storage = GetStorage();
+  var instituteId =''.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -99,6 +101,8 @@ class AnnoumentController extends GetxController {
         );
         storage.write(
             'courseNames', courseNames); // Updated to store combined names
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+       instituteId.value=   prefs.getString('InstituteId') ?? '';
       } else {
         print('Course data is null');
       }

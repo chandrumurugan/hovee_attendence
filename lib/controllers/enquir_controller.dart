@@ -6,6 +6,7 @@ import 'package:hovee_attendence/modals/updateEnquire_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EnquirDetailController extends GetxController
     with GetTickerProviderStateMixin {
@@ -22,6 +23,7 @@ class EnquirDetailController extends GetxController
           // final tuteeController = TextEditingController();
   
  String? lastWord;
+ var instituteId =''.obs;
 
   @override
   void onClose() {
@@ -117,6 +119,8 @@ class EnquirDetailController extends GetxController
       var classesResponse = await WebService.fetchEnquireList(batchData);
       if (classesResponse.data != null) {
         enquirList.value = classesResponse.data!;
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+       instituteId.value=   prefs.getString('InstituteId') ?? '';
       }
     } catch (e) {
       // Handle errors

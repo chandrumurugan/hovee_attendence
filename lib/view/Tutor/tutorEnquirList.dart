@@ -31,7 +31,7 @@ class Tutorenquirlist extends StatelessWidget {
       this.wowid,
       this.onDashBoardBack,
       this.lastWord})
-      : classController = Get.put(EnquirDetailController(),permanent: true);
+      : classController = Get.put(EnquirDetailController(), permanent: true);
 
   // final EnquirDetailController classController =
   //     Get.put(EnquirDetailController());
@@ -82,22 +82,22 @@ class Tutorenquirlist extends StatelessWidget {
                       color: Colors.black),
                 ),
               ),
-             GetBuilder<EnquirDetailController>(
-  init: EnquirDetailController(),
-  builder: (controller) {
-    return TabBar(
-      controller: controller.tabController,
-      tabs: const [
-        Tab(text: 'Pending'),
-        Tab(text: 'Accepted'),
-        Tab(text: 'Rejected'),
-      ],
-      onTap: (value) {
-        controller.handleTabChange(value);
-      },
-    );
-  },
-),
+              GetBuilder<EnquirDetailController>(
+                init: EnquirDetailController(),
+                builder: (controller) {
+                  return TabBar(
+                    controller: controller.tabController,
+                    tabs: const [
+                      Tab(text: 'Pending'),
+                      Tab(text: 'Accepted'),
+                      Tab(text: 'Rejected'),
+                    ],
+                    onTap: (value) {
+                      controller.handleTabChange(value);
+                    },
+                  );
+                },
+              ),
 
               //Display List based on the selected tab
               Expanded(
@@ -146,9 +146,11 @@ class Tutorenquirlist extends StatelessWidget {
                               Get.to(PreviewScreen(
                                 data: tutionCourseDetailsList,
                                 type: 'Enquire',
-                                tutorname: tutionCourseDetailsList.tutorName ?? '',
+                                tutorname:
+                                    tutionCourseDetailsList.tutorName ?? '',
                                 type1: type,
-                                tuteename: tutionCourseDetailsList.studentName ?? '',
+                                tuteename:
+                                    tutionCourseDetailsList.studentName ?? '',
                                 tuteeemail: '',
                                 tuteephn: '',
                                 onPreviewCallbackAccept: () {
@@ -162,14 +164,19 @@ class Tutorenquirlist extends StatelessWidget {
                                 onPreviewCallbackEnroll: () {
                                   Get.to(() => AddEnrollmentScreen(
                                         tuteename: tutionCourseDetailsList
-                                            .studentName ?? '',
-                                        batchname:
-                                            tutionCourseDetailsList.courseName ?? '',
+                                                .studentName ??
+                                            '',
+                                        batchname: tutionCourseDetailsList
+                                                .courseName ??
+                                            '',
                                         classname:
-                                            tutionCourseDetailsList.className ?? '',
+                                            tutionCourseDetailsList.className ??
+                                                '',
                                         subject:
-                                            tutionCourseDetailsList.subject ?? '',
-                                        board: tutionCourseDetailsList.board ?? '',
+                                            tutionCourseDetailsList.subject ??
+                                                '',
+                                        board:
+                                            tutionCourseDetailsList.board ?? '',
                                         batchStartingTime:
                                             tutionCourseDetailsList
                                                     .batchTimingStart ??
@@ -178,29 +185,40 @@ class Tutorenquirlist extends StatelessWidget {
                                                 .batchTimingEnd ??
                                             '',
                                         tutorname:
-                                            tutionCourseDetailsList.tutorName ?? '',
-                                        courseCodeName:
-                                            tutionCourseDetailsList.courseCode??'',
-                                        fees: tutionCourseDetailsList.fees??'',
+                                            tutionCourseDetailsList.tutorName ??
+                                                '',
+                                        courseCodeName: tutionCourseDetailsList
+                                                .courseCode ??
+                                            '',
+                                        fees:
+                                            tutionCourseDetailsList.fees ?? '',
                                         tutorId:
-                                            tutionCourseDetailsList.tutorId ?? '',
+                                            tutionCourseDetailsList.tutorId ??
+                                                '',
                                         tuteeId:
-                                            tutionCourseDetailsList.studentId ?? '',
+                                            tutionCourseDetailsList.studentId ??
+                                                '',
                                         courseId:
-                                            tutionCourseDetailsList.courseId ?? '',
+                                            tutionCourseDetailsList.courseId ??
+                                                '',
                                         batchId:
-                                            tutionCourseDetailsList.batchId ?? '',
+                                            tutionCourseDetailsList.batchId ??
+                                                '',
                                         enrollmentType: tutionCourseDetailsList
-                                            .enquiryType ?? '',
+                                                .enquiryType ??
+                                            '',
                                         type: type,
                                         batchEndDate: tutionCourseDetailsList
-                                            .batchEndDate ?? '',
+                                                .batchEndDate ??
+                                            '',
                                         batchMode:
-                                            tutionCourseDetailsList.batchMode ?? '',
+                                            tutionCourseDetailsList.batchMode ??
+                                                '',
                                       ));
                                 },
-                                tutionName: tutionCourseDetailsList.tutionName ?? '',
-                                email: email ,
+                                tutionName:
+                                    tutionCourseDetailsList.tutionName ?? '',
+                                email: email,
                                 phno: phnno,
                               ));
                             },
@@ -264,7 +282,11 @@ class Tutorenquirlist extends StatelessWidget {
                                                     tutionCourseDetailsList
                                                         .tutorName),
                                                 _buildRow(
-                                                   tutionCourseDetailsList.institudeId!=null? 'Institute name': 'Tution name' ,
+                                                    tutionCourseDetailsList
+                                                                .institudeId !=
+                                                            null
+                                                        ? 'Institute name'
+                                                        : 'Tution name',
                                                     tutionCourseDetailsList
                                                         .tutionName),
                                               ],
@@ -276,10 +298,14 @@ class Tutorenquirlist extends StatelessWidget {
                                         height: 5,
                                       ),
                                       // Display "Accept" and "Reject" buttons outside the column
-                                      if ((classController
+                                      if (classController
                                                   .selectedTabIndex.value ==
                                               0 &&
-                                          type == 'Tutor' &&tutionCourseDetailsList.institudeId==null))
+                                          type == 'Tutor' &&
+                                          (classController.instituteId ==
+                                                  null ||
+                                              classController.instituteId ==
+                                                  ""))
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
@@ -311,14 +337,16 @@ class Tutorenquirlist extends StatelessWidget {
                                                           .bottomCenter,
                                                     ),
                                                   ),
-                                                  child: Text("Accept",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: GoogleFonts.nunito(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 20,
-                                                          color: Colors.white)),
+                                                  child: Text(
+                                                    "Accept",
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.nunito(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -352,77 +380,150 @@ class Tutorenquirlist extends StatelessWidget {
                                                           .bottomCenter,
                                                     ),
                                                   ),
-                                                  child: Text("Reject",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: GoogleFonts.nunito(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 20,
-                                                          color: Colors.white)),
+                                                  child: Text(
+                                                    "Reject",
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.nunito(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ],
                                         ),
-                                      if ((classController.selectedTabIndex.value == 1 && type == 'Tutor') &&
-    !tutionCourseDetailsList.alreadyEnrollment! &&tutionCourseDetailsList.institudeId==null)
-  Row(
-    mainAxisAlignment: MainAxisAlignment.end,
-    children: [
-      Expanded(
-        child: InkWell(
-          onTap: () {
-            Get.to(() => AddEnrollmentScreen(
-                  tuteename: tutionCourseDetailsList.studentName ?? '',
-                  batchname: tutionCourseDetailsList.courseName ?? '',
-                  classname: tutionCourseDetailsList.className ?? '',
-                  subject: tutionCourseDetailsList.subject ?? '',
-                  board: tutionCourseDetailsList.board ?? '',
-                  batchStartingTime:
-                      tutionCourseDetailsList.batchTimingStart ?? '',
-                  batchEndingTime:
-                      tutionCourseDetailsList.batchTimingEnd ?? '',
-                  tutorname: tutionCourseDetailsList.tutorName ?? '',
-                  courseCodeName: tutionCourseDetailsList.courseCode ?? '',
-                  fees: tutionCourseDetailsList.fees ?? '',
-                  tutorId: tutionCourseDetailsList.tutorId ?? '',
-                  tuteeId: tutionCourseDetailsList.studentId ?? '',
-                  courseId: tutionCourseDetailsList.courseId ?? '',
-                  batchId: tutionCourseDetailsList.batchId ?? '',
-                  enrollmentType: tutionCourseDetailsList.enquiryType ?? '',
-                  type: type,
-                  batchEndDate: tutionCourseDetailsList.batchEndDate ?? '',
-                  batchMode: tutionCourseDetailsList.batchMode ?? '',
-                ));
-          },
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              gradient: const LinearGradient(
-                colors: [Color(0xFFBA0161), Color(0xFF510270)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            child: Text(
-              "Enroll now",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.nunito(
-                fontWeight: FontWeight.w500,
-                fontSize: 20,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(width: 10), // Spacing between buttons
-    ],
-  )
 
+                                      if (classController
+                                                  .selectedTabIndex.value ==
+                                              1 &&
+                                          type == 'Tutor' &&
+                                          !tutionCourseDetailsList
+                                              .alreadyEnrollment! &&
+                                          (classController.instituteId ==
+                                                  null ||
+                                              classController.instituteId ==
+                                                  ''))
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Get.to(
+                                                      () => AddEnrollmentScreen(
+                                                            tuteename:
+                                                                tutionCourseDetailsList
+                                                                        .studentName ??
+                                                                    '',
+                                                            batchname:
+                                                                tutionCourseDetailsList
+                                                                        .courseName ??
+                                                                    '',
+                                                            classname:
+                                                                tutionCourseDetailsList
+                                                                        .className ??
+                                                                    '',
+                                                            subject:
+                                                                tutionCourseDetailsList
+                                                                        .subject ??
+                                                                    '',
+                                                            board:
+                                                                tutionCourseDetailsList
+                                                                        .board ??
+                                                                    '',
+                                                            batchStartingTime:
+                                                                tutionCourseDetailsList
+                                                                        .batchTimingStart ??
+                                                                    '',
+                                                            batchEndingTime:
+                                                                tutionCourseDetailsList
+                                                                        .batchTimingEnd ??
+                                                                    '',
+                                                            tutorname:
+                                                                tutionCourseDetailsList
+                                                                        .tutorName ??
+                                                                    '',
+                                                            courseCodeName:
+                                                                tutionCourseDetailsList
+                                                                        .courseCode ??
+                                                                    '',
+                                                            fees:
+                                                                tutionCourseDetailsList
+                                                                        .fees ??
+                                                                    '',
+                                                            tutorId:
+                                                                tutionCourseDetailsList
+                                                                        .tutorId ??
+                                                                    '',
+                                                            tuteeId:
+                                                                tutionCourseDetailsList
+                                                                        .studentId ??
+                                                                    '',
+                                                            courseId:
+                                                                tutionCourseDetailsList
+                                                                        .courseId ??
+                                                                    '',
+                                                            batchId:
+                                                                tutionCourseDetailsList
+                                                                        .batchId ??
+                                                                    '',
+                                                            enrollmentType:
+                                                                tutionCourseDetailsList
+                                                                        .enquiryType ??
+                                                                    '',
+                                                            type: type,
+                                                            batchEndDate:
+                                                                tutionCourseDetailsList
+                                                                        .batchEndDate ??
+                                                                    '',
+                                                            batchMode:
+                                                                tutionCourseDetailsList
+                                                                        .batchMode ??
+                                                                    '',
+                                                          ));
+                                                },
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 10),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    gradient:
+                                                        const LinearGradient(
+                                                      colors: [
+                                                        Color(0xFFBA0161),
+                                                        Color(0xFF510270)
+                                                      ],
+                                                      begin:
+                                                          Alignment.topCenter,
+                                                      end: Alignment
+                                                          .bottomCenter,
+                                                    ),
+                                                  ),
+                                                  child: Text(
+                                                    "Enroll now",
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.nunito(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                                width:
+                                                    10), // Spacing between buttons
+                                          ],
+                                        ),
                                     ],
                                   ),
                                 ),

@@ -6,6 +6,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/guestHome_controller.dart';
+import 'package:hovee_attendence/modals/getBannerModel.dart';
+import 'package:hovee_attendence/modals/getBannerModel.dart';
+import 'package:hovee_attendence/modals/getTestimonialsModel.dart';
 import 'package:hovee_attendence/modals/guestHome_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutee/tutee_courseList.dart';
@@ -28,10 +31,14 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
   int mycount = 0;
   int _currentIndexSlider = 0;
   final GuesthomeController guestController = Get.put(GuesthomeController());
+   List<Datum>? guestTestData;
+   List<guestUserBannerData>? userBannerData;
   @override
   void initState() {
     super.initState();
     getHomeData();
+    fetchGuestUserBannerList();
+    fetchGuestUserTestimonialsList();
   }
 
   void getHomeData() async {
@@ -42,6 +49,36 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
     if (response != null && response.statusCode == 200) {
       setState(() {
         guestHomeData = response.data;
+        isLoading = false;
+      });
+
+      // guestHomeData.teacherList
+    }
+  }
+
+   void fetchGuestUserBannerList() async {
+    setState(() {
+      isLoading = true;
+    });
+    var response = await WebService.fetchGuestUserBannerList();
+    if (response != null && response.statusCode == 200) {
+      setState(() {
+        userBannerData = response.data;
+        isLoading = false;
+      });
+
+      // guestHomeData.teacherList
+    }
+  }
+
+  void fetchGuestUserTestimonialsList() async {
+    setState(() {
+      isLoading = true;
+    });
+    var response = await WebService.fetchGuestUserTestimonialsList();
+    if (response != null && response.statusCode == 200) {
+      setState(() {
+        guestTestData = response.data;
         isLoading = false;
       });
 
@@ -131,113 +168,123 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Container(
-                          //color: Colors.amber,
-                          height: 210,
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Stack(
-                            children: [
-                              Center(
-                                child: Container(
-                                  height: 180,
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    // color: Colors.amber,
-                                    borderRadius: BorderRadius.circular(20),
-                                    gradient: const LinearGradient(colors: [
-                                      Color(0xFFBA0161),
-                                      Color(0xFF510270)
-                                    ]),
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/bgImage/detailpagebanner.jpg"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Attendence !',
-                                          style: GoogleFonts.nunito(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 24),
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.6,
-                                              child: Text(
-                                                'Track student attendance in real-time with live location updates. Designed for schools, coaching centers, and institutions.',
-                                                style: GoogleFonts.nunito(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 12),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 15,
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  //  ClipRRect(
-                                  //     borderRadius: BorderRadius.circular(20),
-                                  //     child: Image.asset(
-                                  //       "assets/bgImage/detailpagebanner.jpg",
-                                  //       fit: BoxFit.cover,
-                                  //     )),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                left: 15,
-                                child: Container(
-                                  height: 50,
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white),
-                                  child: Center(
-                                    child: Container(
-                                      height: 40,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: const Color(0xFF31302D),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "2/3",
-                                          style: GoogleFonts.nunito(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 16),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
+                        isLoading?
+                        CircularProgressIndicator()
+:Container(
+  //color: Colors.amber,
+  height: 210,
+  padding: const EdgeInsets.all(3),
+  child: CarouselSlider.builder(
+    itemCount: userBannerData!.length,
+    itemBuilder: (context, index, realIndex) {
+      final item = userBannerData![index];
+      return Stack(
+        children: [
+          Container(
+            height: 180,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: const LinearGradient(colors: [
+                Color(0xFFBA0161),
+                Color(0xFF510270),
+              ]),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  // Left Side: Title and Description
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.banTitle!,
+                          style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 24,
                           ),
                         ),
+                        Text(
+                          item.banDescription!,
+                          style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                          ),
+                          maxLines: 7,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Right Side: Decoration Image
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(item.banUrl!,),
+                          //fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 15,
+            child: Container(
+              height: 50,
+              width: 120,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+              ),
+              child: Center(
+                child: Container(
+                  height: 40,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: const Color(0xFF31302D),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "${index + 1}/${userBannerData!.length}",
+                      style: GoogleFonts.nunito(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+    options: CarouselOptions(
+      height: 210,
+      enlargeCenterPage: true,
+      autoPlay: true,
+      aspectRatio: 16 / 9,
+      autoPlayInterval: const Duration(seconds: 3),
+      viewportFraction: 0.9,
+    ),
+  ),
+),
+
+                       
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Row(
@@ -442,7 +489,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                                         10)),
                                                         child: Center(
                                                           child: Text(
-                                                              "${course!.batchName}",
+                                                              "${course!.subject}",
                                                               style: GoogleFonts.nunito(
                                                                   fontSize: 16,
                                                                   fontWeight:
@@ -526,7 +573,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                               });
                             },
                           ),
-                          items: testimonials.map((testimonial) {
+                          items: guestTestData!.map((testimonial) {
                             return Builder(
                               builder: (BuildContext context) {
                                 return Container(
@@ -553,12 +600,13 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                             children: [
                                               Stack(
                                                 children: [
-                                                  CircleAvatar(
-                                                    backgroundImage: AssetImage(
-                                                      testimonial["image"]!,
-                                                    ),
-                                                    radius: 40,
-                                                  ),
+                                                 CircleAvatar(
+  backgroundImage: testimonial.testimonialUrl != null && testimonial.testimonialUrl!.isNotEmpty
+      ? NetworkImage(testimonial.testimonialUrl!)
+      : AssetImage('assets/tutorHomeImg/Rectangle 18373.png') as ImageProvider, // Provide a default image if URL is null or empty
+  radius: 40,
+),
+
                                                   Positioned(
                                                     top: 0,
                                                     right: 0,
@@ -583,7 +631,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                        testimonial["name"]!,
+                                                        testimonial.userName ?? '',
                                                         style: TextStyle(
                                                           fontSize: 18,
                                                           fontWeight:
@@ -591,15 +639,14 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                         ),
                                                       ),
                                                       SizedBox(width: 4),
-                                                      Text(
-                                                        testimonial[
-                                                            "location"]!,
-                                                        style: TextStyle(
-                                                          fontSize: 12,
-                                                          color:
-                                                              Colors.grey[600],
-                                                        ),
-                                                      ),
+                                                      // Text(
+                                                      //   testimonial.testimonialUrl!,
+                                                      //   style: TextStyle(
+                                                      //     fontSize: 12,
+                                                      //     color:
+                                                      //         Colors.grey[600],
+                                                      //   ),
+                                                      // ),
                                                     ],
                                                   ),
                                                   SizedBox(
@@ -609,12 +656,12 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                                 .width *
                                                             0.5,
                                                     child: Text(
-                                                      testimonial["text"]!,
+                                                      testimonial.testimonial ?? '',
                                                       style: TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.grey[600],
                                                       ),
-                                                      maxLines: 4,
+                                                      maxLines: 5,
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                     ),
@@ -637,7 +684,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(
-                            testimonials.length,
+                            guestTestData!.length,
                             (index) => AnimatedContainer(
                               duration: Duration(milliseconds: 300),
                               margin: EdgeInsets.symmetric(horizontal: 4),
@@ -814,11 +861,11 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
           top: 100,
           right: 70,
           child: CircleAvatar(
-            radius: 55,
+            radius: 64,
             backgroundColor: Color(0xFF9B0155),
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              radius: 50,
+              radius: 60,
               child: Padding(
                 padding: const EdgeInsets.all(5),
                 child: Center(
@@ -827,7 +874,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                     children: [
                       Image.asset(
                         'assets/guest_logo.jpg',
-                        height: 72,
+                        height: 85,
                       ),
                     ],
                   ),

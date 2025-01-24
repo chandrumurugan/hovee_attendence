@@ -12,6 +12,7 @@ import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_holiday_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../modals/getHolidayDataModel.dart';
 
@@ -34,6 +35,7 @@ class HolidayController extends GetxController {
   final endDateController = TextEditingController();
   List<String> holidayaType = [];
   var holidayTypeController = ''.obs;
+   var instituteId =''.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -94,6 +96,8 @@ class HolidayController extends GetxController {
 
       if (holidayResponse.data != null) {
         holidayDataList.value = holidayResponse.data!;
+         SharedPreferences prefs = await SharedPreferences.getInstance();
+       instituteId.value=   prefs.getString('InstituteId') ?? '';
       }
     } catch (e) {
       // Handle errors if needed

@@ -22,7 +22,7 @@ class SideMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthControllers authController = Get.put(AuthControllers());
     var box = GetStorage();
-    final TuteeHomeController controller = Get.put(TuteeHomeController());
+    //final TuteeHomeController controller = Get.put(TuteeHomeController());
     bool notification = true;
     
     return SizedBox(

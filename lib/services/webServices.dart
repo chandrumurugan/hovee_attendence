@@ -20,6 +20,7 @@ import 'package:hovee_attendence/modals/getAnnounmentBatchList_model.dart';
 import 'package:hovee_attendence/modals/getAnnounment_model.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
+import 'package:hovee_attendence/modals/getBannerModel.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
 import 'package:hovee_attendence/modals/getDashboardYearFlow_model.dart';
@@ -40,6 +41,7 @@ import 'package:hovee_attendence/modals/getQrcode_model.dart';
 import 'package:hovee_attendence/modals/getRatingDashboardListModel.dart';
 import 'package:hovee_attendence/modals/getRatingTutorListModel.dart';
 import 'package:hovee_attendence/modals/getRatingsListModel.dart';
+import 'package:hovee_attendence/modals/getTestimonialsModel.dart';
 import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
@@ -2268,4 +2270,40 @@ class WebService {
     }
   }
 
+
+  static Future<GetBannerListModel?> fetchGuestUserBannerList() async {
+    final url = Uri.parse('${baseUrl}guest/getBannerList');
+
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+// Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return GetBannerListModel.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+  }
+
+static Future<GetTestimonialsModel?> fetchGuestUserTestimonialsList() async {
+    final url = Uri.parse('${baseUrl}guest/getTestimonials');
+
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+// Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return GetTestimonialsModel.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+  }
 }

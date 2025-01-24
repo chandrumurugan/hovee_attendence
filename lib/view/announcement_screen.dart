@@ -242,15 +242,33 @@ class AnnouncementScreen extends StatelessWidget {
             })
           ],
         ),
-        bottomNavigationBar: type == 'Tutor'
-            ? SingleCustomButtom(
-                btnName: 'Add Announcement',
-                isPadded: false,
-                onTap: () {
-                  anoumentController.navigateToAddBatchScreen();
-                },
-              )
-            : SizedBox.shrink());
+        bottomNavigationBar:
+        Obx(() {
+         if (anoumentController.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            }
+           else if ( type == 'Tutor'
+           && (anoumentController.instituteId ==null || anoumentController.instituteId == '')) {
+              return SingleCustomButtom(
+        btnName: 'Add Announcement',
+        isPadded: false,
+        onTap: () {
+          anoumentController.navigateToAddBatchScreen();
+        },
+      );
+            } else  {
+              return SizedBox.shrink();
+            }
+             }));
+        //  type == 'Tutor'
+        //     ? SingleCustomButtom(
+        //         btnName: 'Add Announcement',
+        //         isPadded: false,
+        //         onTap: () {
+        //           anoumentController.navigateToAddBatchScreen();
+        //         },
+        //       )
+        //     : SizedBox.shrink());
   }
 
   Widget _buildRow(String title, String? value, BuildContext context) {

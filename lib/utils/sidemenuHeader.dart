@@ -143,9 +143,19 @@ class SidemenuHeader extends StatelessWidget {
               //         color: Colors.white,
               //         fontSize: 16),
               //   ):
-              userProfileData.userProfileResponse.value.data!.institudeId!=null?
+             isGuest ?
+              Text(
+                        "ID: xxxxxxx" 
+                       ,
+                        overflow: TextOverflow.clip,
+                        style: GoogleFonts.nunito(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                            fontSize: 16),
+                      )
+             : userProfileData.userProfileResponse.value.data!.institudeId!=null?
                   Text(
-                        isGuest ? "ID: xxxxxxx" :
+                        isGuest ?   "ID: xxxxxxx" :
                        'Req no : ${userProfileData.userProfileResponse.value.data!.wowId}',
                         overflow: TextOverflow.clip,
                         style: GoogleFonts.nunito(

@@ -369,16 +369,33 @@ class HolidayScreen extends StatelessWidget {
           }),
         ],
       ),
-      bottomNavigationBar: type!= 'Tutor'
-                    ?SizedBox.fromSize()
-       :SingleCustomButtom(
+      bottomNavigationBar: 
+       Obx(() {
+         if (holidayController.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            }
+           else if ( type == 'Tutor'&& holidayController.instituteId ==null || holidayController.instituteId == '') {
+              return SingleCustomButtom(
         btnName: 'Add',
         isPadded: false,
         onTap: () {
           holidayController.navigateToAddHolidatScreen();
         },
-      ),
-    );
+      );
+            } else  {
+              return SizedBox.shrink();
+            }
+             }));
+    //   type!= 'Tutor'
+    //                 ?SizedBox.fromSize()
+    //    :SingleCustomButtom(
+    //     btnName: 'Add',
+    //     isPadded: false,
+    //     onTap: () {
+    //       holidayController.navigateToAddHolidatScreen();
+    //     },
+    //   ),
+    // );
   }
 
   
