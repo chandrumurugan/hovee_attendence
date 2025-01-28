@@ -361,7 +361,7 @@ class TutionClassPreviewScreen extends StatelessWidget {
                           ),
                          
                           Text(
-                           '${_formatDate(tutionCourseDetailsList.batchStartDate)} - ${_formatDate(tutionCourseDetailsList.batchEndDate)}',
+                           '${tutionCourseDetailsList.batchStartDate} - ${tutionCourseDetailsList.batchEndDate}',
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,

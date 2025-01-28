@@ -201,8 +201,8 @@ class Tutorenquirlist extends StatelessWidget {
                                             '',
                                         type: type,
                                         batchEndDate:
-                                                            DateFormat('dd-MM-yyyy').format(DateTime.parse(tutionCourseDetailsList
-                                                                        .batchEndDate ?? '')),
+                                                           tutionCourseDetailsList
+                                                                        .batchEndDate ?? '',
                                         batchMode:
                                             tutionCourseDetailsList.batchMode ??
                                                 '',
@@ -469,8 +469,8 @@ class Tutorenquirlist extends StatelessWidget {
                                                                     '',
                                                             type: type,
                                                             batchEndDate:
-                                                            DateFormat('dd-MM-yyyy').format(DateTime.parse(tutionCourseDetailsList
-                                                                        .batchEndDate ?? '')),
+                                                            tutionCourseDetailsList
+                                                                        .batchEndDate ?? '',
                                                             batchMode:
                                                                 tutionCourseDetailsList
                                                                         .batchMode ??
