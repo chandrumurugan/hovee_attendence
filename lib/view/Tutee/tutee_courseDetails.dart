@@ -420,8 +420,7 @@ class CourseDetailScreen extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(
-                               data!
-                                    .batches!.startDate!.toString(), // Format as desired
+                              DateFormat('dd-MM-yyyy').format(DateTime.parse(data!.batches!.startDate!)), // Format as desired
                                 style: GoogleFonts.nunito(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -429,7 +428,7 @@ class CourseDetailScreen extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                ' - ${data!.batches!.endDate!}', // Replace with the desired key
+                                ' - ${DateFormat('dd-MM-yyyy').format(DateTime.parse(data!.batches!.endDate!))}', // Replace with the desired key
                                 style: GoogleFonts.nunito(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,

@@ -15,6 +15,7 @@ import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/enrollment_preview_screen.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
+import 'package:intl/intl.dart';
 
 class Tutorenquirlist extends StatelessWidget {
   final String type;
@@ -62,15 +63,6 @@ class Tutorenquirlist extends StatelessWidget {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Search and Filter Section
-              // SearchfiltertabBar(
-              //   title: 'Enquiry list',
-              //   onSearchChanged: (searchTerm) {
-              //   },
-              //   filterOnTap: () {
-              //     // Implement filter logic here if needed
-              //   },
-              // ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
@@ -208,9 +200,9 @@ class Tutorenquirlist extends StatelessWidget {
                                                 .enquiryType ??
                                             '',
                                         type: type,
-                                        batchEndDate: tutionCourseDetailsList
-                                                .batchEndDate ??
-                                            '',
+                                        batchEndDate:
+                                                            DateFormat('dd-MM-yyyy').format(DateTime.parse(tutionCourseDetailsList
+                                                                        .batchEndDate ?? '')),
                                         batchMode:
                                             tutionCourseDetailsList.batchMode ??
                                                 '',
@@ -477,9 +469,8 @@ class Tutorenquirlist extends StatelessWidget {
                                                                     '',
                                                             type: type,
                                                             batchEndDate:
-                                                                tutionCourseDetailsList
-                                                                        .batchEndDate ??
-                                                                    '',
+                                                            DateFormat('dd-MM-yyyy').format(DateTime.parse(tutionCourseDetailsList
+                                                                        .batchEndDate ?? '')),
                                                             batchMode:
                                                                 tutionCourseDetailsList
                                                                         .batchMode ??

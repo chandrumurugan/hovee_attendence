@@ -31,8 +31,8 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
   int mycount = 0;
   int _currentIndexSlider = 0;
   final GuesthomeController guestController = Get.put(GuesthomeController());
-   List<Datum>? guestTestData;
-   List<guestUserBannerData>? userBannerData;
+  List<Datum>? guestTestData;
+  List<guestUserBannerData>? userBannerData;
   @override
   void initState() {
     super.initState();
@@ -56,7 +56,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
     }
   }
 
-   void fetchGuestUserBannerList() async {
+  void fetchGuestUserBannerList() async {
     setState(() {
       isLoading = true;
     });
@@ -168,139 +168,152 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        isLoading?
-                        CircularProgressIndicator()
-:Container(
-  //color: Colors.amber,
-  height: MediaQuery.of(context).size.height *0.3,
-  padding: const EdgeInsets.all(3),
-  child: CarouselSlider.builder(
-    itemCount: userBannerData!.length,
-    itemBuilder: (context, index, realIndex) {
-      final item = userBannerData![index];
-      return Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: const LinearGradient(colors: [
-                Color(0xFFBA0161),
-                Color(0xFF510270),
-              ]),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  // Left Side: Title and Description
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.banTitle!,
-                          style: GoogleFonts.nunito(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 24,
-                          ),
-                        ),
-                        Text(
-                          item.banDescription!,
-                          style: GoogleFonts.nunito(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                          ),
-                          // maxLines: 7,
-                          // overflow: TextOverflow.ellipsis,
-                        ),
-                        //SizedBox(height: 4,)
-                      ],
-                    ),
-                  ),
-                  // Right Side: Decoration Image
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(item.banUrl!,),
-                          //fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 5,),
-          // Positioned(
-          //   bottom: 0,
-          //   left: 15,
-          //   child: Container(
-          //     height: 50,
-          //     width: 120,
-          //     decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(20),
-          //       color: Colors.white,
-          //     ),
-          //     child: Center(
-          //       child: Container(
-          //         height: 40,
-          //         width: 100,
-          //         decoration: BoxDecoration(
-          //           borderRadius: BorderRadius.circular(20),
-          //           color: const Color(0xFF31302D),
-          //         ),
-          //         child: Center(
-          //           child: Text(
-          //             "${index + 1}/${userBannerData!.length}",
-          //             style: GoogleFonts.nunito(
-          //               color: Colors.white,
-          //               fontWeight: FontWeight.w400,
-          //               fontSize: 16,
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-       
-        ],
-      );
-    },
-    options: CarouselOptions(
-      height: 210,
-      enlargeCenterPage: true,
-      autoPlay: true,
-      aspectRatio: 16 / 9,
-      autoPlayInterval: const Duration(seconds: 3),
-      viewportFraction: 0.9,
-    ),
-  ),
-),
-
-                       
+                        isLoading
+                            ? CircularProgressIndicator()
+                            : Container(
+                              height: MediaQuery.of(context).size.height*0.3,
+                             //color: Colors.amber,
+                                padding: const EdgeInsets.all(3),
+                                child: CarouselSlider.builder(
+                                  itemCount: userBannerData!.length,
+                                  itemBuilder: (context, index, realIndex) {
+                                    final item = userBannerData![index];
+                                    return Stack(
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            gradient:
+                                                const LinearGradient(colors: [
+                                              Color(0xFFBA0161),
+                                              Color(0xFF510270),
+                                            ]),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              children: [
+                                                // Left Side: Title and Description
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        item.banTitle!,
+                                                        style:
+                                                            GoogleFonts.nunito(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 24,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        item.banDescription!,
+                                                        style:
+                                                            GoogleFonts.nunito(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 12,
+                                                        ),
+                                                        // maxLines: 7,
+                                                        // overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                      //SizedBox(height: 4,)
+                                                    ],
+                                                  ),
+                                                ),
+                                                // Right Side: Decoration Image
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                          item.banUrl!,
+                                                        ),
+                                                        //fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: -15,
+                                          left: 15,
+                                          child: Container(
+                                            height: 50,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Colors.white,
+                                            ),
+                                            child: Center(
+                                              child: Container(
+                                                height: 40,
+                                                width: 100,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color:
+                                                      const Color(0xFF31302D),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    "${index + 1}/${userBannerData!.length}",
+                                                    style: GoogleFonts.nunito(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  options: CarouselOptions(
+                                    enlargeCenterPage: true,
+                                    autoPlay: true,
+                                    aspectRatio: 16 / 9,
+                                    autoPlayInterval:
+                                        const Duration(seconds: 3),
+                                    viewportFraction: 0.9,
+                                  ),
+                                ),
+                              ),
+                       SizedBox(height: 10,),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Top Tutor's",
+                                "Top Tutors",
                                 style: GoogleFonts.nunito(
                                     color: Colors.black,
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold),
                               ),
-                             InkWell(
+                              InkWell(
                                 onTap: () {
                                   Get.to(() => LoginSignUp());
                                 },
@@ -316,57 +329,56 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(top: 10),
-                          height:
-                              120, // Increased height to accommodate the text
+                          margin: const EdgeInsets.only(
+                            top: 10,
+                          ),
+                          height: MediaQuery.of(context).size.width *
+                              0.33, // Adjusted height to accommodate content
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Stack(
-                            clipBehavior: Clip
-                                .none, // Allow the images to overflow the container
-                            children: List.generate(
-                              guestHomeData!
-                                  .teacherList.length, // Use the dynamic length
-                              (index) {
-                                return Positioned(
-                                  left: index *
-                                      70.0, // Adjust the spacing between items
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const CircleAvatar(
-                                        radius: 40,
-                                        backgroundColor: Colors
-                                            .blueAccent, // Add dynamic colors if needed
-                                        backgroundImage: AssetImage(
-                                          'assets/Ellipse 261.png', // Use a dynamic image if required
-                                        ),
+                          child: ListView.builder(
+                            scrollDirection:
+                                Axis.horizontal, // Use horizontal scrolling
+                            itemCount: 4,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: EdgeInsets.only(
+                                    left:
+                                        index == 0 ? 0 : 10), // Adjust spacing
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const CircleAvatar(
+                                      radius: 40,
+                                      backgroundColor: Colors
+                                          .blueAccent, // Add dynamic colors if needed
+                                      backgroundImage: AssetImage(
+                                        'assets/Ellipse 261.png', // Use a dynamic image if required
                                       ),
-                                      const SizedBox(
-                                          height:
-                                              5), // Add spacing between the image and text
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.2,
-                                        child: Text(
-                                          guestHomeData!.teacherList[index]
-                                              .teacherName, // Dynamic name
-                                          style: const TextStyle(
-                                              fontSize:
-                                                  14), // Adjust font size if needed
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow
-                                              .clip, // Center align text
-                                        ),
+                                    ),
+                                    const SizedBox(
+                                        height:
+                                            5), // Spacing between image and text
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.2,
+                                      child: Text(
+                                        guestHomeData!.teacherList[index]
+                                            .teacherName, // Dynamic name
+                                        style: const TextStyle(
+                                            fontSize: 14), // Adjust font size
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow
+                                            .clip, // Handle long text
                                       ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                         ),
+
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 15),
@@ -458,8 +470,8 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                               color: Color(0xFFF0E6F5),
                             ),
                             child: GestureDetector(
-                              onTap: (){
-                                 Get.to(() => LoginSignUp());
+                              onTap: () {
+                                Get.to(() => LoginSignUp());
                               },
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -503,7 +515,8 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                             child: Text(
                                                                 "${course!.subject}",
                                                                 style: GoogleFonts.nunito(
-                                                                    fontSize: 16,
+                                                                    fontSize:
+                                                                        16,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w600)),
@@ -546,11 +559,11 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(10),
-                                                gradient:
-                                                    const LinearGradient(colors: [
-                                                  Color(0xFFC13584),
-                                                  Color(0xFF833AB4),
-                                                ])),
+                                                gradient: const LinearGradient(
+                                                    colors: [
+                                                      Color(0xFFC13584),
+                                                      Color(0xFF833AB4),
+                                                    ])),
                                             child: const Center(
                                                 child: Icon(
                                               Icons.arrow_forward_ios_outlined,
@@ -613,13 +626,21 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                             children: [
                                               Stack(
                                                 children: [
-                                                 CircleAvatar(
-  backgroundImage: testimonial.testimonialUrl != null && testimonial.testimonialUrl!.isNotEmpty
-      ? NetworkImage(testimonial.testimonialUrl!)
-      : AssetImage('assets/tutorHomeImg/Rectangle 18373.png') as ImageProvider, // Provide a default image if URL is null or empty
-  radius: 40,
-),
-
+                                                  CircleAvatar(
+                                                    backgroundImage: testimonial
+                                                                    .testimonialUrl !=
+                                                                null &&
+                                                            testimonial
+                                                                .testimonialUrl!
+                                                                .isNotEmpty
+                                                        ? NetworkImage(
+                                                            testimonial
+                                                                .testimonialUrl!)
+                                                        : AssetImage(
+                                                                'assets/tutorHomeImg/Rectangle 18373.png')
+                                                            as ImageProvider, // Provide a default image if URL is null or empty
+                                                    radius: 40,
+                                                  ),
                                                   Positioned(
                                                     top: 0,
                                                     right: 0,
@@ -644,7 +665,8 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                        testimonial.userName ?? '',
+                                                        testimonial.userName ??
+                                                            '',
                                                         style: TextStyle(
                                                           fontSize: 18,
                                                           fontWeight:
@@ -669,7 +691,8 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                                 .width *
                                                             0.5,
                                                     child: Text(
-                                                      testimonial.testimonial ?? '',
+                                                      testimonial.testimonial ??
+                                                          '',
                                                       style: TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.grey[600],
@@ -834,13 +857,13 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                   color: Colors.white,
                 ),
               ),
-              const Row(
-                children: [
-                  Icon(Icons.search, color: Colors.white),
-                  SizedBox(width: 16),
-                  // Icon(Icons.g_translate, color: Colors.white),
-                ],
-              ),
+              // const Row(
+              //   children: [
+              //     Icon(Icons.search, color: Colors.white),
+              //     SizedBox(width: 16),
+              //     // Icon(Icons.g_translate, color: Colors.white),
+              //   ],
+              // ),
             ],
           ),
         ),
@@ -879,19 +902,10 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
             child: CircleAvatar(
               backgroundColor: Colors.white,
               radius: 60,
-              child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/guest_logo.jpg',
-                        height: 85,
-                      ),
-                    ],
-                  ),
-                ),
+              child: Image.asset(
+                'assets/guest_logo.jpg',
+                height: 85,
+                fit: BoxFit.cover,
               ),
             ),
           ),

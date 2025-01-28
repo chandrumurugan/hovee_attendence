@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/utils/sidemenuHeader.dart';
+import 'package:hovee_attendence/utils/url_launcher.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/parent_login_screen.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
@@ -20,6 +21,12 @@ class SideMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      const String termsUrl = "https://hoveeattendance.com/#/main/terms-condition";
+        final String contactusUrl = "https://hoveeattendance.com/#/main/contact";
+          const String howitworsUrl = "https://hoveeattendance.com/#/main/how-it-works";
+            const String aboutusUrl = "https://hoveeattendance.com/#/main/about";
+              const String hpaupportUrl = "https://hoveeattendance.com/#/main/help-support";
+
     final AuthControllers authController = Get.put(AuthControllers());
     var box = GetStorage();
     //final TuteeHomeController controller = Get.put(TuteeHomeController());
@@ -82,7 +89,7 @@ class SideMenu extends StatelessWidget {
                 trailing: const Icon(Icons.arrow_forward_ios),
               ),
             ListTile(
-              onTap: () async {},
+              onTap:  () => URLLauncherHelper.launchInBrowser(howitworsUrl, context),
               leading: Image.asset(
                 'assets/sidemenu/userManual.png',
                 height: 25,
@@ -99,15 +106,13 @@ class SideMenu extends StatelessWidget {
               thickness: 2,
             ),
             ListTile(
-              onTap: () {
-                // Get.to(() => HolidayScreen(type: 'Tutee'));
-              },
+             onTap:  () => URLLauncherHelper.launchInBrowser(contactusUrl, context),
               leading: Image.asset(
                 'assets/sidemenu/privacy.png',
                 height: 25,
               ),
               title: Text(
-                'Privacy',
+                'Contact-us',
                 style: GoogleFonts.nunito(
                     fontSize: 16, fontWeight: FontWeight.w600),
               ),
@@ -137,7 +142,7 @@ class SideMenu extends StatelessWidget {
 
 
             ListTile(
-              onTap: () {},
+           onTap:  () => URLLauncherHelper.launchInBrowser(termsUrl, context),
               leading: Image.asset(
                 'assets/sidemenu/terms&condition.png',
                 height: 25,
@@ -150,17 +155,7 @@ class SideMenu extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
             ListTile(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => WebViewLoader(
-                //       loadUrl: "http://hovee.in/attn-web/about.php",
-                //       isBottomMenu: false,
-                //     ),
-                //   ),
-                // );
-              },
+            onTap:  () => URLLauncherHelper.launchInBrowser(aboutusUrl, context),
               leading: Image.asset(
                 'assets/sidemenu/aboutus.png',
                 height: 25,
@@ -177,17 +172,7 @@ class SideMenu extends StatelessWidget {
               thickness: 2,
             ),
             ListTile(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => WebViewLoader(
-                //       loadUrl: "http://hovee.in/attn-web/help-support.php",
-                //       isBottomMenu: false,
-                //     ),
-                //   ),
-                // );
-              },
+            onTap:  () => URLLauncherHelper.launchInBrowser(hpaupportUrl, context),
               leading: Image.asset(
                 'assets/sidemenu/help&support.png',
                 height: 25,
@@ -199,26 +184,26 @@ class SideMenu extends StatelessWidget {
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
-            ListTile(
-              onTap: () {},
-              leading: Image.asset(
-                'assets/sidemenu/notification.png',
-                height: 25,
-              ),
-              title: Text(
-                'Notification',
-                style: GoogleFonts.nunito(
-                    fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              trailing: Switch(
-                  activeTrackColor: const Color(0xFFC13584),
-                  value: notification,
-                  onChanged: (bool value) {
-                    // setState(() {
-                    //   notification = value;
-                    // });
-                  }),
-            ),
+            // ListTile(
+            //   onTap: () {},
+            //   leading: Image.asset(
+            //     'assets/sidemenu/notification.png',
+            //     height: 25,
+            //   ),
+            //   title: Text(
+            //     'Notification',
+            //     style: GoogleFonts.nunito(
+            //         fontSize: 16, fontWeight: FontWeight.w600),
+            //   ),
+            //   trailing: Switch(
+            //       activeTrackColor: const Color(0xFFC13584),
+            //       value: notification,
+            //       onChanged: (bool value) {
+            //         // setState(() {
+            //         //   notification = value;
+            //         // });
+            //       }),
+            // ),
             if (!isGuest)
               Obx(() {
                
