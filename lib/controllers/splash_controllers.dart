@@ -103,9 +103,9 @@ class SplashController extends GetxController {
       print('FCM Token: $fcmToken');
       storeFcm(fcmToken!);
 
-      // Retrieve APNS token
-      String? apnsToken = await messaging.getAPNSToken();
-      print('APNS Token: $apnsToken');
+      // // Retrieve APNS token
+      // String? apnsToken = await messaging.getAPNSToken();
+      // print('APNS Token: $apnsToken');
     } else {
       print('User declined or has not accepted permission');
     }
