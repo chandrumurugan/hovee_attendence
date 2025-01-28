@@ -222,7 +222,7 @@ class AccountSetup extends StatelessWidget {
                                 text: 'Address info',
                               ),
                               // Show this tab only if selectedRole is not "Parent"
-                              if (selectedRole != 'Parent')
+                              if (selectedRole != 'Parent' && selectedRole != 'Hosteller')
                                 Tab(
                                   text: selectedRole == 'Tutee'
                                       ? 'Education info'
@@ -1244,6 +1244,8 @@ class AccountSetup extends StatelessWidget {
                                                       child: Text(
                                                         selectedRole !=
                                                                     'Parent' &&
+                                                                    selectedRole !=
+                                                                    'Hosteller' &&
                                                                 selectedRoleTypeName !=
                                                                     'Institute' &&
                                                                 selectedRole ==

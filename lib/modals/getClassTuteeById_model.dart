@@ -375,8 +375,8 @@ class Batches {
     final String? batchMode;
     final String? fees;
     final String? month;
-    final DateTime? startDate;
-    final DateTime? endDate;
+    final String? startDate;
+    final String? endDate;
     final String? userId;
     final String? institudeName;
     final String? institudeId;
@@ -408,12 +408,8 @@ class Batches {
  batchMode: json["batch_mode"],
             fees: json["fees"],
             month: json["month"],
-           startDate: json["start_date"] == null
-    ? null
-    : DateFormat("dd-MM-yyyy").parse(json["start_date"]),
-endDate: json["end_date"] == null
-    ? null
-    : DateFormat("dd-MM-yyyy").parse(json["end_date"]),
+           startDate: json['start_date'],
+    endDate :json['end_date'],
             userId: json["userId"],
             institudeName: json["institude_name"],
             institudeId: json["institudeId"],
@@ -442,8 +438,8 @@ endDate: json["end_date"] == null
         "batch_mode": batchMode,
         "fees": fees,
         "month": month,
-        "start_date": "${startDate!.year.toString()}-${startDate!.month.toString()}-${startDate!.day.toString()}",
-        "end_date": "${endDate!.year.toString()}-${endDate!.month.toString()}-${endDate!.day.toString()}",
+        "start_date": "${startDate!.toString()}}",
+        "end_date": "${endDate!.toString()}}",
         "userId": userId,
         "institude_name": institudeName,
         "institudeId": institudeId,

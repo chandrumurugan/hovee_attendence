@@ -303,13 +303,17 @@ class BatchId {
   String? batchTimingStart;
   String? batchTimingEnd;
   String? fees;
+  String? startDate;
+  String? endDate;
 
   BatchId(
       {this.sId,
       this.batchName,
       this.batchTimingStart,
       this.batchTimingEnd,
-      this.fees});
+      this.fees,
+      this.startDate,
+      this.endDate});
 
   BatchId.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -317,6 +321,8 @@ class BatchId {
     batchTimingStart = json['batch_timing_start'];
     batchTimingEnd = json['batch_timing_end'];
     fees = json['fees'];
+     startDate = json['start_date'];
+    endDate = json['end_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -326,6 +332,8 @@ class BatchId {
     data['batch_timing_start'] = this.batchTimingStart;
     data['batch_timing_end'] = this.batchTimingEnd;
     data['fees'] = this.fees;
+    data['start_date'] = this.startDate;
+    data['end_date'] = this.endDate;
     return data;
   }
 

@@ -276,7 +276,8 @@ class PreviewScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      controller.storedAddress ?? '',
+                     type == 'Course'
+                     ?  controller.storedAddress ?? '' : data!.studentAddress,
                       style: GoogleFonts.nunito(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,

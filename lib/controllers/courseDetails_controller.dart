@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/addClassData_model.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/modals/submitEnquirModel.dart';
+import 'package:hovee_attendence/modals/submitEnquiryHostelModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
@@ -169,4 +170,75 @@ class CourseDetailController extends GetxController {
   }
 
   
+    void addHostelEnquirs(BuildContext context, String hostelId, String hostelObjectId,
+      String hostellerObjectId) async {
+    isLoading.value = true;
+    try {
+      var batchData = {
+        "hostelId": hostelId,
+        "hostelObjectId": hostelObjectId,
+        "hostellerObjectId": hostellerObjectId,
+        "enquiry_message": '',
+      };
+
+      final SubmitEnquiryHostelModel? response =
+          await WebService.addEnquirsHostel(batchData);
+
+      if (response != null && response.statusCode == 200) {
+                Get.snackbar(
+          'Enquiry submited successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText: const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        'Enquiry submited successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+        Get.delete<EnquirDetailController>();
+         Get.off(() => Tutorenquirlist(type: 'Tutee', fromBottomNav: true,)); 
+      } else {
+        Get.snackbar(
+          'Enquiry already submitted',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText: const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        'Enquiry already submitted',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+      }
+    } catch (e) {
+          Get.snackbar(
+         'Error: $e',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        'Error: $e',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+      //  Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
+      //   ,'Error: $e',);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }

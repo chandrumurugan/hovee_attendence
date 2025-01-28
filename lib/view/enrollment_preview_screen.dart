@@ -107,7 +107,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
                           fontSize: 16),
                     ),
                     Text(
-                      data!.startDate ?? '',
+                      data!.batchId!.startDate ?? '',
                       style: GoogleFonts.nunito(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,
@@ -134,7 +134,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
                           fontSize: 16),
                     ),
                     Text(
-                      data!.endDate ?? '',
+                      data!.batchId!.endDate ?? '',
                       style: GoogleFonts.nunito(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,

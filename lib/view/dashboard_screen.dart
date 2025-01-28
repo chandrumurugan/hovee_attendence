@@ -302,6 +302,7 @@ import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
+import 'package:hovee_attendence/view/home_screen/hosteller_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
@@ -394,6 +395,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ParentView(
           userId: '',
           rolename: 'Parent',
+          firstname: widget.firstname,
+          lastname: widget.lastname,
+          wowid: widget.wowid,
+          onDashBoardBack: () => _navigateBack(),
+        )
+         else if (widget.rolename == 'Hosteller')
+         HostellerHomeScreen(
           firstname: widget.firstname,
           lastname: widget.lastname,
           wowid: widget.wowid,

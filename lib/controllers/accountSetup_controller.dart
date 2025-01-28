@@ -149,7 +149,7 @@ class AccountSetupController extends GetxController
   }
    final authControllers = Get.put(AuthControllers());
     tabController =
-        TabController(length: selectedRole == 'Parent' ? 2 : 3, vsync: this);
+        TabController(length: selectedRole == 'Parent' || selectedRole == 'Hosteller' ? 2 : 3, vsync: this);
     print(parentId);
     if ((parentId == null)) {
       _populateFieldsFromAuth();
@@ -634,7 +634,11 @@ class AccountSetupController extends GetxController
       };
       if (selectedRole == 'Parent') {
         submitAccountSetup(roleId, roleTypeId, selectedRole, context);
-      }else if(selectedRoleTypeName== 'Institute' && selectedRole == 'Tutor'){
+      }
+       else if(selectedRole == 'Hosteller'){
+        submitAccountSetup(roleId, roleTypeId, selectedRole, context);
+      }
+      else if(selectedRoleTypeName== 'Institute' && selectedRole == 'Tutor'){
         submitAccountSetup(roleId, roleTypeId, selectedRole, context);
       }
        else {
@@ -956,7 +960,15 @@ class AccountSetupController extends GetxController
               firstname: firstName,
               lastname: lastName,
               wowid: wowId),arguments: parentId);
-        } else {
+        }if (selectedRole == 'Hosteller') {
+          prefs.setString("Token", parentToken);
+          Get.off(() => DashboardScreen(
+              rolename: 'Hosteller',
+              firstname: firstName,
+              lastname: lastName,
+              wowid: wowId));
+        }
+         else {
           prefs.setString("PrentToken", "");
           Get.offAll(() => DashboardScreen(
               rolename: 'Tutor',

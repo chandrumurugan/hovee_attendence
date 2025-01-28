@@ -168,7 +168,7 @@ class UserProfile extends StatelessWidget {
                               const Tab(
                                 text: 'Address info',
                               ),
-                              if(type == null && type != "Parent")
+                              if(accountController.userProfileResponse.value.data!.rolesId!.roleName!= "Parent" && accountController.userProfileResponse.value.data!.rolesId!.roleName!= "Hosteller")
                               Tab(
                                 text: accountController.userProfileResponse
                                             .value.data!.rolesId!.roleName! ==

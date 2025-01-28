@@ -172,7 +172,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                         CircularProgressIndicator()
 :Container(
   //color: Colors.amber,
-  height: 210,
+  height: MediaQuery.of(context).size.height *0.3,
   padding: const EdgeInsets.all(3),
   child: CarouselSlider.builder(
     itemCount: userBannerData!.length,
@@ -181,7 +181,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
       return Stack(
         children: [
           Container(
-            height: 180,
+            height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -216,9 +216,10 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             fontWeight: FontWeight.w400,
                             fontSize: 12,
                           ),
-                          maxLines: 7,
-                          overflow: TextOverflow.ellipsis,
+                          // maxLines: 7,
+                          // overflow: TextOverflow.ellipsis,
                         ),
+                        //SizedBox(height: 4,)
                       ],
                     ),
                   ),
@@ -238,38 +239,40 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
               ),
             ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 15,
-            child: Container(
-              height: 50,
-              width: 120,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
-              ),
-              child: Center(
-                child: Container(
-                  height: 40,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: const Color(0xFF31302D),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "${index + 1}/${userBannerData!.length}",
-                      style: GoogleFonts.nunito(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          SizedBox(height: 5,),
+          // Positioned(
+          //   bottom: 0,
+          //   left: 15,
+          //   child: Container(
+          //     height: 50,
+          //     width: 120,
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(20),
+          //       color: Colors.white,
+          //     ),
+          //     child: Center(
+          //       child: Container(
+          //         height: 40,
+          //         width: 100,
+          //         decoration: BoxDecoration(
+          //           borderRadius: BorderRadius.circular(20),
+          //           color: const Color(0xFF31302D),
+          //         ),
+          //         child: Center(
+          //           child: Text(
+          //             "${index + 1}/${userBannerData!.length}",
+          //             style: GoogleFonts.nunito(
+          //               color: Colors.white,
+          //               fontWeight: FontWeight.w400,
+          //               fontSize: 16,
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+       
         ],
       );
     },
@@ -291,19 +294,24 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Top Teachers",
+                                "Top Tutor's",
                                 style: GoogleFonts.nunito(
                                     color: Colors.black,
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold),
                               ),
-                              // Text(
-                              //   "see all",
-                              //   style: GoogleFonts.nunito(
-                              //       color: const Color(0xFFFF9900),
-                              //       fontSize: 13,
-                              //       fontWeight: FontWeight.w700),
-                              // ),
+                             InkWell(
+                                onTap: () {
+                                  Get.to(() => LoginSignUp());
+                                },
+                                child: Text(
+                                  "See all",
+                                  style: GoogleFonts.nunito(
+                                      color: const Color(0xFFFF9900),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -449,107 +457,112 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             decoration: const BoxDecoration(
                               color: Color(0xFFF0E6F5),
                             ),
-                            child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  final course =
-                                      guestHomeData!.courseList[index];
-                                  return Stack(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(10),
-                                        margin:
-                                            const EdgeInsets.only(right: 10),
-                                        width: 250,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Stack(
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Card(
-                                                  elevation: 0.0,
-                                                  color: Colors.white,
-                                                  surfaceTintColor:
-                                                      Colors.white,
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        height: 80,
-                                                        decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xFFC7BAE9),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10)),
-                                                        child: Center(
-                                                          child: Text(
-                                                              "${course!.subject}",
-                                                              style: GoogleFonts.nunito(
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600)),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Text("${course!.batchName}",
-                                                    style: GoogleFonts.nunito(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w600)),
-                                                Text("${course!.subject}",
-                                                    style: GoogleFonts.nunito(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400)),
-                                                SizedBox(
-                                                  height: 8,
-                                                ),
-                                                FivePointedStar(
-                                                  onChange: (count) {
-                                                    setState(() {
-                                                      mycount = count;
-                                                    });
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 15,
-                                        bottom: 0,
-                                        child: Container(
-                                          height: 40,
-                                          width: 60,
+                            child: GestureDetector(
+                              onTap: (){
+                                 Get.to(() => LoginSignUp());
+                              },
+                              child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    final course =
+                                        guestHomeData!.courseList[index];
+                                    return Stack(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(10),
+                                          margin:
+                                              const EdgeInsets.only(right: 10),
+                                          width: 250,
                                           decoration: BoxDecoration(
+                                              color: Colors.white,
                                               borderRadius:
-                                                  BorderRadius.circular(10),
-                                              gradient:
-                                                  const LinearGradient(colors: [
-                                                Color(0xFFC13584),
-                                                Color(0xFF833AB4),
-                                              ])),
-                                          child: const Center(
-                                              child: Icon(
-                                            Icons.arrow_forward_ios_outlined,
-                                            color: Colors.white,
-                                          )),
+                                                  BorderRadius.circular(10)),
+                                          child: Stack(
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Card(
+                                                    elevation: 0.0,
+                                                    color: Colors.white,
+                                                    surfaceTintColor:
+                                                        Colors.white,
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          height: 80,
+                                                          decoration: BoxDecoration(
+                                                              color: const Color(
+                                                                  0xFFC7BAE9),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                          child: Center(
+                                                            child: Text(
+                                                                "${course!.subject}",
+                                                                style: GoogleFonts.nunito(
+                                                                    fontSize: 16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600)),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Text("${course!.batchName}",
+                                                      style: GoogleFonts.nunito(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                  Text("${course!.subject}",
+                                                      style: GoogleFonts.nunito(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                                  SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  FivePointedStar(
+                                                    onChange: (count) {
+                                                      setState(() {
+                                                        mycount = count;
+                                                      });
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      )
-                                    ],
-                                  );
-                                },
-                                itemCount: guestHomeData!.courseList.length)),
+                                        Positioned(
+                                          right: 15,
+                                          bottom: 0,
+                                          child: Container(
+                                            height: 40,
+                                            width: 60,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                gradient:
+                                                    const LinearGradient(colors: [
+                                                  Color(0xFFC13584),
+                                                  Color(0xFF833AB4),
+                                                ])),
+                                            child: const Center(
+                                                child: Icon(
+                                              Icons.arrow_forward_ios_outlined,
+                                              color: Colors.white,
+                                            )),
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                  itemCount: guestHomeData!.courseList.length),
+                            )),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 15),

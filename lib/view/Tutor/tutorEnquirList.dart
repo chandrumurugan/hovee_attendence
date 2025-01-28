@@ -260,27 +260,27 @@ class Tutorenquirlist extends StatelessWidget {
                                                 _buildRow(
                                                     'Tutee name',
                                                     tutionCourseDetailsList
-                                                        .studentName),
+                                                        .studentName,context),
                                                 _buildRow(
                                                     'Class',
                                                     tutionCourseDetailsList
-                                                        .className),
+                                                        .className,context),
                                                 _buildRow(
                                                     'Board',
                                                     tutionCourseDetailsList
-                                                        .board),
+                                                        .board,context),
                                                 _buildRow(
                                                     'Batch name',
                                                     tutionCourseDetailsList
-                                                        .courseName),
+                                                        .courseName,context),
                                                 _buildRow(
                                                     'Subject',
                                                     tutionCourseDetailsList
-                                                        .subject),
+                                                        .subject,context),
                                                 _buildRow(
                                                     'Tutor',
                                                     tutionCourseDetailsList
-                                                        .tutorName),
+                                                        .tutorName,context),
                                                 _buildRow(
                                                     tutionCourseDetailsList
                                                                 .institudeId !=
@@ -288,7 +288,7 @@ class Tutorenquirlist extends StatelessWidget {
                                                         ? 'Institute name'
                                                         : 'Tution name',
                                                     tutionCourseDetailsList
-                                                        .tutionName),
+                                                        .tutionName,context),
                                               ],
                                             ),
                                           ),
@@ -541,8 +541,9 @@ class Tutorenquirlist extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(String title, String? value) {
+  Widget _buildRow(String title, String? value,BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
@@ -552,10 +553,13 @@ class Tutorenquirlist extends StatelessWidget {
               fontWeight: FontWeight.w500,
               fontSize: 16),
         ),
-        Text(
-          value ?? '',
-          style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
+        SizedBox(
+          width: MediaQuery.of(context).size.width*0.3,
+          child: Text(
+            value ?? '',
+            style: const TextStyle(
+                color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
+          ),
         ),
       ],
     );

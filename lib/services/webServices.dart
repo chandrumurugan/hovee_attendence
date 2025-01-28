@@ -30,8 +30,10 @@ import 'package:hovee_attendence/modals/getGrouedEnrollmentBylevaemodel.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
+import 'package:hovee_attendence/modals/getGroupedEnrollmentByHostelModel.dart';
 import 'package:hovee_attendence/modals/getHolidayDataModel.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
+import 'package:hovee_attendence/modals/getHostelFilterListModel.dart';
 import 'package:hovee_attendence/modals/getLeaveListModel.dart';
 import 'package:hovee_attendence/modals/getMsplistmodel.dart';
 import 'package:hovee_attendence/modals/getNotification_model.dart';
@@ -58,6 +60,7 @@ import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
 import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
 import 'package:hovee_attendence/modals/submitEnquirModel.dart';
+import 'package:hovee_attendence/modals/submitEnquiryHostelModel.dart';
 import 'package:hovee_attendence/modals/updateEnquire_model.dart';
 import 'package:hovee_attendence/modals/updateLeaveModel.dart';
 import 'package:hovee_attendence/modals/update_parent_status_model.dart';
@@ -895,6 +898,7 @@ class WebService {
         },
       );
       if (response.statusCode == 200) {
+        Logger().i("message${response.body}");
         return GetClassTuteeByIdModel.fromJson(json.decode(response.body));
       } else {
         return null;
@@ -904,10 +908,10 @@ class WebService {
     }
   }
 
-  static Future<submitEnquiryModel?> addEnquirs(
+  static Future<SubmitEnquiryHostelModel?> addEnquirsHostel(
       Map<String, dynamic> batchData) async {
     final url = Uri.parse(
-        "${baseUrl}attendane/submitEnquiry"); // Replace with the actual endpoint
+        "${baseUrl}hostel/enquiry/submitEnquiry"); // Replace with the actual endpoint
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -922,7 +926,7 @@ class WebService {
         },
       );
       if (response.statusCode == 200) {
-        return submitEnquiryModel.fromJson(json.decode(response.body));
+        return SubmitEnquiryHostelModel.fromJson(json.decode(response.body));
       } else {
         return null;
       }
@@ -1921,7 +1925,7 @@ class WebService {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       };
-
+     Logger().i("fafgnkanfgaklj ${token?? ''}");
       var data = {
         "first_name": firstName,
         "last_name": lastName,
@@ -2303,6 +2307,117 @@ static Future<GetTestimonialsModel?> fetchGuestUserTestimonialsList() async {
     if (response.statusCode == 200) {
       return GetTestimonialsModel.fromJson(json.decode(response.body));
     } else {
+      return null;
+    }
+  }
+
+  static Future<GetGroupedEnrollmentByHostelModel?>
+      fetchGroupedEnrollmentByHostel() async {
+    final url = Uri.parse('${baseUrl}hostel_attendance/getGroupedEnrollmentByHostel');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+    Logger().i(response.statusCode);
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body);
+      return GetGroupedEnrollmentByHostelModel.fromJson(result);
+    }
+     else if (response.statusCode == 401) {
+      // Clear session data
+      await prefs.clear();
+      // Navigate to the login screen
+      Get.to(() => LoginSignUp());
+      return null;
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+      return null;
+    }
+  }
+
+
+  static Future<List<String>> fetchHostelcategory() async {
+    final url = Uri.parse('${baseUrl}hostel/getHostelCategoryList');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+
+    final reponse = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+    if (reponse.statusCode == 200) {
+      Map<String, dynamic> result = json.decode(reponse.body);
+      return List<String>.from(result["data"]);
+    } else {
+      return [];
+      //  throw Exception('Failed to fetch course category list');
+    }
+  }
+
+  static Future<GetHostelFilterListModel?> getHostelFilterListfetch(
+      String type, searchTerm) async {
+    final url = Uri.parse('${baseUrl}hostel/getHostelFilterList');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+    var data = {"category": [], "search": searchTerm};
+    try {
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return GetHostelFilterListModel.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
+        // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<submitEnquiryModel?> addEnquirs(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}attendane/submitEnquiry"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return submitEnquiryModel.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (e) {
       return null;
     }
   }
