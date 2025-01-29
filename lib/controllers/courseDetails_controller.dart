@@ -11,6 +11,7 @@ import 'package:hovee_attendence/modals/submitEnquiryHostelModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
+import 'package:hovee_attendence/view/Hosteller/hostel_enquiry_list.dart';
 import 'package:hovee_attendence/view/Tutee/tutee_courseDetails.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -176,8 +177,8 @@ class CourseDetailController extends GetxController {
     try {
       var batchData = {
         "hostelId": hostelId,
-        "hostelObjectId": hostelObjectId,
-        "hostellerObjectId": hostellerObjectId,
+        "hostel_ObjectId": hostelObjectId,
+        "hosteller_ObjectId": hostellerObjectId,
         "enquiry_message": '',
       };
 
@@ -201,7 +202,7 @@ class CourseDetailController extends GetxController {
   ),
 );
         Get.delete<EnquirDetailController>();
-         Get.off(() => Tutorenquirlist(type: 'Tutee', fromBottomNav: true,)); 
+         Get.off(() => HostelEnquiryList(type: 'Hostel', fromBottomNav: true,)); 
       } else {
         Get.snackbar(
           'Enquiry already submitted',

@@ -1,12 +1,10 @@
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/hostel_controller.dart';
+import 'package:hovee_attendence/controllers/hosteller_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_enquiry_list.dart';
@@ -20,23 +18,20 @@ import 'package:hovee_attendence/view/profile_card.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
-import 'package:logger/logger.dart';
 
-import '../../controllers/hosteller_controller.dart';
-
-class HostellerHomeScreen extends StatelessWidget {
-  final String? firstname, lastname, wowid;
+class HostelHomeScreen extends StatelessWidget {
+   final String? firstname, lastname, wowid;
     final VoidCallback onDashBoardBack;
-  const HostellerHomeScreen({super.key, this.firstname, this.lastname, this.wowid, required this.onDashBoardBack});
+  const HostelHomeScreen({super.key, this.firstname, this.lastname, this.wowid, required this.onDashBoardBack});
 
   @override
   Widget build(BuildContext context) {
-     final HostellerController controller = Get.put(HostellerController());
+     final HostelController controller = Get.put(HostelController());
       final NotificationController noticontroller =
         Get.put(NotificationController());
          final userProfileData = Get.put(UserProfileController());
     return Scaffold(
-      key: controller.hostellerScaffoldKey,
+      key: controller.hostelScaffoldKey,
       drawer: SideMenu(
         isGuest: false,
       ),
@@ -52,7 +47,7 @@ class HostellerHomeScreen extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    controller.hostellerScaffoldKey.currentState!.openDrawer();
+                    controller.hostelScaffoldKey.currentState!.openDrawer();
                   },
                   child: Image.asset(
                     'assets/appbar/Group 2322.png',
@@ -79,7 +74,7 @@ class HostellerHomeScreen extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           Get.to(() => NotificationScreen(
-                                type: 'Hosteller',
+                                type: 'Hostel',
                                   firstname: firstname,
               lastname: lastname,
               wowid: wowid
@@ -155,7 +150,7 @@ class HostellerHomeScreen extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        Get.to(() => UserProfile(type: 'Hosteller',));
+                        Get.to(() => UserProfile(type: 'Hostel',));
                       },
                       child: HomePageHeader(
                         title: 'Attendance Monitoring',
@@ -435,4 +430,5 @@ class HostellerHomeScreen extends StatelessWidget {
       }),
     );
   }
+
 }

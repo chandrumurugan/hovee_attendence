@@ -300,6 +300,8 @@ import 'package:hovee_attendence/controllers/tutorHome_controllers.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/view/Hosteller/hostel_enquiry_list.dart';
+import 'package:hovee_attendence/view/Hosteller/hostel_enrollment_screen.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/home_screen/hosteller_home_screen.dart';
@@ -400,14 +402,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
           wowid: widget.wowid,
           onDashBoardBack: () => _navigateBack(),
         )
-         else if (widget.rolename == 'Hosteller')
+         else if (widget.rolename == 'Hosteller' || widget.rolename == "Hostel")
          HostellerHomeScreen(
           firstname: widget.firstname,
           lastname: widget.lastname,
           wowid: widget.wowid,
           onDashBoardBack: () => _navigateBack(),
         ),
+        if (widget.rolename == 'Hosteller' || widget.rolename == "Hostel")
+        HostelEnquiryList(
+        type: widget.rolename,
+        fromBottomNav: true,
+        onDashBoardBack: () => _navigateBack(),
+      ),
       Tutorenquirlist(
+        type: widget.rolename,
+        fromBottomNav: true,
+        onDashBoardBack: () => _navigateBack(),
+      ),
+      if (widget.rolename == 'Hosteller' || widget.rolename == "Hostel")
+      HostelEnrollmentScreen(
         type: widget.rolename,
         fromBottomNav: true,
         onDashBoardBack: () => _navigateBack(),

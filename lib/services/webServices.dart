@@ -33,6 +33,8 @@ import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByHostelModel.dart';
 import 'package:hovee_attendence/modals/getHolidayDataModel.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
+import 'package:hovee_attendence/modals/getHostelEnquiryListModel.dart';
+import 'package:hovee_attendence/modals/getHostelEnrollmentListModel.dart';
 import 'package:hovee_attendence/modals/getHostelFilterListModel.dart';
 import 'package:hovee_attendence/modals/getLeaveListModel.dart';
 import 'package:hovee_attendence/modals/getMsplistmodel.dart';
@@ -2416,6 +2418,60 @@ static Future<GetTestimonialsModel?> fetchGuestUserTestimonialsList() async {
         return submitEnquiryModel.fromJson(json.decode(response.body));
       } else {
         return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<GetHostelEnquiryListModel> fetchHostelEnquireList(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse('${baseUrl}hostel/enquiry/getHostelEnquiryList');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(batchData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return GetHostelEnquiryListModel.fromJson(json.decode(response.body));
+    } else {
+      Logger().i("getting val;uegegbjhgsdfjs");
+      throw Exception('Failed to load Enquir list');
+    }
+  }
+
+  static Future<GetHostelEnrollmentListModel?> getHostelEnrollment(
+      Map<String, dynamic> batchData) async {
+    try {
+      final url = Uri.parse('${baseUrl}hostel/enquiry/getEnrollment');
+      final box = GetStorage(); // Get an instance of GetStorage
+      // Retrieve the token from storage
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token') ?? "";
+      final response = await http.post(
+        url, // Replace with the actual API URL
+        body: json.encode(batchData),
+        headers: {
+          'Authorization': 'Bearer $token', // Add the authorization token here
+          'Content-Type': 'application/json',
+        },
+      );
+      Logger().i(token);
+
+      Logger().i(response.body);
+
+      if (response.statusCode == 200) {
+        return GetHostelEnrollmentListModel.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load Enquir list');
       }
     } catch (e) {
       return null;
