@@ -38,7 +38,7 @@ class AttendanceCourseListScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
                 child: Text(
-                  'My Classes',
+                  'My classes',
                   style: GoogleFonts.nunito(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,

@@ -174,7 +174,7 @@ class TutorHome extends StatelessWidget {
                           Get.to(() => UserProfile());
                         },
                         child: HomePageHeader(
-                          title: 'Attendance Monitoring',
+                          title: 'Attendance monitoring',
                           userType: "Tutor",
                           firstName: firstname,
                           lastName: lastname,
@@ -429,8 +429,11 @@ class TutorHome extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 16),
-              Image.memory(qrCodeUrl!),
-              const SizedBox(height: 16),
+              Image.memory(qrCodeUrl),
+              const SizedBox(height: 10),
+              Text('Please scan the QR code to mark attendance',style:  GoogleFonts.nunito(
+                            fontSize: 14, fontWeight: FontWeight.w700)),
+                             const SizedBox(height: 10),
               ElevatedButton.icon(
                 onPressed: () {
                   Share.share(qrCodeUrl.toString(), subject: 'QR Code');

@@ -365,7 +365,7 @@ class ParentAccountSetupController extends GetxController
           isLoading.value = false;
           Get.dialog(
   AlertDialog(
-    title: Text('Tutee Preview'),
+    title: Text('Tutee preview'),
     content: Column(
       mainAxisSize: MainAxisSize.min, // To avoid stretching the dialog unnecessarily
       children: [

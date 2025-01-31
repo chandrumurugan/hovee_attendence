@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/widget/font_style.dart';
 
 
@@ -39,17 +40,16 @@ Widget subText({
     overflow: textOverflow,
     textAlign: textAlign ?? TextAlign.start,
     maxLines: maxlines,
-    style: FontType.small.style(
-      size: fontSize ?? 14,
-      color: color ?? Color(0xffa5a5a5),
-      fontStyle: fontStyle ?? FontStyle.italic,
-      lineSpace: 1.4,
+    style: GoogleFonts.nunito(
+      fontSize: fontSize ?? 14,
+      color: color ?? const Color(0xffa5a5a5),
+      fontStyle: fontStyle ?? FontStyle.normal,
       decoration: textDecoration ?? TextDecoration.none,
       shadows: [
-        Shadow(
+        const Shadow(
           blurRadius: 0.2,
           color: Color(0xffa5a5a5),
-          offset: const Offset(0.2, 0.2),
+          offset: Offset(0.2, 0.2),
         ),
       ],
     ),

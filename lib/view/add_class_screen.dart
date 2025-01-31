@@ -48,7 +48,7 @@ class _TutorClassFormState extends State<TutorClassForm> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
-                'Add Class',
+                'Add class',
                 style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -90,68 +90,10 @@ class _TutorClassFormState extends State<TutorClassForm> {
                 ],
               ),
             ),
-            //           Obx(() {
-            //   // Listen to changes in courseDetails
-            //   final courseDetail = courseController.selectedCourseDetails.value;
-
-            //   // Display loading indicator if course details are not yet fetched
-            //   if (courseDetail == null || courseDetail.sId == null) {
-            //     return Center(child: Container());
-            //   }
-
-            //   // Display course details
-            //   return Padding(
-            //       padding:
-            //                 const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-            //     child: Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //            Row(
-            //                     children: [
-            //                       const Text(
-            //                         'Course details',
-            //                         style: TextStyle(
-            //                           fontSize: 14,
-            //                           fontWeight: FontWeight.w500,
-            //                           color: Colors.black,
-            //                         ),
-            //                       ),
-
-            //                     ],
-            //                   ),
-                    // Card(
-                    //     elevation: 10,
-                    //   shadowColor: Colors.black,
-                    //   surfaceTintColor: Colors.white,
-                    //   child: Container(
-                    //      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    //       decoration: BoxDecoration(
-                    //         color: Colors.white,
-                    //         borderRadius: BorderRadius.circular(8),
-                    //       ),
-                    //     child: Column(
-                    //       crossAxisAlignment: CrossAxisAlignment.start,
-                    //       children: [
-                    //         Text('Batch Name: ${courseDetail.batchName ?? 'N/A'}', style: TextStyle(fontSize: 18)),
-                    //         Text('Categories: ${courseDetail.categories ?? 'N/A'}', style: TextStyle(fontSize: 18)),
-                    //         Text('Board: ${courseDetail.board ?? 'N/A'}', style: TextStyle(fontSize: 18)),
-                    //         Text('Class Name: ${courseDetail.className ?? 'N/A'}', style: TextStyle(fontSize: 18)),
-                    //         Text('Subject: ${courseDetail.batchId ?? 'N/A'}', style: TextStyle(fontSize: 18)),
-                    //         // Add more fields as necessary
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
-            //       ],
-            //     ),
-            //   );
-            // }),
-
             Obx(() {
               if(!controller.isSelected.value){
                     return SizedBox.shrink();
               }
-
               return  Card(
                 color: Colors.white,surfaceTintColor: Colors.white,
                 child: Container(
@@ -169,7 +111,6 @@ class _TutorClassFormState extends State<TutorClassForm> {
   'Fees : ${controller.selectedCourseData.value.fees != null ? '₹ ${controller.selectedCourseData.value.fees} /month' : 'N/A'}', 
   style: TextStyle(fontSize: 18),
 ),
-
                           Text('Batch date: ${controller.selectedCourseData.value.startDate ?? 'N/A'} - ${controller.selectedCourseData.value.endDate ?? 'N/A'}', style: TextStyle(fontSize: 18)),
                            Text('Batch time: ${controller.selectedCourseData.value.batchTimingStart ?? 'N/A'} - ${controller.selectedCourseData.value.batchTimingEnd ?? 'N/A'}', style: TextStyle(fontSize: 18)),
                       Text('Course code: ${controller.selectedCourseData.value.courseCode ?? 'N/A'}', style: TextStyle(fontSize: 18)),

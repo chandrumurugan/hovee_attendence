@@ -34,16 +34,18 @@ class AttendancecourselistContainer extends StatelessWidget {
                 'assets/tuteeHomeImg/image 193.png',
               ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start  ,
                 children: [
+                  SizedBox(height: 5,),
                    Text(
                     "${attendanceCourse!.batch!.batchName}",
                     style: GoogleFonts.nunito(
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
+                   SizedBox(height: 10,),
                   Text(
                     attendanceCourse!.course!.courseCode ?? '',
                     style: GoogleFonts.nunito(
@@ -51,6 +53,7 @@ class AttendancecourselistContainer extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
+                   SizedBox(height: 10,),
                   attendanceCourse!.course!.className != null
                       ? SizedBox(
                           width: MediaQuery.of(context).size.width * 0.4,
@@ -66,7 +69,7 @@ class AttendancecourselistContainer extends StatelessWidget {
                           ),
                         )
                       : SizedBox.shrink(),
-                      
+                       SizedBox(height: 10,),
                   Text(
                     "${attendanceCourse!.batch!.batchTimingStart} - ${attendanceCourse!.batch!.batchTimingEnd}",
                     style: GoogleFonts.nunito(
@@ -74,14 +77,14 @@ class AttendancecourselistContainer extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
-                  SizedBox(height: 5,),
-                  Text(
-                    "ID:${attendanceCourse!.course!.tutorWowId??''}",
-                    style: GoogleFonts.nunito(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
+                  //SizedBox(height: 5,),
+                  // Text(
+                  //   "ID:${attendanceCourse!.course!.tutorWowId??''}",
+                  //   style: GoogleFonts.nunito(
+                  //       fontSize: 14,
+                  //       fontWeight: FontWeight.bold,
+                  //       color: Colors.black),
+                  // ),
                 ],
               ),
               Column(

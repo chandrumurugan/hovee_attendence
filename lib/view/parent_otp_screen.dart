@@ -100,7 +100,7 @@ class ParentOtpScreen extends StatelessWidget {
                         surfaceTintColor: Colors.white,
                         color: Colors.white,
                         child: Container(
-                          height: 320,
+                          height: MediaQuery.sizeOf(context).height *0.3,
                           width: MediaQuery.sizeOf(context).width,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
@@ -234,7 +234,7 @@ class ParentOtpScreen extends StatelessWidget {
     Get.back(); // Close the bottom sheet
     Get.dialog(
       AlertDialog(
-        title: const Text('Parent Preview'),
+        title: const Text('Parent preview'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -287,7 +287,7 @@ class ParentOtpScreen extends StatelessWidget {
     Get.back(); // Close the bottom sheet
     Get.dialog(
       AlertDialog(
-        title: const Text('Tutee Preview'),
+        title: const Text('Tutee preview'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -450,7 +450,7 @@ class ParentOtpScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 45,
                     ),
                     Column(
                       children: [

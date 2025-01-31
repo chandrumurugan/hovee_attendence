@@ -53,7 +53,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Text(
-                'Preview Details',
+                'Preview details',
                 style: GoogleFonts.nunito(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
@@ -100,7 +100,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Start Date",
+                      "Start date",
                       style: GoogleFonts.nunito(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,
@@ -127,7 +127,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "End Date",
+                      "End date",
                       style: GoogleFonts.nunito(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,
@@ -559,7 +559,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
               Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Tutee Location',
+                'Tutee location',
                 style: GoogleFonts.nunito(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
@@ -601,7 +601,7 @@ class EnRollmentPreviewScreen extends StatelessWidget {
              Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Tution Location',
+                'Tution location',
                 style: GoogleFonts.nunito(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,

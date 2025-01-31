@@ -46,7 +46,7 @@ class AddHolidayScreen extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
-                'Add Holiday',
+                'Add holiday',
                 style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -165,7 +165,7 @@ class AddHolidayScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    'From Date',
+                    'From date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -206,7 +206,7 @@ class AddHolidayScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    'End Date',
+                    'End date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

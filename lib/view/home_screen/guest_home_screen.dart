@@ -307,7 +307,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Top Tutors",
+                                "Top tutors",
                                 style: GoogleFonts.nunito(
                                     color: Colors.black,
                                     fontSize: 17,
@@ -386,7 +386,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Steps to Follow",
+                                "Steps to follow",
                                 style: GoogleFonts.nunito(
                                     color: Colors.black,
                                     fontSize: 17,

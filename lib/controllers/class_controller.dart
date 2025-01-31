@@ -47,6 +47,8 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
 
   var instituteId =''.obs;
 
+   var fullClassesList =<TutionData>[].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -97,24 +99,41 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  void fetchClassesList(String type) async {
-    try {
-      var batchData = {
-        "type": type,
-      };
-      isLoading(true);
-      var classesResponse = await WebService.fetchClassesList(batchData);
-      if (classesResponse.data != null) {
-        classesList.value = classesResponse.data!;
-      }
-       SharedPreferences prefs = await SharedPreferences.getInstance();
-       instituteId.value=   prefs.getString('InstituteId') ?? '';
-    } catch (e) {
-      // Handle errors if needed
-    } finally {
-      isLoading(false);
+  void fetchClassesList(String type, {String searchTerm = ''}) async {
+  try {
+    var batchData = {
+      "type": type,
+    };
+    isLoading(true);
+    var classesResponse = await WebService.fetchClassesList(batchData);
+    if (classesResponse.data != null) {
+      // Store the full list of classes before filtering
+      fullClassesList.value = classesResponse.data!;
+
+      // Apply search filter
+       // Apply search filter
+        if (searchTerm.isNotEmpty) {
+          classesList.value = fullClassesList.where((classItem) {
+            return classItem.batchName!.toLowerCase().contains(searchTerm.toLowerCase()) ||
+                   classItem.courseCode!.toLowerCase().contains(searchTerm.toLowerCase()) ||
+                   classItem.board!.toLowerCase().contains(searchTerm.toLowerCase()) ||
+                   classItem.subject!.toLowerCase().contains(searchTerm.toLowerCase()) ||
+                   classItem.status!.toLowerCase().contains(searchTerm.toLowerCase());
+          }).toList();
+        } else {
+          classesList.value = fullClassesList;
+        }
     }
+    
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    instituteId.value = prefs.getString('InstituteId') ?? '';
+  } catch (e) {
+    // Handle errors if needed
+  } finally {
+    isLoading(false);
   }
+}
+
 
   void updateClass(BuildContext context, String courseCode, courseId, batchId,
       batchName, tuitionId) async {
@@ -238,6 +257,9 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
             context,
             'Class added successfully',
           );
+          isSelected.value = false;
+           selectedCourseData.value = TutionData();
+          courseCodeController.value = ''; 
           // Get.snackbar( 'Class added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           Get.back();
           //onInit();

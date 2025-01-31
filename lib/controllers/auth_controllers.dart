@@ -1382,7 +1382,7 @@ class AuthControllers extends GetxController
     if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Please select the Id proof',
+        'Please select the ID proof',
       );
       return false;
     }

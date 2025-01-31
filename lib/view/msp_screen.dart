@@ -96,13 +96,23 @@ class MspScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          // Search and Filter Section
-          SearchfiltertabBar(
-            title: 'MSP List',
-            onSearchChanged: (searchTerm) {},
-            filterOnTap: () {},
+           const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+                    'MSP list',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                    ),
+                  ),
           ),
+          // Search and Filter Section
+          // SearchfiltertabBar(
+          //   title: 'MSP list',
+          //   onSearchChanged: (searchTerm) {},
+          //   filterOnTap: () {},
+          // ),
           // Header Row
           //const SizedBox(height: 10),
           Obx(() {

@@ -33,7 +33,7 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
         },
       ),
           body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
                Container(
             height: 200,
@@ -47,7 +47,7 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.only(top: 25, left: 15),
+              padding: const EdgeInsets.only(top: 25, left: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -85,7 +85,7 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(right: 15),
+                        padding: const EdgeInsets.only(right: 15),
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: Text(
                           type=='Tutor'?
@@ -105,19 +105,30 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
               ),
             ),
           ),
-               SearchfiltertabBar(
-            title: 'Leave List',
-            onSearchChanged: (searchTerm) {
-              // Trigger the search functionality by passing the search term
-              //batchController.fetchBatchList(searchTerm: searchTerm);
-            },
-            filterOnTap: () {
-              // Implement filter logic here if needed
-            },
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+                    'Leave list',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                    ),
+                  ),
           ),
+          //      SearchfiltertabBar(
+          //   title: 'Leave list',
+          //   onSearchChanged: (searchTerm) {
+          //     // Trigger the search functionality by passing the search term
+          //     //batchController.fetchBatchList(searchTerm: searchTerm);
+          //   },
+          //   filterOnTap: () {
+          //     // Implement filter logic here if needed
+          //   },
+          // ),
               Obx(() {
             if (leaveController.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (leaveController.leaveList.isEmpty) {
               return Center(
                 child: Text(
@@ -140,8 +151,8 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
                       
                         effects: [
                                   SlideEffect(
-                                    begin: Offset(-1, 0), // Start from the left
-                                    end: Offset(
+                                    begin: const Offset(-1, 0), // Start from the left
+                                    end: const Offset(
                                         0, 0), // End at the original position
                                     curve: Curves.easeInOut,
                                     duration: 500

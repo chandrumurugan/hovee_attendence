@@ -127,7 +127,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
 
             //SizedBox(height: 10,),
             SearchfiltertabBar(
-              title: 'Course List',
+              title: 'Course list',
               onSearchChanged: (searchTerm) {
                 filteredfetchList('', searchTerm);
               },

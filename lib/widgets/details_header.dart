@@ -157,7 +157,7 @@ class DeatilHeader extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
-                        '50 Students',
+                        '0 Students',
                         style: GoogleFonts.nunito(
                             color: Colors.grey, fontSize: 18),
                       ),

@@ -42,7 +42,7 @@ class SideMenu extends StatelessWidget {
               isGuest: isGuest,
               userName: isGuest ? "Guest" : 'Justin Joe',
               wowID: isGuest ? "ID:xxxxx" : '1234567',
-              rating: isGuest ? '0/5' : '3/5',
+              rating: isGuest ? '0' : '0',
               type: type??"",
               firstname: firstname,
               lastname: lastname,

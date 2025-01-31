@@ -106,18 +106,28 @@ class HolidayScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          // Search and Filter Section
-          SearchfiltertabBar(
-            title: 'Holiday List',
-            onSearchChanged: (searchTerm) {
-              // Trigger the search functionality by passing the search term
-              //batchController.fetchBatchList(searchTerm: searchTerm);
-            },
-            filterOnTap: () {
-              // Implement filter logic here if needed
-            },
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+                    'Holiday list',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                    ),
+                  ),
           ),
+          // Search and Filter Section
+          // SearchfiltertabBar(
+          //   title: 'Holiday list',
+          //   onSearchChanged: (searchTerm) {
+          //     // Trigger the search functionality by passing the search term
+          //     //batchController.fetchBatchList(searchTerm: searchTerm);
+          //   },
+          //   filterOnTap: () {
+          //     // Implement filter logic here if needed
+          //   },
+          // ),
           // Header Row
           // const Padding(
           //   padding: EdgeInsets.symmetric(horizontal: 12),
@@ -164,8 +174,8 @@ class HolidayScreen extends StatelessWidget {
                       return Animate(
                           effects: [
                                   SlideEffect(
-                                    begin: Offset(-1, 0), // Start from the left
-                                    end: Offset(
+                                    begin: const Offset(-1, 0), // Start from the left
+                                    end: const Offset(
                                         0, 0), // End at the original position
                                     curve: Curves.easeInOut,
                                     duration: 500
@@ -198,12 +208,12 @@ class HolidayScreen extends StatelessWidget {
                                 children: [
                                   Text('Batch name : ${ holidayData.batchName ?? ""}',
                                       style: fontStyle),
-                                      SizedBox(height: 5,),
+                                      const SizedBox(height: 5,),
                                         Text('Holiday name : ${ holidayData.holidayName ?? ""}',
                                       style: fontStyle),
                                       //      Text('Holiday type : ${ holidayData.holidayType ?? ""}',
                                       // style:fontStyle),
-                                       SizedBox(height: 5,),
+                                       const SizedBox(height: 5,),
                                           Text('Date : $formattedDate - $formattedDate2',
                                       style: fontStyle),
                                 
@@ -372,7 +382,7 @@ class HolidayScreen extends StatelessWidget {
       bottomNavigationBar: 
        Obx(() {
          if (holidayController.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
            else if ( type == 'Tutor'&& holidayController.instituteId ==null || holidayController.instituteId == '') {
               return SingleCustomButtom(
@@ -383,7 +393,7 @@ class HolidayScreen extends StatelessWidget {
         },
       );
             } else  {
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             }
              }));
     //   type!= 'Tutor'

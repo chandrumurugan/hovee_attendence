@@ -74,7 +74,7 @@ class MyRatingsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        ' My Classes',
+                        ' My classes',
                         style: GoogleFonts.nunito(
                             fontWeight: FontWeight.w700,
                             fontSize: 16,

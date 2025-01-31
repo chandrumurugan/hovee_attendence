@@ -156,7 +156,7 @@ class SidemenuHeader extends StatelessWidget {
              : userProfileData.userProfileResponse.value.data!.institudeId!=null?
                   Text(
                         isGuest ?   "ID: xxxxxxx" :
-                       'Req no : ${userProfileData.userProfileResponse.value.data!.wowId}',
+                       'Reg no : ${userProfileData.userProfileResponse.value.data!.wowId}',
                         overflow: TextOverflow.clip,
                         style: GoogleFonts.nunito(
                             fontWeight: FontWeight.w400,

@@ -52,7 +52,7 @@ class EditleaveScreen extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
-                'Add Leave Request',
+                'Add leave request',
                 style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -103,7 +103,7 @@ class EditleaveScreen extends StatelessWidget {
                     Row(
                       children: [
                         const Text(
-                          'Choose Leave type',
+                          'Choose leave type',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -136,7 +136,7 @@ class EditleaveScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    'From Date',
+                    'From date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -177,7 +177,7 @@ class EditleaveScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    'End Date',
+                    'End date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -227,6 +227,14 @@ class EditleaveScreen extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
+                       Text(
+                    '*',
+                    style: GoogleFonts.nunito(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red.withOpacity(0.6),
+                    ),
+                       )
                     ],
                   ),
                   CommonInputField(

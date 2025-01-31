@@ -393,26 +393,26 @@ class _RoleSelectionState extends State<RoleSelection> {
                                     return;
                                   }
                                    if (selectedRole == 'Hosteller') {
-                                    // SnackBarUtils.showSuccessSnackBar(
-                                    //   context,
-                                    //   'Feature under development.',
-                                    // );
-                                    // return;
-                                     Get.to(
-                                    () => AccountSetup(
-                                        roleId: selectedRoleId!,
-                                        roleTypeId: selectedRoleTypeId ?? '',
-                                        selectedRoleTypeName:
-                                            selectedRoleTypeName ?? '',
-                                        selectedRole: selectedRole ?? '',
-                                        parentId: widget.parentId ?? '',
-                                        isGoogleSignIn: widget.isGoogleSignIn),
-                                    arguments: {
-                                      'parentId': widget.parentId ?? null,
-                                      'isGoogleSignIn': widget
-                                          .isGoogleSignIn, // or false, based on your logic
-                                    },
-                                  );
+                                    SnackBarUtils.showSuccessSnackBar(
+                                      context,
+                                      'Feature under development.',
+                                    );
+                                    return;
+                                  //    Get.to(
+                                  //   () => AccountSetup(
+                                  //       roleId: selectedRoleId!,
+                                  //       roleTypeId: selectedRoleTypeId ?? '',
+                                  //       selectedRoleTypeName:
+                                  //           selectedRoleTypeName ?? '',
+                                  //       selectedRole: selectedRole ?? '',
+                                  //       parentId: widget.parentId ?? '',
+                                  //       isGoogleSignIn: widget.isGoogleSignIn),
+                                  //   arguments: {
+                                  //     'parentId': widget.parentId ?? null,
+                                  //     'isGoogleSignIn': widget
+                                  //         .isGoogleSignIn, // or false, based on your logic
+                                  //   },
+                                  // );
                                   }
                                   // If we reach here, either a role is selected and it's not 'tutor', or it's 'tuttee' (which doesn't require a role type)
                                   Get.to(

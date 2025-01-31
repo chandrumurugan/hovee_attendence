@@ -91,8 +91,9 @@ class TutorClassList extends StatelessWidget {
           ),
           // Search and Filter Section
            SearchfiltertabBar(
-              title: 'Class List',
+              title: 'Class list',
               onSearchChanged: (searchTerm) {
+                classController.fetchClassesList('',searchTerm: searchTerm);
               },
               filterOnTap: () {},
             ),

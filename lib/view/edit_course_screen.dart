@@ -50,7 +50,7 @@ class EditCourseScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
                 child: Text(
-                  'Edit Course',
+                  'Edit course',
                   style: GoogleFonts.nunito(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,

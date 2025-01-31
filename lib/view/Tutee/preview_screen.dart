@@ -73,7 +73,7 @@ class PreviewScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Text(
-                'Tutee Details',
+                'Tutee details',
                 style: GoogleFonts.nunito(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -294,7 +294,7 @@ class PreviewScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Text(
-                'Tution Details',
+                'Tution details',
                 style: GoogleFonts.nunito(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -401,9 +401,11 @@ class PreviewScreen extends StatelessWidget {
                           fontWeight: FontWeight.w400,
                           fontSize: 16),
                     ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.6,
+                    Container(
+                      //color: Colors.amber,
+                      width: MediaQuery.of(context).size.width * 0.4,
                       child: Text(
+                        textAlign: TextAlign.right,
                         type == 'Course'
                             ? (data!.batches!.batchDays.join(', ') ?? '')
                             : (data!.batchDays?.join(', ') ?? ''),

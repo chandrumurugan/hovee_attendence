@@ -328,7 +328,7 @@ class HostellerHomeScreen extends StatelessWidget {
                                     if (item.name == 'Verifications') {
                                       // classController.onInit();
                                       Get.to(() => HostelEnquiryList(
-                                            type: 'Hostel',
+                                            type: 'Hosteller',
                                             fromBottomNav: true,
                                             firstname:firstname ,lastname:lastname ,wowid: wowid,
                                           ));
@@ -336,7 +336,7 @@ class HostellerHomeScreen extends StatelessWidget {
                                     if (item.name == 'Enrollments') {
                                       // enrollmentController.onInit();
                                       Get.to(() => HostelEnrollmentScreen(
-                                            type: 'Hostel',
+                                            type: 'Hosteller',
                                             fromBottomNav: true,
                                             firstname:firstname ,lastname:lastname ,wowid: wowid,
                                           ));
@@ -344,7 +344,7 @@ class HostellerHomeScreen extends StatelessWidget {
                                     if (item.name == 'Attendance') {
                                       Get.to(
                                           () => TuteeAttendanceList(
-                                                type: 'Tutee',
+                                                type: 'Hosteller',
                                                  firstname:firstname ,lastname:lastname ,wowid: wowid,
                                               ),
                                           arguments: "Tutee");
@@ -358,7 +358,7 @@ class HostellerHomeScreen extends StatelessWidget {
                                     }
                                     if (item.name == 'Miss Punch') {
                                       Get.to(() => MspScreen(
-                                            type: 'Tutee',
+                                            type: 'Hosteller',
                                             fromBottomNav: true,
                                              firstname:firstname ,lastname:lastname ,wowid: wowid,
                                           ));

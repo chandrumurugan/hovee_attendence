@@ -42,7 +42,7 @@ class HostelEnrollmentScreen extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
-                'Enrollment List',
+                'Enrollment list',
                 style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -69,7 +69,7 @@ class HostelEnrollmentScreen extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (controller.enrollmentList.isEmpty) {
                   // Display "No data found" when the list is empty
                   return Center(
@@ -89,8 +89,8 @@ class HostelEnrollmentScreen extends StatelessWidget {
                       return Animate(
                         effects: [
                           SlideEffect(
-                            begin: Offset(-1, 0), // Start from the left
-                            end: Offset(0, 0), // End at the original position
+                            begin: const Offset(-1, 0), // Start from the left
+                            end: const Offset(0, 0), // End at the original position
                             curve: Curves.easeInOut,
                             duration: 500.ms, // Consistent timing for each item
                             delay: 100.ms * index, // Add delay between items
@@ -139,7 +139,7 @@ class HostelEnrollmentScreen extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        CircleAvatar(
+                                        const CircleAvatar(
                                           radius: 30,
                                           backgroundColor: Colors.grey,
                                           child: Icon(
@@ -156,14 +156,14 @@ class HostelEnrollmentScreen extends StatelessWidget {
                                             children: [
                                               _buildRow('Hostel name',  enrollmentList.hostelId!.hostelName ?? '',),
                                                _buildRow('Hostel code', enrollmentList.hostelId!.hashCode.toString() ?? ''),
-                                              _buildRow('Address', '${enrollmentList.hostelId!.doorNo} ${enrollmentList.hostelId!.street} ${enrollmentList.hostelId!.doorNo}' ),
+                                              _buildRow('Address', '${enrollmentList.hostelId!.doorNo} ${enrollmentList.hostelId!.street} ${enrollmentList.hostelId!.city} ${enrollmentList.hostelId!.state} ${enrollmentList.hostelId!.country}' ),
                                                 _buildRow('Status', enrollmentList.status ?? ''),
                                             ],
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
                                     // Display "Accept" and "Reject" buttons outide the column
                                     if ((controller.selectedTabIndex.value ==
                                                 0 &&
@@ -195,8 +195,8 @@ class HostelEnrollmentScreen extends StatelessWidget {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             8),
-                                                    gradient: LinearGradient(
-                                                      colors: const [
+                                                    gradient: const LinearGradient(
+                                                      colors: [
                                                         Color(0xFFBA0161),
                                                         Color(0xFF510270)
                                                       ],
@@ -232,8 +232,8 @@ class HostelEnrollmentScreen extends StatelessWidget {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             8),
-                                                    gradient: LinearGradient(
-                                                      colors: const [
+                                                    gradient: const LinearGradient(
+                                                      colors: [
                                                         Color(0xFFBA0161),
                                                         Color(0xFF510270)
                                                       ],
@@ -491,7 +491,7 @@ class HostelEnrollmentScreen extends StatelessWidget {
         ),
         Text(
           value ?? '',
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
         ),
       ],

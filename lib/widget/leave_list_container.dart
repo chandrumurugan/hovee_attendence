@@ -185,14 +185,15 @@ class LeaveListContainer extends StatelessWidget {
                             color: Colors.black)),
                   ],
                 ),
-                leave.status != 'Accepted' && leave.status != 'Rejected'?
-                const Divider(
-                  //height: 100,
-                  color: Colors.grey,
-                  thickness: 1,
-                  indent: 0,
-                  endIndent: 0,
-                ):const SizedBox(height: 8,),
+                SizedBox(height: 8,),
+                // leave.status != 'Accepted' && leave.status != 'Rejected'?
+                // const Divider(
+                //   //height: 100,
+                //   color: Colors.grey,
+                //   thickness: 1,
+                //   indent: 0,
+                //   endIndent: 0,
+                // ):const SizedBox(height: 8,),
                  buildActionButtons(type,leave.status!,leave.sId!,context)
                 //SizedBox(height: 16),
     //             type == 'Tutor' && (leave.status != 'Accepted' && leave.status != 'Rejected')
@@ -425,19 +426,20 @@ class LeaveListContainer extends StatelessWidget {
     }
   } else if (type == 'Tutee' && status == 'Pending') {
     // Condition 3: Tutee with Pending status - Show Resend button
-    return TextButton(
-      onPressed: () {
-        // Add chat functionality or resend logic here
-      },
-      child: const Text(
-        'Resend',
-        style: TextStyle(
-          color: Colors.blue,
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-        ),
-      ),
-    );
+    return  SizedBox.shrink();
+    // TextButton(
+    //   onPressed: () {
+    //     // Add chat functionality or resend logic here
+    //   },
+    //   child: const Text(
+    //     'Resend',
+    //     style: TextStyle(
+    //       color: Colors.blue,
+    //       fontWeight: FontWeight.bold,
+    //       fontSize: 16,
+    //     ),
+    //   ),
+    // );
   } else {
     // Default case: Show nothing
     return const SizedBox.shrink();

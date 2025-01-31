@@ -26,7 +26,7 @@ final List<BestReviews> review;
                 children: [
                   RichText(
                     text: TextSpan(
-                        text: 'My Reviews',
+                        text: 'My reviews',
                         style: GoogleFonts.nunito(
                             fontWeight: FontWeight.w700,
                             fontSize: 16,

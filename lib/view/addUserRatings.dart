@@ -182,7 +182,7 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 10, left: 15),
-                child: Text("Tutor Info",
+                child: Text("Tutor info",
                     style: GoogleFonts.nunito(
                         fontWeight: FontWeight.w700,
                         color: Colors.black,
@@ -265,7 +265,7 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                 children: [
                   Center(
                     child: Text(
-                      'Please Rate Your Experience!',
+                      'Please rate your experience!',
                       style: GoogleFonts.nunito(
                           fontWeight: FontWeight.w400, color: Colors.black),
                     ),
@@ -442,7 +442,7 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
                     controller: _commentController,
                     maxLines: 2,
                     decoration: InputDecoration(
-                      hintText: 'Type comment',
+                      hintText: 'Type here...',
                       fillColor: Colors.white,
                       filled: true,
                       border: OutlineInputBorder(

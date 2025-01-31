@@ -363,7 +363,23 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
       if (response != null && response.success == true) {
         _clearData();
         fetchCourseList();
-        SnackBarUtils.showSuccessSnackBar(context, 'Course delete successfully');
+        Get.snackbar(
+          'Course delete successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText: const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        'Course delete successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+fetchBatchList();
+        //SnackBarUtils.showSuccessSnackBar(context, 'Course delete successfully');
         //  Get.back();
         //  onInit();
       } else {

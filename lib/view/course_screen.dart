@@ -106,7 +106,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
           ),
           // Search and Filter Section
           SearchfiltertabBar(
-            title: 'Course List',
+            title: 'Course list',
             onSearchChanged: (searchTerm) {
               courseController.fetchCourseList(searchTerm: searchTerm);
             },

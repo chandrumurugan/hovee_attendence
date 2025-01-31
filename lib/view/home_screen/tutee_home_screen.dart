@@ -185,7 +185,7 @@ class TuteeHome extends StatelessWidget {
                         Get.to(() => UserProfile());
                       },
                       child: HomePageHeader(
-                        title: 'Attendance Monitoring',
+                        title: 'Attendance monitoring',
                         userType: "Tutee",
                         firstName: firstname,
                         lastName: lastname,
@@ -278,7 +278,7 @@ class TuteeHome extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
-                                  'My Classes',
+                                  'My classes',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -289,7 +289,7 @@ class TuteeHome extends StatelessWidget {
                                     Get.to(() => AttendanceCourseListScreen());
                                   },
                                   child: const Text(
-                                    'See All',
+                                    'See all',
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
@@ -323,7 +323,7 @@ class TuteeHome extends StatelessWidget {
                           const Padding(
                             padding: EdgeInsets.all(5),
                             child: Text(
-                              'My Listings',
+                              'My listings',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
@@ -381,7 +381,7 @@ class TuteeHome extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: const Text(
-                      "Invite Parent", // Label for the additional item
+                      "Invite parent", // Label for the additional item
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
                     ),

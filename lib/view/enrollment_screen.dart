@@ -61,7 +61,7 @@ class EnrollmentScreen extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
-                'Enrollment List',
+                'Enrollment list',
                 style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -191,8 +191,8 @@ class EnrollmentScreen extends StatelessWidget {
                                                 _buildRow('Subject', enrollmentList.courseId.subject),
                                                _buildRow('Tutor', '${enrollmentList.tutorId.firstName} ${enrollmentList.tutorId.lastName}',),
                                              _buildRow('Status', enrollmentList.status == 'Approved' ? 'Accepted' : enrollmentList.status),
-                                              _buildRow('Start Date', enrollmentList.batchId.startDate ?? ''),
-                                              _buildRow('End Date', enrollmentList.batchId.endDate?? ''),
+                                              _buildRow('Start date', enrollmentList.batchId.startDate ?? ''),
+                                              _buildRow('End date', enrollmentList.batchId.endDate?? ''),
                                             ],
                                           ),
                                         ),

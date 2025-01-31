@@ -38,7 +38,7 @@ class AnnouncementScreen extends StatelessWidget {
           },
         ),
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: 200,
@@ -52,7 +52,7 @@ class AnnouncementScreen extends StatelessWidget {
                 ),
               ),
               child: Padding(
-                padding: EdgeInsets.only(top: 25, left: 15),
+                padding: const EdgeInsets.only(top: 25, left: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -85,7 +85,7 @@ class AnnouncementScreen extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.only(right: 15),
+                          padding: const EdgeInsets.only(right: 15),
                           width: MediaQuery.of(context).size.width * 0.9,
                           child: Text(
                             'list your planned announcement for the upcoming year and keep everything well-organized',
@@ -104,19 +104,30 @@ class AnnouncementScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SearchfiltertabBar(
-              title: 'Announcement List',
-              onSearchChanged: (searchTerm) {
-                // Trigger the search functionality by passing the search term
-                //batchController.fetchBatchList(searchTerm: searchTerm);
-              },
-              filterOnTap: () {
-                // Implement filter logic here if needed
-              },
-            ),
+            const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+                    'Announcement list',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                    ),
+                  ),
+          ),
+            // SearchfiltertabBar(
+            //   title: 'Announcement list',
+            //   onSearchChanged: (searchTerm) {
+            //     // Trigger the search functionality by passing the search term
+            //     //batchController.fetchBatchList(searchTerm: searchTerm);
+            //   },
+            //   filterOnTap: () {
+            //     // Implement filter logic here if needed
+            //   },
+            // ),
             Obx(() {
               if (anoumentController.isLoading.value) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (anoumentController.announmentList.isEmpty) {
                 return Center(
                   child: Text(
@@ -245,7 +256,7 @@ class AnnouncementScreen extends StatelessWidget {
         bottomNavigationBar:
         Obx(() {
          if (anoumentController.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
            else if ( type == 'Tutor'
            && (anoumentController.instituteId ==null || anoumentController.instituteId == '')) {
@@ -257,7 +268,7 @@ class AnnouncementScreen extends StatelessWidget {
         },
       );
             } else  {
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             }
              }));
         //  type == 'Tutor'
@@ -291,7 +302,7 @@ class AnnouncementScreen extends StatelessWidget {
           child: Text(
             displayValue,
             maxLines: 3,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.w400,
                 fontSize: 14,

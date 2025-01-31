@@ -210,7 +210,7 @@ class _ParentViewState extends State<ParentView> {
                           Get.to(() => UserProfile(type: "Parent",));
                         },
                         child: HomePageHeader(
-                          title: 'Attendance Monitoring',
+                          title: 'Attendance monitoring',
                           userType: "Parent",
                           firstName: widget.firstname,
                           lastName: widget.lastname,
