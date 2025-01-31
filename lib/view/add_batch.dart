@@ -427,16 +427,12 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                     hintText: 'Enter here...',
                     controllerValue: controller.feesController,
                     selectedValue: controller.feesController,
-                    keyboardType: TextInputType.phone,
+                     keyboardType: TextInputType.number,
                     onTap: () {},
                     prefixText: '₹ ', // Add the rupee symbol as prefix
                     suffixText: '/month', controller: controller.fees,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                        RegExp(r"[0-9]"),
-                      ),
-                      LengthLimitingTextInputFormatter(
-                          10), // Restrict to 10 digits
+                      FilteringTextInputFormatter.digitsOnly, // Restrict to 10 digits
                     ], // Add "/month" as suffix
                   ),
                   Padding(

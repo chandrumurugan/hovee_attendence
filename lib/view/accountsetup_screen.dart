@@ -757,519 +757,870 @@ class AccountSetup extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-
-                                //address info
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12),
-                                  child: GestureDetector(
-                                    onVerticalDragUpdate: (details) {
-                                      // Detect dragging on the map
-
-                                      if (details.localPosition.dy <=
-                                          accountController.mapHeight.value) {
-                                        // setState(() {
-                                        //   _isMapInteracting = true;
-                                        // });
-                                        accountController
-                                            .isMapInteracting.value = true;
-                                      }
-                                    },
-                                    onVerticalDragEnd: (details) {
-                                      // Reset the interaction flag when the drag ends
-                                      // setState(() {
-                                      //   _isMapInteracting = false;
-                                      // });
-                                      accountController.isMapInteracting.value =
-                                          true;
-                                    },
-                                    child: SingleChildScrollView(
-                                      physics: accountController
-                                              .isMapInteracting.value
-                                          ? const NeverScrollableScrollPhysics()
-                                          : const AlwaysScrollableScrollPhysics(),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          placesAutoCompleteTextField(
-                                              accountController),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Obx(() => Stack(
-                                                children: [
-                                                  Container(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.25,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      border: Border.all(
-                                                        color: Colors.grey
-                                                            .withOpacity(0.3),
-                                                        width: 1,
-                                                      ),
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .all(
-                                                              Radius.circular(
-                                                                  8.0)),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                                        child: Expanded(
+                                                child: CustomScrollView(
+                                                  slivers: [
+                                                    SliverToBoxAdapter(
+                                                      child: placesAutoCompleteTextField(accountController),
                                                     ),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .all(
-                                                              Radius.circular(
-                                                                  8.0)),
-                                                      child: GoogleMap(
-                                                        scrollGesturesEnabled:
-                                                            true,
-                                                        mapType: MapType.normal,
-                                                        initialCameraPosition:
-                                                            CameraPosition(
-                                                          target: LatLng(
-                                                              accountController
-                                                                      .latitudeL
-                                                                      .value ??
-                                                                  0.0,
-                                                              accountController
-                                                                      .longitudeL
-                                                                      .value ??
-                                                                  0.0),
-                                                          zoom: 10,
+                                                    SliverList(
+                                                      delegate: SliverChildListDelegate(
+                                                        [
+                                                          const SizedBox(height: 10),
+                                                          SizedBox(
+                                                        height: MediaQuery.of(context).size.height * 0.25,
+                                                        child: GoogleMap(
+                                                          scrollGesturesEnabled: true,
+                                                          mapType: MapType.normal,
+                                                          initialCameraPosition: CameraPosition(
+                                                            target: LatLng(accountController.latitudeL.value ?? 0.0,
+                                                                accountController.longitudeL.value ?? 0.0),
+                                                            zoom: 10,
+                                                          ),
+                                                          onMapCreated: accountController.onMapCreated,
+                                                          markers: accountController.marker.value != null
+                                                              ? {accountController.marker.value!}
+                                                              : {},
+                                                          onTap: (position) {
+                                                            accountController.setMarker(position);
+                                                          },
+                                                          zoomControlsEnabled: false,
+                                                          gestureRecognizers: Set()
+                                                            ..add(Factory<EagerGestureRecognizer>(
+                                                                () => EagerGestureRecognizer())),
                                                         ),
-                                                        onMapCreated:
-                                                            accountController
-                                                                .onMapCreated,
-                                                        markers:
-                                                            accountController
-                                                                        .marker
-                                                                        .value !=
-                                                                    null
-                                                                ? {
-                                                                    accountController
-                                                                        .marker
-                                                                        .value!
-                                                                  }
-                                                                : {},
-                                                        onTap: (position) {
-                                                          accountController
-                                                              .setMarker(
-                                                                  position);
-                                                        },
-                                                        zoomControlsEnabled:
-                                                            false,
-                                                        gestureRecognizers: Set()
-                                                          ..add(Factory<
-                                                                  EagerGestureRecognizer>(
-                                                              () =>
-                                                                  EagerGestureRecognizer())),
                                                       ),
-                                                    ),
+                                                          
+                                                          const SizedBox(height: 10),
+                                                                    const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  'Door no',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
                                                   ),
-                                                  if (accountController
-                                                      .isLoading.value)
-                                                    Positioned.fill(
-                                                      child: Container(
-                                                        color: Colors.black
-                                                            .withOpacity(0.5),
-                                                        child: const Center(
-                                                          child:
-                                                              CircularProgressIndicator(),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  Positioned(
-                                                    top: 10,
-                                                    right: 10,
-                                                    child: Column(
-                                                      children: [
-                                                        FloatingActionButton(
-                                                          backgroundColor:
-                                                              Colors.blue,
-                                                          onPressed: () =>
-                                                              accountController
-                                                                  .zoomIn(),
-                                                          mini: true,
-                                                          child: const Icon(
-                                                              Icons.zoom_in,
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 10),
-                                                        FloatingActionButton(
-                                                          backgroundColor:
-                                                              Colors.blue,
-                                                          onPressed: () =>
-                                                              accountController
-                                                                  .zoomOut(),
-                                                          mini: true,
-                                                          child: const Icon(
-                                                              Icons.zoom_out,
-                                                              color:
-                                                                  Colors.white),
-                                                        ),
-                                                      ],
+                                                ),
+                                                Text(
+                                                  '*',
+                                                  style: GoogleFonts.nunito(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.red
+                                                        .withOpacity(0.6),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            InputTextField(
+                                                suffix: false,
+                                                readonly: false,
+                                                hintText: 'Enter here...',
+                                                keyboardType: TextInputType.name,
+                                                inputFormatter: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(
+                                                    RegExp(
+                                                      r"[a-zA-Z0-9\s@&_,-\./']",
                                                     ),
                                                   ),
                                                 ],
-                                              )),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                'Door no',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
+                                                controller: accountController
+                                                    .address1Controller),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  'Street & Area',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(
-                                                '*',
-                                                style: GoogleFonts.nunito(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.red
-                                                      .withOpacity(0.6),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          InputTextField(
-                                              suffix: false,
-                                              readonly: false,
-                                              hintText: 'Enter here...',
-                                              keyboardType: TextInputType.name,
-                                              inputFormatter: [
-                                                FilteringTextInputFormatter
-                                                    .allow(
-                                                  RegExp(
-                                                    r"[a-zA-Z0-9\s@&_,-\./']",
+                                                Text(
+                                                  '*',
+                                                  style: GoogleFonts.nunito(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.red
+                                                        .withOpacity(0.6),
                                                   ),
                                                 ),
                                               ],
-                                              controller: accountController
-                                                  .address1Controller),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                'Street & Area',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            InputTextField(
+                                                suffix: false,
+                                                readonly: false,
+                                                hintText: 'Enter here...',
+                                                keyboardType: TextInputType.name,
+                                                inputFormatter: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(
+                                                    RegExp(
+                                                        r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                                  ),
+                                                ],
+                                                controller: accountController
+                                                    .address2Controller),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  'City',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(
-                                                '*',
-                                                style: GoogleFonts.nunito(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.red
-                                                      .withOpacity(0.6),
+                                                Text(
+                                                  '*',
+                                                  style: GoogleFonts.nunito(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.red
+                                                        .withOpacity(0.6),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          InputTextField(
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            InputTextField(
+                                                suffix: false,
+                                                readonly: false,
+                                                hintText: 'Enter here...',
+                                                keyboardType: TextInputType.name,
+                                                inputFormatter: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(
+                                                    RegExp(
+                                                        r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                                  ),
+                                                ],
+                                                controller: accountController
+                                                    .cityController),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  'State',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '*',
+                                                  style: GoogleFonts.nunito(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.red
+                                                        .withOpacity(0.6),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            InputTextField(
+                                                suffix: false,
+                                                readonly: false,
+                                                hintText: 'Enter here...',
+                                                keyboardType: TextInputType.text,
+                                                inputFormatter: [
+                                                  FilteringTextInputFormatter
+                                                      .allow(
+                                                    RegExp(
+                                                        r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                                  ),
+                                                ],
+                                                controller: accountController
+                                                    .stateController),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  'Country',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '*',
+                                                  style: GoogleFonts.nunito(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.red
+                                                        .withOpacity(0.6),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            InputTextField(
                                               suffix: false,
                                               readonly: false,
                                               hintText: 'Enter here...',
                                               keyboardType: TextInputType.name,
                                               inputFormatter: [
-                                                FilteringTextInputFormatter
-                                                    .allow(
+                                                FilteringTextInputFormatter.allow(
                                                   RegExp(
                                                       r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
                                                 ),
                                               ],
                                               controller: accountController
-                                                  .address2Controller),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                'City',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
+                                                  .countryController,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  'Pincode',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(
-                                                '*',
-                                                style: GoogleFonts.nunito(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.red
-                                                      .withOpacity(0.6),
+                                                Text(
+                                                  '*',
+                                                  style: GoogleFonts.nunito(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.red
+                                                        .withOpacity(0.6),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          InputTextField(
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            InputTextField(
                                               suffix: false,
                                               readonly: false,
                                               hintText: 'Enter here...',
-                                              keyboardType: TextInputType.name,
-                                              inputFormatter: [
-                                                FilteringTextInputFormatter
-                                                    .allow(
-                                                  RegExp(
-                                                      r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
-                                                ),
-                                              ],
+                                              keyboardType: TextInputType.number,
                                               controller: accountController
-                                                  .cityController),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                'State',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              Text(
-                                                '*',
-                                                style: GoogleFonts.nunito(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.red
-                                                      .withOpacity(0.6),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          InputTextField(
-                                              suffix: false,
-                                              readonly: false,
-                                              hintText: 'Enter here...',
-                                              keyboardType: TextInputType.text,
+                                                  .pincodesController,
                                               inputFormatter: [
-                                                FilteringTextInputFormatter
-                                                    .allow(
+                                                FilteringTextInputFormatter.allow(
                                                   RegExp(
-                                                      r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                                    r"[0-9]",
+                                                  ),
                                                 ),
+                                                LengthLimitingTextInputFormatter(
+                                                    10),
                                               ],
-                                              controller: accountController
-                                                  .stateController),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                'Country',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              Text(
-                                                '*',
-                                                style: GoogleFonts.nunito(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.red
-                                                      .withOpacity(0.6),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          InputTextField(
-                                            suffix: false,
-                                            readonly: false,
-                                            hintText: 'Enter here...',
-                                            keyboardType: TextInputType.name,
-                                            inputFormatter: [
-                                              FilteringTextInputFormatter.allow(
-                                                RegExp(
-                                                    r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
-                                              ),
-                                            ],
-                                            controller: accountController
-                                                .countryController,
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                'Pincode',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              Text(
-                                                '*',
-                                                style: GoogleFonts.nunito(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.red
-                                                      .withOpacity(0.6),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          InputTextField(
-                                            suffix: false,
-                                            readonly: false,
-                                            hintText: 'Enter here...',
-                                            keyboardType: TextInputType.number,
-                                            controller: accountController
-                                                .pincodesController,
-                                            inputFormatter: [
-                                              FilteringTextInputFormatter.allow(
-                                                RegExp(
-                                                  r"[0-9]",
-                                                ),
-                                              ),
-                                              LengthLimitingTextInputFormatter(
-                                                  10),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 16,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              KeyboardUtil.hideKeyboard(
-                                                  context);                               // Check the GoogleSignIn status and account verification status
-                                            if (isGoogleSignIn == true &&
-                                                accountController
-                                                    .accountVerified.value) {
-                                              // If GoogleSignIn is true and account is verified, store personal info
-                                             accountController
-                                                  .storeAddressInfo(
-                                                      context,
-                                                      selectedRoleTypeName,
-                                                      roleId,
-                                                      roleTypeId,
-                                                      selectedRole);
-                                            } else if (isGoogleSignIn == true &&
-                                                !accountController
-                                                    .accountVerified.value) {
-                                              // If GoogleSignIn is true but account is not verified, show verification message
-                                              SnackBarUtils.showErrorSnackBar(
-                                                context,
-                                                "Please verify your phone number",
-                                              );
-                                            } else if (isGoogleSignIn ==
-                                                    false &&
-                                                !accountController
-                                                    .accountVerified.value) {
-                                              // If GoogleSignIn is false and account is not verified, store personal info
-                                              accountController
-                                                  .storeAddressInfo(
-                                                      context,
-                                                      selectedRoleTypeName,
-                                                      roleId,
-                                                      roleTypeId,
-                                                      selectedRole);
-                                            }
-                                            },
-                                            child: Container(
-                                              height: 48,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 40,
-                                                vertical: 12,
-                                              ),
-                                              decoration: const BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(8),
-                                                ),
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    Color(0xFFC13584),
-                                                    Color(0xFF833AB4)
-                                                  ],
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                ),
-                                              ),
-                                              child: accountController
-                                                      .isLoading.value
-                                                  ? const Center(
-                                                      child:
-                                                          CircularProgressIndicator(),
-                                                    )
-                                                  : Center(
-                                                      child: Text(
-                                                        selectedRole !=
-                                                                    'Parent' &&
-                                                                    selectedRole !=
-                                                                    'Hosteller' &&
-                                                                selectedRoleTypeName !=
-                                                                    'Institute' &&
-                                                                selectedRole ==
-                                                                    'Tutor'
-                                                            ? 'Next'
-                                                            : 'Submit',
-                                                        style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.white,
-                                                        ),
+                                            ),
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                                          InkWell(
+                                                            onTap: () {
+                                                              KeyboardUtil.hideKeyboard(context);
+                                                              if (isGoogleSignIn == true &&
+                                                                  accountController.accountVerified.value) {
+                                                                accountController.storeAddressInfo(
+                                                                    context, selectedRoleTypeName, roleId, roleTypeId, selectedRole);
+                                                              } else if (isGoogleSignIn == true &&
+                                                                  !accountController.accountVerified.value) {
+                                                                SnackBarUtils.showErrorSnackBar(
+                                                                  context,
+                                                                  "Please verify your phone number",
+                                                                );
+                                                              } else if (isGoogleSignIn == false &&
+                                                                  !accountController.accountVerified.value) {
+                                                                accountController.storeAddressInfo(
+                                                                    context, selectedRoleTypeName, roleId, roleTypeId, selectedRole);
+                                                              }
+                                                            },
+                                                            child: Container(
+                                                              height: 48,
+                                                              padding: const EdgeInsets.symmetric(
+                                                                horizontal: 40,
+                                                                vertical: 12,
+                                                              ),
+                                                              decoration: const BoxDecoration(
+                                                                borderRadius: BorderRadius.all(
+                                                                  Radius.circular(8),
+                                                                ),
+                                                                gradient: LinearGradient(
+                                                                  colors: [Color(0xFFC13584), Color(0xFF833AB4)],
+                                                                  begin: Alignment.topCenter,
+                                                                  end: Alignment.bottomCenter,
+                                                                ),
+                                                              ),
+                                                              child: Center(
+                                                                child: Text(
+                                                                  selectedRole != 'Parent' &&
+                                                                          selectedRole != 'Hosteller' &&
+                                                                          selectedRoleTypeName != 'Institute' &&
+                                                                          selectedRole == 'Tutor'
+                                                                      ? 'Next'
+                                                                      : 'Submit',
+                                                                  style: const TextStyle(
+                                                                    fontSize: 16,
+                                                                    fontWeight: FontWeight.w600,
+                                                                    color: Colors.white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(height: 16),
+                                                        ],
                                                       ),
                                                     ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 16,
-                                          ),
-                                        ],
+                                                  ],
+                                                ),
+                                              ),
                                       ),
-                                    ),
-                                  ),
-                                ),
+                                //address info
+                                // Container(
+                                //   padding: const EdgeInsets.symmetric(
+                                //       horizontal: 12),
+                                //   child: GestureDetector(
+                                //     onVerticalDragUpdate: (details) {
+                                //       // Detect dragging on the map
+
+                                //       if (details.localPosition.dy <=
+                                //           accountController.mapHeight.value) {
+                                //         // setState(() {
+                                //         //   _isMapInteracting = true;
+                                //         // });
+                                //         accountController
+                                //             .isMapInteracting.value = true;
+                                //       }
+                                //     },
+                                //     onVerticalDragEnd: (details) {
+                                //       // Reset the interaction flag when the drag ends
+                                //       // setState(() {
+                                //       //   _isMapInteracting = false;
+                                //       // });
+                                //       accountController.isMapInteracting.value =
+                                //           true;
+                                //     },
+                                //     child: SingleChildScrollView(
+                                //       physics: accountController
+                                //               .isMapInteracting.value
+                                //           ? const NeverScrollableScrollPhysics()
+                                //           : const AlwaysScrollableScrollPhysics(),
+                                //       child: Column(
+                                //         mainAxisAlignment:
+                                //             MainAxisAlignment.start,
+                                //         crossAxisAlignment:
+                                //             CrossAxisAlignment.start,
+                                //         children: [
+                                //           placesAutoCompleteTextField(
+                                //               accountController),
+                                //           const SizedBox(
+                                //             height: 10,
+                                //           ),
+                                //           Obx(() => Stack(
+                                //                 children: [
+                                //                   Container(
+                                //                     height:
+                                //                         MediaQuery.of(context)
+                                //                                 .size
+                                //                                 .height *
+                                //                             0.25,
+                                //                     width:
+                                //                         MediaQuery.of(context)
+                                //                             .size
+                                //                             .width,
+                                //                     decoration: BoxDecoration(
+                                //                       color: Colors.white,
+                                //                       border: Border.all(
+                                //                         color: Colors.grey
+                                //                             .withOpacity(0.3),
+                                //                         width: 1,
+                                //                       ),
+                                //                       borderRadius:
+                                //                           const BorderRadius
+                                //                               .all(
+                                //                               Radius.circular(
+                                //                                   8.0)),
+                                //                     ),
+                                //                     child: ClipRRect(
+                                //                       borderRadius:
+                                //                           const BorderRadius
+                                //                               .all(
+                                //                               Radius.circular(
+                                //                                   8.0)),
+                                //                       child: GoogleMap(
+                                //                         scrollGesturesEnabled:
+                                //                             true,
+                                //                         mapType: MapType.normal,
+                                //                         initialCameraPosition:
+                                //                             CameraPosition(
+                                //                           target: LatLng(
+                                //                               accountController
+                                //                                       .latitudeL
+                                //                                       .value ??
+                                //                                   0.0,
+                                //                               accountController
+                                //                                       .longitudeL
+                                //                                       .value ??
+                                //                                   0.0),
+                                //                           zoom: 10,
+                                //                         ),
+                                //                         onMapCreated:
+                                //                             accountController
+                                //                                 .onMapCreated,
+                                //                         markers:
+                                //                             accountController
+                                //                                         .marker
+                                //                                         .value !=
+                                //                                     null
+                                //                                 ? {
+                                //                                     accountController
+                                //                                         .marker
+                                //                                         .value!
+                                //                                   }
+                                //                                 : {},
+                                //                         onTap: (position) {
+                                //                           accountController
+                                //                               .setMarker(
+                                //                                   position);
+                                //                         },
+                                //                         zoomControlsEnabled:
+                                //                             false,
+                                //                         gestureRecognizers: Set()
+                                //                           ..add(Factory<
+                                //                                   EagerGestureRecognizer>(
+                                //                               () =>
+                                //                                   EagerGestureRecognizer())),
+                                //                       ),
+                                //                     ),
+                                //                   ),
+                                //                   if (accountController
+                                //                       .isLoading.value)
+                                //                     Positioned.fill(
+                                //                       child: Container(
+                                //                         color: Colors.black
+                                //                             .withOpacity(0.5),
+                                //                         child: const Center(
+                                //                           child:
+                                //                               CircularProgressIndicator(),
+                                //                         ),
+                                //                       ),
+                                //                     ),
+                                //                   Positioned(
+                                //                     top: 10,
+                                //                     right: 10,
+                                //                     child: Column(
+                                //                       children: [
+                                //                         FloatingActionButton(
+                                //                           backgroundColor:
+                                //                               Colors.blue,
+                                //                           onPressed: () =>
+                                //                               accountController
+                                //                                   .zoomIn(),
+                                //                           mini: true,
+                                //                           child: const Icon(
+                                //                               Icons.zoom_in,
+                                //                               color:
+                                //                                   Colors.white),
+                                //                         ),
+                                //                         const SizedBox(
+                                //                             height: 10),
+                                //                         FloatingActionButton(
+                                //                           backgroundColor:
+                                //                               Colors.blue,
+                                //                           onPressed: () =>
+                                //                               accountController
+                                //                                   .zoomOut(),
+                                //                           mini: true,
+                                //                           child: const Icon(
+                                //                               Icons.zoom_out,
+                                //                               color:
+                                //                                   Colors.white),
+                                //                         ),
+                                //                       ],
+                                //                     ),
+                                //                   ),
+                                //                 ],
+                                //               )),
+                                          // const SizedBox(
+                                          //   height: 5,
+                                          // ),
+                                          // Row(
+                                          //   children: [
+                                          //     const Text(
+                                          //       'Door no',
+                                          //       style: TextStyle(
+                                          //         fontSize: 14,
+                                          //         fontWeight: FontWeight.w500,
+                                          //         color: Colors.black,
+                                          //       ),
+                                          //     ),
+                                          //     Text(
+                                          //       '*',
+                                          //       style: GoogleFonts.nunito(
+                                          //         fontSize: 18,
+                                          //         fontWeight: FontWeight.w600,
+                                          //         color: Colors.red
+                                          //             .withOpacity(0.6),
+                                          //       ),
+                                          //     ),
+                                          //   ],
+                                          // ),
+                                          // const SizedBox(
+                                          //   height: 10,
+                                          // ),
+                                          // InputTextField(
+                                          //     suffix: false,
+                                          //     readonly: false,
+                                          //     hintText: 'Enter here...',
+                                          //     keyboardType: TextInputType.name,
+                                          //     inputFormatter: [
+                                          //       FilteringTextInputFormatter
+                                          //           .allow(
+                                          //         RegExp(
+                                          //           r"[a-zA-Z0-9\s@&_,-\./']",
+                                          //         ),
+                                          //       ),
+                                          //     ],
+                                          //     controller: accountController
+                                          //         .address1Controller),
+                                          // const SizedBox(
+                                          //   height: 10,
+                                          // ),
+                                          // Row(
+                                          //   children: [
+                                          //     const Text(
+                                          //       'Street & Area',
+                                          //       style: TextStyle(
+                                          //         fontSize: 14,
+                                          //         fontWeight: FontWeight.w500,
+                                          //         color: Colors.black,
+                                          //       ),
+                                          //     ),
+                                          //     Text(
+                                          //       '*',
+                                          //       style: GoogleFonts.nunito(
+                                          //         fontSize: 18,
+                                          //         fontWeight: FontWeight.w600,
+                                          //         color: Colors.red
+                                          //             .withOpacity(0.6),
+                                          //       ),
+                                          //     ),
+                                          //   ],
+                                          // ),
+                                          // const SizedBox(
+                                          //   height: 10,
+                                          // ),
+                                          // InputTextField(
+                                          //     suffix: false,
+                                          //     readonly: false,
+                                          //     hintText: 'Enter here...',
+                                          //     keyboardType: TextInputType.name,
+                                          //     inputFormatter: [
+                                          //       FilteringTextInputFormatter
+                                          //           .allow(
+                                          //         RegExp(
+                                          //             r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                          //       ),
+                                          //     ],
+                                          //     controller: accountController
+                                          //         .address2Controller),
+                                          // const SizedBox(
+                                          //   height: 10,
+                                          // ),
+                                          // Row(
+                                          //   children: [
+                                          //     const Text(
+                                          //       'City',
+                                          //       style: TextStyle(
+                                          //         fontSize: 14,
+                                          //         fontWeight: FontWeight.w500,
+                                          //         color: Colors.black,
+                                          //       ),
+                                          //     ),
+                                          //     Text(
+                                          //       '*',
+                                          //       style: GoogleFonts.nunito(
+                                          //         fontSize: 18,
+                                          //         fontWeight: FontWeight.w600,
+                                          //         color: Colors.red
+                                          //             .withOpacity(0.6),
+                                          //       ),
+                                          //     ),
+                                          //   ],
+                                          // ),
+                                          // const SizedBox(
+                                          //   height: 10,
+                                          // ),
+                                          // InputTextField(
+                                          //     suffix: false,
+                                          //     readonly: false,
+                                          //     hintText: 'Enter here...',
+                                          //     keyboardType: TextInputType.name,
+                                          //     inputFormatter: [
+                                          //       FilteringTextInputFormatter
+                                          //           .allow(
+                                          //         RegExp(
+                                          //             r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                          //       ),
+                                          //     ],
+                                          //     controller: accountController
+                                          //         .cityController),
+                                          // const SizedBox(
+                                          //   height: 10,
+                                          // ),
+                                          // Row(
+                                          //   children: [
+                                          //     const Text(
+                                          //       'State',
+                                          //       style: TextStyle(
+                                          //         fontSize: 14,
+                                          //         fontWeight: FontWeight.w500,
+                                          //         color: Colors.black,
+                                          //       ),
+                                          //     ),
+                                          //     Text(
+                                          //       '*',
+                                          //       style: GoogleFonts.nunito(
+                                          //         fontSize: 18,
+                                          //         fontWeight: FontWeight.w600,
+                                          //         color: Colors.red
+                                          //             .withOpacity(0.6),
+                                          //       ),
+                                          //     ),
+                                          //   ],
+                                          // ),
+                                          // const SizedBox(
+                                          //   height: 10,
+                                          // ),
+                                          // InputTextField(
+                                          //     suffix: false,
+                                          //     readonly: false,
+                                          //     hintText: 'Enter here...',
+                                          //     keyboardType: TextInputType.text,
+                                          //     inputFormatter: [
+                                          //       FilteringTextInputFormatter
+                                          //           .allow(
+                                          //         RegExp(
+                                          //             r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                          //       ),
+                                          //     ],
+                                          //     controller: accountController
+                                          //         .stateController),
+                                          // const SizedBox(
+                                          //   height: 10,
+                                          // ),
+                                          // Row(
+                                          //   children: [
+                                          //     const Text(
+                                          //       'Country',
+                                          //       style: TextStyle(
+                                          //         fontSize: 14,
+                                          //         fontWeight: FontWeight.w500,
+                                          //         color: Colors.black,
+                                          //       ),
+                                          //     ),
+                                          //     Text(
+                                          //       '*',
+                                          //       style: GoogleFonts.nunito(
+                                          //         fontSize: 18,
+                                          //         fontWeight: FontWeight.w600,
+                                          //         color: Colors.red
+                                          //             .withOpacity(0.6),
+                                          //       ),
+                                          //     ),
+                                          //   ],
+                                          // ),
+                                          // const SizedBox(
+                                          //   height: 10,
+                                          // ),
+                                          // InputTextField(
+                                          //   suffix: false,
+                                          //   readonly: false,
+                                          //   hintText: 'Enter here...',
+                                          //   keyboardType: TextInputType.name,
+                                          //   inputFormatter: [
+                                          //     FilteringTextInputFormatter.allow(
+                                          //       RegExp(
+                                          //           r"[a-zA-Z0-9\s@&_,-\./']"), // \s allows spaces
+                                          //     ),
+                                          //   ],
+                                          //   controller: accountController
+                                          //       .countryController,
+                                          // ),
+                                          // const SizedBox(
+                                          //   height: 10,
+                                          // ),
+                                          // Row(
+                                          //   children: [
+                                          //     const Text(
+                                          //       'Pincode',
+                                          //       style: TextStyle(
+                                          //         fontSize: 14,
+                                          //         fontWeight: FontWeight.w500,
+                                          //         color: Colors.black,
+                                          //       ),
+                                          //     ),
+                                          //     Text(
+                                          //       '*',
+                                          //       style: GoogleFonts.nunito(
+                                          //         fontSize: 18,
+                                          //         fontWeight: FontWeight.w600,
+                                          //         color: Colors.red
+                                          //             .withOpacity(0.6),
+                                          //       ),
+                                          //     ),
+                                          //   ],
+                                          // ),
+                                          // const SizedBox(
+                                          //   height: 10,
+                                          // ),
+                                          // InputTextField(
+                                          //   suffix: false,
+                                          //   readonly: false,
+                                          //   hintText: 'Enter here...',
+                                          //   keyboardType: TextInputType.number,
+                                          //   controller: accountController
+                                          //       .pincodesController,
+                                          //   inputFormatter: [
+                                          //     FilteringTextInputFormatter.allow(
+                                          //       RegExp(
+                                          //         r"[0-9]",
+                                          //       ),
+                                          //     ),
+                                          //     LengthLimitingTextInputFormatter(
+                                          //         10),
+                                          //   ],
+                                          // ),
+                                          // const SizedBox(
+                                          //   height: 16,
+                                          // ),
+                                //           InkWell(
+                                //             onTap: () {
+                                //               KeyboardUtil.hideKeyboard(
+                                //                   context);                               // Check the GoogleSignIn status and account verification status
+                                //             if (isGoogleSignIn == true &&
+                                //                 accountController
+                                //                     .accountVerified.value) {
+                                //               // If GoogleSignIn is true and account is verified, store personal info
+                                //              accountController
+                                //                   .storeAddressInfo(
+                                //                       context,
+                                //                       selectedRoleTypeName,
+                                //                       roleId,
+                                //                       roleTypeId,
+                                //                       selectedRole);
+                                //             } else if (isGoogleSignIn == true &&
+                                //                 !accountController
+                                //                     .accountVerified.value) {
+                                //               // If GoogleSignIn is true but account is not verified, show verification message
+                                //               SnackBarUtils.showErrorSnackBar(
+                                //                 context,
+                                //                 "Please verify your phone number",
+                                //               );
+                                //             } else if (isGoogleSignIn ==
+                                //                     false &&
+                                //                 !accountController
+                                //                     .accountVerified.value) {
+                                //               // If GoogleSignIn is false and account is not verified, store personal info
+                                //               accountController
+                                //                   .storeAddressInfo(
+                                //                       context,
+                                //                       selectedRoleTypeName,
+                                //                       roleId,
+                                //                       roleTypeId,
+                                //                       selectedRole);
+                                //             }
+                                //             },
+                                //             child: Container(
+                                //               height: 48,
+                                //               padding:
+                                //                   const EdgeInsets.symmetric(
+                                //                 horizontal: 40,
+                                //                 vertical: 12,
+                                //               ),
+                                //               decoration: const BoxDecoration(
+                                //                 borderRadius: BorderRadius.all(
+                                //                   Radius.circular(8),
+                                //                 ),
+                                //                 gradient: LinearGradient(
+                                //                   colors: [
+                                //                     Color(0xFFC13584),
+                                //                     Color(0xFF833AB4)
+                                //                   ],
+                                //                   begin: Alignment.topCenter,
+                                //                   end: Alignment.bottomCenter,
+                                //                 ),
+                                //               ),
+                                //               child: accountController
+                                //                       .isLoading.value
+                                //                   ? const Center(
+                                //                       child:
+                                //                           CircularProgressIndicator(),
+                                //                     )
+                                //                   : Center(
+                                //                       child: Text(
+                                //                         selectedRole !=
+                                //                                     'Parent' &&
+                                //                                     selectedRole !=
+                                //                                     'Hosteller' &&
+                                //                                 selectedRoleTypeName !=
+                                //                                     'Institute' &&
+                                //                                 selectedRole ==
+                                //                                     'Tutor'
+                                //                             ? 'Next'
+                                //                             : 'Submit',
+                                //                         style: const TextStyle(
+                                //                           fontSize: 16,
+                                //                           fontWeight:
+                                //                               FontWeight.w600,
+                                //                           color: Colors.white,
+                                //                         ),
+                                //                       ),
+                                //                     ),
+                                //             ),
+                                //           ),
+                                //           const SizedBox(
+                                //             height: 16,
+                                //           ),
+                                //         ],
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                              
+
                                 // selectedRoleTypeName == 'Institute' &&
                                 //         selectedRoleTypeName == ""
                                 //     ? Container()
