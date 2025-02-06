@@ -5,6 +5,7 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/courseDetails_controller.dart';
 import 'package:hovee_attendence/controllers/course_controller.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
+import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/edit_batch_screen.dart';
 import 'package:hovee_attendence/view/edit_course_screen.dart';
 
@@ -210,7 +211,9 @@ class CourseListContainer extends StatelessWidget {
                       IconButton(
                         onPressed: () {
                           // Add delete functionality
-                          courseController.deleteCourse(context, id);
+                           // Navigator.pop(context);
+                                           _showConfirmationDialog(
+                                              context, id);
                         },
                         icon: Icon(
                           Icons.delete,
@@ -287,6 +290,40 @@ class CourseListContainer extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+     void _showConfirmationDialog(BuildContext context, String id) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CustomDialogBox(
+          title1: 'Do you want to delete this course?',
+          title2: '',
+          subtitle: 'Do you want to delete this course?',
+          icon: const Icon(
+            Icons.help_outline,
+            color: Colors.white,
+          ),
+          color: const Color(0xFF833AB4), // Set the primary color
+          color1: const Color(0xFF833AB4), // Optional gradient color
+          singleBtn: false, // Show both 'Yes' and 'No' buttons
+          btnName: 'No',
+          onTap: () {
+            // Call the updateClass method when 'Yes' is clicked
+            // Close the dialog after update
+            Navigator.of(context).pop();
+          },
+          btnName2: 'Yes',
+          onTap2: () {
+            // Close the dialog when 'No' is clicked
+            courseController.deleteCourse(context, id);
+            // classController.tabController.animateTo(1);
+            // classController.handleTabChange(1);
+            Navigator.of(context).pop();
+          },
+        );
+      },
     );
   }
 }

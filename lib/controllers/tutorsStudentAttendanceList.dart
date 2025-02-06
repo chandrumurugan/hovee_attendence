@@ -26,6 +26,7 @@ class StudentAttendanceController extends GetxController {
 
   Data? data;
   TuteeData? dataTutee;
+  Data1? selectedBatch;
 
   var isBatchSelected = false.obs;
   var attendanceData = <AttendanceData>[].obs;
@@ -57,15 +58,21 @@ class StudentAttendanceController extends GetxController {
   // StudentAttendanceController();
 
   // final missPunchDates = <DateTime>{}.obs;
-  RxSet<DateTime> missPunchDates = RxSet<DateTime>();
-    RxSet<DateTime> absentDates = RxSet<DateTime>();
-    RxSet<DateTime> presentDates = RxSet<DateTime>();
-    RxSet<DateTime> leaveDates = RxSet<DateTime>();
-    RxSet<DateTime> holidayDates = RxSet<DateTime>();
+  // RxSet<DateTime> missPunchDates = RxSet<DateTime>();
+  //   RxSet<DateTime> absentDates = RxSet<DateTime>();
+  //   RxSet<DateTime> presentDates = RxSet<DateTime>();
+  //   RxSet<DateTime> leaveDates = RxSet<DateTime>();
+  //   RxSet<DateTime> holidayDates = RxSet<DateTime>();
+  var missPunchDates = <DateTime>{}.obs;
+var absentDates = <DateTime>{}.obs;
+var presentDates = <DateTime>{}.obs;
+var leaveDates = <DateTime>{}.obs;
+var holidayDates = <DateTime>{}.obs;
+
 
     //tutor
-    RxSet<DateTime> holidayDatesTutor = RxSet<DateTime>();
-     String? batchname;
+    var holidayDatesTutor = <DateTime>{}.obs;
+     String? batchname; // Ensure it is observable
 
   @override
   void onInit() {
@@ -173,7 +180,7 @@ class StudentAttendanceController extends GetxController {
 
   void setFocusedDay(DateTime date) {
     focusedDay.value = date;
-    //update();
+    update();
   }
 
   void fetchStudentsList(
@@ -193,6 +200,7 @@ class StudentAttendanceController extends GetxController {
             return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
           })
           .toSet();
+           print("Holiday===========>${holidayDatesTutor.value}");
         attendanceData.value = [
           AttendanceData(
               category: "All",
@@ -211,6 +219,7 @@ class StudentAttendanceController extends GetxController {
               percentage: data!.statusCounts!.missPunch!.toDouble(),
               pointColor: Color(0xff2E5BB5)),
         ];
+         update();
       }
     } catch (e) {
       print(e);
@@ -289,6 +298,7 @@ class StudentAttendanceController extends GetxController {
                   dataTutee!.statusCounts!.missPunch!.toDouble(),
               pointColor: Color(0xff2E5BB5)),
         ];
+         update();
       }
     } catch (e) {
       print(e);
@@ -312,6 +322,7 @@ class StudentAttendanceController extends GetxController {
 
   void onMonthSelectedTutor(DateTime date) {
     // Format the selected date as required by the API, e.g., '01/11/2024'
+   focusedDay.value = date;
     String monthAbbreviation = DateFormat('MMM').format(date);
     print(monthAbbreviation);
     String formattedDate = DateFormat('dd/MM/yyyy').format(date);
@@ -319,7 +330,8 @@ class StudentAttendanceController extends GetxController {
     // Check if a batch is selected and fetch attendance
     if (selectedBatchIN.value != null) {
       fetchStudentsList(
-          selectedBatchIN.value!.batchId!, formattedDate, monthAbbreviation);
+          selectedBatchIN.value!.batchId!, '', monthAbbreviation);
+           update();
     }
   }
 
@@ -338,6 +350,7 @@ class StudentAttendanceController extends GetxController {
 
   void onMonthSelectedTutee(DateTime date) {
     // Format the selected date as required by the API, e.g., '01/11/2024'
+     focusedDay.value = date;
     String monthAbbreviation = DateFormat('MMM').format(date);
     print(monthAbbreviation);
     String formattedDate = DateFormat('dd/MM/yyyy').format(date);
@@ -346,6 +359,8 @@ class StudentAttendanceController extends GetxController {
     if (selectedBatchIN.value != null) {
       fetchTutteAttendanceList(
           selectedBatchIN.value!.batchId!, '', monthAbbreviation);
+          update();
+          
     }
   }
 }

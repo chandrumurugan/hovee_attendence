@@ -108,7 +108,7 @@ class StudentAttendanceList extends StatelessWidget {
                                     controller.isBatchSelected.value = true;
                                     controller.fetchStudentsList(
                                       selectedBatch.batchId!,
-                                      selectedBatch.startDate!,
+                                      selectedBatch.startDate ?? '',
                                       DateFormat('MMM').format(DateTime.now()),
                                     );
                                   }
@@ -231,65 +231,70 @@ class StudentAttendanceList extends StatelessWidget {
                 return const SizedBox
                     .shrink(); // Hide calendar if no batch is selected
               }
-              return Container(
-                // height: MediaQuery.of(context).size.height * 0.50,
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                // padding: EdgeInsets.symmetric(vertical: 30),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.black)),
-                child: TableCalendar(
-                  firstDay: DateTime(2024, 1, 1),
-                  lastDay: DateTime(2025, 12, 31),
-                  focusedDay: controller.selectedBatchStartDate.value!,
-                  rangeStartDay: controller.selectedBatchStartDate.value,
-                  rangeEndDay: controller.selectedBatchEndDate.value,
-                  calendarFormat: CalendarFormat.month,
-                  startingDayOfWeek: StartingDayOfWeek.monday,
-                  headerStyle: const HeaderStyle(
-                    formatButtonVisible: false,
-                    titleCentered: true,
-                  ),
-                  calendarStyle: const CalendarStyle(
-                    rangeHighlightColor: AppConstants.primaryColor,
-                    withinRangeTextStyle: TextStyle(color: Colors.white),
-                    selectedDecoration: BoxDecoration(
-                      color:
-                          Colors.blue, // Customize the color for selected date
-                      shape: BoxShape.circle,
+              return GetBuilder<StudentAttendanceController>(
+                builder: (_) =>Container(
+                  // height: MediaQuery.of(context).size.height * 0.50,
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  // padding: EdgeInsets.symmetric(vertical: 30),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.black)),
+                  child: TableCalendar(
+                    firstDay: DateTime(2024, 1, 1),
+                    lastDay: DateTime(2025, 12, 31),
+                    focusedDay: controller.focusedDay.value,
+                    rangeStartDay: controller.selectedBatchStartDate.value,
+                    rangeEndDay: controller.selectedBatchEndDate.value,
+                    calendarFormat: CalendarFormat.month,
+                    startingDayOfWeek: StartingDayOfWeek.monday,
+                    headerStyle: const HeaderStyle(
+                      formatButtonVisible: false,
+                      titleCentered: true,
                     ),
-                    // outsideRangeTextStyle: TextStyle(color: Colors.grey),
-                  ),
-                  selectedDayPredicate: (day) {
-                    return isSameDay(controller.selectedDay.value, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
-                    controller.onDateSelectedTutor(selectedDay);
-                    controller.setFocusedDay(focusedDay);
-                  },
-                  onPageChanged: (focusedDay) {
-                    controller.setFocusedDay(focusedDay);
-                    controller.onMonthSelectedTutor(focusedDay);
-                  },
-                     calendarBuilders: CalendarBuilders(
-                    defaultBuilder: (context, day, focusedDay) {
-                      // Check if the day is a miss punch date
-                      if (controller.holidayDatesTutor
-                          .contains(DateTime(day.year, day.month, day.day))) {
-                        return Container(
-                            margin: const EdgeInsets.all(4.0),
-                          decoration: BoxDecoration(
-                             color:Colors.amber, // Background color for miss punch dates
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                            alignment: Alignment.center,
-                          child: Center(child: Text('${day.day}', style: const TextStyle(
-                                color: Colors.white),)),
-                        );
-                      }
-                      // Return default appearance for other dates
-                      return null;
+                    calendarStyle: const CalendarStyle(
+                      rangeHighlightColor: AppConstants.primaryColor,
+                      withinRangeTextStyle: TextStyle(color: Colors.white),
+                      selectedDecoration: BoxDecoration(
+                        color:
+                            Colors.blue, // Customize the color for selected date
+                        shape: BoxShape.circle,
+                      ),
+                      // outsideRangeTextStyle: TextStyle(color: Colors.grey),
+                    ),
+                    selectedDayPredicate: (day) {
+                    return isSameDay(controller.selectedDay.value, day) && 
+         isSameDay(controller.selectedDay.value, DateTime.now());
                     },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      controller.onDateSelectedTutor(selectedDay);
+                      controller.setFocusedDay(focusedDay);
+                    },
+                    onPageChanged: (focusedDay) {
+                      // controller.setFocusedDay(focusedDay);
+                      controller.onMonthSelectedTutor(focusedDay);
+                       controller.update();
+                    },
+                       calendarBuilders: CalendarBuilders(
+                      defaultBuilder: (context, day, focusedDay) {
+                        // Check if the day is a miss punch date
+                         controller.holidayDatesTutor.refresh();
+                        if (controller.holidayDatesTutor
+                            .contains(DateTime(day.year, day.month, day.day))) {
+                          return Container(
+                              margin: const EdgeInsets.all(4.0),
+                            decoration: BoxDecoration(
+                               color:Colors.amber, // Background color for miss punch dates
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                              alignment: Alignment.center,
+                            child: Center(child: Text('${day.day}', style: const TextStyle(
+                                  color: Colors.white),)),
+                          );
+                        }
+                        // Return default appearance for other dates
+                        return null;
+                      },
+                    ),
                   ),
                 ),
               );

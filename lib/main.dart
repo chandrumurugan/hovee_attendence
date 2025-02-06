@@ -202,7 +202,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       navigatorKey: _navKey,
       initialBinding: MyBindings(),
-      title: 'Attendence',
+      title: 'Attendance',
       onInit: () {
           
       },

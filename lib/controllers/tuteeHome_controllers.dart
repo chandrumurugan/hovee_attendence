@@ -107,8 +107,8 @@ class TuteeHomeController extends GetxController with GetSingleTickerProviderSta
   Position? lastKnownLocation;
 
   var notificationCount = 0.obs; // Observable
-
-  //final NotificationController noticontroller = Get.put(NotificationController());
+  
+  final NotificationController noticontroller = Get.put(NotificationController());
 
   @override
   void onInit() {
@@ -123,6 +123,7 @@ class TuteeHomeController extends GetxController with GetSingleTickerProviderSta
     fetchHomeDashboardTuteeList();
     //fetchNotificationsType();
     fetchAttendanceCourseList();
+     noticontroller.fetchNotifications('Tutee',false);
   }
 
   void fetchUserProfiles() async {

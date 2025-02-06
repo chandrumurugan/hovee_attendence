@@ -1485,8 +1485,8 @@ class AuthControllers extends GetxController
           idProofController.clear();
           acceptedTerms.value = false;
           selectedIDProof.value = '';
-
           isLoading.value = false;
+          currentTabIndex.value == 0;
           Get.to(() => const OtpScreen());
         } else {
           Logger().e('Failed to load AppConfig');
@@ -1740,6 +1740,13 @@ class AuthControllers extends GetxController
   await _googleSignIn.signOut();
   print("User logged out successfully");
 }
+
+void resetTabIndex() {
+  currentTabIndex.value = 0;
+  tabController.index = 0;
+  update();  // Forces UI update
+}
+
   
 }
 

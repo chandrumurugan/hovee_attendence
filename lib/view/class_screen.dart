@@ -226,22 +226,30 @@ class TutorClassList extends StatelessWidget {
           )
         ],
       ),
-      bottomNavigationBar:   Obx(() {
-         if (classController.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
-            }
-           else if (classController.instituteId ==null || classController.instituteId == '') {
-              return SingleCustomButtom(
+      bottomNavigationBar:  SingleCustomButtom(
         btnName: 'Add',
         isPadded: false,
         onTap: () {
           classController.navigateToAddCourseScreen();
         },
-      );
-            } else  {
-              return SizedBox.shrink();
-            }
-             }),
+      )
+
+      //  Obx(() {
+      //    if (classController.isLoading.value) {
+      //         return Center(child: CircularProgressIndicator());
+      //       }
+      //      else if (classController.instituteId ==null || classController.instituteId == '') {
+      //         return SingleCustomButtom(
+      //   btnName: 'Add',
+      //   isPadded: false,
+      //   onTap: () {
+      //     classController.navigateToAddCourseScreen();
+      //   },
+      // );
+      //       } else  {
+      //         return SizedBox.shrink();
+      //       }
+      //        }),
     );
   }
 

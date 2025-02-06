@@ -216,22 +216,31 @@ class TutorBatchList extends StatelessWidget {
           }),
         ],
       ),
-      bottomNavigationBar:   Obx(() {
-         if (batchController.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
-            }
-           else if (batchController.instituteId ==null || batchController.instituteId == '') {
-              return SingleCustomButtom(
+      bottomNavigationBar: 
+      SingleCustomButtom(
         btnName: 'Add',
         isPadded: false,
         onTap: () {
           batchController.navigateToAddBatchScreen();
         },
-      );
-            } else  {
-              return SizedBox.shrink();
-            }
-             }),
+      )
+      // Obx(() {
+      //    if (batchController.isLoading.value) {
+      //         return Center(child: SizedBox.shrink());
+      //       }
+      //      else if (batchController.instituteId ==null || batchController.instituteId == '') {
+      //         return SingleCustomButtom(
+      //   btnName: 'Add',
+      //   isPadded: false,
+      //   onTap: () {
+      //     batchController.navigateToAddBatchScreen();
+      //   },
+      // );
+      //       } else  {
+      //         return SizedBox.shrink();
+      //       }
+      //        }
+      //        ),
     );
   }
 }

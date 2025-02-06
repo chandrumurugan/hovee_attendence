@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
+import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/modals/getDashboardYearFlow_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
@@ -119,6 +120,7 @@ class TutorHomeController extends GetxController {
     var userProfileResponse = UserProfileM().obs;
     var notificationCount = 0.obs;
      var wowId;
+     final NotificationController noticontroller = Get.put(NotificationController());
   @override
   void onInit() {
     // TODO: implement onInit
@@ -128,6 +130,7 @@ class TutorHomeController extends GetxController {
     fetchQrCodeImage();
     fetchGroupedEnrollmentByBatchListItem();
     fetchHomeDashboardTuteeList();
+    noticontroller.fetchNotifications('Tutor',false);
   }
 
     void fetchUserProfiles() async {

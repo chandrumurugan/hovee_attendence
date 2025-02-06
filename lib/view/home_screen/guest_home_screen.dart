@@ -403,7 +403,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                           ),
                         ),
                         Container(
-                          height: 320,
+                          height: 270,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             // border: Border.all(color: Colors.blue, width: 2),

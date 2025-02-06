@@ -187,7 +187,7 @@ class _TutorCourseListState extends State<TutorCourseList> {
               batchTimingStart: '',
               batchTimingEnd: '', instituteId: course.institudeId ?? '',
             ),
-          );
+                        );
         },
         separatorBuilder: (context, int index) {
           return const SizedBox(height: 1);
@@ -201,23 +201,29 @@ class _TutorCourseListState extends State<TutorCourseList> {
         ],
       ),
       // Bottom Button
-      bottomNavigationBar:
-       Obx(() {
-         if (courseController.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
-            }
-           else if (courseController.instituteId ==null || courseController.instituteId == '') {
-              return SingleCustomButtom(
+      bottomNavigationBar:SingleCustomButtom(
         btnName: 'Add',
         isPadded: false,
         onTap: () {
           courseController.navigateToAddCourseScreen();
         },
-      );
-            } else  {
-              return SizedBox.shrink();
-            }
-             }),
+      )
+//        Obx(() {
+//          if (courseController.isLoading.value) {
+//               return Center(child: CircularProgressIndicator());
+//             }
+//            else if (courseController.instituteId ==null || courseController.instituteId == '') {
+// return SingleCustomButtom(
+//         btnName: 'Add',
+//         isPadded: false,
+//         onTap: () {
+//           courseController.navigateToAddCourseScreen();
+//         },
+//       );
+//             } else  {
+//               return SizedBox.shrink();
+//             }
+//              }),
     );
   }
 }
