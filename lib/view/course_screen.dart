@@ -201,13 +201,19 @@ class _TutorCourseListState extends State<TutorCourseList> {
         ],
       ),
       // Bottom Button
-      bottomNavigationBar:SingleCustomButtom(
-        btnName: 'Add',
-        isPadded: false,
-        onTap: () {
-          courseController.navigateToAddCourseScreen();
-        },
-      )
+     bottomNavigationBar: GetBuilder<CourseController>(
+  builder: (controller) {
+    return (courseController.instituteId ==null || courseController.instituteId == '')
+        ? SingleCustomButtom(
+            btnName: 'Add',
+            isPadded: false,
+            onTap: () {
+              controller.navigateToAddCourseScreen();
+            },
+          )
+        : SizedBox.shrink();
+  },
+),
 //        Obx(() {
 //          if (courseController.isLoading.value) {
 //               return Center(child: CircularProgressIndicator());

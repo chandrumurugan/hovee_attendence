@@ -188,7 +188,7 @@ class MspController extends GetxController {
           _clearData();
           SnackBarUtils.showSuccessSnackBar(
             context,
-            'MSP updated successfully',
+            'Success! The misspunch details have been updated.',
           );
         } else {
           // SnackBarUtils.showErrorSnackBar(
@@ -218,7 +218,7 @@ class MspController extends GetxController {
           if(response.data!.status=='Accepted'){
              fetchBatchList();
               Get.snackbar(
-       'MSP accepted successfully',
+       'You have successfully accepted the misspunch request.',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
@@ -226,7 +226,7 @@ class MspController extends GetxController {
     height: 40, // Set desired height here
     child: Center(
       child: Text(
-      'MSP accepted successfully',
+      'You have successfully accepted the misspunch request.',
         style: TextStyle(color: Colors.white, fontSize: 16),
       ),
     ),
@@ -238,7 +238,7 @@ class MspController extends GetxController {
           else{
              fetchBatchList();
               Get.snackbar(
-       'MSP rejected successfully',
+       'You have rejected the misspunch request ',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
@@ -246,7 +246,7 @@ class MspController extends GetxController {
     height: 40, // Set desired height here
     child: Center(
       child: Text(
-      'MSP rejected successfully',
+      'You have rejected the misspunch request ',
         style: TextStyle(color: Colors.white, fontSize: 16),
       ),
     ),
@@ -282,7 +282,7 @@ class MspController extends GetxController {
       // Notify listeners about the updated list
       mspDataList.refresh(); // Ensures the UI is updated
        Get.snackbar(
-       'MSP deleted successfully',
+       'Deletion Successful! The misspunch has removed.',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
@@ -290,7 +290,7 @@ class MspController extends GetxController {
     height: 40, // Set desired height here
     child: Center(
       child: Text(
-      'MSP deleted successfully',
+      'Deletion Successful! The misspunch has removed.',
         style: TextStyle(color: Colors.white, fontSize: 16),
       ),
     ),

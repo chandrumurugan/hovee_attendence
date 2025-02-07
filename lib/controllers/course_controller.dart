@@ -106,6 +106,7 @@ class CourseController extends GetxController {
       storage.write('courseCode', courseCodes);
  SharedPreferences prefs = await SharedPreferences.getInstance();
        instituteId.value=   prefs.getString('InstituteId') ?? '';
+       update();
     } else {
       print('Course data is null');
     }
@@ -115,6 +116,7 @@ class CourseController extends GetxController {
   } finally {
      isLoading.value=false;
      initialLoad.value=false;
+      update();
   }
 }
 
@@ -261,21 +263,21 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
    bool validateFields(BuildContext context) {
     validationMessages.clear();
     if (batchNameController.value.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Batch name is required',);
+       SnackBarUtils.showErrorSnackBar(context,'Please select batch name.',);
       return false;
     }
     if (boardController.value.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Board is required',);
+       SnackBarUtils.showErrorSnackBar(context,'Please select the board.',);
       return false;
     }
     if (classController.value.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Class is required',);
+       SnackBarUtils.showErrorSnackBar(context,'Please select the class.',);
       return false;
     }
     
     
     if (subjectController.value.isEmpty) {
-       SnackBarUtils.showErrorSnackBar(context,'Subject is required',);
+       SnackBarUtils.showErrorSnackBar(context,'Please select the subject.',);
       return false;
     }
     // if (remarks.text.isEmpty) {
@@ -306,7 +308,7 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
 
         if (response != null && response.success == true) {
           _clearData();
-           SnackBarUtils.showSuccessSnackBar(context,'Course added successfully',);
+           SnackBarUtils.showSuccessSnackBar(context,'Success! Your new course is added',);
         //    SnackBarUtils.showSuccessSnackBar(context,
         // 'Course added successfully',,);
           //SnackBarUtils.showSuccessSnackBar(context,'Course added successfully',,);
@@ -454,7 +456,7 @@ fetchBatchList();
 
         if (response != null && response.success == true) {
           _clearData();
-           SnackBarUtils.showSuccessSnackBar(context,'Course updated successfully',);
+           SnackBarUtils.showSuccessSnackBar(context,'Update successful! Your changes have been saved.',);
         //    SnackBarUtils.showSuccessSnackBar(context,
         // 'Course added successfully',,);
           //SnackBarUtils.showSuccessSnackBar(context,'Course added successfully',,);

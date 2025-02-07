@@ -183,16 +183,54 @@ class TuteeLeaveController extends GetxController {
           Get.back();
           fetchBatchList();
           _clearData();
-          SnackBarUtils.showSuccessSnackBar(
-            context,
-            'Leave added successfully',
-          );
+          Get.snackbar(
+       'Leave added successfully',
+  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:   const SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      'Leave added successfully',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
         } else {
-          SnackBarUtils.showErrorSnackBar(
-              context, response?.message ?? 'Leave already applied for these dates');
+          Get.snackbar(
+       response?.message ?? 'Leave already applied for these dates',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      response?.message ?? 'Leave already applied for these dates',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
         }
       } catch (e) {
-        SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+        Get.snackbar(
+      'Error: $e',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+      'Error: $e',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
       } finally {
         isLoading.value = false;
       }
@@ -227,7 +265,7 @@ class TuteeLeaveController extends GetxController {
           fetchBatchList();
           _clearData();
                         Get.snackbar(
-       'Leave updated  successfully',
+       'Success! The leave details have been updated.',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
@@ -235,7 +273,7 @@ class TuteeLeaveController extends GetxController {
     height: 40, // Set desired height here
     child: Center(
       child: Text(
-      'Leave updated  successfully',
+      'Success! The leave details have been updated.',
         style: TextStyle(color: Colors.white, fontSize: 16),
       ),
     ),
@@ -305,7 +343,7 @@ class TuteeLeaveController extends GetxController {
       // Notify listeners about the updated list
       leaveList.refresh(); // Ensures the UI is updated
      Get.snackbar(
-      "Leave deleted  successfully",
+      "Deletion Successful! The leave has  removed.",
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
@@ -377,7 +415,7 @@ class TuteeLeaveController extends GetxController {
           if(response.data!.status=='Accepted'){
              fetchBatchList();
              Get.snackbar(
-      "Leave accepted successfully",
+      "You have successfully accepted the leave request.",
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
@@ -385,7 +423,7 @@ class TuteeLeaveController extends GetxController {
     height: 40, // Set desired height here
     child: Center(
       child: Text(
-      "Leave accepted successfully",
+      "You have successfully accepted the leave request.",
         style: TextStyle(color: Colors.white, fontSize: 16),
       ),
     ),
@@ -397,7 +435,7 @@ class TuteeLeaveController extends GetxController {
           else{
              fetchBatchList();
               Get.snackbar(
-      "Leave rejected successfully",
+      "You have rejected the leave request",
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
@@ -405,7 +443,7 @@ class TuteeLeaveController extends GetxController {
     height: 40, // Set desired height here
     child: Center(
       child: Text(
-      "Leave rejected successfully",
+      "You have rejected the leave request",
         style: TextStyle(color: Colors.white, fontSize: 16),
       ),
     ),

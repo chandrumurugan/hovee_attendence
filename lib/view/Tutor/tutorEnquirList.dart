@@ -591,7 +591,7 @@ class Tutorenquirlist extends StatelessWidget {
       BuildContext context, dynamic tutionCourseDetailsList) {
     Get.dialog(
       CustomDialogBox(
-        title1: 'Would you like to accept this enquiry?',
+        title1: 'Do you want to accept this enquiry?',
         title2: '',
         subtitle: 'Do you want to accept this Enquiry?',
         icon: const Icon(Icons.help_outline, color: Colors.white),
@@ -624,9 +624,9 @@ class Tutorenquirlist extends StatelessWidget {
       BuildContext context, dynamic tutionCourseDetailsList) {
     Get.dialog(
       CustomDialogBox(
-        title1: 'Would you like to reject this enquiry?',
+        title1: 'Would you like to ask a query or reject the enquiry request?',
         title2: '',
-        subtitle: 'Do you want to reject this Enquiry?',
+        subtitle: 'Would you like to ask a query or reject the enquiry request?',
         icon: const Icon(Icons.help_outline, color: Colors.white),
         color: const Color(0xFF833AB4), // Set the primary color
         color1: const Color(0xFF833AB4), // Optional gradient color

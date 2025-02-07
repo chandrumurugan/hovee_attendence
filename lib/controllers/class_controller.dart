@@ -127,10 +127,12 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
     
     SharedPreferences prefs = await SharedPreferences.getInstance();
     instituteId.value = prefs.getString('InstituteId') ?? '';
+    update();
   } catch (e) {
     // Handle errors if needed
   } finally {
     isLoading(false);
+    update();
   }
 }
 
@@ -219,14 +221,14 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
     if (courseCodeController.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Course code is required',
+        'Please select the course code.',
       );
       return false;
     }
     if (batchNameController1.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Batch name is required',
+        'Please select the batch name.',
       );
       return false;
     }
@@ -255,7 +257,7 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
           _clearData();
           SnackBarUtils.showSuccessSnackBar(
             context,
-            'Class added successfully',
+            'Success! Your new class is added.',
           );
           isSelected.value = false;
            selectedCourseData.value = TutionData();

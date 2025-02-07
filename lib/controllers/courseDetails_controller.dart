@@ -77,7 +77,7 @@ class CourseDetailController extends GetxController {
   }
 
   void addEnquirs(BuildContext context, String courseId, String studentId,
-      String tutorId) async {
+      String tutorId,String batch,subject,tutorname) async {
     isLoading.value = true;
     try {
       var batchData = {
@@ -93,17 +93,19 @@ class CourseDetailController extends GetxController {
 
       if (response != null && response.statusCode == 200) {
                 Get.snackbar(
-          'Enquiry submited successfully',
+         'Enquiry Sent Successfully! for Batch $batch ($subject) $tutorname will receive your enquiry request',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  messageText: const SizedBox(
+  messageText:  SizedBox(
     height: 40, // Set desired height here
     child: Center(
       child: Text(
-        'Enquiry submited successfully',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
+  'Enquiry Sent Successfully! for Batch $batch ($subject) $tutorname will receive your enquiry request',
+  style: TextStyle(color: Colors.white, fontSize: 16),
+  textAlign: TextAlign.center, // Align text if needed
+),
+
     ),
   ),
 );

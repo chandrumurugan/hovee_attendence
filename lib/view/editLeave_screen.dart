@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/leave_controller.dart';
 import 'package:hovee_attendence/modals/getLeaveListModel.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/customDropDownInputField.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
@@ -13,10 +14,10 @@ import 'package:hovee_attendence/widget/single_button.dart';
 class EditleaveScreen extends StatelessWidget {
    final LeaveData batch;
    EditleaveScreen({super.key, required this.batch});
-
+     final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
   @override
   Widget build(BuildContext context) {
-     final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
+    
     leaveController.batchNameController.value = batch.batchDetails!.batchName ?? '';
     leaveController.leaveTypeController.value = batch.leaveType ?? '';
     leaveController.startDateController.text = batch.fromDate ?? '';
@@ -266,12 +267,46 @@ class EditleaveScreen extends StatelessWidget {
               
               btnName: 'Add',
               onTap: () {
-               leaveController.updateBatch(context,batch.sId!);
+                _showConfirmationDialog(context,batch.sId!);
               },
             )
           ],
         ),
       ),
+    );
+  }
+
+  void _showConfirmationDialog(BuildContext context, String id) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CustomDialogBox(
+          title1: 'Do you want to update your leave request?',
+          title2: '',
+          subtitle: 'Do you want to update your leave request?',
+          icon: const Icon(
+            Icons.help_outline,
+            color: Colors.white,
+          ),
+          color: const Color(0xFF833AB4), // Set the primary color
+          color1: const Color(0xFF833AB4), // Optional gradient color
+          singleBtn: false, // Show both 'Yes' and 'No' buttons
+          btnName: 'No',
+          onTap: () {
+            // Call the updateClass method when 'Yes' is clicked
+            // Close the dialog after update
+            Navigator.of(context).pop();
+          },
+          btnName2: 'Yes',
+          onTap2: () {
+            // Close the dialog when 'No' is clicked
+           leaveController.updateBatch(context,batch.sId!);
+            // classController.tabController.animateTo(1);
+            // classController.handleTabChange(1);
+            Navigator.of(context).pop();
+          },
+        );
+      },
     );
   }
 }

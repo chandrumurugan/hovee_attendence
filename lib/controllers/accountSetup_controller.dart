@@ -659,28 +659,35 @@ class AccountSetupController extends GetxController
     if (highestQualification.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        "Please select a highest qualification.",
+        "Please select the highest qualification.",
       );
       return false;
     }
     if (teachingSkills.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Please select a teaching skill set.',
+        'Please select the teaching skill set.',
       );
       return false;
     }
     if (workingTech.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Please select a work type.',
+        'Please select the work type.',
       );
       return false;
     }
     if (teachingExperience.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Please select your teaching experience.',
+        'Please select the your teaching experience.',
+      );
+      return false;
+    }
+    if (tutionController.text.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        "Please enter the tution name.",
       );
       return false;
     }
@@ -698,13 +705,7 @@ class AccountSetupController extends GetxController
       );
       return false;
     }
-    if (tutionController.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(
-        context,
-        "Please enter the tution name.",
-      );
-      return false;
-    }
+    
     return true;
   }
 

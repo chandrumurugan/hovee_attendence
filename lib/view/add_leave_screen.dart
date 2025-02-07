@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/controllers/leave_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/customDropDownInputField.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
@@ -259,12 +260,46 @@ class TuteeAddLeaveScreen extends StatelessWidget {
               
               btnName: 'Add',
               onTap: () {
-               leaveController.addLeave(context);
+               _showConfirmationDialog(context);
               },
             )
           ],
         ),
       ),
+    );
+  }
+
+    void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CustomDialogBox(
+          title1: 'Do you want to submit your leave request?',
+          title2: '',
+          subtitle: 'Do you want to submit your leave request?',
+          icon: const Icon(
+            Icons.help_outline,
+            color: Colors.white,
+          ),
+          color: const Color(0xFF833AB4), // Set the primary color
+          color1: const Color(0xFF833AB4), // Optional gradient color
+          singleBtn: false, // Show both 'Yes' and 'No' buttons
+          btnName: 'No',
+          onTap: () {
+            // Call the updateClass method when 'Yes' is clicked
+            // Close the dialog after update
+            Navigator.of(context).pop();
+          },
+          btnName2: 'Yes',
+          onTap2: () {
+            // Close the dialog when 'No' is clicked
+            leaveController.addLeave(context);
+            // classController.tabController.animateTo(1);
+            // classController.handleTabChange(1);
+            Navigator.of(context).pop();
+          },
+        );
+      },
     );
   }
 }

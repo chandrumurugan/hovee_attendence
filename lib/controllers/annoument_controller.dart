@@ -183,7 +183,7 @@ void addAnnoument(BuildContext context) async {
           _clearData();
           SnackBarUtils.showSuccessSnackBar(
             context,
-            'Announcement added successfully',
+            'Announcement Posted Successfully! Your announcement has been sent to the tutees',
           );
         } else {
           SnackBarUtils.showErrorSnackBar(

@@ -1320,7 +1320,7 @@ class AuthControllers extends GetxController
     if (emailController.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Please enter the email.',
+        'Please enter the email ID.',
       );
       return false;
     }
@@ -1374,7 +1374,7 @@ class AuthControllers extends GetxController
     if (!acceptedTerms.value) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'Please accept the checkbox to proceed',
+        'Please check the box to proceed.',
       );
       return false;
     }

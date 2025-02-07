@@ -415,9 +415,9 @@ class HolidayScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return CustomDialogBox(
-          title1: 'Do you want to delete this holiday?',
+          title1: 'Do you want to remove this holiday?',
           title2: '',
-          subtitle: 'Do you want to delete this holiday?',
+          subtitle: 'Do you want to remove this holiday?',
           icon: const Icon(
             Icons.help_outline,
             color: Colors.white,

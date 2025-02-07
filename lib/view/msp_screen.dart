@@ -575,9 +575,9 @@ class MspScreen extends StatelessWidget {
       builder: (context) {
         final MspController mspController = Get.put(MspController());
         return CustomDialogBox(
-          title1: 'Would you like to accept this msp?',
+          title1: 'Do you want to accept this misspunch request? ',
           title2: '',
-          subtitle: 'Do you want to accept this msp?',
+          subtitle: 'Do you want to accept this misspunch request? ',
           icon: const Icon(Icons.help_outline, color: Colors.white),
           color: const Color(0xFF833AB4), // Set the primary color
           color1: const Color(0xFF833AB4), // Optional gradient color
@@ -610,9 +610,9 @@ class MspScreen extends StatelessWidget {
       builder: (context) {
         final MspController mspController = Get.put(MspController());
         return CustomDialogBox(
-          title1: 'Would you like to reject this msp?',
+          title1: 'Do you want to reject this misspunch request? ',
           title2: '',
-          subtitle: 'Do you want to reject this msp?',
+          subtitle: 'Do you want to reject this misspunch request?',
           icon: const Icon(Icons.help_outline, color: Colors.white),
           color: const Color(0xFF833AB4), // Set the primary color
           color1: const Color(0xFF833AB4), // Optional gradient color
@@ -639,9 +639,9 @@ class MspScreen extends StatelessWidget {
       builder: (context) {
        final MspController mspController = Get.put(MspController());
         return CustomDialogBox(
-          title1: 'Do you want to make delete this leave?',
+          title1: 'Do you want to delete your misspunch request?',
           title2: '',
-          subtitle: 'Do you want to delete this leave?',
+          subtitle: 'Do you want to delete your misspunch request?',
           icon: const Icon(
             Icons.help_outline,
             color: Colors.white,

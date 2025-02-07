@@ -498,9 +498,9 @@ class LeaveListContainer extends StatelessWidget {
             final TuteeLeaveController leaveController =
         Get.put(TuteeLeaveController());
         return CustomDialogBox(
-          title1: 'Would you like to accept this leave?',
+          title1: 'Do you want to accept this leave request?',
           title2: '',
-          subtitle: 'Do you want to accept this leave?',
+          subtitle: 'Do you want to accept this leave request?',
           icon: const Icon(Icons.help_outline, color: Colors.white),
           color: const Color(0xFF833AB4), // Set the primary color
           color1: const Color(0xFF833AB4), // Optional gradient color
@@ -533,9 +533,9 @@ class LeaveListContainer extends StatelessWidget {
             final TuteeLeaveController leaveController =
         Get.put(TuteeLeaveController());
         return CustomDialogBox(
-          title1: 'Would you like to reject this leave?',
+          title1: 'Do you want to reject this leave request?',
           title2: '',
-          subtitle: 'Do you want to reject this leave?',
+          subtitle: 'Do you want to reject this leave request?',
           icon: const Icon(Icons.help_outline, color: Colors.white),
           color: const Color(0xFF833AB4), // Set the primary color
           color1: const Color(0xFF833AB4), // Optional gradient color
@@ -565,9 +565,9 @@ class LeaveListContainer extends StatelessWidget {
          final TuteeLeaveController leaveController =
         Get.put(TuteeLeaveController());
         return CustomDialogBox(
-          title1: 'Do you want to make delete this leave?',
+          title1: 'Do you want to delete your leave request?',
           title2: '',
-          subtitle: 'Do you want to delete this leave?',
+          subtitle: 'Do you want to delete your leave request?',
           icon: const Icon(
             Icons.help_outline,
             color: Colors.white,

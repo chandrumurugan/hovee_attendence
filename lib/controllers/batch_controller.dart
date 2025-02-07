@@ -138,8 +138,10 @@ var batchDaysController = "".obs;
           'batchList', batchResponse.data!.map((e) => e.toJson()).toList());
           SharedPreferences prefs = await SharedPreferences.getInstance();
        instituteId.value=   prefs.getString('InstituteId') ?? '';
+       update();
     } else {
       batchList.clear();
+      update();
     }
   } catch (e) {
     batchList.clear(); // Clear the list on error
@@ -147,6 +149,7 @@ var batchDaysController = "".obs;
   } finally {
     isLoading.value = false; // Stop loading
      initialLoad.value=false;
+     update();
   }
 }
 
@@ -185,7 +188,7 @@ var batchDaysController = "".obs;
     //   return false;
     // }
     if (batchName.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Batch name is required');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the batch name.');
       return false;
     }
     // if (batchTeacherController.value.isEmpty) {
@@ -194,43 +197,43 @@ var batchDaysController = "".obs;
     // }
 
     if (batchTiming.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Batch timing is required');
+      SnackBarUtils.showErrorSnackBar(context, 'Please select the batch timing start.');
       return false;
     }
     if (batchTimingEnd.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Batch timing End is required');
+      SnackBarUtils.showErrorSnackBar(context, 'Please select the batch timing end.');
       return false;
     }
 
     if (maxSlots.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Maximum slots are required');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the maximum slots.');
       return false;
     }
     if (batchDaysController.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Batch days is required');
+      SnackBarUtils.showErrorSnackBar(context, 'Please select the batch days.');
       return false;
     }
     if (modeController.value.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Mode is required');
+      SnackBarUtils.showErrorSnackBar(context, 'Please select the mode.');
       return false;
     }
 
     if (fees.text.isEmpty) {
-      SnackBarUtils.showErrorSnackBar(context, 'Fees is required');
+      SnackBarUtils.showErrorSnackBar(context, 'Please enter the fees.');
       return false;
     }
 
      if (startDateController.text.isEmpty) {
       SnackBarUtils.showSuccessSnackBar(
         context,
-        'Start Date is required',
+        'Please select the batch start date.',
       );
       return false;
     }
     if (endDateController.text.isEmpty) {
       SnackBarUtils.showSuccessSnackBar(
         context,
-        'End date is required',
+        'Please select the batch end date.',
       );
       return false;
     }
@@ -292,7 +295,7 @@ var batchDaysController = "".obs;
           clearData();
            batchDaysController.value = "";
           SnackBarUtils.showSuccessSnackBar(
-              context, 'Batch added successfully',);
+              context, 'Success! Your new batch is created.',);
           Get.back();
           // fetchBatchList();
           isLoading.value = true;
@@ -471,7 +474,7 @@ var batchDaysController = "".obs;
         if (response != null && response.success == true) {
           clearData();
           SnackBarUtils.showSuccessSnackBar(
-              context, 'Batch updated successfully');
+              context, 'Update successfull Your changes have been saved.');
           Get.back();
           onInit();
         } else {

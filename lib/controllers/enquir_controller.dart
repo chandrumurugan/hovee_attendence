@@ -161,7 +161,21 @@ class EnquirDetailController extends GetxController
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
           if(response.enquiry!.status=='Approved'){
-        // SnackBarUtils.showSuccessSnackBar(context,'Enquiry accepted successfully',);
+            Get.snackbar(
+          'Enquiry Accepted! Note: You may now begin the enrollment process.',
+          icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          messageText: const SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                'Enquiry Accepted! Note: You may now begin the enrollment process.',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
         tabController.animateTo(1);
                                     handleTabChange(1);
                                     print(selectedTabIndex.value);

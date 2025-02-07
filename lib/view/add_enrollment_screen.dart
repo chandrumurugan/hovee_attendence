@@ -630,7 +630,7 @@ class AddEnrollmentScreen extends StatelessWidget {
         isPadded: false,
         onTap: () {
           if (controller.validateFields(context)) {
-          _showConfirmationDialog(context,tutorId,tuteeId,courseId,batchId,tuteename,type);
+          _showConfirmationDialog(context,tutorId,tuteeId,courseId,batchId,tuteename,type,batchname,subject,tutorname);
           }
           // controller.addEnrollment(
           //     context, tutorId, tuteeId, courseId, batchId, tuteename, type);
@@ -639,7 +639,7 @@ class AddEnrollmentScreen extends StatelessWidget {
     );
   }
 
-   void _showConfirmationDialog(BuildContext context, String tutorId, tuteeId, courseId, batchId, tuteename, type) {
+   void _showConfirmationDialog(BuildContext context, String tutorId, tuteeId, courseId, batchId, tuteename, type, batch, subject, tutorname) {
   showDialog(
     context: context,
     builder: (context) {
@@ -664,7 +664,7 @@ class AddEnrollmentScreen extends StatelessWidget {
         onTap2: () {
           // Close the dialog when 'No' is clicked
              controller.addEnrollment(
-              context, tutorId, tuteeId, courseId, batchId, tuteename, type);
+              context, tutorId, tuteeId, courseId, batchId, tuteename, type,batch, subject, tutorname);
           Navigator.of(context).pop();
         },
       );

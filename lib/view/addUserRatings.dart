@@ -125,7 +125,7 @@ class _AddUserRatingsScreenState extends State<AddUserRatingsScreen> {
           backgroundColor: Colors.transparent,
           builder: (context) {
             return CustomDialogBox(
-              title1: 'Ratings posted successfully !',
+              title1: 'Rating Submitted! Thank you for rating ${widget.firstName} ${widget.lastName}',
               title2: '',
               subtitle: '',
               btnName: 'Ok',

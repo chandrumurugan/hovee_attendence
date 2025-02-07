@@ -226,13 +226,19 @@ class TutorClassList extends StatelessWidget {
           )
         ],
       ),
-      bottomNavigationBar:  SingleCustomButtom(
-        btnName: 'Add',
-        isPadded: false,
-        onTap: () {
-          classController.navigateToAddCourseScreen();
-        },
-      )
+       bottomNavigationBar: GetBuilder<ClassController>(
+  builder: (controller) {
+    return (classController.instituteId ==null || classController.instituteId == '')
+        ? SingleCustomButtom(
+            btnName: 'Add',
+            isPadded: false,
+            onTap: () {
+              controller.navigateToAddCourseScreen();
+            },
+          )
+        : SizedBox.shrink();
+  },
+),
 
       //  Obx(() {
       //    if (classController.isLoading.value) {
@@ -278,9 +284,9 @@ class TutorClassList extends StatelessWidget {
     context: context,
     builder: (context) {
       return CustomDialogBox(
-        title1: 'Do you want to make this class live?',
+        title1: 'Start the class live now? Click Yes to begin the session.',
         title2: '',
-        subtitle: 'Do you want to live this class?',
+        subtitle: 'Start the class live now? Click Yes to begin the session.',
          icon: const Icon(
                                                       Icons.help_outline,
                                                       color: Colors.white,

@@ -698,7 +698,7 @@ class PreviewScreen extends StatelessWidget {
                 print(studentId);
                 print(data!.tutorId!);
                 _showConfirmationDialog(
-                    context, data!.courseId!, studentId, data!.tutorId!);
+                    context, data!.courseId!, studentId, data!.tutorId!,data!.batches!.batchName! ?? '',data!.subject ?? '',tutorname ?? '');
               },
             )
           : data.status == 'Approved' &&
@@ -718,7 +718,7 @@ class PreviewScreen extends StatelessWidget {
   }
 
   void _showConfirmationDialog(
-      BuildContext context, String courseId, String studentId, String tutorId) {
+      BuildContext context, String courseId, String studentId, String tutorId,String batch,subject,tutorname) {
     showDialog(
       context: context,
       builder: (context) {
@@ -746,6 +746,9 @@ class PreviewScreen extends StatelessWidget {
               courseId,
               studentId,
               tutorId,
+              batch,
+              subject,
+              tutorname
             );
             Navigator.of(context).pop();
           },

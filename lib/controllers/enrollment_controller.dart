@@ -136,7 +136,7 @@ void onInit() {
   }
 
   void addEnrollment(BuildContext context, String tutorId, studentId, courseId,
-      batchId, tutorName, entrollmentType) async {
+      batchId, tutorName, entrollmentType,batch, subject, tutorname) async {
     if (validateFields(context)) {
       isLoading.value = true;
       try {
@@ -157,15 +157,15 @@ void onInit() {
         if (response != null && response.statusCode == 200) {
           //SnackBarUtils.showSuccessSnackBar(context, 'Enrollment submitted successfully',);
           Get.snackbar(
-         'Enrollment submitted successfully',
+         'Enrollment Initiated! for $batch($subject) You’ve successfully initiated the enrollment for $tutorname',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  messageText:  const SizedBox(
+  messageText:   SizedBox(
     height: 40, // Set desired height here
     child: Center(
       child: Text(
-        'Enrollment submitted successfully',
+       'Enrollment Initiated! for $batch($subject) You’ve successfully initiated the enrollment for $tutorname',
         style: TextStyle(color: Colors.white, fontSize: 16),
       ),
     ),
