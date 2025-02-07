@@ -19,6 +19,7 @@ import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
 import 'package:hovee_attendence/utils/keyboardUtils.dart';
+import 'package:hovee_attendence/utils/url_launcher.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -32,7 +33,7 @@ class LoginSignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthControllers authController = Get.put(AuthControllers());
     final splashController = Get.find<SplashController>();
-
+    const String termsUrl = "https://hoveeattendance.com/#/main/terms-condition";
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -1024,7 +1025,9 @@ class LoginSignUp extends StatelessWidget {
                                                       ),
                                                       recognizer:
                                                           TapGestureRecognizer()
-                                                            ..onTap = () {},
+                                                            ..onTap = () {
+                                                              URLLauncherHelper.launchInBrowser(termsUrl, context);
+                                                            },
                                                     ),
                                                   ],
                                                 ),

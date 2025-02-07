@@ -400,7 +400,7 @@ class _ParentViewState extends State<ParentView> {
                       const Padding(
                         padding: EdgeInsets.all(5),
                         child: Text(
-                          'My Listings',
+                          'My listings',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,

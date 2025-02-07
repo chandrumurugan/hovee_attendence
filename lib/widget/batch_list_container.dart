@@ -58,7 +58,7 @@ class BatchListConatiner extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
               const SizedBox(height: 20),
-              _buildRow('Batch Name', batch.batchName,context),
+              _buildRow('Batch name', batch.batchName,context),
               const SizedBox(height: 10),
               _buildRow('Tutor', batch.batchTeacher,context),
               const SizedBox(height: 10),
@@ -70,9 +70,9 @@ class BatchListConatiner extends StatelessWidget {
               const SizedBox(height: 10),
               _buildRow('Fees', '${batch.fees}',context),
                 const SizedBox(height: 10),
-               _buildRow('Batch StartDate', '${batch.startDate ??''}',context),
+               _buildRow('Batch start date', '${batch.startDate ??''}',context),
                 const SizedBox(height: 10),
-                _buildRow('Batch EndDate', '${batch.endDate??''}',context),
+                _buildRow('Batch end date', '${batch.endDate??''}',context),
               Divider(),
               TextButton(
                 onPressed: () {

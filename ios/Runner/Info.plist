@@ -37,15 +37,22 @@
 			</array>
 		</dict>
 	</array>
+	<key>AssociatedDomains</key>
+    <array>
+       <string>applinks:express.insakal.com</string>
+    </array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>FlutterDeepLinkingEnabled</key>
 	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>sms</string>
-		<string>tel</string>
-	</array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+       <string>sms</string>
+       <string>tel</string>
+       <string>http</string>
+       <string>https</string>
+    </array>
+
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -86,5 +93,7 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 </dict>
 </plist>

@@ -55,7 +55,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
-                'Add Batch',
+                'Add batch',
                 style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -441,7 +441,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
               child: Row(
                 children: [
                   const Text(
-                    'Start Date',
+                    'Start date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -488,7 +488,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
               child: Row(
                 children: [
                   const Text(
-                    'End Date',
+                    'End date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

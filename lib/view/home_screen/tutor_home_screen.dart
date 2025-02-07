@@ -221,7 +221,7 @@ class TutorHome extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Text(
-                                ' My Listings',
+                                ' My listings',
                                 style: GoogleFonts.nunito(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,

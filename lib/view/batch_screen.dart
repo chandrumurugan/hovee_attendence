@@ -161,7 +161,7 @@ class TutorBatchList extends StatelessWidget {
 
           // Search and Filter Section
           SearchfiltertabBar(
-            title: 'Batch List',
+            title: 'Batch list',
             onSearchChanged: (searchTerm) {
               // Trigger the search functionality by passing the search term
               batchController.fetchBatchList(searchTerm: searchTerm);

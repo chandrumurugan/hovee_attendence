@@ -16,7 +16,7 @@ class AttendancecourselistContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
       child: Card(
         elevation: 10,
         shadowColor: Colors.grey,

@@ -1365,29 +1365,46 @@ class WebService {
   }
 
   static Future<deleteBatchDataModel> deleteBatch(
-      Map<String, dynamic> batchData) async {
-    final url = Uri.parse('${baseUrl}batch/deleteBatch');
-    final box = GetStorage(); // Get an instance of GetStorage
-    // Retrieve the token from storage
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('Token') ?? "";
-    final response = await http.post(
-      url, // Replace with the actual API URL
-      body: json.encode(batchData),
-      headers: {
-        'Authorization': 'Bearer $token', // Add the authorization token here
-        'Content-Type': 'application/json',
-      },
-    );
+    Map<String, dynamic> batchData) async {
+  final url = Uri.parse('${baseUrl}batch/deleteBatch');
+  
+  // Retrieve the token from SharedPreferences
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('Token') ?? "";
 
-    if (response.statusCode == 200) {
-      return deleteBatchDataModel.fromJson(json.decode(response.body));
-    } else {
-      var result = deleteBatchDataModel.fromJson(json.decode(response.body));
-        // Get.snackbar(result.message.toString());
-      throw Exception(result.message.toString());
-    }
+  final response = await http.post(
+    url,
+    body: json.encode(batchData),
+    headers: {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    return deleteBatchDataModel.fromJson(json.decode(response.body));
+  } else {
+    var result = deleteBatchDataModel.fromJson(json.decode(response.body));
+    Get.snackbar(
+          result.message.toString(),
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        result.message.toString(),
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
+    // Either return a default instance or throw an error
+    throw Exception("Failed to delete batch: ${result.message}");
   }
+}
+
 
   static Future<deleteBatchDataModel> deleteCourse(
       Map<String, dynamic> batchData) async {

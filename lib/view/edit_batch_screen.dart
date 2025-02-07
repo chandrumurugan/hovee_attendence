@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDropDownInputField.dart';
@@ -19,7 +20,7 @@ class EditBatchScreen extends StatelessWidget {
   final Data2 batch;
    EditBatchScreen({super.key, required this.batch});
 final BatchController controller = Get.put(BatchController());
-
+ UserProfileController accountController = Get.put(UserProfileController());
   @override
   Widget build(BuildContext context) {
     Logger().i("getting runtime==?>>>${batch.batchDays}");
@@ -65,7 +66,7 @@ final BatchController controller = Get.put(BatchController());
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
-                'Edit Batch',
+                'Edit batch',
                 style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -133,13 +134,31 @@ final BatchController controller = Get.put(BatchController());
                       ),
                     ],
                   ),
-                  CommonDropdownInputField(
-                    title: 'Batch teacher',
-                    controllerValue: controller.batchTeacherController,
-                    selectedValue: controller.batchTeacherController,
-                    items: controller.teacher,
-                    onChanged: controller.setTeacher,
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.grey.shade200),
+                    child: InputTextField(
+                        suffix: false,
+                        readonly: true,
+                        hintText: 'First',
+                        keyboardType: TextInputType.name,
+                        inputFormatter: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(
+                              r"[a-zA-Z0-9\s@&_,-\/.']",
+                            ),
+                          ),
+                        ],
+                        controller: accountController.firstNameController),
                   ),
+                  // CommonDropdownInputField(
+                  //   title: 'Batch teacher',
+                  //   controllerValue: controller.batchTeacherController,
+                  //   selectedValue: controller.batchTeacherController,
+                  //   items: controller.teacher,
+                  //   onChanged: controller.setTeacher,
+                  // ),
                 ],
               ),
             ),
@@ -396,7 +415,7 @@ final BatchController controller = Get.put(BatchController());
               child: Row(
                 children: [
                   const Text(
-                    'Start Date',
+                    'Start date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -443,7 +462,7 @@ final BatchController controller = Get.put(BatchController());
               child: Row(
                 children: [
                   const Text(
-                    'End Date',
+                    'End date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

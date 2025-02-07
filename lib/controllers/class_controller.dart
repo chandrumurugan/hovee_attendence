@@ -262,6 +262,8 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
           isSelected.value = false;
            selectedCourseData.value = TutionData();
           courseCodeController.value = ''; 
+          courseCode=='';
+          update();
           // Get.snackbar( 'Class added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           Get.back();
           //onInit();
