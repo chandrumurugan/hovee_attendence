@@ -2,6 +2,7 @@ import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
@@ -41,7 +42,7 @@ class PunchView extends StatelessWidget {
   String? scannedData;
   @override
   Widget build(BuildContext context) {
-     final PunchController _controller = Get.put(PunchController(batchname: batchname,batchId: batchId),permanent: true);
+     final PunchController _controller = Get.put(PunchController(batchname: batchname,batchId: batchId));
      
     return Scaffold(
       appBar: AppBarHeader(
@@ -294,19 +295,6 @@ class PunchView extends StatelessWidget {
     );
   }
 
-  // void _onQRViewCreated(QRViewController controller ) {
-  //   this.controller = controller;
-  //   controller.scannedDataStream.listen((scanData) {
-     
-  //     String?  scannedData = scanData.code;
-      
-
-  //     // Close scanner after scanning
-  //     if (scannedData != null) {
-  //       _onBarcodeScanned(scannedData);
-  //     }
-  //   });
-  // }
 
   Future<void> showQRScannerScreen(BuildContext context) async {
   await showDialog(
@@ -314,7 +302,7 @@ class PunchView extends StatelessWidget {
     builder: (context) {
       return Scaffold(
         appBar: AppBar(title: Text('QR Code Scanner')),
-        body: AiBarcodeScanner(
+         body: AiBarcodeScanner(
           extendBodyBehindAppBar: false,
           hideGalleryButton: true,
           hideGalleryIcon: true,

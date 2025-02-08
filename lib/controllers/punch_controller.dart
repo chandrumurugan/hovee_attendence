@@ -307,6 +307,7 @@ class PunchController extends GetxController {
           punchedIn.value = true;
           await savePunchState(punchedIn.value);
           buttonLoader(false);
+          hasScanned.value = false;
           showAnimatedDialog('Punched in successfully!',
               "assets/images/success_punching.png",context);
           SnackBarUtils.showSuccessSnackBar(context, 'Attendance successfully marked');

@@ -422,9 +422,9 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                   'assets/edit 1.png', "Registration"),
                               _buildStepCard('assets/search (1) 1.png',
                                   "Search Using Map"),
+                              _buildStepCard('assets/edit 1.png', "Enquiry"),
                               _buildStepCard(
                                   'assets/diploma 1.png', "Enrollments"),
-                              _buildStepCard('assets/edit 1.png', "Enquiry"),
                               _buildStepCard('assets/edit 1.png', "Attendance"),
                               _buildStepCard('assets/star 2.png', "Ratings"),
                             ],

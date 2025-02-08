@@ -740,7 +740,7 @@ class LoginSignUp extends StatelessWidget {
                                                   children: [
                                                     Container(
                                                       width: 70,
-                                                      height: 46,
+                                                      height: 53,
                                                       decoration: BoxDecoration(
                                                         color: const Color(
                                                                 0xffD9D9D9)
