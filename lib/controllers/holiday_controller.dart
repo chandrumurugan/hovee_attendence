@@ -69,14 +69,14 @@ class HolidayController extends GetxController {
     if (startDateController.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'From Date is required',
+        'From date is required',
       );
       return false;
     }
     if (endDateController.text.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
-        'End Date is required',
+        'End date is required',
       );
       return false;
     }

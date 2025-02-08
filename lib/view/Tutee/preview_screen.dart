@@ -9,6 +9,7 @@ import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
+import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/widget/doubleCustombtn.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 import 'package:hovee_attendence/widgets/preview_header.dart';
@@ -699,6 +700,7 @@ class PreviewScreen extends StatelessWidget {
                 print(data!.tutorId!);
                 _showConfirmationDialog(
                     context, data!.courseId!, studentId, data!.tutorId!,data!.batches!.batchName! ?? '',data!.subject ?? '',tutorname ?? '');
+                  
               },
             )
           : data.status == 'Approved' &&
@@ -739,9 +741,10 @@ class PreviewScreen extends StatelessWidget {
             Navigator.of(context).pop();
           },
           btnName2: 'Yes',
-          onTap2: () {
+          onTap2: () async {
             // Call the addEnquirs method with the parent context
-            controller.addEnquirs(
+           Get.back();
+                  final response = await  controller.addEnquirs(
               Get.context!, // Use Get.context instead of dialog context
               courseId,
               studentId,
@@ -750,10 +753,44 @@ class PreviewScreen extends StatelessWidget {
               subject,
               tutorname
             );
-            Navigator.of(context).pop();
+           // Navigator.of(context).pop();
+             if (response) {
+                     showConfirmationDialog1(Get.context!,data!.batches!.batchName! ?? '',data!.subject ?? '',tutorname ?? '');
+                  }
+             
           },
         );
       },
     );
+  }
+
+    void showConfirmationDialog1(BuildContext context,String batch,subject,tutorname ) {
+    showModalBottomSheet(
+                                                        isDismissible: false,
+                                                        enableDrag: false,
+                                                        context: context,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        builder: (context) {
+                                                          return CustomDialogBox1(
+                                                            title1:
+                                                                "Enquiry Sent Successfully! for $batch($subject)",
+                                                            title2: '',
+                                                            subtitle: 'Note: $tutorname will receive your enquiry request',
+                                                            btnName: 'Ok',
+                                                            onTap: () async {
+                                                               Get.delete<EnquirDetailController>();
+         Get.off(() => Tutorenquirlist(type: 'Tutee', fromBottomNav: true,)); 
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.check,
+                                                              color: Colors.white,
+                                                            ),
+                                                            color: const Color(
+                                                                0xFF833AB4),
+                                                            singleBtn: true,
+                                                          );
+                                                        },
+                                                      );
   }
 }

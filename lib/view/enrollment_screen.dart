@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/addUserRatings.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
@@ -16,17 +17,19 @@ import 'package:pinput/pinput.dart';
 class EnrollmentScreen extends StatelessWidget {
   final String type;
   final bool fromBottomNav;
-  final String? firstname, lastname, wowid,lastWord;
-   final VoidCallback? onDashBoardBack;
-   final EnrollmentController controller;
+  final String? firstname, lastname, wowid, lastWord;
+  final VoidCallback? onDashBoardBack;
+  final EnrollmentController controller;
   EnrollmentScreen({
     super.key,
     required this.type,
     this.fromBottomNav = true,
     this.firstname,
     this.lastname,
-    this.wowid, this.onDashBoardBack, this.lastWord,
-  }): controller = Get.put(EnrollmentController(),permanent: true);
+    this.wowid,
+    this.onDashBoardBack,
+    this.lastWord,
+  }) : controller = Get.put(EnrollmentController(), permanent: true);
   //final EnrollmentController controller = Get.put(EnrollmentController());
   //final NotificationController notificontroller = Get.put(NotificationController());
   final TuteeHomeController attendanceCourseListController =
@@ -41,18 +44,18 @@ class EnrollmentScreen extends StatelessWidget {
         appBar: AppBarHeader(
             needGoBack: fromBottomNav,
             navigateTo: () {
-            if (fromBottomNav && onDashBoardBack != null) {
-            // Call onDashBoardBack if navigating from bottom navigation
-            onDashBoardBack!();
-          } else {
-            // Navigate to Dashboard if not from bottom navigation
-            Get.offAll(DashboardScreen(
-              rolename: type,
-              firstname: firstname,
-              lastname: lastname,
-              wowid: wowid,
-            ));
-          }
+              if (fromBottomNav && onDashBoardBack != null) {
+                // Call onDashBoardBack if navigating from bottom navigation
+                onDashBoardBack!();
+              } else {
+                // Navigate to Dashboard if not from bottom navigation
+                Get.offAll(DashboardScreen(
+                  rolename: type,
+                  firstname: firstname,
+                  lastname: lastname,
+                  wowid: wowid,
+                ));
+              }
             }),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,22 +83,22 @@ class EnrollmentScreen extends StatelessWidget {
             //     controller.handleTabChange(value);
             //   },
             // ),
-             GetBuilder<EnrollmentController>(
-  init: EnrollmentController(),
-  builder: (controller) {
-    return TabBar(
-      controller: controller.tabController,
-      tabs: const [
-        Tab(text: 'Pending'),
-        Tab(text: 'Accepted'),
-        Tab(text: 'Rejected'),
-      ],
-      onTap: (value) {
-        controller.handleTabChange(value);
-      },
-    );
-  },
-),
+            GetBuilder<EnrollmentController>(
+              init: EnrollmentController(),
+              builder: (controller) {
+                return TabBar(
+                  controller: controller.tabController,
+                  tabs: const [
+                    Tab(text: 'Pending'),
+                    Tab(text: 'Accepted'),
+                    Tab(text: 'Rejected'),
+                  ],
+                  onTap: (value) {
+                    controller.handleTabChange(value);
+                  },
+                );
+              },
+            ),
             // Display List based on the selected tab
             Expanded(
               child: Obx(() {
@@ -138,21 +141,19 @@ class EnrollmentScreen extends StatelessWidget {
                             Get.to(EnRollmentPreviewScreen(
                               data: enrollmentList,
                               type: 'Enquire',
-                              role:type,
-                               onPreviewCallbackAccept:(){
-                                       _showOtpDialog(
-                                                      context,
-                                                      enrollmentList
-                                                          .sId!);
-                                      },
-                                      onPreviewCallbackReject:(){
-                                          controller.updateEnrollment(
-                                                      context,
-                                                      enrollmentList.sId!,
-                                                      'Rejected',
-                                                      enrollmentList
-                                                          .enquiryCode!);
-                                      },
+                              role: type,
+                              onPreviewCallbackAccept: () {
+                                _showOtpDialog(
+                                    context,
+                                    enrollmentList.sId!,
+                                    enrollmentList.batchId!.batchName!,
+                                    enrollmentList.courseId.subject,
+                                    enrollmentList.tutorId.firstName);
+                              },
+                              onPreviewCallbackReject: () {
+                                controller.updateEnrollment(enrollmentList.sId!,
+                                    'Rejected', enrollmentList.enquiryCode!);
+                              },
                             ));
                           },
                           child: Padding(
@@ -185,14 +186,42 @@ class EnrollmentScreen extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              _buildRow('Tutee name',  '${enrollmentList.studentId.firstName} ${enrollmentList.studentId.lastName}',),
-                                               _buildRow('Class', enrollmentList.courseId.className),
-                                              _buildRow('Board', enrollmentList.courseId.board),
-                                                _buildRow('Subject', enrollmentList.courseId.subject),
-                                               _buildRow('Tutor', '${enrollmentList.tutorId.firstName} ${enrollmentList.tutorId.lastName}',),
-                                             _buildRow('Status', enrollmentList.status == 'Approved' ? 'Accepted' : enrollmentList.status),
-                                              _buildRow('Start date', enrollmentList.batchId.startDate ?? ''),
-                                              _buildRow('End date', enrollmentList.batchId.endDate?? ''),
+                                              _buildRow(
+                                                'Tutee name',
+                                                '${enrollmentList.studentId.firstName} ${enrollmentList.studentId.lastName}',
+                                              ),
+                                              _buildRow(
+                                                  'Class',
+                                                  enrollmentList
+                                                      .courseId.className),
+                                              _buildRow(
+                                                  'Board',
+                                                  enrollmentList
+                                                      .courseId.board),
+                                              _buildRow(
+                                                  'Subject',
+                                                  enrollmentList
+                                                      .courseId.subject),
+                                              _buildRow(
+                                                'Tutor',
+                                                '${enrollmentList.tutorId.firstName} ${enrollmentList.tutorId.lastName}',
+                                              ),
+                                              _buildRow(
+                                                  'Status',
+                                                  enrollmentList.status ==
+                                                          'Approved'
+                                                      ? 'Accepted'
+                                                      : enrollmentList.status),
+                                              _buildRow(
+                                                  'Start date',
+                                                  enrollmentList
+                                                          .batchId.startDate ??
+                                                      ''),
+                                              _buildRow(
+                                                  'End date',
+                                                  enrollmentList
+                                                          .batchId.endDate ??
+                                                      ''),
                                             ],
                                           ),
                                         ),
@@ -219,8 +248,13 @@ class EnrollmentScreen extends StatelessWidget {
                                                 onTap: () {
                                                   _showOtpDialog(
                                                       context,
+                                                      enrollmentList.sId!,
                                                       enrollmentList
-                                                          .sId!); //enrollmentList.id!
+                                                          .batchId!.batchName!,
+                                                      enrollmentList
+                                                          .courseId.subject,
+                                                      enrollmentList.tutorId
+                                                          .firstName); //enrollmentList.id!
                                                 },
                                                 child: Container(
                                                   width: double.infinity,
@@ -258,7 +292,6 @@ class EnrollmentScreen extends StatelessWidget {
                                               child: InkWell(
                                                 onTap: () {
                                                   controller.updateEnrollment(
-                                                      context,
                                                       enrollmentList.sId!,
                                                       'Rejected',
                                                       enrollmentList
@@ -320,11 +353,14 @@ class EnrollmentScreen extends StatelessWidget {
                                                         .batchId.sId,
                                                     courseId: enrollmentList
                                                         .courseId.sId,
-                                                        classname: enrollmentList.courseId.className,
-                                                        board:  enrollmentList.courseId.board,
-                                                        subject: enrollmentList.courseId.subject ,
-                                                        courtsecode:  enrollmentList.courseId.courseCode,
-
+                                                    classname: enrollmentList
+                                                        .courseId.className,
+                                                    board: enrollmentList
+                                                        .courseId.board,
+                                                    subject: enrollmentList
+                                                        .courseId.subject,
+                                                    courtsecode: enrollmentList
+                                                        .courseId.courseCode,
                                                   ));
                                                 },
                                                 child: Container(
@@ -379,7 +415,8 @@ class EnrollmentScreen extends StatelessWidget {
         ));
   }
 
-  void _showOtpDialog(BuildContext context, String enrollmentId) {
+  void _showOtpDialog(
+      BuildContext context, String enrollmentId, batch, subject, tutorname) {
     final defaultPinTheme = PinTheme(
       width: 50,
       height: 38,
@@ -493,19 +530,15 @@ class EnrollmentScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 final otp = attendanceCourseListController.otpController.text;
                 if (otp.isNotEmpty) {
-                  controller.updateEnrollment(
-                      context, enrollmentId, 'Approved', otp);
-                  controller.otpController.clear(); // Clear the OTP field
-                  GetStorage().remove('otpCode');
-                  Get.offAll(DashboardScreen(
-                    rolename: type,
-                    firstname: firstname,
-                    lastname: lastname,
-                    wowid: wowid,
-                  ));
+                  Get.back();
+                  final response = await controller.updateEnrollment(
+                      enrollmentId, 'Approved', otp);
+                  if (response) {
+                    showConfirmationDialog1(batch, subject, tutorname);
+                  }
                 } else {
                   SnackBarUtils.showSuccessSnackBar(
                     context,
@@ -555,6 +588,37 @@ class EnrollmentScreen extends StatelessWidget {
               color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
         ),
       ],
+    );
+  }
+
+  void showConfirmationDialog1(String batch, String subject, String tutorname) {
+    Get.dialog(
+      CustomDialogBox1(
+        title1: 'Enrollment Accepted! for $batch($subject)',
+        title2: '',
+        subtitle:
+            'Note: You have successfully the accept the $tutorname request',
+        icon: const Icon(
+          Icons.help_outline,
+          color: Colors.white,
+        ),
+        color: const Color(0xFF833AB4), // Set the primary color
+        color1: const Color(0xFF833AB4), // Optional gradient color
+        singleBtn: true, // Show only one button
+        btnName: 'OK', // Set the button name
+        onTap: () {
+          // Call API to add enrollment
+          controller.otpController.clear(); // Clear the OTP field
+                  GetStorage().remove('otpCode');
+                  Get.offAll(DashboardScreen(
+                    rolename: type,
+                    firstname: firstname,
+                    lastname: lastname,
+                    wowid: wowid,
+                  ));
+        },
+      ),
+      barrierDismissible: false, // Prevent dismissing by tapping outside
     );
   }
 }

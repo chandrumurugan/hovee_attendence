@@ -262,10 +262,11 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
           isSelected.value = false;
            selectedCourseData.value = TutionData();
           courseCodeController.value = ''; 
-          courseCode=='';
+          courseCode=[];
           update();
           // Get.snackbar( 'Class added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
-          Get.back();
+          controller.onInit();
+            Navigator.pop(context);
           //onInit();
           fetchClassesList("Draft");
         } else {
@@ -290,6 +291,7 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void navigateToAddCourseScreen() {
+    
     Get.to(() => const TutorClassForm());
   }
 

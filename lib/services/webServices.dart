@@ -1212,6 +1212,22 @@ class WebService {
       if (response.statusCode == 200) {
         return UpdateEnrollmentStatusModel.fromJson(json.decode(response.body));
       } else {
+        var result = UpdateEnrollmentStatusModel.fromJson(json.decode(response.body));
+    Get.snackbar(
+          result.message.toString(),
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  messageText:  SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+        result.message.toString(),
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
         return null;
       }
     } catch (e) {

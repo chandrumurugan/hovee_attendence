@@ -146,7 +146,7 @@ class EnquirDetailController extends GetxController
   //   }
   // }
 
-  void updateEnquire(BuildContext context,String enquiryId,String type ) async {
+  Future<bool> updateEnquire(BuildContext context,String enquiryId,String type ) async {
       isLoading.value = true;
       try {
         var batchData = {
@@ -161,29 +161,31 @@ class EnquirDetailController extends GetxController
           // SnackBarUtils.showSuccessSnackBar(
           //     context, 'Update enquire successfully');
           if(response.enquiry!.status=='Approved'){
-            Get.snackbar(
-          'Enquiry Accepted! Note: You may now begin the enrollment process.',
-          icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
-          colorText: Colors.white,
-          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          messageText: const SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                'Enquiry Accepted! Note: You may now begin the enrollment process.',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
-        );
-        tabController.animateTo(1);
-                                    handleTabChange(1);
-                                    print(selectedTabIndex.value);
+        //     Get.snackbar(
+        //   'Enquiry Accepted! Note: You may now begin the enrollment process.',
+        //   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+        //   colorText: Colors.white,
+        //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        //   messageText: const SizedBox(
+        //     height: 40, // Set desired height here
+        //     child: Center(
+        //       child: Text(
+        //         'Enquiry Accepted! Note: You may now begin the enrollment process.',
+        //         style: TextStyle(color: Colors.white, fontSize: 16),
+        //       ),
+        //     ),
+        //   ),
+        // );
+        // tabController.animateTo(1);
+        //                             handleTabChange(1);
+        //                             print(selectedTabIndex.value);
+        return true;
           }
           else{
               //SnackBarUtils.showSuccessSnackBar(context,'Enquiry rejected successfully');
         tabController.animateTo(2);
                                     handleTabChange(2);
+                                    return false;
           }
         // fetchEnquirList('Pending');
         //       //Get.off(()=>TutorClassList());
@@ -191,9 +193,11 @@ class EnquirDetailController extends GetxController
         } else {
           // SnackBarUtils.showErrorSnackBar(
           //     context, response?.message ?? 'Failed to update Enquire');
+          return false;
         }
       } catch (e) {
         //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+        return false;
       } finally {
         isLoading.value = false;
       }

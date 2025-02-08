@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/inputTextField.dart';
+import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/widget/single_custom_button.dart';
 import 'package:hovee_attendence/widgets/preview_header.dart';
 
@@ -46,7 +47,9 @@ class AddEnrollmentScreen extends StatelessWidget {
       required this.courseId,
       required this.batchId,
       required this.enrollmentType,
-      required this.type, required this.batchEndDate, required this.batchMode});
+      required this.type,
+      required this.batchEndDate,
+      required this.batchMode});
   final EnrollmentController controller = Get.put(EnrollmentController());
   @override
   Widget build(BuildContext context) {
@@ -79,12 +82,11 @@ class AddEnrollmentScreen extends StatelessWidget {
               subtitle: tutorname,
               ratingCount: '4.8',
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     'Tutee name',
                     style: TextStyle(
                       fontSize: 14,
@@ -124,7 +126,7 @@ class AddEnrollmentScreen extends StatelessWidget {
               child: Row(
                 children: [
                   const Text(
-                    'Start Date',
+                    'Start date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -165,27 +167,26 @@ class AddEnrollmentScreen extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
               child: Row(
                 children: [
-                  const Text(
-                    'End Date',
+                  Text(
+                    'End date',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: Colors.black,
                     ),
                   ),
-                  Text(
-                    '*',
-                    style: GoogleFonts.nunito(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red.withOpacity(0.6),
-                    ),
-                  ),
+                  // Text(
+                  //   '*',
+                  //   style: GoogleFonts.nunito(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: Colors.red.withOpacity(0.6),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -200,23 +201,21 @@ class AddEnrollmentScreen extends StatelessWidget {
                   readonly: true,
                   isDate: true,
                   hintText: 'Select',
-                 initialDate: DateTime.now(),
-                firstDate:
-                    DateTime.now(), // Sets the minimum selectable date to today
-                lastDate:
-                    DateTime(2100),
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime
+                      .now(), // Sets the minimum selectable date to today
+                  lastDate: DateTime(2100),
                   keyboardType: TextInputType.datetime,
                   controller: controller.endDateController),
             ),
             const SizedBox(
               height: 5,
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     'Batch name',
                     style: TextStyle(
                       fontSize: 14,
@@ -224,14 +223,14 @@ class AddEnrollmentScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  Text(
-                    '*',
-                    style: GoogleFonts.nunito(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red.withOpacity(0.6),
-                    ),
-                  ),
+                  // Text(
+                  //   '*',
+                  //   style: GoogleFonts.nunito(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: Colors.red.withOpacity(0.6),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -261,12 +260,11 @@ class AddEnrollmentScreen extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     'Board',
                     style: TextStyle(
                       fontSize: 14,
@@ -274,14 +272,14 @@ class AddEnrollmentScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  Text(
-                    '*',
-                    style: GoogleFonts.nunito(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red.withOpacity(0.6),
-                    ),
-                  ),
+                  // Text(
+                  //   '*',
+                  //   style: GoogleFonts.nunito(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: Colors.red.withOpacity(0.6),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -308,12 +306,11 @@ class AddEnrollmentScreen extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     'Class',
                     style: TextStyle(
                       fontSize: 14,
@@ -321,14 +318,14 @@ class AddEnrollmentScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  Text(
-                    '*',
-                    style: GoogleFonts.nunito(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red.withOpacity(0.6),
-                    ),
-                  ),
+                  // Text(
+                  //   '*',
+                  //   style: GoogleFonts.nunito(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: Colors.red.withOpacity(0.6),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -355,12 +352,11 @@ class AddEnrollmentScreen extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     'Subject',
                     style: TextStyle(
                       fontSize: 14,
@@ -368,14 +364,14 @@ class AddEnrollmentScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  Text(
-                    '*',
-                    style: GoogleFonts.nunito(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red.withOpacity(0.6),
-                    ),
-                  ),
+                  // Text(
+                  //   '*',
+                  //   style: GoogleFonts.nunito(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: Colors.red.withOpacity(0.6),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -402,12 +398,11 @@ class AddEnrollmentScreen extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     'Tutor',
                     style: TextStyle(
                       fontSize: 14,
@@ -415,14 +410,14 @@ class AddEnrollmentScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  Text(
-                    '*',
-                    style: GoogleFonts.nunito(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red.withOpacity(0.6),
-                    ),
-                  ),
+                  // Text(
+                  //   '*',
+                  //   style: GoogleFonts.nunito(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: Colors.red.withOpacity(0.6),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -496,12 +491,11 @@ class AddEnrollmentScreen extends StatelessWidget {
             // const SizedBox(
             //   height: 5,
             // ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     'Batch timings',
                     style: TextStyle(
                       fontSize: 14,
@@ -509,14 +503,14 @@ class AddEnrollmentScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  Text(
-                    '*',
-                    style: GoogleFonts.nunito(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.red.withOpacity(0.6),
-                    ),
-                  ),
+                  // Text(
+                  //   '*',
+                  //   style: GoogleFonts.nunito(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: Colors.red.withOpacity(0.6),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -543,12 +537,11 @@ class AddEnrollmentScreen extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     'Fees',
                     style: TextStyle(
                       fontSize: 14,
@@ -577,19 +570,18 @@ class AddEnrollmentScreen extends StatelessWidget {
                   ],
                   hintText: 'Enter here...',
                   keyboardType: TextInputType.emailAddress,
-                   prefixText: '₹ ', // Add the rupee symbol as prefix
-                    suffixText: '/month',
+                  prefixText: '₹ ', // Add the rupee symbol as prefix
+                  suffixText: '/month',
                   controller: controller.feesController),
             ),
             const SizedBox(
               height: 5,
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 0),
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     'Batch mode',
                     style: TextStyle(
                       fontSize: 14,
@@ -618,8 +610,8 @@ class AddEnrollmentScreen extends StatelessWidget {
                   ],
                   hintText: 'Enter here...',
                   keyboardType: TextInputType.emailAddress,
-                   prefixText: '', // Add the rupee symbol as prefix
-                    suffixText: '',
+                  prefixText: '', // Add the rupee symbol as prefix
+                  suffixText: '',
                   controller: controller.modeController),
             ),
           ],
@@ -630,7 +622,8 @@ class AddEnrollmentScreen extends StatelessWidget {
         isPadded: false,
         onTap: () {
           if (controller.validateFields(context)) {
-          _showConfirmationDialog(context,tutorId,tuteeId,courseId,batchId,tuteename,type,batchname,subject,tutorname);
+            _showConfirmationDialog(context, tutorId, tuteeId, courseId,
+                batchId, tuteename, type, batchname, subject, tutorname);
           }
           // controller.addEnrollment(
           //     context, tutorId, tuteeId, courseId, batchId, tuteename, type);
@@ -639,36 +632,71 @@ class AddEnrollmentScreen extends StatelessWidget {
     );
   }
 
-   void _showConfirmationDialog(BuildContext context, String tutorId, tuteeId, courseId, batchId, tuteename, type, batch, subject, tutorname) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return CustomDialogBox(
-        title1: 'Do you want to submit the enrollment?',
-        title2: '',
-        subtitle: 'Do you want to live this class?',
-         icon: const Icon(
-                                                      Icons.help_outline,
-                                                      color: Colors.white,
-                                                    ),
-       color:  Color(0xFF833AB4), // Set the primary color
-        color1: const Color(0xFF833AB4), // Optional gradient color
-        singleBtn: false, // Show both 'Yes' and 'No' buttons
-        btnName: 'No',
-        onTap: () {
-          // Call the updateClass method when 'Yes' is clicked
-         // Close the dialog after update
-         Navigator.of(context).pop();
-        },
-        btnName2: 'Yes',
-        onTap2: () {
-          // Close the dialog when 'No' is clicked
-             controller.addEnrollment(
-              context, tutorId, tuteeId, courseId, batchId, tuteename, type,batch, subject, tutorname);
-          Navigator.of(context).pop();
-        },
-      );
-    },
-  );
-}
+  void _showConfirmationDialog(BuildContext context, String tutorId, tuteeId,
+      courseId, batchId, tuteename, type, batch, subject, tutorname) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CustomDialogBox(
+          title1: 'Do you want to submit the enrollment?',
+          title2: '',
+          subtitle: 'Do you want to live this class?',
+          icon: const Icon(
+            Icons.help_outline,
+            color: Colors.white,
+          ),
+          color: const Color(0xFF833AB4), // Set the primary color
+          color1: const Color(0xFF833AB4), // Optional gradient color
+          singleBtn: false, // Show both 'Yes' and 'No' buttons
+          btnName: 'No',
+          onTap: () {
+            // Call the updateClass method when 'Yes' is clicked
+            // Close the dialog after update
+            Navigator.of(context).pop();
+          },
+          btnName2: 'Yes',
+          onTap2: () async {
+            // Close the dialog when 'No' is clicked
+             Get.back();
+                  final response = await controller.addEnrollment(context, tutorId, tuteeId, courseId,
+                batchId, tuteename, type, batch, subject, tutorname);
+             if(response){
+            showConfirmationDialog1(Get.context!, batch, subject, tuteename, type);
+             }
+          },
+        );
+      },
+    );
+  }
+
+  void showConfirmationDialog1(
+      BuildContext context, String batch, subject, tutorname, type) {
+    showModalBottomSheet(
+      isDismissible: false,
+      enableDrag: false,
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return CustomDialogBox1(
+          title1: "Enrollment Initiated! for $batch($subject)",
+          title2: '',
+          subtitle:
+              'Note: You’ve successfully initiated the enrollment for $tuteename',
+          btnName: 'Ok',
+          onTap: () async {
+            Get.delete<EnrollmentController>();
+            Get.off(() => EnrollmentScreen(
+                  type: type,
+                ));
+          },
+          icon: const Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+          color: const Color(0xFF833AB4),
+          singleBtn: true,
+        );
+      },
+    );
+  }
 }

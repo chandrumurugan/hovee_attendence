@@ -76,7 +76,7 @@ class CourseDetailController extends GetxController {
     }
   }
 
-  void addEnquirs(BuildContext context, String courseId, String studentId,
+  Future<bool> addEnquirs(BuildContext context, String courseId, String studentId,
       String tutorId,String batch,subject,tutorname) async {
     isLoading.value = true;
     try {
@@ -92,28 +92,7 @@ class CourseDetailController extends GetxController {
           await WebService.addEnquirs(batchData);
 
       if (response != null && response.statusCode == 200) {
-                Get.snackbar(
-         'Enquiry Sent Successfully! for Batch $batch ($subject) $tutorname will receive your enquiry request',
-  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  messageText:  SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-  'Enquiry Sent Successfully! for Batch $batch ($subject) $tutorname will receive your enquiry request',
-  style: TextStyle(color: Colors.white, fontSize: 16),
-  textAlign: TextAlign.center, // Align text if needed
-),
-
-    ),
-  ),
-);
-         //SnackBarUtils.showSuccessSnackBar(context,'Enquiry submited successfully',);
-        //  Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        // ,'Enquiry submited successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
-        Get.delete<EnquirDetailController>();
-         Get.off(() => Tutorenquirlist(type: 'Tutee', fromBottomNav: true,)); 
+        return true;
       } else {
         Get.snackbar(
           'Enquiry already submitted',
@@ -130,8 +109,7 @@ class CourseDetailController extends GetxController {
     ),
   ),
 );
-        // Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
-        // ,'Enquiry already submitted',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+ return false;
       }
     } catch (e) {
           Get.snackbar(
@@ -149,6 +127,7 @@ class CourseDetailController extends GetxController {
     ),
   ),
 );
+ return false;
       //  Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
       //   ,'Error: $e',);
     } finally {
@@ -244,4 +223,6 @@ class CourseDetailController extends GetxController {
       isLoading.value = false;
     }
   }
+
+
 }

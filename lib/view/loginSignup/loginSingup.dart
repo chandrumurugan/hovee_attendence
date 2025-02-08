@@ -33,7 +33,8 @@ class LoginSignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthControllers authController = Get.put(AuthControllers());
     final splashController = Get.find<SplashController>();
-    const String termsUrl = "https://hoveeattendance.com/#/main/terms-condition";
+    const String termsUrl =
+        "https://hoveeattendance.com/#/main/terms-condition";
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -168,9 +169,10 @@ class LoginSignUp extends StatelessWidget {
 // Save the first and last names separately
                                   prefs.setString('UserName', firstName);
                                   prefs.setString('UserLastName', lastName);
-                                   String title1 = response.data!.accountSetup! == false
-                                                  ? 'Registered' 
-                                                  : 'Logged in';
+                                  String title1 =
+                                      response.data!.accountSetup! == false
+                                          ? 'Registered'
+                                          : 'Logged in';
                                   showModalBottomSheet(
                                     isDismissible: false,
                                     enableDrag: false,
@@ -494,14 +496,27 @@ class LoginSignUp extends StatelessWidget {
                                                 Get.to(() =>
                                                     const GuestHomeScreen());
                                               },
-                                              child: Text(
-                                                "Maybe later",
-                                                style: GoogleFonts.nunito(
-                                                  fontSize: 15.0,
-                                                  color: Colors.blue,
+                                              child: ShaderMask(
+                                                shaderCallback: (bounds) =>
+                                                    LinearGradient(
+                                                  colors: [
+                                                    Color(0xFFC13584),
+                                                    Color(0xFF833AB4),
+                                                  ],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                ).createShader(bounds),
+                                                child: Text(
+                                                  "Maybe later",
+                                                  style: GoogleFonts.nunito(
+                                                    fontSize: 15.0,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors
+                                                        .white, // This will be overridden by the gradient
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                            )
                                           ],
                                         ),
                                         const SizedBox(
@@ -724,10 +739,8 @@ class LoginSignUp extends StatelessWidget {
                                                   alignment: Alignment.center,
                                                   children: [
                                                     Container(
-                                                      width:
-                                                          70, // Ensure the Container has a width
-                                                      height:
-                                                          46, // Make the height same as the parent SizedBox
+                                                      width: 70,
+                                                      height: 46,
                                                       decoration: BoxDecoration(
                                                         color: const Color(
                                                                 0xffD9D9D9)
@@ -737,30 +750,62 @@ class LoginSignUp extends StatelessWidget {
                                                                 .circular(12),
                                                       ),
                                                     ),
-                                                    CountryCodePicker(
-                                                      onChanged: print,
-                                                      countryList:
-                                                          authController
-                                                              .country_codes,
-                                                      initialSelection:
-                                                          'IN', // Changed to 'IN' for India
-                                                      favorite: [
-                                                        '+91'
-                                                      ], // Added '+91' for India as favorite
-                                                      showCountryOnly: false,
-                                                      showOnlyCountryWhenClosed:
-                                                          false,
-                                                      alignLeft: false,
-                                                      showFlag: false,
-                                                      padding: const EdgeInsets
-                                                          .all(
-                                                          0), // Add padding if needed
-                                                      textStyle: const TextStyle(
-                                                          color: Colors
-                                                              .black), // Adjust text style if needed
+                                                    Text(
+                                                      '+91',
+                                                      style: TextStyle(
+                                                        color: const Color
+                                                                .fromARGB(255,
+                                                                136, 134, 134)
+                                                            .withOpacity(0.4),
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
+
+                                                // Stack(
+                                                //   alignment: Alignment.center,
+                                                //   children: [
+                                                //     Container(
+                                                //       width:
+                                                //           70, // Ensure the Container has a width
+                                                //       height:
+                                                //           46, // Make the height same as the parent SizedBox
+                                                //       decoration: BoxDecoration(
+                                                // color: const Color(
+                                                //         0xffD9D9D9)
+                                                //     .withOpacity(0.4),
+                                                //         borderRadius:
+                                                //             BorderRadius
+                                                //                 .circular(12),
+                                                //       ),
+                                                //     ),
+                                                //     CountryCodePicker(
+                                                //       onChanged: print,
+                                                //       countryList:
+                                                //           authController
+                                                //               .country_codes,
+                                                //       initialSelection:
+                                                //           'IN', // Changed to 'IN' for India
+                                                //       favorite: [
+                                                //         '+91'
+                                                //       ], // Added '+91' for India as favorite
+                                                //       showCountryOnly: false,
+                                                //       showOnlyCountryWhenClosed:
+                                                //           false,
+                                                //       alignLeft: false,
+                                                //       showFlag: false,
+                                                //       padding: const EdgeInsets
+                                                //           .all(
+                                                //           0), // Add padding if needed
+                                                //       textStyle: const TextStyle(
+                                                //           color: Colors
+                                                //               .black), // Adjust text style if needed
+                                                //     ),
+                                                //   ],
+                                                // ),
                                                 const SizedBox(
                                                   width: 4,
                                                 ),
@@ -1014,26 +1059,48 @@ class LoginSignUp extends StatelessWidget {
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                   children: [
-                                                    TextSpan(
-                                                      text:
-                                                          'Terms & Conditions',
-                                                      style: GoogleFonts.nunito(
-                                                        fontSize: 12,
-                                                        color: Colors.blue,
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                    WidgetSpan(
+                                                      child: ShaderMask(
+                                                        shaderCallback:
+                                                            (bounds) =>
+                                                                LinearGradient(
+                                                          colors: [
+                                                            Color(0xFFC13584),
+                                                            Color(0xFF833AB4),
+                                                          ],
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomCenter,
+                                                        ).createShader(bounds),
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            URLLauncherHelper
+                                                                .launchInBrowser(
+                                                                    termsUrl,
+                                                                    context);
+                                                          },
+                                                          child: Text(
+                                                            'Terms & Conditions',
+                                                            style: GoogleFonts
+                                                                .nunito(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: Colors
+                                                                  .white, // This will be overridden by the gradient
+                                                            ),
+                                                          ),
+                                                        ),
                                                       ),
-                                                      recognizer:
-                                                          TapGestureRecognizer()
-                                                            ..onTap = () {
-                                                              URLLauncherHelper.launchInBrowser(termsUrl, context);
-                                                            },
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                             ),
                                           ),
+
                                           const SizedBox(
                                             height: 16,
                                           ),

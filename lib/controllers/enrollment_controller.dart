@@ -121,7 +121,7 @@ void onInit() {
     if (startDateController.text.isEmpty) {
       SnackBarUtils.showSuccessSnackBar(
         context,
-        'Start Date is required',
+        'Start date is required',
       );
       return false;
     }
@@ -135,7 +135,7 @@ void onInit() {
     return true;
   }
 
-  void addEnrollment(BuildContext context, String tutorId, studentId, courseId,
+  Future<bool> addEnrollment(BuildContext context, String tutorId, studentId, courseId,
       batchId, tutorName, entrollmentType,batch, subject, tutorname) async {
     if (validateFields(context)) {
       isLoading.value = true;
@@ -156,21 +156,21 @@ void onInit() {
 
         if (response != null && response.statusCode == 200) {
           //SnackBarUtils.showSuccessSnackBar(context, 'Enrollment submitted successfully',);
-          Get.snackbar(
-         'Enrollment Initiated! for $batch($subject) You’ve successfully initiated the enrollment for $tutorname',
-  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  messageText:   SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Enrollment Initiated! for $batch($subject) You’ve successfully initiated the enrollment for $tutorname',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
+//           Get.snackbar(
+//          'Enrollment Initiated! for $batch($subject) You’ve successfully initiated the enrollment for $tutorname',
+//   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+//   colorText: Colors.white,
+//   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+//   messageText:   SizedBox(
+//     height: 40, // Set desired height here
+//     child: Center(
+//       child: Text(
+//        'Enrollment Initiated! for $batch($subject) You’ve successfully initiated the enrollment for $tutorname',
+//         style: TextStyle(color: Colors.white, fontSize: 16),
+//       ),
+//     ),
+//   ),
+// );
           // Get.snackbar(
           //   icon: const Icon(
           //     Icons.check_circle,
@@ -181,10 +181,11 @@ void onInit() {
           //   colorText: Colors.white,
           //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           // );
-          Get.delete<EnrollmentController>();
-          Get.off(() => EnrollmentScreen(
-                type: entrollmentType,
-              ));
+          // Get.delete<EnrollmentController>();
+          // Get.off(() => EnrollmentScreen(
+          //       type: entrollmentType,
+          //     ));
+          return true;
         } else {
           // SnackBarUtils.showSuccessSnackBar(context, response?.message ?? 'Failed to add Enrollment',);
                     Get.snackbar(
@@ -202,6 +203,7 @@ void onInit() {
     ),
   ),
 );
+return false;
           // Get.snackbar(
           //   icon: const Icon(
           //     Icons.info,
@@ -229,6 +231,7 @@ void onInit() {
     ),
   ),
 );
+return false;
         // Get.snackbar(
         //   icon: const Icon(
         //     Icons.info,
@@ -241,6 +244,7 @@ void onInit() {
         isLoading.value = false;
       }
     }
+    return false;
   }
 
   void fetchEnrollmentList(String type) async {
@@ -261,91 +265,49 @@ void onInit() {
     }
   }
 
-  void updateEnrollment(
-      BuildContext context, String enrollmentId, String type, code) async {
-    isLoading.value = true;
-    try {
-      var batchData = {
-        "status": type,
-        "enrollmentId": enrollmentId,
-        "code": code
-      };
+  Future<bool> updateEnrollment( String enrollmentId, String type, String code) async {
+  isLoading.value = true;
+  try {
+    var batchData = {
+      "status": type,
+      "enrollmentId": enrollmentId,
+      "code": code
+    };
 
-      final UpdateEnrollmentStatusModel? response =
-          await WebService.updateEnrollment(batchData);
+    final UpdateEnrollmentStatusModel? response =
+        await WebService.updateEnrollment(batchData);
 
-      if (response != null && response.statusCode == 200) {
-        // SnackBarUtils.showSuccessSnackBar(
-        //     context, 'Update enquire successfully');
-        if (response.data!.status == 'Approved') {
-          // SnackBarUtils.showSuccessSnackBar(context,'You are enrolled successfully',);
-          Get.snackbar(
-         'You are enrolled successfully',
-  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  messageText:  const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'You are enrolled successfully',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
-          // Get.snackbar(
-          //   icon: const Icon(
-          //     Icons.check_circle,
-          //     color: Colors.white,
-          //     size: 40,
-          //   ),
-          //   'You are enrolled successfully',
-          //   colorText: Colors.white,
-          //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          // );
-          fetchEnrollmentList('Pending');
-          tabController.animateTo(1);
-          handleTabChange(1);
-        } else {
-           Get.snackbar(
-         'Enrollement rejected successfully',
-  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  messageText:  const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Enrollement rejected successfully',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
-          // Get.snackbar(
-          //   icon: const Icon(
-          //     Icons.check_circle,
-          //     color: Colors.white,
-          //     size: 40,
-          //   ),
-          //   'Enrollement rejected successfully',
-          //   colorText: Colors.white,
-          //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          // );
-          //SnackBarUtils.showSuccessSnackBar(context,'Enrollement rejected successfully',);
-          tabController.animateTo(2);
-          handleTabChange(2);
-        }
-        //Get.off(()=>TutorClassList());
+    if (response != null && response.statusCode == 200) {
+      if (response.data!.status == 'Approved') {
+        return true; // Enrollment successful
       } else {
-        // SnackBarUtils.showErrorSnackBar(
-        //     context, response?.message ?? 'Failed to update Enquire');
+        Get.snackbar(
+          'Enrollment rejected successfully',
+          icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          messageText: const SizedBox(
+            height: 40,
+            child: Center(
+              child: Text(
+                'Enrollment rejected successfully',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+         tabController.animateTo(2);
+          handleTabChange(2);
+        return false;
       }
-    } catch (e) {
-      //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
-    } finally {
-      isLoading.value = false;
+    } else {
+      return false;
     }
+  } catch (e) {
+    return false;
+  } finally {
+    isLoading.value = false;
   }
+}
+
 }

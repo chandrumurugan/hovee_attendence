@@ -604,15 +604,18 @@ class Tutorenquirlist extends StatelessWidget {
           Get.back();
         },
         btnName2: 'Yes',
-        onTap2: () {
+        onTap2: () async {
           // Call the updateClass method when 'Yes' is clicked
-          classController.updateEnquire(
+         Get.back();
+                  final response = await  classController.updateEnquire(
             context,
             tutionCourseDetailsList.enquiryId!,
             'Approved',
           );
           // Close the dialog after update
-          Get.back();
+           if (response) {
+          showConfirmationDialogAccept(Get.context!);
+           }
         },
       ),
       barrierDismissible:
@@ -653,33 +656,35 @@ class Tutorenquirlist extends StatelessWidget {
     );
   }
 
-  //  void _showConfirmationDialog1(
-  //     BuildContext context, dynamic tutionCourseDetailsList) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         title: Text('Are you sure?'),
-  //         content: Text('Do you want to reject with this Enquiry?'),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               // Close the dialog when 'No' is clicked
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: Text('No'),
-  //           ),
-  //           TextButton(
-  //             onPressed: () {
-  //               // Call the updateClass method when 'Yes' is clicked
-  //              classController.updateEnquire(tutionCourseDetailsList.enquiryId!,'Rejected');
-  //               Navigator.of(context).pop(); // Close the dialog after update
-  //             },
-  //             child: Text('Yes'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
+ void showConfirmationDialogAccept(BuildContext context ) {
+    showModalBottomSheet(
+                                                        isDismissible: false,
+                                                        enableDrag: false,
+                                                        context: context,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        builder: (context) {
+                                                          return CustomDialogBox1(
+                                                            title1:
+                                                                "Enquiry Accepted! ",
+                                                            title2: '',
+                                                            subtitle: 'Note: You may now begin the enrollment process',
+                                                            btnName: 'Ok',
+                                                            onTap: () async {
+                                                               classController. tabController.animateTo(1);
+                                   classController. handleTabChange(1);
+                                    print(classController.selectedTabIndex.value);
+                                     Navigator.of(context).pop();
+                                                            },
+                                                            icon: const Icon(
+                                                              Icons.check,
+                                                              color: Colors.white,
+                                                            ),
+                                                            color: const Color(
+                                                                0xFF833AB4),
+                                                            singleBtn: true,
+                                                          );
+                                                        },
+                                                      );
+  }
 }
