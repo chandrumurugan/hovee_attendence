@@ -1,68 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:hovee_attendence/controllers/punch_controller.dart';
-import 'package:hovee_attendence/view/punch_view.dart';
-import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRScannerScreen extends StatefulWidget {
-
-
-  const QRScannerScreen({
-    super.key, 
-  });
-
   @override
   _QRScannerScreenState createState() => _QRScannerScreenState();
 }
 
 class _QRScannerScreenState extends State<QRScannerScreen> {
-  final PunchController _controller = Get.put(PunchController());
-  void _onBarcodeScanned(String? scannedData) async {
-    if (scannedData == null) return;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  QRViewController? controller;
 
-    // Extract latitude and longitude
-    final latitude = _extractCoordinate(scannedData, 'latitude');
-    final longitude = _extractCoordinate(scannedData, 'longitude');
-
-    // Store in SharedPreferences
-    if (latitude != null && longitude != null) {
-      await _saveCoordinatesToPreferences(latitude, longitude);
-    }
-     _controller.hasScanned.value = true;
-    Get.back(result: _controller.hasScanned.value);
-    
+  @override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 
-  double? _extractCoordinate(String code, String type) {
-    final regex = RegExp('$type=([0-9.]+)');
-    final match = regex.firstMatch(code);
-    if (match != null) {
-      return double.tryParse(match.group(1)!);
-    }
-    return null;
-  }
-
-  Future<void> _saveCoordinatesToPreferences(double latitude, double longitude) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setDouble('target_lat', latitude);
-    await prefs.setDouble('target_long', longitude);
-    print('Latitude and Longitude saved: $latitude, $longitude');
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      if (scanData.code != null) {
+        Navigator.pop(context, scanData.code); // Return scanned data to PunchView
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: Text('QR Code Scanner')),
-      body: AiBarcodeScanner(
-        controller: MobileScannerController(
-
-
+      appBar: AppBar(title: Text('QR Code Scanner')),
+      body: QRView(
+        key: qrKey,
+        onQRViewCreated: _onQRViewCreated,
+        overlay: QrScannerOverlayShape(
+          borderRadius: 10,
+          borderColor: Colors.red,
+          borderLength: 30,
+          borderWidth: 10,
+          cutOutSize: 300,
         ),
-        hideGalleryButton: true,
-        onDetect: (po){
-           _onBarcodeScanned(po.barcodes.first.rawValue!);
-        },
       ),
     );
   }
