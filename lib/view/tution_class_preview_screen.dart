@@ -47,7 +47,7 @@ class TutionClassPreviewScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Text(
-                'Tution Class Details',
+                'Tution class details',
                 style: GoogleFonts.nunito(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,

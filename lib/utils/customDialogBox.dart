@@ -232,10 +232,10 @@ class _CustomDialogBox1State extends State<CustomDialogBox1> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                height: MediaQuery.sizeOf(context).height * 0.33,
+                height: MediaQuery.sizeOf(context).height * 0.30,
                 width: MediaQuery.sizeOf(context).width * 0.8,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(
                       height: 25,
@@ -248,7 +248,7 @@ class _CustomDialogBox1State extends State<CustomDialogBox1> {
                             text: " ${widget.title1}",
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
-                                fontSize: 20,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w400),
                           ),
                           TextSpan(

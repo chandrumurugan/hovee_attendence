@@ -403,7 +403,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                           ),
                         ),
                         Container(
-                          height: 270,
+                          height: MediaQuery.of(context).size.height *0.34,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             // border: Border.all(color: Colors.blue, width: 2),
@@ -941,7 +941,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
             ),
           ),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.2,
+            width: MediaQuery.of(context).size.width * 0.25,
             child: Text(
               title,
               style: GoogleFonts.lato(

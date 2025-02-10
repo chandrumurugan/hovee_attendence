@@ -193,6 +193,7 @@ class HolidayController extends GetxController {
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  shouldIconPulse: false,
   messageText:  const SizedBox(
     height: 40, // Set desired height here
     child: Center(
@@ -210,6 +211,7 @@ class HolidayController extends GetxController {
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  shouldIconPulse: false,
   messageText:   SizedBox(
     height: 40, // Set desired height here
     child: Center(
@@ -227,6 +229,7 @@ class HolidayController extends GetxController {
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  shouldIconPulse: false,
   messageText:   SizedBox(
     height: 40, // Set desired height here
     child: Center(
@@ -268,6 +271,7 @@ class HolidayController extends GetxController {
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  shouldIconPulse: false,
   messageText:  const SizedBox(
     height: 40, // Set desired height here
     child: Center(
@@ -289,6 +293,7 @@ class HolidayController extends GetxController {
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  shouldIconPulse: false,
   messageText:   SizedBox(
     height: 40, // Set desired height here
     child: Center(
@@ -307,6 +312,7 @@ class HolidayController extends GetxController {
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  shouldIconPulse: false,
   messageText:   SizedBox(
     height: 40, // Set desired height here
     child: Center(

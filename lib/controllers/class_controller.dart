@@ -159,6 +159,7 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
           icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
           messageText: const SizedBox(
             height: 40, // Set desired height here
             child: Center(
@@ -185,6 +186,7 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
           response?.message ?? 'Failed to update Enquire',
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
         );
       }
     } catch (e) {

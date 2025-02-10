@@ -187,7 +187,7 @@ class TutorClassList extends StatelessWidget {
                                     _buildRow('Course code',
                                         tutionCourseDetailsList.courseCode),
                           
-                                    _buildRow('Batch Name',
+                                    _buildRow('Batch name',
                                         tutionCourseDetailsList.batchName),
                           
                                     _buildRow('Board', tutionCourseDetailsList.board),
