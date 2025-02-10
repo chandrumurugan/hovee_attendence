@@ -536,7 +536,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                                           fontWeight:
                                                               FontWeight.w400)),
                                                   SizedBox(
-                                                    height: 8,
+                                                    height: 3,
                                                   ),
                                                   FivePointedStar(
                                                     onChange: (count) {

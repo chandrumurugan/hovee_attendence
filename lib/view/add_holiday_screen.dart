@@ -288,7 +288,14 @@ class AddHolidayScreen extends StatelessWidget {
               
               btnName: 'Add',
               onTap: () {
-               _showConfirmationDialog(context);
+              if (!holidayController.validateFields(context)) {
+      // If validation fails, return early and don't show the dialog
+      return;
+    }
+              else {
+                 _showConfirmationDialog(context);
+              }
+              
               },
             )
           ],

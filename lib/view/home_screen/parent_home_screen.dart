@@ -70,6 +70,7 @@ class _ParentViewState extends State<ParentView> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: parentController.tuteeScaffoldKey,
+        floatingActionButton: FloatingActionButton.extended(onPressed: (){}, label: Icon(Icons.chat)),
         drawer: SideMenu(
           isGuest: false,
           type: 'Parent',

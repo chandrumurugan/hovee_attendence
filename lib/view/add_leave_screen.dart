@@ -260,7 +260,13 @@ class TuteeAddLeaveScreen extends StatelessWidget {
               
               btnName: 'Add',
               onTap: () {
-               _showConfirmationDialog(context);
+              if (!leaveController.validateFields(context)) {
+      // If validation fails, return early and don't show the dialog
+      return;
+    }
+              else {
+                 _showConfirmationDialog(context);
+              }
               },
             )
           ],

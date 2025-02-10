@@ -18,7 +18,7 @@ class EditleaveScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    leaveController.batchNameController.value = batch.batchDetails!.batchName ?? '';
+    leaveController.batchNameController.value = batch.batchDetails!=null?  batch.batchDetails!.batchName ?? '': '';
     leaveController.leaveTypeController.value = batch.leaveType ?? '';
     leaveController.startDateController.text = batch.fromDate ?? '';
     leaveController.endDateController.text = batch.endDate ?? '';
@@ -267,7 +267,13 @@ class EditleaveScreen extends StatelessWidget {
               
               btnName: 'Add',
               onTap: () {
-                _showConfirmationDialog(context,batch.sId!);
+              if (!leaveController.validateFields(context)) {
+      // If validation fails, return early and don't show the dialog
+      return;
+    }
+              else {
+                 _showConfirmationDialog(context,batch.sId!);
+              }
               },
             )
           ],
