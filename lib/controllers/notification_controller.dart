@@ -62,7 +62,7 @@ class NotificationController extends GetxController {
     var batchData = {"role": role, "isRead ": false};
     var response = await WebService.getNotifications(batchData);
     if (response != null && response.statusCode == 200) {
-      //notificationList.value =response.data!;
+      notificationList.value =response.data!;
       notificationCount.value=response.unreadCount!;
       isLoading(false);
     } else {
