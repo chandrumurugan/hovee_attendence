@@ -1417,7 +1417,7 @@ class WebService {
   ),
 );
     // Either return a default instance or throw an error
-    throw Exception("Failed to delete batch: ${result.message}");
+    return deleteBatchDataModel(message: result.message); 
   }
 }
 

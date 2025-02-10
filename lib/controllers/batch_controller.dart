@@ -418,21 +418,21 @@ var batchDaysController = "".obs;
         //  Get.back();
         //  onInit();
       } else {
-        Get.snackbar(
-          'fail to delete batch',
-  icon: const Icon(Icons.info, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  messageText: const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        'fail to delete batch',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
+//         Get.snackbar(
+//           'fail to delete batch',
+//   icon: const Icon(Icons.info, color: Colors.white, size: 40),
+//   colorText: Colors.white,
+//   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+//   messageText: const SizedBox(
+//     height: 40, // Set desired height here
+//     child: Center(
+//       child: Text(
+//         'fail to delete batch',
+//         style: TextStyle(color: Colors.white, fontSize: 16),
+//       ),
+//     ),
+//   ),
+// );
         //  Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
         // ,'fail to delete batch',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
