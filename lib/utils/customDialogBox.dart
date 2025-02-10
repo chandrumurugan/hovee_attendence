@@ -220,7 +220,7 @@ class _CustomDialogBox1State extends State<CustomDialogBox1> {
         top: 100,
       ),
       child: SizedBox(
-         width: MediaQuery.sizeOf(context).width * 1,
+         width: MediaQuery.sizeOf(context).width * 3,
         child: Dialog(
            backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
@@ -232,7 +232,7 @@ class _CustomDialogBox1State extends State<CustomDialogBox1> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                height: MediaQuery.sizeOf(context).height * 0.30,
+                height: MediaQuery.sizeOf(context).height * 0.33,
                 width: MediaQuery.sizeOf(context).width * 0.8,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,

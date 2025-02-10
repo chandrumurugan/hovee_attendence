@@ -264,7 +264,7 @@ class TutionClassPreviewScreen extends StatelessWidget {
                           ),
                          
                           SizedBox(
-                            width: MediaQuery.of(context).size.width*0.4,
+                            width: MediaQuery.of(context).size.width*0.2,
                             child: Text(
                                                     tutionCourseDetailsList.batchDays!.join(', ')  ?? '',
                               style: GoogleFonts.nunito(
