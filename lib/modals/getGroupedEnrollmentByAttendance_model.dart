@@ -28,6 +28,10 @@ class Data {
   StatusCounts? statusCounts;
   List<AttendanceDetails>? attendanceDetails;
   List<Holidays>? holidays;
+  List<Holidays>? missPunch;
+  List<Holidays>? present;
+  List<Holidays>? absent;
+  List<Leave>? leave;
 
   Data(
       {this.batchId,
@@ -35,7 +39,11 @@ class Data {
       this.month,
       this.statusCounts,
       this.attendanceDetails,
-      this.holidays});
+      this.holidays,
+       this.missPunch,
+      this.present,
+      this.absent,
+       this.leave});
 
   Data.fromJson(Map<String, dynamic> json) {
     batchId = json['batchId'];
@@ -56,6 +64,30 @@ class Data {
         holidays!.add(new Holidays.fromJson(v));
       });
     }
+    if (json['miss_punch'] != null) {
+      missPunch = <Holidays>[];
+      json['miss_punch'].forEach((v) {
+        missPunch!.add(new Holidays.fromJson(v));
+      });
+    }
+    if (json['present'] != null) {
+      present = <Holidays>[];
+      json['present'].forEach((v) {
+        present!.add(new Holidays.fromJson(v));
+      });
+    }
+    if (json['absent'] != null) {
+      absent = <Holidays>[];
+      json['absent'].forEach((v) {
+        absent!.add(new Holidays.fromJson(v));
+      });
+    }
+    if (json['leave'] != null) {
+      leave = <Leave>[];
+      json['leave'].forEach((v) {
+        leave!.add(new Leave.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -72,6 +104,18 @@ class Data {
     }
      if (this.holidays != null) {
       data['holidays'] = this.holidays!.map((v) => v.toJson()).toList();
+    }
+    if (this.missPunch != null) {
+      data['miss_punch'] = this.missPunch!.map((v) => v.toJson()).toList();
+    }
+    if (this.present != null) {
+      data['present'] = this.present!.map((v) => v.toJson()).toList();
+    }
+    if (this.absent != null) {
+      data['absent'] = this.absent!.map((v) => v.toJson()).toList();
+    }
+    if (this.leave != null) {
+      data['leave'] = this.leave!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -170,6 +214,25 @@ class Holidays {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['holiday_date'] = this.holidayDate;
+    return data;
+  }
+
+}
+  class Leave {
+  String? sId;
+  String? leaveDate;
+
+  Leave({this.sId, this.leaveDate});
+
+  Leave.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    leaveDate = json['leave_date'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['leave_date'] = this.leaveDate;
     return data;
   }
 }

@@ -295,132 +295,124 @@ class HostellerHomeScreen extends StatelessWidget {
                             ),
                           ),
                           Animate(
-                            child: GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      childAspectRatio: 1.0,
-                                      crossAxisCount: 3,
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10 // Number of columns
-                                      ),
-                              itemBuilder: (context, int index) {
-                                    if (index == controller.homeDashboardNavList.value
-                                  .where((item) => item.name != 'Dashboard')
-                                  .length ) {
-        // Logic for the additional item at the end
-        
+  child: GridView.builder(
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      childAspectRatio: 1.0,
+      crossAxisCount: 3,
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 10,
+    ),
+    itemCount: controller.homeDashboardNavList.value
+            .where((item) => item.name != 'Dashboard')
+            .length + 1, // Extra item
+    itemBuilder: (context, index) {
+      final filteredList = controller.homeDashboardNavList.value
+          .where((item) => item.name != 'Dashboard')
+          .toList();
+
+      // Handle the additional item separately
+      if (index == filteredList.length) {
+        return SizedBox.shrink(); // Add a separate widget for the extra item
       }
 
-                                final item = filteredList[index];
-                                Color myColor = Color(
-                                  int.parse((item.color ?? "#FFFFFF")
-                                      .replaceAll("#", "0xFF")),
-                                );
-                            
-                                return InkWell(
-                                  onTap: () {
-                                    if (item.name == 'Hostel List') {
-                                     Get.to(() =>  HostelList(
-                                          ));
-                                    }
-                                    if (item.name == 'Verifications') {
-                                      // classController.onInit();
-                                      Get.to(() => HostelEnquiryList(
-                                            type: 'Hosteller',
-                                            fromBottomNav: true,
-                                            firstname:firstname ,lastname:lastname ,wowid: wowid,
-                                          ));
-                                    }
-                                    if (item.name == 'Enrollments') {
-                                      // enrollmentController.onInit();
-                                      Get.to(() => HostelEnrollmentScreen(
-                                            type: 'Hosteller',
-                                            fromBottomNav: true,
-                                            firstname:firstname ,lastname:lastname ,wowid: wowid,
-                                          ));
-                                    }
-                                    if (item.name == 'Attendance') {
-                                      Get.to(
-                                          () => TuteeAttendanceList(
-                                                type: 'Hosteller',
-                                                 firstname:firstname ,lastname:lastname ,wowid: wowid,
-                                              ),
-                                          arguments: "Tutee");
-                                    }
-                                    if (item.name == 'Leave') {
-                                      Get.to(() => TuteeLeaveScreen(
-                                            type: 'Tutee',
-                                            fromBottomNav: true,
-                                             firstname:firstname ,lastname:lastname ,wowid: wowid,
-                                          ));
-                                    }
-                                    if (item.name == 'Miss Punch') {
-                                      Get.to(() => MspScreen(
-                                            type: 'Hosteller',
-                                            fromBottomNav: true,
-                                             firstname:firstname ,lastname:lastname ,wowid: wowid,
-                                          ));
-                                    }
-                                  },
-                                  child: Card(
-                                    elevation: 10,
-                                    shadowColor: Colors.grey,
-                                    surfaceTintColor: Colors.white,
-                                    child: Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          color: const Color.fromRGBO(
-                                              246, 244, 254, 1)),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 10),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                color: myColor),
-                                            child: item.image != null
-                                                ? Image.asset(
-                                                    item.image!,
-                                                    color: Colors.white,
-                                                    height: 30,
-                                                  )
-                                                : const SizedBox.shrink(),
-                                          ),
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Text(
-                                              item.name!,
-                                              overflow: TextOverflow.ellipsis,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                  
-                                  ;
-                              },
-                              itemCount: controller.homeDashboardNavList.value
-                                  .where((item) => item.name != 'Dashboard')
-                                  .length + 1,
-                            ),
-                          ) .animate().shimmer().slide()
-                                  ,
-                        ],
+      final item = filteredList[index];
+
+      Color myColor = Color(
+        int.parse((item.color ?? "#FFFFFF").replaceAll("#", "0xFF")),
+      );
+
+      return InkWell(
+        onTap: () {
+          if (item.name == 'Hostel List') {
+            Get.to(() => HostelList());
+          } else if (item.name == 'Verifications') {
+            Get.to(() => HostelEnquiryList(
+                  type: 'Hosteller',
+                  fromBottomNav: true,
+                  firstname: firstname,
+                  lastname: lastname,
+                  wowid: wowid,
+                ));
+          } else if (item.name == 'Enrollments') {
+            Get.to(() => HostelEnrollmentScreen(
+                  type: 'Hosteller',
+                  fromBottomNav: true,
+                  firstname: firstname,
+                  lastname: lastname,
+                  wowid: wowid,
+                ));
+          } else if (item.name == 'Attendance') {
+            Get.to(() => TuteeAttendanceList(
+                  type: 'Hosteller',
+                  firstname: firstname,
+                  lastname: lastname,
+                  wowid: wowid,
+                ));
+          } else if (item.name == 'Leave') {
+            Get.to(() => TuteeLeaveScreen(
+                  type: 'Tutee',
+                  fromBottomNav: true,
+                  firstname: firstname,
+                  lastname: lastname,
+                  wowid: wowid,
+                ));
+          } else if (item.name == 'Miss Punch') {
+            Get.to(() => MspScreen(
+                  type: 'Hosteller',
+                  fromBottomNav: true,
+                  firstname: firstname,
+                  lastname: lastname,
+                  wowid: wowid,
+                ));
+          }
+        },
+        child: Card(
+          elevation: 10,
+          shadowColor: Colors.grey,
+          surfaceTintColor: Colors.white,
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: const Color.fromRGBO(246, 244, 254, 1),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: myColor,
+                  ),
+                  child: item.image != null
+                      ? Image.asset(
+                          item.image!,
+                          color: Colors.white,
+                          height: 30,
+                        )
+                      : const SizedBox.shrink(),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Text(
+                    item.name!,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  ),
+).animate().shimmer().slide()
+ ],
                       );
                     }),
                     // const SizedBox(

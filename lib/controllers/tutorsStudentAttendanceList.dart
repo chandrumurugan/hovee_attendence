@@ -72,6 +72,7 @@ var holidayDates = <DateTime>{}.obs;
 
     //tutor
     var holidayDatesTutor = <DateTime>{}.obs;
+     var leaveDatesTutor = <DateTime>{}.obs;
      String? batchname; // Ensure it is observable
 
   @override
@@ -201,6 +202,11 @@ var holidayDates = <DateTime>{}.obs;
           })
           .toSet();
            print("Holiday===========>${holidayDatesTutor.value}");
+           leaveDatesTutor.value = data!.leave!.map((date) {
+               final parsedDate = DateFormat('dd-MM-yyyy').parse(date.leaveDate!);
+            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+           }) .toSet();
+           print("leave===========>${leaveDatesTutor.value}");
         attendanceData.value = [
           AttendanceData(
               category: "All",

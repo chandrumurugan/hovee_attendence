@@ -37,6 +37,8 @@ class Data {
   bool? isRead;
   String? createdAt;
   int? iV;
+  String? batchId;
+  String? tabType;
 
   Data(
       {this.sId,
@@ -48,7 +50,9 @@ class Data {
       this.redirectTo,
       this.isRead,
       this.createdAt,
-      this.iV});
+      this.iV,
+      this.batchId,
+      this.tabType,});
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -61,6 +65,8 @@ class Data {
     isRead = json['isRead'];
     createdAt = json['createdAt'];
     iV = json['__v'];
+     batchId = json['batchId'];
+    tabType = json['tab_type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -75,6 +81,8 @@ class Data {
     data['isRead'] = this.isRead;
     data['createdAt'] = this.createdAt;
     data['__v'] = this.iV;
+    data['batchId'] = this.batchId;
+    data['tab_type'] = this.tabType;
     return data;
   }
 }

@@ -291,6 +291,19 @@ class StudentAttendanceList extends StatelessWidget {
                                   color: Colors.white),)),
                           );
                         }
+                        if (controller.leaveDatesTutor
+                            .contains(DateTime(day.year, day.month, day.day))) {
+                          return Container(
+                              margin: const EdgeInsets.all(4.0),
+                            decoration: BoxDecoration(
+                               color:Colors.blue, // Background color for miss punch dates
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                              alignment: Alignment.center,
+                            child: Center(child: Text('${day.day}', style: const TextStyle(
+                                  color: Colors.white),)),
+                          );
+                        }
                         // Return default appearance for other dates
                         return null;
                       },
@@ -327,7 +340,7 @@ class StudentAttendanceList extends StatelessWidget {
                   height: 150,
                   width: MediaQuery.of(context).size.width,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       // Wrap only the Circular Chart in Obx to react to changes in attendanceData
@@ -413,6 +426,12 @@ class StudentAttendanceList extends StatelessWidget {
                                   count:
                                       '${controller.data?.statusCounts?.missPunch ?? 0}',
                                   title: 'Miss Punch',
+                                ),
+                                barChart(
+                                  color:  Colors.blue,
+                                  count:
+                                      '${controller.data?.statusCounts?.leave ?? 0}',
+                                  title: 'Leave',
                                 ),
                               ],
                             ),

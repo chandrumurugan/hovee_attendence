@@ -131,6 +131,7 @@ class WebService {
     required String phNo,
     required String pincode,
     required String idProof,
+    required String countrycode,
   }) async {
     try {
       DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
@@ -148,13 +149,15 @@ class WebService {
         "pincode": pincode,
         "user_type": 2,
         "id_proof_label": idProof,
-        if (fcmToken != null) "fcm_token": fcmToken
+        if (fcmToken != null) "fcm_token": fcmToken,
+        "country_code":countrycode,
+        "country":'india',
       };
 
       var url = Uri.parse("${baseUrl}user/registerUser");
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
-
+       Logger().i(response.body);
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         return RegisterModal.fromJson(result);
@@ -381,9 +384,9 @@ class WebService {
     required Map<dynamic, dynamic> educationInfo,
     // required String roleId,
     //  required String roleTypeId,
-    String resumePath = '',
-    String educationCertPath = '',
-    String experienceCertPath = '',
+   required String resumePath ,
+   required String educationCertPath ,
+   required String experienceCertPath ,
     required String latitude,
     required String longitude,
      required String parentId,
@@ -416,19 +419,20 @@ class WebService {
     request.fields['latitude'] = latitude;
     request.fields['longitude'] = longitude;
      request.fields['parentId'] = parentId;
+     // Attach files if available
+  // if (resumePath != null && resumePath.isNotEmpty) {
+  //   request.files.add(await http.MultipartFile.fromPath('resume', resumePath));
+  // }
+  // if (educationCertPath != null && educationCertPath.isNotEmpty) {
+  //   request.files.add(await http.MultipartFile.fromPath(
+  //       'education_certificate', educationCertPath));
+  // }
+  // if (experienceCertPath != null && experienceCertPath.isNotEmpty) {
+  //   request.files.add(await http.MultipartFile.fromPath(
+  //       'experience_certificate', experienceCertPath));
+  // }
     request.headers.addAll(headers);
     Logger().i(request.fields);
-
-    // Add files (if present)
-    // if (resumePath.isNotEmpty) {
-    //   request.files.add(await http.MultipartFile.fromPath('resume', resumePath));
-    // }
-    // if (educationCertPath.isNotEmpty) {
-    //   request.files.add(await http.MultipartFile.fromPath('education_certificate', educationCertPath));
-    // }
-    // if (experienceCertPath.isNotEmpty) {
-    //   request.files.add(await http.MultipartFile.fromPath('experience_certificate', experienceCertPath));
-    // }
     Logger().i(request.headers);
     Logger().i(personalInfo);
     Logger().i(addressInfo);

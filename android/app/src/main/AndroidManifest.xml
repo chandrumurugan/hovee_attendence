@@ -22,7 +22,7 @@ package="com.example.hovee_attendence">
              <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-           <data android:scheme="https" android:host="express.insakal.com" 
+           <data android:scheme="https" android:host="api.hoveeattendance.com" 
              android:pathPrefix="/parent-login"
            
            />

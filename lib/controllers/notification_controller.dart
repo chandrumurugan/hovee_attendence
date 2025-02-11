@@ -190,40 +190,21 @@ void fetchMarkedNotification(String notificationId, String type, String msgtype)
       otpController.text = ""; // Handle if code is not found
     }
 
-    // Extract the last word from the message
-    final lastWordRegex = RegExp(r'\b(\w+)\b$'); // Matches the last word
-    final lastWordMatch = lastWordRegex.firstMatch(head);
-    final lastWord = lastWordMatch?.group(0);
-
-    if (lastWord != null) {
-      print("Last word in message: $lastWord");
-
-      // Perform actions based on the last word
-      if (lastWord != null && msgtype == 'Enrollment') {
-        Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,lastWord:lastWord ,),arguments:lastWord);
-      }
-      // Add more conditions for other last words and msgtypes if needed
-    }
-
-    isLoading(false);
-
-    if (lastWord != null && msgtype == 'Enquiry') {
-      Get.off(() => Tutorenquirlist(type: role!, fromBottomNav: true,),arguments:lastWord);
-    }
-    // if (msgtype == 'Enrollment') {
-    //   enrollmentController.onInit();
-    //   Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,));
-    // }
-    if (msgtype == 'Leave') {
+   // Extract tab_type from the response
+    final tabType = notificationData.value!.tabType ?? ""; // Default to "0" if not found
+       Logger().i("tabType: $tabType");
+    // Navigate based on msgtype and pass only tabType
+    if (msgtype == 'Enquiry') {
+      Get.off(() => Tutorenquirlist(type: role!, fromBottomNav: true,), arguments: tabType);
+    } else if (msgtype == 'Enrollment') {
+      Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,), arguments: tabType);
+    } else if (msgtype == 'Leave') {
       Get.off(() => TuteeLeaveScreen(type: role!, fromBottomNav: true,));
-    }
-    if (msgtype == 'Miss Punch') {
+    } else if (msgtype == 'Miss Punch') {
       Get.off(() => MspScreen(type: role!, fromBottomNav: true,));
-    }
-    if (msgtype == 'Announcements') {
+    } else if (msgtype == 'Announcements') {
       Get.off(() => AnnouncementScreen(type: role!,));
-    }
-    if (msgtype == 'Holiday') {
+    } else if (msgtype == 'Holiday') {
       if (role == 'Tutor') {
         Get.off(() => HolidayController());
       } else {

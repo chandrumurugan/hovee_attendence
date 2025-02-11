@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -27,7 +28,7 @@ import 'package:geocoding/geocoding.dart';
 
 class AccountSetupController extends GetxController
     with GetTickerProviderStateMixin {
-   final  authControllers = Get.find<AuthControllers>();
+  final authControllers = Get.find<AuthControllers>();
 
   //late AuthControllers authControllers;
   late TabController tabController;
@@ -82,9 +83,9 @@ class AccountSetupController extends GetxController
   // Dropdown values tutee
   var tuteeHighestQualification = ''.obs;
   var tuteeSpeciallization = ''.obs;
-   var boardController = ''.obs;
-    var classController = ''.obs;
-      var subjectController = ''.obs;
+  var boardController = ''.obs;
+  var classController = ''.obs;
+  var subjectController = ''.obs;
   // Additional info text field
   var additionalInfo = ''.obs;
 
@@ -117,45 +118,49 @@ class AccountSetupController extends GetxController
   final parentController = Get.find<ParentController>();
   LoginData? loginData;
   List<String> board = [];
-   RxList<String> classList = <String>[].obs;
-   RxList<String> subject = <String>[].obs;
-   var appConfig = AppConfig().obs;
-    List<String> batchName = [];
+  RxList<String> classList = <String>[].obs;
+  RxList<String> subject = <String>[].obs;
+  var appConfig = AppConfig().obs;
+  List<String> batchName = [];
 
-    var isFirstTime = true.obs;
-    var isLocationSearched = false.obs;
+  var isFirstTime = true.obs;
+  var isLocationSearched = false.obs;
 
   bool? isGoogleSignIn;
   RxBool accountVerified = false.obs;
 
   AccountSetupController({this.isGoogleSignIn});
-   PhnData? loginResponse;
+  PhnData? loginResponse;
 
-    var isPhoneNumberVerified = false.obs;
+  var isPhoneNumberVerified = false.obs;
+
+  final ImagePicker imagePicker = ImagePicker();
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     final args = Get.arguments;
 
-  if (args != null && args is Map) {
-    parentId = args['parentId'] ?? '';
-    isGoogleSignIn = args['isGoogleSignIn'] ?? false;
+    if (args != null && args is Map) {
+      parentId = args['parentId'] ?? '';
+      isGoogleSignIn = args['isGoogleSignIn'] ?? false;
 
-    print("Parent ID: $parentId");
-    print("isGoogleSignIn: $isGoogleSignIn");
-  } else {
-    print("No arguments passed or arguments format is invalid.");
-  }
-   final authControllers = Get.put(AuthControllers());
-    tabController =
-        TabController(length: selectedRole == 'Parent' || selectedRole == 'Hosteller' ? 2 : 3, vsync: this);
+      print("Parent ID: $parentId");
+      print("isGoogleSignIn: $isGoogleSignIn");
+    } else {
+      print("No arguments passed or arguments format is invalid.");
+    }
+    final authControllers = Get.put(AuthControllers());
+    tabController = TabController(
+        length: selectedRole == 'Parent' || selectedRole == 'Hosteller' ? 2 : 3,
+        vsync: this);
     print(parentId);
     if ((parentId == null)) {
       _populateFieldsFromAuth();
     }
-    if(isGoogleSignIn==false){
-       _populateFieldsFromAuth();
+    if (isGoogleSignIn == false) {
+      _populateFieldsFromAuth();
     }
     if ((parentId != "")) {
       phController.text = parentController.otpResponse.value != null
@@ -165,9 +170,9 @@ class AccountSetupController extends GetxController
       print("object");
     }
 
- fetchAppConfig();
+    fetchAppConfig();
     // _populateAddressFromLocation();
-   // getCurrentLocation();
+    // getCurrentLocation();
     //loadAppConfigData();
     qualifications = getQualifications();
     techs = getTechs();
@@ -175,20 +180,21 @@ class AccountSetupController extends GetxController
     tuteeQualifications = getTuteeQualifications();
     skills = getSkills();
     tuteeSpeciallizationClass = getSkills();
-       //getCurrentLocation();
+    //getCurrentLocation();
   }
 
   //addresslocation map
 
-    void getCurrentLocation() async {
-        if (!isFirstTime.value) return;
+  void getCurrentLocation() async {
+    if (!isFirstTime.value) return;
     isLoading.value = true; // Show loader
     try {
       // Position position = await Geolocator.getCurrentPosition(
       //   desiredAccuracy: LocationAccuracy.high,
       // );
 
-      LatLng? position =await LocationService.getCurrentLocation() ?? const LatLng(0, 0);
+      LatLng? position =
+          await LocationService.getCurrentLocation() ?? const LatLng(0, 0);
       latitudeL.value = position.latitude;
       longitudeL.value = position.longitude;
 
@@ -199,7 +205,7 @@ class AccountSetupController extends GetxController
       );
 
       setMarker(LatLng(latitudeL.value, longitudeL.value));
-       isFirstTime.value = false;
+      isFirstTime.value = false;
       //  isLocationSearched.value = true;
     } catch (e) {
       Logger().e("Error getting current location: $e");
@@ -224,7 +230,7 @@ class AccountSetupController extends GetxController
     longitudeL.value = lng;
     latitude = lat;
     longitude = lng;
-    
+
     try {
       List<Placemark>? placemarks =
           await placemarkFromCoordinates(latitude ?? 0.0, longitude ?? 0.0);
@@ -249,15 +255,14 @@ class AccountSetupController extends GetxController
     latitudeL.value = position.latitude;
     longitudeL.value = position.longitude;
     //if(!isLocationSearched.value){
-       marker.value = Marker(
+    marker.value = Marker(
       markerId: const MarkerId('selected-location'),
       position: position,
       draggable: true,
       onDragEnd: onMarkerDragEnd,
     );
-    updateLocationDetails(position.latitude, position.longitude);  
-   // }
- 
+    updateLocationDetails(position.latitude, position.longitude);
+    // }
   }
 
   void zoomIn() {
@@ -269,15 +274,15 @@ class AccountSetupController extends GetxController
   }
 
   void handleAutoCompleteSelection(Prediction prediction) async {
-     isLocationSearched.value = false;
+    isLocationSearched.value = false;
     latitudeL.value = double.parse(prediction.lat!);
     longitudeL.value = double.parse(prediction.lng!);
     mapController.animateCamera(
       CameraUpdate.newLatLng(LatLng(latitudeL.value, longitudeL.value)),
     );
-    
+
     setMarker(LatLng(latitudeL.value, longitudeL.value));
-      isLocationSearched.value = true;
+    isLocationSearched.value = true;
   }
   //
 
@@ -316,23 +321,23 @@ class AccountSetupController extends GetxController
   void _populateFieldsFromAuth() {
     // Logger().i(
     //     "getting idprrof value==>${authControllers.otpResponse.value.data!.idProof ?? ''}");
-    if(authControllers.otpResponse.value.data != null){
-       phController.text =
-        authControllers.otpResponse.value.data!.phoneNumber ?? '';
-    firstNameController.text =
-        authControllers.otpResponse.value.data!.firstName ?? '';
-    lastNameController.text =
-        authControllers.otpResponse.value.data!.lastName ?? '';
-    emailController.text = authControllers.otpResponse.value.data!.email ?? '';
-    dobController.text = authControllers.otpResponse.value.data!.dob!;
-    pincodeController.text =
-        authControllers.otpResponse.value.data!.pincode!.toString();
-    selectedIDProof.value =
-        authControllers.otpResponse.value.data!.idProof ?? '';
-    idProofController.text =
-        authControllers.otpResponse.value.data!.idProof ?? '';  
+    if (authControllers.otpResponse.value.data != null) {
+      phController.text =
+          authControllers.otpResponse.value.data!.phoneNumber ?? '';
+      firstNameController.text =
+          authControllers.otpResponse.value.data!.firstName ?? '';
+      lastNameController.text =
+          authControllers.otpResponse.value.data!.lastName ?? '';
+      emailController.text =
+          authControllers.otpResponse.value.data!.email ?? '';
+      dobController.text = authControllers.otpResponse.value.data!.dob!;
+      pincodeController.text =
+          authControllers.otpResponse.value.data!.pincode!.toString();
+      selectedIDProof.value =
+          authControllers.otpResponse.value.data!.idProof ?? '';
+      idProofController.text =
+          authControllers.otpResponse.value.data!.idProof ?? '';
     }
- 
   }
 
   List<String> getQualifications() {
@@ -571,6 +576,8 @@ class AccountSetupController extends GetxController
         "id_proof_label": idProofController.text,
         'rolesId': roleId,
         'rolesTypeId': roleTypeId,
+        "country_code": '+91',
+        "country": 'india',
       };
       tabController.animateTo(1);
       Logger().i(personalInfo.value);
@@ -634,14 +641,12 @@ class AccountSetupController extends GetxController
       };
       if (selectedRole == 'Parent') {
         submitAccountSetup(roleId, roleTypeId, selectedRole, context);
-      }
-       else if(selectedRole == 'Hosteller'){
+      } else if (selectedRole == 'Hosteller') {
         submitAccountSetup(roleId, roleTypeId, selectedRole, context);
-      }
-      else if(selectedRoleTypeName== 'Institute' && selectedRole == 'Tutor'){
+      } else if (selectedRoleTypeName == 'Institute' &&
+          selectedRole == 'Tutor') {
         submitAccountSetup(roleId, roleTypeId, selectedRole, context);
-      }
-       else {
+      } else {
         selectedRoleTypeName == 'I Run an Institute'
             ? submitAccountSetup(roleId, roleTypeId, selectedRole, context)
             : Container();
@@ -705,7 +710,7 @@ class AccountSetupController extends GetxController
       );
       return false;
     }
-    
+
     return true;
   }
 
@@ -717,7 +722,7 @@ class AccountSetupController extends GetxController
       );
       return false;
     }
-     if (boardController.value.isEmpty) {
+    if (boardController.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
         "Please select board.",
@@ -731,7 +736,7 @@ class AccountSetupController extends GetxController
       );
       return false;
     }
-     if (subjectController.value.isEmpty) {
+    if (subjectController.value.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
         context,
         "Please select subject.",
@@ -786,7 +791,7 @@ class AccountSetupController extends GetxController
           "highest_qualification": tuteeHighestQualification.value,
           "select_class": classController.value,
           "select_board": boardController.value,
-           "select_subject": subjectController.value,
+          "select_subject": subjectController.value,
           "organization_name": tuteorganizationController.text
         };
         submitTuteeAccountSetup(roleId, parentId, context);
@@ -873,29 +878,6 @@ class AccountSetupController extends GetxController
   void setTuteeSpeciallization(String value) =>
       tuteeSpeciallization.value = value;
 
-  Future<void> pickFile(String type) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? file = await picker.pickImage(source: ImageSource.gallery);
-    if (file != null) {
-      Logger().i(file.path);
-
-      // Extracting filename and extension
-      String filename = path.basename(file.path); // e.g., "1000000018.jpg"
-      String fileExtension = path.extension(file.path); // e.g., ".jpg"
-
-      Logger().i("Filename: $filename");
-      Logger().i("File Extension: $fileExtension");
-
-      if (type == 'resume') {
-        resumePath.value = file.path;
-      } else if (type == 'education') {
-        educationCertPath.value = file.path;
-      } else if (type == 'experience') {
-        experienceCertPath.value = file.path;
-      }
-    }
-  }
-
   Future<void> submitAccountSetup(String roleId, String roleTypeId,
       String selectedRole, BuildContext context) async {
     final box = GetStorage(); // Get an instance of GetStorage
@@ -917,9 +899,12 @@ class AccountSetupController extends GetxController
         personalInfo: personalInfo.value,
         addressInfo: addressInfo.value,
         educationInfo: educationInfo.value,
-        resumePath: '',
+         resumePath: '',
         educationCertPath: '',
-        experienceCertPath: '',
+        experienceCertPath:'',
+        // resumePath: resumePath.value,
+        // educationCertPath: educationCertPath.value,
+        // experienceCertPath: experienceCertPath.value,
         latitude: latitude.toString(),
         longitude: longitude.toString(), parentId: '',
       );
@@ -932,8 +917,8 @@ class AccountSetupController extends GetxController
         print(responseBody);
         final jsonResponse = jsonDecode(responseBody);
         var parentToken = jsonResponse["userDetails"]['token'];
-       String parentId = jsonResponse["userDetails"]["_id"];
-       print(parentId);
+        String parentId = jsonResponse["userDetails"]["_id"];
+        print(parentId);
         // Extract firstName and lastName from personalInfo
         final firstName = personalInfo.value['first_name'] ?? '';
         final lastName = personalInfo.value['last_name'] ?? '';
@@ -956,21 +941,22 @@ class AccountSetupController extends GetxController
         if (selectedRole == 'Parent') {
           prefs.setString("PrentToken", parentToken);
           Logger().i("hfjhdjgj ${prefs.getString("PrentToken") ?? ''}");
-         parentController.getUserTokenList(parentId);
-          Get.off(() => DashboardScreen(
-              rolename: 'Parent',
-              firstname: firstName,
-              lastname: lastName,
-              wowid: wowId),arguments: parentId);
-        }else if (selectedRole == 'Hosteller') {
+          parentController.getUserTokenList(parentId);
+          Get.off(
+              () => DashboardScreen(
+                  rolename: 'Parent',
+                  firstname: firstName,
+                  lastname: lastName,
+                  wowid: wowId),
+              arguments: parentId);
+        } else if (selectedRole == 'Hosteller') {
           prefs.setString("Token", parentToken);
           Get.off(() => DashboardScreen(
               rolename: 'Hosteller',
               firstname: firstName,
               lastname: lastName,
               wowid: wowId));
-        }
-         else {
+        } else {
           prefs.setString("PrentToken", "");
           Get.offAll(() => DashboardScreen(
               rolename: 'Tutor',
@@ -1047,23 +1033,23 @@ class AccountSetupController extends GetxController
       var response = await WebService.fetchAppConfig();
       if (response != null) {
         appConfig.value = response;
-        
+
         // Store the response data in GetStorage
         final storage = GetStorage();
         storage.write('appConfig', response.toJson());
-batchName = (storage.read<List<dynamic>>('batchList') ?? [])
-    .map((item) => item.toString()) 
-    .toList();
+        batchName = (storage.read<List<dynamic>>('batchList') ?? [])
+            .map((item) => item.toString())
+            .toList();
         // Create board list by explicitly casting each part of the chain
         board = response.data?.studentCategory
-            ?.expand((category) => category.label?.labelData ?? [])
-            .map((labelData) => labelData.board ?? '')
-            .where((board) => board.isNotEmpty)
-            .toSet() // Removes duplicates
-            .cast<String>() // Ensures all items are strings
-            .toList() ?? [];
+                ?.expand((category) => category.label?.labelData ?? [])
+                .map((labelData) => labelData.board ?? '')
+                .where((board) => board.isNotEmpty)
+                .toSet() // Removes duplicates
+                .cast<String>() // Ensures all items are strings
+                .toList() ??
+            [];
         SharedPreferences prefs = await SharedPreferences.getInstance();
-           
 
         Logger().i('AppConfig loaded successfully');
       } else {
@@ -1074,7 +1060,7 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
     }
   }
 
-   void updateClassList(String board) {
+  void updateClassList(String board) {
     boardController.value = board;
     classList.value = appConfig.value.data?.studentCategory
             ?.expand((category) => category.label?.labelData ?? [])
@@ -1084,7 +1070,8 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
             .where((className) => className.isNotEmpty)
             .toSet() // Removes duplicates
             .cast<String>() // Ensures all items are strings
-            .toList() ?? [];
+            .toList() ??
+        [];
   }
 
   void updateSubjectList(String className) {
@@ -1098,41 +1085,49 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
             .where((subjectName) => subjectName.isNotEmpty)
             .toSet()
             .cast<String>()
-            .toList() ?? [];
+            .toList() ??
+        [];
   }
 
-     void setBoard(String value) {
-  boardController.value = value;
-   updateClassList(value);
-}
+  void setBoard(String value) {
+    boardController.value = value;
+    updateClassList(value);
+  }
 
-void setClass(String value) {
-  classController.value = value;
-   updateSubjectList(value);
-}
+  void setClass(String value) {
+    classController.value = value;
+    updateSubjectList(value);
+  }
 
-void setSubject(String value) {
-  subjectController.value = value;
-}
+  void setSubject(String value) {
+    subjectController.value = value;
+  }
 
   void phoneNumberVerified(String identifiers, BuildContext context) async {
     if (validateLogin(context)) {
       isLoading.value = true;
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        var response = await WebService.phoneNumberVerified(identifiers, context);
+        var response =
+            await WebService.phoneNumberVerified(identifiers, context);
         if (response != null) {
           loginResponse = response.data;
-        await prefs.setString("OTP", response.data!.otp!);
-        await prefs.setString("AccountVerificationToken", response.data!.accountVerificationToken!);
+          await prefs.setString("OTP", response.data!.otp!);
+          await prefs.setString("AccountVerificationToken",
+              response.data!.accountVerificationToken!);
           isPhoneNumberVerified.value = true;
           isLoading.value = false;
           phController.clear();
-       final result=  await Get.to(() => OtpScreen(phnNumber: identifiers,),arguments: isGoogleSignIn,);
-        if (result != null) {
-    phController.text = result['phnNumber']; // Update phone number
-  accountVerified.value = result['accountVerified'];
-  }
+          final result = await Get.to(
+            () => OtpScreen(
+              phnNumber: identifiers,
+            ),
+            arguments: isGoogleSignIn,
+          );
+          if (result != null) {
+            phController.text = result['phnNumber']; // Update phone number
+            accountVerified.value = result['accountVerified'];
+          }
         } else {
           Logger().e('Failed to load AppConfig');
           isLoading.value = false;
@@ -1169,5 +1164,49 @@ void setSubject(String value) {
     }
     // If the input is a valid email
     return true;
+  }
+
+  // Pick file from storage
+  void pickFile(String type) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      String filePath = result.files.single.path!;
+      _updateFilePath(type, filePath);
+    }
+  }
+
+  // Capture image from camera
+  void pickImageFromCamera(String type) async {
+    final XFile? image =
+        await imagePicker.pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      _updateFilePath(type, image.path);
+    }
+  }
+
+  // Update the file path based on the document type
+  void _updateFilePath(String type, String filePath) {
+    if (type == 'resume') {
+      resumePath.value = filePath;
+    } else if (type == 'education') {
+      educationCertPath.value = filePath;
+    } else if (type == 'experience') {
+      experienceCertPath.value = filePath;
+    }
+  }
+
+  void removeFile(String type) {
+    if (type == 'resume') {
+      resumePath.value = '';
+    } else if (type == 'education') {
+      educationCertPath.value = '';
+    } else if (type == 'experience') {
+      experienceCertPath.value = '';
+    }
   }
 }

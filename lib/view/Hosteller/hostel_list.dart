@@ -110,7 +110,7 @@ class _HostelListState extends State<HostelList> {
             //   primaryColor: AppConstants.primaryColor, // Example primary color
             // ),
             SearchfiltertabBar(
-              title: 'Hostel List',
+              title: 'Hostel list',
               onSearchChanged: (searchTerm) {
                 filteredfetchList('', searchTerm);
               },
@@ -172,7 +172,7 @@ class _HostelListState extends State<HostelList> {
                _buildRow('Categories', hostel.categories,context),
                 _buildRow('Room type', hostel.hostelPriceDetails!.roomType,context),
                   _buildRow('Price', hostel.hostelPriceDetails!.price!.toString(),context),
-               _buildRow('Hostel Address', '${hostel.doorNo!.toString()},${hostel.street!.toString()},${hostel.city!.toString()},${hostel.state!.toString()},${hostel.country!.toString()} -${hostel.pincode!.toString()}',context),
+               _buildRow('Hostel address', '${hostel.doorNo!.toString()},${hostel.street!.toString()},${hostel.city!.toString()},${hostel.state!.toString()},${hostel.country!.toString()} -${hostel.pincode!.toString()}',context),
             ],
           ),
         ),

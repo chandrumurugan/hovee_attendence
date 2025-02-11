@@ -181,7 +181,7 @@ class HostelEnquiryList extends StatelessWidget {
                                       if (controller
                                                   .selectedTabIndex.value ==
                                               0 &&
-                                          type == 'Hosteller')
+                                          type!= 'Hosteller')
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
@@ -275,7 +275,7 @@ class HostelEnquiryList extends StatelessWidget {
                                       if (controller
                                                   .selectedTabIndex.value ==
                                               1 &&
-                                          type == 'Hosteller')
+                                          type!= 'Hosteller')
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,

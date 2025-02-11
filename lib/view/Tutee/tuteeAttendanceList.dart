@@ -616,6 +616,12 @@ class TuteeAttendanceList extends StatelessWidget {
                                       '${controller.dataTutee?.statusCounts?.missPunch ?? 0}',
                                   title: 'Miss punch',
                                 ),
+                                barChart(
+                                  color:  Colors.blue,
+                                  count:
+                                      '${controller.dataTutee?.statusCounts?.missPunch ?? 0}',
+                                  title: 'Leave',
+                                ),
                               ],
                             ),
                           );

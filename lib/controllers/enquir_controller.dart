@@ -66,14 +66,14 @@ class EnquirDetailController extends GetxController
   void onInit() {
     super.onInit();
 
-    lastWord = Get.arguments ?? 'Tutee';
+    lastWord = Get.arguments ?? '';
     tabController = TabController(length: 3, vsync: this);
 
-    if (lastWord == 'Approved') {
+    if (lastWord == '1') {
       selectedTabIndex.value = 1;
       tabController.animateTo(1);
       fetchEnquirList("Approved");
-    } else if (lastWord == 'Rejected') {
+    } else if (lastWord == '2') {
       selectedTabIndex.value = 2;
       tabController.animateTo(2);
       fetchEnquirList("Rejected");

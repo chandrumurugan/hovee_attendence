@@ -473,45 +473,87 @@ class AccountSetup extends StatelessWidget {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        InputTextField(
-                                          showVerifiedIcon:
-                                              isGoogleSignIn! ? true : false,
-                                          isDate: false,
-                                          suffix:
-                                              isGoogleSignIn! ? false : false,
-                                          readonly:
-                                              isGoogleSignIn! 
-      ? (accountController.accountVerified == true ? true : false) 
-      : true,
-                                          hintText: 'Enter here...',
-                                          keyboardType: TextInputType.phone,
-                                          inputFormatter: [
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp(r"[0-9]")),
-                                            LengthLimitingTextInputFormatter(
-                                                10), // Restrict to 10 digits
-                                          ],
-                                          controller:
-                                              accountController.phController,
-                                          accountVerified: accountController
-                                                  .accountVerified ==
-                                              true,
-                                          onVerifiedIconPressed: () {
-                                            if (accountController
-                                                    .accountVerified ==
-                                                false) {
-                                              // Allow function execution only if not verified
-                                              print("Verified icon clicked");
-                                              accountController
-                                                  .phoneNumberVerified(
+                                        SizedBox(
+                                          child: Row(
+                                             crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                            children: [
+                                                Stack(
+                                                    alignment: Alignment.center,
+                                                    children: [
+                                                      Container(
+                                                        width: 70,
+                                                        height: 53,
+                                                        decoration: BoxDecoration(
+                                                          color: const Color(
+                                                                  0xffD9D9D9)
+                                                              .withOpacity(0.4),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        '+91',
+                                                        style: TextStyle(
+                                                          color: const Color
+                                                                  .fromARGB(255,
+                                                                  136, 134, 134)
+                                                              .withOpacity(0.4),
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                   const SizedBox(
+                                                    width: 4,
+                                                  ),
+                                              Expanded(
+                                                child: InputTextField(
+                                                  showVerifiedIcon:
+                                                      isGoogleSignIn! ? true : false,
+                                                  isDate: false,
+                                                  suffix:
+                                                      isGoogleSignIn! ? false : false,
+                                                  readonly:
+                                                      isGoogleSignIn! 
+                                                      ? (accountController.accountVerified == true ? true : false) 
+                                                      : true,
+                                                  hintText: 'Enter here...',
+                                                  keyboardType: TextInputType.phone,
+                                                  inputFormatter: [
+                                                    FilteringTextInputFormatter.allow(
+                                                        RegExp(r"[0-9]")),
+                                                    LengthLimitingTextInputFormatter(
+                                                        10), // Restrict to 10 digits
+                                                  ],
+                                                  controller:
+                                                      accountController.phController,
+                                                  accountVerified: accountController
+                                                          .accountVerified ==
+                                                      true,
+                                                  onVerifiedIconPressed: () {
+                                                    if (accountController
+                                                            .accountVerified ==
+                                                        false) {
+                                                      // Allow function execution only if not verified
+                                                      print("Verified icon clicked");
                                                       accountController
-                                                          .phController.text,
-                                                      context);
-                                            } else {
-                                              print(
-                                                  "Account already verified, action not allowed.");
-                                            }
-                                          },
+                                                          .phoneNumberVerified(
+                                                              accountController
+                                                                  .phController.text,
+                                                              context);
+                                                    } else {
+                                                      print(
+                                                          "Account already verified, action not allowed.");
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
 
                                         // InputTextField(
@@ -2489,78 +2531,79 @@ class AccountSetup extends StatelessWidget {
   // }
 
   Widget _buildFileUploadSection(String title, String type) {
-    final AccountSetupController accountController =
-        Get.put(AccountSetupController());
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
+  final AccountSetupController accountController =
+      Get.put(AccountSetupController());
+  
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+            ),
+            if (type != 'education')
               Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                '*',
+                style: GoogleFonts.nunito(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.red.withOpacity(0.6),
                 ),
               ),
-              // Display the asterisk (*) only for types other than 'education'
-              if (type != 'education')
-                Text(
-                  '*',
-                  style: GoogleFonts.nunito(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.red.withOpacity(0.6),
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          InkWell(
-            onTap: () {
-              print("Greeting values==");
-              accountController.pickFile(type);
-            },
-            child: Container(
-              height: 55,
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 12),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: (type == 'resume' &&
-                          accountController.resumePath.value.isNotEmpty) ||
-                      (type == 'education' &&
-                          accountController
-                              .educationCertPath.value.isNotEmpty) ||
-                      (type == 'experience' &&
-                          accountController.experienceCertPath.value.isNotEmpty)
-                  ? Text(
-                      path.basename(
-                        type == 'resume'
-                            ? accountController.resumePath.value
-                            : type == 'education'
-                                ? accountController.educationCertPath.value
-                                : accountController.experienceCertPath.value,
+          ],
+        ),
+        const SizedBox(height: 5),
+        InkWell(
+          onTap: () => showFileSourceBottomSheet(type, accountController),
+          child: Container(
+            height: 55,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 12),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Obx(() {
+              String filePath = (type == 'resume')
+                  ? accountController.resumePath.value
+                  : (type == 'education')
+                      ? accountController.educationCertPath.value
+                      : accountController.experienceCertPath.value;
+
+              return filePath.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(path.basename(filePath)),
+                      IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: (){
+                          accountController.removeFile(type);
+                        },
                       ),
-                    )
+                    ],
+                  )
                   : Text(
                       "Upload document",
                       style: TextStyle(
                           color: Colors.grey[400], fontWeight: FontWeight.w400),
-                    ),
-            ),
+                    );
+            }),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
+
 
   List<Widget> _buildDropdowns() {
     final AccountSetupController accountController =
@@ -2752,4 +2795,36 @@ class AccountSetup extends StatelessWidget {
       ),
     );
   }
+
+  void showFileSourceBottomSheet(String type, AccountSetupController controller) {
+  Get.bottomSheet(
+    Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(15.0)),
+      ),
+      child: Wrap(
+        children: <Widget>[
+          ListTile(
+            leading: const Icon(Icons.attach_file_outlined),
+            title: const Text('Upload from File'),
+            onTap: () {
+              Get.back();
+              controller.pickFile(type);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.camera_alt_outlined),
+            title: const Text('Upload from Camera'),
+            onTap: () {
+              Get.back();
+              controller.pickImageFromCamera(type);
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 }

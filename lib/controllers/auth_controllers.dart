@@ -1294,7 +1294,7 @@ class AuthControllers extends GetxController
 
   AuthControllers() {
     _googleSignIn = GoogleSignIn(
-      clientId: "751210563328-g5tai08dr1nefkr0726tklou1jfaiodd.apps.googleusercontent.com",
+      clientId: "751210563328-blg8n0qcdl7a2nphnq4ui0jsofb70tr4.apps.googleusercontent.com",
       scopes: <String>[
         'email',
         'https://www.googleapis.com/auth/contacts.readonly',
@@ -1471,7 +1471,8 @@ class AuthControllers extends GetxController
             dob: dobController.text,
             phNo: phController.text,
             pincode: pincodeController.text,
-            idProof: selectedIDProof.value);
+            idProof: selectedIDProof.value,
+            countrycode: '+91');
 
         if (response != null) {
           registerResponse.value = response;

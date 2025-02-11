@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "751210563328-ck2vak7lo8mdm968i18f5ltvmuktankt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hovee_attendence",
+            "certificate_hash": "0315bab2ce9d4b7e05f64e4a6856ffb1949e47ce"
+          }
+        },
+        {
           "client_id": "751210563328-uaijaavvbpqpls5gpecubotijv05gvfh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -22,7 +30,7 @@
           }
         },
         {
-          "client_id": "751210563328-blg8n0qcdl7a2nphnq4ui0jsofb70tr4.apps.googleusercontent.com",
+          "client_id": "751210563328-e2vvbnq8k11m43oor0lljpb5joj6u0v1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
