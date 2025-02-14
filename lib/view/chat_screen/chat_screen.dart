@@ -24,8 +24,8 @@ class ChatScreenState extends State<CustomerChat> {
   List<Map<String, dynamic>> messages = [];
   List<String> predefinedTexts = [
     "General & Account Related",
-    "Owners Related",
-    "Tenant Related",
+    "Tutee Related",
+    "Tutor Related",
     "Others"
   ];
 
@@ -45,7 +45,7 @@ class ChatScreenState extends State<CustomerChat> {
         isLoading = true;
       });
       dialogFlowtter = DialogFlowtter(
-          jsonPath: "assets/dialogFlowJson/dialog_flow_auth.json");
+          jsonPath: "assets/dialog_flow_auth.json");
     } catch (e) {
       if (kDebugMode) {
         print('Error initializing DialogFlowtter: $e');

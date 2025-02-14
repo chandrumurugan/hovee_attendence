@@ -905,7 +905,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
               child: Image.asset(
                 'assets/guest_logo.jpg',
                 height: 85,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
             ),
           ),

@@ -154,10 +154,10 @@ class HostelEnrollmentScreen extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              _buildRow('Hostel name',  enrollmentList.hostelId!.hostelName ?? '',),
-                                               _buildRow('Hostel code', enrollmentList.hostelId!.hashCode.toString() ?? ''),
-                                              _buildRow('Address', '${enrollmentList.hostelId!.doorNo} ${enrollmentList.hostelId!.street} ${enrollmentList.hostelId!.city} ${enrollmentList.hostelId!.state} ${enrollmentList.hostelId!.country}' ),
-                                                _buildRow('Status', enrollmentList.status ?? ''),
+                                              _buildRow('Hostel name',  enrollmentList.hostelId!.hostelName ?? '',context),
+                                               _buildRow('Hostel code', enrollmentList.hostelId!.hashCode.toString() ?? '',context),
+                                              _buildRow('Address', '${enrollmentList.hostelId!.doorNo} ${enrollmentList.hostelId!.street} ${enrollmentList.hostelId!.city} ${enrollmentList.hostelId!.state} ${enrollmentList.hostelId!.country}' ,context),
+                                                _buildRow('Status', enrollmentList.status ?? '',context),
                                             ],
                                           ),
                                         ),
@@ -478,7 +478,7 @@ class HostelEnrollmentScreen extends StatelessWidget {
   //   );
   // }
 
-  Widget _buildRow(String title, String? value) {
+  Widget _buildRow(String title, String? value,BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -489,10 +489,13 @@ class HostelEnrollmentScreen extends StatelessWidget {
               fontWeight: FontWeight.w500,
               fontSize: 16),
         ),
-        Text(
-          value ?? '',
-          style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
+        SizedBox(
+           width: MediaQuery.of(context).size.width*0.36,
+          child: Text(
+            value ?? '',
+            style: const TextStyle(
+                color: Colors.black, fontWeight: FontWeight.w400, fontSize: 14),
+          ),
         ),
       ],
     );

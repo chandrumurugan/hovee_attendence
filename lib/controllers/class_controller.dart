@@ -325,4 +325,71 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
     batchNameController1.clear();
     courseCodeController.value = '';
   }
+
+  void deleteClass(BuildContext context,String courseId,status ) async {
+      isLoading.value = true;
+      try {
+        var batchData = {
+          "type": "D",
+          "courseId": courseId,
+        };
+
+        final AddClassDataModel? response =
+            await WebService.addClass(batchData);
+
+        if (response != null && response.success == true) {
+          _clearData();
+          Get.snackbar(
+          response.message ?? 'Class deleted successfully',
+          icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText:  SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                 response.message ?? 'Class deleted successfully',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+          update();
+          // Get.snackbar( 'Class added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+          // onInit();
+          status=="Public"?
+          fetchClassesList("Public")
+          :fetchClassesList("Draft");
+        } else {
+        //  Get.snackbar(
+        //   icon: const Icon(
+        //     Icons.info,
+        //     color: Colors.white,
+        //     size: 40,
+        //   ),
+        //   response?.message ?? 'Failed to update Enquire',
+        //   colorText: Colors.white,
+        //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        //   shouldIconPulse: false,
+        // );
+       isLoading.value = false;
+        }
+      } catch (e) {
+           Get.snackbar(
+          icon: const Icon(
+            Icons.info,
+            color: Colors.white,
+            size: 40,
+          ),
+          'Error: $e',
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+        );
+         isLoading.value = true;
+      } finally {
+        isLoading.value = false;
+      }
+  }
 }

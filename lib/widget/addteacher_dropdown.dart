@@ -7,8 +7,8 @@ class CommonDropdownInputField extends StatelessWidget {
   final RxString selectedValue;
   final List<String> items;
   final Function(String) onChanged;
-  final bool ?onTap;
-  
+  final bool? onTap;
+  final bool isNonEdit; // Flag to control editability
 
   CommonDropdownInputField({
     Key? key,
@@ -17,38 +17,32 @@ class CommonDropdownInputField extends StatelessWidget {
     required this.selectedValue,
     required this.items,
     required this.onChanged,
-    this.onTap
+    required this.isNonEdit, // Pass this from controller
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-        // Determine the text to show in the TextField
+      // Determine the text to show in the TextField
       String displayText = selectedValue.value.isEmpty
-          ? 'Select' // Show "Tap to select [title]" if nothing is selected
-          : selectedValue.value;    // Show the selected value otherwise
+          ? 'Select' // Show "Select" if nothing is selected
+          : selectedValue.value;
 
       return TextField(
-        
         decoration: InputDecoration(
-           //labelText: title,
-          suffixIcon: Icon(Icons.keyboard_arrow_down), // Down arrow icon
-            filled: true,
+          filled: true,
           fillColor: Colors.grey[200],
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14.0),
             borderSide: BorderSide.none,
           ),
+          suffixIcon: isNonEdit
+              ? null // Hide dropdown icon if editing is disabled
+              : const Icon(Icons.keyboard_arrow_down),
         ),
-        readOnly: true,
-        onTap: () {
-         
-           _showDropdown(context);   
-          
-            
-          
-        
-        },
+        readOnly: true, // Disable editing if isNonEdit is true
+        onTap: isNonEdit ? null : () => _showDropdown(context),
         controller: TextEditingController(text: displayText),
       );
     });
@@ -60,35 +54,33 @@ class CommonDropdownInputField extends StatelessWidget {
       isScrollControlled: true,
       builder: (BuildContext context) {
         return Container(
-         // height: 180, // Adjust height as needed
           padding: const EdgeInsets.all(10),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-      
             children: [
-              Text("Select $title", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("Select $title", style: const TextStyle(fontWeight: FontWeight.bold)),
               ListView.builder(
                 itemCount: items.length,
-                   shrinkWrap: true, // Ensures the ListView doesn't expand infinitely
-                            physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.only(bottom: 8),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(bottom: 8),
                 itemBuilder: (context, index) {
                   final isSelected = selectedValue.value == items[index];
                   return SizedBox(
-                      height: 33,
-                      child: RadioListTile<String>(
-                        contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
-                        title: Text(items[index]),
-                        value: items[index],
-                        groupValue: selectedValue.value,
-                        onChanged: (value) {
-                          selectedValue.value = value!;
-                          controllerValue.value = value;
-                          onChanged(value);
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    );
+                    height: 33,
+                    child: RadioListTile<String>(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(items[index]),
+                      value: items[index],
+                      groupValue: selectedValue.value,
+                      onChanged: (value) {
+                        selectedValue.value = value!;
+                        controllerValue.value = value;
+                        onChanged(value);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  );
                 },
               ),
             ],

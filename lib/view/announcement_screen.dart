@@ -190,7 +190,7 @@ class AnnouncementScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                if (type == 'Tutor')
+                                if ((type == 'Tutor') && anoumentController.instituteId == null  || anoumentController.instituteId == '')
                                   SizedBox(
                                     width: MediaQuery.of(context).size.width *
                                         0.13,
@@ -204,6 +204,7 @@ class AnnouncementScreen extends StatelessWidget {
                                         },
                                         itemBuilder: (BuildContext context) {
                                           return [
+                                            if(type == 'Tutor')
                                             PopupMenuItem(
                                               value: 'Edit',
                                               child: ListTile(

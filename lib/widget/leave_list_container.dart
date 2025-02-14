@@ -59,11 +59,12 @@ class LeaveListContainer extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              leave.studentDetails!=null?
                               Text('${leave.studentDetails!.firstName!} ${leave.studentDetails!.lastName!}',
                                   style: GoogleFonts.nunito(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14,
-                                      color: Colors.black)),
+                                      color: Colors.black)):SizedBox.shrink(),
                               const SizedBox(height: 4),
                               leave.enrollmentDetails!=null?
                               Text('Roll no: ${leave.enrollmentDetails!.rollNumber??''}',
@@ -99,7 +100,7 @@ class LeaveListContainer extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                            
+                            leaveController.instituteId ==null || leaveController.instituteId == ''?
                               IconButton(
                                 iconSize: 25,
                             onPressed: () {}, // No action needed here
@@ -124,6 +125,7 @@ class LeaveListContainer extends StatelessWidget {
                                       },
                                     ),
                                   ),
+                                  
                                   PopupMenuItem(
                                     value: 'Delete',
                                     child: ListTile(
@@ -141,7 +143,7 @@ class LeaveListContainer extends StatelessWidget {
                                 ];
                               },
                             ),
-                          ),
+                          ):SizedBox.shrink(),
                           
                               Container(
                                 padding: const EdgeInsets.all(3),

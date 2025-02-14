@@ -70,7 +70,7 @@ void onInit() {
   endDateController.clear();
    
   // Check if `lastWord` is not null and not an empty string
-  if (lastWord =='Approved' && lastWord != null && lastWord!.isNotEmpty) {
+  if (lastWord == '1') {
     // Change tab index to 1 (Approved)
     selectedTabIndex.value = 1;
     tabController.animateTo(1);
@@ -78,7 +78,7 @@ void onInit() {
     // Fetch approved data list
     fetchEnrollmentList("Approved");
   }
-  else if (lastWord =='Rejected' &&lastWord != null && lastWord!.isNotEmpty) {
+  else if (lastWord == '2') {
     // Change tab index to 1 (Approved)
     selectedTabIndex.value = 2;
     tabController.animateTo(2);

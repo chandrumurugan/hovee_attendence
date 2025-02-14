@@ -35,7 +35,7 @@ class HolidayController extends GetxController {
   final endDateController = TextEditingController();
   List<String> holidayaType = [];
   var holidayTypeController = ''.obs;
-   var instituteId =''.obs;
+  var instituteId = ''.obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -96,8 +96,8 @@ class HolidayController extends GetxController {
 
       if (holidayResponse.data != null) {
         holidayDataList.value = holidayResponse.data!;
-         SharedPreferences prefs = await SharedPreferences.getInstance();
-       instituteId.value=   prefs.getString('InstituteId') ?? '';
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        instituteId.value = prefs.getString('InstituteId') ?? '';
       }
     } catch (e) {
       // Handle errors if needed
@@ -106,11 +106,12 @@ class HolidayController extends GetxController {
     }
   }
 
-   void fetchHoliDataTuteeList({String searchTerm = ''}) async {
+  void fetchHoliDataTuteeList({String searchTerm = ''}) async {
     try {
       isLoading(true);
       var holidayResponse = await WebService.fetchHoliDataTuteeList(
-          searchTerm,); // Pass the searchTerm to the API
+        searchTerm,
+      ); // Pass the searchTerm to the API
 
       if (holidayResponse.data != null) {
         holidayTuteeDataList.value = holidayResponse.data!;
@@ -122,8 +123,6 @@ class HolidayController extends GetxController {
     }
   }
 
-  
-
   void addHoliday(BuildContext context) async {
     if (validateFields(context)) {
       isLoading.value = true;
@@ -134,31 +133,59 @@ class HolidayController extends GetxController {
           "description": description.text,
           "holidayId": "",
           "holiday_from_date": startDateController.text,
-           "holiday_end_date": endDateController.text,
+          "holiday_end_date": endDateController.text,
           "holiday_name": holidayName.text,
           "holiday_type": holidayTypeController.value,
           "type": "N",
-          "batchId":selectedBatchId,
+          "batchId": selectedBatchId,
         };
 
         final AddHolidayModel? response =
             await WebService.addHoliday(batchData);
 
         if (response != null && response.success == true) {
-           Get.back();
+          Get.back();
           onInit();
           _clearData();
           SnackBarUtils.showSuccessSnackBar(
             context,
             'Holiday Posted Successfully! Your tutees will be notified about the holidays.',
           );
-         
         } else {
-          SnackBarUtils.showErrorSnackBar(
-              context, response?.message ?? 'Holiday already exists for these dates');
+          // Get.snackbar(
+          //   response?.message ?? '',
+          //   icon: const Icon(Icons.info, color: Colors.white, size: 40),
+          //   colorText: Colors.white,
+          //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          //   shouldIconPulse: false,
+          //   messageText: SizedBox(
+          //     height: 40, // Set desired height here
+          //     child: Center(
+          //       child: Text(
+          //         response?.message ?? '',
+          //         style: TextStyle(color: Colors.white, fontSize: 16),
+          //       ),
+          //     ),
+          //   ),
+          // );
         }
       } catch (e) {
-        SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+        Get.snackbar(
+          'Error: $e',
+          icon: const Icon(Icons.info, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                'Error: $e',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
       } finally {
         isLoading.value = false;
       }
@@ -175,7 +202,7 @@ class HolidayController extends GetxController {
           "description": description.text,
           "holidayId": holidayId,
           "holiday_from_date": startDateController.text,
-           "holiday_end_date": endDateController.text,
+          "holiday_end_date": endDateController.text,
           "holiday_name": holidayName.text,
           "holiday_type": holidayTypeController.value,
           "type": "U"
@@ -186,60 +213,59 @@ class HolidayController extends GetxController {
 
         if (response != null && response.success == true) {
           _clearData();
-           Get.back();
+          Get.back();
           onInit();
-           Get.snackbar(
-         'Success! The holiday details have been updated.',
-  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  shouldIconPulse: false,
-  messageText:  const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Success! The holiday details have been updated.',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
-         
+          Get.snackbar(
+            'Success! The holiday details have been updated.',
+            icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+            colorText: Colors.white,
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+            shouldIconPulse: false,
+            messageText: const SizedBox(
+              height: 40, // Set desired height here
+              child: Center(
+                child: Text(
+                  'Success! The holiday details have been updated.',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+          );
         } else {
-           Get.snackbar(
-        response?.message ?? 'Failed to update holiday',
-  icon: const Icon(Icons.info, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  shouldIconPulse: false,
-  messageText:   SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       response?.message ?? 'Failed to update holiday',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
+          Get.snackbar(
+            response?.message ?? 'Failed to update holiday',
+            icon: const Icon(Icons.info, color: Colors.white, size: 40),
+            colorText: Colors.white,
+            backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+            shouldIconPulse: false,
+            messageText: SizedBox(
+              height: 40, // Set desired height here
+              child: Center(
+                child: Text(
+                  response?.message ?? 'Failed to update holiday',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+          );
         }
       } catch (e) {
-                   Get.snackbar(
-       'Error: $e',
-  icon: const Icon(Icons.info, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  shouldIconPulse: false,
-  messageText:   SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Error: $e',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
+        Get.snackbar(
+          'Error: $e',
+          icon: const Icon(Icons.info, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                'Error: $e',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
       } finally {
         isLoading.value = false;
       }
@@ -254,7 +280,7 @@ class HolidayController extends GetxController {
         "description": "",
         "holidayId": holidayId,
         "holiday_from_date": "",
-           "holiday_end_date": "",
+        "holiday_end_date": "",
         "holiday_name": "",
         "holiday_type": "",
         "type": "D"
@@ -264,65 +290,65 @@ class HolidayController extends GetxController {
           await WebService.deleteHoliday(batchData);
 
       if (response != null && response.success == true) {
-         _clearData();
+        _clearData();
         fetchBatchList();
         Get.snackbar(
-         'Deletion Successful! The holiday has removed.',
-  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  shouldIconPulse: false,
-  messageText:  const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Deletion Successful! The holiday has removed.',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
+          'Deletion Successful! The holiday has removed.',
+          icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: const SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                'Deletion Successful! The holiday has removed.',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
         //  Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
         // ,'Holiday deleted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
-      // SnackBarUtils.showSuccessSnackBar(context, 'Holiday delete successfully');
+        // SnackBarUtils.showSuccessSnackBar(context, 'Holiday delete successfully');
         //  Get.back();
-         onInit();
+        onInit();
       } else {
-                Get.snackbar(
-         response?.message ?? 'Failed to update Enquire',
-  icon: const Icon(Icons.info, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  shouldIconPulse: false,
-  messageText:   SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       response?.message ?? 'Failed to update Enquire',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
-    // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),response?.message ?? 'Failed to update Enquire',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        Get.snackbar(
+          response?.message ?? 'Failed to update Enquire',
+          icon: const Icon(Icons.info, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                response?.message ?? 'Failed to update Enquire',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+        // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),response?.message ?? 'Failed to update Enquire',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
     } catch (e) {
       Get.snackbar(
         'Error: $e',
-  icon: const Icon(Icons.info, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  shouldIconPulse: false,
-  messageText:   SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Error: $e',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
+        icon: const Icon(Icons.info, color: Colors.white, size: 40),
+        colorText: Colors.white,
+        backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        shouldIconPulse: false,
+        messageText: SizedBox(
+          height: 40, // Set desired height here
+          child: Center(
+            child: Text(
+              'Error: $e',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        ),
+      );
       // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } finally {
       isLoading.value = false;

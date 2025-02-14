@@ -7,6 +7,7 @@ import 'package:hovee_attendence/controllers/hostel_controller.dart';
 import 'package:hovee_attendence/controllers/hosteller_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
+import 'package:hovee_attendence/view/Hosteller/hostel_attendance_screen.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_enquiry_list.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_enrollment_screen.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_list.dart';
@@ -20,16 +21,21 @@ import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 
 class HostelHomeScreen extends StatelessWidget {
-   final String? firstname, lastname, wowid;
-    final VoidCallback onDashBoardBack;
-  const HostelHomeScreen({super.key, this.firstname, this.lastname, this.wowid, required this.onDashBoardBack});
+  final String? firstname, lastname, wowid;
+  final VoidCallback onDashBoardBack;
+  const HostelHomeScreen(
+      {super.key,
+      this.firstname,
+      this.lastname,
+      this.wowid,
+      required this.onDashBoardBack});
 
   @override
   Widget build(BuildContext context) {
-     final HostelController controller = Get.put(HostelController());
-      final NotificationController noticontroller =
+    final HostelController controller = Get.put(HostelController());
+    final NotificationController noticontroller =
         Get.put(NotificationController());
-         final userProfileData = Get.put(UserProfileController());
+    final userProfileData = Get.put(UserProfileController());
     return Scaffold(
       key: controller.hostelScaffoldKey,
       drawer: SideMenu(
@@ -74,11 +80,10 @@ class HostelHomeScreen extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           Get.to(() => NotificationScreen(
-                                type: 'Hostel',
-                                  firstname: firstname,
-              lastname: lastname,
-              wowid: wowid
-                              ));
+                              type: 'Hostel',
+                              firstname: firstname,
+                              lastname: lastname,
+                              wowid: wowid));
                         },
                         child: Image.asset(
                           'assets/appbar/bell 5.png',
@@ -89,8 +94,7 @@ class HostelHomeScreen extends StatelessWidget {
                       Obx(() => Positioned(
                             right: 1,
                             top: 1,
-                            child: 
-                            noticontroller.notificationCount.value > 0
+                            child: noticontroller.notificationCount.value > 0
                                 ? Container(
                                     padding: const EdgeInsets.all(2),
                                     decoration: BoxDecoration(
@@ -118,8 +122,7 @@ class HostelHomeScreen extends StatelessWidget {
                     width: 10,
                   ),
                   InkWell(
-                    onTap: () {
-                    },
+                    onTap: () {},
                     child: Icon(
                       Icons.message,
                       color: Colors.black.withOpacity(0.4),
@@ -150,7 +153,9 @@ class HostelHomeScreen extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        Get.to(() => UserProfile(type: 'Hostel',));
+                        Get.to(() => UserProfile(
+                              type: 'Hostel',
+                            ));
                       },
                       child: HomePageHeader(
                         title: 'Attendance Monitoring',
@@ -301,31 +306,33 @@ class HostelHomeScreen extends StatelessWidget {
                                       crossAxisSpacing: 10 // Number of columns
                                       ),
                               itemBuilder: (context, int index) {
-                                    if (index == controller.homeDashboardNavList.value
-                                  .where((item) => item.name != 'Dashboard')
-                                  .length ) {
-        // Logic for the additional item at the end
-        
-      }
+                                if (index ==
+                                    controller.homeDashboardNavList.value
+                                        .where(
+                                            (item) => item.name != 'Dashboard')
+                                        .length) {
+                                  // Logic for the additional item at the end
+                                }
 
                                 final item = filteredList[index];
                                 Color myColor = Color(
                                   int.parse((item.color ?? "#FFFFFF")
                                       .replaceAll("#", "0xFF")),
                                 );
-                            
+
                                 return InkWell(
                                   onTap: () {
                                     if (item.name == 'Hostel List') {
-                                     Get.to(() =>  HostelList(
-                                          ));
+                                      Get.to(() => HostelList());
                                     }
                                     if (item.name == 'Verifications') {
                                       // classController.onInit();
                                       Get.to(() => HostelEnquiryList(
                                             type: 'Hostel',
                                             fromBottomNav: true,
-                                            firstname:firstname ,lastname:lastname ,wowid: wowid,
+                                            firstname: firstname,
+                                            lastname: lastname,
+                                            wowid: wowid,
                                           ));
                                     }
                                     if (item.name == 'Enrollments') {
@@ -333,29 +340,37 @@ class HostelHomeScreen extends StatelessWidget {
                                       Get.to(() => HostelEnrollmentScreen(
                                             type: 'Hostel',
                                             fromBottomNav: true,
-                                            firstname:firstname ,lastname:lastname ,wowid: wowid,
+                                            firstname: firstname,
+                                            lastname: lastname,
+                                            wowid: wowid,
                                           ));
                                     }
                                     if (item.name == 'Attendance') {
                                       Get.to(
-                                          () => TuteeAttendanceList(
-                                                type: 'Tutee',
-                                                 firstname:firstname ,lastname:lastname ,wowid: wowid,
+                                          () => HostelAttendanceScreen(
+                                                type: 'Hostel',
+                                                firstname: firstname,
+                                                lastname: lastname,
+                                                wowid: wowid,
                                               ),
-                                          arguments: "Tutee");
+                                          arguments: "Hostel");
                                     }
                                     if (item.name == 'Leave') {
                                       Get.to(() => TuteeLeaveScreen(
                                             type: 'Tutee',
                                             fromBottomNav: true,
-                                             firstname:firstname ,lastname:lastname ,wowid: wowid,
+                                            firstname: firstname,
+                                            lastname: lastname,
+                                            wowid: wowid,
                                           ));
                                     }
                                     if (item.name == 'Miss Punch') {
                                       Get.to(() => MspScreen(
                                             type: 'Tutee',
                                             fromBottomNav: true,
-                                             firstname:firstname ,lastname:lastname ,wowid: wowid,
+                                            firstname: firstname,
+                                            lastname: lastname,
+                                            wowid: wowid,
                                           ));
                                     }
                                   },
@@ -405,16 +420,14 @@ class HostelHomeScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                )
-                                  
-                                  ;
+                                );
                               },
                               itemCount: controller.homeDashboardNavList.value
-                                  .where((item) => item.name != 'Dashboard')
-                                  .length + 1,
+                                      .where((item) => item.name != 'Dashboard')
+                                      .length +
+                                  1,
                             ),
-                          ) .animate().shimmer().slide()
-                                  ,
+                          ).animate().shimmer().slide(),
                         ],
                       );
                     }),
@@ -430,5 +443,4 @@ class HostelHomeScreen extends StatelessWidget {
       }),
     );
   }
-
 }

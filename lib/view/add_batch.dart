@@ -393,6 +393,7 @@ class _TutorAddBatchScreenState extends State<TutorAddBatchScreen> {
                     selectedValue: controller.modeController,
                     items: controller.batchModes,
                     onChanged: controller.setBatchModes,
+                    isNonEdit: false,
                   ),
                 ],
               ),

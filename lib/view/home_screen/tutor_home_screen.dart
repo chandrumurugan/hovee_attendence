@@ -320,7 +320,7 @@ class TutorHome extends StatelessWidget {
                                             lastname: lastname,
                                             wowid: wowid,
                                           ));
-                                    } else if (item.name == 'Miss Punch') {
+                                    } else if (item.name == 'Miss punch') {
                                       Get.to(() => MspScreen(
                                             type: 'Tutor',
                                             fromBottomNav: true,

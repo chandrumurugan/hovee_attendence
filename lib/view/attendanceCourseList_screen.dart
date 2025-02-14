@@ -10,7 +10,6 @@ import 'package:hovee_attendence/widget/attendanceCourseList_container.dart';
 
 class AttendanceCourseListScreen extends StatelessWidget {
    AttendanceCourseListScreen({super.key});
-   //final AttendanceCourseListController attendanceCourseListController = Get.put(AttendanceCourseListController());
     final TuteeHomeController attendanceCourseListController = Get.put(TuteeHomeController());
   @override
   Widget build(BuildContext context) {

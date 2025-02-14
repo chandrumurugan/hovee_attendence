@@ -16,6 +16,8 @@ class HostellerController extends GetxController with GetSingleTickerProviderSta
   var batchList = <Datum>[].obs;
   var selectedBatchIN = Rxn<Datum>();
   var isBatchSelected = false.obs;
+   var studentDetails = <StudentDetails>[].obs;
+   var homeDashboardCourseList = <CourseList?>[].obs;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -47,6 +49,12 @@ class HostellerController extends GetxController with GetSingleTickerProviderSta
       var homeDashboardResponse = await WebService.fetchHomeDashboardList();
       if (homeDashboardResponse != null) {
         homeDashboardNavList.value = homeDashboardResponse.navbarItems!;
+                studentDetails.value = homeDashboardResponse.studentDetails!;
+        if (studentDetails!= null && studentDetails.isNotEmpty) {
+          homeDashboardCourseList.value = studentDetails[0].courseList!;
+           print("ghetting courseList==$homeDashboardCourseList");
+          
+        }
       }
     } catch (e) {
       // Get.snackbar('Failed to fetch batches');

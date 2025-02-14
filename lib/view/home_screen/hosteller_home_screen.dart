@@ -7,12 +7,16 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/hostel_enquiry_controller.dart';
+import 'package:hovee_attendence/controllers/hostel_enrollement_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
+import 'package:hovee_attendence/view/Hosteller/hostel_attendance_screen.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_enquiry_list.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_enrollment_screen.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_list.dart';
 import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
+import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/msp_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
@@ -20,6 +24,7 @@ import 'package:hovee_attendence/view/profile_card.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
+import 'package:hovee_attendence/widget/subjectContainer.dart';
 import 'package:logger/logger.dart';
 
 import '../../controllers/hosteller_controller.dart';
@@ -35,6 +40,10 @@ class HostellerHomeScreen extends StatelessWidget {
       final NotificationController noticontroller =
         Get.put(NotificationController());
          final userProfileData = Get.put(UserProfileController());
+          final HostelEnquiryController hostelEnquiryController =
+        Get.put(HostelEnquiryController());
+    final HostelEnrollementController hostelEnrollmentController =
+        Get.put(HostelEnrollementController());
     return Scaffold(
       key: controller.hostellerScaffoldKey,
       drawer: SideMenu(
@@ -229,44 +238,44 @@ class HostellerHomeScreen extends StatelessWidget {
                     // const SizedBox(
                     //   height: 10,
                     // ),
-                    // Obx(() {
-                    //   if (controller.isLoading.value) {
-                    //     return const SizedBox.shrink();
-                    //   } else if (controller
-                    //       .homeDashboardCourseList.value.isEmpty) {
-                    //     return const SizedBox.shrink();
-                    //   } else {
-                    //     return Column(
-                    //       children: [
-                    //         Row(
-                    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //           children: [
-                    //             const Text(
-                    //               'My Classes',
-                    //               style: TextStyle(
-                    //                   fontSize: 16,
-                    //                   fontWeight: FontWeight.w500,
-                    //                   color: Colors.black),
-                    //             ),
-                    //             InkWell(
-                    //               onTap: () {
-                    //                 Get.to(() => AttendanceCourseListScreen());
-                    //               },
-                    //               child: const Text(
-                    //                 'See All',
-                    //                 style: TextStyle(
-                    //                     fontSize: 16,
-                    //                     fontWeight: FontWeight.w500,
-                    //                     color: Colors.black),
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //         SubjectContainer(),
-                    //       ],
-                    //     );
-                    //   }
-                    // }),
+                    Obx(() {
+                      if (controller.isLoading.value) {
+                        return const SizedBox.shrink();
+                      } else if (controller
+                          .homeDashboardCourseList.isEmpty) {
+                        return const SizedBox.shrink();
+                      } else {
+                        return Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'My Classes',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(() => AttendanceCourseListScreen());
+                                  },
+                                  child: const Text(
+                                    'See All',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SubjectContainer(),
+                          ],
+                        );
+                      }
+                    }),
 
                     // const SizedBox(
                     //   height: 10,
@@ -344,12 +353,12 @@ class HostellerHomeScreen extends StatelessWidget {
                   wowid: wowid,
                 ));
           } else if (item.name == 'Attendance') {
-            Get.to(() => TuteeAttendanceList(
+            Get.to(() => HostelAttendanceScreen(
                   type: 'Hosteller',
                   firstname: firstname,
                   lastname: lastname,
                   wowid: wowid,
-                ));
+                ),arguments: "Hosteller");
           } else if (item.name == 'Leave') {
             Get.to(() => TuteeLeaveScreen(
                   type: 'Tutee',

@@ -425,7 +425,7 @@ class StudentAttendanceList extends StatelessWidget {
                                   color: const Color(0xff2E5BB5),
                                   count:
                                       '${controller.data?.statusCounts?.missPunch ?? 0}',
-                                  title: 'Miss Punch',
+                                  title: 'Miss\npunch',
                                 ),
                                 barChart(
                                   color:  Colors.blue,

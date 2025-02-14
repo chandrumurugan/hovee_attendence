@@ -225,6 +225,7 @@ class HolidayScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
+                                    holidayController.instituteId == null ||  holidayController.instituteId == ""?
                                        IconButton(
                                     iconSize: 25,
                                 onPressed: () {}, // No action needed here
@@ -266,7 +267,7 @@ class HolidayScreen extends StatelessWidget {
                                     ];
                                   },
                                 ),
-                                                          ),
+                                                          ):SizedBox.shrink(),
                                 
                                 Container(
                                     padding: const EdgeInsets.all(3),

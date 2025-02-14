@@ -378,50 +378,49 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   List<Widget> _buildScreens() {
-    return [
-      if (widget.rolename == 'Tutee')
-        TuteeHome(
-          firstname: widget.firstname,
-          lastname: widget.lastname,
-          wowid: widget.wowid,
-          onDashBoardBack: () => _navigateBack(),
-        )
-      else if (widget.rolename == 'Tutor')
-        TutorHome(
-          firstname: widget.firstname,
-          lastname: widget.lastname,
-          wowid: widget.wowid,
-          onDashBoardBack: () => _navigateBack(),
-        )
-      else if (widget.rolename == 'Parent')
-        ParentView(
-          userId: '',
-          rolename: 'Parent',
-          firstname: widget.firstname,
-          lastname: widget.lastname,
-          wowid: widget.wowid,
-          onDashBoardBack: () => _navigateBack(),
-        )
-         else if (widget.rolename == 'Hosteller' || widget.rolename == "Hostel")
-         HostellerHomeScreen(
-          firstname: widget.firstname,
-          lastname: widget.lastname,
-          wowid: widget.wowid,
-          onDashBoardBack: () => _navigateBack(),
-        ),
-        if (widget.rolename == 'Hosteller' || widget.rolename == "Hostel")
-        HostelEnquiryList(
+  return [
+    if (widget.rolename == 'Tutee')
+      TuteeHome(
+        firstname: widget.firstname,
+        lastname: widget.lastname,
+        wowid: widget.wowid,
+        onDashBoardBack: () => _navigateBack(),
+      ),
+    if (widget.rolename == 'Tutor')
+      TutorHome(
+        firstname: widget.firstname,
+        lastname: widget.lastname,
+        wowid: widget.wowid,
+        onDashBoardBack: () => _navigateBack(),
+      ),
+    if (widget.rolename == 'Parent')
+      ParentView(
+        userId: '',
+        rolename: 'Parent',
+        firstname: widget.firstname,
+        lastname: widget.lastname,
+        wowid: widget.wowid,
+        onDashBoardBack: () => _navigateBack(),
+      ),
+    if (widget.rolename == 'Hosteller' || widget.rolename == "Hostel") ...[
+      HostellerHomeScreen(
+        firstname: widget.firstname,
+        lastname: widget.lastname,
+        wowid: widget.wowid,
+        onDashBoardBack: () => _navigateBack(),
+      ),
+      HostelEnquiryList(
         type: widget.rolename,
         fromBottomNav: true,
         onDashBoardBack: () => _navigateBack(),
       ),
-      Tutorenquirlist(
-        type: widget.rolename,
-        fromBottomNav: true,
-        onDashBoardBack: () => _navigateBack(),
-      ),
-      if (widget.rolename == 'Hosteller' || widget.rolename == "Hostel")
       HostelEnrollmentScreen(
+        type: widget.rolename,
+        fromBottomNav: true,
+        onDashBoardBack: () => _navigateBack(),
+      ),
+    ] else ...[
+      Tutorenquirlist(
         type: widget.rolename,
         fromBottomNav: true,
         onDashBoardBack: () => _navigateBack(),
@@ -431,20 +430,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
         fromBottomNav: true,
         onDashBoardBack: () => _navigateBack(),
       ),
-      if (widget.rolename == 'Tutor')
-        MyRatingsScreen(
-          fromBottomNav: true,
-          type: 'Tutor',
-          onDashBoardBack: () => _navigateBack(),
-        ),
-      // else
-      //   const Center(child: Text("Feature under development")),
-     
-      userProfileResponse!.data!.institudeId!=null?
-      SizedBox.shrink()
-      :const Center(child: Text("Feature under development")),
-    ];
-  }
+    ],
+    if (widget.rolename == 'Tutor')
+      MyRatingsScreen(
+        fromBottomNav: true,
+        type: 'Tutor',
+        onDashBoardBack: () => _navigateBack(),
+      ),
+    if (userProfileResponse?.data?.institudeId == null)
+      const Center(child: Text("Feature under development")),
+  ];
+}
+
 
   void _navigateBack() {
     if (_navigationStack.length > 1) {

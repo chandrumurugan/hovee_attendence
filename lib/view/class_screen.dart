@@ -15,8 +15,13 @@ import 'package:hovee_attendence/widget/single_custom_button.dart';
 
 class TutorClassList extends StatelessWidget {
   final String type;
-  final String? firstname,lastname,wowid;
-  TutorClassList({super.key, required this.type, this.firstname, this.lastname, this.wowid});
+  final String? firstname, lastname, wowid;
+  TutorClassList(
+      {super.key,
+      required this.type,
+      this.firstname,
+      this.lastname,
+      this.wowid});
 
   final ClassController classController = Get.put(ClassController());
   @override
@@ -25,7 +30,12 @@ class TutorClassList extends StatelessWidget {
       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
-            Get.offAll(DashboardScreen(rolename: type, firstname:firstname ,lastname:lastname ,wowid:wowid,));
+            Get.offAll(DashboardScreen(
+              rolename: type,
+              firstname: firstname,
+              lastname: lastname,
+              wowid: wowid,
+            ));
           }),
       body: Column(
         children: [
@@ -90,82 +100,83 @@ class TutorClassList extends StatelessWidget {
             ),
           ),
           // Search and Filter Section
-           SearchfiltertabBar(
-              title: 'Class list',
-              onSearchChanged: (searchTerm) {
-                classController.fetchClassesList('',searchTerm: searchTerm);
-              },
-              filterOnTap: () {},
-            ),
+          SearchfiltertabBar(
+            title: 'Class list',
+            onSearchChanged: (searchTerm) {
+              classController.fetchClassesList('', searchTerm: searchTerm);
+            },
+            filterOnTap: () {},
+          ),
           //Tabs for Active and Inactive
           TabBar(
-            controller: classController.tabController,
-            tabs: [
-              Tab(text: 'Pending'),
-              Tab(text: 'Live'),
-            ],
-            onTap: (value) {
-               classController.handleTabChange(value);
-            }
-          ),
+              controller: classController.tabController,
+              tabs: [
+                Tab(text: 'Pending'),
+                Tab(text: 'Live'),
+              ],
+              onTap: (value) {
+                classController.handleTabChange(value);
+              }),
           //Display List based on the selected tab
           Expanded(
-            child: Obx((){
+            child: Obx(() {
               if (classController.isLoading.value) {
                 return Center(child: CircularProgressIndicator());
               } else if (classController.classesList.isEmpty) {
                 return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Image.asset(
-                                'assets/logo/No_Verification_Found_Image_app.png',
-                                height: 200,
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Center(
-                                  child: Text(
-                                "No listing found",
-                                style: GoogleFonts.nunito(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600),
-                              )),
-                            ],
-                          ),
-                        );
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Image.asset(
+                        'assets/logo/No_Verification_Found_Image_app.png',
+                        height: 200,
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Center(
+                          child: Text(
+                        "No listing found",
+                        style: GoogleFonts.nunito(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      )),
+                    ],
+                  ),
+                );
               } else {
-            return  GetBuilder<ClassController>(
-  builder: (controller) =>
-               ListView.builder(
+                return GetBuilder<ClassController>(
+                  builder: (controller) => ListView.builder(
                     itemCount: classController.classesList.length,
                     itemBuilder: (context, index) {
                       final tutionCourseDetailsList =
                           classController.classesList[index];
                       return Animate(
-                          effects: [
-                            SlideEffect(
-                              begin: Offset(-1, 0),
-                              end: Offset(0, 0),
-                              curve: Curves.easeInOut,
-                              duration: 500.ms,
-                              delay: 100.ms * index,
-                            ),
-                            FadeEffect(
-                              begin: 0,
-                              end: 1,
-                              duration: 500.ms,
-                              delay: 100.ms * index,
-                            ),
-                          ],
+                        effects: [
+                          SlideEffect(
+                            begin: Offset(-1, 0),
+                            end: Offset(0, 0),
+                            curve: Curves.easeInOut,
+                            duration: 500.ms,
+                            delay: 100.ms * index,
+                          ),
+                          FadeEffect(
+                            begin: 0,
+                            end: 1,
+                            duration: 500.ms,
+                            delay: 100.ms * index,
+                          ),
+                        ],
                         child: GestureDetector(
-                          onTap: (){
-                                 Get.to(TutionClassPreviewScreen(tutionCourseDetailsList: tutionCourseDetailsList,firstname: firstname,));
+                          onTap: () {
+                            Get.to(TutionClassPreviewScreen(
+                              tutionCourseDetailsList: tutionCourseDetailsList,
+                              firstname: firstname,
+                            ));
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
@@ -186,34 +197,130 @@ class TutorClassList extends StatelessWidget {
                                   children: [
                                     _buildRow('Course code',
                                         tutionCourseDetailsList.courseCode),
-                          
+
                                     _buildRow('Batch name',
                                         tutionCourseDetailsList.batchName),
-                          
-                                    _buildRow('Board', tutionCourseDetailsList.board),
-                          
+
                                     _buildRow(
-                                        'Subject', tutionCourseDetailsList.subject),
-                          
+                                        'Board', tutionCourseDetailsList.board),
+
+                                    _buildRow('Subject',
+                                        tutionCourseDetailsList.subject),
+
                                     _buildRow(
-                                        'Status', tutionCourseDetailsList.status == "Public" ? "Live" : "Pending"),
-                          
+                                        'Status',
+                                        tutionCourseDetailsList.status ==
+                                                "Public"
+                                            ? "Live"
+                                            : "Pending"),
+
                                     // Display the button only if selectedTabIndex is 0 (Draft tab)
-                                    if (classController.instituteId ==null || classController.instituteId == '' && classController.selectedTabIndex.value == 0)
-                                      SingleButton(
-                                        btnName: 'Go live',
-                                        onTap: () {
-                                          //  classController.updateClass(
-                                          //   context,
-                                          //   tutionCourseDetailsList.courseCode!,
-                                          //   tutionCourseDetailsList.courseId!,
-                                          //   tutionCourseDetailsList.batchId!,
-                                          //   tutionCourseDetailsList.batchName!,
-                                          //   tutionCourseDetailsList.sId,
-                                          // );
-                                          _showConfirmationDialog(context,tutionCourseDetailsList);
-                                        },
+                                    if (classController.instituteId == null ||
+                                        classController.instituteId == '' &&
+                                            classController
+                                                    .selectedTabIndex.value ==
+                                                0)
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SingleButton(
+                                            btnName: 'Go live',
+                                            onTap: () {
+                                              //  classController.updateClass(
+                                              //   context,
+                                              //   tutionCourseDetailsList.courseCode!,
+                                              //   tutionCourseDetailsList.courseId!,
+                                              //   tutionCourseDetailsList.batchId!,
+                                              //   tutionCourseDetailsList.batchName!,
+                                              //   tutionCourseDetailsList.sId,
+                                              // );
+                                              _showConfirmationDialog(context,
+                                                  tutionCourseDetailsList);
+                                            },
+                                          ),
+                                          if (classController.instituteId ==
+                                                  null ||
+                                              classController.instituteId == '')
+                                            IconButton(
+                                              iconSize: 25,
+                                              onPressed:
+                                                  () {}, // No action needed here
+                                              icon: PopupMenuButton<String>(
+                                                icon:
+                                                    const Icon(Icons.more_vert),
+                                                onSelected: (String value) {
+                                                  // Optional if further actions are needed after selection
+                                                },
+                                                itemBuilder:
+                                                    (BuildContext context) {
+                                                  return [
+                                                    PopupMenuItem(
+                                                      value: 'Delete',
+                                                      child: ListTile(
+                                                        leading: const Icon(
+                                                            Icons.delete),
+                                                        title: const Text(
+                                                            'Delete'),
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          _showConfirmationDeleteDialog(
+                                                              context,
+                                                              tutionCourseDetailsList
+                                                                  .courseId!,tutionCourseDetailsList.status);
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ];
+                                                },
+                                              ),
+                                            ),
+                                        ],
                                       ),
+                                       classController
+                                                    .selectedTabIndex.value ==
+                                                1?
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        if (classController.instituteId ==
+                                                null ||
+                                            classController.instituteId == '')
+                                          IconButton(
+                                            iconSize: 25,
+                                            onPressed:
+                                                () {}, // No action needed here
+                                            icon: PopupMenuButton<String>(
+                                              icon: const Icon(Icons.more_vert),
+                                              onSelected: (String value) {
+                                                // Optional if further actions are needed after selection
+                                              },
+                                              itemBuilder:
+                                                  (BuildContext context) {
+                                                return [
+                                                  PopupMenuItem(
+                                                    value: 'Delete',
+                                                    child: ListTile(
+                                                      leading: const Icon(
+                                                          Icons.delete),
+                                                      title:
+                                                          const Text('Delete'),
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                        _showConfirmationDeleteDialog(
+                                                            context,
+                                                            tutionCourseDetailsList
+                                                                .courseId!,tutionCourseDetailsList.status);
+                                                      },
+                                                    ),
+                                                  ),
+                                                ];
+                                              },
+                                            ),
+                                          ),
+                                      ],
+                                    ):SizedBox.shrink()
                                   ],
                                 ),
                               ),
@@ -223,25 +330,26 @@ class TutorClassList extends StatelessWidget {
                       );
                     },
                   ),
-            );
+                );
               }
-  }),
+            }),
           )
         ],
       ),
-       bottomNavigationBar: GetBuilder<ClassController>(
-  builder: (controller) {
-    return (classController.instituteId ==null || classController.instituteId == '')
-        ? SingleCustomButtom(
-            btnName: 'Add',
-            isPadded: false,
-            onTap: () {
-              controller.navigateToAddCourseScreen();
-            },
-          )
-        : SizedBox.shrink();
-  },
-),
+      bottomNavigationBar: GetBuilder<ClassController>(
+        builder: (controller) {
+          return (classController.instituteId == null ||
+                  classController.instituteId == '')
+              ? SingleCustomButtom(
+                  btnName: 'Add',
+                  isPadded: false,
+                  onTap: () {
+                    controller.navigateToAddCourseScreen();
+                  },
+                )
+              : SizedBox.shrink();
+        },
+      ),
 
       //  Obx(() {
       //    if (classController.isLoading.value) {
@@ -282,44 +390,79 @@ class TutorClassList extends StatelessWidget {
     );
   }
 
-  void _showConfirmationDialog(BuildContext context, dynamic tutionCourseDetailsList) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return CustomDialogBox(
-        title1: 'Start the class live now? Click Yes to begin the session.',
-        title2: '',
-        subtitle: 'Start the class live now? Click Yes to begin the session.',
-         icon: const Icon(
-                                                      Icons.help_outline,
-                                                      color: Colors.white,
-                                                    ),
-       color:  Color(0xFF833AB4), // Set the primary color
-        color1: const Color(0xFF833AB4), // Optional gradient color
-        singleBtn: false, // Show both 'Yes' and 'No' buttons
-        btnName: 'No',
-        onTap: () {
-          // Call the updateClass method when 'Yes' is clicked
-         // Close the dialog after update
-         Navigator.of(context).pop();
-        },
-        btnName2: 'Yes',
-        onTap2: () {
-          // Close the dialog when 'No' is clicked
-           classController.updateClass(
-                                      context,
-                                      tutionCourseDetailsList.courseCode!,
-                                      tutionCourseDetailsList.courseId!,
-                                      tutionCourseDetailsList.batchId!,
-                                      tutionCourseDetailsList.batchName!,
-                                      tutionCourseDetailsList.sId,
-                                    );
-                                    // classController.tabController.animateTo(1);
-                                    // classController.handleTabChange(1);
-          Navigator.of(context).pop();
-        },
-      );
-    },
-  );
-}
+  void _showConfirmationDialog(
+      BuildContext context, dynamic tutionCourseDetailsList) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CustomDialogBox(
+          title1: 'Start the class live now? Click Yes to begin the session.',
+          title2: '',
+          subtitle: 'Start the class live now? Click Yes to begin the session.',
+          icon: const Icon(
+            Icons.help_outline,
+            color: Colors.white,
+          ),
+          color: Color(0xFF833AB4), // Set the primary color
+          color1: const Color(0xFF833AB4), // Optional gradient color
+          singleBtn: false, // Show both 'Yes' and 'No' buttons
+          btnName: 'No',
+          onTap: () {
+            // Call the updateClass method when 'Yes' is clicked
+            // Close the dialog after update
+            Navigator.of(context).pop();
+          },
+          btnName2: 'Yes',
+          onTap2: () {
+            // Close the dialog when 'No' is clicked
+            classController.updateClass(
+              context,
+              tutionCourseDetailsList.courseCode!,
+              tutionCourseDetailsList.courseId!,
+              tutionCourseDetailsList.batchId!,
+              tutionCourseDetailsList.batchName!,
+              tutionCourseDetailsList.sId,
+            );
+            // classController.tabController.animateTo(1);
+            // classController.handleTabChange(1);
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
+
+  void _showConfirmationDeleteDialog(BuildContext context, String id,status) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return CustomDialogBox(
+          title1: 'Do you want to delete this class?',
+          title2: '',
+          subtitle: 'Do you want to delete this class?',
+          icon: const Icon(
+            Icons.help_outline,
+            color: Colors.white,
+          ),
+          color: Color(0xFF833AB4), // Set the primary color
+          color1: const Color(0xFF833AB4), // Optional gradient color
+          singleBtn: false, // Show both 'Yes' and 'No' buttons
+          btnName: 'No',
+          onTap: () {
+            // Call the updateClass method when 'Yes' is clicked
+            // Close the dialog after update
+            Navigator.of(context).pop();
+          },
+          btnName2: 'Yes',
+          onTap2: () {
+            // Close the dialog when 'No' is clicked
+            classController.deleteClass(context, id,status);
+            // classController.tabController.animateTo(1);
+            // classController.handleTabChange(1);
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
 }

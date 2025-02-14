@@ -190,6 +190,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 const SizedBox(
                                   height: 10,
                                 ),
+                              isGoogleSignIn==false?
                                 TabBar(
                                   dragStartBehavior: DragStartBehavior.down,
                                   controller: authController.tabController,
@@ -212,7 +213,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                     color: Colors.black,
                                   ),
                                   physics: NeverScrollableScrollPhysics(),
-                                ),
+                                ):SizedBox.shrink(),
                                 
                                 Padding(
                                   padding: const EdgeInsets.symmetric(

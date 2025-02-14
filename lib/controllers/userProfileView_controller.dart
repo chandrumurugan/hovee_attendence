@@ -4,18 +4,25 @@
 //     }
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/login_data_model.dart';
+import 'package:hovee_attendence/modals/phonenumberVerfication_model.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
 import 'package:hovee_attendence/services/firestoreService.dart';
+import 'package:hovee_attendence/services/liveLocationService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
+import 'package:hovee_attendence/view/loginSignup/otp_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -116,6 +123,26 @@ class UserProfileController extends GetxController
    RxList<String> subject = <String>[].obs;
    var appConfig = AppConfig().obs;
     List<String> batchName = [];
+
+    RxBool isNonEdit = true.obs;
+    File? pickedFile;
+     RxBool accountVerified = false.obs;
+     PhnData? loginResponse;
+
+     var isPhoneNumberVerified = false.obs;
+
+     final TextEditingController autoCompleteController = TextEditingController();
+
+     var isLocationSearched = false.obs;
+
+     var latitudeL = 0.0.obs;
+  var longitudeL = 0.0.obs;
+   var focusNode = FocusNode();
+   late GoogleMapController mapController;
+    var marker = Rxn<Marker>();
+     var isFirstTime = true.obs;
+
+     final updatePhController = TextEditingController();
 
   void setHighestQualification(String value) =>
       highestQualification.value = value;
@@ -479,7 +506,7 @@ class UserProfileController extends GetxController
         userProfileResponse.value = fetchProfile;
         _populateFieldsFromResponse(fetchProfile.data!);
        
-        String organizationName = fetchProfile.data!.qualificationDetails!.isNotEmpty?
+        String organizationName = fetchProfile.data!.qualificationDetails.isNotEmpty?
             fetchProfile.data!.qualificationDetails[0].organizationName!:'';
         // Store relevant fields in GetStorage
         storage.write('doorNo', fetchProfile.data!.doorNo);
@@ -503,7 +530,10 @@ class UserProfileController extends GetxController
             "${fetchProfile.data!.country} - "
             "${fetchProfile.data!.pincode}";
         storage.write('address', address);
-
+      roleId.value =fetchProfile.data!.rolesId!.id!;
+      roleTypeId.value =fetchProfile.data!.rolesTypeId!;
+      Logger().i( "roleId ${fetchProfile.data!.rolesId!.id!}");
+      Logger().i( "roleTypeId ${fetchProfile.data!.rolesTypeId}");
         isLoading(false);
       } else {
         // SnackBarUtils.showErrorSnackBar(context, message)
@@ -600,10 +630,11 @@ class UserProfileController extends GetxController
         "phone_number": phController.text,
         "pincode": pincodeController.text,
         "user_type": 2,
-        "id_proof_label": idProofController.text,
-       
+        "id_proof_label": selectedIDProof.value,
+        'rolesId': roleId.value,
+        'rolesTypeId': roleTypeId.value,
       };
-      tabController.animateTo(1);
+     // tabController.animateTo(1);
       Logger().i(personalInfo.value);
     }
   }
@@ -631,8 +662,9 @@ class UserProfileController extends GetxController
          // submitAccountSetup(context);
       //     : Container();
       // selectedRoleTypeName != 'I Run an Institute'
-           tabController.animateTo(2);
+           //tabController.animateTo(2);
          // : Container();
+         Logger().i(addressInfo.value);
     }
   }
 
@@ -658,7 +690,7 @@ class UserProfileController extends GetxController
           educationCertPath: educationCertPath.value,
           experienceCertPath: experienceCertPath.value,
           latitude: latitude.toString(),
-          longitude: longitude.toString());
+          longitude: longitude.toString(), idproof: pickedFile!.path);
 
       // Handle the response
       if (response.statusCode == 200) {
@@ -677,12 +709,30 @@ class UserProfileController extends GetxController
          print('Wow ID: ${loginData!.toJson().toString()}');
 // Print or use the `wowId`
 print('Wow ID: $wowId');
-        Get.offAll(() => DashboardScreen(
-              rolename: 'Tutor',
-                firstname: firstName,
-              lastname: lastName,
-              wowid: wowId
-            ));
+     isNonEdit.value=true;
+     update();
+ Get.snackbar(
+          'Profile updated successfully',
+          icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: const SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                'Profile updated successfully',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+        // Get.offAll(() => DashboardScreen(
+        //       rolename: 'Tutor',
+        //         firstname: firstName,
+        //       lastname: lastName,
+        //       wowid: wowId
+        //     ));
         //Get.offAll(() => TutorHome());
         // Handle success (e.g., show a success message)
       } else {
@@ -722,10 +772,12 @@ print('Wow ID: $wowId');
       if (validateTuteEducationInfo(context)) {
         tuteEducationInfo.value = {
           "highest_qualification": highestQualifications.value,
-          "select_class": QualificationClass.value,
-          // "select_board": tuteeboardController.text,
-          "organization_name": tuteorganizationController.text
+          "select_class": classController.value,
+          "organization_name": tuteorganizationController.text,
+          "select_board": boardController.value,
+          "select_subject": subjectController.value,
         };
+         Logger().i(tuteEducationInfo.value);
         submitTuteeAccountSetup( context);
       }
     }
@@ -822,18 +874,30 @@ print('Wow ID: $wowId');
           addressInfo: addressInfo.value,
           educationInfo: tuteEducationInfo.value,
           latitude: latitude.toString(),
-          longitude: longitude.toString()
-          // resumePath: '',
-          // educationCertPath: '',
-          // experienceCertPath: '',
-          // roleId:roleId ,
-          // roleTypeId: roleTypeId
+          longitude: longitude.toString(),
+          idproof: pickedFile!.path
           );
       if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
         print(responseBody);
-        SnackBarUtils.showSuccessSnackBar(
-            context, "Account setup successfully completed.");
+        isNonEdit.value=true;
+        update();
+         Get.snackbar(
+          'Profile updated successfully',
+          icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: const SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                'Profile updated successfully',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
                 final firstName = personalInfo.value['first_name'] ?? '';
       final lastName = personalInfo.value['last_name'] ?? '';
       
@@ -848,15 +912,16 @@ print('Wow ID: $wowId');
          print('Wow ID: ${loginData!.toJson().toString()}');
 // Print or use the `wowId`
 print('Wow ID: $wowId');
-        Get.offAll(() => DashboardScreen(
-              rolename: 'Tutee',
-                firstname: firstName,
-              lastname: lastName,
-              wowid: wowId
-            ));
+        // Get.offAll(() => DashboardScreen(
+        //       rolename: 'Tutee',
+        //         firstname: firstName,
+        //       lastname: lastName,
+        //       wowid: wowId
+        //     ));
         //Get.offAll(() => TutorHome());
         // Handle success (e.g., show a success message)
       } else {
+        Logger().e(response.stream.bytesToString());
         print(response.statusCode);
         // Handle failure (e.g., show an error message)
       }
@@ -938,4 +1003,171 @@ void setSubject(String value) {
   subjectController.value = value;
 }
 
+  Future<bool> phoneNumberVerified(String identifiers, BuildContext context) async {
+    if (validateLogin(context)) {
+      isLoading.value = true;
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var response =
+            await WebService.phoneNumberVerified(identifiers, context);
+        if (response != null) {
+          loginResponse = response.data;
+          await prefs.setString("OTP", response.data!.otp ?? '');
+          await prefs.setString("AccountVerificationToken",
+              response.data!.accountVerificationToken ?? '');
+          isPhoneNumberVerified.value = true;
+          isLoading.value = false;
+          phController.clear();
+          updatePhController.clear();
+          final result = await Get.to(
+            () => OtpScreen(
+              phnNumber: identifiers,
+            ),
+            arguments: isNonEdit.value,
+          );
+          if (result != null) {
+            phController.text = result['phnNumber']; // Update phone number
+            accountVerified.value = result['accountVerified'];
+          }
+          return true;
+        } else {
+          Logger().e('Failed to load AppConfig');
+          isLoading.value = false;
+          isPhoneNumberVerified.value = false;
+          return false;
+        }
+      } catch (e) {
+        isPhoneNumberVerified.value = false;
+        Logger().e(e);
+        return false;
+      }
+    }
+    return false;
+  }
+
+   bool validateLogin(BuildContext context) {
+    String input = phController.text.trim();
+
+    if (input.isEmpty) {
+      SnackBarUtils.showErrorSnackBar(
+        context,
+        'Please enter the phone number',
+      );
+      return false;
+    }
+
+    // Check if the input is a phone number (10 digits)
+    if (RegExp(r'^[0-9]+$').hasMatch(input)) {
+      if (input.length != 10) {
+        SnackBarUtils.showErrorSnackBar(
+          context,
+          'Invalid Phone number',
+        );
+        return false;
+      }
+      return true; // It's a valid phone number
+    }
+    // If the input is a valid email
+    return true;
+  }
+
+    void handleAutoCompleteSelection(Prediction prediction) async {
+    isLocationSearched.value = false;
+    latitudeL.value = double.parse(prediction.lat!);
+    longitudeL.value = double.parse(prediction.lng!);
+    mapController.animateCamera(
+      CameraUpdate.newLatLng(LatLng(latitudeL.value, longitudeL.value)),
+    );
+
+    setMarker(LatLng(latitudeL.value, longitudeL.value));
+    isLocationSearched.value = true;
+  }
+
+  void setMarker(LatLng position) {
+    latitudeL.value = position.latitude;
+    longitudeL.value = position.longitude;
+    //if(!isLocationSearched.value){
+    marker.value = Marker(
+      markerId: const MarkerId('selected-location'),
+      position: position,
+      draggable: true,
+      onDragEnd: onMarkerDragEnd,
+    );
+    updateLocationDetails(position.latitude, position.longitude);
+    // }
+  }
+
+  void onMarkerDragEnd(LatLng position) {
+    latitudeL.value = position.latitude;
+    longitudeL.value = position.longitude;
+    updateLocationDetails(latitudeL.value, longitudeL.value);
+  }
+
+  void updateLocationDetails(double lat, double lng) async {
+    latitudeL.value = lat;
+    longitudeL.value = lng;
+    latitude = lat;
+    longitude = lng;
+
+    try {
+      List<Placemark>? placemarks =
+          await placemarkFromCoordinates(latitude ?? 0.0, longitude ?? 0.0);
+      if (placemarks != null && placemarks.isNotEmpty) {
+        Placemark place = placemarks[0];
+
+        address1Controller.text = place.subThoroughfare ?? "";
+        address2Controller.text =
+            place.thoroughfare ?? "" + "" + place.subLocality! ?? "";
+        cityController.text = place.locality ?? "";
+        stateController.text = place.administrativeArea ?? "";
+        countryController.text = place.country ?? "";
+        pincodesController.text = place.postalCode ?? "";
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+    print("Updated location: ($lat, $lng)");
+  }
+
+
+void onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    getCurrentLocation();
+  }
+
+  void getCurrentLocation() async {
+    if (!isFirstTime.value) return;
+    //isLoading.value = true; // Show loader
+    try {
+      // Position position = await Geolocator.getCurrentPosition(
+      //   desiredAccuracy: LocationAccuracy.high,
+      // );
+
+      LatLng? position =
+          await LocationService.getCurrentLocation() ?? const LatLng(0, 0);
+      latitudeL.value = position.latitude;
+      longitudeL.value = position.longitude;
+
+      mapController.animateCamera(
+        CameraUpdate.newLatLng(
+          LatLng(latitudeL.value, longitudeL.value),
+        ),
+      );
+
+      setMarker(LatLng(latitudeL.value, longitudeL.value));
+      isFirstTime.value = false;
+      //  isLocationSearched.value = true;
+    } catch (e) {
+      Logger().e("Error getting current location: $e");
+    } finally {
+      isLoading.value = false; // Hide loader
+    }
+  }
+
+  void uploadFile(File? file){
+    pickedFile = file;
+
+              isNonEdit.value = false;
+              update()  ;
+  }
 }

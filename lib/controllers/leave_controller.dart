@@ -17,6 +17,7 @@ import 'package:hovee_attendence/view/add_batch.dart';
 import 'package:hovee_attendence/view/add_leave_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TuteeLeaveController extends GetxController {
   var leaveList = <LeaveData>[].obs;
@@ -39,6 +40,7 @@ class TuteeLeaveController extends GetxController {
   String? selectedCourseId;
   String? selectedTutorId;
   String? selectedCourseName;
+  var instituteId =''.obs;
 
   @override
   void onInit() {
@@ -146,7 +148,8 @@ class TuteeLeaveController extends GetxController {
       isLoading(true);
       var leaveResponse = await WebService.fetchLeaveList(
           searchTerm); // Pass the searchTerm to the API
-
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+       instituteId.value=   prefs.getString('InstituteId') ?? '';
       if (leaveResponse.data != null) {
         leaveList.value = leaveResponse.data!;
       }

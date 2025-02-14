@@ -1,44 +1,30 @@
-import 'dart:convert';
-
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
-import 'package:hovee_attendence/controllers/msp_controller.dart';
-import 'package:hovee_attendence/controllers/track_tutee_controller.dart';
-import 'package:hovee_attendence/controllers/tutorsStudentAttendanceList.dart';
+import 'package:hovee_attendence/controllers/hostel_attendance_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
-import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
-import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
-import 'package:hovee_attendence/view/add_msp_screen.dart';
-import 'package:hovee_attendence/view/dashBoard.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
-import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
-import 'package:hovee_attendence/view/parent/trackTuteeLocation.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class TuteeAttendanceList extends StatelessWidget {
-  final String type;
-  final StudentAttendanceController controller;
+class HostelAttendanceScreen extends StatelessWidget {
+   final String type;
+  final HostelAttendanceController controller;
   final String? firstname, lastname, wowid, batchname;
-  TuteeAttendanceList(
-      {super.key,
-      required this.type,
+   HostelAttendanceScreen({super.key,required this.type,
       this.firstname,
       this.lastname,
       this.wowid,
-      this.batchname})
-      : controller = Get.put(StudentAttendanceController());
-  final MspController mspController = Get.put(MspController());
+      this.batchname}): controller = Get.put(HostelAttendanceController());
+
   @override
   Widget build(BuildContext context) {
-    //final  trackTuteeLocationController = Get.put(TrackTuteeLocationController());
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
@@ -72,43 +58,6 @@ class TuteeAttendanceList extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // const SizedBox(height: 10),
-                            // Obx(() {
-                            //   if (controller.isLoading.value) {
-                            //     return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
-                            //   } else {
-                            //     return
-                            //         CustomDropdown(
-                            //       itemsListPadding: EdgeInsets.zero,
-                            //       listItemPadding: const EdgeInsets.symmetric(
-                            //           vertical: 6, horizontal: 10),
-                            //       hintText: 'Select batch',
-                            //       items: controller.batchList
-                            //           .map((batch) => batch.batchName ?? '')
-                            //           .toList(),
-                            //       initialItem: controller
-                            //           .selectedBatchIN.value?.batchName,
-                            //       onChanged: (String? selectedValue) {
-                            //         if (selectedValue != null) {
-                            //           final selectedBatch =
-                            //               controller.batchList.firstWhere(
-                            //             (batch) =>
-                            //                 batch.batchName == selectedValue,
-                            //           );
-                            //           controller.selectBatch(selectedBatch);
-                            //           controller.isBatchSelected.value = true;
-                            //           controller.fetchStudentsList(
-                            //             selectedBatch.batchId!,
-                            //             selectedBatch.startDate??'',
-                            //             DateFormat('MMM')
-                            //                 .format(DateTime.now()),
-                            //           );
-
-                            //         }
-                            //       },
-                            //     );
-                            //   }
-                            // }),
                             Obx(() {
                               if (controller.isLoading.value) {
                                 return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
@@ -119,22 +68,22 @@ class TuteeAttendanceList extends StatelessWidget {
                                       vertical: 6, horizontal: 10),
                                   hintText: 'Select batch',
                                   items: controller.batchList
-                                      .map((batch) => batch.batchName ?? '')
+                                      .map((batch) => batch.hostelListDetails!.hostelName ?? '')
                                       .toList(),
                                   initialItem: controller
-                                      .selectedBatchIN.value?.batchName,
+                                      .selectedBatchIN.value?.hostelListDetails!.hostelName,
                                   onChanged: (String? selectedValue) {
                                     if (selectedValue != null) {
                                       controller.selectedBatch =
                                           controller.batchList.firstWhere(
                                         (batch) =>
-                                            batch.batchName == selectedValue,
+                                            batch.hostelListDetails!.hostelName == selectedValue,
                                       );
                                       controller.selectBatch(controller.selectedBatch!);
                                       controller.isBatchSelected.value = true;
                                       controller.fetchStudentsList(
-                                       controller. selectedBatch!.batchId!,
-                                       controller. selectedBatch!.startDate ?? '',
+                                       controller. selectedBatch!.hostelListDetails!.id!,
+                                       '',
                                         DateFormat('MMM')
                                             .format(DateTime.now()),
                                       );
@@ -182,7 +131,7 @@ class TuteeAttendanceList extends StatelessWidget {
                 return const SizedBox
                     .shrink(); // Hide calendar if no batch is selected
               }
-              return GetBuilder<StudentAttendanceController>(
+              return GetBuilder<HostelAttendanceController>(
                 builder: (_) => Container(
                   // height: MediaQuery.of(context).size.height * 0.55,
                   margin:
@@ -195,8 +144,8 @@ class TuteeAttendanceList extends StatelessWidget {
                     firstDay: DateTime(2024, 1, 1),
                     lastDay: DateTime(2025, 12, 31),
                     focusedDay: controller.focusedDay.value,
-                    rangeStartDay: controller.selectedBatchStartDate.value,
-                    rangeEndDay: controller.selectedBatchEndDate.value,
+                    // rangeStartDay: controller.selectedBatchStartDate.value,
+                    // rangeEndDay: controller.selectedBatchEndDate.value,
                     calendarFormat: CalendarFormat.month,
                     startingDayOfWeek: StartingDayOfWeek.monday,
                     headerStyle: const HeaderStyle(
@@ -218,11 +167,11 @@ class TuteeAttendanceList extends StatelessWidget {
          isSameDay(controller.selectedDay.value, DateTime.now());
                     },
                     onDaySelected: (selectedDay, focusedDay) {
-                      controller.onDateSelectedTutee(selectedDay);
+                      controller.onDateSelected(selectedDay);
                       controller.setFocusedDay(focusedDay);
                     },
                     onPageChanged: (focusedDay) {
-                      controller.onMonthSelectedTutee(focusedDay);
+                      controller.onMonthSelected(focusedDay);
                        controller.update();
                     },
                     calendarBuilders: CalendarBuilders(
@@ -595,31 +544,31 @@ class TuteeAttendanceList extends StatelessWidget {
                                 barChart(
                                   color: const Color(0xff014EA9),
                                   count:
-                                      '${controller.dataTutee?.statusCounts?.totalStudents ?? 0}',
+                                      '${controller.data?.statusCounts?.totalStudents ?? 0}',
                                   title: 'All',
                                 ),
                                 barChart(
                                   color: const Color(0xffF07721),
                                   count:
-                                      '${controller.dataTutee?.statusCounts?.present ?? 0}',
+                                      '${controller.data?.statusCounts?.present ?? 0}',
                                   title: 'Present',
                                 ),
                                 barChart(
                                   color: const Color(0xffAD0F60),
                                   count:
-                                      '${controller.dataTutee?.statusCounts?.absent ?? 0}',
+                                      '${controller.data?.statusCounts?.absent ?? 0}',
                                   title: 'Absent',
                                 ),
                                 barChart(
                                   color: const Color(0xff2E5BB5),
                                   count:
-                                      '${controller.dataTutee?.statusCounts?.missPunch ?? 0}',
+                                      '${controller.data?.statusCounts?.missPunch ?? 0}',
                                   title: 'Miss\npunch',
                                 ),
                                 barChart(
                                   color:  Colors.blue,
                                   count:
-                                      '${controller.dataTutee?.statusCounts?.missPunch ?? 0}',
+                                      '${controller.data?.statusCounts?.missPunch ?? 0}',
                                   title: 'Leave',
                                 ),
                               ],
@@ -634,66 +583,7 @@ class TuteeAttendanceList extends StatelessWidget {
             ),
             const SizedBox(
               height: 10,
-            ),
-            // SearchfiltertabBar(
-            //   title: 'Attendance List',
-            //   searchOnTap: () {},
-            //   filterOnTap: () {},
-            // ),
-            type == 'Parent'
-                ? Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "GPS Tracker",
-                          style: GoogleFonts.nunito(
-                              color: Colors.black,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        InkWell(
-                          onTap: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            String? userData = prefs.getString('firstUserId');
-                            String? wowId, firstName;
-                            if (userData != null) {
-                              Map<String, dynamic> userMap =
-                                  jsonDecode(userData);
-                              wowId = userMap['wowId'];
-                              firstName = userMap['firstName'];
-                              print('User ID: $wowId, User Name: $firstName');
-                            }
-                            Get.to(
-                              () => TrackTuteeLocation(
-                                type: 'Parent',
-                                // firstname: widget.firstname,
-                                // lastname: widget.lastname,
-                                // wowid: widget.wowid,
-                              ),
-                              arguments: [
-                                {
-                                  "userId": wowId.toString(),
-                                }
-                              ],
-                            );
-                          },
-                          child: Text(
-                            "View GPS",
-                            style: GoogleFonts.nunito(
-                                color: const Color(0xFFFF9900),
-                                fontSize: 13,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : SizedBox.shrink(),
-            Padding(
+            ),  Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
@@ -746,17 +636,17 @@ class TuteeAttendanceList extends StatelessWidget {
                       // Check if attendance data is available and load it dynamically
                       if (controller.isLoadingList.value) {
                         return const CircularProgressIndicator();
-                      } else if (controller.dataTutee?.attendanceDetails !=
+                      } else if (controller.data?.attendanceDetails !=
                               null &&
-                          controller.dataTutee!.attendanceDetails!.isNotEmpty) {
+                          controller.data!.attendanceDetails!.isNotEmpty) {
                         return ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount:
-                              controller.dataTutee!.attendanceDetails!.length,
+                              controller.data!.attendanceDetails!.length,
                           itemBuilder: (context, index) {
                             final attendance =
-                                controller.dataTutee!.attendanceDetails![index];
+                                controller.data!.attendanceDetails![index];
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(
@@ -795,10 +685,7 @@ class TuteeAttendanceList extends StatelessWidget {
                                                 color: Colors.blue),
                                             onPressed: () {
                                               // Handle edit action for punch in time
-                                              mspController
-                                                  .navigateToAddHolidatScreen();
-                                              print(
-                                                  'Edit Punch In Time for index $index');
+                                            
                                             },
                                           ),
                                   ),
@@ -820,19 +707,6 @@ class TuteeAttendanceList extends StatelessWidget {
                                                 color: Colors.blue),
                                             onPressed: () {
                                               // Handle edit action for punch out time
-                                              Get.to(() => AddMspScreen(
-                                                    data: attendance.batchList,
-                                                    date:
-                                                        attendance.punchInDate!,
-                                                    id: attendance
-                                                        .batchList!.userId!,
-                                                    batchId: attendance
-                                                        .batchList!.sId!,
-                                                    attendanceID: attendance
-                                                        .attendanceId!,
-                                                  ));
-                                              print(
-                                                  'Edit Punch Out Time for index $index');
                                             },
                                           ),
                                   ),

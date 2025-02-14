@@ -16,6 +16,7 @@ import 'package:hovee_attendence/view/Tutee/tutee_courseList.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
+import 'package:hovee_attendence/view/chat_screen/chat_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/msp_screen.dart';
@@ -147,10 +148,7 @@ class TuteeHome extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => const ChatScreen()));
+                    Get.to(() => CustomerChat());
                     },
                     child: Icon(
                       Icons.message,
@@ -443,7 +441,7 @@ class TuteeHome extends StatelessWidget {
                                              firstname:firstname ,lastname:lastname ,wowid: wowid,
                                           ));
                                     }
-                                    if (item.name == 'Miss Punch') {
+                                    if (item.name == 'Miss punch') {
                                       Get.to(() => MspScreen(
                                             type: 'Tutee',
                                             fromBottomNav: true,

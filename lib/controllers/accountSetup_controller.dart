@@ -899,12 +899,12 @@ class AccountSetupController extends GetxController
         personalInfo: personalInfo.value,
         addressInfo: addressInfo.value,
         educationInfo: educationInfo.value,
-         resumePath: '',
-        educationCertPath: '',
-        experienceCertPath:'',
-        // resumePath: resumePath.value,
-        // educationCertPath: educationCertPath.value,
-        // experienceCertPath: experienceCertPath.value,
+        //  resumePath: '',
+        // educationCertPath: '',
+        // experienceCertPath:'',
+        resumePath: resumePath.value,
+        educationCertPath: educationCertPath.value,
+        experienceCertPath: experienceCertPath.value,
         latitude: latitude.toString(),
         longitude: longitude.toString(), parentId: '',
       );
@@ -1167,38 +1167,38 @@ class AccountSetupController extends GetxController
   }
 
   // Pick file from storage
-  void pickFile(String type) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
-    );
+  // void pickFile(String type) async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //     type: FileType.custom,
+  //     allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf'],
+  //   );
 
-    if (result != null && result.files.single.path != null) {
-      String filePath = result.files.single.path!;
-      _updateFilePath(type, filePath);
-    }
-  }
+  //   if (result != null && result.files.single.path != null) {
+  //     String filePath = result.files.single.path!;
+  //     _updateFilePath(type, filePath);
+  //   }
+  // }
 
-  // Capture image from camera
-  void pickImageFromCamera(String type) async {
-    final XFile? image =
-        await imagePicker.pickImage(source: ImageSource.camera);
+  // // Capture image from camera
+  // void pickImageFromCamera(String type) async {
+  //   final XFile? image =
+  //       await imagePicker.pickImage(source: ImageSource.camera);
 
-    if (image != null) {
-      _updateFilePath(type, image.path);
-    }
-  }
+  //   if (image != null) {
+  //     _updateFilePath(type, image.path);
+  //   }
+  // }
 
-  // Update the file path based on the document type
-  void _updateFilePath(String type, String filePath) {
-    if (type == 'resume') {
-      resumePath.value = filePath;
-    } else if (type == 'education') {
-      educationCertPath.value = filePath;
-    } else if (type == 'experience') {
-      experienceCertPath.value = filePath;
-    }
-  }
+  // // Update the file path based on the document type
+  // void _updateFilePath(String type, String filePath) {
+  //   if (type == 'resume') {
+  //     resumePath.value = filePath;
+  //   } else if (type == 'education') {
+  //     educationCertPath.value = filePath;
+  //   } else if (type == 'experience') {
+  //     experienceCertPath.value = filePath;
+  //   }
+  // }
 
   void removeFile(String type) {
     if (type == 'resume') {
@@ -1207,6 +1207,29 @@ class AccountSetupController extends GetxController
       educationCertPath.value = '';
     } else if (type == 'experience') {
       experienceCertPath.value = '';
+    }
+  }
+
+   Future<void> pickFile(String type) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? file = await picker.pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      Logger().i(file.path);
+
+      // Extracting filename and extension
+      String filename = path.basename(file.path); // e.g., "1000000018.jpg"
+      String fileExtension = path.extension(file.path); // e.g., ".jpg"
+
+      Logger().i("Filename: $filename");
+      Logger().i("File Extension: $fileExtension");
+
+      if (type == 'resume') {
+        resumePath.value = file.path;
+      } else if (type == 'education') {
+        educationCertPath.value = file.path;
+      } else if (type == 'experience') {
+        experienceCertPath.value = file.path;
+      }
     }
   }
 }

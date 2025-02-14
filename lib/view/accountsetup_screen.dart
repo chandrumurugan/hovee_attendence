@@ -2561,44 +2561,76 @@ class AccountSetup extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 5),
-        InkWell(
-          onTap: () => showFileSourceBottomSheet(type, accountController),
-          child: Container(
-            height: 55,
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 12),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Obx(() {
-              String filePath = (type == 'resume')
-                  ? accountController.resumePath.value
-                  : (type == 'education')
-                      ? accountController.educationCertPath.value
-                      : accountController.experienceCertPath.value;
-
-              return filePath.isNotEmpty
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(path.basename(filePath)),
-                      IconButton(
-                        icon: Icon(Icons.close),
-                        onPressed: (){
-                          accountController.removeFile(type);
-                        },
-                      ),
-                    ],
-                  )
-                  : Text(
+                  InkWell(
+            onTap: () {
+              print("Greeting values==");
+              accountController.pickFile(type);
+            },
+            child: Container(
+              height: 55,
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 12),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: (type == 'resume' &&
+                          accountController.resumePath.value.isNotEmpty) ||
+                      (type == 'education' &&
+                          accountController
+                              .educationCertPath.value.isNotEmpty) ||
+                      (type == 'experience' &&
+                          accountController.experienceCertPath.value.isNotEmpty)
+                  ? Text(
+                      path.basename(
+                        type == 'resume'
+                            ? accountController.resumePath.value
+                            : type == 'education'
+                                ? accountController.educationCertPath.value
+                                : accountController.experienceCertPath.value,
+                      )):  Text(
                       "Upload document",
                       style: TextStyle(
                           color: Colors.grey[400], fontWeight: FontWeight.w400),
-                    );
-            }),
-          ),
-        ),
+                    ),))
+        // InkWell(
+        //   onTap: () => showFileSourceBottomSheet(type, accountController),
+        //   child: Container(
+        //     height: 55,
+        //     alignment: Alignment.centerLeft,
+        //     padding: const EdgeInsets.only(top: 10, bottom: 10, left: 12),
+        //     decoration: BoxDecoration(
+        //       color: Colors.grey[200],
+        //       borderRadius: BorderRadius.circular(15),
+        //     ),
+        //     child: Obx(() {
+        //       String filePath = (type == 'resume')
+        //           ? accountController.resumePath.value
+        //           : (type == 'education')
+        //               ? accountController.educationCertPath.value
+        //               : accountController.experienceCertPath.value;
+
+        //       return filePath.isNotEmpty
+        //           ? Row(
+        //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //             children: [
+        //               Text(path.basename(filePath)),
+        //               IconButton(
+        //                 icon: Icon(Icons.close),
+        //                 onPressed: (){
+        //                   accountController.removeFile(type);
+        //                 },
+        //               ),
+        //             ],
+        //           )
+        //           : Text(
+        //               "Upload document",
+        //               style: TextStyle(
+        //                   color: Colors.grey[400], fontWeight: FontWeight.w400),
+        //             );
+        //     }),
+        //   ),
+        // ),
       ],
     ),
   );
@@ -2818,7 +2850,7 @@ class AccountSetup extends StatelessWidget {
             title: const Text('Upload from Camera'),
             onTap: () {
               Get.back();
-              controller.pickImageFromCamera(type);
+            //  controller.pickImageFromCamera(type);
             },
           ),
         ],

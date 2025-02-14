@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -74,7 +76,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http_parser/http_parser.dart';
+
 
 class WebService {
   static String baseUrl = APIConfig.urlsConfig();
@@ -150,14 +155,14 @@ class WebService {
         "user_type": 2,
         "id_proof_label": idProof,
         if (fcmToken != null) "fcm_token": fcmToken,
-        "country_code":countrycode,
-        "country":'india',
+        "country_code": countrycode,
+        "country": 'india',
       };
 
       var url = Uri.parse("${baseUrl}user/registerUser");
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
-       Logger().i(response.body);
+      Logger().i(response.body);
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         return RegisterModal.fromJson(result);
@@ -185,7 +190,7 @@ class WebService {
       var data = {
         "account_verification_token": accountverificationtoken,
         "otp": otp,
-       if (fcmToken != null) "fcm_token": fcmToken
+        if (fcmToken != null) "fcm_token": fcmToken
       };
       Logger().i(data);
 
@@ -266,7 +271,8 @@ class WebService {
     }
   }
 
-  static Future<getBatchListModel> fetchBatchList( Map<String, dynamic> batchData) async {
+  static Future<getBatchListModel> fetchBatchList(
+      Map<String, dynamic> batchData) async {
     final url = Uri.parse('${baseUrl}batch/getBatchList');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
@@ -384,12 +390,12 @@ class WebService {
     required Map<dynamic, dynamic> educationInfo,
     // required String roleId,
     //  required String roleTypeId,
-   required String resumePath ,
-   required String educationCertPath ,
-   required String experienceCertPath ,
+    required String resumePath,
+    required String educationCertPath,
+    required String experienceCertPath,
     required String latitude,
     required String longitude,
-     required String parentId,
+    required String parentId,
   }) async {
     var headers = {
       'Authorization': 'Bearer $token', // Pass the token for authorization
@@ -418,19 +424,20 @@ class WebService {
     //  request.fields['rolesTypeId'] = roleTypeId;
     request.fields['latitude'] = latitude;
     request.fields['longitude'] = longitude;
-     request.fields['parentId'] = parentId;
-     // Attach files if available
-  // if (resumePath != null && resumePath.isNotEmpty) {
-  //   request.files.add(await http.MultipartFile.fromPath('resume', resumePath));
-  // }
-  // if (educationCertPath != null && educationCertPath.isNotEmpty) {
-  //   request.files.add(await http.MultipartFile.fromPath(
-  //       'education_certificate', educationCertPath));
-  // }
-  // if (experienceCertPath != null && experienceCertPath.isNotEmpty) {
-  //   request.files.add(await http.MultipartFile.fromPath(
-  //       'experience_certificate', experienceCertPath));
-  // }
+    request.fields['parentId'] = parentId;
+    // Attach files if available
+    if (resumePath != null && resumePath.isNotEmpty) {
+      request.files
+          .add(await http.MultipartFile.fromPath('resume', resumePath,contentType: MediaType('image', 'jpeg')));
+    }
+    if (educationCertPath != null && educationCertPath.isNotEmpty) {
+      request.files.add(await http.MultipartFile.fromPath(
+          'education_certificate', educationCertPath,contentType: MediaType('image', 'jpeg')));
+    }
+    if (experienceCertPath != null && experienceCertPath.isNotEmpty) {
+      request.files.add(await http.MultipartFile.fromPath(
+          'experience_certificate', experienceCertPath,contentType: MediaType('image', 'jpeg')));
+    }
     request.headers.addAll(headers);
     Logger().i(request.fields);
     Logger().i(request.headers);
@@ -441,79 +448,140 @@ class WebService {
     return await request.send();
   }
 
-  static Future<http.StreamedResponse> submitAccountSetupEdit({
-    required String token,
-    required Map<dynamic, dynamic> personalInfo,
-    required Map<dynamic, dynamic> addressInfo,
-    required Map<dynamic, dynamic> educationInfo,
-    // required String roleId,
-    //  required String roleTypeId,
-   required String resumePath,
-   required String educationCertPath,
-   required String experienceCertPath,
-    required String latitude,
-    required String longitude,
-  }) async {
-    var headers = {
-      'Authorization': 'Bearer $token', // Pass the token for authorization
-      'Content-Type': 'application/json'
-    };
+  
 
-    var request =
-        http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
+  // static Future<http.StreamedResponse> submitAccountSetupEdit({
+  //   required String token,
+  //   required Map<dynamic, dynamic> personalInfo,
+  //   required Map<dynamic, dynamic> addressInfo,
+  //   required Map<dynamic, dynamic> educationInfo,
+  //   // required String roleId,
+  //   //  required String roleTypeId,
+  //   required String resumePath,
+  //   required String educationCertPath,
+  //   required String experienceCertPath,
+  //   required String latitude,
+  //   required String longitude,
+  //   required String idproof,
+  // }) async {
+  //   var headers = {
+  //     'Authorization': 'Bearer $token', // Pass the token for authorization
+  //     'Content-Type': 'application/json'
+  //   };
 
-    // Add personal info
-    request.fields['personal_info'] = jsonEncode(personalInfo);
+  //   var request =
+  //       http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
 
-    // Add address info
-    request.fields['permanent_address'] = jsonEncode(addressInfo);
+  //   // Add personal info
+  //   request.fields['personal_info'] = jsonEncode(personalInfo);
 
-    // Add education info
-    request.fields['education_info'] = jsonEncode(educationInfo);
+  //   // Add address info
+  //   request.fields['permanent_address'] = jsonEncode(addressInfo);
 
-    // Add other fields
-    request.fields['type'] = 'U';
-    //  request.fields['id_proof'] = '';
-     request.fields['resume'] = resumePath;
-     request.fields['education_certificate'] =educationCertPath;
-     request.fields['experience_certificate'] =experienceCertPath;
-    //  request.fields['rolesId'] = roleId;
-    //  request.fields['rolesTypeId'] = roleTypeId;
-    request.fields['latitude'] = latitude;
-    request.fields['longitude'] = longitude;
-    request.headers.addAll(headers);
-    Logger().i(request.fields);
+  //   // Add education info
+  //   request.fields['education_info'] = jsonEncode(educationInfo);
 
-    // Add files (if present)
-    // if (resumePath.isNotEmpty) {
-    //   request.files.add(await http.MultipartFile.fromPath('resume', resumePath));
-    // }
-    // if (educationCertPath.isNotEmpty) {
-    //   request.files.add(await http.MultipartFile.fromPath('education_certificate', educationCertPath));
-    // }
-    // if (experienceCertPath.isNotEmpty) {
-    //   request.files.add(await http.MultipartFile.fromPath('experience_certificate', experienceCertPath));
-    // }
-    Logger().i(request.headers);
-    Logger().i(personalInfo);
-    Logger().i(addressInfo);
-    Logger().i(educationInfo);
-    // Send the request
-    return await request.send();
+  //   // Add other fields
+  //   request.fields['type'] = 'U';
+  //   request.fields['latitude'] = latitude;
+  //   request.fields['longitude'] = longitude;
+  //    request.files.add(await http.MultipartFile.fromPath(
+  //         'id_proof', idproof));
+  //   request.headers.addAll(headers);
+  //   Logger().i(request.fields);
+
+  //   // Add files (if present)
+  //   if (resumePath != null && resumePath.isNotEmpty) {
+  //     request.files
+  //         .add(await http.MultipartFile.fromPath('resume', resumePath,contentType: MediaType('image', 'jpg')));
+  //   }
+  //   if (educationCertPath != null && educationCertPath.isNotEmpty) {
+  //     request.files.add(await http.MultipartFile.fromPath(
+  //         'education_certificate', educationCertPath,contentType: MediaType('image', 'jpg')));
+  //   }
+  //   if (experienceCertPath != null && experienceCertPath.isNotEmpty) {
+  //     request.files.add(await http.MultipartFile.fromPath(
+  //         'experience_certificate', experienceCertPath,contentType: MediaType('image', 'jpg')));
+  //   }
+  //   request.files.add(await http.MultipartFile.fromPath(
+  //         'id_proof', idproof,contentType: MediaType('image', 'jpeg')));
+  //   Logger().i(request.headers);
+  //   Logger().i(personalInfo);
+  //   Logger().i(addressInfo);
+  //   Logger().i(educationInfo);
+  //   // Send the request
+  //   return await request.send();
+  // }
+static Future<http.StreamedResponse> submitAccountSetupEdit({
+  required String token,
+  required Map<dynamic, dynamic> personalInfo,
+  required Map<dynamic, dynamic> addressInfo,
+  required Map<dynamic, dynamic> educationInfo,
+  required String resumePath,
+  required String educationCertPath,
+  required String experienceCertPath,
+  required String latitude,
+  required String longitude,
+  required String idproof,
+}) async {
+  var headers = {
+    'Authorization': 'Bearer $token',
+    'Content-Type': 'application/json'
+  };
+
+  var request =
+      http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
+
+  // Add form fields
+  request.fields['personal_info'] = jsonEncode(personalInfo);
+  request.fields['permanent_address'] = jsonEncode(addressInfo);
+  request.fields['education_info'] = jsonEncode(educationInfo);
+  request.fields['type'] = 'U';
+  request.fields['latitude'] = latitude;
+  request.fields['longitude'] = longitude;
+
+  request.headers.addAll(headers);
+
+  // Function to handle file uploads
+  Future<void> addFile(String fieldName, String filePath) async {
+    if (filePath.isNotEmpty && !filePath.startsWith('http')) { 
+      // If filePath is NOT a URL, it's a new file → upload it
+      request.files.add(await http.MultipartFile.fromPath(
+        fieldName,
+        filePath,
+        contentType: MediaType('image', 'jpg'),
+      ));
+    } else {
+      // If filePath is a URL, just send the existing file path in fields
+      request.fields[fieldName] = filePath;
+    }
   }
+
+  // Upload only if it's a new file, otherwise send the existing URL
+  await addFile('id_proof', idproof);
+  await addFile('resume', resumePath);
+  await addFile('education_certificate', educationCertPath);
+  await addFile('experience_certificate', experienceCertPath);
+
+  Logger().i(request.fields);
+  Logger().i(request.headers);
+
+  return await request.send();
+}
+
 
   static Future<UserProfileM?> fetchUserProfile() async {
     final box = GetStorage(); // Get an instance of GetStorage
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
     final rolename = prefs.getString('Rolename') ?? "";
-   final parentToken = prefs.getString('PrentToken') ?? "";
+    final parentToken = prefs.getString('PrentToken') ?? "";
     String lastToken = "";
-         if(rolename=='Parent'){
-           lastToken = parentToken;
-         }else{
-          lastToken = token;
-         }
+    if (rolename == 'Parent') {
+      lastToken = parentToken;
+    } else {
+      lastToken = token;
+    }
     try {
       var headers = {'Authorization': "Bearer $lastToken"};
       var url = Uri.parse("${baseUrl}user/getUserProfile");
@@ -522,14 +590,13 @@ class WebService {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         return UserProfileM.fromJson(data);
-      } 
-      else if (response.statusCode == 401) {
-      // Clear session data
-      await prefs.clear();
-      // Navigate to the login screen
-      Get.to(() => LoginSignUp());
-      return null;
-    }else {
+      } else if (response.statusCode == 401) {
+        // Clear session data
+        await prefs.clear();
+        // Navigate to the login screen
+        Get.to(() => LoginSignUp());
+        return null;
+      } else {
         return null;
       }
     } catch (e) {
@@ -538,14 +605,13 @@ class WebService {
   }
 
   static Future<http.StreamedResponse> submitTuteeAccountSetup({
-     required  String parentId,
+    required String parentId,
     required String token,
     required Map<dynamic, dynamic> personalInfo,
     required Map<dynamic, dynamic> addressInfo,
     required Map<dynamic, dynamic> educationInfo,
     required String latitude,
     required String longitude,
-    
   }) async {
     var headers = {
       'Authorization': 'Bearer $token', // Pass the token for authorization
@@ -555,7 +621,7 @@ class WebService {
 
     var request =
         http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
-      Logger().i(request);
+    Logger().i(request);
     // Add personal info
     request.fields['personal_info'] = jsonEncode(personalInfo);
 
@@ -579,13 +645,14 @@ class WebService {
     required Map<dynamic, dynamic> educationInfo,
     required String latitude,
     required String longitude,
+     required String idproof,
   }) async {
     var headers = {
       'Authorization': 'Bearer $token', // Pass the token for authorization
-      'Content-Type': 'application/json'
+      //'Content-Type': 'application/json'
     };
-    Logger().i(personalInfo);
-
+      Logger().i(token);
+   
     var request =
         http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
 
@@ -600,7 +667,10 @@ class WebService {
     request.fields['type'] = 'U';
     request.fields['latitude'] = latitude;
     request.fields['longitude'] = longitude;
+    request.files.add(await http.MultipartFile.fromPath(
+          'id_proof', idproof,contentType: MediaType('image', 'jpeg')));
     request.headers.addAll(headers);
+    Logger().i(request.fields);
     return await request.send();
   }
 
@@ -663,19 +733,23 @@ class WebService {
   }
 
   static Future<getAttendancePunchInModel?> getAttendancePunchOut(
-      BuildContext context,String batchId) async {
+      BuildContext context, String batchId) async {
     final url = Uri.parse('${baseUrl}attendane/punchOut');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
-     var data = { "batchId": batchId};
+    var data = {"batchId": batchId};
     final token = prefs.getString('Token') ?? "";
     var headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
     try {
-      var response = await http.post(url, headers: headers,body:jsonEncode(data), );
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: jsonEncode(data),
+      );
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         return getAttendancePunchInModel.fromJson(result);
@@ -710,8 +784,7 @@ class WebService {
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
       return getGroupedEnrollmentByBatch.fromJson(result);
-    }
-     else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401) {
       // Clear session data
       await prefs.clear();
       // Navigate to the login screen
@@ -808,7 +881,25 @@ class WebService {
       if (response.statusCode == 200) {
         return AddClassDataModel.fromJson(json.decode(response.body));
       } else {
-        return null;
+        var result = AddClassDataModel.fromJson(json.decode(response.body));
+        Get.snackbar(
+          result.message.toString(),
+          icon: const Icon(Icons.info, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                result.message.toString(),
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+        // Either return a default instance or throw an error
+        return AddClassDataModel(message: result.message);
       }
     } catch (e) {
       return null;
@@ -957,8 +1048,7 @@ class WebService {
 
     if (response.statusCode == 200) {
       return getQrcodeModel.fromJson(json.decode(response.body));
-    }
-     else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401) {
       // Clear session data
       await prefs.clear();
       // Navigate to the login screen
@@ -1216,23 +1306,24 @@ class WebService {
       if (response.statusCode == 200) {
         return UpdateEnrollmentStatusModel.fromJson(json.decode(response.body));
       } else {
-        var result = UpdateEnrollmentStatusModel.fromJson(json.decode(response.body));
-    Get.snackbar(
+        var result =
+            UpdateEnrollmentStatusModel.fromJson(json.decode(response.body));
+        Get.snackbar(
           result.message.toString(),
-  icon: const Icon(Icons.info, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  shouldIconPulse: false,
-  messageText:  SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        result.message.toString(),
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
+          icon: const Icon(Icons.info, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                result.message.toString(),
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
         return null;
       }
     } catch (e) {
@@ -1294,6 +1385,7 @@ class WebService {
   //     //  throw Exception('Failed to fetch course category list');
   //   }
   // }
+
   static Future<getHomeDashboardTutorModel> fetchHomeDashboardList() async {
     try {
       final url = Uri.parse('${baseUrl}home/getHomeDashboardTutor');
@@ -1371,14 +1463,13 @@ class WebService {
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
       return getdashboardYearflowModel.fromJson(result);
-    }  else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401) {
       // Clear session data
       await prefs.clear();
       // Navigate to the login screen
       Get.to(() => LoginSignUp());
       return null;
-    }
-    else {
+    } else {
       Map<String, dynamic> result = jsonDecode(response.body);
       // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
       return null;
@@ -1386,47 +1477,46 @@ class WebService {
   }
 
   static Future<deleteBatchDataModel> deleteBatch(
-    Map<String, dynamic> batchData) async {
-  final url = Uri.parse('${baseUrl}batch/deleteBatch');
-  
-  // Retrieve the token from SharedPreferences
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  final token = prefs.getString('Token') ?? "";
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse('${baseUrl}batch/deleteBatch');
 
-  final response = await http.post(
-    url,
-    body: json.encode(batchData),
-    headers: {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json',
-    },
-  );
+    // Retrieve the token from SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
 
-  if (response.statusCode == 200) {
-    return deleteBatchDataModel.fromJson(json.decode(response.body));
-  } else {
-    var result = deleteBatchDataModel.fromJson(json.decode(response.body));
-    Get.snackbar(
-          result.message.toString(),
-  icon: const Icon(Icons.info, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  shouldIconPulse: false,
-  messageText:  SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
+    final response = await http.post(
+      url,
+      body: json.encode(batchData),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return deleteBatchDataModel.fromJson(json.decode(response.body));
+    } else {
+      var result = deleteBatchDataModel.fromJson(json.decode(response.body));
+      Get.snackbar(
         result.message.toString(),
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
-    // Either return a default instance or throw an error
-    return deleteBatchDataModel(message: result.message); 
+        icon: const Icon(Icons.info, color: Colors.white, size: 40),
+        colorText: Colors.white,
+        backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        shouldIconPulse: false,
+        messageText: SizedBox(
+          height: 40, // Set desired height here
+          child: Center(
+            child: Text(
+              result.message.toString(),
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        ),
+      );
+      // Either return a default instance or throw an error
+      return deleteBatchDataModel(message: result.message);
+    }
   }
-}
-
 
   static Future<deleteBatchDataModel> deleteCourse(
       Map<String, dynamic> batchData) async {
@@ -1448,7 +1538,7 @@ class WebService {
       return deleteBatchDataModel.fromJson(json.decode(response.body));
     } else {
       var result = deleteBatchDataModel.fromJson(json.decode(response.body));
-        // Get.snackbar(result.message.toString());
+      // Get.snackbar(result.message.toString());
       throw Exception(result.message.toString());
     }
   }
@@ -1460,15 +1550,15 @@ class WebService {
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
-        final token = prefs.getString('Token') ?? "";
+    final token = prefs.getString('Token') ?? "";
     final rolename = prefs.getString('Rolename') ?? "";
-   final parentToken = prefs.getString('PrentToken') ?? "";
+    final parentToken = prefs.getString('PrentToken') ?? "";
     String lastToken = "";
-         if(rolename=='Parent'){
-           lastToken = parentToken;
-         }else{
-          lastToken = token;
-         }
+    if (rolename == 'Parent') {
+      lastToken = parentToken;
+    } else {
+      lastToken = token;
+    }
     // final token = prefs.getString('Token') ?? "";
     try {
       final response = await http.post(
@@ -1562,7 +1652,25 @@ class WebService {
       if (response.statusCode == 200) {
         return AddHolidayModel.fromJson(json.decode(response.body));
       } else {
-        return null;
+        var result = AddHolidayModel.fromJson(json.decode(response.body));
+        Get.snackbar(
+          result.message.toString(),
+          icon: const Icon(Icons.info, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                result.message.toString(),
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+        // Either return a default instance or throw an error
+        return AddHolidayModel(message: result.message);
       }
     } catch (e) {
       return null;
@@ -1682,7 +1790,7 @@ class WebService {
         body: json.encode(batchData),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer $token',                                                             
         },
       );
       if (response.statusCode == 200) {
@@ -1863,7 +1971,25 @@ class WebService {
       if (response.statusCode == 200) {
         return addAnnouncementModel.fromJson(json.decode(response.body));
       } else {
-        return null;
+        var result = addAnnouncementModel.fromJson(json.decode(response.body));
+      Get.snackbar(
+        result.message.toString(),
+        icon: const Icon(Icons.info, color: Colors.white, size: 40),
+        colorText: Colors.white,
+        backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        shouldIconPulse: false,
+        messageText: SizedBox(
+          height: 40, // Set desired height here
+          child: Center(
+            child: Text(
+              result.message ?? 'Failed to add announcement',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        ),
+      );
+      // Either return a default instance or throw an error
+      return addAnnouncementModel(message: result.message);
       }
     } catch (e) {
       return null;
@@ -1874,28 +2000,28 @@ class WebService {
       String identifiers, BuildContext context) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-       final token = prefs.getString('Token') ?? "";
-    final rolename = prefs.getString('Rolename') ?? "";
-   final parentToken = prefs.getString('PrentToken') ?? "";
-    String lastToken = "";
-         if(rolename=='Parent'){
-           lastToken = parentToken;
-         }else{
-          lastToken = token;
-         }
-     // final token = prefs.getString('PrentToken') ?? "";
+      final token = prefs.getString('Token') ?? "";
+      final rolename = prefs.getString('Rolename') ?? "";
+      final parentToken = prefs.getString('PrentToken') ?? "";
+      String lastToken = "";
+      if (rolename == 'Parent') {
+        lastToken = parentToken;
+      } else {
+        lastToken = token;
+      }
+      // final token = prefs.getString('PrentToken') ?? "";
       var headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $lastToken',
       };
       var data = {"phone_number": identifiers};
       var url = Uri.parse("${baseUrl}user/generateInvitationLink");
-        
+
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
       Logger().i(response.bodyBytes);
       Logger().i(response.body);
-       Logger().i("gEDGMmbpkoWDRB $token");
+      Logger().i("gEDGMmbpkoWDRB $token");
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         return parentLoginModal.fromJson(result);
@@ -1908,7 +2034,7 @@ class WebService {
         return null;
       }
     } catch (e) {
-       Logger().e(e);
+      Logger().e(e);
       return null;
     }
   }
@@ -1968,7 +2094,7 @@ class WebService {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       };
-     Logger().i("fafgnkanfgaklj ${token?? ''}");
+      Logger().i("fafgnkanfgaklj ${token ?? ''}");
       var data = {
         "first_name": firstName,
         "last_name": lastName,
@@ -2128,7 +2254,7 @@ class WebService {
       String tutorId,
       String batchId,
       String courseId,
-       String star,
+      String star,
       List<String> subCategoryId,
       String? reviews) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -2141,7 +2267,7 @@ class WebService {
       "tutorId": tutorId,
       "batchId": batchId,
       "courseId": courseId,
-       "star": star,
+      "star": star,
       "details": subCategoryId,
       "comments": reviews
     });
@@ -2228,19 +2354,20 @@ class WebService {
     }
   }
 
-  static Future<GetRatingDashboardListModel? > getMyRatings() async {
+  static Future<GetRatingDashboardListModel?> getMyRatings() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var headers = {'Authorization': 'Bearer ${prefs.getString('Token')}'};
     print('response================>${headers}');
 
     try {
-      final response = await http.post(Uri.parse('${baseUrl}rating/getRatingDashboardList'),
+      final response = await http.post(
+          Uri.parse('${baseUrl}rating/getRatingDashboardList'),
           headers: headers);
 
       if (response.statusCode == 200) {
         print('response================>${response.body}');
         final Map<String, dynamic> responseData = json.decode(response.body);
-        return GetRatingDashboardListModel .fromJson(responseData);
+        return GetRatingDashboardListModel.fromJson(responseData);
       } else {
         print('response================error');
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -2261,10 +2388,7 @@ class WebService {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var headers = {'Content-Type': 'application/json'};
-      var data = {
-        "idToken": idToken,
-        "type": type
-      };
+      var data = {"idToken": idToken, "type": type};
       Logger().i(data);
 
       var url = Uri.parse("${baseUrl}user/googleSignIn");
@@ -2289,11 +2413,14 @@ class WebService {
     }
   }
 
-   static Future<PhoneNumberVerifiedModel?> phoneNumberVerified(
+  static Future<PhoneNumberVerifiedModel?> phoneNumberVerified(
       String identifiers, BuildContext context) async {
     try {
-       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var headers = {'Authorization': 'Bearer ${prefs.getString('Token')}','Content-Type': 'application/json'};
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var headers = {
+        'Authorization': 'Bearer ${prefs.getString('Token')}',
+        'Content-Type': 'application/json'
+      };
       var data = {"phone_number": identifiers};
       var url = Uri.parse("${baseUrl}user/phoneNumberVerified");
       var response =
@@ -2317,7 +2444,6 @@ class WebService {
     }
   }
 
-
   static Future<GetBannerListModel?> fetchGuestUserBannerList() async {
     final url = Uri.parse('${baseUrl}guest/getBannerList');
 
@@ -2336,7 +2462,7 @@ class WebService {
     }
   }
 
-static Future<GetTestimonialsModel?> fetchGuestUserTestimonialsList() async {
+  static Future<GetTestimonialsModel?> fetchGuestUserTestimonialsList() async {
     final url = Uri.parse('${baseUrl}guest/getTestimonials');
 
     final response = await http.post(
@@ -2356,7 +2482,8 @@ static Future<GetTestimonialsModel?> fetchGuestUserTestimonialsList() async {
 
   static Future<GetGroupedEnrollmentByHostelModel?>
       fetchGroupedEnrollmentByHostel() async {
-    final url = Uri.parse('${baseUrl}hostel_attendance/getGroupedEnrollmentByHostel');
+    final url =
+        Uri.parse('${baseUrl}hostel_attendance/getGroupedEnrollmentByHostel');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -2372,8 +2499,7 @@ static Future<GetTestimonialsModel?> fetchGuestUserTestimonialsList() async {
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
       return GetGroupedEnrollmentByHostelModel.fromJson(result);
-    }
-     else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401) {
       // Clear session data
       await prefs.clear();
       // Navigate to the login screen
@@ -2385,7 +2511,6 @@ static Future<GetTestimonialsModel?> fetchGuestUserTestimonialsList() async {
       return null;
     }
   }
-
 
   static Future<List<String>> fetchHostelcategory() async {
     final url = Uri.parse('${baseUrl}hostel/getHostelCategoryList');
@@ -2510,11 +2635,50 @@ static Future<GetTestimonialsModel?> fetchGuestUserTestimonialsList() async {
       Logger().i(response.body);
 
       if (response.statusCode == 200) {
-        return GetHostelEnrollmentListModel.fromJson(json.decode(response.body));
+        return GetHostelEnrollmentListModel.fromJson(
+            json.decode(response.body));
       } else {
         throw Exception('Failed to load Enquir list');
       }
     } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<getGroupedEnrollmentByAttendanceModel?>
+      fetchgetGroupedEnrollmentByAttendance(
+          String batchId, String selectedDate, selectedMonth, type) async {
+    final url = Uri.parse(
+        '${baseUrl}hostel_attendance/getGroupedEnrollmentByAttendanceTutor');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var data = {
+      "date": selectedDate,
+      "batchId": batchId,
+      "month": selectedMonth,
+      "fromDate": '',
+      "toDate": '',
+      "roleType": type
+    };
+    print(data);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(data),
+    );
+
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body);
+      Logger().i(result);
+      return getGroupedEnrollmentByAttendanceModel.fromJson(result);
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
       return null;
     }
   }

@@ -186,8 +186,8 @@ void addAnnoument(BuildContext context) async {
             'Announcement Posted Successfully! Your announcement has been sent to the tutees',
           );
         } else {
-          SnackBarUtils.showErrorSnackBar(
-              context, response?.message ?? 'Failed to add announcement');
+          // SnackBarUtils.showErrorSnackBar(
+          //     context, response?.message ?? 'Failed to add announcement');
         }
       } else {
         SnackBarUtils.showErrorSnackBar(context, 'Course or Batch not found');
