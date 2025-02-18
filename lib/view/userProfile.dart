@@ -22,6 +22,7 @@ import 'package:hovee_attendence/widget/addteacher_dropdown.dart';
 import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:hovee_attendence/widget/custom_textfield.dart';
 import 'package:hovee_attendence/widget/fileUpload.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 
@@ -37,6 +38,7 @@ class UserProfile extends StatelessWidget {
     //   DateTime.now().subtract(const Duration(days: 365 * 18)),
     // );
     final splashController = Get.find<SplashController>();
+    final screen_height = MediaQuery.of(context).size.height;
     return Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBarHeader(
@@ -59,29 +61,93 @@ class UserProfile extends StatelessWidget {
                   height: 150,
                   width: MediaQuery.sizeOf(context).width,
                   color: Colors.purple,
-                  child: const Column(
+                  child:  Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Adjust as per your design
-                      SizedBox(
-                        height: 10,
+                      const SizedBox(
+                        height: 8,
                       ),
-                      CircleAvatar(
-                        radius: 42,
-                        // Optional: Set a background color
-                        //backgroundColor: Colors.grey[200],
-                        child: Icon(
-                          Icons
-                              .person, // Correct usage: provide IconData directly
-                          size: 36, // Adjust the icon size as needed
-                          color: Colors.black, // Set the icon color
+                     
+                                             Container(
+                        //color: Colors.white,
+                        height: screen_height * 0.12,
+                        child: Center(
+                          child: Stack(
+                            children: [
+                              CircleAvatar(
+                                  radius: 85,
+                  backgroundColor:Colors.grey.withOpacity(0.75),
+
+                                child: CircleAvatar(
+                                  backgroundColor:
+                                      AppConstants.secondaryColor.withOpacity(0.8),
+                                  radius: 50,
+                                  backgroundImage: accountController.image.value != null
+                                      ? FileImage(accountController.image.value!) as ImageProvider
+                                      : null,
+                                  child: accountController.image.value == null
+                                      ? (accountController.userProfileResponse.value.data!.profileUrl !=
+                                                  null &&
+                                              accountController.userProfileResponse.value.data!.profileUrl !.isNotEmpty
+                                          ? CircleAvatar(
+                                              radius: 50,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(0),
+                                                child: Hero(
+                                                  tag: 'profile-hero',
+                                                  child: Image.network(
+                                                      accountController.userProfileResponse.value.data!.profileUrl ! ??
+                                                          "",
+                                                          fit: BoxFit.cover,),
+                                                ),
+                                              ),
+                                            )
+                                          : Icon(
+                                              Icons.person,
+                                              color: Colors.white,
+                                            ))
+                                      : null,
+                                ),
+                              ),
+                              if (accountController.isNonEdit.value == false)
+                                Positioned(
+                                  bottom: 0,
+                                  right: 0,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      
+                                       accountController. changeDp++;
+                                     
+                                      getImageSource(context);
+                                    },
+                                    child: Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: AppConstants.primaryColor,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Icon(
+                                        Icons.add_a_photo,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
+             const SizedBox(
+                        height: 10,
+                      ),
               Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.14),
@@ -180,7 +246,10 @@ class UserProfile extends StatelessWidget {
                                       "Parent" &&
                                   accountController.userProfileResponse.value
                                           .data!.rolesId!.roleName !=
-                                      "Hosteller")
+                                      "Hosteller" &&
+                                  accountController.userProfileResponse.value
+                                          .data!.rolesId!.roleName !=
+                                      "Hostel")
                                 Tab(
                                   text: accountController.userProfileResponse
                                               .value.data!.rolesId!.roleName! ==
@@ -1331,11 +1400,11 @@ class UserProfile extends StatelessWidget {
                 ),
               ),
               child: accountController.isLoading.value
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator())
                   : Center(
                       child: Text(
                         accountController.isNonEdit.value ? 'Edit' : 'Update',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.white),
@@ -1956,13 +2025,19 @@ class UserProfile extends StatelessWidget {
         'Tutor') {
       accountController.storePersonalInfo(context);
       accountController.storeAddressInfo(context,
-          accountController.userProfileResponse.value.data!.rolesId!.roleName!);
+          accountController.userProfileResponse.value.data!.rolesId!.roleName!,accountController.userProfileResponse.value.data!.rolesId!.id ?? '', accountController.userProfileResponse.value.data!.rolesTypeId ?? '',accountController.userProfileResponse.value.data!.rolesId!.roleName ?? '');
       accountController.storeEducationInfo(context);
-    } else {
+    } else if(accountController.userProfileResponse.value.data!.rolesId!.roleName ==
+        'Tutee') {
       accountController.storePersonalInfo(context);
       accountController.storeAddressInfo(context,
-          accountController.userProfileResponse.value.data!.rolesId!.roleName!);
+          accountController.userProfileResponse.value.data!.rolesId!.roleName!,accountController.userProfileResponse.value.data!.rolesId!.id ?? '', accountController.userProfileResponse.value.data!.rolesTypeId ?? '',accountController.userProfileResponse.value.data!.rolesId!.roleName ?? '');
       accountController.storeTuteeeducationInfo(context);
+    }
+    else{
+      accountController.storePersonalInfo(context);
+      accountController.storeAddressInfoParent(context,
+          accountController.userProfileResponse.value.data!.rolesId!.roleName!,accountController.userProfileResponse.value.data!.rolesId!.id ?? '', accountController.userProfileResponse.value.data!.rolesTypeId ?? '',accountController.userProfileResponse.value.data!.rolesId!.roleName ?? '');
     }
   }
 
@@ -1973,7 +2048,7 @@ class UserProfile extends StatelessWidget {
         return AlertDialog(
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
-          title: Text('Update phone number'),
+          title: const Text('Update phone number'),
           content: CustomTextField(
               placeholder: 'enter phone number',
               title: 'Please enter the new number',
@@ -1989,7 +2064,7 @@ class UserProfile extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
                     color: AppConstants.primaryColor,
                     borderRadius: BorderRadius.circular(8)),
@@ -2002,7 +2077,7 @@ class UserProfile extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             InkWell(
@@ -2020,7 +2095,7 @@ class UserProfile extends StatelessWidget {
                 }
               },
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
                     color: AppConstants.secondaryColor,
                     borderRadius: BorderRadius.circular(8)),
@@ -2068,6 +2143,44 @@ class UserProfile extends StatelessWidget {
         },
         focusNode: accountController.focusNode,
       ),
+    );
+  }
+
+    getImageSource(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Choose from Gallery'),
+                onTap: () {
+                 accountController.getImage(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Take a Photo'),
+                onTap: () {
+                  accountController.getImage(ImageSource.camera);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text('Remove Profile Picture'),
+                onTap: () {
+                 accountController.removeProfilePicture();
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

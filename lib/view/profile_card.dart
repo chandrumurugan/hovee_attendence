@@ -79,16 +79,21 @@ class HomePageHeader extends StatelessWidget {
                                 duration: 300.ms,
                               ),
                             ],
-                            child: const CircleAvatar(
+                            child:  CircleAvatar(
                               radius: 35,
                               // Optional: Set a background color
                               //backgroundColor: Colors.grey[200],
-                              child: Icon(
+                              child: userProfileData.userProfileResponse.value.data!.profileUrl ==
+                                                  null &&
+                                              userProfileData.userProfileResponse.value.data!.profileUrl!.isEmpty?
+                               Icon(
                                 Icons
                                     .person, // Correct usage: provide IconData directly
                                 size: 36, // Adjust the icon size as needed
                                 color: Colors.black, // Set the icon color
-                              ),
+                              ):Image.network(
+                                                      userProfileData.userProfileResponse.value.data!.profileUrl ??
+                                                          "",fit: BoxFit.cover,),
                             ),
                           ),
                           const SizedBox(

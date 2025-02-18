@@ -73,11 +73,14 @@ class LeaveListContainer extends StatelessWidget {
                                       fontSize: 14,
                                       color: Colors.black)):const SizedBox.shrink(),
                               const SizedBox(height: 4),
-                              Text('Date: $formattedDate - $formattedDate2',
-                                  style: GoogleFonts.nunito(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 14,
-                                      color: Colors.black)),
+                              Container(
+                                width: MediaQuery.of(context).size.width*0.4,
+                                child: Text('Date: ${leave.fromDate!} - ${leave.endDate!}',
+                                    style: GoogleFonts.nunito(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                        color: Colors.black)),
+                              ),
                                       const SizedBox(height: 4),
                                       leave.batchDetails!=null?
                                        Text(

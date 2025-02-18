@@ -28,6 +28,7 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 // import 'package:hovee_attendence/services/webServices.dart';
 
 class UserProfileController extends GetxController
@@ -143,6 +144,14 @@ class UserProfileController extends GetxController
      var isFirstTime = true.obs;
 
      final updatePhController = TextEditingController();
+
+     var image = Rx<File?>(null);
+     final ImagePicker picker = ImagePicker();
+
+     String? profileImage;
+
+     int changeDp = 0;
+     File? _byteData;
 
   void setHighestQualification(String value) =>
       highestQualification.value = value;
@@ -534,6 +543,7 @@ class UserProfileController extends GetxController
       roleTypeId.value =fetchProfile.data!.rolesTypeId!;
       Logger().i( "roleId ${fetchProfile.data!.rolesId!.id!}");
       Logger().i( "roleTypeId ${fetchProfile.data!.rolesTypeId}");
+       profileImage = fetchProfile.data!.profileUrl ?? '';
         isLoading(false);
       } else {
         // SnackBarUtils.showErrorSnackBar(context, message)
@@ -640,7 +650,7 @@ class UserProfileController extends GetxController
   }
 
   void storeAddressInfo(BuildContext context, String selectedRoleTypeName,
-      ) {
+      String roleId, String roleTypeId, selectedRole) {
     if (validateAddressInfo(context)) {
       String address = "${address1Controller.text}, "
           "${address2Controller.text}, "
@@ -664,7 +674,35 @@ class UserProfileController extends GetxController
       // selectedRoleTypeName != 'I Run an Institute'
            //tabController.animateTo(2);
          // : Container();
+         Logger().i("addressInfo ${addressInfo.value}");
+    }
+  }
+
+  void storeAddressInfoParent(BuildContext context, String selectedRoleTypeName,
+      String roleId, String roleTypeId, selectedRole) {
+    if (validateAddressInfo(context)) {
+      String address = "${address1Controller.text}, "
+          "${address2Controller.text}, "
+          "${cityController.text}, "
+          "${stateController.text}, "
+          "${countryController.text} - "
+          "${pincodesController.text}";
+      addressInfo.value = {
+        "door_no": address1Controller.text,
+        "street": address2Controller.text,
+        "city": cityController.text,
+        "state": stateController.text,
+        "country": countryController.text,
+        "pincode": pincodesController.text,
+        "phone_number": phController.text,
+        "address": address,
+      };
          Logger().i(addressInfo.value);
+         if (selectedRole == 'Parent') {
+        submitSetup(context,roleId, roleTypeId, selectedRole);
+      } else if (selectedRole == 'Hosteller') {
+        submitSetup(context,roleId, roleTypeId, selectedRole, );
+      }  
     }
   }
 
@@ -690,7 +728,8 @@ class UserProfileController extends GetxController
           educationCertPath: educationCertPath.value,
           experienceCertPath: experienceCertPath.value,
           latitude: latitude.toString(),
-          longitude: longitude.toString(), idproof: pickedFile!.path);
+          longitude: longitude.toString(), idproof: pickedFile!.path,
+          profileImage:  _byteData!.path);
 
       // Handle the response
       if (response.statusCode == 200) {
@@ -778,7 +817,7 @@ print('Wow ID: $wowId');
           "select_subject": subjectController.value,
         };
          Logger().i(tuteEducationInfo.value);
-        submitTuteeAccountSetup( context);
+        submitTuteeAccountSetup(context);
       }
     }
   }
@@ -875,13 +914,15 @@ print('Wow ID: $wowId');
           educationInfo: tuteEducationInfo.value,
           latitude: latitude.toString(),
           longitude: longitude.toString(),
-          idproof: pickedFile!.path
+          idproof: pickedFile!.path,
+         profileImage:  _byteData!.path
           );
       if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
         print(responseBody);
         isNonEdit.value=true;
         update();
+        isLoading.value = false;
          Get.snackbar(
           'Profile updated successfully',
           icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
@@ -920,9 +961,11 @@ print('Wow ID: $wowId');
         //     ));
         //Get.offAll(() => TutorHome());
         // Handle success (e.g., show a success message)
+       
       } else {
         Logger().e(response.stream.bytesToString());
         print(response.statusCode);
+        isLoading.value = false;
         // Handle failure (e.g., show an error message)
       }
     } catch (e) {
@@ -1046,7 +1089,7 @@ void setSubject(String value) {
   }
 
    bool validateLogin(BuildContext context) {
-    String input = phController.text.trim();
+    String input = updatePhController.text.trim();
 
     if (input.isEmpty) {
       SnackBarUtils.showErrorSnackBar(
@@ -1170,4 +1213,101 @@ void onMapCreated(GoogleMapController controller) {
               isNonEdit.value = false;
               update()  ;
   }
+
+  Future<void> submitSetup(
+     BuildContext context,String roleId, String roleTypeId,
+      String selectedRole) async {
+    final box = GetStorage(); // Get an instance of GetStorage
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
+    latitude = prefs.getDouble('latitude');
+    longitude = prefs.getDouble('longitude');
+    isLoading.value = true;
+    try {
+      // Call the API using the WebService
+      http.StreamedResponse response = await WebService.submitSetupEdit(
+          token: token, // Add the actual token here
+          personalInfo: personalInfo.value,
+          addressInfo: addressInfo.value,
+          latitude: latitude.toString(),
+          longitude: longitude.toString(), idproof: pickedFile!.path);
+
+      // Handle the response
+      if (response.statusCode == 200) {
+        String responseBody = await response.stream.bytesToString();
+        final firstName = personalInfo.value['first_name'] ?? '';
+      final lastName = personalInfo.value['last_name'] ?? '';
+      
+      String? wowId =prefs.getString("WowId") ?? "";
+
+ LoginData loginData = LoginData(
+            firstName: firstName,
+            lastName: lastName,
+            wowId: wowId,
+          );
+         await prefs.setString('userData', jsonEncode(loginData!.toJson()));
+         print('Wow ID: ${loginData!.toJson().toString()}');
+// Print or use the `wowId`
+print('Wow ID: $wowId');
+     isNonEdit.value=true;
+     update();
+ Get.snackbar(
+          'Profile updated successfully',
+          icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: const SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                'Profile updated successfully',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print('Error occurred: $e');
+      // Handle any exception (e.g., network failure)
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> getImage(ImageSource source) async {
+    XFile? pickedFile = await picker.pickImage(source: source);
+
+   
+      if (pickedFile != null) {
+        image.value = File(pickedFile.path);
+      }
+      profileImage = "";
+   
+    _byteData = image.value!.path.isNotEmpty ? File(image.value! .path) : null;
+      image.value = _byteData;
+      update()  ;
+      profileImage = "";
+      CustomCacheManager.instance.emptyCache();
+  }
+
+   removeProfilePicture() async {
+      image.value = null;
+      profileImage = "";
+    // ;;await ;
+  }
+}
+
+class CustomCacheManager {
+  static final instance = CacheManager(
+    Config(
+      'customCacheKey',
+      stalePeriod: const Duration(days: 1),
+      maxNrOfCacheObjects: 20,
+    ),
+  );
 }

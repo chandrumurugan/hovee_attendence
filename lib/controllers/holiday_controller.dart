@@ -147,10 +147,26 @@ class HolidayController extends GetxController {
           Get.back();
           onInit();
           _clearData();
-          SnackBarUtils.showSuccessSnackBar(
-            context,
-            'Holiday Posted Successfully! Your tutees will be notified about the holidays.',
-          );
+          Get.snackbar(
+          'Holiday Posted Successfully.',
+          icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                'Holiday Posted Successfully! Your tutees will be notified about the holidays.',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+          // SnackBarUtils.showSuccessSnackBar(
+          //   context,
+          //   'Holiday Posted Successfully! Your tutees will be notified about the holidays.',
+          // );
         } else {
           // Get.snackbar(
           //   response?.message ?? '',

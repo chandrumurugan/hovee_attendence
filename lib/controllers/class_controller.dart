@@ -358,6 +358,7 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
           update();
           // Get.snackbar( 'Class added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           // onInit();
+          fetchCourseList();
           status=="Public"?
           fetchClassesList("Public")
           :fetchClassesList("Draft");

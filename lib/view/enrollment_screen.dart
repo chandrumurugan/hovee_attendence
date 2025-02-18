@@ -152,7 +152,7 @@ class EnrollmentScreen extends StatelessWidget {
                               },
                               onPreviewCallbackReject: () {
                                 controller.updateEnrollment(enrollmentList.sId!,
-                                    'Rejected', enrollmentList.enquiryCode!);
+                                    'Rejected', attendanceCourseListController.otpController.text);
                               },
                             ));
                           },
@@ -294,8 +294,7 @@ class EnrollmentScreen extends StatelessWidget {
                                                   controller.updateEnrollment(
                                                       enrollmentList.sId!,
                                                       'Rejected',
-                                                      enrollmentList
-                                                          .enquiryCode!);
+                                                      attendanceCourseListController.otpController.text ?? '');
                                                 },
                                                 child: Container(
                                                   width: double.infinity,

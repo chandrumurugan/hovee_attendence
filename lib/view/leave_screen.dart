@@ -36,7 +36,7 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
                Container(
-            height: 200,
+            height: 170,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(0)),
               image: DecorationImage(
@@ -52,7 +52,7 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Row(
@@ -70,13 +70,15 @@ final TuteeLeaveController leaveController = Get.put(TuteeLeaveController());
                       //     ),
                       //   ],
                       // ),
+                      SizedBox(height: 8,),
                       Image.asset(
                         'assets/tuteeHomeImg/leave 1.png',
                         height: 35,
                         color: Colors.white,
                         fit: BoxFit.contain,
                       ),
-                      Text(
+                      SizedBox(height: 8,),
+                                            Text(
                         'Leave list',
                         style: GoogleFonts.nunito(
                           color: Colors.white,

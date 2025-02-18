@@ -36,7 +36,7 @@ class MspScreen extends StatelessWidget {
         children: [
           // Header Section
           Container(
-            height: 200,
+            height: 170,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(0)),
               image: DecorationImage(
@@ -52,7 +52,7 @@ class MspScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Row(
@@ -67,6 +67,14 @@ class MspScreen extends StatelessWidget {
                       //     ),
                       //   ],
                       // ),
+                       SizedBox(height: 8,),
+                       Image.asset(
+                        'assets/tuteeHomeImg/leave 1.png',
+                        height: 35,
+                        color: Colors.white,
+                        fit: BoxFit.contain,
+                      ),
+                      SizedBox(height: 8,),
                       Text(
                         'MSP',
                         style: GoogleFonts.nunito(
@@ -205,7 +213,7 @@ class MspScreen extends StatelessWidget {
                                                       fontSize: 14,
                                                       color: Colors.black)):SizedBox.shrink(),
                                               SizedBox(height: 4),
-                                              Text('Date: $formattedDate',
+                                              Text('Date: ${holidayData.date!}',
                                                   style: GoogleFonts.nunito(
                                                       fontWeight: FontWeight.w600,
                                                       fontSize: 14,

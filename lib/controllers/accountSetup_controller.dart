@@ -932,6 +932,7 @@ class AccountSetupController extends GetxController
 
           // Access the `wowId`
           wowId = userDataMap['wowId'];
+            print(wowId);
         }
 
 // Print or use the `wowId`

@@ -523,6 +523,7 @@ static Future<http.StreamedResponse> submitAccountSetupEdit({
   required String latitude,
   required String longitude,
   required String idproof,
+   required String profileImage
 }) async {
   var headers = {
     'Authorization': 'Bearer $token',
@@ -562,12 +563,42 @@ static Future<http.StreamedResponse> submitAccountSetupEdit({
   await addFile('resume', resumePath);
   await addFile('education_certificate', educationCertPath);
   await addFile('experience_certificate', experienceCertPath);
-
+  await addFile('profile_image', profileImage);
   Logger().i(request.fields);
   Logger().i(request.headers);
 
   return await request.send();
 }
+
+static Future<http.StreamedResponse> submitSetupEdit({
+  required String token,
+  required Map<dynamic, dynamic> personalInfo,
+  required Map<dynamic, dynamic> addressInfo,
+  required String latitude,
+  required String longitude,
+  required String idproof,
+}) async {
+  var headers = {
+    'Authorization': 'Bearer $token',
+    //'Content-Type': 'application/json'
+  };
+
+  var request =
+      http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
+
+  // Add form fields
+  request.fields['personal_info'] = jsonEncode(personalInfo);
+  request.fields['permanent_address'] = jsonEncode(addressInfo);
+ request.fields['type'] = 'U';
+    request.fields['latitude'] = latitude;
+    request.fields['longitude'] = longitude;
+    request.files.add(await http.MultipartFile.fromPath(
+          'id_proof', idproof,contentType: MediaType('image', 'jpeg')));
+    request.headers.addAll(headers);
+    Logger().i(request.fields);
+    return await request.send();
+}
+
 
 
   static Future<UserProfileM?> fetchUserProfile() async {
@@ -646,6 +677,7 @@ static Future<http.StreamedResponse> submitAccountSetupEdit({
     required String latitude,
     required String longitude,
      required String idproof,
+     required String profileImage
   }) async {
     var headers = {
       'Authorization': 'Bearer $token', // Pass the token for authorization
@@ -669,6 +701,8 @@ static Future<http.StreamedResponse> submitAccountSetupEdit({
     request.fields['longitude'] = longitude;
     request.files.add(await http.MultipartFile.fromPath(
           'id_proof', idproof,contentType: MediaType('image', 'jpeg')));
+          request.files.add(await http.MultipartFile.fromPath(
+          'profile_image', profileImage,contentType: MediaType('image', 'jpeg')));
     request.headers.addAll(headers);
     Logger().i(request.fields);
     return await request.send();

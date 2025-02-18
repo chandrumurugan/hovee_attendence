@@ -385,7 +385,7 @@ class TutionClassPreviewScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Batch maximus slots",
+                            "Batch maximum slots",
                             style: GoogleFonts.nunito(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w400,

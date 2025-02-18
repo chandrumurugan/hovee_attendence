@@ -183,7 +183,7 @@ void addAnnoument(BuildContext context) async {
           _clearData();
           SnackBarUtils.showSuccessSnackBar(
             context,
-            'Announcement Posted Successfully! Your announcement has been sent to the tutees',
+            'Announcement Posted Successfully.',
           );
         } else {
           // SnackBarUtils.showErrorSnackBar(
@@ -263,7 +263,22 @@ void editAnnoument(BuildContext context,String announcementId) async {
         SnackBarUtils.showErrorSnackBar(context, 'Course or Batch not found');
       }
     } catch (e) {
-      SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
+       Get.snackbar(
+          'Error: $e',
+  icon: const Icon(Icons.info, color: Colors.white, size: 40),
+  colorText: Colors.white,
+  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+  shouldIconPulse: false,
+  messageText:  SizedBox(
+    height: 40, // Set desired height here
+    child: Center(
+      child: Text(
+       'Error: $e',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+);
     } finally {
       isLoading.value = false;
     }

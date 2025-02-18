@@ -41,7 +41,7 @@ final HolidayController holidayController = Get.put(HolidayController());
         children: [
           // Header Section
           Container(
-            height: 200,
+            height: 170,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(0)),
               image: DecorationImage(
@@ -57,7 +57,7 @@ final HolidayController holidayController = Get.put(HolidayController());
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Row(
@@ -75,10 +75,12 @@ final HolidayController holidayController = Get.put(HolidayController());
                       //     ),
                       //   ],
                       // ),
+                      SizedBox(height: 8),
                       Image.asset(
                         'assets/headerIcons/holiday 1 (1).png',
                         height: 35,
                       ),
+                      SizedBox(height: 10),
                       Text(
                         'Holiday',
                         style: GoogleFonts.nunito(
@@ -200,7 +202,7 @@ final HolidayController holidayController = Get.put(HolidayController());
                                       //      Text('Holiday type : ${ holidayData.holidayType ?? ""}',
                                       // style:fontStyle),
                                        const SizedBox(height: 5,),
-                                          Text('Date : $formattedDate - $formattedDate2',
+                                          Text('Date : ${holidayData.holidayFromDate!} - ${holidayData.holidayEndDate!}',
                                       style: fontStyle),
                                 
                                 

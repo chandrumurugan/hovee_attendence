@@ -73,20 +73,20 @@ class BatchListConatiner extends StatelessWidget {
                _buildRow('Batch start date', '${batch.startDate ??''}',context),
                 const SizedBox(height: 10),
                 _buildRow('Batch end date', '${batch.endDate??''}',context),
-              Divider(),
-              TextButton(
-                onPressed: () {
-                  // Add chat functionality
-                },
-                child: Text(
-                  'Chat',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              )
+              // Divider(),
+              // TextButton(
+              //   onPressed: () {
+              //     // Add chat functionality
+              //   },
+              //   child: Text(
+              //     'Chat',
+              //     style: TextStyle(
+              //       color: Colors.blue,
+              //       fontWeight: FontWeight.bold,
+              //       fontSize: 16,
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),
