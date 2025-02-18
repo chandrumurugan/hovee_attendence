@@ -8,7 +8,6 @@ import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/accountsetup_screen.dart';
-import 'package:hovee_attendence/view/dashBoard.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
@@ -253,6 +252,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                           // Specify direction if desired
                                           textDirection: TextDirection.ltr,
                                           child: Pinput(
+                                            androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
                                             inputFormatters: [
                                               FilteringTextInputFormatter
                                                   .digitsOnly

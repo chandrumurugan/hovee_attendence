@@ -44,6 +44,7 @@ class UserProfile extends StatelessWidget {
         appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
+            accountController.fetchUserProfiles();
             Get.back();
           },
         ),
@@ -61,7 +62,7 @@ class UserProfile extends StatelessWidget {
                   height: 150,
                   width: MediaQuery.sizeOf(context).width,
                   color: Colors.purple,
-                  child:  Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -69,58 +70,39 @@ class UserProfile extends StatelessWidget {
                       const SizedBox(
                         height: 8,
                       ),
-                     
-                                             Container(
-                        //color: Colors.white,
+
+                      SizedBox(
                         height: screen_height * 0.12,
                         child: Center(
                           child: Stack(
                             children: [
                               CircleAvatar(
-                                  radius: 85,
-                  backgroundColor:Colors.grey.withOpacity(0.75),
+  radius: 50,
+  backgroundImage: accountController.image.value != null
+      ? FileImage(accountController.image.value!) as ImageProvider
+      : null,
+  child: accountController.image.value == null
+      ? (accountController.userProfileResponse.value.data!.profileUrl != null &&
+              accountController.userProfileResponse.value.data!.profileUrl!.isNotEmpty
+          ? ClipOval(
+              child: Image.network(
+                accountController.userProfileResponse.value.data!.profileUrl!,
+                fit: BoxFit.cover,
+                width: 100, 
+                height: 100,
+              ),
+            )
+          : Icon(Icons.person, color: Colors.black))
+      : null,
+),
 
-                                child: CircleAvatar(
-                                  backgroundColor:
-                                      AppConstants.secondaryColor.withOpacity(0.8),
-                                  radius: 50,
-                                  backgroundImage: accountController.image.value != null
-                                      ? FileImage(accountController.image.value!) as ImageProvider
-                                      : null,
-                                  child: accountController.image.value == null
-                                      ? (accountController.userProfileResponse.value.data!.profileUrl !=
-                                                  null &&
-                                              accountController.userProfileResponse.value.data!.profileUrl !.isNotEmpty
-                                          ? CircleAvatar(
-                                              radius: 50,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(0),
-                                                child: Hero(
-                                                  tag: 'profile-hero',
-                                                  child: Image.network(
-                                                      accountController.userProfileResponse.value.data!.profileUrl ! ??
-                                                          "",
-                                                          fit: BoxFit.cover,),
-                                                ),
-                                              ),
-                                            )
-                                          : Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                            ))
-                                      : null,
-                                ),
-                              ),
-                              if (accountController.isNonEdit.value == false)
+                              if (!accountController.isNonEdit.value)
                                 Positioned(
                                   bottom: 0,
                                   right: 0,
                                   child: GestureDetector(
                                     onTap: () {
-                                      
-                                       accountController. changeDp++;
-                                     
+                                      accountController.changeDp++;
                                       getImageSource(context);
                                     },
                                     child: Container(
@@ -145,9 +127,9 @@ class UserProfile extends StatelessWidget {
                   ),
                 ),
               ),
-             const SizedBox(
-                        height: 10,
-                      ),
+              const SizedBox(
+                height: 10,
+              ),
               Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.14),
@@ -241,8 +223,8 @@ class UserProfile extends StatelessWidget {
                               const Tab(
                                 text: 'Address info',
                               ),
-                              if (accountController.userProfileResponse.value
-                                          .data!.rolesId!.roleName !=
+                              if (accountController.userProfileResponse.value.data!
+                                          .rolesId!.roleName !=
                                       "Parent" &&
                                   accountController.userProfileResponse.value
                                           .data!.rolesId!.roleName !=
@@ -440,8 +422,14 @@ class UserProfile extends StatelessWidget {
                                           height: 5,
                                         ),
                                         InputTextField(
-                                            suffix:accountController.isNonEdit.value ? false : true,
-                                            readonly: accountController.isNonEdit.value ? true :false,
+                                            suffix: accountController
+                                                    .isNonEdit.value
+                                                ? false
+                                                : true,
+                                            readonly: accountController
+                                                    .isNonEdit.value
+                                                ? true
+                                                : false,
                                             isDate: true,
                                             hintText: 'Enter your dob',
                                             initialDate:
@@ -1378,41 +1366,41 @@ class UserProfile extends StatelessWidget {
             ],
           );
         }),
-        bottomNavigationBar: GetBuilder<UserProfileController>(
-  builder: (controller) {
-    return
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: InkWell(
-            onTap: () {
-              accountController.isNonEdit.value
-                  ? _fileUploadBottomModal(context)
-                  : _navigationPage(context);
-            },
-            child: Container(
-              height: 48,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                gradient: LinearGradient(
-                  colors: [Color(0xFFC13584), Color(0xFF833AB4)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+        bottomNavigationBar:
+            GetBuilder<UserProfileController>(builder: (controller) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () {
+                accountController.isNonEdit.value
+                    ? _fileUploadBottomModal(context)
+                    : _navigationPage(context);
+              },
+              child: Container(
+                height: 48,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  gradient: LinearGradient(
+                    colors: [Color(0xFFC13584), Color(0xFF833AB4)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
-              ),
-              child: accountController.isLoading.value
-                  ? const Center(child: CircularProgressIndicator())
-                  : Center(
-                      child: Text(
-                        accountController.isNonEdit.value ? 'Edit' : 'Update',
-                        style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
+                child: accountController.isLoading.value
+                    ? const Center(child: CircularProgressIndicator())
+                    : Center(
+                        child: Text(
+                          accountController.isNonEdit.value ? 'Edit' : 'Update',
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
                       ),
-                    ),
+              ),
             ),
-          ),
-        );}));
+          );
+        }));
   }
 
   Widget _buildDropdowns(BuildContext context) {
@@ -1952,9 +1940,9 @@ class UserProfile extends StatelessWidget {
           InkWell(
             onTap: () {
               print("Greeting values==");
-             accountController.isNonEdit.value?
-              null
-              :accountController.pickFile(type);
+              accountController.isNonEdit.value
+                  ? null
+                  : accountController.pickFile(type);
             },
             child: Container(
               height: 55,
@@ -2024,20 +2012,35 @@ class UserProfile extends StatelessWidget {
     if (accountController.userProfileResponse.value.data!.rolesId!.roleName ==
         'Tutor') {
       accountController.storePersonalInfo(context);
-      accountController.storeAddressInfo(context,
-          accountController.userProfileResponse.value.data!.rolesId!.roleName!,accountController.userProfileResponse.value.data!.rolesId!.id ?? '', accountController.userProfileResponse.value.data!.rolesTypeId ?? '',accountController.userProfileResponse.value.data!.rolesId!.roleName ?? '');
+      accountController.storeAddressInfo(
+          context,
+          accountController.userProfileResponse.value.data!.rolesId!.roleName!,
+          accountController.userProfileResponse.value.data!.rolesId!.id ?? '',
+          accountController.userProfileResponse.value.data!.rolesTypeId ?? '',
+          accountController.userProfileResponse.value.data!.rolesId!.roleName ??
+              '');
       accountController.storeEducationInfo(context);
-    } else if(accountController.userProfileResponse.value.data!.rolesId!.roleName ==
+    } else if (accountController
+            .userProfileResponse.value.data!.rolesId!.roleName ==
         'Tutee') {
       accountController.storePersonalInfo(context);
-      accountController.storeAddressInfo(context,
-          accountController.userProfileResponse.value.data!.rolesId!.roleName!,accountController.userProfileResponse.value.data!.rolesId!.id ?? '', accountController.userProfileResponse.value.data!.rolesTypeId ?? '',accountController.userProfileResponse.value.data!.rolesId!.roleName ?? '');
+      accountController.storeAddressInfo(
+          context,
+          accountController.userProfileResponse.value.data!.rolesId!.roleName!,
+          accountController.userProfileResponse.value.data!.rolesId!.id ?? '',
+          accountController.userProfileResponse.value.data!.rolesTypeId ?? '',
+          accountController.userProfileResponse.value.data!.rolesId!.roleName ??
+              '');
       accountController.storeTuteeeducationInfo(context);
-    }
-    else{
+    } else {
       accountController.storePersonalInfo(context);
-      accountController.storeAddressInfoParent(context,
-          accountController.userProfileResponse.value.data!.rolesId!.roleName!,accountController.userProfileResponse.value.data!.rolesId!.id ?? '', accountController.userProfileResponse.value.data!.rolesTypeId ?? '',accountController.userProfileResponse.value.data!.rolesId!.roleName ?? '');
+      accountController.storeAddressInfoParent(
+          context,
+          accountController.userProfileResponse.value.data!.rolesId!.roleName!,
+          accountController.userProfileResponse.value.data!.rolesId!.id ?? '',
+          accountController.userProfileResponse.value.data!.rolesTypeId ?? '',
+          accountController.userProfileResponse.value.data!.rolesId!.roleName ??
+              '');
     }
   }
 
@@ -2064,7 +2067,8 @@ class UserProfile extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
                     color: AppConstants.primaryColor,
                     borderRadius: BorderRadius.circular(8)),
@@ -2095,7 +2099,8 @@ class UserProfile extends StatelessWidget {
                 }
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
                     color: AppConstants.secondaryColor,
                     borderRadius: BorderRadius.circular(8)),
@@ -2146,7 +2151,7 @@ class UserProfile extends StatelessWidget {
     );
   }
 
-    getImageSource(BuildContext context) {
+  getImageSource(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -2157,7 +2162,7 @@ class UserProfile extends StatelessWidget {
                 leading: const Icon(Icons.photo_library),
                 title: const Text('Choose from Gallery'),
                 onTap: () {
-                 accountController.getImage(ImageSource.gallery);
+                  accountController.getImage(ImageSource.gallery);
                   Navigator.pop(context);
                 },
               ),
@@ -2173,7 +2178,7 @@ class UserProfile extends StatelessWidget {
                 leading: const Icon(Icons.delete),
                 title: const Text('Remove Profile Picture'),
                 onTap: () {
-                 accountController.removeProfilePicture();
+                  accountController.removeProfilePicture();
                   Navigator.pop(context);
                 },
               ),

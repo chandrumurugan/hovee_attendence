@@ -25,6 +25,7 @@ import 'package:hovee_attendence/view/add_class_screen.dart';
 import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/batch_screen.dart';
+import 'package:hovee_attendence/view/chat_screen/chat_screen.dart';
 import 'package:hovee_attendence/view/class_screen.dart';
 import 'package:hovee_attendence/view/course_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
@@ -61,6 +62,9 @@ class TutorHome extends StatelessWidget {
     return Scaffold(
         key: controller.tutorScaffoldKey,
         drawer: SideMenu(isGuest: false),
+         floatingActionButton: FloatingActionButton.extended(onPressed: (){
+        Get.to(() => CustomerChat());
+      }, label: Icon(Icons.chat)),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           elevation: 5,

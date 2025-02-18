@@ -49,6 +49,9 @@ class TuteeHome extends StatelessWidget {
         final userProfileData = Get.put(UserProfileController());
     return Scaffold(
       key: controller.tuteeScaffoldKey,
+      floatingActionButton: FloatingActionButton.extended(onPressed: (){
+        Get.to(() => CustomerChat());
+      }, label: Icon(Icons.chat)),
       drawer: SideMenu(
         isGuest: false,
       ),

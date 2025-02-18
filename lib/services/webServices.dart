@@ -80,7 +80,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http_parser/http_parser.dart';
 
-
 class WebService {
   static String baseUrl = APIConfig.urlsConfig();
 
@@ -427,16 +426,18 @@ class WebService {
     request.fields['parentId'] = parentId;
     // Attach files if available
     if (resumePath != null && resumePath.isNotEmpty) {
-      request.files
-          .add(await http.MultipartFile.fromPath('resume', resumePath,contentType: MediaType('image', 'jpeg')));
+      request.files.add(await http.MultipartFile.fromPath('resume', resumePath,
+          contentType: MediaType('image', 'jpeg')));
     }
     if (educationCertPath != null && educationCertPath.isNotEmpty) {
       request.files.add(await http.MultipartFile.fromPath(
-          'education_certificate', educationCertPath,contentType: MediaType('image', 'jpeg')));
+          'education_certificate', educationCertPath,
+          contentType: MediaType('image', 'jpeg')));
     }
     if (experienceCertPath != null && experienceCertPath.isNotEmpty) {
       request.files.add(await http.MultipartFile.fromPath(
-          'experience_certificate', experienceCertPath,contentType: MediaType('image', 'jpeg')));
+          'experience_certificate', experienceCertPath,
+          contentType: MediaType('image', 'jpeg')));
     }
     request.headers.addAll(headers);
     Logger().i(request.fields);
@@ -447,8 +448,6 @@ class WebService {
     // Send the request
     return await request.send();
   }
-
-  
 
   // static Future<http.StreamedResponse> submitAccountSetupEdit({
   //   required String token,
@@ -512,94 +511,110 @@ class WebService {
   //   // Send the request
   //   return await request.send();
   // }
-static Future<http.StreamedResponse> submitAccountSetupEdit({
-  required String token,
-  required Map<dynamic, dynamic> personalInfo,
-  required Map<dynamic, dynamic> addressInfo,
-  required Map<dynamic, dynamic> educationInfo,
-  required String resumePath,
-  required String educationCertPath,
-  required String experienceCertPath,
-  required String latitude,
-  required String longitude,
-  required String idproof,
-   required String profileImage
-}) async {
-  var headers = {
-    'Authorization': 'Bearer $token',
-    'Content-Type': 'application/json'
-  };
+  static Future<http.StreamedResponse> submitAccountSetupEdit(
+      {required String token,
+      required Map<dynamic, dynamic> personalInfo,
+      required Map<dynamic, dynamic> addressInfo,
+      required Map<dynamic, dynamic> educationInfo,
+      required String resumePath,
+      required String educationCertPath,
+      required String experienceCertPath,
+      required String latitude,
+      required String longitude,
+      required String idproof,
+      required String profileImage}) async {
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
 
-  var request =
-      http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
+    var request =
+        http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
 
-  // Add form fields
-  request.fields['personal_info'] = jsonEncode(personalInfo);
-  request.fields['permanent_address'] = jsonEncode(addressInfo);
-  request.fields['education_info'] = jsonEncode(educationInfo);
-  request.fields['type'] = 'U';
-  request.fields['latitude'] = latitude;
-  request.fields['longitude'] = longitude;
-
-  request.headers.addAll(headers);
-
-  // Function to handle file uploads
-  Future<void> addFile(String fieldName, String filePath) async {
-    if (filePath.isNotEmpty && !filePath.startsWith('http')) { 
-      // If filePath is NOT a URL, it's a new file → upload it
-      request.files.add(await http.MultipartFile.fromPath(
-        fieldName,
-        filePath,
-        contentType: MediaType('image', 'jpg'),
-      ));
-    } else {
-      // If filePath is a URL, just send the existing file path in fields
-      request.fields[fieldName] = filePath;
-    }
-  }
-
-  // Upload only if it's a new file, otherwise send the existing URL
-  await addFile('id_proof', idproof);
-  await addFile('resume', resumePath);
-  await addFile('education_certificate', educationCertPath);
-  await addFile('experience_certificate', experienceCertPath);
-  await addFile('profile_image', profileImage);
-  Logger().i(request.fields);
-  Logger().i(request.headers);
-
-  return await request.send();
-}
-
-static Future<http.StreamedResponse> submitSetupEdit({
-  required String token,
-  required Map<dynamic, dynamic> personalInfo,
-  required Map<dynamic, dynamic> addressInfo,
-  required String latitude,
-  required String longitude,
-  required String idproof,
-}) async {
-  var headers = {
-    'Authorization': 'Bearer $token',
-    //'Content-Type': 'application/json'
-  };
-
-  var request =
-      http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
-
-  // Add form fields
-  request.fields['personal_info'] = jsonEncode(personalInfo);
-  request.fields['permanent_address'] = jsonEncode(addressInfo);
- request.fields['type'] = 'U';
+    // Add form fields
+    request.fields['personal_info'] = jsonEncode(personalInfo);
+    request.fields['permanent_address'] = jsonEncode(addressInfo);
+    request.fields['education_info'] = jsonEncode(educationInfo);
+    request.fields['type'] = 'U';
     request.fields['latitude'] = latitude;
     request.fields['longitude'] = longitude;
+
+    request.headers.addAll(headers);
+
+    // Function to handle file uploads
+    Future<void> addFile(String fieldName, String filePath) async {
+      if (filePath.isNotEmpty && !filePath.startsWith('http')) {
+        // If filePath is NOT a URL, it's a new file → upload it
+        request.files.add(await http.MultipartFile.fromPath(
+          fieldName,
+          filePath,
+          contentType: MediaType('image', 'jpg'),
+        ));
+      } else {
+        // If filePath is a URL, just send the existing file path in fields
+        request.fields[fieldName] = filePath ?? '';
+      }
+    }
+
+    // Upload only if it's a new file, otherwise send the existing URL
+    await addFile('id_proof', idproof);
+    await addFile('resume', resumePath);
+    await addFile('education_certificate', educationCertPath);
+    await addFile('experience_certificate', experienceCertPath);
+    if (profileImage != null && profileImage.isNotEmpty) {
     request.files.add(await http.MultipartFile.fromPath(
-          'id_proof', idproof,contentType: MediaType('image', 'jpeg')));
+      'profile_image', profileImage,
+      contentType: MediaType('image', 'jpeg'),
+    ));
+  }
+    Logger().i(request.fields);
+    Logger().i(request.headers);
+
+    return await request.send();
+  }
+
+  static Future<http.StreamedResponse> submitSetupEdit(
+      {required String token,
+      required Map<dynamic, dynamic> personalInfo,
+      required Map<dynamic, dynamic> addressInfo,
+      required String latitude,
+      required String longitude,
+      required String idproof,
+      required String profileImage,
+      required String parentId}) async {
+    var headers = {
+      'Authorization': 'Bearer $token', // Pass the token for authorization
+      'Content-Type': 'application/json'
+    };
+    Logger().i(token);
+    
+    var request = 
+        http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
+
+    // Add personal info
+    request.fields['personal_info'] = jsonEncode(personalInfo);
+
+    // Add address info
+    request.fields['permanent_address'] = jsonEncode(addressInfo);
+    request.fields['type'] = 'U';
+    request.fields['latitude'] = latitude;
+    request.fields['longitude'] = longitude;
+    request.fields['parentId'] = parentId;
+    request.files.add(await http.MultipartFile.fromPath('id_proof', idproof,
+        contentType: MediaType('image', 'jpeg')));
+    // Check if `profileImage` is provided before adding
+  if (profileImage != null && profileImage.isNotEmpty) {
+    request.files.add(await http.MultipartFile.fromPath(
+      'profile_image', profileImage,
+      contentType: MediaType('image', 'jpeg'),
+    ));
+  }  
+  
     request.headers.addAll(headers);
     Logger().i(request.fields);
+     Logger().i(request.headers);
     return await request.send();
-}
-
-
+  }
 
   static Future<UserProfileM?> fetchUserProfile() async {
     final box = GetStorage(); // Get an instance of GetStorage
@@ -669,22 +684,21 @@ static Future<http.StreamedResponse> submitSetupEdit({
     return await request.send();
   }
 
-  static Future<http.StreamedResponse> submitTuteeAccountSetupEdit({
-    required String token,
-    required Map<dynamic, dynamic> personalInfo,
-    required Map<dynamic, dynamic> addressInfo,
-    required Map<dynamic, dynamic> educationInfo,
-    required String latitude,
-    required String longitude,
-     required String idproof,
-     required String profileImage
-  }) async {
+  static Future<http.StreamedResponse> submitTuteeAccountSetupEdit(
+      {required String token,
+      required Map<dynamic, dynamic> personalInfo,
+      required Map<dynamic, dynamic> addressInfo,
+      required Map<dynamic, dynamic> educationInfo,
+      required String latitude,
+      required String longitude,
+      required String idproof,
+      required String profileImage}) async {
     var headers = {
       'Authorization': 'Bearer $token', // Pass the token for authorization
       //'Content-Type': 'application/json'
     };
-      Logger().i(token);
-   
+    Logger().i(token);
+
     var request =
         http.MultipartRequest('POST', Uri.parse('${baseUrl}user/accountSetup'));
 
@@ -699,10 +713,15 @@ static Future<http.StreamedResponse> submitSetupEdit({
     request.fields['type'] = 'U';
     request.fields['latitude'] = latitude;
     request.fields['longitude'] = longitude;
+    request.files.add(await http.MultipartFile.fromPath('id_proof', idproof,
+        contentType: MediaType('image', 'jpeg')));
+    // Check if `profileImage` is provided before adding
+  if (profileImage != null && profileImage.isNotEmpty) {
     request.files.add(await http.MultipartFile.fromPath(
-          'id_proof', idproof,contentType: MediaType('image', 'jpeg')));
-          request.files.add(await http.MultipartFile.fromPath(
-          'profile_image', profileImage,contentType: MediaType('image', 'jpeg')));
+      'profile_image', profileImage,
+      contentType: MediaType('image', 'jpeg'),
+    ));
+  }
     request.headers.addAll(headers);
     Logger().i(request.fields);
     return await request.send();
@@ -1824,7 +1843,7 @@ static Future<http.StreamedResponse> submitSetupEdit({
         body: json.encode(batchData),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',                                                             
+          'Authorization': 'Bearer $token',
         },
       );
       if (response.statusCode == 200) {
@@ -2006,24 +2025,24 @@ static Future<http.StreamedResponse> submitSetupEdit({
         return addAnnouncementModel.fromJson(json.decode(response.body));
       } else {
         var result = addAnnouncementModel.fromJson(json.decode(response.body));
-      Get.snackbar(
-        result.message.toString(),
-        icon: const Icon(Icons.info, color: Colors.white, size: 40),
-        colorText: Colors.white,
-        backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-        shouldIconPulse: false,
-        messageText: SizedBox(
-          height: 40, // Set desired height here
-          child: Center(
-            child: Text(
-              result.message ?? 'Failed to add announcement',
-              style: TextStyle(color: Colors.white, fontSize: 16),
+        Get.snackbar(
+          result.message.toString(),
+          icon: const Icon(Icons.info, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                result.message ?? 'Failed to add announcement',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
             ),
           ),
-        ),
-      );
-      // Either return a default instance or throw an error
-      return addAnnouncementModel(message: result.message);
+        );
+        // Either return a default instance or throw an error
+        return addAnnouncementModel(message: result.message);
       }
     } catch (e) {
       return null;

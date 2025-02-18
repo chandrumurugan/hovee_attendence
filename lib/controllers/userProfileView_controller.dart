@@ -145,7 +145,7 @@ class UserProfileController extends GetxController
 
      final updatePhController = TextEditingController();
 
-     var image = Rx<File?>(null);
+     var image = Rxn<File>();
      final ImagePicker picker = ImagePicker();
 
      String? profileImage;
@@ -729,7 +729,7 @@ class UserProfileController extends GetxController
           experienceCertPath: experienceCertPath.value,
           latitude: latitude.toString(),
           longitude: longitude.toString(), idproof: pickedFile!.path,
-          profileImage:  _byteData!.path);
+         profileImage: _byteData?.path ?? "",);
 
       // Handle the response
       if (response.statusCode == 200) {
@@ -915,7 +915,7 @@ print('Wow ID: $wowId');
           latitude: latitude.toString(),
           longitude: longitude.toString(),
           idproof: pickedFile!.path,
-         profileImage:  _byteData!.path
+         profileImage: _byteData?.path ?? "",
           );
       if (response.statusCode == 200) {
         String responseBody = await response.stream.bytesToString();
@@ -1219,8 +1219,9 @@ void onMapCreated(GoogleMapController controller) {
       String selectedRole) async {
     final box = GetStorage(); // Get an instance of GetStorage
     final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('Token') ?? "";
-    Get.log("Latitude: ${latitude}, Longitude: ${longitude}");
+    final token = prefs.getString('PrentToken') ?? "";
+    Logger().i("Latitude: ${latitude}, Longitude: ${longitude}");
+    Get.log("token: ${token}");
     latitude = prefs.getDouble('latitude');
     longitude = prefs.getDouble('longitude');
     isLoading.value = true;
@@ -1231,10 +1232,14 @@ void onMapCreated(GoogleMapController controller) {
           personalInfo: personalInfo.value,
           addressInfo: addressInfo.value,
           latitude: latitude.toString(),
-          longitude: longitude.toString(), idproof: pickedFile!.path);
+          longitude: longitude.toString(), idproof: pickedFile!.path,
+         profileImage: _byteData?.path ?? "",
+         parentId:  userProfileResponse.value.data?.id ?? '',
+         );
 
       // Handle the response
       if (response.statusCode == 200) {
+        //onInit();
         String responseBody = await response.stream.bytesToString();
         final firstName = personalInfo.value['first_name'] ?? '';
       final lastName = personalInfo.value['last_name'] ?? '';

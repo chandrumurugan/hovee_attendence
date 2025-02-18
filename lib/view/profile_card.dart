@@ -69,8 +69,8 @@ class HomePageHeader extends StatelessWidget {
                           Animate(
                             effects: [
                               SlideEffect(
-                                begin: Offset(-1.0, 0.0), // Slide in from left
-                                end: Offset(0.0, 0.0), // End at original position
+                                begin: const Offset(-1.0, 0.0), // Slide in from left
+                                end: const Offset(0.0, 0.0), // End at original position
                                 duration: 300.ms,
                               ),
                               FadeEffect(
@@ -80,20 +80,21 @@ class HomePageHeader extends StatelessWidget {
                               ),
                             ],
                             child:  CircleAvatar(
-                              radius: 35,
-                              // Optional: Set a background color
-                              //backgroundColor: Colors.grey[200],
-                              child: userProfileData.userProfileResponse.value.data!.profileUrl ==
+                              radius: 38,
+                              child: userProfileData.userProfileResponse.value.data!.profileUrl!=
                                                   null &&
-                                              userProfileData.userProfileResponse.value.data!.profileUrl!.isEmpty?
-                               Icon(
+                                              userProfileData.userProfileResponse.value.data!.profileUrl!.isNotEmpty?
+                               ClipOval(
+                                child: Image.network(
+                                                        userProfileData.userProfileResponse.value.data!.profileUrl ??
+                                                            "",fit: BoxFit.cover, width: 100, 
+                height: 100,),
+                              ):const Icon(
                                 Icons
                                     .person, // Correct usage: provide IconData directly
                                 size: 36, // Adjust the icon size as needed
                                 color: Colors.black, // Set the icon color
-                              ):Image.network(
-                                                      userProfileData.userProfileResponse.value.data!.profileUrl ??
-                                                          "",fit: BoxFit.cover,),
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -186,9 +187,9 @@ class HomePageHeader extends StatelessWidget {
                                           duration: 500.ms,
                                         ),
                                         SlideEffect(
-                                          begin: Offset(-1.0,
+                                          begin: const Offset(-1.0,
                                               0.0), // Slide in from the left
-                                          end: Offset(0.0,
+                                          end: const Offset(0.0,
                                               0.0), // End at original position
                                           duration: 500.ms,
                                         ),
@@ -211,9 +212,9 @@ class HomePageHeader extends StatelessWidget {
                                     duration: 600.ms,
                                   ),
                                   SlideEffect(
-                                    begin: Offset(
+                                    begin: const Offset(
                                         -1.0, 0.0), // Slide in from the left
-                                    end: Offset(
+                                    end: const Offset(
                                         0.0, 0.0), // End at original position
                                     duration: 600.ms,
                                   ),
@@ -242,8 +243,8 @@ class HomePageHeader extends StatelessWidget {
                             effects: [
                               SlideEffect(
                                 begin:
-                                    Offset(-1.0, 0.0), // Slide in from the left
-                                end: Offset(0.0, 0.0), // End at original position
+                                    const Offset(-1.0, 0.0), // Slide in from the left
+                                end: const Offset(0.0, 0.0), // End at original position
                                 duration: 400.ms,
                               ),
                               FadeEffect(
@@ -278,8 +279,8 @@ class HomePageHeader extends StatelessWidget {
                             effects: [
                               SlideEffect(
                                 begin:
-                                    Offset(-1.0, 0.0), // Slide in from the left
-                                end: Offset(0.0, 0.0), // End at original position
+                                    const Offset(-1.0, 0.0), // Slide in from the left
+                                end: const Offset(0.0, 0.0), // End at original position
                                 duration: 450.ms,
                               ),
                               FadeEffect(
@@ -309,8 +310,8 @@ class HomePageHeader extends StatelessWidget {
                             effects: [
                               SlideEffect(
                                 begin:
-                                    Offset(-1.0, 0.0), // Slide in from the left
-                                end: Offset(0.0, 0.0), // End at original position
+                                    const Offset(-1.0, 0.0), // Slide in from the left
+                                end: const Offset(0.0, 0.0), // End at original position
                                 duration: 500.ms,
                               ),
                               FadeEffect(

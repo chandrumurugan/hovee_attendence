@@ -98,10 +98,10 @@ class MessageScreenState extends State<MessagesScreen> {
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
-          bottomLeft: const Radius.circular(20),
-          topRight: const Radius.circular(20),
-          bottomRight: Radius.circular(isUserMessage ? 0 : 20),
-          topLeft: Radius.circular(isUserMessage ? 20 : 0),
+          topLeft: Radius.circular(isUserMessage ? 10 : 10),
+                topRight: Radius.circular(isUserMessage ? 10 : 10),
+                bottomLeft: Radius.circular(isUserMessage ? 10 : 0),
+                bottomRight: Radius.circular(isUserMessage ? 0 : 10),
         ),
         color:
             isUserMessage ? AppConstants.primaryColor : AppConstants.secondaryColor,

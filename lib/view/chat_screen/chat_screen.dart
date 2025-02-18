@@ -77,61 +77,108 @@ class ChatScreenState extends State<CustomerChat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarHeader(needGoBack: true, navigateTo: () { Get.back(); },),
-      body: Container(
-        // decoration: const BoxDecoration(
-        //   gradient: LinearGradient(
-        //     begin: Alignment.topCenter,
-        //     end: Alignment.bottomCenter,
-        //     colors: [Colors.deepPurple, Colors.deepPurpleAccent],
-        //   ),
-        // ),
-        child: Column(
-          children: [
-            Expanded(
-              child: MessagesScreen(
-                messages: messages,
-                scrollController: _scrollController,
-                onSendMessage: sendMessage,
+      body: Column(
+        children: [
+          Container(
+          height: 130,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(0)),
+            image: DecorationImage(
+              image: AssetImage(
+                'assets/Course_BG_Banner.png',
               ),
+              fit: BoxFit.cover,
             ),
-            if (isLoading) const CircularProgressIndicator(),
-            if (showPredefinedTexts)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20, top: 10),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: AppConstants.primaryColor.withOpacity(0.3),
-                  ),
-                  child: Wrap(
-                    spacing: 8.0,
-                    runSpacing: 10,
-                    alignment: WrapAlignment.center,
-                    children: predefinedTexts.map((text) {
-                      return ActionChip(
-                        side: BorderSide(color: AppConstants.secondaryColor),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        label: Text(
-                          text,
-                          style: GoogleFonts.nunito(color: Colors.black),
-                        ),
-                        onPressed: () {
-                          sendMessage(text);
-                        },
-                        backgroundColor:
-                           AppConstants.secondaryColor.withOpacity(0.3),
-                        labelStyle: const TextStyle(color: Colors.white),
-                      );
-                    }).toList(),
-                  ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 25, left: 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    ),
+                  ],
+                ),
+              
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      'Chat',
+                      style: GoogleFonts.nunito(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 22,
+                      ),
+                      
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.phone, color: Colors.white,size: 28,),
+                          SizedBox(width: 15,),
+                           Icon(Icons.video_camera_back, color: Colors.white,size: 28,),
+                        ],
+                      ),
+                    ),
+                   
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+          Expanded(
+            child: MessagesScreen(
+              messages: messages,
+              scrollController: _scrollController,
+              onSendMessage: sendMessage,
+            ),
+          ),
+          if (isLoading) const CircularProgressIndicator(),
+          if (showPredefinedTexts)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20, top: 10),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: AppConstants.primaryColor.withOpacity(0.3),
+                ),
+                child: Wrap(
+                  spacing: 8.0,
+                  runSpacing: 10,
+                  alignment: WrapAlignment.center,
+                  children: predefinedTexts.map((text) {
+                    return ActionChip(
+                      side: const BorderSide(color: AppConstants.secondaryColor),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      label: Text(
+                        text,
+                        style: GoogleFonts.nunito(color: Colors.black),
+                      ),
+                      onPressed: () {
+                        sendMessage(text);
+                      },
+                      backgroundColor:
+                         AppConstants.secondaryColor.withOpacity(0.3),
+                      labelStyle: const TextStyle(color: Colors.white),
+                    );
+                  }).toList(),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

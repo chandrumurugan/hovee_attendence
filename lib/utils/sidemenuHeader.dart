@@ -63,35 +63,30 @@ class SidemenuHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const Column(
+           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // InkWell(
-              //   onTap: () {
-              //     sidemenuKey.currentState!.closeDrawer();
-              //   },
-              //   child: const Icon(
-              //     Icons.close,
-              //     color: Colors.white,
-              //   ),
-              // ),
-              // // const SizedBox(
-              // //   height: 30,
-              // // ),
               CircleAvatar(
-                radius: 42,
-                // Optional: Set a background color
-                //backgroundColor: Colors.grey[200],
-                child: Icon(
-                  Icons.person, // Correct usage: provide IconData directly
-                  size: 36, // Adjust the icon size as needed
-                  color: Colors.black, // Set the icon color
-                ),
-              )
+                              radius: 42,
+                              child: userProfileData.userProfileResponse.value.data!.profileUrl!=
+                                                  null &&
+                                              userProfileData.userProfileResponse.value.data!.profileUrl!.isNotEmpty?
+                               ClipOval(
+                                child: Image.network(
+                                                        userProfileData.userProfileResponse.value.data!.profileUrl ??
+                                                            "",fit: BoxFit.cover, width: 100, 
+                height: 100,),
+                              ):const Icon(
+                                Icons
+                                    .person, // Correct usage: provide IconData directly
+                                size: 36, // Adjust the icon size as needed
+                                color: Colors.black, // Set the icon color
+                              ),
+                            ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
           Column(

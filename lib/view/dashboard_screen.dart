@@ -309,6 +309,7 @@ import 'package:hovee_attendence/view/home_screen/parent_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/ratings_screen.dart';
+import 'package:hovee_attendence/view/subscription_plans/subcription_plan_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -438,7 +439,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onDashBoardBack: () => _navigateBack(),
       ),
     if (userProfileResponse?.data?.institudeId == null)
-      const Center(child: Text("Feature under development")),
+      PlanList(),
   ];
 }
 

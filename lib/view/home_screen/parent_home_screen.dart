@@ -14,6 +14,7 @@ import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/announcement_screen.dart';
+import 'package:hovee_attendence/view/chat_screen/chat_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/parent_login_screen.dart';
@@ -70,7 +71,9 @@ class _ParentViewState extends State<ParentView> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: parentController.tuteeScaffoldKey,
-        floatingActionButton: FloatingActionButton.extended(onPressed: (){}, label: Icon(Icons.chat)),
+        floatingActionButton: FloatingActionButton.extended(onPressed: (){
+          Get.to(() => CustomerChat());
+        }, label: Icon(Icons.chat)),
         drawer: SideMenu(
           isGuest: false,
           type: 'Parent',
