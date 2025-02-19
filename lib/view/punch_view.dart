@@ -145,44 +145,44 @@ class PunchView extends StatelessWidget {
               )
             ],
           ),
-          Obx(() => _controller.buttonLoader.value
-              ? Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.black.withOpacity(0.3),
-                  child: Center(
-                    child: Container(
+          // Obx(() => _controller.buttonLoader.value
+          //     ? Container(
+          //         height: MediaQuery.of(context).size.height,
+          //         width: MediaQuery.of(context).size.width,
+          //         color: Colors.black.withOpacity(0.3),
+          //         child: Center(
+          //           child: Container(
                  
-                      decoration: BoxDecoration(
-                             color: Colors.white,
-                             borderRadius: BorderRadius.circular(12)
+          //             decoration: BoxDecoration(
+          //                    color: Colors.white,
+          //                    borderRadius: BorderRadius.circular(12)
 
-                      ),
-                      height: 200,
-                      width: 200,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (_controller.buttonLoader.value)
-                            CircularProgressIndicator(
-                              color: AppConstants.primaryColor,
-                            ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "Submitting attendance",
-                            style: GoogleFonts.nunito(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              : SizedBox.shrink())
+          //             ),
+          //             height: 200,
+          //             width: 200,
+          //             child: Column(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: [
+          //                 if (_controller.buttonLoader.value)
+          //                   CircularProgressIndicator(
+          //                     color: AppConstants.primaryColor,
+          //                   ),
+          //                 SizedBox(
+          //                   height: 20,
+          //                 ),
+          //                 Text(
+          //                   "Submitting attendance",
+          //                   style: GoogleFonts.nunito(
+          //                       fontSize: 12,
+          //                       fontWeight: FontWeight.bold,
+          //                       color: Colors.black),
+          //                 )
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       )
+          //     : SizedBox.shrink())
         ],
       ),
       floatingActionButton: Padding(

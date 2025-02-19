@@ -414,61 +414,61 @@ class ParentAccountSetupScreen extends StatelessWidget {
                                           const SizedBox(
                                             height: 5,
                                           ),
-                                          // Row(
-                                          //   children: [
-                                          //     const Text(
-                                          //       'ID Proof',
-                                          //       style: TextStyle(
-                                          //         fontSize: 14,
-                                          //         fontWeight: FontWeight.w500,
-                                          //         color: Colors.black,
-                                          //       ),
-                                          //     ),
-                                          //     Text(
-                                          //       '*',
-                                          //       style: GoogleFonts.nunito(
-                                          //         fontSize: 18,
-                                          //         fontWeight: FontWeight.w600,
-                                          //         color:
-                                          //             Colors.red.withOpacity(0.6),
-                                          //       ),
-                                          //     ),
-                                          //   ],
-                                          // ),
-                                          // const SizedBox(
-                                          //   height: 5,
-                                          // ),
-                                          // InkWell(
-                                          //   onTap: () {
-                                          //     print("gretting values==");
-                                          //     ModalService.openIDProofModalSheet(
-                                          //         context,
-                                          //         splashController,
-                                          //         parentController);
-                                          //   },
-                                          //   child: Container(
-                                          //     height: 55,
-                                          //     alignment: Alignment.centerLeft,
-                                          //     padding: const EdgeInsets.only(
-                                          //         top: 10, bottom: 10, left: 12),
-                                          //     decoration: BoxDecoration(
-                                          //         color: Colors.grey[200],
-                                          //         borderRadius:
-                                          //             BorderRadius.circular(15)),
-                                          //     child: parentController
-                                          //             .selectedIDProof
-                                          //             .value
-                                          //             .isNotEmpty
-                                          //         ? Text(parentController
-                                          //             .selectedIDProof.value)
-                                          //         : Text(
-                                          //             "Tap to select the ID proof",
-                                          //             style: TextStyle(
-                                          //                 color: Colors.grey[400],
-                                          //                 fontWeight:
-                                          //                     FontWeight.w400)),
-                                          //   ),
-                                          // ),
+                                          Row(
+                                            children: [
+                                              const Text(
+                                                'ID Proof',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              Text(
+                                                '*',
+                                                style: GoogleFonts.nunito(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                  color:
+                                                      Colors.red.withOpacity(0.6),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              print("gretting values==");
+                                              ModalService.openIDProofModalSheet(
+                                                  context,
+                                                  splashController,
+                                                  parentController);
+                                            },
+                                            child: Container(
+                                              height: 55,
+                                              alignment: Alignment.centerLeft,
+                                              padding: const EdgeInsets.only(
+                                                  top: 10, bottom: 10, left: 12),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey[200],
+                                                  borderRadius:
+                                                      BorderRadius.circular(15)),
+                                              child: parentController
+                                                      .selectedIDProof
+                                                      .value
+                                                      .isNotEmpty
+                                                  ? Text(parentController
+                                                      .selectedIDProof.value)
+                                                  : Text(
+                                                      "Tap to select the ID proof",
+                                                      style: TextStyle(
+                                                          color: Colors.grey[400],
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                            ),
+                                          ),
                                           const SizedBox(
                                             height: 16,
                                           ),
@@ -976,11 +976,11 @@ class ParentAccountSetupScreen extends StatelessWidget {
         googleAPIKey: "AIzaSyCe2-5wVLxW2xSeQpqVzVCEt9n3ppUAwXA",
         inputDecoration: InputDecoration(
           hintText: "Search your location",
-          filled: true,
+          filled: false,
           fillColor: Colors.grey.withOpacity(0.2),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(14.0),
-          ),
+              borderRadius: BorderRadius.circular(14.0),
+              borderSide: BorderSide.none),
           suffixIcon: const Icon(Icons.search),
         ),
         debounceTime: 800,
@@ -997,5 +997,35 @@ class ParentAccountSetupScreen extends StatelessWidget {
         focusNode: parentController.focusNode,
       ),
     );
+    // Container(
+    //   height: 60,
+    //   padding: const EdgeInsets.symmetric(horizontal: 10),
+    //   child: GooglePlaceAutoCompleteTextField(
+    //     textEditingController: parentController.autoCompleteController,
+    //     googleAPIKey: "AIzaSyCe2-5wVLxW2xSeQpqVzVCEt9n3ppUAwXA",
+    //     inputDecoration: InputDecoration(
+    //       hintText: "Search your location",
+    //       filled: true,
+    //       fillColor: Colors.grey.withOpacity(0.2),
+    //       border: OutlineInputBorder(
+    //         borderRadius: BorderRadius.circular(14.0,),
+    //         borderSide: BorderSide.none
+    //       ),
+    //       suffixIcon: const Icon(Icons.search),
+    //     ),
+    //     debounceTime: 800,
+    //     countries: const ["in", "QA"],
+    //     isLatLngRequired: true,
+    //     getPlaceDetailWithLatLng: (Prediction prediction) {
+    //       parentController.handleAutoCompleteSelection(prediction);
+    //     },
+    //     itemClick: (Prediction prediction) {
+    //       parentController.autoCompleteController.text =
+    //           prediction.description!;
+    //       parentController.focusNode.unfocus();
+    //     },
+    //     focusNode: parentController.focusNode,
+    //   ),
+    // );
   }
 }

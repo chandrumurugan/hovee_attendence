@@ -17,7 +17,6 @@ class NotificationScreen extends StatelessWidget {
   final String type;
   final String? firstname,lastname,wowid;
   NotificationScreen({super.key, required this.type, this.firstname, this.lastname, this.wowid});
-  //final NotificationController controller = Get.put(NotificationController());
   final NotificationController attendanceCourseListController =
       Get.put(NotificationController());
   @override

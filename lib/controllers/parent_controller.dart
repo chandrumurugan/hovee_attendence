@@ -19,6 +19,7 @@ import 'package:hovee_attendence/view/home_screen/tutee_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
 import 'package:hovee_attendence/view/parent_otp_screen.dart';
 import 'package:hovee_attendence/view/roleSelection.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -390,7 +391,8 @@ class ParentController extends GetxController {
           userDetail = otpResponse.value.userDetail!;
           print(userID.value);
           prefs.setString('Token', response.parentToken!);
-          prefs.setString('WowId', otpResponse.value.userDetail!.wowId!);
+          prefs.setString('WowId', otpResponse.value.userDetail!.wowId!); 
+         prefs.setString('Dob', formatDate(otpResponse.value.userDetail!.dob!));
           // prefs.setString('Rolename', response.data!.roles!.roleName??'');
           //  var validateTokendata = response.parentDetail!;
           //   //if(response.parentData=='true'){
@@ -588,4 +590,13 @@ class ParentController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  String formatDate(String dob) {
+  try {
+    DateTime parsedDate = DateFormat('dd/MM/yyyy').parse(dob);
+    return DateFormat('dd-MM-yyyy').format(parsedDate);
+  } catch (e) {
+    return dob; // Return original string if parsing fails
+  }
+}
 }

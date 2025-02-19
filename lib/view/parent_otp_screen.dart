@@ -166,11 +166,11 @@ class ParentOtpScreen extends StatelessWidget {
                                           controller:
                                               parentController.otpController,
                                           focusNode: parentController.focusNode,
-                                          // androidSmsAutofillMethod:
-                                          //     AndroidSmsAutofillMethod
-                                          //         .smsUserConsentApi,
-                                          // listenForMultipleSmsOnAndroid:
-                                          //     true,
+                                          androidSmsAutofillMethod:
+                                              AndroidSmsAutofillMethod
+                                                  .smsUserConsentApi,
+                                          listenForMultipleSmsOnAndroid:
+                                              true,
                                           defaultPinTheme: defaultPinTheme,
                                           separatorBuilder: (index) =>
                                               const SizedBox(width: 8),
@@ -227,10 +227,13 @@ class ParentOtpScreen extends StatelessWidget {
                                                   title2: '',
                                                   subtitle: 'subtitle',
                                                   btnName: 'Ok',
-                                                  onTap: () {
+                                                  onTap: () async {
                                                    if (value.parentAccount!) {
+                                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                    String dob = prefs.getString('Dob') ?? '';
   if (value.parentDetail!.parentToStudentInvite!) {
     // Display the Parent Preview dialog box (instead of Tutee Preview)
+    
     Get.back(); // Close the bottom sheet
     Get.dialog(
       AlertDialog(
@@ -256,7 +259,7 @@ class ParentOtpScreen extends StatelessWidget {
             ),
             _buildRow(
               'DOB',
-              value.userDetail!.dob,
+              dob,
             ),
           ],
         ),
@@ -309,7 +312,7 @@ class ParentOtpScreen extends StatelessWidget {
             ),
             _buildRow(
               'DOB',
-              value.userDetail!.dob,
+              dob,
             ),
           ],
         ),
@@ -391,15 +394,15 @@ class ParentOtpScreen extends StatelessWidget {
                                               // }),
                                               ),
                                         ),
-                                        Obx(() {
-                                          if (otpparentController
-                                              .code.value.isEmpty) {
-                                            return const SizedBox.shrink();
-                                          }
+                                        // Obx(() {
+                                        //   if (otpparentController
+                                        //       .code.value.isEmpty) {
+                                        //     return const SizedBox.shrink();
+                                        //   }
 
-                                          return Text(
-                                              otpparentController.code.value);
-                                        }),
+                                        //   return Text(
+                                        //       otpparentController.code.value);
+                                        // }),
                                       ],
                                     ),
                                     const SizedBox(
@@ -487,4 +490,5 @@ class ParentOtpScreen extends StatelessWidget {
       ],
     );
   }
+  
 }

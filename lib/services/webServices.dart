@@ -27,6 +27,7 @@ import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
 import 'package:hovee_attendence/modals/getDashboardYearFlow_model.dart';
 import 'package:hovee_attendence/modals/getEnquireList_model.dart';
+import 'package:hovee_attendence/modals/getEnrollmentDataModel.dart';
 import 'package:hovee_attendence/modals/getEnrollment_model.dart';
 import 'package:hovee_attendence/modals/getGrouedEnrollmentBylevaemodel.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
@@ -582,8 +583,18 @@ class WebService {
       required String idproof,
       required String profileImage,
       required String parentId}) async {
+         SharedPreferences prefs = await SharedPreferences.getInstance();
+         final token = prefs.getString('Token') ?? "";
+    final rolename = prefs.getString('Rolename') ?? "";
+    final parentToken = prefs.getString('PrentToken') ?? "";
+    String lastToken = "";
+    if (rolename == 'Parent') {
+      lastToken = parentToken;
+    } else {
+      lastToken = token;
+    }
     var headers = {
-      'Authorization': 'Bearer $token', // Pass the token for authorization
+      'Authorization': 'Bearer $lastToken', // Pass the token for authorization
       'Content-Type': 'application/json'
     };
     Logger().i(token);
@@ -1308,6 +1319,7 @@ class WebService {
       throw Exception('Failed to load Notification list');
     }
   }
+
 
   static Future<GetEnrollmentModel?> getEnrollment(
       Map<String, dynamic> batchData) async {
@@ -2137,6 +2149,7 @@ class WebService {
     required String city,
     required String street,
     required String doorNo,
+    required String idProof
   }) async {
     try {
       DateTime parsedDate1 = DateFormat('dd-MM-yyyy').parse(dob);
@@ -2162,6 +2175,7 @@ class WebService {
         "city": city,
         "street": street,
         "door_no": doorNo,
+        "id_proof_label": idProof,
       };
 
       var url = Uri.parse("${baseUrl}user/registerParent");
@@ -2735,4 +2749,78 @@ class WebService {
       return null;
     }
   }
+
+  // static Future<List<String>> fetchHostelNotificationsType() async {
+  //   final url = Uri.parse('${baseUrl}hostelNotification/getNotificationsType');
+  //   final box = GetStorage(); // Get an instance of GetStorage
+  //   // Retrieve the token from storage
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   final token = prefs.getString('Token') ?? "";
+
+  //   final reponse = await http.post(
+  //     url, // Replace with the actual API URL
+  //     headers: {
+  //       'Authorization': 'Bearer $token', // Add the authorization token here
+  //       'Content-Type': 'application/json',
+  //     },
+  //   );
+  //   if (reponse.statusCode == 200) {
+  //     Map<String, dynamic> result = json.decode(reponse.body);
+  //     return List<String>.from(result["data"]);
+  //   } else {
+  //     return [];
+  //     //  throw Exception('Failed to fetch course category list');
+  //   }
+  // }
+
+  // static Future<GetEnrollmentDataModel> fetchHomeDashboardHostelList() async {
+  //   try {
+  //     final url = Uri.parse('${baseUrl}api/hostel_attendance/getHomeDashboardTutor');
+  //     final box = GetStorage(); // Get an instance of GetStorage
+  //     // Retrieve the token from storage
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     final token = prefs.getString('Token') ?? "";
+  //     Logger().d("$token");
+  //     final response = await http.post(
+  //       url, // Replace with the actual API URL
+  //       headers: {
+  //         'Authorization': 'Bearer $token', // Add the authorization token here
+  //         'Content-Type': 'application/json',
+  //       },
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       Logger().i("200yhasuvsagvfdsfjsfvd");
+  //       return GetEnrollmentDataModel.fromJson(json.decode(response.body));
+  //     } else {
+  //       throw Exception('Failed to load dashboard list');
+  //     }
+  //   } catch (e) {
+  //     Logger().e(e);
+  //     throw e;
+  //   }
+  // }
+
+  //  static Future<getNotificationsModel> getNotificationsHostel(
+  //     Map<String, dynamic> notificationData) async {
+  //   final url = Uri.parse('${baseUrl}hostelNotification/getNotifications');
+  //   final box = GetStorage(); // Get an instance of GetStorage
+  //   // Retrieve the token from storage
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   final token = prefs.getString('Token') ?? "";
+  //   final response = await http.post(
+  //     url, // Replace with the actual API URL
+  //     body: json.encode(notificationData),
+  //     headers: {
+  //       'Authorization': 'Bearer $token', // Add the authorization token here
+  //       'Content-Type': 'application/json',
+  //     },
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     return getNotificationsModel.fromJson(json.decode(response.body));
+  //   } else {
+  //     throw Exception('Failed to load Notification list');
+  //   }
+  // }
 }

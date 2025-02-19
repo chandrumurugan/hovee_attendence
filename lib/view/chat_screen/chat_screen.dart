@@ -7,7 +7,6 @@ import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/view/chat_screen/message_module.dart';
 
-
 class CustomerChat extends StatefulWidget {
   const CustomerChat({Key? key}) : super(key: key);
 
@@ -44,8 +43,7 @@ class ChatScreenState extends State<CustomerChat> {
       setState(() {
         isLoading = true;
       });
-      dialogFlowtter = DialogFlowtter(
-          jsonPath: "assets/dialog_flow_auth.json");
+      dialogFlowtter = DialogFlowtter(jsonPath: "assets/dialog_flow_auth.json");
     } catch (e) {
       if (kDebugMode) {
         print('Error initializing DialogFlowtter: $e');
@@ -80,62 +78,59 @@ class ChatScreenState extends State<CustomerChat> {
       body: Column(
         children: [
           Container(
-          height: 130,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(0)),
-            image: DecorationImage(
-              image: AssetImage(
-                'assets/Course_BG_Banner.png',
+            height: 130,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(0)),
+              image: DecorationImage(
+                image: AssetImage(
+                  'assets/Course_BG_Banner.png',
+                ),
+                fit: BoxFit.cover,
               ),
-              fit: BoxFit.cover,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 25, left: 0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        'Chat',
+                        style: GoogleFonts.nunito(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 22,
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            // Icon(Icons.phone, color: Colors.white,size: 28,),
+                            // SizedBox(width: 15,),
+                            //  Icon(Icons.video_camera_back, color: Colors.white,size: 28,),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 25, left: 0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    ),
-                  ],
-                ),
-              
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      'Chat',
-                      style: GoogleFonts.nunito(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 22,
-                      ),
-                      
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Icon(Icons.phone, color: Colors.white,size: 28,),
-                          SizedBox(width: 15,),
-                           Icon(Icons.video_camera_back, color: Colors.white,size: 28,),
-                        ],
-                      ),
-                    ),
-                   
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
           Expanded(
             child: MessagesScreen(
               messages: messages,
@@ -152,7 +147,11 @@ class ChatScreenState extends State<CustomerChat> {
                     const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: AppConstants.primaryColor.withOpacity(0.3),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFC13584), Color(0xFF833AB4)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
                 child: Wrap(
                   spacing: 8.0,
@@ -160,18 +159,19 @@ class ChatScreenState extends State<CustomerChat> {
                   alignment: WrapAlignment.center,
                   children: predefinedTexts.map((text) {
                     return ActionChip(
-                      side: const BorderSide(color: AppConstants.secondaryColor),
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      side:
+                          const BorderSide(color: AppConstants.primaryColor),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
                       label: Text(
                         text,
-                        style: GoogleFonts.nunito(color: Colors.black),
+                        style: GoogleFonts.nunito(color: Colors.white),
                       ),
                       onPressed: () {
                         sendMessage(text);
                       },
                       backgroundColor:
-                         AppConstants.secondaryColor.withOpacity(0.3),
+                          AppConstants.secondaryColor,
                       labelStyle: const TextStyle(color: Colors.white),
                     );
                   }).toList(),

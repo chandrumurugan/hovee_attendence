@@ -52,13 +52,13 @@ class _OtpScreenState extends State<OtpScreen> {
 
     if (isGoogleSignIn!) {
       print('yes $otp');
-      authController.otpController.text = otp!;
+      //authController.otpController.text = otp!;
     } else {
       print('no $otp');
-      authController.otpController.text = authController.currentTabIndex == 0 ||
-              authController.isOtpResent.value
-          ? authController.loginResponse.value.otp!
-          : authController.registerResponse.value.data!.otp!;
+      // authController.otpController.text = authController.currentTabIndex == 0 ||
+      //         authController.isOtpResent.value
+      //     ? authController.loginResponse.value.otp!
+      //     : authController.registerResponse.value.data!.otp!;
     }
 
     if (isGoogleSignIn!) {
@@ -252,7 +252,8 @@ class _OtpScreenState extends State<OtpScreen> {
                                           // Specify direction if desired
                                           textDirection: TextDirection.ltr,
                                           child: Pinput(
-                                            androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
+                                            androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+                                            listenForMultipleSmsOnAndroid: true,
                                             inputFormatters: [
                                               FilteringTextInputFormatter
                                                   .digitsOnly
@@ -514,24 +515,24 @@ class _OtpScreenState extends State<OtpScreen> {
                                               }),
                                             ),
                                           ),
-                                          isGoogleSignIn!
-                                              ? Obx(() {
-                                                  if (authController
-                                                      .resend.value) {
-                                                    return Text(authController
-                                                            .loginResponse
-                                                            .value
-                                                            .otp ??
-                                                        '');
-                                                  } else {
-                                                    return Text(otp!.toString());
-                                                  }
-                                                })
-                                              : Obx(() {
-                                                  return Text(
-                                                    "${authController.currentTabIndex == 0 || authController.isOtpResent.value ? authController.loginResponse.value.otp : authController.registerResponse.value.data!.otp!}",
-                                                  );
-                                                }),
+                                          // isGoogleSignIn!
+                                          //     ? Obx(() {
+                                          //         if (authController
+                                          //             .resend.value) {
+                                          //           return Text(authController
+                                          //                   .loginResponse
+                                          //                   .value
+                                          //                   .otp ??
+                                          //               '');
+                                          //         } else {
+                                          //           return Text(otp!.toString());
+                                          //         }
+                                          //       })
+                                          //     : Obx(() {
+                                          //         return Text(
+                                          //           "${authController.currentTabIndex == 0 || authController.isOtpResent.value ? authController.loginResponse.value.otp : authController.registerResponse.value.data!.otp!}",
+                                          //         );
+                                          //       }),
                                         ],
                                       ),
                                       const SizedBox(

@@ -44,6 +44,8 @@ class UserProfile extends StatelessWidget {
         appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
+            accountController. isNonEdit = true.obs;
+            accountController.image.value = null;
             accountController.fetchUserProfiles();
             Get.back();
           },

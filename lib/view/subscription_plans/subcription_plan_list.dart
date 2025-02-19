@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class PlanList extends StatefulWidget {
-  const PlanList({super.key});
+  final bool fromBottomNav;
+    final String type;
+     final VoidCallback? onDashBoardBack;
+  const PlanList({super.key, required this.fromBottomNav, required this.type, this.onDashBoardBack});
 
   @override
   State<PlanList> createState() => _PlanListState();
@@ -66,7 +72,17 @@ class _PlanListState extends State<PlanList> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBarHeader(needGoBack: true, navigateTo: () {}),
+      appBar: AppBarHeader(needGoBack: true, navigateTo: () {
+          if (widget.fromBottomNav &&widget. onDashBoardBack != null) {
+            // Call onDashBoardBack if navigating from bottom navigation
+           widget. onDashBoardBack!();
+          } else {
+            // Navigate to Dashboard if not from bottom navigation
+            Get.offAll(DashboardScreen(
+              rolename:widget. type,
+            ));
+          }
+      }),
       body: Container(
         height: height,
         width: width,
@@ -168,18 +184,17 @@ class _PlanListState extends State<PlanList> {
             const SizedBox(
               height: 10,
             ),
-            SizedBox(
-              height: height * 0.4,
+            Expanded(
               child: ListView.separated(
                   shrinkWrap: true,
                   physics: const AlwaysScrollableScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     var data = populateSampleData[index];
-
+              
                     List<String> features =
                         populateSampleData[index]["features"];
-
+              
                     return GestureDetector(
                       onTap: () {
                         setState(() {
@@ -206,9 +221,9 @@ class _PlanListState extends State<PlanList> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
+                            // const SizedBox(
+                            //   height: 10,
+                            // ),
                             Text(
                               "${data["plan_name"]}",
                               style: GoogleFonts.nunito(
@@ -216,9 +231,9 @@ class _PlanListState extends State<PlanList> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 24),
                             ),
-                            const SizedBox(
-                              height: 15,
-                            ),
+                            // const SizedBox(
+                            //   height: 15,
+                            // ),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
@@ -234,9 +249,9 @@ class _PlanListState extends State<PlanList> {
                                     fontSize: 15),
                               ),
                             ),
-                            const SizedBox(
-                              height: 15,
-                            ),
+                            // const SizedBox(
+                            //   height: 15,
+                            // ),
                             Text(
                               data["price"] + " ₹/month",
                               style: GoogleFonts.nunito(
@@ -253,22 +268,27 @@ class _PlanListState extends State<PlanList> {
                                   }).toList()),
                             ),
                             const SizedBox(
-                              height: 25,
+                              height: 15,
                             ),
-                            Container(
-                              width: 160,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 8),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.white)),
-                              child: Center(
-                                child: Text(
-                                  "Select",
-                                  style: GoogleFonts.nunito(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                            InkWell(
+                              onTap: (){
+                                handlePayment();
+                              },
+                              child: Container(
+                                width: 160,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(color: Colors.white)),
+                                child: Center(
+                                  child: Text(
+                                    "Select",
+                                    style: GoogleFonts.nunito(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
                                 ),
                               ),
                             )
@@ -288,7 +308,7 @@ class _PlanListState extends State<PlanList> {
               height: 10,
             ),
             Text(
-              "Terms & Conditiom",
+              "Terms & Condition",
               style: GoogleFonts.nunito(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -313,7 +333,9 @@ class _PlanListState extends State<PlanList> {
   void handlePayment() {
     var options = {
       'key': 'rzp_test_ZkLOvWs7XmF5xN',
-      'amount': int.parse("${"plan.price"}") * 100,
+      'amount': 
+      //int.parse("${"plan.price"}") * 
+      100,
       'currency': 'INR',
       'name': " userDetails!.userDetails.firstName" +
           " " +

@@ -18,6 +18,7 @@ import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:hovee_attendence/view/home_screen/tutor_home_screen.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -275,10 +276,10 @@ class ParentAccountSetupController extends GetxController
     //   return false;
     // }
 
-    // if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
-    //    SnackBarUtils.showErrorSnackBar(context,'Please select the Id proof',);
-    //   return false;
-    // }
+    if (selectedIDProof.value.isEmpty && idProofController.text.isEmpty) {
+       SnackBarUtils.showErrorSnackBar(context,'Please select the Id proof',);
+      return false;
+    }
     return true;
   }
 
@@ -354,7 +355,7 @@ class ParentAccountSetupController extends GetxController
             state: stateController.text,
             city: cityController.text,
             street: address2Controller.text,
-            doorNo: address1Controller.text);
+            doorNo: address1Controller.text, idProof: idProofController.text);
 
         if (response != null) {
           registerResponse.value = response;
@@ -379,7 +380,7 @@ class ParentAccountSetupController extends GetxController
           'Phone number',
           '${parentController.userDetail!.phoneNumber}',
         ),
-        _buildRow('DOB', parentController.userDetail!.dob!),
+       _buildRow('DOB', formatDate(parentController.userDetail!.dob!)),
       ],
     ),
     actions: [
@@ -542,6 +543,15 @@ if (jsonString != null) {
   }
 
 
+  }
+}
+
+String formatDate(String dob) {
+  try {
+    DateTime parsedDate = DateFormat('dd/MM/yyyy').parse(dob);
+    return DateFormat('dd-MM-yyyy').format(parsedDate);
+  } catch (e) {
+    return dob; // Return original string if parsing fails
   }
 }
 

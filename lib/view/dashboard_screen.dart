@@ -439,7 +439,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onDashBoardBack: () => _navigateBack(),
       ),
     if (userProfileResponse?.data?.institudeId == null)
-      PlanList(),
+      PlanList(fromBottomNav: true,type: widget.rolename,
+        onDashBoardBack: () => _navigateBack(),),
   ];
 }
 

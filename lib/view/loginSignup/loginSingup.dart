@@ -24,6 +24,7 @@ import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/view/home_screen/guest_home_screen.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:hovee_attendence/view/roleSelection.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginSignUp extends StatelessWidget {
@@ -448,6 +449,8 @@ class LoginSignUp extends StatelessWidget {
                                           children: [
                                             InkWell(
                                               onTap: () async {
+                                                await Permission.sms.request();
+
                                                 authController.logIn(
                                                     authController
                                                         .logInController.text,
