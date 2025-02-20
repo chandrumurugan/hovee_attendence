@@ -38,7 +38,7 @@ class EnrollmentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final storage = GetStorage();
     final savedOtp = storage.read('otpCode') ?? '';
-    attendanceCourseListController.otpController.text = savedOtp;
+    //attendanceCourseListController.otpController.text = savedOtp;
     controller.onInit();
     return Scaffold(
         appBar: AppBarHeader(
@@ -464,6 +464,8 @@ class EnrollmentScreen extends StatelessWidget {
                     child: Directionality(
                       textDirection: TextDirection.ltr,
                       child: Pinput(
+                        androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
+                        listenForMultipleSmsOnAndroid: true,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],

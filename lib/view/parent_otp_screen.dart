@@ -394,15 +394,15 @@ class ParentOtpScreen extends StatelessWidget {
                                               // }),
                                               ),
                                         ),
-                                        // Obx(() {
-                                        //   if (otpparentController
-                                        //       .code.value.isEmpty) {
-                                        //     return const SizedBox.shrink();
-                                        //   }
+                                        Obx(() {
+                                          if (otpparentController
+                                              .code.value.isEmpty) {
+                                            return const SizedBox.shrink();
+                                          }
 
-                                        //   return Text(
-                                        //       otpparentController.code.value);
-                                        // }),
+                                          return Text(
+                                              otpparentController.code.value);
+                                        }),
                                       ],
                                     ),
                                     const SizedBox(

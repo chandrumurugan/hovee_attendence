@@ -1610,7 +1610,7 @@ class AuthControllers extends GetxController
         isOtpResent(true);
         resend(true);
         loginResponse.value = response;
-        otpController.text =response.otp!;
+       // otpController.text =response.otp!;
          await prefs.setString("OTP", response.otp!);
          await prefs.setString("AccountVerificationToken", response.accountVerificationToken!);
            Logger().i("resend ${prefs.getString("AccountVerificationToken")??''}");

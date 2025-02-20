@@ -68,22 +68,32 @@ class SidemenuHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
-                              radius: 42,
-                              child: userProfileData.userProfileResponse.value.data!.profileUrl!=
-                                                  null &&
-                                              userProfileData.userProfileResponse.value.data!.profileUrl!.isNotEmpty?
-                               ClipOval(
-                                child: Image.network(
-                                                        userProfileData.userProfileResponse.value.data!.profileUrl ??
-                                                            "",fit: BoxFit.cover, width: 100, 
-                height: 100,),
-                              ):const Icon(
-                                Icons
-                                    .person, // Correct usage: provide IconData directly
-                                size: 36, // Adjust the icon size as needed
-                                color: Colors.black, // Set the icon color
-                              ),
-                            ),
+  radius: 42,
+  child: isGuest
+      ? ClipOval(
+          child: const Icon(
+            Icons.person,
+            size: 36,
+            color: Colors.black,
+          ),
+        )
+      : (userProfileData.userProfileResponse.value.data!.profileUrl != null &&
+              userProfileData.userProfileResponse.value.data!.profileUrl!.isNotEmpty)
+          ? ClipOval(
+              child: Image.network(
+                userProfileData.userProfileResponse.value.data!.profileUrl!,
+                fit: BoxFit.cover,
+                width: 100,
+                height: 100,
+              ),
+            )
+          : const Icon(
+              Icons.person,
+              size: 36,
+              color: Colors.black,
+            ),
+),
+
             ],
           ),
           const SizedBox(

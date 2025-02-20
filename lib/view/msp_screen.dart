@@ -199,12 +199,13 @@ class MspScreen extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
+                                              holidayData.studentDetails!=null?
                                               Text(
                                                  '${holidayData.studentDetails!.firstName!} ${holidayData.studentDetails!.lastName!}',
                                                   style: GoogleFonts.nunito(
                                                       fontWeight: FontWeight.w600,
                                                       fontSize: 14,
-                                                      color: Colors.black)),
+                                                      color: Colors.black)):SizedBox.shrink(),
                                               SizedBox(height: 4),
                                               holidayData.enrollmentDetails!=null?
                                               Text('Roll no:${holidayData.enrollmentDetails!.rollNumber!}',
