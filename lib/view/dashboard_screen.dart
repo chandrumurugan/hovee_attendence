@@ -374,6 +374,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
     else if (index == 0 && widget.rolename == 'Tutee') {
       noticontroller.fetchNotifications('Tutee',false);
+    }else{
+      noticontroller.filteredNotifications('', widget.rolename, false);
     }
     });
   }

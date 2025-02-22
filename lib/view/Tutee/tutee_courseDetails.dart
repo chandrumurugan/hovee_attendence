@@ -96,6 +96,7 @@ class CourseDetailScreen extends StatelessWidget {
                 Coursecode:
                     'Tutor name: ${data!.tutorDetails!.firstName} ${data!.tutorDetails!.lastName}',
                 address: '',
+                type: 'Course',
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

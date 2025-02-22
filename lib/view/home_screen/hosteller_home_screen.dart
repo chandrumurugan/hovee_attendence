@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -11,11 +13,13 @@ import 'package:hovee_attendence/controllers/hostel_enquiry_controller.dart';
 import 'package:hovee_attendence/controllers/hostel_enrollement_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
+import 'package:hovee_attendence/view/Hosteller/hostel_announcement_screen.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_attendance_screen.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_enquiry_list.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_enrollment_screen.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_list.dart';
 import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
+import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/msp_screen.dart';
@@ -26,6 +30,7 @@ import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 import 'package:hovee_attendence/widget/subjectContainer.dart';
 import 'package:logger/logger.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../controllers/hosteller_controller.dart';
 
@@ -131,14 +136,31 @@ class HostellerHomeScreen extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  InkWell(
-                    onTap: () {
-                    },
-                    child: Icon(
-                      Icons.message,
-                      color: Colors.black.withOpacity(0.4),
-                    ),
-                  )
+                 
+                  Obx(() {
+                    if(controller.role.value=='Hosteller'){
+                      return InkWell(
+                      onTap: () {
+                      },
+                      child: Icon(
+                        Icons.message,
+                        color: Colors.black.withOpacity(0.4),
+                      ),
+                    );
+                    }
+                    else{
+                      return InkWell(
+                      onTap: () {
+                          _showQrCodeBottomSheet(
+                        context, controller.qrcodeImageData!);
+                      },
+                      child: Icon(
+                        Icons.qr_code,
+                        color: Colors.black.withOpacity(0.4),
+                      ),
+                    );
+                    }
+                  })
                 ],
               ),
             ),
@@ -238,11 +260,12 @@ class HostellerHomeScreen extends StatelessWidget {
                     // const SizedBox(
                     //   height: 10,
                     // ),
+                    controller.role!='Hostel'?
                     Obx(() {
                       if (controller.isLoading.value) {
                         return const SizedBox.shrink();
                       } else if (controller
-                          .homeDashboardCourseList.isEmpty) {
+                          .homeDashboardHostelList.isEmpty) {
                         return const SizedBox.shrink();
                       } else {
                         return Column(
@@ -251,7 +274,7 @@ class HostellerHomeScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
-                                  'My Classes',
+                                  'My hostel',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -259,7 +282,7 @@ class HostellerHomeScreen extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(() => AttendanceCourseListScreen());
+                                    Get.to(() => AttendanceHostelListScreen());
                                   },
                                   child: const Text(
                                     'See All',
@@ -271,11 +294,11 @@ class HostellerHomeScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SubjectContainer(),
+                            SubjectContainerHostel(),
                           ],
                         );
                       }
-                    }),
+                    }):SizedBox.shrink(),
 
                     // const SizedBox(
                     //   height: 10,
@@ -337,16 +360,18 @@ class HostellerHomeScreen extends StatelessWidget {
           if (item.name == 'Hostel List') {
             Get.to(() => HostelList());
           } else if (item.name == 'Verifications') {
+             hostelEnquiryController.onInit();
             Get.to(() => HostelEnquiryList(
-                  type: 'Hosteller',
+                  type: controller.role.value ?? '',
                   fromBottomNav: true,
                   firstname: firstname,
                   lastname: lastname,
                   wowid: wowid,
                 ));
           } else if (item.name == 'Enrollments') {
+             hostelEnrollmentController.onInit();
             Get.to(() => HostelEnrollmentScreen(
-                  type: 'Hosteller',
+                  type: controller.role.value ?? '',
                   fromBottomNav: true,
                   firstname: firstname,
                   lastname: lastname,
@@ -354,28 +379,20 @@ class HostellerHomeScreen extends StatelessWidget {
                 ));
           } else if (item.name == 'Attendance') {
             Get.to(() => HostelAttendanceScreen(
-                  type: 'Hosteller',
+                  type: controller.role.value.obs,
                   firstname: firstname,
                   lastname: lastname,
                   wowid: wowid,
-                ),arguments: "Hosteller");
+                ),arguments: controller.role.value);
           } else if (item.name == 'Leave') {
-            Get.to(() => TuteeLeaveScreen(
-                  type: 'Tutee',
-                  fromBottomNav: true,
-                  firstname: firstname,
-                  lastname: lastname,
-                  wowid: wowid,
-                ));
           } else if (item.name == 'Miss Punch') {
-            Get.to(() => MspScreen(
-                  type: 'Hosteller',
-                  fromBottomNav: true,
-                  firstname: firstname,
-                  lastname: lastname,
-                  wowid: wowid,
-                ));
           }
+         else if (item.name == 'Announcement') {
+                                      Get.to(() => HostelAnnouncementScreen(
+                                            type: controller.role.value,
+                                            firstname:firstname ,lastname:lastname ,wowid: wowid,
+                                          ));
+                                    }
         },
         child: Card(
           elevation: 10,
@@ -434,6 +451,37 @@ class HostellerHomeScreen extends StatelessWidget {
           ),
         );
       }),
+    );
+  }
+
+  void _showQrCodeBottomSheet(BuildContext context, Uint8List qrCodeUrl) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      builder: (context) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 16),
+              Image.memory(qrCodeUrl),
+              const SizedBox(height: 10),
+              Text('Please scan the QR code to mark attendance',style:  GoogleFonts.nunito(
+                            fontSize: 14, fontWeight: FontWeight.w700)),
+                             const SizedBox(height: 10),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Share.share(qrCodeUrl.toString(), subject: 'QR Code');
+                },
+                icon: const Icon(Icons.share),
+                label: const Text('Share'),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        );
+      },
     );
   }
 }

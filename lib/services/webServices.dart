@@ -30,6 +30,7 @@ import 'package:hovee_attendence/modals/getEnquireList_model.dart';
 import 'package:hovee_attendence/modals/getEnrollmentDataModel.dart';
 import 'package:hovee_attendence/modals/getEnrollment_model.dart';
 import 'package:hovee_attendence/modals/getGrouedEnrollmentBylevaemodel.dart';
+import 'package:hovee_attendence/modals/getGroupedAnnouncementHostelModel.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
@@ -2613,7 +2614,16 @@ class WebService {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json'
     };
-    var data = {"category": [], "search": searchTerm};
+    var data = {"category": [], 
+     "maxDistance": "",
+    "price_min": "",
+    "price_max": "",
+    "searchKey": searchTerm,
+    "userLatitude": prefs.getDouble('latitude'),
+    "userLongitude": prefs.getDouble('longitude'),
+    "pincode": "",
+    "low_to_high": "",
+    "high_to_low": ""};
     try {
       var response =
           await http.post(url, body: jsonEncode(data), headers: headers);
@@ -2723,7 +2733,7 @@ class WebService {
     final token = prefs.getString('Token') ?? "";
     var data = {
       "date": selectedDate,
-      "batchId": batchId,
+      "hostelId": batchId,
       "month": selectedMonth,
       "fromDate": '',
       "toDate": '',
@@ -2750,77 +2760,270 @@ class WebService {
     }
   }
 
-  // static Future<List<String>> fetchHostelNotificationsType() async {
-  //   final url = Uri.parse('${baseUrl}hostelNotification/getNotificationsType');
-  //   final box = GetStorage(); // Get an instance of GetStorage
-  //   // Retrieve the token from storage
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   final token = prefs.getString('Token') ?? "";
+  static Future<List<String>> fetchHostelNotificationsType() async {
+    final url = Uri.parse('${baseUrl}hostelNotification/getNotificationsType');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
 
-  //   final reponse = await http.post(
-  //     url, // Replace with the actual API URL
-  //     headers: {
-  //       'Authorization': 'Bearer $token', // Add the authorization token here
-  //       'Content-Type': 'application/json',
-  //     },
-  //   );
-  //   if (reponse.statusCode == 200) {
-  //     Map<String, dynamic> result = json.decode(reponse.body);
-  //     return List<String>.from(result["data"]);
-  //   } else {
-  //     return [];
-  //     //  throw Exception('Failed to fetch course category list');
-  //   }
-  // }
+    final reponse = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+    if (reponse.statusCode == 200) {
+      Map<String, dynamic> result = json.decode(reponse.body);
+      return List<String>.from(result["data"]);
+    } else {
+      return [];
+      //  throw Exception('Failed to fetch course category list');
+    }
+  }
 
-  // static Future<GetEnrollmentDataModel> fetchHomeDashboardHostelList() async {
-  //   try {
-  //     final url = Uri.parse('${baseUrl}api/hostel_attendance/getHomeDashboardTutor');
-  //     final box = GetStorage(); // Get an instance of GetStorage
-  //     // Retrieve the token from storage
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     final token = prefs.getString('Token') ?? "";
-  //     Logger().d("$token");
-  //     final response = await http.post(
-  //       url, // Replace with the actual API URL
-  //       headers: {
-  //         'Authorization': 'Bearer $token', // Add the authorization token here
-  //         'Content-Type': 'application/json',
-  //       },
-  //     );
+  static Future<GetEnrollmentDataModel> fetchHomeDashboardHostelList() async {
+     try {
+      final url = Uri.parse('${baseUrl}hostel_attendance/getHomeDashboardTutor');
+      final box = GetStorage(); // Get an instance of GetStorage
+      // Retrieve the token from storage
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('Token') ?? "";
+      Logger().d("$token");
+      final response = await http.post(
+        url, // Replace with the actual API URL
+        headers: {
+          'Authorization': 'Bearer $token', // Add the authorization token here
+          'Content-Type': 'application/json',
+        },
+      );
 
-  //     if (response.statusCode == 200) {
-  //       Logger().i("200yhasuvsagvfdsfjsfvd");
-  //       return GetEnrollmentDataModel.fromJson(json.decode(response.body));
-  //     } else {
-  //       throw Exception('Failed to load dashboard list');
-  //     }
-  //   } catch (e) {
-  //     Logger().e(e);
-  //     throw e;
-  //   }
-  // }
+      if (response.statusCode == 200) {
+        Logger().i("200yhasuvsagvfdsfjsfvd");
+        return GetEnrollmentDataModel.fromJson(json.decode(response.body));
+      } else {
+        throw Exception('Failed to load dashboard list');
+      }
+    } catch (e) {
+      Logger().e(e);
+      throw e;
+    }
+  }
 
-  //  static Future<getNotificationsModel> getNotificationsHostel(
-  //     Map<String, dynamic> notificationData) async {
-  //   final url = Uri.parse('${baseUrl}hostelNotification/getNotifications');
-  //   final box = GetStorage(); // Get an instance of GetStorage
-  //   // Retrieve the token from storage
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   final token = prefs.getString('Token') ?? "";
-  //   final response = await http.post(
-  //     url, // Replace with the actual API URL
-  //     body: json.encode(notificationData),
-  //     headers: {
-  //       'Authorization': 'Bearer $token', // Add the authorization token here
-  //       'Content-Type': 'application/json',
-  //     },
-  //   );
+   static Future<getNotificationsModel> getNotificationsHostel(
+      Map<String, dynamic> notificationData) async {
+    final url = Uri.parse('${baseUrl}hostelNotification/getNotifications');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(notificationData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
 
-  //   if (response.statusCode == 200) {
-  //     return getNotificationsModel.fromJson(json.decode(response.body));
-  //   } else {
-  //     throw Exception('Failed to load Notification list');
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      return getNotificationsModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Notification list');
+    }
+  }
+
+  static Future<GetGroupedAnnouncementHostelModel> fetchHostelAnnounmentsList(
+      String searchitems) async {
+    final url = Uri.parse('$baseUrl/hostel/getGroupedAnnouncement');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var data = {"searchKey": searchitems};
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: jsonEncode(data),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return GetGroupedAnnouncementHostelModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load course list');
+    }
+  }
+
+  static Future<getAttendancePunchInModel?> getHostelAttendancePunchIn(
+      String hostelId, String hostelObjId, BuildContext context) async {
+    Logger().d("api calling");
+    final url = Uri.parse('${baseUrl}hostel_attendance/HostelPunchIn');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+    var data = {"hostelId": hostelId, "hostel_ObjectId": hostelObjId};
+    Logger().d("api calling ==>${token}");
+    Logger().d("api calling ==>${data}");
+    try {
+      var response =
+          await http.post(url, body: jsonEncode(data), headers: headers);
+      Logger().d(response.body);
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return getAttendancePunchInModel.fromJson(result);
+      } else {
+        Logger().d(response.reasonPhrase);
+        Map<String, dynamic> result = jsonDecode(response.body);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
+        return null;
+      }
+    } catch (e) {
+      Logger().e(e);
+      return null;
+    }
+  }
+
+  static Future<getAttendancePunchInModel?> getHostelAttendancePunchOut(
+      BuildContext context, String hostelId,hostelObjId) async {
+    final url = Uri.parse('${baseUrl}hostel_attendance/HostelPunchOut');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = {"hostelId": hostelId, "hostel_ObjectId": hostelObjId};
+    final token = prefs.getString('Token') ?? "";
+    var headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json'
+    };
+    try {
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: jsonEncode(data),
+      );
+      if (response.statusCode == 200) {
+        var result = jsonDecode(response.body);
+        return getAttendancePunchInModel.fromJson(result);
+      } else {
+        Map<String, dynamic> result = jsonDecode(response.body);
+        SnackBarUtils.showSuccessSnackBar(
+          context,
+          "${result["message"]}",
+        );
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<getMarkNotificationAsReadModel> FetchMarkedNotificationHostel(
+      Map<String, dynamic> notificationData) async {
+    final url = Uri.parse('${baseUrl}hostelNotification/markNotificationAsRead');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(notificationData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return getMarkNotificationAsReadModel
+          .fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Notification list');
+    }
+  }
+
+  static Future<UpdateEnrollmentStatusModel?> updateEnrollmentHostel(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse(
+        "${baseUrl}hostel/enquiry/updateEnrollment"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return UpdateEnrollmentStatusModel.fromJson(json.decode(response.body));
+      } else {
+        var result =
+            UpdateEnrollmentStatusModel.fromJson(json.decode(response.body));
+        Get.snackbar(
+          result.message.toString(),
+          icon: const Icon(Icons.info, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: SizedBox(
+            height: 40, // Set desired height here
+            child: Center(
+              child: Text(
+                result.message.toString(),
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<getQrcodeModel> fetchHostelQrCode(String hostelId) async {
+    final url = Uri.parse('${baseUrl}hostel_attendance/getQrcode');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var data = {"hostelId": hostelId};
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      return getQrcodeModel.fromJson(json.decode(response.body));
+    } else if (response.statusCode == 401) {
+      // Clear session data
+      await prefs.clear();
+      // Navigate to the login screen
+      Get.to(() => LoginSignUp());
+      return null!;
+    } else {
+      throw Exception('Failed to load attendanceCourse list');
+    }
+  }
 }

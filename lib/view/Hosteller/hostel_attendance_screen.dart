@@ -14,7 +14,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HostelAttendanceScreen extends StatelessWidget {
-   final String type;
+   final RxString  type;
   final HostelAttendanceController controller;
   final String? firstname, lastname, wowid, batchname;
    HostelAttendanceScreen({super.key,required this.type,
@@ -30,7 +30,7 @@ class HostelAttendanceScreen extends StatelessWidget {
         needGoBack: true,
         navigateTo: () {
           Get.offAll(DashboardScreen(
-            rolename: type,
+            rolename: type.value,
             firstname: firstname ?? '',
             lastname: lastname ?? '',
             wowid: wowid ?? '',

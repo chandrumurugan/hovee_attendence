@@ -153,22 +153,6 @@ class AccountSetup extends StatelessWidget {
                             dragStartBehavior: DragStartBehavior.down,
                             controller: accountController.tabController,
                             onTap: (int index) {
-                              // if (index == 1) {
-                              //   accountController.storePersonalInfo(
-                              //       context, roleId, roleTypeId);
-                              // }
-                              // if (index == 2) {
-                              //   accountController.storeAddressInfo(
-                              //       context,
-                              //       selectedRoleTypeName,
-                              //       roleId,
-                              //       roleTypeId,
-                              //       selectedRole);
-                              // }
-                              // accountController.currentTabIndex.value = index;
-                              // accountController.isLoading.value = false;
-                              // KeyboardUtil.hideKeyboard(context);
-
                               // Perform actions based on tab index
                               if (index == 1) {
                                 accountController.storePersonalInfo(
@@ -182,32 +166,6 @@ class AccountSetup extends StatelessWidget {
                                     roleTypeId,
                                     selectedRole);
                               }
-
-                              // if (index == 1 || index == 2) {
-                              //   // Check if a location has been searched
-                              //   Logger().d(accountController
-                              //       .isLocationSearched.value);
-                              //   if (accountController
-                              //       .isLocationSearched.value) {
-                              //              Logger().d( LatLng(
-                              //             accountController.latitudeL.value,
-                              //             accountController.longitudeL.value),);
-                              //     accountController.mapController
-                              //         .animateCamera(
-                              //       CameraUpdate.newLatLng(
-                              //         LatLng(
-                              //             accountController.latitudeL.value,
-                              //             accountController.longitudeL.value),
-                              //       ),
-                              //     );
-                              //     accountController.setMarker(
-                              //       LatLng(accountController.latitudeL.value,
-                              //           accountController.longitudeL.value),
-                              //     );
-                              //   }else{
-                              //     Logger().d("Location already searched");
-                              //   }
-                              // }
 
                               // Update the current tab index and hide the keyboard
                               accountController.currentTabIndex.value = index;

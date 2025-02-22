@@ -201,7 +201,8 @@ class SidemenuHeader extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    rating,
+                   isGuest ?  '0':
+                    userProfileData .userRatings!.averageRating ?? '0',
                     style: GoogleFonts.nunito(
                         fontWeight: FontWeight.w400,
                         color: Colors.white,

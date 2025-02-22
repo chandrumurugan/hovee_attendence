@@ -5,10 +5,13 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hovee_attendence/controllers/enquir_controller.dart';
 import 'package:hovee_attendence/controllers/enrollment_controller.dart';
 import 'package:hovee_attendence/controllers/holiday_controller.dart';
+import 'package:hovee_attendence/controllers/hostel_enrollement_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:hovee_attendence/view/Hosteller/hostel_enquiry_list.dart';
+import 'package:hovee_attendence/view/Hosteller/hostel_enrollment_screen.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
 import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
@@ -36,10 +39,14 @@ class NotificationController extends GetxController {
   var savedOtp;
 
    final EnrollmentController enrollmentController = Get.put(EnrollmentController());
+   final HostelEnrollementController hostelEnrollmentController =
+        Get.put(HostelEnrollementController());
 
     var notificationCount = 0.obs;
   final EnquirDetailController classController =
       Get.put(EnquirDetailController());
+      final HostelEnrollementController controller =
+      Get.put(HostelEnrollementController());
   @override
   void onInit() {
     super.onInit();
@@ -48,12 +55,6 @@ class NotificationController extends GetxController {
     fetchNotificationsType();
      print("object1");
   }
-
-  // void getRole() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   role = prefs.getString('Rolename') ?? '';
-  //   fetchNotifications(role!,false);
-  // }
 
   void fetchNotifications(String role, bool isRead) async {
     //  SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -73,27 +74,41 @@ class NotificationController extends GetxController {
 
   void fetchNotificationsType() async {
   isLoading(true);
-
-  var response = await WebService.fetchNotificationsType();
-
+    final storage = GetStorage();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    role = prefs.getString('Rolename') ?? '';
+    if(role=='Hostel' || role=='Hosteller'){
+  var response = await WebService.fetchHostelNotificationsType();
   if (response.isNotEmpty) {
     // Move "Announcements" to the last index
     if (response.contains("Announcements")) {
       response.remove("Announcements");
       response.add("Announcements");
     }
-
     categories.value = response;
     isLoading(false);
-
-    final storage = GetStorage();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    role = prefs.getString('Rolename') ?? '';
     filteredNotifications('Enquiry', role!, false);
     //filteredNotifications('Enrollment', role!, false);
   } else {
     isLoading(false);
   }
+    }
+    else{
+      var response = await WebService.fetchNotificationsType();
+  if (response.isNotEmpty) {
+    // Move "Announcements" to the last index
+    if (response.contains("Announcements")) {
+      response.remove("Announcements");
+      response.add("Announcements");
+    }
+    categories.value = response;
+    isLoading(false);
+    filteredNotifications('Enquiry', role!, false);
+    //filteredNotifications('Enrollment', role!, false);
+  } else {
+    isLoading(false);
+  }
+    }
 }
 
 
@@ -102,7 +117,19 @@ class NotificationController extends GetxController {
   void filteredNotifications(String type, String role, bool isRead) async {
     isLoading(true);
     var batchData = {"role": role, "type": type, "isRead ": false};
-    var response = await WebService.getNotifications(batchData);
+    if(role =='Hostel' || role =='Hosteller' ){
+    var response = await WebService.getNotificationsHostel(batchData);
+    if (response != null && response.statusCode == 200) {
+      notificationList.value =response.data!;
+     notificationCount.value=response.unreadCount!;
+      isLoading(false);
+    } else {
+      notificationList.clear();
+      isLoading(false);
+    }
+
+    }else{
+      var response = await WebService.getNotifications(batchData);
     if (response != null && response.statusCode == 200) {
       notificationList.value =response.data!;
      // notificationCount.value=response.unreadCount!;
@@ -110,6 +137,7 @@ class NotificationController extends GetxController {
     } else {
       notificationList.clear();
       isLoading(false);
+    }
     }
   }
 
@@ -170,7 +198,55 @@ class NotificationController extends GetxController {
 void fetchMarkedNotification(String notificationId, String type, String msgtype) async {
   isLoading(true);
   var batchData = {"notificationId": notificationId};
-  var response = await WebService.FetchMarkedNotification(batchData);
+  if(role =='Hostel' || role =='Hosteller' ){
+  var response = await WebService.FetchMarkedNotificationHostel(batchData);
+  final storage = GetStorage();
+
+  if (response != null && response.statusCode == 200) {
+    notificationData.value = response.data!;
+
+    // Extract only the code using a regular expression
+    final message = notificationData.value!.message ?? "";
+     final head = notificationData.value!.head ?? "";
+    final regex = RegExp(r'\b\d{6}\b'); // Matches a 6-digit number
+    final match = regex.firstMatch(message);
+
+    if (match != null) {
+      otpController.text = match.group(0)!; // Store only the code in otpController
+      storage.write('otpCode', otpController.text); // Store OTP in GetStorage
+      print("Stored OTP: ${otpController.text}");
+    } else {
+      otpController.text = ""; // Handle if code is not found
+    }
+
+   // Extract tab_type from the response
+    final tabType = notificationData.value!.tabType ?? ""; // Default to "0" if not found
+       Logger().i("tabType: $tabType");
+    // Navigate based on msgtype and pass only tabType
+    if (msgtype == 'Enquiry') {
+      controller.onInit();
+      Get.off(() => HostelEnquiryList(type: role!, fromBottomNav: true,), arguments: tabType);
+    } else if (msgtype == 'Enrollment') {
+      Get.off(() => HostelEnrollmentScreen(type: role!, fromBottomNav: true,), arguments: tabType);
+    } else if (msgtype == 'Leave') {
+      //Get.off(() => TuteeLeaveScreen(type: role!, fromBottomNav: true,));
+    } else if (msgtype == 'MSP') {
+      //Get.off(() => MspScreen(type: role!, fromBottomNav: true,));
+    } else if (msgtype == 'Announcements') {
+     // Get.off(() => AnnouncementScreen(type: role!,));
+    } else if (msgtype == 'Holiday') {
+      // if (role == 'Tutor') {
+      //   Get.off(() => HolidayController());
+      // } else {
+      //   Get.off(() => TuteeHolidayScreen(type: role!,));
+      // }
+    }
+  } else {
+    notificationList.clear();
+    isLoading(false);
+  }
+  }else{
+    var response = await WebService.FetchMarkedNotification(batchData);
   final storage = GetStorage();
 
   if (response != null && response.statusCode == 200) {
@@ -200,7 +276,7 @@ void fetchMarkedNotification(String notificationId, String type, String msgtype)
       Get.off(() => EnrollmentScreen(type: role!, fromBottomNav: true,), arguments: tabType);
     } else if (msgtype == 'Leave') {
       Get.off(() => TuteeLeaveScreen(type: role!, fromBottomNav: true,));
-    } else if (msgtype == 'Miss Punch') {
+    } else if (msgtype == 'MSP') {
       Get.off(() => MspScreen(type: role!, fromBottomNav: true,));
     } else if (msgtype == 'Announcements') {
       Get.off(() => AnnouncementScreen(type: role!,));
@@ -215,16 +291,11 @@ void fetchMarkedNotification(String notificationId, String type, String msgtype)
     notificationList.clear();
     isLoading(false);
   }
+  }
 }
 
     void setSelectedIndex(int index) {
       
     selectedIndex.value = index; // Update selected index
   }
-
-//   void initializeOtpField() {
-  
-// }
-
-
 }

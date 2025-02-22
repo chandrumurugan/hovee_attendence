@@ -172,9 +172,19 @@ class _RoleSelectionState extends State<RoleSelection> {
                                       horizontal: 3, vertical: 8),
                                   child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: roles?.length ?? 0,
+                                    itemCount: roles
+                                            ?.where((role) =>
+                                                role.roleName != 'Hostel')
+                                            .length ??
+                                        0,
                                     itemBuilder: (context, index) {
-                                      var role = roles![index];
+                                      var filteredRoles = roles!
+                                          .where((role) =>
+                                              role.roleName != 'Hostel')
+                                          .toList();
+                                      var role = filteredRoles[
+                                          index]; // Use the filtered list
+
                                       bool isSelected =
                                           selectedRoleId == role.id &&
                                               selectedRole == role.roleName;
@@ -185,10 +195,6 @@ class _RoleSelectionState extends State<RoleSelection> {
                                           if (widget.parentId != null &&
                                               widget.parentId!.isNotEmpty &&
                                               role.roleName != 'Tutee') {
-                                            // SnackBarUtils.showSuccessSnackBar(
-                                            //   context,
-                                            //   'Only Tutee role is allowed in this scenario.',
-                                            // );
                                             return; // Exit early, prevent selection
                                           }
 
@@ -257,69 +263,92 @@ class _RoleSelectionState extends State<RoleSelection> {
                               ),
                             ),
                             // Role Types ListView.builder
-                         if (roleTypes.isNotEmpty)
-  Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    child: Card(
-      elevation: 20,
-      shadowColor: Colors.black,
-      child: Container(
-        height: 60,
-        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 8),
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: roleTypes.where((roleType) => roleType.roleTypeName != 'Institute').length,
-          itemBuilder: (context, index) {
-            // Filtered list excluding 'Institute'
-            var filteredRoleTypes = roleTypes.where((roleType) => roleType.roleTypeName != 'Institute').toList();
-            var roleType = filteredRoleTypes[index];
-            bool isSelected = selectedRoleTypeId == roleType.id &&
-                selectedRoleTypeName == roleType.roleTypeName;
+                            if (roleTypes.isNotEmpty)
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Card(
+                                  elevation: 20,
+                                  shadowColor: Colors.black,
+                                  child: Container(
+                                    height: 60,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 3, vertical: 8),
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: roleTypes
+                                          .where((roleType) =>
+                                              roleType.roleTypeName !=
+                                              'Institute')
+                                          .length,
+                                      itemBuilder: (context, index) {
+                                        // Filtered list excluding 'Institute'
+                                        var filteredRoleTypes = roleTypes
+                                            .where((roleType) =>
+                                                roleType.roleTypeName !=
+                                                'Institute')
+                                            .toList();
+                                        var roleType = filteredRoleTypes[index];
+                                        bool isSelected =
+                                            selectedRoleTypeId == roleType.id &&
+                                                selectedRoleTypeName ==
+                                                    roleType.roleTypeName;
 
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedRoleTypeId = roleType.id;
-                  selectedRoleTypeName = roleType.roleTypeName;
-                });
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: Card(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      gradient: isSelected
-                          ? const LinearGradient(
-                              colors: [
-                                Color(0xFFBA0161),
-                                Color(0xFF510270),
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            )
-                          : null,
-                    ),
-                    child: Center(
-                      child: Text(
-                        roleType.roleTypeName,
-                        style: GoogleFonts.nunito(
-                          color: isSelected ? Colors.white : Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    ),
-  ),
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              selectedRoleTypeId = roleType.id;
+                                              selectedRoleTypeName =
+                                                  roleType.roleTypeName;
+                                            });
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Card(
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10.0,
+                                                        vertical: 5),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  gradient: isSelected
+                                                      ? const LinearGradient(
+                                                          colors: [
+                                                            Color(0xFFBA0161),
+                                                            Color(0xFF510270),
+                                                          ],
+                                                          begin: Alignment
+                                                              .topCenter,
+                                                          end: Alignment
+                                                              .bottomCenter,
+                                                        )
+                                                      : null,
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    roleType.roleTypeName,
+                                                    style: GoogleFonts.nunito(
+                                                      color: isSelected
+                                                          ? Colors.white
+                                                          : Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
 
                             // Get It Button
 
@@ -392,12 +421,13 @@ class _RoleSelectionState extends State<RoleSelection> {
                                     );
                                     return;
                                   }
-                                   if (selectedRole == 'Hosteller') {
-                                    SnackBarUtils.showSuccessSnackBar(
-                                      context,
-                                      'Feature under development.',
-                                    );
-                                    return;
+                                  //  if (selectedRole == 'Hosteller') {
+                                  //   SnackBarUtils.showSuccessSnackBar(
+                                  //     context,
+                                  //     'Feature under development.',
+                                  //   );
+                                  //   return;
+                                  //  }
                                   //    Get.to(
                                   //   () => AccountSetup(
                                   //       roleId: selectedRoleId!,
@@ -413,7 +443,7 @@ class _RoleSelectionState extends State<RoleSelection> {
                                   //         .isGoogleSignIn, // or false, based on your logic
                                   //   },
                                   // );
-                                  }
+
                                   // If we reach here, either a role is selected and it's not 'tutor', or it's 'tuttee' (which doesn't require a role type)
                                   Get.to(
                                     () => AccountSetup(

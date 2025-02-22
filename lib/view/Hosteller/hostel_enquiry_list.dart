@@ -8,6 +8,8 @@ import 'package:hovee_attendence/controllers/hostel_enquiry_controller.dart';
 import 'package:hovee_attendence/services/modalServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
+import 'package:hovee_attendence/view/Hosteller/hostel_enquiry_preview_screen.dart';
+import 'package:hovee_attendence/view/Hosteller/hoster_preview_screen.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 
 class HostelEnquiryList extends StatelessWidget {
@@ -116,7 +118,9 @@ class HostelEnquiryList extends StatelessWidget {
                               final storage = GetStorage();
                               String email = storage.read('email');
                               String phnno = storage.read('phoneNumber');
-
+                                Get.to(HostelEnquiryPreviewScreen(
+                        data: hostelEnquiryList,
+                      ));
                             },
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
@@ -158,17 +162,17 @@ class HostelEnquiryList extends StatelessWidget {
                                                     hostelEnquiryList
                                                         .hostelLists!.hostelName ?? '',context),
                                                 _buildRow(
-                                                    'RegisterNo',
+                                                    'Register no',
                                                     hostelEnquiryList
                                                         .hostelLists!.registerNo ?? '',context),
                                                 _buildRow(
-                                                    'Hostel categories',
+                                                    'Hostel category',
                                                    hostelEnquiryList
-                                                        .hostelLists!.registerNo ?? '',context),
+                                                        .hostelLists!.categories ?? '',context),
                                                 _buildRow(
                                                     'Status',
                                                     hostelEnquiryList
-                                                        .status ?? '',context),
+                                                        .status =='Approved'?'Accepted': hostelEnquiryList.status ?? '' ?? '',context),
                                               ],
                                             ),
                                           ),
@@ -177,152 +181,6 @@ class HostelEnquiryList extends StatelessWidget {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      // Display "Accept" and "Reject" buttons outside the column
-                                      if (controller
-                                                  .selectedTabIndex.value ==
-                                              0 &&
-                                          type!= 'Hosteller')
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Expanded(
-                                              child: InkWell(
-                                                onTap: () {
-                                                  _showConfirmationDialog(
-                                                      context,
-                                                      hostelEnquiryList);
-                                                },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 10),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    gradient:
-                                                        const LinearGradient(
-                                                      colors: [
-                                                        Color(0xFFBA0161),
-                                                        Color(0xFF510270)
-                                                      ],
-                                                      begin:
-                                                          Alignment.topCenter,
-                                                      end: Alignment
-                                                          .bottomCenter,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    "Accept",
-                                                    textAlign: TextAlign.center,
-                                                    style: GoogleFonts.nunito(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 20,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                                width:
-                                                    10), // Spacing between buttons
-                                            Expanded(
-                                              child: InkWell(
-                                                onTap: () {
-                                                  _showConfirmationDialog1(
-                                                      context,
-                                                      hostelEnquiryList);
-                                                },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 10),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    gradient:
-                                                        const LinearGradient(
-                                                      colors: [
-                                                        Color(0xFFBA0161),
-                                                        Color(0xFF510270)
-                                                      ],
-                                                      begin:
-                                                          Alignment.topCenter,
-                                                      end: Alignment
-                                                          .bottomCenter,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    "Reject",
-                                                    textAlign: TextAlign.center,
-                                                    style: GoogleFonts.nunito(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 20,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-
-                                      if (controller
-                                                  .selectedTabIndex.value ==
-                                              1 &&
-                                          type!= 'Hosteller')
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Expanded(
-                                              child: InkWell(
-                                                onTap: () {
-                                                
-                                                },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 10),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8),
-                                                    gradient:
-                                                        const LinearGradient(
-                                                      colors: [
-                                                        Color(0xFFBA0161),
-                                                        Color(0xFF510270)
-                                                      ],
-                                                      begin:
-                                                          Alignment.topCenter,
-                                                      end: Alignment
-                                                          .bottomCenter,
-                                                    ),
-                                                  ),
-                                                  child: Text(
-                                                    "Enroll now",
-                                                    textAlign: TextAlign.center,
-                                                    style: GoogleFonts.nunito(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 20,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                                width:
-                                                    10), // Spacing between buttons
-                                          ],
-                                        ),
                                     ],
                                   ),
                                 ),
@@ -353,7 +211,7 @@ class HostelEnquiryList extends StatelessWidget {
               fontSize: 16),
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width*0.2,
+          width: MediaQuery.of(context).size.width*0.3,
           child: Text(
             value ?? '',
             style: const TextStyle(

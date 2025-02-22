@@ -55,6 +55,7 @@ class UserData {
         required this.rolesTypeId,
         required this.qualificationDetails,
        required this.institudeId,
+       required this.ratings,
     });
 
     final String? id;
@@ -80,7 +81,7 @@ class UserData {
     final String? idProofFilename;
     final String? idProofUrl;
     final String? profileFilename;
-    final String? profileUrl;
+     String? profileUrl;
     final int? isActive;
     final int? isDeleted;
     final DateTime? createdAt;
@@ -90,6 +91,7 @@ class UserData {
     final String? rolesTypeId;
     final List<QualificationDetail> qualificationDetails;
     final String? institudeId;
+    final Ratings? ratings;
 
     factory UserData.fromJson(Map<String, dynamic> json){ 
         return UserData(
@@ -125,6 +127,7 @@ class UserData {
             rolesId: json["rolesId"] == null ? null : RolesId.fromJson(json["rolesId"]),
             rolesTypeId: json["rolesTypeId"],
             qualificationDetails: json["qualificationDetails"] == null ? [] : List<QualificationDetail>.from(json["qualificationDetails"]!.map((x) => QualificationDetail.fromJson(x))), institudeId: json['institudeId'],
+            ratings: json["ratings"] == null ? null : Ratings.fromJson(json["ratings"]),
             
         );
     }
@@ -281,4 +284,27 @@ class RoleType {
         );
     }
 
+}
+
+
+class Ratings {
+  Ratings({
+    required this.averageRating,
+    required this.totalRatings,
+  });
+
+  final String? averageRating;
+  final int? totalRatings;
+
+  factory Ratings.fromJson(Map<String, dynamic> json) {
+    return Ratings(
+      averageRating: json["averageRating"]?.toString(), // Convert to String
+      totalRatings: json["totalRatings"] as int?, // Ensure it's an int
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "averageRating": averageRating,
+        "totalRatings": totalRatings,
+      };
 }

@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hovee_attendence/controllers/notification_controller.dart';
+import 'package:hovee_attendence/modals/getEnrollmentDataModel.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByHostelModel.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
@@ -12,18 +17,34 @@ class HostellerController extends GetxController with GetSingleTickerProviderSta
 
  GlobalKey<ScaffoldState> hostellerScaffoldKey = GlobalKey<ScaffoldState>();
   var isLoading = true.obs;
-  var homeDashboardNavList = <NavbarItems>[].obs;
+  var homeDashboardNavList = <NavbarItem>[].obs;
   var batchList = <Datum>[].obs;
   var selectedBatchIN = Rxn<Datum>();
   var isBatchSelected = false.obs;
-   var studentDetails = <StudentDetails>[].obs;
-   var homeDashboardCourseList = <CourseList?>[].obs;
+ var enrollmentDetails = <EnrollmentDatum>[].obs;
+   var homeDashboardHostelList = <HostelList?>[].obs;
+     HostelObjectIdDetails? hostellerObjectIdDetails;
+     HostelObjectIdDetails? hostelObjectIdDetails;
+     var role=''.obs;
+     var qrcodeImage;
+     var wowId;
+  Uint8List? qrcodeImageData;
+  String? hostelId;
+  final NotificationController noticontroller = Get.put(NotificationController());
   @override
+
   void onInit() {
     // TODO: implement onInit
     super.onInit();
      fetchHomeDashboardTuteeList();
-     //fetchGroupedEnrollmentByHostel();
+     getRole();
+  }
+
+  getRole() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    role.value = prefs.getString('Rolename') ?? '';
+    update();
+    noticontroller.filteredNotifications('', role.value, false);
   }
 
   void selectBatch(Datum batch) {
@@ -42,19 +63,21 @@ class HostellerController extends GetxController with GetSingleTickerProviderSta
   }
 
    void fetchHomeDashboardTuteeList() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
     try {
       isLoading(true);
-      var homeDashboardResponse = await WebService.fetchHomeDashboardList();
+      var homeDashboardResponse = await WebService.fetchHomeDashboardHostelList();
       if (homeDashboardResponse != null) {
-        homeDashboardNavList.value = homeDashboardResponse.navbarItems!;
-                studentDetails.value = homeDashboardResponse.studentDetails!;
-        if (studentDetails!= null && studentDetails.isNotEmpty) {
-          homeDashboardCourseList.value = studentDetails[0].courseList!;
-           print("ghetting courseList==$homeDashboardCourseList");
-          
-        }
+        homeDashboardNavList.value = homeDashboardResponse.navbarItems;
+         enrollmentDetails.value = homeDashboardResponse.enrollmentData;
+        if (enrollmentDetails.value != null && enrollmentDetails.value.isNotEmpty) {
+          // Getting the unreadNotificationCount of the first student
+          hostellerObjectIdDetails =enrollmentDetails[0].hostellerObjectIdDetails;
+          hostelObjectIdDetails=enrollmentDetails[0].hostelObjectIdDetails;
+          homeDashboardHostelList.value = enrollmentDetails[0].hostelList;
+        hostelId = homeDashboardHostelList[0]!.id ?? '';
+        Logger().i(hostelId);
+      } 
+      fetchQrCodeImage();
       }
     } catch (e) {
       // Get.snackbar('Failed to fetch batches');
@@ -133,4 +156,40 @@ class HostellerController extends GetxController with GetSingleTickerProviderSta
   //     isLoading(false);
   //   }
   // }
+
+  void fetchQrCodeImage() async {
+    try {
+      isLoading(true);
+      var qrcodeResponse = await WebService.fetchHostelQrCode(hostelId ?? '');
+      print("API Response: ${qrcodeResponse.data}");
+       SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (qrcodeResponse.data != null) {
+        qrcodeImage = qrcodeResponse.data!.qrCode??'';
+        wowId=qrcodeResponse.data!.wowId??'';
+         prefs.setString('QRWowId', wowId?? '');
+        try {
+          qrcodeImage =
+              qrcodeImage.replaceFirst(RegExp(r'data:image\/\w+;base64,'), '');
+
+          if (qrcodeImage.isNotEmpty) {
+            // Decode the base64 string to Uint8List
+            qrcodeImageData = base64Decode(qrcodeImage);
+            print("Decoded QR Code Image Data: $qrcodeImageData");
+            print("WowID Data: $wowId");
+          } else {
+            print("Error: Base64 QR Code string is empty.");
+          }
+        } catch (e) {
+          print("123456667777==>$e");
+        }
+        // Remove potential metadata prefix
+      } else {
+        print("Error: qrcodeResponse.data is null.");
+      }
+    } catch (e) {
+      print("Exception caught: $e");
+    } finally {
+      isLoading(false);
+    }
+  }
 }

@@ -8,6 +8,7 @@ import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/Hosteller/hoster_preview_screen.dart';
 import 'package:hovee_attendence/widget/doubleCustombtn.dart';
 import 'package:hovee_attendence/widgets/details_header.dart';
+import 'package:intl/intl.dart';
 
 class HostelDetailsScreen extends StatelessWidget {
    final Datum? data;
@@ -47,11 +48,12 @@ class HostelDetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DeatilHeader(
+              DetailHeader1(
                   subject: "Hostel name",
-                  Coursecode:
+                  courseCode:
                      data!.hostelName ?? '',
                   address: '',
+                  type: 'Hostel', profileUrl: data!.profileUrl ?? '',
                 ),
                Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -214,6 +216,7 @@ class HostelDetailsScreen extends StatelessWidget {
                               color: Colors.black,
                             ),
                           ),
+                          data!.hostelPriceDetails!=null?
                           Text(
                             data!.hostelPriceDetails!.roomType ?? '',
                             style: GoogleFonts.nunito(
@@ -221,7 +224,7 @@ class HostelDetailsScreen extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               color: Colors.grey,
                             ),
-                          )
+                          ):SizedBox.shrink()
                         ],
                       )
                     ],
@@ -245,7 +248,7 @@ class HostelDetailsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Room type',
+                            'Available count',
                             style: GoogleFonts.nunito(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -253,7 +256,7 @@ class HostelDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            data!.hostelPriceDetails!.roomType ?? '',
+                            data!.availableCount.toString() ?? '',
                             style: GoogleFonts.nunito(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -265,6 +268,44 @@ class HostelDetailsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                //     Padding(
+                //   padding: const EdgeInsets.all(10.0),
+                //   child: Row(
+                //     children: [
+                //       Padding(
+                //         padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                //         child: Container(
+                //           height: 44,
+                //           width: 47,
+                //           decoration: BoxDecoration(
+                //               color: Color(0xffD9D9D9).withOpacity(0.4),
+                //               borderRadius: BorderRadius.circular(8)),
+                //         ),
+                //       ),
+                //       Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           Text(
+                //             'Total count',
+                //             style: GoogleFonts.nunito(
+                //               fontSize: 16,
+                //               fontWeight: FontWeight.w500,
+                //               color: Colors.black,
+                //             ),
+                //           ),
+                //           Text(
+                //             data!.totalCount.toString() ?? '',
+                //             style: GoogleFonts.nunito(
+                //               fontSize: 16,
+                //               fontWeight: FontWeight.w500,
+                //               color: Colors.grey,
+                //             ),
+                //           )
+                //         ],
+                //       )
+                //     ],
+                //   ),
+                // ),
                     Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
@@ -290,14 +331,15 @@ class HostelDetailsScreen extends StatelessWidget {
                               color: Colors.black,
                             ),
                           ),
+                          data!.hostelPriceDetails!=null?
                           Text(
-                            data!.hostelPriceDetails!.price.toString() ?? '',
+                           '₹ ${ data!.hostelPriceDetails!.price.toString()} /month' ?? '',
                             style: GoogleFonts.nunito(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               color: Colors.grey,
                             ),
-                          )
+                          ):SizedBox.shrink()
                         ],
                       )
                     ],
@@ -328,6 +370,7 @@ class HostelDetailsScreen extends StatelessWidget {
                               color: Colors.black,
                             ),
                           ),
+                          data!.hostelPriceDetails!=null?
                           Text(
                             data!.hostelPriceDetails!.roomCount.toString() ?? '',
                             style: GoogleFonts.nunito(
@@ -335,7 +378,7 @@ class HostelDetailsScreen extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               color: Colors.grey,
                             ),
-                          )
+                          ):SizedBox.shrink()
                         ],
                       )
                     ],
@@ -378,6 +421,28 @@ class HostelDetailsScreen extends StatelessWidget {
                       )
                     ],
                   ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    ' Additional information',
+                    style: GoogleFonts.nunito(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 25.0),
+                  child: Text(
+                              data!.remarks ?? '',
+                              style: GoogleFonts.nunito(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                            ),
                 ),
                     Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -482,4 +547,6 @@ class HostelDetailsScreen extends StatelessWidget {
       },
     );
   }
+
+ 
 }

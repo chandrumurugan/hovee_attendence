@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hovee_attendence/modals/enrollment_success_model.dart';
 import 'package:hovee_attendence/modals/getHostelEnrollmentListModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:logger/logger.dart';
@@ -12,6 +13,10 @@ class HostelEnrollementController extends GetxController
   var selectedTabIndex = 0.obs;
 
   var enrollmentList = <Datum>[].obs;
+
+   final otpController = TextEditingController();
+
+   final focusNode = FocusNode();
 
   @override
   void onInit() {
@@ -66,4 +71,50 @@ class HostelEnrollementController extends GetxController
     }
   }
 
+
+Future<bool> updateEnrollment( String enrollmentId, String type, String code) async {
+  isLoading.value = true;
+  try {
+    var batchData = {
+      "status": type,
+      "enrollmentId": enrollmentId,
+      "code": code
+    };
+
+    final UpdateEnrollmentStatusModel? response =
+        await WebService.updateEnrollmentHostel(batchData);
+
+    if (response != null && response.statusCode == 200) {
+      if (response.data!.status == 'Approved') {
+        return true; // Enrollment successful
+      } else {
+        Get.snackbar(
+          'Enrollment rejected successfully',
+          icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
+          colorText: Colors.white,
+          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+          shouldIconPulse: false,
+          messageText: const SizedBox(
+            height: 40,
+            child: Center(
+              child: Text(
+                'Enrollment rejected successfully',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
+        );
+         tabController.animateTo(2);
+          handleTabChange(2);
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } catch (e) {
+    return false;
+  } finally {
+    isLoading.value = false;
+  }
+}
     }

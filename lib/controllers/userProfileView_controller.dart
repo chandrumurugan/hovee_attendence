@@ -153,6 +153,8 @@ class UserProfileController extends GetxController
      int changeDp = 0;
      File? _byteData;
 
+       Ratings?userRatings;
+
   void setHighestQualification(String value) =>
       highestQualification.value = value;
   //void setTeachingSkills(String value) => teachingSkills.value = value;
@@ -513,6 +515,7 @@ class UserProfileController extends GetxController
       UserProfileM? fetchProfile = await WebService.fetchUserProfile();
       if (fetchProfile != null) {
         userProfileResponse.value = fetchProfile;
+        userRatings =fetchProfile.data!.ratings;
         _populateFieldsFromResponse(fetchProfile.data!);
        
         String organizationName = fetchProfile.data!.qualificationDetails.isNotEmpty?
@@ -1301,9 +1304,12 @@ print('Wow ID: $wowId');
   }
 
    removeProfilePicture() async {
-      image.value = null;
+      image.value =null;
       profileImage = "";
-    // ;;await ;
+      userProfileResponse.value.data!.profileUrl = "";
+      _byteData = null;
+      userProfileResponse.refresh();
+      update();
   }
 }
 

@@ -44,7 +44,7 @@ class UserProfile extends StatelessWidget {
         appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
-            accountController. isNonEdit = true.obs;
+            accountController.isNonEdit = true.obs;
             accountController.image.value = null;
             accountController.fetchUserProfiles();
             Get.back();
@@ -79,25 +79,40 @@ class UserProfile extends StatelessWidget {
                           child: Stack(
                             children: [
                               CircleAvatar(
-  radius: 50,
-  backgroundImage: accountController.image.value != null
-      ? FileImage(accountController.image.value!) as ImageProvider
-      : null,
-  child: accountController.image.value == null
-      ? (accountController.userProfileResponse.value.data!.profileUrl != null &&
-              accountController.userProfileResponse.value.data!.profileUrl!.isNotEmpty
-          ? ClipOval(
-              child: Image.network(
-                accountController.userProfileResponse.value.data!.profileUrl!,
-                fit: BoxFit.cover,
-                width: 100, 
-                height: 100,
-              ),
-            )
-          : Icon(Icons.person, color: Colors.black))
-      : null,
-),
-
+                                radius: 50,
+                                backgroundImage: accountController
+                                            .image.value !=
+                                        null
+                                    ? FileImage(accountController.image.value!)
+                                        as ImageProvider
+                                    : (accountController.userProfileResponse
+                                                    .value.data!.profileUrl !=
+                                                null &&
+                                            accountController
+                                                .userProfileResponse
+                                                .value
+                                                .data!
+                                                .profileUrl!
+                                                .isNotEmpty
+                                        ? NetworkImage(accountController
+                                            .userProfileResponse
+                                            .value
+                                            .data!
+                                            .profileUrl!)
+                                        : null),
+                                child: (accountController.image.value == null &&
+                                        (accountController.userProfileResponse
+                                                    .value.data!.profileUrl ==
+                                                null ||
+                                            accountController
+                                                .userProfileResponse
+                                                .value
+                                                .data!
+                                                .profileUrl!
+                                                .isEmpty))
+                                    ? Icon(Icons.person, color: Colors.black)
+                                    : null,
+                              ),
                               if (!accountController.isNonEdit.value)
                                 Positioned(
                                   bottom: 0,

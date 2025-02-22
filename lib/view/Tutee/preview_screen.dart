@@ -774,7 +774,7 @@ class PreviewScreen extends StatelessWidget {
                                                         builder: (context) {
                                                           return CustomDialogBox1(
                                                             title1:
-                                                                "Enquiry Sent Successfully! for $batch($subject)",
+                                                                "Enquiry sent successfully! for $batch($subject)",
                                                             title2: '',
                                                             subtitle: 'Note: $tutorname will receive your enquiry request',
                                                             btnName: 'Ok',

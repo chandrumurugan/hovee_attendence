@@ -38,7 +38,7 @@ class HostellerAttendancelist extends StatelessWidget {
           builder: (controller) {
             if (attendanceCourseListController.isLoading.value) {
               return const Center(child: CircularProgressIndicator());
-            } else if (attendanceCourseListController.homeDashboardCourseList.isEmpty) {
+            } else if (attendanceCourseListController.homeDashboardHostelList.isEmpty) {
               return Center(
                 child: Text(
                   'No list found',
@@ -50,10 +50,10 @@ class HostellerAttendancelist extends StatelessWidget {
               );
             } else {
               return ListView.builder(
-                itemCount: attendanceCourseListController.homeDashboardCourseList.length,
+                itemCount: attendanceCourseListController.homeDashboardHostelList.length,
                 itemBuilder: (context, index) {
-                  return AttendancecourselistContainer(
-                    attendanceCourse: attendanceCourseListController.homeDashboardCourseList[index],
+                  return AttendanceHostellistContainer(
+                    attendanceCourse: attendanceCourseListController.homeDashboardHostelList[index], hostellerObjectIdDetails: attendanceCourseListController.hostellerObjectIdDetails, hostelObjectIdDetails: attendanceCourseListController.hostelObjectIdDetails,
                   );
                 },
               );

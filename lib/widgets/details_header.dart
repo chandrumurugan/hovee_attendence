@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class DeatilHeader extends StatelessWidget {
  // ignore: non_constant_identifier_names
- final String subject,Coursecode,address;
-   const DeatilHeader({super.key,required this.subject,required this.Coursecode, required this.address,
+ final String subject,Coursecode,address,type;
+   const DeatilHeader({super.key,required this.subject,required this.Coursecode, required this.address, required this.type,
   });
   @override
   Widget build(BuildContext context) {
@@ -157,7 +157,7 @@ class DeatilHeader extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
-                        '0 Students',
+                      type!='Course'?'0 Hostellers':  '0 Students',
                         style: GoogleFonts.nunito(
                             color: Colors.grey, fontSize: 18),
                       ),
@@ -168,3 +168,112 @@ class DeatilHeader extends StatelessWidget {
     );
   }
 }
+
+class DetailHeader1 extends StatelessWidget {
+  final String subject, courseCode, address, type;
+  final String? profileUrl;
+
+  const DetailHeader1({
+    super.key,
+    required this.subject,
+    required this.courseCode,
+    required this.address,
+    required this.type,
+    this.profileUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: Stack(
+        children: [
+          /// Background image with error handling
+          SizedBox(
+            width: MediaQuery.sizeOf(context).width,
+            height: 250,
+            child: Image.network(
+              profileUrl ?? '',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  'assets/v2.jpg', // Fallback image
+                  fit: BoxFit.cover,
+                );
+              },
+            ),
+          ),
+
+          /// Content Overlay
+          Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.sizeOf(context).width * 0.05,
+                  vertical: MediaQuery.sizeOf(context).height * 0.035,
+                ),
+                width: MediaQuery.sizeOf(context).width,
+                height: 250,
+                color: Colors.black.withOpacity(0.3), // Add overlay effect
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          subject,
+                          style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              courseCode,
+                              style: GoogleFonts.nunito(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(width: 15),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          address,
+                          style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              // Container(
+              //   color: Colors.white,
+              //   height: 80,
+              // ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+

@@ -261,10 +261,10 @@ class HomePageHeader extends StatelessWidget {
                                   color: Colors.green),
                               child: Row(
                                 children: [
-                                  const Text('0',
+                                   Text(userProfileData .userRatings!.averageRating ?? '0',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 10.0,
+                                        fontSize: 12.0,
                                         color: Colors.white,
                                       )),
                                   Image.asset('assets/tutorHomeImg/star 1.png')

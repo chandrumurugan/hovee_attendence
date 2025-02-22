@@ -154,7 +154,7 @@ class CourseDetailController extends GetxController {
   }
 
   
-    void addHostelEnquirs(BuildContext context, String hostelId, String hostelObjectId,
+    Future<bool> addHostelEnquirs(BuildContext context, String hostelId, String hostelObjectId,
       String hostellerObjectId) async {
     isLoading.value = true;
     try {
@@ -169,24 +169,9 @@ class CourseDetailController extends GetxController {
           await WebService.addEnquirsHostel(batchData);
 
       if (response != null && response.statusCode == 200) {
-                Get.snackbar(
-          'Enquiry submited successfully',
-  icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
-  colorText: Colors.white,
-  backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-  shouldIconPulse: false,
-  messageText: const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        'Enquiry submited successfully',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
-);
-        Get.delete<EnquirDetailController>();
-         Get.off(() => HostelEnquiryList(type: 'Hostel', fromBottomNav: true,)); 
+ return true;
+        // Get.delete<EnquirDetailController>();
+        //  Get.off(() => HostelEnquiryList(type: 'Hostel', fromBottomNav: true,)); 
       } else {
         Get.snackbar(
           'Enquiry already submitted',
@@ -204,6 +189,7 @@ class CourseDetailController extends GetxController {
     ),
   ),
 );
+return false;
       }
     } catch (e) {
           Get.snackbar(
@@ -222,6 +208,7 @@ class CourseDetailController extends GetxController {
     ),
   ),
 );
+return false;
       //  Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
       //   ,'Error: $e',);
     } finally {

@@ -13,13 +13,25 @@ class HostelEnquiryController extends GetxController
   var isLoading = true.obs;
 
   var enquirList = <Datum>[].obs;
+  String? lastWord;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    lastWord = Get.arguments ?? '';
     tabController = TabController(length: 3, vsync: this);
-    fetchEnquirList("Pending");
+   if (lastWord == '1') {
+      selectedTabIndex.value = 1;
+      tabController.animateTo(1);
+      fetchEnquirList("Approved");
+    } else if (lastWord == '2') {
+      selectedTabIndex.value = 2;
+      tabController.animateTo(2);
+      fetchEnquirList("Rejected");
+    } else {
+      fetchEnquirList("Pending");
+    }
   }
 
 
@@ -58,8 +70,7 @@ class HostelEnquiryController extends GetxController
       var batchData = {"status": type};
       var classesResponse = await WebService.fetchHostelEnquireList(batchData);
       if (classesResponse.data != null) {
-        enquirList.value = classesResponse.data!;
-          SharedPreferences prefs = await SharedPreferences.getInstance();
+        enquirList.value = classesResponse.data;
       }
     } catch (e) {
       // Handle errors

@@ -25,7 +25,7 @@ class _HostelListState extends State<HostelList> {
 
   List<Datum>? filteredList = [];
   bool isLoadingcategoryList = false;
-
+  List<Datum>? filteredListSearch = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -62,12 +62,23 @@ class _HostelListState extends State<HostelList> {
     var response = await WebService.getHostelFilterListfetch(type, searchTerm);
     if (response != null && response.success == true) {
       setState(() {
-        filteredList = response.data; // Update the filtered list
+        filteredListSearch = response.data; // Update the filtered list
         isLoadingcategoryList = false;
-      });
+         if (searchTerm.isNotEmpty) {
+          filteredList = filteredListSearch!.where((classItem) {
+            return classItem.hostelName!.toLowerCase().contains(searchTerm.toLowerCase()) ||
+                   classItem.hostelType!.toLowerCase().contains(searchTerm.toLowerCase()) ||
+                   classItem.hostelPriceDetails!.price!.toString().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                   classItem.hostelPriceDetails!.roomType!.toLowerCase().contains(searchTerm.toLowerCase()) ||
+                   classItem.categories!.toLowerCase().contains(searchTerm.toLowerCase());
+          }).toList();
+        } else {
+          filteredList = filteredListSearch;
+        }
+        });
     } else {
       setState(() {
-        filteredList = []; // Clear the list if no data found
+        filteredList = filteredListSearch; // Clear the list if no data found
         isLoadingcategoryList = false;
       });
     }
@@ -122,7 +133,7 @@ class _HostelListState extends State<HostelList> {
                 child: isLoadingcategoryList
                     ? const Center(child: CircularProgressIndicator())
                     : filteredList!.isEmpty
-                        ? const Center(child: Text("No courses available"))
+                        ? const Center(child: Text("No hostel available"))
                         : ListView.builder(
                             itemCount: filteredList!.length,
                             itemBuilder: (context, index) {
@@ -161,17 +172,28 @@ class _HostelListState extends State<HostelList> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/v2.jpg',
-                height: 150,
-                fit: BoxFit.fill,
-              ),
+              hostel.profileUrl!=null?
+              Image.network(
+  hostel.profileUrl ?? '',
+  height: 150,
+  width: 300,
+  fit: BoxFit.cover,
+  errorBuilder: (context, error, stackTrace) {
+    return Image.asset(
+      'assets/v2.jpg', // Fallback image
+      height: 150,
+      width: 300,
+      fit: BoxFit.cover,
+    );
+  },
+)
+:Image.asset('assets/v2.jpg'),
               const SizedBox(height: 20),
               _buildRow('Hostel name', hostel.hostelName,context),
                _buildRow('Hostel type', hostel.hostelType,context),
                _buildRow('Categories', hostel.categories,context),
-                _buildRow('Room type', hostel.hostelPriceDetails!.roomType,context),
-                  _buildRow('Price', hostel.hostelPriceDetails!.price!.toString(),context),
+              hostel.hostelPriceDetails!=null?  _buildRow('Room type', hostel.hostelPriceDetails!.roomType,context):SizedBox.shrink(),
+                hostel.hostelPriceDetails!=null?  _buildRow('Price', '₹ ${ hostel!.hostelPriceDetails!.price.toString()} /month' ?? '',context):SizedBox.shrink(),
                _buildRow('Hostel address', '${hostel.doorNo!.toString()},${hostel.street!.toString()},${hostel.city!.toString()},${hostel.state!.toString()},${hostel.country!.toString()} -${hostel.pincode!.toString()}',context),
             ],
           ),

@@ -1,24 +1,28 @@
-class GetHostelFilterListModel {
-    GetHostelFilterListModel({
-        required this.success,
+class GetGroupedAnnouncementHostelModel {
+    GetGroupedAnnouncementHostelModel({
+        required this.statusCode,
+        required this.message,
         required this.data,
         required this.pagination,
     });
 
-    final bool? success;
+    final int? statusCode;
+    final String? message;
     final List<Datum> data;
     final Pagination? pagination;
 
-    factory GetHostelFilterListModel.fromJson(Map<String, dynamic> json){ 
-        return GetHostelFilterListModel(
-            success: json["success"],
+    factory GetGroupedAnnouncementHostelModel.fromJson(Map<String, dynamic> json){ 
+        return GetGroupedAnnouncementHostelModel(
+            statusCode: json["statusCode"],
+            message: json["message"],
             data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
             pagination: json["pagination"] == null ? null : Pagination.fromJson(json["pagination"]),
         );
     }
 
     Map<String, dynamic> toJson() => {
-        "success": success,
+        "statusCode": statusCode,
+        "message": message,
         "data": data.map((x) => x?.toJson()).toList(),
         "pagination": pagination?.toJson(),
     };
@@ -27,6 +31,41 @@ class GetHostelFilterListModel {
 
 class Datum {
     Datum({
+        required this.title,
+        required this.announcementId,
+        required this.description,
+        required this.hostelListsDetails,
+        required this.hostellerObjectId,
+    });
+
+    final String? title;
+    final String? announcementId;
+    final String? description;
+    final HostelListsDetails? hostelListsDetails;
+    final List<HostellerObjectId> hostellerObjectId;
+
+    factory Datum.fromJson(Map<String, dynamic> json){ 
+        return Datum(
+            title: json["title"],
+            announcementId: json["announcementId"],
+            description: json["description"],
+            hostelListsDetails: json["hostel_lists_Details"] == null ? null : HostelListsDetails.fromJson(json["hostel_lists_Details"]),
+            hostellerObjectId: json["hosteller_ObjectId"] == null ? [] : List<HostellerObjectId>.from(json["hosteller_ObjectId"]!.map((x) => HostellerObjectId.fromJson(x))),
+        );
+    }
+
+    Map<String, dynamic> toJson() => {
+        "title": title,
+        "announcementId": announcementId,
+        "description": description,
+        "hostel_lists_Details": hostelListsDetails?.toJson(),
+        "hosteller_ObjectId": hostellerObjectId.map((x) => x?.toJson()).toList(),
+    };
+
+}
+
+class HostelListsDetails {
+    HostelListsDetails({
         required this.id,
         required this.hostelObjectId,
         required this.roomType,
@@ -52,9 +91,11 @@ class Datum {
         required this.hostelTimingEnd,
         required this.hostelTimingStartMinutes,
         required this.hostelTimingEndMinutes,
-        required this.hostelPriceDetails,
-        required this.totalCount,
-        required this.availableCount,
+        required this.isActive,
+        required this.createdAt,
+        required this.updatedAt,
+        required this.v,
+        required this.qrCodeUrl,
     });
 
     final String? id;
@@ -76,18 +117,20 @@ class Datum {
     final String? state;
     final String? country;
     final String? pincode;
-    final String? profileFilename;
-    final String? profileUrl;
+    final dynamic profileFilename;
+    final dynamic profileUrl;
     final String? hostelTimingStart;
     final String? hostelTimingEnd;
     final int? hostelTimingStartMinutes;
     final int? hostelTimingEndMinutes;
-    final HostelPriceDetails? hostelPriceDetails;
-    final int? totalCount;
-    final int? availableCount;
+    final int? isActive;
+    final DateTime? createdAt;
+    final DateTime? updatedAt;
+    final int? v;
+    final String? qrCodeUrl;
 
-    factory Datum.fromJson(Map<String, dynamic> json){ 
-        return Datum(
+    factory HostelListsDetails.fromJson(Map<String, dynamic> json){ 
+        return HostelListsDetails(
             id: json["_id"],
             hostelObjectId: json["hostel_ObjectId"],
             roomType: json["room_type"],
@@ -113,9 +156,11 @@ class Datum {
             hostelTimingEnd: json["hostel_timing_end"],
             hostelTimingStartMinutes: json["hostel_timing_start_minutes"],
             hostelTimingEndMinutes: json["hostel_timing_end_minutes"],
-            hostelPriceDetails: json["hostelPriceDetails"] == null ? null : HostelPriceDetails.fromJson(json["hostelPriceDetails"]),
-            totalCount: json["totalCount"],
-            availableCount: json["availableCount"],
+            isActive: json["is_active"],
+            createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+            updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+            v: json["__v"],
+            qrCodeUrl: json["qr_code_url"],
         );
     }
 
@@ -145,64 +190,11 @@ class Datum {
         "hostel_timing_end": hostelTimingEnd,
         "hostel_timing_start_minutes": hostelTimingStartMinutes,
         "hostel_timing_end_minutes": hostelTimingEndMinutes,
-        "hostelPriceDetails": hostelPriceDetails?.toJson(),
-        "totalCount": totalCount,
-        "availableCount": availableCount,
-    };
-
-}
-
-class HostelPriceDetails {
-    HostelPriceDetails({
-        required this.id,
-        required this.hostelObjectId,
-        required this.roomType,
-        required this.price,
-        required this.roomCount,
-        required this.isActive,
-        required this.isDeleted,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.v,
-    });
-
-    final String? id;
-    final String? hostelObjectId;
-    final String? roomType;
-    final int? price;
-    final int? roomCount;
-    final int? isActive;
-    final int? isDeleted;
-    final DateTime? createdAt;
-    final DateTime? updatedAt;
-    final int? v;
-
-    factory HostelPriceDetails.fromJson(Map<String, dynamic> json){ 
-        return HostelPriceDetails(
-            id: json["_id"],
-            hostelObjectId: json["hostel_ObjectId"],
-            roomType: json["room_type"],
-            price: json["price"],
-            roomCount: json["room_count"],
-            isActive: json["is_active"],
-            isDeleted: json["is_deleted"],
-            createdAt: DateTime.tryParse(json["created_at"] ?? ""),
-            updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
-            v: json["__v"],
-        );
-    }
-
-    Map<String, dynamic> toJson() => {
-        "_id": id,
-        "hostel_ObjectId": hostelObjectId,
-        "room_type": roomType,
-        "price": price,
-        "room_count": roomCount,
         "is_active": isActive,
-        "is_deleted": isDeleted,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
+        "qr_code_url": qrCodeUrl,
     };
 
 }
@@ -226,6 +218,33 @@ class Location {
     Map<String, dynamic> toJson() => {
         "type": type,
         "coordinates": coordinates.map((x) => x).toList(),
+    };
+
+}
+
+class HostellerObjectId {
+    HostellerObjectId({
+        required this.hostellerFirstName,
+        required this.hostellerLastName,
+        required this.hostellerObjectId,
+    });
+
+    final String? hostellerFirstName;
+    final String? hostellerLastName;
+    final String? hostellerObjectId;
+
+    factory HostellerObjectId.fromJson(Map<String, dynamic> json){ 
+        return HostellerObjectId(
+            hostellerFirstName: json["hosteller_first_name"],
+            hostellerLastName: json["hosteller_last_name"],
+            hostellerObjectId: json["hosteller_ObjectId"],
+        );
+    }
+
+    Map<String, dynamic> toJson() => {
+        "hosteller_first_name": hostellerFirstName,
+        "hosteller_last_name": hostellerLastName,
+        "hosteller_ObjectId": hostellerObjectId,
     };
 
 }

@@ -8,6 +8,7 @@ import 'package:hovee_attendence/modals/addAnnounmentModel.dart';
 import 'package:hovee_attendence/modals/delete_announcement_model.dart';
 import 'package:hovee_attendence/modals/getAnnounmentBatchList_model.dart';
 import 'package:hovee_attendence/modals/getAnnounment_model.dart';
+import 'package:hovee_attendence/modals/getGroupedAnnouncementHostelModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_annouments_screen.dart';
@@ -16,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AnnoumentController extends GetxController {
   var announmentBatchList = <BatchData>[].obs;
   var announmentList = <AnnounmentsData>[].obs;
+  var announmentHostelList = <Datum>[].obs;
   var isLoading = true.obs;
 
   var courseNamesController = ''.obs;
@@ -34,6 +36,7 @@ class AnnoumentController extends GetxController {
 
   final storage = GetStorage();
   var instituteId =''.obs;
+  String? role;
   @override
   void onInit() {
     // TODO: implement onInit
@@ -117,12 +120,24 @@ class AnnoumentController extends GetxController {
   void fetchAnnounmentsList({String searchTerm = ''}) async {
     try {
       isLoading(true);
-      var courseResponse = await WebService.fetchAnnounmentsList(searchTerm);
+       SharedPreferences prefs = await SharedPreferences.getInstance();
+    role = prefs.getString('Rolename') ?? '';
+    if(role=='Hostel' || role=='Hosteller'){
+      var courseResponse = await WebService.fetchHostelAnnounmentsList(searchTerm);
+      if (courseResponse.data != null) {
+        announmentHostelList.value = courseResponse.data!;
+      } else {
+        print('Course data is null');
+      }
+    }
+    else{
+       var courseResponse = await WebService.fetchAnnounmentsList(searchTerm);
       if (courseResponse.data != null) {
         announmentList.value = courseResponse.data!;
       } else {
         print('Course data is null');
       }
+    }
     } catch (e) {
       print('Error: $e');
       //  SnackBarUtils.showSuccessSnackBar(context,'Failed to fetch course');
