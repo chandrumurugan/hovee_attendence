@@ -95,7 +95,7 @@ class SubjectContainerHostel extends StatelessWidget {
                 return SizedBox(
                   
                   width: MediaQuery.of(context).size.width,
-                  child: AttendanceHostellistContainer(attendanceCourse: attendanceCourse, hostellerObjectIdDetails: attendanceListController.hostellerObjectIdDetails, hostelObjectIdDetails: attendanceListController.hostelObjectIdDetails,));
+                  child: AttendanceHostellistContainer(attendanceCourse: attendanceCourse, hostellerObjectIdDetails: attendanceListController.hostellerObjectIdDetails, hostelObjectIdDetails: attendanceListController.hostelObjectIdDetails,hostelListDetail: attendanceListController.homeDashboardHostelListDetails[index],));
               },
             );
           }

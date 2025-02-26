@@ -203,7 +203,7 @@ class _PlanListState extends State<PlanList> {
                       },
                       child: Container(
                         // width: 173,
-                        // height: 320,
+                         //height: MediaQuery.of(context).size.height * 0.4,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
@@ -268,7 +268,7 @@ class _PlanListState extends State<PlanList> {
                                   }).toList()),
                             ),
                             const SizedBox(
-                              height: 15,
+                              height: 5,
                             ),
                             InkWell(
                               onTap: (){

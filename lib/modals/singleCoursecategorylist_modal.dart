@@ -44,7 +44,7 @@ class Data {
   String? className;
   String? subject;
   String? tutorId;
-
+  Ratings? ratings;
   Data(
       {this.fees,
       this.courseCode,
@@ -61,7 +61,8 @@ class Data {
       this.tutorAddress,
       this.className,
       this.subject,
-      this.tutorId});
+      this.tutorId,
+      this.ratings,});
 
   Data.fromJson(Map<String, dynamic> json) {
     fees = json['fees'];
@@ -82,6 +83,8 @@ class Data {
     className = json['className'];
     subject = json['subject'];
     tutorId = json['TutorId'];
+    ratings =
+        json['ratings'] != null ? new Ratings.fromJson(json['ratings']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -104,6 +107,9 @@ class Data {
     data['className'] = this.className;
     data['subject'] = this.subject;
     data['TutorId'] = this.tutorId;
+     if (this.ratings != null) {
+      data['ratings'] = this.ratings!.toJson();
+    }
     return data;
   }
 }
@@ -123,6 +129,35 @@ class TutorLocation {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['type'] = this.type;
     data['coordinates'] = this.coordinates;
+    return data;
+  }
+}
+
+class Ratings {
+  String? nId;
+  int? averageRating;
+  int? totalRatings;
+
+  Ratings({this.nId, this.averageRating, this.totalRatings});
+
+  Ratings.fromJson(Map<String, dynamic> json) {
+    nId = json['_id'];
+    
+    // Convert double to int if needed
+    averageRating = (json['averageRating'] is double) 
+        ? (json['averageRating'] as double).toInt() 
+        : json['averageRating'];
+
+    totalRatings = (json['totalRatings'] is double) 
+        ? (json['totalRatings'] as double).toInt() 
+        : json['totalRatings'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = nId;
+    data['averageRating'] = averageRating;
+    data['totalRatings'] = totalRatings;
     return data;
   }
 }

@@ -408,7 +408,7 @@ class _CustomDialogBox2State extends State<CustomDialogBox2> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                height: MediaQuery.sizeOf(context).height * 0.22,
+                height: MediaQuery.sizeOf(context).height * 0.25,
                 width: MediaQuery.sizeOf(context).width * 0.8,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

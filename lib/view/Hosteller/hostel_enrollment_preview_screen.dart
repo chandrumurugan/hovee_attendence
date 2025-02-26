@@ -247,12 +247,15 @@ final UserProfileController userProfileData =
                           fontWeight: FontWeight.w400,
                           fontSize: 16),
                     ),
-                    Text(
-                       data!.hostelId!.hostelName ?? '',
-                      style: GoogleFonts.nunito(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: Text(
+                         data!.hostelId!.hostelName ?? '',
+                        style: GoogleFonts.nunito(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16),
+                      ),
                     )
                   ],
                 ),
@@ -281,6 +284,34 @@ final UserProfileController userProfileData =
                           fontWeight: FontWeight.w400,
                           fontSize: 16),
                     )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14.0),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                decoration: BoxDecoration(color: Colors.grey.shade300),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Hostel price",
+                      style: GoogleFonts.nunito(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16),
+                    ),
+                    data!.hostelId!.roomType!.price.toString()!=null?
+                    Text(
+                     '₹ ${data!.hostelId!.roomType!.price} /month' ?? '',
+                      style: GoogleFonts.nunito(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16),
+                    ):SizedBox.shrink()
                   ],
                 ),
               ),
@@ -364,7 +395,7 @@ final UserProfileController userProfileData =
                       ),
                     ],
                   ),
-                   if (type == 'Hosteller')
+                   if (type == 'Hosteller' && data!.status=='Pending')
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(

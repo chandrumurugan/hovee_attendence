@@ -27,7 +27,7 @@ class ChartApp extends StatelessWidget {
           surfaceTintColor: Colors.white,
           child: Container(
             padding: const EdgeInsets.all(8),
-            height: MediaQuery.sizeOf(context).height * 0.24,
+            height: MediaQuery.sizeOf(context).height * 0.3,
             child: Row(
               children: [
                 const SizedBox(

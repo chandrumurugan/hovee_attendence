@@ -6,6 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/hostel_enquiry_controller.dart';
 import 'package:hovee_attendence/controllers/notification_controller.dart';
 import 'package:hovee_attendence/controllers/tuteeHome_controllers.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
@@ -19,6 +20,7 @@ class NotificationScreen extends StatelessWidget {
   NotificationScreen({super.key, required this.type, this.firstname, this.lastname, this.wowid});
   final NotificationController attendanceCourseListController =
       Get.put(NotificationController());
+      // final HostelEnquiryController controller = Get.put(HostelEnquiryController());
   @override
   Widget build(BuildContext context) {
     attendanceCourseListController.setSelectedIndex(0);

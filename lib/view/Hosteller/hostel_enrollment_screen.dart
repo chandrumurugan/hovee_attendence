@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/hostel_enrollement_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_enquiry_preview_screen.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_enrollment_preview_screen.dart';
@@ -27,13 +28,14 @@ class HostelEnrollmentScreen extends StatelessWidget {
       this.wowid,
       this.lastWord,
       this.onDashBoardBack})
-      : controller = Get.put(HostelEnrollementController(), permanent: true);
+      : controller = Get.put(HostelEnrollementController());
 
   @override
   Widget build(BuildContext context) {
       final storage = GetStorage();
     final savedOtp = storage.read('otpCode') ?? '';
     controller.otpController.text = savedOtp;
+    controller.onInit();
     return Scaffold(
       appBar: AppBarHeader(
           needGoBack: fromBottomNav,
@@ -207,7 +209,7 @@ class HostelEnrollmentScreen extends StatelessWidget {
                                                 context),
                                             _buildRow(
                                                 'Status',
-                                                enrollmentList.status ?? '',
+                                                enrollmentList.status =='Approved'?'Accepted': enrollmentList.status ?? '' ?? '',
                                                 context),
                                           ],
                                         ),
@@ -304,7 +306,7 @@ class HostelEnrollmentScreen extends StatelessWidget {
                                         ] else if (controller
                                                     .selectedTabIndex.value ==
                                                 1 &&
-                                            type == 'Hostel') ...[
+                                            type == 'Hosteller') ...[
                                           Expanded(
                                             child: InkWell(
                                               onTap: () {
@@ -474,18 +476,22 @@ class HostelEnrollmentScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 final otp = controller.otpController.text;
                 if (otp.isNotEmpty) {
-                  controller.updateEnrollment(enrollmentId, 'Approved', otp);
-                  controller.otpController.clear(); // Clear the OTP field
-                  GetStorage().remove('otpCode');
-                  Get.offAll(DashboardScreen(
-                    rolename: type,
-                    firstname: firstname,
-                    lastname: lastname,
-                    wowid: wowid,
-                  ));
+                  Get.back();
+                 final response = await  controller.updateEnrollment(enrollmentId, 'Approved', otp);
+                   if (response) {
+                    showConfirmationDialog1();
+                  }
+                  // controller.otpController.clear(); // Clear the OTP field
+                  // GetStorage().remove('otpCode');
+                  // Get.offAll(DashboardScreen(
+                  //   rolename: type,
+                  //   firstname: firstname,
+                  //   lastname: lastname,
+                  //   wowid: wowid,
+                  // ));
                 } else {
                   SnackBarUtils.showSuccessSnackBar(
                     context,
@@ -542,34 +548,34 @@ class HostelEnrollmentScreen extends StatelessWidget {
     );
   }
 
-  //  void showConfirmationDialog1(String batch, String subject, String tutorname) {
-  //   Get.dialog(
-  //     CustomDialogBox3(
-  //       title1: 'Enrollment Accepted successfully!',
-  //       title2: '',
-  //       subtitle:
-  //           'Note: You have successfully the accept the $tutorname request',
-  //       icon: const Icon(
-  //         Icons.help_outline,
-  //         color: Colors.white,
-  //       ),
-  //       color: const Color(0xFF833AB4), // Set the primary color
-  //       color1: const Color(0xFF833AB4), // Optional gradient color
-  //       singleBtn: true, // Show only one button
-  //       btnName: 'OK', // Set the button name
-  //       onTap: () {
-  //         // Call API to add enrollment
-  //         controller.otpController.clear(); // Clear the OTP field
-  //                 GetStorage().remove('otpCode');
-  //                 Get.offAll(DashboardScreen(
-  //                   rolename: type,
-  //                   firstname: firstname,
-  //                   lastname: lastname,
-  //                   wowid: wowid,
-  //                 ));
-  //       },
-  //     ),
-  //     barrierDismissible: false, // Prevent dismissing by tapping outside
-  //   );
-  // }
+   void showConfirmationDialog1() {
+    Get.dialog(
+      CustomDialogBox2(
+        title1: 'Enrollment Accepted successfully!',
+        title2: '',
+        subtitle:
+            '',
+        icon: const Icon(
+          Icons.help_outline,
+          color: Colors.white,
+        ),
+        color: const Color(0xFF833AB4), // Set the primary color
+        color1: const Color(0xFF833AB4), // Optional gradient color
+        singleBtn: true, // Show only one button
+        btnName: 'OK', // Set the button name
+        onTap: () {
+          // Call API to add enrollment
+          controller.otpController.clear(); // Clear the OTP field
+                  GetStorage().remove('otpCode');
+                  Get.offAll(DashboardScreen(
+                    rolename: type,
+                    firstname: firstname,
+                    lastname: lastname,
+                    wowid: wowid,
+                  ));
+        },
+      ),
+      barrierDismissible: false, // Prevent dismissing by tapping outside
+    );
+  }
 }

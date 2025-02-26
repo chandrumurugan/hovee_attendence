@@ -284,10 +284,16 @@ class AttendancecourselistContainer extends StatelessWidget {
 
 class AttendanceHostellistContainer extends StatelessWidget {
   final HostelList? attendanceCourse;
- final HostelObjectIdDetails? hostellerObjectIdDetails;
-  final   HostelObjectIdDetails? hostelObjectIdDetails;
+  final HostelObjectIdDetails? hostellerObjectIdDetails;
+  final HostelObjectIdDetails? hostelObjectIdDetails;
+  final HostelListDetail? hostelListDetail;
   const AttendanceHostellistContainer(
-      {super.key, required this.attendanceCourse, required, required this.hostellerObjectIdDetails,required this.hostelObjectIdDetails});
+      {super.key,
+      required this.attendanceCourse,
+      required,
+      required this.hostellerObjectIdDetails,
+      required this.hostelObjectIdDetails,
+      this.hostelListDetail});
 
   @override
   Widget build(BuildContext context) {
@@ -306,10 +312,23 @@ class AttendanceHostellistContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/v2.jpg',
-                width: 100,
-              ),
+              attendanceCourse!.profileUrl != null
+                  ? Image.network(
+                      attendanceCourse!.profileUrl ?? '',
+                      width: 120,
+                      height: 180,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/v2.jpg', // Fallback image
+                            width: 120,
+                      height: 180,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    )
+                  : Image.asset('assets/v2.jpg',  width: 120,
+                      height: 180,),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,12 +336,15 @@ class AttendanceHostellistContainer extends StatelessWidget {
                   SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    "${attendanceCourse!.hostelName}",
-                    style: GoogleFonts.nunito(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: Text(
+                      "${attendanceCourse!.hostelName}",
+                      style: GoogleFonts.nunito(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -445,7 +467,7 @@ class AttendanceHostellistContainer extends StatelessWidget {
                           () => HostelPunchView(
                             hostelName: attendanceCourse!.hostelName ?? '',
                             hostelId: attendanceCourse!.id ?? '',
-                            hostelObjId:  hostelObjectIdDetails!.id ?? '',
+                            hostelObjId: hostelObjectIdDetails!.id ?? '',
                             hostelStartTime:
                                 attendanceCourse!.hostelTimingStart ?? '',
                             hostelEndTime:
@@ -461,12 +483,12 @@ class AttendanceHostellistContainer extends StatelessWidget {
                           () => HostelPunchView(
                             hostelName: attendanceCourse!.hostelName ?? '',
                             hostelId: attendanceCourse!.id ?? '',
-                            hostelObjId:  hostelObjectIdDetails!.id ?? '',
+                            hostelObjId: hostelObjectIdDetails!.id ?? '',
                             hostelStartTime:
                                 attendanceCourse!.hostelTimingStart ?? '',
                             hostelEndTime:
                                 attendanceCourse!.hostelTimingEnd ?? '',
-                            wowId:hostellerObjectIdDetails!.wowId ?? '',
+                            wowId: hostellerObjectIdDetails!.wowId ?? '',
                             hostelType: attendanceCourse!.hostelType ?? '',
                             room: attendanceCourse!.food ?? '',
                           ),

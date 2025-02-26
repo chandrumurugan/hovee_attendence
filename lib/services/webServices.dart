@@ -41,6 +41,7 @@ import 'package:hovee_attendence/modals/getHostelEnquiryListModel.dart';
 import 'package:hovee_attendence/modals/getHostelEnrollmentListModel.dart';
 import 'package:hovee_attendence/modals/getHostelFilterListModel.dart';
 import 'package:hovee_attendence/modals/getLeaveListModel.dart';
+import 'package:hovee_attendence/modals/getMspHostelModel.dart';
 import 'package:hovee_attendence/modals/getMsplistmodel.dart';
 import 'package:hovee_attendence/modals/getNotification_model.dart';
 import 'package:hovee_attendence/modals/getParenthomeModal.dart';
@@ -3026,4 +3027,56 @@ class WebService {
       throw Exception('Failed to load attendanceCourse list');
     }
   }
+
+  static Future<GetMspHostelModel> fetchHostelMSPDataList(String searchitems) async {
+    final url = Uri.parse('${baseUrl}hostel/leave/getMsp');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var data = {"searchKey": searchitems};
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(data),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+    print(token);
+    if (response.statusCode == 200) {
+      return GetMspHostelModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load batch list');
+    }
+  }
+
+  static Future<addMspModel?> addMSPHostel(Map<String, dynamic> batchData) async {
+    final url =
+        Uri.parse("${baseUrl}hostel/leave/addMsp"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    Logger().i("getting24567890avaluue==>${batchData}");
+    Logger().i("getting2456hgfujtgf0avaluue==>${token}");
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return addMspModel.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
 }

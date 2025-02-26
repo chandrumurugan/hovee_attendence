@@ -9,6 +9,7 @@ import 'package:hovee_attendence/controllers/hostel_attendance_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
+import 'package:hovee_attendence/view/hostel_addMSP_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -362,36 +363,28 @@ class HostelAttendanceScreen extends StatelessWidget {
                                     const SizedBox(
                                       width: 10,
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 18,
-                                          width: 18,
-                                          color: Colors.blue,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Leave ',
-                                          style: GoogleFonts.nunito(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Row(
+                                    // Row(
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.start,
+                                    //   children: [
+                                    //     Container(
+                                    //       height: 18,
+                                    //       width: 18,
+                                    //       color: Colors.blue,
+                                    //     ),
+                                    //     const SizedBox(
+                                    //       width: 10,
+                                    //     ),
+                                    //     Text(
+                                    //       'Leave ',
+                                    //       style: GoogleFonts.nunito(
+                                    //           fontSize: 14,
+                                    //           fontWeight: FontWeight.bold,
+                                    //           color: Colors.black),
+                                    //     )
+                                    //   ],
+                                    // ),
+                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
@@ -412,9 +405,38 @@ class HostelAttendanceScreen extends StatelessWidget {
                                         )
                                       ],
                                     ),
-                                    const SizedBox(
-                                      width: 30,
-                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Row(
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.start,
+                                    //   children: [
+                                    //     Container(
+                                    //       height: 18,
+                                    //       width: 18,
+                                    //       color: Colors.amber,
+                                    //     ),
+                                    //     const SizedBox(
+                                    //       width: 10,
+                                    //     ),
+                                    //     Text(
+                                    //       'Holiday',
+                                    //       style: GoogleFonts.nunito(
+                                    //           fontSize: 14,
+                                    //           fontWeight: FontWeight.bold,
+                                    //           color: Colors.black),
+                                    //     )
+                                    //   ],
+                                    // ),
+                                    // const SizedBox(
+                                    //   width: 30,
+                                    // ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -565,12 +587,12 @@ class HostelAttendanceScreen extends StatelessWidget {
                                       '${controller.data?.statusCounts?.missPunch ?? 0}',
                                   title: 'Miss\npunch',
                                 ),
-                                barChart(
-                                  color:  Colors.blue,
-                                  count:
-                                      '${controller.data?.statusCounts?.missPunch ?? 0}',
-                                  title: 'Leave',
-                                ),
+                                // barChart(
+                                //   color:  Colors.blue,
+                                //   count:
+                                //       '${controller.data?.statusCounts?.missPunch ?? 0}',
+                                //   title: 'Leave',
+                                // ),
                               ],
                             ),
                           );
@@ -685,7 +707,9 @@ class HostelAttendanceScreen extends StatelessWidget {
                                                 color: Colors.blue),
                                             onPressed: () {
                                               // Handle edit action for punch in time
-                                            
+                                            // Get.to(() => HostelAddmspScreen(
+                                            //   data: attendance,
+                                            //       ));
                                             },
                                           ),
                                   ),
@@ -707,6 +731,9 @@ class HostelAttendanceScreen extends StatelessWidget {
                                                 color: Colors.blue),
                                             onPressed: () {
                                               // Handle edit action for punch out time
+                                               Get.to(() => HostelAddmspScreen(
+                                                data: attendance,
+                                                  ));
                                             },
                                           ),
                                   ),

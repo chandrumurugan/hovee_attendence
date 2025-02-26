@@ -178,6 +178,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                                          filteredList![index].batchTimingEnd!,
                                          filteredList![index].tutorAddress!,
                                         filteredList![index].courseId! ,
+                                        filteredList![index].ratings!=null? filteredList![index].ratings!.averageRating.toString() ?? '0' : '0',
                                         );
                                   },
                                   child: CourseListContainer1(
@@ -200,7 +201,7 @@ class _GetTopicsCoursesState extends State<GetTopicsCourses> {
                                      batchMaximumSlots: filteredList![index].batchMaximumSlots ?? '', 
                                      batchTimingStart:  filteredList![index].batchTimingStart??'', 
                                      batchTimingEnd: filteredList![index].batchTimingEnd??'',
-                                      address:    filteredList![index].tutorAddress ??'', courseId: filteredList![index].courseId!,
+                                      address:    filteredList![index].tutorAddress ??'', courseId: filteredList![index].courseId!, ratings: filteredList![index].ratings!=null? filteredList![index].ratings!.averageRating.toString() ?? '0' : '0',
                                   ),
                                 ),
                               );

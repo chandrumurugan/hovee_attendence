@@ -18,6 +18,7 @@ import 'package:hovee_attendence/view/Hosteller/hostel_attendance_screen.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_enquiry_list.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_enrollment_screen.dart';
 import 'package:hovee_attendence/view/Hosteller/hostel_list.dart';
+import 'package:hovee_attendence/view/Hosteller/hostel_msp_screen.dart';
 import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
 import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
@@ -92,6 +93,7 @@ class HostellerHomeScreen extends StatelessWidget {
                     children: [
                       InkWell(
                         onTap: () {
+                          noticontroller.onInit();
                           Get.to(() => NotificationScreen(
                                 type: 'Hosteller',
                                   firstname: firstname,
@@ -337,11 +339,11 @@ class HostellerHomeScreen extends StatelessWidget {
       crossAxisSpacing: 10,
     ),
     itemCount: controller.homeDashboardNavList.value
-            .where((item) => item.name != 'Dashboard')
+            .where((item) => item.name != 'Dashboard' && item.name != 'Ratings')
             .length + 1, // Extra item
     itemBuilder: (context, index) {
       final filteredList = controller.homeDashboardNavList.value
-          .where((item) => item.name != 'Dashboard')
+          .where((item) => item.name != 'Dashboard' && item.name != 'Ratings')
           .toList();
 
       // Handle the additional item separately
@@ -385,7 +387,14 @@ class HostellerHomeScreen extends StatelessWidget {
                   wowid: wowid,
                 ),arguments: controller.role.value);
           } else if (item.name == 'Leave') {
-          } else if (item.name == 'Miss Punch') {
+          } else if (item.name == 'Miss punch') {
+            Get.to(() => HostelMspScreen(
+                                            type: controller.role.value,
+                                            fromBottomNav: true,
+                                            firstname: firstname,
+                                            lastname: lastname,
+                                            wowid: wowid,
+                                          ));
           }
          else if (item.name == 'Announcement') {
                                       Get.to(() => HostelAnnouncementScreen(

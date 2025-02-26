@@ -23,6 +23,7 @@ class HostellerController extends GetxController with GetSingleTickerProviderSta
   var isBatchSelected = false.obs;
  var enrollmentDetails = <EnrollmentDatum>[].obs;
    var homeDashboardHostelList = <HostelList?>[].obs;
+   var homeDashboardHostelListDetails = <HostelListDetail?>[].obs;
      HostelObjectIdDetails? hostellerObjectIdDetails;
      HostelObjectIdDetails? hostelObjectIdDetails;
      var role=''.obs;
@@ -69,11 +70,13 @@ class HostellerController extends GetxController with GetSingleTickerProviderSta
       if (homeDashboardResponse != null) {
         homeDashboardNavList.value = homeDashboardResponse.navbarItems;
          enrollmentDetails.value = homeDashboardResponse.enrollmentData;
+         homeDashboardHostelListDetails.value = homeDashboardResponse.hostelListDetails;
         if (enrollmentDetails.value != null && enrollmentDetails.value.isNotEmpty) {
           // Getting the unreadNotificationCount of the first student
           hostellerObjectIdDetails =enrollmentDetails[0].hostellerObjectIdDetails;
           hostelObjectIdDetails=enrollmentDetails[0].hostelObjectIdDetails;
           homeDashboardHostelList.value = enrollmentDetails[0].hostelList;
+           
         hostelId = homeDashboardHostelList[0]!.id ?? '';
         Logger().i(hostelId);
       } 

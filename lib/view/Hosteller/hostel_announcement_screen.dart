@@ -117,81 +117,72 @@ class HostelAnnouncementScreen extends StatelessWidget {
             //     // Implement filter logic here if needed
             //   },
             // ),
-            Obx(() {
-              if (anoumentController.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (anoumentController.announmentHostelList.isEmpty) {
-                return Center(
-                  child: Text(
-                    'No list found',
-                    style: GoogleFonts.nunito(
-                      color: Colors.black54,
-                      fontSize: 16,
-                    ),
-                  ),
-                );
-              } else {
-                return Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: anoumentController.announmentHostelList.length,
-                    itemBuilder: (context, index) {
-                      final leaveData =
-                          anoumentController.announmentHostelList[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                        child: Card(
-                          elevation: 10,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      _buildRow(
-                                          'Title', leaveData.title, context),
-                                      const SizedBox(height: 10),
-                                      _buildRow(
-                                          'Hostel name',
-                                          '${leaveData.hostelListsDetails!.hostelName}',
-                                          context),
-                                      const SizedBox(height: 10),
-                                      _buildRow(
-                                          'Hosteller name',
-                                          leaveData.hostellerObjectId[index].hostellerFirstName,
-                                          context),
-                                      const SizedBox(height: 10),
-                                      // _buildRow(
-                                      //     'Class name',
-                                      //     '${leaveData.courseDetails!.className}',
-                                      //     context),
-                                      // const SizedBox(height: 10),
-                                      // _buildRow(
-                                      //     'Subject',
-                                      //     leaveData.courseDetails!.subject,
-                                      //     context),
-                                      // const SizedBox(height: 10),
-                                      _buildRow('Description',
-                                          leaveData.description, context),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+           Obx(() {
+  if (anoumentController.isLoading.value) {
+    return const Center(child: CircularProgressIndicator());
+  } else if (anoumentController.announmentHostelList.isEmpty) {
+    return Center(
+      child: Text(
+        'No list found',
+        style: GoogleFonts.nunito(
+          color: Colors.black54,
+          fontSize: 16,
+        ),
+      ),
+    );
+  } else {
+    return Expanded(
+      child: ListView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        itemCount: anoumentController.announmentHostelList.length,
+        itemBuilder: (context, index) {
+          final leaveData = anoumentController.announmentHostelList[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Card(
+              elevation: 10,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildRow('Title', leaveData.title ?? 'No Title', context),
+                          const SizedBox(height: 10),
+                          _buildRow(
+                            'Hostel name',
+                            leaveData.hostelListsDetails?.hostelName ?? 'No Hostel',
+                            context,
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              }
-            })
+                          const SizedBox(height: 10),
+                          _buildRow(
+                            'Hosteller name',
+                            leaveData.hostellerObjectId.isNotEmpty 
+                              ? leaveData.hostellerObjectId.first.hostellerFirstName 
+                              : 'No Hosteller',
+                            context,
+                          ),
+                          const SizedBox(height: 10),
+                          _buildRow('Description', leaveData.description ?? 'No Description', context),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+})
+
           ],
         ),
              )

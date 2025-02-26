@@ -17,15 +17,33 @@ class HostelEnrollementController extends GetxController
    final otpController = TextEditingController();
 
    final focusNode = FocusNode();
+   String? lastWord;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-
+   lastWord = Get.arguments ?? '';
     tabController = TabController(length: 3, vsync: this);
     selectedTabIndex.value = 0;
-    fetchHostelEnrollmentList("Pending");
+     if (lastWord == '1') {
+    // Change tab index to 1 (Approved)
+    selectedTabIndex.value = 1;
+    tabController.animateTo(1);
+
+    // Fetch approved data list
+    fetchHostelEnrollmentList("Approved");
+  }
+  else if (lastWord == '2') {
+    // Change tab index to 1 (Approved)
+    selectedTabIndex.value = 2;
+    tabController.animateTo(2);
+
+    // Fetch approved data list
+    fetchHostelEnrollmentList("Rejected");
+  }else{
+     fetchHostelEnrollmentList("Pending");
+  }
   }
 
    void handleTabChange(int index) {

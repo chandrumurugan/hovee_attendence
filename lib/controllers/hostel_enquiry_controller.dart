@@ -19,6 +19,7 @@ class HostelEnquiryController extends GetxController
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    print("Received arguments: ${Get.arguments}");
     lastWord = Get.arguments ?? '';
     tabController = TabController(length: 3, vsync: this);
    if (lastWord == '1') {

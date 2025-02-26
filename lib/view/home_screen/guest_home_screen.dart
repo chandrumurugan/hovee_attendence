@@ -171,8 +171,9 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                         isLoading
                             ? CircularProgressIndicator()
                             : Container(
-                              height: MediaQuery.of(context).size.height*0.3,
-                             //color: Colors.amber,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.3,
+                                //color: Colors.amber,
                                 padding: const EdgeInsets.all(3),
                                 child: CarouselSlider.builder(
                                   itemCount: userBannerData!.length,
@@ -300,7 +301,9 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                                   ),
                                 ),
                               ),
-                       SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Row(
@@ -328,56 +331,55 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             ],
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(
-                            top: 10,
-                          ),
-                          height: MediaQuery.of(context).size.width *
-                              0.33, // Adjusted height to accommodate content
-                          width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: ListView.builder(
-                            scrollDirection:
-                                Axis.horizontal, // Use horizontal scrolling
-                            itemCount: 4,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: EdgeInsets.only(
-                                    left:
-                                        index == 0 ? 0 : 10), // Adjust spacing
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const CircleAvatar(
-                                      radius: 40,
-                                      backgroundColor: Colors
-                                          .blueAccent, // Add dynamic colors if needed
-                                      backgroundImage: AssetImage(
-                                        'assets/Ellipse 261.png', // Use a dynamic image if required
+                        guestHomeData?.teacherList == null ||
+                                guestHomeData!.teacherList.isEmpty
+                            ? Center(child: Text("No teachers available"))
+                            : Container(
+                                margin: const EdgeInsets.only(top: 10),
+                                height:
+                                    MediaQuery.of(context).size.width * 0.33,
+                                width: MediaQuery.of(context).size.width,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount:
+                                      guestHomeData?.teacherList?.length ?? 0,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      margin: EdgeInsets.only(
+                                          left: index == 0 ? 0 : 10),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const CircleAvatar(
+                                            radius: 40,
+                                            backgroundColor: Colors.blueAccent,
+                                            backgroundImage: AssetImage(
+                                                'assets/Ellipse 261.png'),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.2,
+                                            child: Text(
+                                              guestHomeData?.teacherList[index]
+                                                      .teacherName ??
+                                                  'Unknown',
+                                              style:
+                                                  const TextStyle(fontSize: 14),
+                                              textAlign: TextAlign.center,
+                                              overflow: TextOverflow.clip,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    const SizedBox(
-                                        height:
-                                            5), // Spacing between image and text
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.2,
-                                      child: Text(
-                                        guestHomeData!.teacherList[index]
-                                            .teacherName, // Dynamic name
-                                        style: const TextStyle(
-                                            fontSize: 14), // Adjust font size
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow
-                                            .clip, // Handle long text
-                                      ),
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 ),
-                              );
-                            },
-                          ),
-                        ),
+                              ),
 
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -403,7 +405,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                           ),
                         ),
                         Container(
-                          height: MediaQuery.of(context).size.height *0.34,
+                          height: MediaQuery.of(context).size.height * 0.34,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             // border: Border.all(color: Colors.blue, width: 2),
@@ -903,7 +905,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
               backgroundColor: Colors.white,
               radius: 60,
               child: Image.asset(
-                'assets/guest_logo.jpg',
+                'assets/hovee_loader_gif_2x.gif',
                 height: 85,
                 fit: BoxFit.fill,
               ),

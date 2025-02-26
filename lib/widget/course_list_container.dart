@@ -348,6 +348,7 @@ class CourseListContainer1 extends StatelessWidget {
   final String batchTimingEnd;
   final String address;
   final String courseId;
+  final String ratings;
   CourseListContainer1(
       {super.key,
       required this.image,
@@ -360,7 +361,7 @@ class CourseListContainer1 extends StatelessWidget {
       required this.arrowIcon,
       required this.className,
       required this.tutorId,
-      required this.batchname, required this.tutorname, required this.type, required this.id, required this.batchMaximumSlots, required this.batchTimingStart, required this.batchTimingEnd, required this.address, required this.courseId,});
+      required this.batchname, required this.tutorname, required this.type, required this.id, required this.batchMaximumSlots, required this.batchTimingStart, required this.batchTimingEnd, required this.address, required this.courseId, required this.ratings,});
 
   final CourseDetailController controller = Get.put(CourseDetailController());
   final CourseController courseController = Get.put(CourseController());
@@ -549,7 +550,7 @@ class CourseListContainer1 extends StatelessWidget {
                                   // Navigate to course details screen
                                   type=='Tutee'?
                                    controller. getClassTuteeById(
-                                       context,className,subject,tutorId,tutorname,subjectCode,batchMaximumSlots,batchTimingStart,batchTimingEnd,address,courseId):Container();
+                                       context,className,subject,tutorId,tutorname,subjectCode,batchMaximumSlots,batchTimingStart,batchTimingEnd,address,courseId,ratings):Container();
                                 },
                                 icon: const Icon(
                                   Icons.arrow_forward_ios_rounded,
@@ -569,6 +570,26 @@ class CourseListContainer1 extends StatelessWidget {
                               ),
                       ],
                     ),
+                    Container(
+                      width: 80,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 3),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,),
+                              child: Row(
+                                children: [
+                                   Text(ratings ?? '0',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14.0,
+                                        color: Colors.black,
+                                      )),
+                                      SizedBox(width: 5),
+                                  Image.asset('assets/tutorHomeImg/star 1.png')
+                                ],
+                              ),
+                            ),
                   ],
                 ),
               )

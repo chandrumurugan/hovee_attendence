@@ -17,11 +17,14 @@ class HostelEnquiryList extends StatelessWidget {
    final bool fromBottomNav;
   final String? firstname, lastname, wowid, lastWord;
   final VoidCallback? onDashBoardBack;
-  final HostelEnquiryController controller;
-   HostelEnquiryList({super.key, required this.fromBottomNav, this.firstname, this.lastname, this.wowid, this.lastWord, this.onDashBoardBack, required this.type}): controller = Get.put(HostelEnquiryController(), permanent: true);
-
+  //final HostelEnquiryController controller;
+   HostelEnquiryList({super.key, required this.fromBottomNav, this.firstname, this.lastname, this.wowid, this.lastWord, this.onDashBoardBack, required this.type});
+   //:controller = Get.put(HostelEnquiryController(), permanent: true);
+   final HostelEnquiryController controller =
+      Get.put(HostelEnquiryController());
   @override
   Widget build(BuildContext context) {
+    controller.onInit();
     return WillPopScope(
       onWillPop: () async {
         return await ModalService.handleBackButtonN(context);

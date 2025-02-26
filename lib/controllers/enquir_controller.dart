@@ -129,23 +129,6 @@ class EnquirDetailController extends GetxController
     }
   }
 
-  // void fetchEnquirList(String type) async {
-  //   try {
-  //     var batchData = {
-  //       "status": type,
-  //     };
-  //     isLoading(true);
-  //     var classesResponse = await WebService.fetchEnquireList(batchData);
-  //     if (classesResponse.data != null) {
-  //       enquirList.value = classesResponse.data!;
-  //     }
-  //   } catch (e) {
-  //     // Handle errors if needed
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
-
   Future<bool> updateEnquire(BuildContext context,String enquiryId,String type ) async {
       isLoading.value = true;
       try {

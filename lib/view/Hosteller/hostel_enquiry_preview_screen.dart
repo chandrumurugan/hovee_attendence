@@ -243,12 +243,15 @@ class HostelEnquiryPreviewScreen extends StatelessWidget {
                           fontWeight: FontWeight.w400,
                           fontSize: 16),
                     ),
-                    Text(
-                       data!.hostelLists!.hostelName ?? '',
-                      style: GoogleFonts.nunito(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16),
+                    SizedBox(
+                       width: MediaQuery.of(context).size.width * 0.3,
+                      child: Text(
+                         data!.hostelLists!.hostelName ?? '',
+                        style: GoogleFonts.nunito(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16),
+                      ),
                     )
                   ],
                 ),

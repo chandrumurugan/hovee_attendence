@@ -191,7 +191,7 @@ class _HostelListState extends State<HostelList> {
               const SizedBox(height: 20),
               _buildRow('Hostel name', hostel.hostelName,context),
                _buildRow('Hostel type', hostel.hostelType,context),
-               _buildRow('Categories', hostel.categories,context),
+               _buildRow('category', hostel.categories,context),
               hostel.hostelPriceDetails!=null?  _buildRow('Room type', hostel.hostelPriceDetails!.roomType,context):SizedBox.shrink(),
                 hostel.hostelPriceDetails!=null?  _buildRow('Price', '₹ ${ hostel!.hostelPriceDetails!.price.toString()} /month' ?? '',context):SizedBox.shrink(),
                _buildRow('Hostel address', '${hostel.doorNo!.toString()},${hostel.street!.toString()},${hostel.city!.toString()},${hostel.state!.toString()},${hostel.country!.toString()} -${hostel.pincode!.toString()}',context),

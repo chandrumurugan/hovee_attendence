@@ -90,48 +90,6 @@ class CommonDropdownInputField extends StatelessWidget {
         );
       },
     );
-    // showModalBottomSheet(
-    //   context: context,
-    //   isScrollControlled: true,
-    //   builder: (BuildContext context) {
-    //     return Container(
-    //       padding: const EdgeInsets.all(10),
-    //       child: Column(
-    //         mainAxisSize: MainAxisSize.min,
-    //         children: [
-    //           Text("Select $title", style: TextStyle(fontWeight: FontWeight.bold)),
-    //           Expanded(
-    //             child: ListView.builder(
-    //               shrinkWrap: true,
-    //               padding: EdgeInsets.only(bottom: 8),
-    //               itemCount: items.length,
-    //               itemBuilder: (context, index) {
-    //                 return Obx(() {
-    //                   final isSelected = selectedValue.value == items[index];
-    //                   return SizedBox(
-    //                     height: 33,
-    //                     child: RadioListTile<String>(
-    //                       contentPadding: EdgeInsets.symmetric(vertical: 0),
-    //                       title: Text(items[index]),
-    //                       value: items[index],
-    //                       groupValue: selectedValue.value,
-    //                       onChanged: (value) {
-    //                         selectedValue.value = value!;
-    //                         controllerValue.value = value;
-    //                         onChanged(value);
-    //                         Navigator.of(context).pop();
-    //                       },
-    //                     ),
-    //                   );
-    //                 });
-    //               },
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     );
-    //   },
-    // );
   }
 }
 

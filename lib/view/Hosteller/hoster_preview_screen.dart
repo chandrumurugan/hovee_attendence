@@ -260,12 +260,15 @@ class HosterPreviewScreen extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                             fontSize: 16),
                       ),
-                      Text(
-                        data!.hostelName ?? '',
-                        style: GoogleFonts.nunito(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: Text(
+                          data!.hostelName ?? '',
+                          style: GoogleFonts.nunito(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16),
+                        ),
                       )
                     ],
                   ),
@@ -480,7 +483,7 @@ class HosterPreviewScreen extends StatelessWidget {
           subtitle: '',
           btnName: 'Ok',
           onTap: () async {
-            Get.delete<EnquirDetailController>();
+            Get.delete<HostelEnquiryController>();
             hostelEnquiryController.onInit();
             Get.off(() => HostelEnquiryList(
                   type: 'Hosteller',

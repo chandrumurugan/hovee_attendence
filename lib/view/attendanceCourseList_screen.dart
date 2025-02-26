@@ -144,7 +144,7 @@ class AttendanceHostelListScreen extends StatelessWidget {
                 return ListView.builder(
                   itemCount: attendanceCourseListController.homeDashboardHostelList.length,
                   itemBuilder: (context, index) {
-                    return AttendanceHostellistContainer(attendanceCourse: attendanceCourseListController.homeDashboardHostelList[index], hostellerObjectIdDetails: attendanceCourseListController.hostellerObjectIdDetails, hostelObjectIdDetails: attendanceCourseListController.hostelObjectIdDetails,);
+                    return AttendanceHostellistContainer(attendanceCourse: attendanceCourseListController.homeDashboardHostelList[index], hostellerObjectIdDetails: attendanceCourseListController.hostellerObjectIdDetails, hostelObjectIdDetails: attendanceCourseListController.hostelObjectIdDetails,hostelListDetail:attendanceCourseListController.homeDashboardHostelListDetails[index] ,);
                   },
                 );
               }

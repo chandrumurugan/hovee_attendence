@@ -81,6 +81,7 @@ class HostelList {
         required this.remarks,
         required this.hostelTimingStart,
         required this.hostelTimingEnd,
+        required this.profileUrl,
     });
 
     final String? id;
@@ -94,6 +95,7 @@ class HostelList {
     final String? remarks;
     final String? hostelTimingStart;
     final String? hostelTimingEnd;
+    final String? profileUrl;
 
     factory HostelList.fromJson(Map<String, dynamic> json){ 
         return HostelList(
@@ -108,6 +110,7 @@ class HostelList {
             remarks: json["remarks"],
             hostelTimingStart: json["hostel_timing_start"],
             hostelTimingEnd: json["hostel_timing_end"],
+            profileUrl: json["profileUrl"],
         );
     }
 

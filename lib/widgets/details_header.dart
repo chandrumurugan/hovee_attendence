@@ -67,13 +67,18 @@ class DeatilHeader extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                          Text(
-                       address,
-                        style: GoogleFonts.nunito(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14),
-                      ),
+                          Row(
+                            children: [
+                               Text(address ?? '0',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.0,
+                                    color: Colors.white,
+                                  )),
+                                  const SizedBox(width: 5),
+                              Image.asset('assets/tutorHomeImg/star 1.png')
+                            ],
+                          ),
                     ],
                   ),
                 ],

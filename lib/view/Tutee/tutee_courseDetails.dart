@@ -15,7 +15,7 @@ import 'package:intl/intl.dart';
 
 class CourseDetailScreen extends StatelessWidget {
   final Data1? data;
-  final String tutorname, fees, maxSlots, startDate, endDate, address;
+  final String tutorname, fees, maxSlots, startDate, endDate, address,ratings;
 
   CourseDetailScreen(
       {super.key,
@@ -25,7 +25,7 @@ class CourseDetailScreen extends StatelessWidget {
       required this.maxSlots,
       required this.startDate,
       required this.endDate,
-      required this.address});
+      required this.address, required this.ratings});
 
   final CourseDetailController controller = Get.put(CourseDetailController());
 
@@ -95,7 +95,7 @@ class CourseDetailScreen extends StatelessWidget {
                 subject: data!.subject!,
                 Coursecode:
                     'Tutor name: ${data!.tutorDetails!.firstName} ${data!.tutorDetails!.lastName}',
-                address: '',
+                address: ratings,
                 type: 'Course',
               ),
               Padding(

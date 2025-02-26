@@ -187,7 +187,7 @@ class HostelId {
     final Location? location;
     final String? id;
     final String? hostelObjectId;
-    final String? roomType;
+     RoomType? roomType;
     final String? hostelName;
     final String? registerNo;
     final String? shortName;
@@ -219,7 +219,7 @@ class HostelId {
             location: json["location"] == null ? null : Location.fromJson(json["location"]),
             id: json["_id"],
             hostelObjectId: json["hostel_ObjectId"],
-            roomType: json["room_type"],
+            roomType: json["room_type"] == null ? null : RoomType.fromJson(json["room_type"]),
             hostelName: json["hostel_name"],
             registerNo: json["register_no"],
             shortName: json["short_name"],
@@ -496,5 +496,24 @@ class Pagination {
         "currentPage": currentPage,
         "totalPages": totalPages,
     };
+
+}
+
+
+class RoomType {
+    RoomType({
+        required this.id,
+        required this.price,
+    });
+
+    final String? id;
+     int? price;
+
+    factory RoomType.fromJson(Map<String, dynamic> json){ 
+        return RoomType(
+            id: json["_id"],
+            price: json["price"],
+        );
+    }
 
 }
