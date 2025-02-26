@@ -18,6 +18,7 @@ import 'package:hovee_attendence/modals/deleteHolidayModel.dart';
 import 'package:hovee_attendence/modals/delete_announcement_model.dart';
 import 'package:hovee_attendence/modals/deletebatch_model.dart';
 import 'package:hovee_attendence/modals/enrollment_success_model.dart';
+import 'package:hovee_attendence/modals/fetchGuestUserHostelListModel.dart';
 import 'package:hovee_attendence/modals/getAnnounmentBatchList_model.dart';
 import 'package:hovee_attendence/modals/getAnnounment_model.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
@@ -50,6 +51,8 @@ import 'package:hovee_attendence/modals/getQrcode_model.dart';
 import 'package:hovee_attendence/modals/getRatingDashboardListModel.dart';
 import 'package:hovee_attendence/modals/getRatingTutorListModel.dart';
 import 'package:hovee_attendence/modals/getRatingsListModel.dart';
+import 'package:hovee_attendence/modals/getSubscriptionByPlanModel.dart';
+import 'package:hovee_attendence/modals/getSubscriptionModel.dart';
 import 'package:hovee_attendence/modals/getTestimonialsModel.dart';
 import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
@@ -3079,4 +3082,76 @@ class WebService {
     }
   }
 
+  static Future<FetchGuestUserHostelListModel?> fetchGuestUserHostelList() async {
+    final url = Uri.parse('${baseUrl}admin/userManagement/hostel');
+    var data = {"type": "Hostel"};
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+// Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(data),
+    );
+
+    if (response.statusCode == 200) {
+      return FetchGuestUserHostelListModel.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+  }
+  
+  static Future<GetSubscriptionModel?> getSubscription(Map<String, dynamic> batchData) async {
+    final url =
+        Uri.parse("${baseUrl}guest/getSubscription"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          //'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return GetSubscriptionModel.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+
+
+  static Future<GetSubscriptionByPlanModel?> getSubscriptionByPlan(Map<String, dynamic> batchData) async {
+    final url =
+        Uri.parse("${baseUrl}guest/getSubscriptionByPlan"); // Replace with the actual endpoint
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(batchData),
+        headers: {
+          'Content-Type': 'application/json',
+          //'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return GetSubscriptionByPlanModel.fromJson(json.decode(response.body));
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 }

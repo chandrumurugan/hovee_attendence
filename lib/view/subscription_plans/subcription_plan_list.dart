@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/modals/getSubscriptionModel.dart';
+import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -21,50 +23,76 @@ class _PlanListState extends State<PlanList> {
   bool isMonthlySelected = true;
   int selectedIndex = -1;
   late Razorpay _razorpay;
-  List<Map<String, dynamic>> populateSampleData = [
-    {
-      "plan_name": "Bronze",
-      "is_popular": true,
-      "price": "1000",
-      "features": [
-        "New plan for today start",
-        "most common plan",
-        "effective plan",
-        "cost efficient"
-      ]
-    },
-    {
-      "plan_name": "Silver",
-      "is_popular": true,
-      "price": "2000",
-      "features": [
-        "New plan for today start",
-        "most common plan",
-        "effective plan",
-        "cost efficient"
-      ]
-    },
-    {
-      "plan_name": "Gold",
-      "is_popular": true,
-      "price": "3000",
-      "features": [
-        "New plan for today start",
-        "most common plan",
-        "effective plan",
-        "cost efficient"
-      ]
-    }
-  ];
-
+  // List<Map<String, dynamic>> populateSampleData = [
+  //   {
+  //     "plan_name": "Bronze",
+  //     "is_popular": true,
+  //     "price": "1000",
+  //     "features": [
+  //       "New plan for today start",
+  //       "most common plan",
+  //       "effective plan",
+  //       "cost efficient"
+  //     ]
+  //   },
+  //   {
+  //     "plan_name": "Silver",
+  //     "is_popular": true,
+  //     "price": "2000",
+  //     "features": [
+  //       "New plan for today start",
+  //       "most common plan",
+  //       "effective plan",
+  //       "cost efficient"
+  //     ]
+  //   },
+  //   {
+  //     "plan_name": "Gold",
+  //     "is_popular": true,
+  //     "price": "3000",
+  //     "features": [
+  //       "New plan for today start",
+  //       "most common plan",
+  //       "effective plan",
+  //       "cost efficient"
+  //     ]
+  //   }
+  // ];
+  List<Datum> data = [];
+   List<Plan> populateSampleData = [];
+    bool isLoadingcategoryList = false;
   @override
   void initState() {
     super.initState();
+     fetchSubscriptionData("month");
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
+
+  Future<void> fetchSubscriptionData(String type) async {
+     setState(() {
+      isLoadingcategoryList = true;
+    });
+  Map<String, dynamic> requestPayload = {
+    "type": type, // Pass "month" or "year"
+  };
+
+  GetSubscriptionModel? response = await WebService.getSubscription(requestPayload);
+
+  if (response != null && response.data != null) {
+    setState(() {
+      populateSampleData = response.data[0].plans;
+      isLoadingcategoryList = false; // Update list with API response
+    });
+  }else{
+    setState(() {
+      isLoadingcategoryList = false; // Update list with API response
+    });
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +111,12 @@ class _PlanListState extends State<PlanList> {
             ));
           }
       }),
-      body: Container(
+      body:isLoadingcategoryList
+      ? const Center(child: CircularProgressIndicator())
+                    : populateSampleData!.isEmpty
+                        ? const Center(child: Text("No subscription available"))
+                        :
+       Container(
         height: height,
         width: width,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -122,10 +155,12 @@ class _PlanListState extends State<PlanList> {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     setState(() {
                       isMonthlySelected = true;
+                      selectedIndex = -1;
                     });
+                    await fetchSubscriptionData("month");
                   },
                   child: Container(
                     padding:
@@ -152,10 +187,12 @@ class _PlanListState extends State<PlanList> {
                   width: 10,
                 ),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     setState(() {
                       isMonthlySelected = false;
+                      selectedIndex = -1;
                     });
+                    await fetchSubscriptionData("year");
                   },
                   child: Container(
                     padding:
@@ -190,10 +227,9 @@ class _PlanListState extends State<PlanList> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    var data = populateSampleData[index];
-              
+                    var plan = populateSampleData[index];
                     List<String> features =
-                        populateSampleData[index]["features"];
+                        plan.description;
               
                     return GestureDetector(
                       onTap: () {
@@ -202,7 +238,7 @@ class _PlanListState extends State<PlanList> {
                         });
                       },
                       child: Container(
-                        // width: 173,
+                        width: MediaQuery.of(context).size.width * 0.6,
                          //height: MediaQuery.of(context).size.height * 0.4,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 10),
@@ -225,7 +261,7 @@ class _PlanListState extends State<PlanList> {
                             //   height: 10,
                             // ),
                             Text(
-                              "${data["plan_name"]}",
+                              "${plan.category}",
                               style: GoogleFonts.nunito(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -253,7 +289,7 @@ class _PlanListState extends State<PlanList> {
                             //   height: 15,
                             // ),
                             Text(
-                              data["price"] + " ₹/month",
+                              plan.price.toString() + " ₹/month",
                               style: GoogleFonts.nunito(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -352,6 +388,7 @@ class _PlanListState extends State<PlanList> {
 
   Widget dotRow({required String name}) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         const CircleAvatar(
           radius: 5,
@@ -359,10 +396,13 @@ class _PlanListState extends State<PlanList> {
         const SizedBox(
           width: 5,
         ),
-        Text(
-          name,
-          style: GoogleFonts.nunito(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+        SizedBox(
+           width: MediaQuery.of(context).size.width * 0.5,
+          child: Text(
+            name,
+            style: GoogleFonts.nunito(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+          ),
         )
       ],
     );

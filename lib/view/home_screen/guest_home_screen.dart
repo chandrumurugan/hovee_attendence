@@ -16,6 +16,8 @@ import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 
+import '../../modals/fetchGuestUserHostelListModel.dart';
+
 class GuestHomeScreen extends StatefulWidget {
   const GuestHomeScreen({super.key});
 
@@ -33,12 +35,14 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
   final GuesthomeController guestController = Get.put(GuesthomeController());
   List<Datum>? guestTestData;
   List<guestUserBannerData>? userBannerData;
+  Data1? guestHomeHostelListData;
   @override
   void initState() {
     super.initState();
     getHomeData();
     fetchGuestUserBannerList();
     fetchGuestUserTestimonialsList();
+    getGuestUserHomeHostelList();
   }
 
   void getHomeData() async {
@@ -111,6 +115,21 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
     },
   ];
 
+
+void getGuestUserHomeHostelList() async {
+    setState(() {
+      isLoading = true;
+    });
+    var response = await WebService.fetchGuestUserHostelList();
+    if (response != null && response.statusCode == 200) {
+      setState(() {
+        guestHomeHostelListData = response.data;
+        isLoading = false;
+      });
+
+      // guestHomeData.teacherList
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -813,6 +832,155 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
                             ]),
                           ),
                         ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
+                          child: Text(
+                            "Hostels list",
+                            style: GoogleFonts.nunito(
+                                color: Colors.black,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        guestHomeHostelListData!=null?
+                        CarouselSlider(
+                          options: CarouselOptions(
+                            height: MediaQuery.of(context).size.height * 0.17,
+                            enableInfiniteScroll: false,
+                            enlargeCenterPage: true,
+                            viewportFraction: 0.9,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _currentIndexSlider = index;
+                              });
+                            },
+                          ),
+                          items: guestHomeHostelListData!.records.map((hostel) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(16),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 4,
+                                        offset: Offset(2, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Stack(
+                                                children: [
+                                                  hostel.profileUrl != null
+                  ? Image.network(
+                      hostel.profileUrl ?? '',
+                      width: 90,
+                      height: 100,
+                      //fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/v2.jpg', // Fallback image
+                            width: 90,
+                      height: 100,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    )
+                  : Image.asset('assets/v2.jpg',  width: 90,
+                      height: 100,),
+                                                  
+                                                ],
+                                              ),
+                                              SizedBox(width: 10),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        hostel.firstName ??
+                                                            '',
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      SizedBox(width: 4),
+                                                      // Text(
+                                                      //   testimonial.testimonialUrl!,
+                                                      //   style: TextStyle(
+                                                      //     fontSize: 12,
+                                                      //     color:
+                                                      //         Colors.grey[600],
+                                                      //   ),
+                                                      // ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.5,
+                                                    child: Text(
+                                                      hostel.email ??
+                                                          '',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.grey[600],
+                                                      ),
+                                                      maxLines: 5,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.5,
+                                                    child: Text(
+                                                      hostel.phoneNumber ??
+                                                          '',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.grey[600],
+                                                      ),
+                                                      maxLines: 5,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
+                        ):CircularProgressIndicator(),
+                        SizedBox(height: 30,)
                       ],
                     ),
                   )
@@ -954,6 +1122,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
               textAlign: TextAlign.center,
             ),
           ),
+          
         ],
       ),
     );
