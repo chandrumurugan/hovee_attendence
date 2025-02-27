@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -19,6 +21,7 @@ class TrackTuteeLocationController extends GetxController {
 
   var tuteeLocation = Rxn<LatLng>();
   var targetLocation = Rxn<LatLng>();
+   var previousLocation = Rxn<LatLng>();
   //var targetLocation = const LatLng(13.039422387848779,80.22285977520232).obs;
 
   var distance = 0.0.obs;
@@ -37,6 +40,7 @@ class TrackTuteeLocationController extends GetxController {
   var target = Rxn<LatLng>();
 
   var fetchingRoute = false.obs;
+   Timer? markerAnimationTimer;
 
   @override
   void onInit() {
@@ -70,11 +74,32 @@ class TrackTuteeLocationController extends GetxController {
           await fetchRoadRoute();
           updateDistance();
           _checkRouteDeviation();
+           // Smooth Animation
+          animateMarker(previousLocation.value, tuteeLocation.value!);
         }
       });
     } catch (e) {
       print(e);
     }
+  }
+    void animateMarker(LatLng? from, LatLng to) {
+    if (from == null) return;
+    const int steps = 50;
+    int step = 0;
+    markerAnimationTimer?.cancel();
+
+    markerAnimationTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      double latitude = from.latitude + ((to.latitude - from.latitude) / steps) * step;
+      double longitude = from.longitude + ((to.longitude - from.longitude) / steps) * step;
+      tuteeLocation.value = LatLng(latitude, longitude);
+
+      updateMarkers(name);
+      step++;
+
+      if (step >= steps) {
+        timer.cancel();
+      }
+    });
   }
 
   void _checkRouteDeviation() {
