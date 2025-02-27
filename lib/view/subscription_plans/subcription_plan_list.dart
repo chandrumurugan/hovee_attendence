@@ -238,7 +238,7 @@ class _PlanListState extends State<PlanList> {
                         });
                       },
                       child: Container(
-                        width: MediaQuery.of(context).size.width * 0.6,
+                        width: MediaQuery.of(context).size.width * 0.61,
                          //height: MediaQuery.of(context).size.height * 0.4,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 10),

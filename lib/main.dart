@@ -83,7 +83,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-   Get.put(NetworkController());
+  Get.put(NetworkController(), permanent: true);
   Get.put(AuthControllers());
  //Get.put(UserProfileController());
   runApp(const MyApp());

@@ -67,7 +67,7 @@ class SubjectContainerHostel extends StatelessWidget {
   Widget build(BuildContext context) {
     return
       SizedBox(
-        height: 140,
+        height: 150,
         child: Obx(() {
           if (attendanceCourseListController.isLoading.value) {
             return Center(child: CircularProgressIndicator());
@@ -93,7 +93,6 @@ class SubjectContainerHostel extends StatelessWidget {
                 print("gettiunhs calye123456==>${attendanceListController.homeDashboardHostelList.length}");
                 final attendanceCourse = attendanceListController.homeDashboardHostelList[index];
                 return SizedBox(
-                  
                   width: MediaQuery.of(context).size.width,
                   child: AttendanceHostellistContainer(attendanceCourse: attendanceCourse, hostellerObjectIdDetails: attendanceListController.hostellerObjectIdDetails, hostelObjectIdDetails: attendanceListController.hostelObjectIdDetails,hostelListDetail: attendanceListController.homeDashboardHostelListDetails[index],));
               },

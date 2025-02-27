@@ -58,9 +58,11 @@ import 'package:hovee_attendence/modals/getTutionCourseList_model.dart';
 import 'package:hovee_attendence/modals/getUserTokenList_model.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/modals/getbatchlocation.dart';
+import 'package:hovee_attendence/modals/getcurrentsubscriptionModel.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
 import 'package:hovee_attendence/modals/googleSignInModel.dart';
 import 'package:hovee_attendence/modals/guestHome_modal.dart';
+import 'package:hovee_attendence/modals/institudeTutorsListModel.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/parentLoginDataModel.dart';
@@ -3151,6 +3153,51 @@ class WebService {
         return null;
       }
     } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<GetcurrentsubscriptionModel?> getcurrentsubscription() async {
+    final box = GetStorage(); // Get an instance of GetStorage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    try {
+      var headers = {'Authorization': "Bearer $token"};
+      var url = Uri.parse("${baseUrl}mysubscription/getcurrentsubscription");
+      var response = await http.post(url, headers: headers);
+      Logger().i(response.headers);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        return GetcurrentsubscriptionModel.fromJson(data);
+      } else if (response.statusCode == 401) {
+        // Clear session data
+        await prefs.clear();
+        // Navigate to the login screen
+       // Get.to(() => LoginSignUp());
+        return null;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<InstitudeTutorsListModel?> fetchGuestUserInstitudeTutorsList() async {
+    final url = Uri.parse('${baseUrl}admin/userManagement/institudeTutorsList');
+    var data = {"type": "Hostel"};
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+// Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(data),
+    );
+
+    if (response.statusCode == 200) {
+      return InstitudeTutorsListModel.fromJson(json.decode(response.body));
+    } else {
       return null;
     }
   }

@@ -298,18 +298,19 @@ class AttendanceHostellistContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
       child: Card(
         elevation: 10,
         shadowColor: Colors.grey,
         surfaceTintColor: Colors.white,
         child: Container(
+          height: 150,
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               attendanceCourse!.profileUrl != null
@@ -318,77 +319,82 @@ class AttendanceHostellistContainer extends StatelessWidget {
                     child: Image.network(
                         attendanceCourse!.profileUrl ?? '',
                         width: 120,
-                        height: 180,
+                        height: 150,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
                             'assets/v2.jpg', // Fallback image
                               width: 120,
-                        height: 180,
+                        height: 150,
                             fit: BoxFit.cover,
                           );
                         },
                       ),
                   )
                   : Image.asset('assets/v2.jpg',  width: 120,
-                      height: 180,),
-                      SizedBox(width: 10,),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    child: Text(
-                      "${attendanceCourse!.hostelName}",
+                      height: 150,),
+                      SizedBox(width: 5,),
+              SizedBox(
+                 //color: Colors.amber,
+                      width: MediaQuery.of(context).size.width * 0.39,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // SizedBox(
+                    //   height: 5,
+                    // ),
+                    SizedBox(
+                      //color: Colors.amber,
+                      width: MediaQuery.of(context).size.width * 0.39,
+                      child: Text(
+                        "${attendanceCourse!.hostelName}",
+                        style: GoogleFonts.nunito(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
+                    ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    Text(
+                      attendanceCourse!.categories ?? '',
                       style: GoogleFonts.nunito(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Colors.black),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    attendanceCourse!.categories ?? '',
-                    style: GoogleFonts.nunito(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  attendanceCourse!.hostelType != null
-                      ? SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          child: Text(
-                            "${attendanceCourse!.hostelType} - ${attendanceCourse!.food}",
-                            maxLines: 2, // Restrict to one line
-                            overflow: TextOverflow
-                                .ellipsis, // Add ellipsis if the text overflows
-                            style: GoogleFonts.nunito(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          ),
-                        )
-                      : SizedBox.shrink(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "${attendanceCourse!.hostelTimingStart} - ${attendanceCourse!.hostelTimingEnd}",
-                    style: GoogleFonts.nunito(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  ),
-                ],
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    attendanceCourse!.hostelType != null
+                        ? SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.4,
+                            child: Text(
+                              "${attendanceCourse!.hostelType} - ${attendanceCourse!.food}",
+                              maxLines: 2, // Restrict to one line
+                              overflow: TextOverflow
+                                  .ellipsis, // Add ellipsis if the text overflows
+                              style: GoogleFonts.nunito(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black),
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
+                    Text(
+                      "${attendanceCourse!.hostelTimingStart} - ${attendanceCourse!.hostelTimingEnd}",
+                      style: GoogleFonts.nunito(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,

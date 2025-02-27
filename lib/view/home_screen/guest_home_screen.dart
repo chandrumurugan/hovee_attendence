@@ -7,15 +7,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/guestHome_controller.dart';
 import 'package:hovee_attendence/modals/getBannerModel.dart';
-import 'package:hovee_attendence/modals/getBannerModel.dart';
 import 'package:hovee_attendence/modals/getTestimonialsModel.dart';
 import 'package:hovee_attendence/modals/guestHome_modal.dart';
 import 'package:hovee_attendence/services/webServices.dart';
-import 'package:hovee_attendence/view/Tutee/tutee_courseList.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
-import 'package:hovee_attendence/widget/gifController.dart';
 
+import 'package:hovee_attendence/modals/institudeTutorsListModel.dart';
 import '../../modals/fetchGuestUserHostelListModel.dart';
 
 class GuestHomeScreen extends StatefulWidget {
@@ -36,6 +34,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
   List<Datum>? guestTestData;
   List<guestUserBannerData>? userBannerData;
   Data1? guestHomeHostelListData;
+  Data2? guestInstitudeTutorsListData;
   @override
   void initState() {
     super.initState();
@@ -124,6 +123,21 @@ void getGuestUserHomeHostelList() async {
     if (response != null && response.statusCode == 200) {
       setState(() {
         guestHomeHostelListData = response.data;
+        isLoading = false;
+      });
+
+      // guestHomeData.teacherList
+    }
+  }
+
+  void fetchGuestUserInstitudeTutorsList() async {
+    setState(() {
+      isLoading = true;
+    });
+    var response = await WebService.fetchGuestUserInstitudeTutorsList();
+    if (response != null && response.statusCode == 200) {
+      setState(() {
+        guestInstitudeTutorsListData = response.data;
         isLoading = false;
       });
 
@@ -836,12 +850,29 @@ void getGuestUserHomeHostelList() async {
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 15),
-                          child: Text(
-                            "Hostels list",
-                            style: GoogleFonts.nunito(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Hostel list",
+                                style: GoogleFonts.nunito(
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(() => LoginSignUp());
+                                },
+                                child: Text(
+                                  "See all",
+                                  style: GoogleFonts.nunito(
+                                      color: const Color(0xFFFF9900),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         guestHomeHostelListData!=null?
@@ -860,120 +891,140 @@ void getGuestUserHomeHostelList() async {
                           items: guestHomeHostelListData!.records.map((hostel) {
                             return Builder(
                               builder: (BuildContext context) {
-                                return Container(
-                                  padding: EdgeInsets.all(10),
-                                  margin: EdgeInsets.symmetric(horizontal: 8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(16),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 4,
-                                        offset: Offset(2, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Stack(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Stack(
-                                                children: [
-                                                  hostel.profileUrl != null
-                  ? Image.network(
-                      hostel.profileUrl ?? '',
-                      width: 90,
-                      height: 100,
-                      //fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          'assets/v2.jpg', // Fallback image
-                            width: 90,
-                      height: 100,
-                          fit: BoxFit.cover,
-                        );
-                      },
-                    )
-                  : Image.asset('assets/v2.jpg',  width: 90,
-                      height: 100,),
-                                                  
-                                                ],
-                                              ),
-                                              SizedBox(width: 10),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Text(
-                                                        hostel.firstName ??
+                                return GestureDetector(
+                                  onTap: () {
+                                    Get.to(() => LoginSignUp());
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    margin: EdgeInsets.symmetric(horizontal: 8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[200],
+                                      borderRadius: BorderRadius.circular(16),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 4,
+                                          offset: Offset(2, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Stack(
+                                                  children: [
+                                                    hostel.profileUrl != null
+                                                    ? ClipRRect(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      child: Image.network(
+                                                          hostel.profileUrl ?? '',
+                                                          width: 90,
+                                                          height: 100,
+                                                          //fit: BoxFit.cover,
+                                                          errorBuilder: (context, error, stackTrace) {
+                                                            return Image.asset(
+                                                              'assets/v2.jpg', // Fallback image
+                                                                width: 90,
+                                                          height: 100,
+                                                              fit: BoxFit.cover,
+                                                            );
+                                                          },
+                                                        ),
+                                                    )
+                                                    : ClipRRect(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      child: Image.asset('assets/v2.jpg',  width: 90,
+                                                          height: 100,),
+                                                    ),
+                                                    
+                                                  ],
+                                                ),
+                                                SizedBox(width: 10),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          hostel.firstName ??
+                                                              '',
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 4),
+                                                        // Text(
+                                                        //   testimonial.testimonialUrl!,
+                                                        //   style: TextStyle(
+                                                        //     fontSize: 12,
+                                                        //     color:
+                                                        //         Colors.grey[600],
+                                                        //   ),
+                                                        // ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.5,
+                                                      child: Text(
+                                                        hostel.email ??
                                                             '',
                                                         style: TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                          fontSize: 14,
+                                                          color: Colors.grey[600],
                                                         ),
+                                                        maxLines: 5,
+                                                        overflow:
+                                                            TextOverflow.ellipsis,
                                                       ),
-                                                      SizedBox(width: 4),
-                                                      // Text(
-                                                      //   testimonial.testimonialUrl!,
-                                                      //   style: TextStyle(
-                                                      //     fontSize: 12,
-                                                      //     color:
-                                                      //         Colors.grey[600],
-                                                      //   ),
-                                                      // ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.5,
-                                                    child: Text(
-                                                      hostel.email ??
-                                                          '',
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey[600],
-                                                      ),
-                                                      maxLines: 5,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
                                                     ),
-                                                  ),
-                                                  SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.5,
-                                                    child: Text(
-                                                      hostel.phoneNumber ??
-                                                          '',
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey[600],
-                                                      ),
-                                                      maxLines: 5,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                                    SizedBox(
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    child: Text.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: "Address: ",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black, // Black color for "Address"
+                                              fontWeight: FontWeight.normal, // Optional: Make it bold
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: hostel.address ?? '',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey[600], // Grey color for the address text
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ],
+                                      maxLines: 5,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 );
                               },
