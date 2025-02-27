@@ -313,22 +313,26 @@ class AttendanceHostellistContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               attendanceCourse!.profileUrl != null
-                  ? Image.network(
-                      attendanceCourse!.profileUrl ?? '',
-                      width: 120,
-                      height: 180,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          'assets/v2.jpg', // Fallback image
-                            width: 120,
-                      height: 180,
-                          fit: BoxFit.cover,
-                        );
-                      },
-                    )
+                  ? ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Image.network(
+                        attendanceCourse!.profileUrl ?? '',
+                        width: 120,
+                        height: 180,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/v2.jpg', // Fallback image
+                              width: 120,
+                        height: 180,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      ),
+                  )
                   : Image.asset('assets/v2.jpg',  width: 120,
                       height: 180,),
+                      SizedBox(width: 10,),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
