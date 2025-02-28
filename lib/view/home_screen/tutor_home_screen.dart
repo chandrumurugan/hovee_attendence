@@ -183,6 +183,7 @@ class TutorHome extends StatelessWidget {
                           firstName: firstname,
                           lastName: lastname,
                           wowId: wowid,
+                          planName: noticontroller.planName ?? "",
                         ),
                       ),
                       SizedBox(

@@ -68,6 +68,7 @@ import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/parentLoginDataModel.dart';
 import 'package:hovee_attendence/modals/parentLoginModel.dart';
 import 'package:hovee_attendence/modals/phonenumberVerfication_model.dart';
+import 'package:hovee_attendence/modals/postPayment_model.dart';
 import 'package:hovee_attendence/modals/regiasterModal.dart';
 import 'package:hovee_attendence/modals/role_modal.dart';
 import 'package:hovee_attendence/modals/singleCoursecategorylist_modal.dart';
@@ -3157,6 +3158,7 @@ class WebService {
     }
   }
 
+
   static Future<GetcurrentsubscriptionModel?> getcurrentsubscription() async {
     final box = GetStorage(); // Get an instance of GetStorage
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -3164,7 +3166,7 @@ class WebService {
     try {
       var headers = {'Authorization': "Bearer $token"};
       var url = Uri.parse("${baseUrl}mysubscription/getcurrentsubscription");
-      var response = await http.post(url, headers: headers);
+      var response = await http.get(url, headers: headers);
       Logger().i(response.headers);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
@@ -3201,4 +3203,43 @@ class WebService {
       return null;
     }
   }
+
+
+   static Future<PostPaymentModel?> postPayment(Map<String, dynamic> data) async {
+    final url = Uri.parse('${baseUrl}mysubscription/updatesubscription');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+// Add the authorization token here
+         'Content-Type': 'application/json',
+         'Authorization': "Bearer $token",
+      },
+      body: json.encode(data),
+    );
+    if (response.statusCode == 200) {
+      return PostPaymentModel.fromJson(json.decode(response.body));
+    } else {
+      
+      return null;
+    }
+// var headers = {
+//   'Content-Type': 'application/json',
+//   'Authorization': "Bearer $token",
+// };
+// var request = http.Request('POST', Uri.parse('https://api.hoveeattendance.com/dev/api/mysubscription/updatesubscription'));
+// request.body = json.encode(data);
+// request.headers.addAll(headers);
+
+// http.StreamedResponse response = await request.send();
+
+// if (response.statusCode == 200) {
+//   print(await response.stream.bytesToString());
+// }
+// else {
+//   print(response.reasonPhrase);
+//   }
+}
+
 }

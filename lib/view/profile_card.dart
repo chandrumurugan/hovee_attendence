@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/controllers/parent_dashboard_controller.dart';
 import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 
 class HomePageHeader extends StatelessWidget {
   @override
-  HomePageHeader({super.key, required this.title, required this.userType, this.firstName, this.lastName, this.wowId});
+  HomePageHeader({super.key, required this.title, required this.userType, this.firstName, this.lastName, this.wowId, required this.planName});
   final String title;
   final String userType;
   final String? firstName,lastName,wowId;
+  final String planName;
   @override
   Widget build(BuildContext context) {
     final AuthControllers authController = Get.put(AuthControllers());
@@ -343,12 +345,43 @@ class HomePageHeader extends StatelessWidget {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    ),
+                    Card(
+                    elevation: 4.0,
+                    surfaceTintColor: Colors.white,
+                    color: Colors.white,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Color(0xFFCD7F32)),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            planName,
+                            style: GoogleFonts.nunito(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                              color: Color(0xFFCD7F32),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ],
                 ),
               ),
               if (userType == "Tutor")

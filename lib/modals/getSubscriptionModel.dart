@@ -83,12 +83,16 @@ class Datum {
 class Plan {
     Plan({
         required this.category,
+        required this.duration,
+        required this.durationType,
         required this.price,
         required this.description,
         required this.id,
     });
 
     final String? category;
+    final String? duration;
+    final String? durationType;
     final double? price;
     final List<String> description;
     final String? id;
@@ -96,7 +100,9 @@ class Plan {
     factory Plan.fromJson(Map<String, dynamic> json){ 
         return Plan(
             category: json["category"],
-            price: (json["price"] as num?)?.toDouble(),
+            duration: json["duration"],
+            durationType: json["durationType"],
+            price: json["price"],
             description: json["description"] == null ? [] : List<String>.from(json["description"]!.map((x) => x)),
             id: json["_id"],
         );
@@ -104,6 +110,8 @@ class Plan {
 
     Map<String, dynamic> toJson() => {
         "category": category,
+        "duration": duration,
+        "durationType": durationType,
         "price": price,
         "description": description.map((x) => x).toList(),
         "_id": id,

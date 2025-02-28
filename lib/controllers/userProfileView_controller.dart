@@ -14,6 +14,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:hovee_attendence/controllers/auth_controllers.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
+import 'package:hovee_attendence/modals/getcurrentsubscriptionModel.dart';
 import 'package:hovee_attendence/modals/login_data_model.dart';
 import 'package:hovee_attendence/modals/phonenumberVerfication_model.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
@@ -154,6 +155,7 @@ class UserProfileController extends GetxController
      File? _byteData;
 
        Ratings?userRatings;
+       currentsubscriptionData? currentSubscription;
 
   void setHighestQualification(String value) =>
       highestQualification.value = value;
@@ -416,6 +418,7 @@ class UserProfileController extends GetxController
     fetchUserProfiles();
     _loadDropdownData();
     fetchAppConfig();
+    getcurrentsubscription();
   }
 
   void _loadDropdownData() async {
@@ -1311,6 +1314,24 @@ print('Wow ID: $wowId');
       userProfileResponse.refresh();
       update();
   }
+
+  Future<void> getcurrentsubscription() async {
+     
+      isLoading.value = true;
+   GetcurrentsubscriptionModel? response = await WebService.getcurrentsubscription();
+
+  if (response != null && response.data != null) {
+  
+    // Update list with API response
+    currentSubscription =response.data;
+    Logger().i("currentSubscription==>${currentSubscription}");
+     isLoading.value = false;
+     update();
+  }else{
+      // Update list with API response
+       isLoading.value = false;
+  }
+}
 }
 
 class CustomCacheManager {

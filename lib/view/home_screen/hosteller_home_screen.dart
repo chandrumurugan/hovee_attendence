@@ -195,7 +195,7 @@ class HostellerHomeScreen extends StatelessWidget {
                         userType: "Hosteller",
                         firstName: firstname,
                         lastName: lastname,
-                        wowId: wowid,
+                        wowId: wowid, planName: noticontroller.planName ?? "",
                       ),
                     ),
                     // SizedBox(

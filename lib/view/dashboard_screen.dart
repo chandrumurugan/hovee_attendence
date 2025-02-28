@@ -369,6 +369,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _selectedIndex = index;
       _navigationStack.add(index);
       _pageController.jumpToPage(index);
+     
        if (index == 0 && widget.rolename == 'Tutor') {
       noticontroller.fetchNotifications('Tutor',false);
     }

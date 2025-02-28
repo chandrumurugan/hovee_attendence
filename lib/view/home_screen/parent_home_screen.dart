@@ -219,6 +219,7 @@ class _ParentViewState extends State<ParentView> {
                           firstName: widget.firstname,
                           lastName: widget.lastname,
                           wowId: widget.wowid,
+                          planName: noticontroller.planName ?? "",
                         ),
                       ),
                   const SizedBox(

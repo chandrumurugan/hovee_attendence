@@ -111,14 +111,14 @@ class GetcurrentsubscriptionModel {
 
     final bool? success;
     final int? statusCode;
-    final Data? data;
+    final currentsubscriptionData? data;
     final String? message;
 
     factory GetcurrentsubscriptionModel.fromJson(Map<String, dynamic> json){ 
         return GetcurrentsubscriptionModel(
             success: json["success"],
             statusCode: json["statusCode"],
-            data: json["data"] == null ? null : Data.fromJson(json["data"]),
+            data: json["data"] == null ? null : currentsubscriptionData.fromJson(json["data"]),
             message: json["message"],
         );
     }
@@ -132,8 +132,8 @@ class GetcurrentsubscriptionModel {
 
 }
 
-class Data {
-    Data({
+class currentsubscriptionData {
+    currentsubscriptionData({
         required this.id,
         required this.subscriptionId,
         required this.planId,
@@ -165,8 +165,8 @@ class Data {
     final String? invoiceId;
     final DateTime? createdAt;
 
-    factory Data.fromJson(Map<String, dynamic> json){ 
-        return Data(
+    factory currentsubscriptionData.fromJson(Map<String, dynamic> json){ 
+        return currentsubscriptionData(
             id: json["id"],
             subscriptionId: json["subscription_id"],
             planId: json["plan_id"],

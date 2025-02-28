@@ -3,11 +3,17 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getSubscriptionModel.dart';
+import 'package:hovee_attendence/modals/getcurrentsubscriptionModel.dart';
+import 'package:hovee_attendence/modals/postPayment_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
+import 'package:logger/logger.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PlanList extends StatefulWidget {
   final bool fromBottomNav;
@@ -61,9 +67,14 @@ class _PlanListState extends State<PlanList> {
   List<Datum> data = [];
    List<Plan> populateSampleData = [];
     bool isLoadingcategoryList = false;
+    String? lastSelectedPlanName;
+    final userProfileData = Get.find<UserProfileController>();
+   String? subscriptionId;
+   currentsubscriptionData? currentSubscription;
   @override
   void initState() {
     super.initState();
+    getcurrentsubscription();
      fetchSubscriptionData("month");
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -84,11 +95,35 @@ class _PlanListState extends State<PlanList> {
   if (response != null && response.data != null) {
     setState(() {
       populateSampleData = response.data[0].plans;
+      subscriptionId =response.data[0].id;
       isLoadingcategoryList = false; // Update list with API response
     });
   }else{
     setState(() {
       isLoadingcategoryList = false; // Update list with API response
+    });
+  }
+}
+
+Future<void> getcurrentsubscription() async {
+   SharedPreferences prefs = await SharedPreferences.getInstance();
+     setState(() {
+      isLoadingcategoryList = true;
+    });
+   GetcurrentsubscriptionModel? response = await WebService.getcurrentsubscription();
+
+  if (response != null && response.data != null) {
+    setState(() {
+    // Update list with API response
+    currentSubscription =response.data;
+    Logger().i("currentSubscription==>${currentSubscription}");
+    prefs.setString("planName", "${currentSubscription!.planName}");
+    isLoadingcategoryList = false;
+    });
+  }else{
+    setState(() {
+      // Update list with API response
+      isLoadingcategoryList = false;
     });
   }
 }
@@ -230,7 +265,7 @@ class _PlanListState extends State<PlanList> {
                     var plan = populateSampleData[index];
                     List<String> features =
                         plan.description;
-              
+                 bool isActive = currentSubscription!=null? currentSubscription!.planId == plan.id : false;
                     return GestureDetector(
                       onTap: () {
                         setState(() {
@@ -245,12 +280,8 @@ class _PlanListState extends State<PlanList> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                              color: selectedIndex == index
-                                  ? Colors.transparent
-                                  : Colors.white),
-                          color: selectedIndex == index
-                              ? const Color(0xFFF07721) // Selected color
-                              : Colors.transparent,
+                              color: Colors.white),
+                          color:  Colors.transparent,
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -308,7 +339,7 @@ class _PlanListState extends State<PlanList> {
                             ),
                             InkWell(
                               onTap: (){
-                                handlePayment();
+                                handlePayment(plan);
                               },
                               child: Container(
                                 width: 160,
@@ -319,7 +350,7 @@ class _PlanListState extends State<PlanList> {
                                     border: Border.all(color: Colors.white)),
                                 child: Center(
                                   child: Text(
-                                    "Select",
+                                   isActive ? "Active" : "Select",
                                     style: GoogleFonts.nunito(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -366,23 +397,23 @@ class _PlanListState extends State<PlanList> {
     );
   }
 
-  void handlePayment() {
+  void handlePayment(Plan plan) {
     var options = {
       'key': 'rzp_test_ZkLOvWs7XmF5xN',
       'amount': 
-      //int.parse("${"plan.price"}") * 
+      int.parse("${plan.price!.toInt()}") * 
       100,
       'currency': 'INR',
-      'name': " userDetails!.userDetails.firstName" +
+      'name': userProfileData.userProfileResponse.value.data!.firstName.toString() +
           " " +
-          " userDetails!.userDetails.lastName",
-      'description': 'Subscription Payment for ${"plan.name"}',
+          userProfileData.userProfileResponse.value.data!.lastName.toString(),
+      'description': 'Subscription Payment for ${plan.category}',
       'prefill': {
-        'contact': " userDetails!.userDetails.mobileNo",
-        'email': " userDetails!.userDetails.email"
+        'contact': userProfileData.userProfileResponse.value.data!.phoneNumber,
+        'email': userProfileData.userProfileResponse.value.data!.email
       },
     };
-    // lastSelectedPlanName = plan.name;
+    lastSelectedPlanName = plan.id;
     _razorpay.open(options);
   }
 
@@ -408,9 +439,109 @@ class _PlanListState extends State<PlanList> {
     );
   }
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) async {}
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    // Do something when payment succeeds
+    Logger().d(response.data!);
+    String paymentId = response.paymentId! ?? "";
+    Plan selectedPlan = populateSampleData.firstWhere(
+      (plan) => plan.id == lastSelectedPlanName,
+      orElse: () => populateSampleData.first, // Default in case of failure
+    );
+    String durationType = selectedPlan.durationType!.trim().toLowerCase();
+    String duration = selectedPlan.duration.toString().trim();
+    String planName = selectedPlan.category!;
+    String planId = selectedPlan.id!;
 
-  void _handlePaymentError(PaymentFailureResponse response) async {}
+    Logger().d(
+      "Payment successful: $paymentId, Plan: $planName, Duration: $duration, Duration Type: $durationType",
+    );
+     Map<String, dynamic> requestPayload = {
+    "subscription_id":subscriptionId, 
+    "plan_id" : planId,
+    "duration_type": duration, 
+    "duration":1, // next month added subscription
+    "payment_txt_id":paymentId ?? '',
+     "payment_status": 1,
+  };
 
-  void _handleExternalWallet(ExternalWalletResponse response) {}
+  PostPaymentModel? result = await WebService.postPayment(requestPayload);
+
+  if (result != null && result.data != null) {
+    setState(() {
+        showConfirmationDialog1(result.message ?? '');          
+    });
+  }else{
+    setState(() {
+     
+    });
+  }
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) async {
+    // Do something when payment fails
+    Logger().d(response.error);
+    Plan selectedPlan = populateSampleData.firstWhere(
+      (plan) => plan.id == lastSelectedPlanName,
+      orElse: () => populateSampleData.first, // Default in case of failure
+    );
+    String planId = selectedPlan.id!;
+    String durationType = selectedPlan.durationType!.trim().toLowerCase();
+    String duration = selectedPlan.duration.toString().trim();
+    String planName = selectedPlan.category!;
+    String price = selectedPlan.price.toString();
+
+     Map<String, dynamic> requestPayload = {
+    "subscription_id":subscriptionId, 
+    "plan_id" : planId,
+    "duration_type": duration, 
+    "duration":1, // next month added subscription
+    "payment_txt_id": '',
+     "payment_status": 0,
+  };
+
+  PostPaymentModel? result = await WebService.postPayment(requestPayload);
+
+  if (result != null && result.data != null) {
+    setState(() {
+      
+        showConfirmationDialog1(result.message ?? '');
+                  
+    });
+  }else{
+    setState(() {
+     
+    });
+  }
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Do something when an external wallet was selected
+    Logger().d(response.walletName);
+  }
+
+  void showConfirmationDialog1(String msg) {
+    Get.dialog(
+      CustomDialogBox2(
+        title1: msg,
+        title2: '',
+        subtitle:
+            '',
+        icon: const Icon(
+          Icons.help_outline,
+          color: Colors.white,
+        ),
+        color: const Color(0xFF833AB4), // Set the primary color
+        color1: const Color(0xFF833AB4), // Optional gradient color
+        singleBtn: true, // Show only one button
+        btnName: 'OK', // Set the button name
+        onTap: () {
+          // Call API to add enrollmen
+          Navigator.pop(context);
+          getcurrentsubscription();
+        },
+      ),
+      barrierDismissible: false, // Prevent dismissing by tapping outside
+    );
+  }
 }
+
