@@ -6,7 +6,7 @@ class FetchGuestUserHostelListModel {
     });
 
     final bool? success;
-    final int? statusCode;
+    final num? statusCode;
     final Data1? data;
 
     factory FetchGuestUserHostelListModel.fromJson(Map<String, dynamic> json){ 
@@ -17,46 +17,32 @@ class FetchGuestUserHostelListModel {
         );
     }
 
-    Map<String, dynamic> toJson() => {
-        "success": success,
-        "statusCode": statusCode,
-        "data": data?.toJson(),
-    };
-
 }
 
 class Data1 {
     Data1({
-        required this.records,
         required this.totalRecords,
+        required this.records,
         required this.roleName,
         required this.totalPages,
         required this.currentPage,
     });
 
+    final num? totalRecords;
     final List<Record> records;
-    final int? totalRecords;
     final String? roleName;
-    final int? totalPages;
-    final int? currentPage;
+    final num? totalPages;
+    final num? currentPage;
 
     factory Data1.fromJson(Map<String, dynamic> json){ 
         return Data1(
-            records: json["records"] == null ? [] : List<Record>.from(json["records"]!.map((x) => Record.fromJson(x))),
             totalRecords: json["totalRecords"],
+            records: json["records"] == null ? [] : List<Record>.from(json["records"]!.map((x) => Record.fromJson(x))),
             roleName: json["roleName"],
             totalPages: json["totalPages"],
             currentPage: json["currentPage"],
         );
     }
-
-    Map<String, dynamic> toJson() => {
-        "records": records.map((x) => x?.toJson()).toList(),
-        "totalRecords": totalRecords,
-        "roleName": roleName,
-        "totalPages": totalPages,
-        "currentPage": currentPage,
-    };
 
 }
 
@@ -64,162 +50,102 @@ class Record {
     Record({
         required this.location,
         required this.id,
-        required this.firstName,
-        required this.lastName,
-        required this.wowId,
-        required this.email,
-        required this.dob,
-        required this.phoneNumber,
-        required this.pincode,
-        required this.userType,
-        required this.otp,
-        required this.accountVerificationToken,
-        required this.accountVerified,
-        required this.accountSetup,
+        required this.hostelObjectId,
+        required this.roomType,
+        required this.hostelName,
+        required this.registerNo,
+        required this.shortName,
+        required this.hostelType,
+        required this.food,
+        required this.categories,
+        required this.remarks,
+        required this.latitude,
+        required this.longitude,
         required this.doorNo,
         required this.street,
         required this.city,
         required this.state,
         required this.country,
-        required this.countryCode,
-        required this.idProof,
-        required this.idProofLabel,
-        required this.idProofFilename,
-        required this.idProofUrl,
+        required this.pincode,
         required this.profileFilename,
         required this.profileUrl,
-        required this.latitude,
-        required this.longitude,
-        required this.fcmToken,
+        required this.hostelTimingStart,
+        required this.hostelTimingEnd,
+        required this.hostelTimingStartMinutes,
+        required this.hostelTimingEndMinutes,
         required this.qrCodeUrl,
         required this.isActive,
-        required this.isDeleted,
         required this.createdAt,
-        required this.token,
-        required this.address,
-        required this.rolesId,
-        required this.rolesTypeId,
+        required this.updatedAt,
+        required this.v,
     });
 
     final Location? location;
     final String? id;
-    final String? firstName;
-    final String? lastName;
-    final String? wowId;
-    final String? email;
-    final String? dob;
-    final String? phoneNumber;
-    final int? pincode;
-    final int? userType;
-    final dynamic otp;
-    final dynamic accountVerificationToken;
-    final bool? accountVerified;
-    final bool? accountSetup;
+    final String? hostelObjectId;
+    final RoomType? roomType;
+    final String? hostelName;
+    final String? registerNo;
+    final String? shortName;
+    final String? hostelType;
+    final String? food;
+    final String? categories;
+    final String? remarks;
+    final num? latitude;
+    final num? longitude;
     final String? doorNo;
     final String? street;
     final String? city;
     final String? state;
     final String? country;
-    final String? countryCode;
-    final String? idProof;
-    final String? idProofLabel;
-    final String? idProofFilename;
-    final String? idProofUrl;
+    final String? pincode;
     final String? profileFilename;
     final String? profileUrl;
-    final double? latitude;
-    final double? longitude;
-    final String? fcmToken;
+    final String? hostelTimingStart;
+    final String? hostelTimingEnd;
+    final num? hostelTimingStartMinutes;
+    final num? hostelTimingEndMinutes;
     final String? qrCodeUrl;
-    final int? isActive;
-    final int? isDeleted;
+    final num? isActive;
     final DateTime? createdAt;
-    final String? token;
-    final String? address;
-    final String? rolesId;
-    final dynamic rolesTypeId;
+    final DateTime? updatedAt;
+    final num? v;
 
     factory Record.fromJson(Map<String, dynamic> json){ 
         return Record(
             location: json["location"] == null ? null : Location.fromJson(json["location"]),
             id: json["_id"],
-            firstName: json["first_name"],
-            lastName: json["last_name"],
-            wowId: json["wow_id"],
-            email: json["email"],
-            dob: json["dob"],
-            phoneNumber: json["phone_number"],
-            pincode: json["pincode"],
-            userType: json["user_type"],
-            otp: json["otp"],
-            accountVerificationToken: json["account_verification_token"],
-            accountVerified: json["account_verified"],
-            accountSetup: json["account_setup"],
+            hostelObjectId: json["hostel_ObjectId"],
+            roomType: json["room_type"] == null ? null : RoomType.fromJson(json["room_type"]),
+            hostelName: json["hostel_name"],
+            registerNo: json["register_no"],
+            shortName: json["short_name"],
+            hostelType: json["hostel_type"],
+            food: json["food"],
+            categories: json["categories"],
+            remarks: json["remarks"],
+            latitude: json["latitude"],
+            longitude: json["longitude"],
             doorNo: json["door_no"],
             street: json["street"],
             city: json["city"],
             state: json["state"],
-            country: json["country"],
-            countryCode: json["country_code"],
-            idProof: json["id_proof"],
-            idProofLabel: json["id_proof_label"],
-            idProofFilename: json["id_proof_filename"],
-            idProofUrl: json["id_proof_url"],
+            country:
+json["country"],
+            pincode: json["pincode"],
             profileFilename: json["profile_filename"],
             profileUrl: json["profile_url"],
-            latitude: json["latitude"],
-            longitude: json["longitude"],
-            fcmToken: json["fcm_token"],
+            hostelTimingStart: json["hostel_timing_start"],
+            hostelTimingEnd: json["hostel_timing_end"],
+            hostelTimingStartMinutes: json["hostel_timing_start_minutes"],
+            hostelTimingEndMinutes: json["hostel_timing_end_minutes"],
             qrCodeUrl: json["qr_code_url"],
             isActive: json["is_active"],
-            isDeleted: json["is_deleted"],
-            createdAt: DateTime.tryParse(json["created_at"] ?? ""),
-            token: json["token"],
-            address: json["address"],
-            rolesId: json["rolesId"],
-            rolesTypeId: json["rolesTypeId"],
+            createdAt: DateTime.tryParse(json["createdAt"] ?? ""),
+            updatedAt: DateTime.tryParse(json["updatedAt"] ?? ""),
+            v: json["__v"],
         );
     }
-
-    Map<String, dynamic> toJson() => {
-        "location": location?.toJson(),
-        "_id": id,
-        "first_name": firstName,
-        "last_name": lastName,
-        "wow_id": wowId,
-        "email": email,
-        "dob": dob,
-        "phone_number": phoneNumber,
-        "pincode": pincode,
-        "user_type": userType,
-        "otp": otp,
-        "account_verification_token": accountVerificationToken,
-        "account_verified": accountVerified,
-        "account_setup": accountSetup,
-        "door_no": doorNo,
-        "street": street,
-        "city": city,
-        "state": state,
-        "country": country,
-        "country_code": countryCode,
-        "id_proof": idProof,
-        "id_proof_label": idProofLabel,
-        "id_proof_filename": idProofFilename,
-        "id_proof_url": idProofUrl,
-        "profile_filename": profileFilename,
-        "profile_url": profileUrl,
-        "latitude": latitude,
-        "longitude": longitude,
-        "fcm_token": fcmToken,
-        "qr_code_url": qrCodeUrl,
-        "is_active": isActive,
-        "is_deleted": isDeleted,
-        "created_at": createdAt?.toIso8601String(),
-        "token": token,
-        "address": address,
-        "rolesId": rolesId,
-        "rolesTypeId": rolesTypeId,
-    };
 
 }
 
@@ -230,18 +156,31 @@ class Location {
     });
 
     final String? type;
-    final List<double> coordinates;
+    final List<num> coordinates;
 
     factory Location.fromJson(Map<String, dynamic> json){ 
         return Location(
             type: json["type"],
-            coordinates: json["coordinates"] == null ? [] : List<double>.from(json["coordinates"]!.map((x) => x)),
+            coordinates: json["coordinates"] == null ? [] : List<num>.from(json["coordinates"]!.map((x) => x)),
         );
     }
 
-    Map<String, dynamic> toJson() => {
-        "type": type,
-        "coordinates": coordinates.map((x) => x).toList(),
-    };
+}
+
+class RoomType {
+    RoomType({
+        required this.id,
+        required this.price,
+    });
+
+    final String? id;
+    final num? price;
+
+    factory RoomType.fromJson(Map<String, dynamic> json){ 
+        return RoomType(
+            id: json["_id"],
+            price: json["price"],
+        );
+    }
 
 }

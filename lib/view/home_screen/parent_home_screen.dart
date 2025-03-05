@@ -196,7 +196,7 @@ class _ParentViewState extends State<ParentView> {
         ),
         body:
             Obx(() {
-          if (parentController.isLoading.value || userProfileData.isLoading.value ) {
+          if (parentController.isLoading.value || userProfileData.isLoadingUser.value ) {
             // Call your refresh logic here, e.g., re-fetch data
             // Reset the refresh state
             return const Center(child: CircularProgressIndicator());

@@ -64,6 +64,7 @@ import 'package:hovee_attendence/modals/googleSignInModel.dart';
 import 'package:hovee_attendence/modals/guestHome_modal.dart';
 import 'package:hovee_attendence/modals/institudeTutorsListModel.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
+import 'package:hovee_attendence/modals/my_payments_modal.dart';
 import 'package:hovee_attendence/modals/otpModal.dart';
 import 'package:hovee_attendence/modals/parentLoginDataModel.dart';
 import 'package:hovee_attendence/modals/parentLoginModel.dart';
@@ -3086,7 +3087,7 @@ class WebService {
   }
 
   static Future<FetchGuestUserHostelListModel?> fetchGuestUserHostelList() async {
-    final url = Uri.parse('${baseUrl}admin/userManagement/hostel');
+    final url = Uri.parse('${baseUrl}admin/userManagement/hostelAllList');
     var data = {"type": "Hostel"};
     final response = await http.post(
       url, // Replace with the actual API URL
@@ -3158,6 +3159,30 @@ class WebService {
     }
   }
 
+
+ static Future<Mypayments?> getMyPayments() async {
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+
+    try {
+            var headers = {'Authorization': "Bearer $token"};
+      var url = Uri.parse("${baseUrl}mysubscription/getallsubscription"); //?page=1&limit=3&status=1
+      var response = await http.get(url, headers: headers);
+       if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        return Mypayments.fromJson(data);
+      }else{
+        return null;
+      }
+      
+    } catch (e) {
+      Logger().e(e);
+      throw Exception(e);
+      
+    }
+   
+
+ }
 
   static Future<GetcurrentsubscriptionModel?> getcurrentsubscription() async {
     final box = GetStorage(); // Get an instance of GetStorage

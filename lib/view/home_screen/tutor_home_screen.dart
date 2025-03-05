@@ -162,9 +162,12 @@ class TutorHome extends StatelessWidget {
           backgroundColor: Colors.white,
         ),
         body: Obx(() {
-          if (controller.isLoading.value || userProfileData.isLoading.value) {
+          if (controller.isLoading.value || userProfileData.isLoadingUser.value) {
             return const Center(child: CircularProgressIndicator());
-          }
+          } 
+          // else if(userProfileData.userProfileResponse.value.data==null){
+          //    return const Center(child: CircularProgressIndicator());
+          // }
           return SingleChildScrollView(
             child: Stack(
               children: [
@@ -413,7 +416,7 @@ class TutorHome extends StatelessWidget {
                 Positioned(
                     left: 20,
                     right: 20,
-                    top: MediaQuery.sizeOf(context).height * 0.18,
+                    top: MediaQuery.sizeOf(context).height * 0.21,
                     child: const LineChartSample(
                       userType: 'Tutor',
                     )),

@@ -178,7 +178,7 @@ Future<void> getcurrentsubscription() async {
               height: 10,
             ),
             Text(
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+              "Choose the perfect plan for effortless attendance tracking!",
               style: GoogleFonts.nunito(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
@@ -375,7 +375,7 @@ Future<void> getcurrentsubscription() async {
               height: 10,
             ),
             Text(
-              "Terms & Condition",
+              "Payment Terms:",
               style: GoogleFonts.nunito(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -385,7 +385,14 @@ Future<void> getcurrentsubscription() async {
               height: 10,
             ),
             Text(
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+              "Subscription fees are non-refundable and billed as per the selected plan.",
+              style: GoogleFonts.nunito(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13),
+            ),
+             Text(
+              "Cancellation or upgrades can be managed through your account settings.",
               style: GoogleFonts.nunito(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,

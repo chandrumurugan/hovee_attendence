@@ -10,6 +10,7 @@ import 'package:hovee_attendence/utils/sidemenuHeader.dart';
 import 'package:hovee_attendence/utils/url_launcher.dart';
 import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/parent_login_screen.dart';
+import 'package:hovee_attendence/view/subscription_plans/my_payment_screen.dart';
 import 'package:hovee_attendence/view/userProfile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -75,7 +76,7 @@ class SideMenu extends StatelessWidget {
             if (!isGuest)
               ListTile(
                 onTap: () {
-                  // Get.to(() => AddAnnoumentsScreen());
+                   Get.to(() =>  MyPaymentScreen(type: type ?? "",));
                 },
                 leading: Image.asset(
                   'assets/sidemenu/mypayment.png',

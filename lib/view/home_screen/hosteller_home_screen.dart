@@ -173,7 +173,7 @@ class HostellerHomeScreen extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       body: Obx(() {
-        if (controller.isLoading.value || userProfileData.isLoading.value) {
+        if (controller.isLoading.value || userProfileData.isLoadingUser.value) {
           // Call your refresh logic here, e.g., re-fetch data
           // Reset the refresh state
           return const Center(child: CircularProgressIndicator());

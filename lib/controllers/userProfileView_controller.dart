@@ -157,6 +157,8 @@ class UserProfileController extends GetxController
        Ratings?userRatings;
        currentsubscriptionData? currentSubscription;
 
+       RxBool isLoadingUser = false.obs;
+
   void setHighestQualification(String value) =>
       highestQualification.value = value;
   //void setTeachingSkills(String value) => teachingSkills.value = value;
@@ -513,7 +515,7 @@ class UserProfileController extends GetxController
 
   void fetchUserProfiles() async {
     final storage = GetStorage();
-    isLoading(true);
+    isLoadingUser(true);
     try {
       UserProfileM? fetchProfile = await WebService.fetchUserProfile();
       if (fetchProfile != null) {
@@ -550,14 +552,15 @@ class UserProfileController extends GetxController
       Logger().i( "roleId ${fetchProfile.data!.rolesId!.id!}");
       Logger().i( "roleTypeId ${fetchProfile.data!.rolesTypeId}");
        profileImage = fetchProfile.data!.profileUrl ?? '';
-        isLoading(false);
+        isLoadingUser(false);
+        update();
       } else {
         // SnackBarUtils.showErrorSnackBar(context, message)
-        isLoading(false);
+        isLoadingUser(false);
       }
     } catch (e) {
       print(e);
-      isLoading(false);
+      isLoadingUser(false);
     }
   }
 

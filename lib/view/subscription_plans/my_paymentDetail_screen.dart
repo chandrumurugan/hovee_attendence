@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
@@ -10,13 +9,14 @@ import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
 class MyPaymentDetailScreen extends StatelessWidget {
+   // ignore: prefer_typing_uninitialized_variables
    final paymentDetail;
   const MyPaymentDetailScreen({super.key, this.paymentDetail});
 
   @override
   Widget build(BuildContext context) {
-    var paymentDetail;
-    Logger().d(paymentDetail.toJson());
+    // var paymentDetail;
+    // Logger().d(paymentDetail.toJson());
     // Logger().d(paymentDetail.id);
     // Logger().d(paymentDetail.method);
     return Scaffold(
@@ -31,7 +31,7 @@ class MyPaymentDetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Align(
@@ -46,54 +46,54 @@ class MyPaymentDetailScreen extends StatelessWidget {
                         imageUrl: "",
                         fit: BoxFit.cover,
                         placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(
                           Icons.shopping_bag_outlined,
                         ),
                       ),
                     )),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
-                "Plan name : ${paymentDetail.name}",
+                "Plan name : ${paymentDetail.selectedPlan.category}",
                 style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: Colors.black),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
-                "₹ ${paymentDetail.price}",
+                "₹ ${paymentDetail.selectedPlan.price}",
                 style: GoogleFonts.nunito(
                     fontSize: 40,
                     fontWeight: FontWeight.w700,
                     color: Colors.black),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (paymentDetail.status == "Paid")
-                    Icon(
+                  if (paymentDetail.paymentStatus == "Paid")
+                    const Icon(
                       Icons.check_circle_outline,
                       color: Colors.green,
                     )
                   else
-                    Icon(
+                    const Icon(
                       Icons.cancel_presentation_outlined,
                       color: Colors.red,
                     ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(
-                    "${paymentDetail.status}",
+                    "${paymentDetail.paymentStatus == "Unpaid" ? "Failed" : paymentDetail.paymentStatus}",
                     style: GoogleFonts.nunito(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
@@ -101,18 +101,21 @@ class MyPaymentDetailScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              Divider(
+              const Divider(
                 color: Colors.black,
                 indent: 80,
                 endIndent: 80,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              if (paymentDetail.status == "Paid")
-                Text(DateFormat("d MMM yyyy")
-                    .format(DateTime.parse(paymentDetail.purchaseDate!))),
-              SizedBox(
+              if (paymentDetail.paymentStatus == "Paid")
+                Text(
+                   DateFormat("d MMM yyyy").format(DateFormat("dd/MM/yyyy").parse(paymentDetail.purchaseDate))
+                  // DateFormat("d MMM yyyy")
+                  //   .format(DateTime.parse(paymentDetail.purchaseDate!))
+                    ),
+              const SizedBox(
                 height: 20,
               ),
               Container(
@@ -121,7 +124,7 @@ class MyPaymentDetailScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                         color: AppConstants.secondaryColor, width: 1.0)),
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -130,9 +133,9 @@ class MyPaymentDetailScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.assignment),
+                          const Icon(Icons.assignment),
                           Text(
-                            paymentDetail.invoice,
+                            paymentDetail.invoiceId,
                             style: GoogleFonts.nunito(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -140,40 +143,43 @@ class MyPaymentDetailScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      if (paymentDetail.status == "Paid") Divider(),
-                      if (paymentDetail.status == "Paid")
+                      if (paymentDetail.paymentStatus == "Paid") const Divider(),
+                      if (paymentDetail.paymentStatus == "Paid")
                         _buildDetail(
                             "Expiry date",
-                            DateFormat("dMMMyyyy").format(
-                                DateTime.parse(paymentDetail.expiryDate!))),
-                      if (paymentDetail.status == "Paid")
-                        _buildDetail("Method", paymentDetail.method),
-                      _buildDetail(
-                          "Plan status",
-                          paymentDetail.expiryStatus.isNotEmpty
-                              ? paymentDetail.expiryStatus
-                              : "Failed"),
+                             DateFormat("d MMM yyyy").format(DateFormat("dd/MM/yyyy").parse(paymentDetail.expiryDate))
+                            // DateFormat("dMMMyyyy").format(
+                            //     DateTime.parse(paymentDetail.expiryDate!))
+                                
+                                ),
+                      // if (paymentDetail.paymentStatus == "Paid")
+                      //   _buildDetail("Method", paymentDetail.method),
+                      // _buildDetail(
+                      //     "Plan status",
+                      //     paymentDetail.expiredStatus.isNotEmpty
+                      //         ? paymentDetail.expiredStatus
+                      //         : "Failed"),
                       _buildDetail("Package", paymentDetail.durationType),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
                   onTap: () {
-                    var pdf =
-                        "https://www.ocean.washington.edu/courses/oc410/reading/RogerAnderson/Planet_Earth_Topic_3.pdf";
-                    Get.to(
-                      PDFScreen(
-                        path: pdf,
-                      ),
-                      transition: Transition.rightToLeft,
-                      duration: Duration(milliseconds: 500),
-                    );
+                    // var pdf =
+                    //     "https://www.ocean.washington.edu/courses/oc410/reading/RogerAnderson/Planet_Earth_Topic_3.pdf";
+                    // Get.to(
+                    //   PDFScreen(
+                    //     path: pdf,
+                    //   ),
+                    //   transition: Transition.rightToLeft,
+                    //   duration: const Duration(milliseconds: 500),
+                    // );
                   },
                   child: Container(
                     height: 48,
@@ -185,9 +191,9 @@ class MyPaymentDetailScreen extends StatelessWidget {
                         end: Alignment.bottomCenter,
                       ),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
-                        'Upload',
+                        'View Invoice',
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,

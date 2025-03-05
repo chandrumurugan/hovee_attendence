@@ -878,7 +878,7 @@ void getGuestUserHomeHostelList() async {
                         guestHomeHostelListData!=null?
                         CarouselSlider(
                           options: CarouselOptions(
-                            height: MediaQuery.of(context).size.height * 0.17,
+                            height: MediaQuery.of(context).size.height * 0.188,
                             enableInfiniteScroll: false,
                             enlargeCenterPage: true,
                             viewportFraction: 0.9,
@@ -925,13 +925,13 @@ void getGuestUserHomeHostelList() async {
                                                       child: Image.network(
                                                           hostel.profileUrl ?? '',
                                                           width: 90,
-                                                          height: 100,
-                                                          //fit: BoxFit.cover,
+                                                          height: 120,
+                                                          fit: BoxFit.cover,
                                                           errorBuilder: (context, error, stackTrace) {
                                                             return Image.asset(
                                                               'assets/v2.jpg', // Fallback image
                                                                 width: 90,
-                                                          height: 100,
+                                                          height: 120,
                                                               fit: BoxFit.cover,
                                                             );
                                                           },
@@ -940,7 +940,7 @@ void getGuestUserHomeHostelList() async {
                                                     : ClipRRect(
                                                       borderRadius: BorderRadius.circular(10),
                                                       child: Image.asset('assets/v2.jpg',  width: 90,
-                                                          height: 100,),
+                                                          height: 120,fit: BoxFit.cover,),
                                                     ),
                                                     
                                                   ],
@@ -952,13 +952,21 @@ void getGuestUserHomeHostelList() async {
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        Text(
-                                                          hostel.firstName ??
-                                                              '',
-                                                          style: TextStyle(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.bold,
+                                                        SizedBox(
+                                                          
+                                                          width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.5,
+                                                          child: Text(
+                                                            hostel.hostelName ??
+                                                                '',
+                                                            style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight.bold,
+                                                            ),
                                                           ),
                                                         ),
                                                         SizedBox(width: 4),
@@ -978,17 +986,29 @@ void getGuestUserHomeHostelList() async {
                                                                   .size
                                                                   .width *
                                                               0.5,
-                                                      child: Text(
-                                                        hostel.email ??
-                                                            '',
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.grey[600],
-                                                        ),
-                                                        maxLines: 5,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
-                                                      ),
+                                                      child: Text.rich(
+                                      TextSpan(
+                                        children: [
+                                          TextSpan(
+                                            text: "Hostel type: ",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black, // Black color for "Address"
+                                              fontWeight: FontWeight.normal, // Optional: Make it bold
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: hostel.hostelType ?? '',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey[600], // Grey color for the address text
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      maxLines: 5,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                                     ),
                                                     SizedBox(
                                     width: MediaQuery.of(context).size.width * 0.5,
@@ -1004,7 +1024,7 @@ void getGuestUserHomeHostelList() async {
                                             ),
                                           ),
                                           TextSpan(
-                                            text: hostel.address ?? '',
+                                            text: '${hostel.doorNo!.toString()},${hostel.street!.toString()},${hostel.city!.toString()},${hostel.state!.toString()},${hostel.country!.toString()} -${hostel.pincode!.toString()}',
                                             style: TextStyle(
                                               fontSize: 14,
                                               color: Colors.grey[600], // Grey color for the address text
