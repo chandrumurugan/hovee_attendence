@@ -17,9 +17,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PlanList extends StatefulWidget {
   final bool fromBottomNav;
-    final String type;
-     final VoidCallback? onDashBoardBack;
-  const PlanList({super.key, required this.fromBottomNav, required this.type, this.onDashBoardBack});
+  final String type;
+  final VoidCallback? onDashBoardBack;
+  const PlanList(
+      {super.key,
+      required this.fromBottomNav,
+      required this.type,
+      this.onDashBoardBack});
 
   @override
   State<PlanList> createState() => _PlanListState();
@@ -65,17 +69,17 @@ class _PlanListState extends State<PlanList> {
   //   }
   // ];
   List<Datum> data = [];
-   List<Plan> populateSampleData = [];
-    bool isLoadingcategoryList = false;
-    String? lastSelectedPlanName;
-    final userProfileData = Get.find<UserProfileController>();
-   String? subscriptionId;
-   currentsubscriptionData? currentSubscription;
+  List<Plan> populateSampleData = [];
+  bool isLoadingcategoryList = false;
+  String? lastSelectedPlanName;
+  final userProfileData = Get.find<UserProfileController>();
+  String? subscriptionId;
+  currentsubscriptionData? currentSubscription;
   @override
   void initState() {
     super.initState();
     getcurrentsubscription();
-     fetchSubscriptionData("month");
+    fetchSubscriptionData("month");
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -83,51 +87,52 @@ class _PlanListState extends State<PlanList> {
   }
 
   Future<void> fetchSubscriptionData(String type) async {
-     setState(() {
+    setState(() {
       isLoadingcategoryList = true;
     });
-  Map<String, dynamic> requestPayload = {
-    "type": type, // Pass "month" or "year"
-  };
+    Map<String, dynamic> requestPayload = {
+      "type": type, // Pass "month" or "year"
+    };
 
-  GetSubscriptionModel? response = await WebService.getSubscription(requestPayload);
+    GetSubscriptionModel? response =
+        await WebService.getSubscription(requestPayload);
 
-  if (response != null && response.data != null) {
-    setState(() {
-      populateSampleData = response.data[0].plans;
-      subscriptionId =response.data[0].id;
-      isLoadingcategoryList = false; // Update list with API response
-    });
-  }else{
-    setState(() {
-      isLoadingcategoryList = false; // Update list with API response
-    });
+    if (response != null && response.data != null) {
+      setState(() {
+        populateSampleData = response.data[0].plans;
+        subscriptionId = response.data[0].id;
+        isLoadingcategoryList = false; // Update list with API response
+      });
+    } else {
+      setState(() {
+        isLoadingcategoryList = false; // Update list with API response
+      });
+    }
   }
-}
 
-Future<void> getcurrentsubscription() async {
-   SharedPreferences prefs = await SharedPreferences.getInstance();
-     setState(() {
+  Future<void> getcurrentsubscription() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
       isLoadingcategoryList = true;
     });
-   GetcurrentsubscriptionModel? response = await WebService.getcurrentsubscription();
+    GetcurrentsubscriptionModel? response =
+        await WebService.getcurrentsubscription();
 
-  if (response != null && response.data != null) {
-    setState(() {
-    // Update list with API response
-    currentSubscription =response.data;
-    Logger().i("currentSubscription==>${currentSubscription}");
-    prefs.setString("planName", "${currentSubscription!.planName}");
-    isLoadingcategoryList = false;
-    });
-  }else{
-    setState(() {
-      // Update list with API response
-      isLoadingcategoryList = false;
-    });
+    if (response!.success == true) {
+      setState(() {
+        // Update list with API response
+        currentSubscription = response.data;
+        Logger().i("currentSubscription==>${currentSubscription}");
+        prefs.setString("planName", "${currentSubscription!.planName}");
+        isLoadingcategoryList = false;
+      });
+    } else {
+      setState(() {
+        // Update list with API response
+        isLoadingcategoryList = false;
+      });
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,283 +140,311 @@ Future<void> getcurrentsubscription() async {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBarHeader(needGoBack: true, navigateTo: () {
-          if (widget.fromBottomNav &&widget. onDashBoardBack != null) {
-            // Call onDashBoardBack if navigating from bottom navigation
-           widget. onDashBoardBack!();
-          } else {
-            // Navigate to Dashboard if not from bottom navigation
-            Get.offAll(DashboardScreen(
-              rolename:widget. type,
-            ));
-          }
-      }),
-      body:isLoadingcategoryList
-      ? const Center(child: CircularProgressIndicator())
-                    : populateSampleData!.isEmpty
-                        ? const Center(child: Text("No subscription available"))
-                        :
-       Container(
-        height: height,
-        width: width,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFFE60079), Color(0xFF160B47)],
-        )),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              "Choose your Plan",
-              style: GoogleFonts.nunito(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Choose the perfect plan for effortless attendance tracking!",
-              style: GoogleFonts.nunito(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 13),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    setState(() {
-                      isMonthlySelected = true;
-                      selectedIndex = -1;
-                    });
-                    await fetchSubscriptionData("month");
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color:
-                          isMonthlySelected ? Colors.white : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Monthly",
-                        style: GoogleFonts.nunito(
-                            color: isMonthlySelected
-                                ? AppConstants.primaryColor
-                                : Colors.white,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 20),
+      appBar: AppBarHeader(
+          needGoBack: true,
+          navigateTo: () {
+            if (widget.fromBottomNav && widget.onDashBoardBack != null) {
+              // Call onDashBoardBack if navigating from bottom navigation
+              widget.onDashBoardBack!();
+            } else {
+              // Navigate to Dashboard if not from bottom navigation
+              Get.offAll(DashboardScreen(
+                rolename: widget.type,
+              ));
+            }
+          }),
+      body: isLoadingcategoryList
+          ? const Center(child: CircularProgressIndicator())
+          : populateSampleData!.isEmpty
+              ? const Center(child: Text("No subscription available"))
+              : Container(
+                  height: height,
+                  width: width,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xFFE60079), Color(0xFF160B47)],
+                  )),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    setState(() {
-                      isMonthlySelected = false;
-                      selectedIndex = -1;
-                    });
-                    await fetchSubscriptionData("year");
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: !isMonthlySelected
-                          ? Colors.white
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Yearly",
+                      Text(
+                        "Choose your Plan",
                         style: GoogleFonts.nunito(
-                            color: !isMonthlySelected
-                                ? AppConstants.primaryColor
-                                : Colors.white,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 20),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24),
                       ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    var plan = populateSampleData[index];
-                    List<String> features =
-                        plan.description;
-                 bool isActive = currentSubscription!=null? currentSubscription!.planId == plan.id : false;
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedIndex = index; // Update selected index
-                        });
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.61,
-                         //height: MediaQuery.of(context).size.height * 0.4,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                              color: Colors.white),
-                          color:  Colors.transparent,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // const SizedBox(
-                            //   height: 10,
-                            // ),
-                            Text(
-                              "${plan.category}",
-                              style: GoogleFonts.nunito(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 24),
-                            ),
-                            // const SizedBox(
-                            //   height: 15,
-                            // ),
-                            Container(
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Choose the perfect plan for effortless attendance tracking!",
+                        style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              setState(() {
+                                isMonthlySelected = true;
+                                selectedIndex = -1;
+                              });
+                              await fetchSubscriptionData("month");
+                            },
+                            child: Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
+                                  horizontal: 16, vertical: 8),
                               decoration: BoxDecoration(
-                                color: Colors.green,
+                                color: isMonthlySelected
+                                    ? Colors.white
+                                    : Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Text(
-                                "Most popular",
-                                style: GoogleFonts.nunito(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 15),
-                              ),
-                            ),
-                            // const SizedBox(
-                            //   height: 15,
-                            // ),
-                            Text(
-                              plan.price.toString() + " ₹/month",
-                              style: GoogleFonts.nunito(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20),
-                            ),
-                            Center(
-                              child: Column(
-                                  // mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: features.map((index) {
-                                    return dotRow(name: index);
-                                  }).toList()),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            InkWell(
-                              onTap: (){
-                                handlePayment(plan);
-                              },
-                              child: Container(
-                                width: 160,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 0, vertical: 8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(color: Colors.white)),
-                                child: Center(
-                                  child: Text(
-                                   isActive ? "Active" : "Select",
-                                    style: GoogleFonts.nunito(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
+                              child: Center(
+                                child: Text(
+                                  "Monthly",
+                                  style: GoogleFonts.nunito(
+                                      color: isMonthlySelected
+                                          ? AppConstants.primaryColor
+                                          : Colors.white,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 20),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              setState(() {
+                                isMonthlySelected = false;
+                                selectedIndex = -1;
+                              });
+                              await fetchSubscriptionData("year");
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: !isMonthlySelected
+                                    ? Colors.white
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Yearly",
+                                  style: GoogleFonts.nunito(
+                                      color: !isMonthlySelected
+                                          ? AppConstants.primaryColor
+                                          : Colors.white,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      width: 10,
-                    );
-                  },
-                  itemCount: populateSampleData.length),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Payment Terms:",
-              style: GoogleFonts.nunito(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Subscription fees are non-refundable and billed as per the selected plan.",
-              style: GoogleFonts.nunito(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 13),
-            ),
-             Text(
-              "Cancellation or upgrades can be managed through your account settings.",
-              style: GoogleFonts.nunito(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 13),
-            ),
-          ],
-        ),
-      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                        child: ListView.separated(
+                            shrinkWrap: true,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              var plan = populateSampleData[index];
+                              List<String> features = plan.description;
+                              bool isActive = currentSubscription != null
+                                  ? currentSubscription!.planId == plan.id
+                                  : false;
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedIndex =
+                                        index; // Update selected index
+                                  });
+                                },
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.61,
+                                  //height: MediaQuery.of(context).size.height * 0.4,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(color: Colors.white),
+                                    color: Colors.transparent,
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // const SizedBox(
+                                      //   height: 10,
+                                      // ),
+                                      Text(
+                                        "${plan.category}",
+                                        style: GoogleFonts.nunito(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24),
+                                      ),
+                                      // const SizedBox(
+                                      //   height: 15,
+                                      // ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 4),
+                                        decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Text(
+                                          "Most popular",
+                                          style: GoogleFonts.nunito(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 15),
+                                        ),
+                                      ),
+                                      Text(
+                                        plan.price.toString() + " ₹/month",
+                                        style: GoogleFonts.nunito(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                      Center(
+                                        child: Column(
+                                            // mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: features.map((index) {
+                                              return dotRow(name: index);
+                                            }).toList()),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      InkWell(
+  onTap: (currentSubscription == null) ||
+          (plan.category == "Bronze" && currentSubscription!.allowBronze!) ||
+          (plan.category == "Silver" && currentSubscription!.allowSilver!) ||
+          (plan.category == "Gold" && currentSubscription!.allowGold!)
+      ? () {
+          handlePayment(plan);
+        }
+      : null, // Disable if the plan is not allowed
+  child: Container(
+    width: 160,
+    padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8),
+      border: Border.all(color: Colors.white),
+      color:currentSubscription == null?Colors.transparent :
+       (currentSubscription != null && currentSubscription!.planName == plan.category)
+        ? Colors.green // Display "Active" if the current plan matches
+        : (plan.category == "Bronze" && currentSubscription!.allowBronze!) ||
+          (plan.category == "Silver" && currentSubscription!.allowSilver!) ||
+          (plan.category == "Gold" && currentSubscription!.allowGold!)
+          ? Colors.transparent // Enabled state
+          : Colors.grey, // Disabled state
+    ),
+    child: Center(
+  child: Text(
+    currentSubscription == null?"Pay Now" :
+    (currentSubscription != null && currentSubscription!.planName == plan.category)
+        ? "Active" // Display "Active" if the current plan matches
+        : (plan.category == "Bronze" && currentSubscription!.allowBronze!) ||
+          (plan.category == "Silver" && currentSubscription!.allowSilver!) ||
+          (plan.category == "Gold" && currentSubscription!.allowGold!)
+          ? "Pay Now" // Display "Pay Now" if the plan is available for purchase
+          : "Pay Now", // If not available, keep it disabled as "Active"
+    style: GoogleFonts.nunito(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: 20,
+    ),
+  ),
+)
+,
+  ),
+)
+
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                width: 10,
+                              );
+                            },
+                            itemCount: populateSampleData.length),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Payment Terms:",
+                        style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Subscription fees are non-refundable and billed as per the selected plan.",
+                        style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13),
+                      ),
+                      Text(
+                        "Cancellation or upgrades can be managed through your account settings.",
+                        style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13),
+                      ),
+                    ],
+                  ),
+                ),
     );
   }
 
   void handlePayment(Plan plan) {
     var options = {
       'key': 'rzp_test_ZkLOvWs7XmF5xN',
-      'amount': 
-      int.parse("${plan.price!.toInt()}") * 
-      100,
+      'amount': int.parse("${plan.price!.toInt()}") * 100,
       'currency': 'INR',
-      'name': userProfileData.userProfileResponse.value.data!.firstName.toString() +
+      'name': userProfileData.userProfileResponse.value.data!.firstName
+              .toString() +
           " " +
           userProfileData.userProfileResponse.value.data!.lastName.toString(),
       'description': 'Subscription Payment for ${plan.category}',
@@ -435,7 +468,7 @@ Future<void> getcurrentsubscription() async {
           width: 5,
         ),
         SizedBox(
-           width: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.5,
           child: Text(
             name,
             style: GoogleFonts.nunito(
@@ -462,26 +495,24 @@ Future<void> getcurrentsubscription() async {
     Logger().d(
       "Payment successful: $paymentId, Plan: $planName, Duration: $duration, Duration Type: $durationType",
     );
-     Map<String, dynamic> requestPayload = {
-    "subscription_id":subscriptionId, 
-    "plan_id" : planId,
-    "duration_type": duration, 
-    "duration":1, // next month added subscription
-    "payment_txt_id":paymentId ?? '',
-     "payment_status": 1,
-  };
+    Map<String, dynamic> requestPayload = {
+      "subscription_id": subscriptionId,
+      "plan_id": planId,
+      "duration_type": duration,
+      "duration": 1, // next month added subscription
+      "payment_txt_id": paymentId ?? '',
+      "payment_status": 1,
+    };
 
-  PostPaymentModel? result = await WebService.postPayment(requestPayload);
+    PostPaymentModel? result = await WebService.postPayment(requestPayload);
 
-  if (result != null && result.data != null) {
-    setState(() {
-        showConfirmationDialog1(result.message ?? '');          
-    });
-  }else{
-    setState(() {
-     
-    });
-  }
+    if (result != null && result.data != null) {
+      setState(() {
+        showConfirmationDialog1(result.message ?? '');
+      });
+    } else {
+      setState(() {});
+    }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) async {
@@ -497,28 +528,24 @@ Future<void> getcurrentsubscription() async {
     String planName = selectedPlan.category!;
     String price = selectedPlan.price.toString();
 
-     Map<String, dynamic> requestPayload = {
-    "subscription_id":subscriptionId, 
-    "plan_id" : planId,
-    "duration_type": duration, 
-    "duration":1, // next month added subscription
-    "payment_txt_id": '',
-     "payment_status": 0,
-  };
+    Map<String, dynamic> requestPayload = {
+      "subscription_id": subscriptionId,
+      "plan_id": planId,
+      "duration_type": duration,
+      "duration": 1, // next month added subscription
+      "payment_txt_id": '',
+      "payment_status": 0,
+    };
 
-  PostPaymentModel? result = await WebService.postPayment(requestPayload);
+    PostPaymentModel? result = await WebService.postPayment(requestPayload);
 
-  if (result != null && result.data != null) {
-    setState(() {
-      
+    if (result != null && result.data != null) {
+      setState(() {
         showConfirmationDialog1(result.message ?? '');
-                  
-    });
-  }else{
-    setState(() {
-     
-    });
-  }
+      });
+    } else {
+      setState(() {});
+    }
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
@@ -531,8 +558,7 @@ Future<void> getcurrentsubscription() async {
       CustomDialogBox2(
         title1: msg,
         title2: '',
-        subtitle:
-            '',
+        subtitle: '',
         icon: const Icon(
           Icons.help_outline,
           color: Colors.white,
@@ -551,4 +577,3 @@ Future<void> getcurrentsubscription() async {
     );
   }
 }
-

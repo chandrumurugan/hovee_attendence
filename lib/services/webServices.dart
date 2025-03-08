@@ -33,6 +33,7 @@ import 'package:hovee_attendence/modals/getEnrollment_model.dart';
 import 'package:hovee_attendence/modals/getGrouedEnrollmentBylevaemodel.dart';
 import 'package:hovee_attendence/modals/getGroupedAnnouncementHostelModel.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
+import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutor_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByHostelModel.dart';
@@ -60,6 +61,7 @@ import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/modals/getbatchlocation.dart';
 import 'package:hovee_attendence/modals/getcurrentsubscriptionModel.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
+import 'package:hovee_attendence/modals/getsubscriptionPdfModel.dart';
 import 'package:hovee_attendence/modals/googleSignInModel.dart';
 import 'package:hovee_attendence/modals/guestHome_modal.dart';
 import 'package:hovee_attendence/modals/institudeTutorsListModel.dart';
@@ -870,7 +872,7 @@ class WebService {
     }
   }
 
-  static Future<getGroupedEnrollmentByAttendanceModel?>
+  static Future<GetGroupedEnrollmentByAttendanceTutorModel?>
       fetchGroupedEnrollmentByBatchList(
           String batchId, String selectedDate, selectedMonth) async {
     final url =
@@ -899,7 +901,7 @@ class WebService {
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
       Logger().i(result);
-      return getGroupedEnrollmentByAttendanceModel.fromJson(result);
+      return GetGroupedEnrollmentByAttendanceTutorModel.fromJson(result);
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
       // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
@@ -3266,5 +3268,26 @@ class WebService {
 //   print(response.reasonPhrase);
 //   }
 }
+
+ static Future<GetsubscriptionPdfModel> getsubscriptionPdfInvoice(String id) async {
+    final url = Uri.parse('${baseUrl}mysubscription/getsubscription/${id}');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    final response = await http.get(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+    print(token);
+    if (response.statusCode == 200) {
+      return GetsubscriptionPdfModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load batch list');
+    }
+  }
 
 }

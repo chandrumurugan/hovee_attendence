@@ -3,23 +3,50 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/widget/pdf_view_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
-class MyPaymentDetailScreen extends StatelessWidget {
-   // ignore: prefer_typing_uninitialized_variables
-   final paymentDetail;
+import '../../modals/getsubscriptionPdfModel.dart';
+
+
+class MyPaymentDetailScreen extends StatefulWidget {
+  final paymentDetail;
   const MyPaymentDetailScreen({super.key, this.paymentDetail});
 
   @override
+  State<MyPaymentDetailScreen> createState() => _MyPaymentDetailScreenState();
+}
+
+class _MyPaymentDetailScreenState extends State<MyPaymentDetailScreen> {
+  bool isLoading = false;
+  Data? paymentList;
+  initState() {
+    super.initState();
+    _getPaymentList();
+  }
+
+  Future<void> _getPaymentList() async {
+    setState(() {
+      isLoading = true;
+    });
+    var response = await WebService.getsubscriptionPdfInvoice(widget.paymentDetail.id);
+    if (response.success!) {
+      setState(() {
+        paymentList = response.data;
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+  @override
   Widget build(BuildContext context) {
-    // var paymentDetail;
-    // Logger().d(paymentDetail.toJson());
-    // Logger().d(paymentDetail.id);
-    // Logger().d(paymentDetail.method);
-    return Scaffold(
+        return Scaffold(
       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
@@ -57,7 +84,7 @@ class MyPaymentDetailScreen extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                "Plan name : ${paymentDetail.selectedPlan.category}",
+                "Plan name : ${widget.paymentDetail.selectedPlan.category}",
                 style: GoogleFonts.nunito(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -67,7 +94,7 @@ class MyPaymentDetailScreen extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                "₹ ${paymentDetail.selectedPlan.price}",
+                "₹ ${widget.paymentDetail.selectedPlan.price}",
                 style: GoogleFonts.nunito(
                     fontSize: 40,
                     fontWeight: FontWeight.w700,
@@ -79,7 +106,7 @@ class MyPaymentDetailScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (paymentDetail.paymentStatus == "Paid")
+                  if (widget.paymentDetail.paymentStatus == "Paid")
                     const Icon(
                       Icons.check_circle_outline,
                       color: Colors.green,
@@ -93,7 +120,7 @@ class MyPaymentDetailScreen extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    "${paymentDetail.paymentStatus == "Unpaid" ? "Failed" : paymentDetail.paymentStatus}",
+                    "${widget.paymentDetail.paymentStatus == "Unpaid" ? "Failed" : widget.paymentDetail.paymentStatus}",
                     style: GoogleFonts.nunito(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
@@ -109,9 +136,9 @@ class MyPaymentDetailScreen extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              if (paymentDetail.paymentStatus == "Paid")
+              if (widget.paymentDetail.paymentStatus == "Paid")
                 Text(
-                   DateFormat("d MMM yyyy").format(DateFormat("dd/MM/yyyy").parse(paymentDetail.purchaseDate))
+                   DateFormat("d MMM yyyy").format(DateFormat("dd/MM/yyyy").parse(widget.paymentDetail.purchaseDate))
                   // DateFormat("d MMM yyyy")
                   //   .format(DateTime.parse(paymentDetail.purchaseDate!))
                     ),
@@ -135,7 +162,7 @@ class MyPaymentDetailScreen extends StatelessWidget {
                         children: [
                           const Icon(Icons.assignment),
                           Text(
-                            paymentDetail.invoiceId,
+                            widget.paymentDetail.invoiceId,
                             style: GoogleFonts.nunito(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -143,11 +170,11 @@ class MyPaymentDetailScreen extends StatelessWidget {
                           )
                         ],
                       ),
-                      if (paymentDetail.paymentStatus == "Paid") const Divider(),
-                      if (paymentDetail.paymentStatus == "Paid")
+                      if (widget.paymentDetail.paymentStatus == "Paid") const Divider(),
+                      if (widget.paymentDetail.paymentStatus == "Paid")
                         _buildDetail(
                             "Expiry date",
-                             DateFormat("d MMM yyyy").format(DateFormat("dd/MM/yyyy").parse(paymentDetail.expiryDate))
+                             DateFormat("d MMM yyyy").format(DateFormat("dd/MM/yyyy").parse(widget.paymentDetail.expiryDate))
                             // DateFormat("dMMMyyyy").format(
                             //     DateTime.parse(paymentDetail.expiryDate!))
                                 
@@ -159,7 +186,7 @@ class MyPaymentDetailScreen extends StatelessWidget {
                       //     paymentDetail.expiredStatus.isNotEmpty
                       //         ? paymentDetail.expiredStatus
                       //         : "Failed"),
-                      _buildDetail("Package", paymentDetail.durationType),
+                      _buildDetail("Package", widget.paymentDetail.durationType),
                     ],
                   ),
                 ),
@@ -167,19 +194,18 @@ class MyPaymentDetailScreen extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
+              if (widget.paymentDetail.paymentStatus == "Paid")
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
                   onTap: () {
-                    // var pdf =
-                    //     "https://www.ocean.washington.edu/courses/oc410/reading/RogerAnderson/Planet_Earth_Topic_3.pdf";
-                    // Get.to(
-                    //   PDFScreen(
-                    //     path: pdf,
-                    //   ),
-                    //   transition: Transition.rightToLeft,
-                    //   duration: const Duration(milliseconds: 500),
-                    // );
+                    Get.to(
+                      PDFScreen(
+                        path: paymentList!.pdfFilepath,
+                      ),
+                      transition: Transition.rightToLeft,
+                      duration: const Duration(milliseconds: 500),
+                    );
                   },
                   child: Container(
                     height: 48,
@@ -210,7 +236,7 @@ class MyPaymentDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetail(String title, String value) {
+   Widget _buildDetail(String title, String value) {
     return Column(
       children: [
         Text(

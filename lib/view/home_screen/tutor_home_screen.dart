@@ -303,7 +303,7 @@ class TutorHome extends StatelessWidget {
                                             lastname: lastname,
                                             wowid: wowid,
                                           ));
-                                    } else if (item.name == 'Enquires') {
+                                    } else if (item.name == 'Enquiries') {
                                       classController.onInit();
                                       Get.to(() => Tutorenquirlist(
                                             type: 'Tutor',

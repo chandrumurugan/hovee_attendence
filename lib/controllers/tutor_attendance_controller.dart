@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutor_model.dart';
 
 class TutorAttendanceController extends GetxController {
   // Reactive variables using Rx types

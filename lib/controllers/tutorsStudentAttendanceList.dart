@@ -3,13 +3,12 @@ import 'package:get/get.dart';
 import 'package:hovee_attendence/controllers/accountSetup_controller.dart';
 import 'package:hovee_attendence/controllers/track_tutee_controller.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutee_model.dart';
-import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendance_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutor/tutorsStudentAttendenceList.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-
+import 'package:hovee_attendence/modals/getGroupedEnrollmentByAttendanceTutor_model.dart';
 class StudentAttendanceController extends GetxController {
   var batches = <String>[].obs;
   var selectedBatchIN = Rxn<Data1>();
@@ -202,11 +201,11 @@ var holidayDates = <DateTime>{}.obs;
           })
           .toSet();
            print("Holiday===========>${holidayDatesTutor.value}");
-           leaveDatesTutor.value = data!.leave!.map((date) {
-               final parsedDate = DateFormat('dd-MM-yyyy').parse(date.leaveDate!);
-            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
-           }) .toSet();
-           print("leave===========>${leaveDatesTutor.value}");
+          //  leaveDatesTutor.value = data!.leave!.map((date) {
+          //      final parsedDate = DateFormat('dd-MM-yyyy').parse(date.leaveDate!);
+          //   return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+          //  }) .toSet();
+          //  print("leave===========>${leaveDatesTutor.value}");
         attendanceData.value = [
           AttendanceData(
               category: "All",

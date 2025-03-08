@@ -191,6 +191,7 @@ class SidemenuHeader extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
+              userProfileData.userProfileResponse.value.data!.rolesId!.roleName=='Tutee'?const SizedBox():
               Row(
                 children: [
                   const Icon(
@@ -200,6 +201,7 @@ class SidemenuHeader extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
+                   
                   Text(
                    isGuest ?  '0':
                     userProfileData .userRatings!.averageRating ?? '0',

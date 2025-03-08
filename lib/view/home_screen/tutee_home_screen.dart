@@ -414,7 +414,7 @@ class TuteeHome extends StatelessWidget {
                                             firstname:firstname ,lastname:lastname ,wowid: wowid,
                                           ));
                                     }
-                                    if (item.name == 'Enquires') {
+                                    if (item.name == 'Enquiries') {
                                       classController.onInit();
                                       Get.to(() => Tutorenquirlist(
                                             type: 'Tutee',

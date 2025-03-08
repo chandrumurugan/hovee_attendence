@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/widget/gifController.dart';
 
 class AppBarHeader extends StatelessWidget implements PreferredSizeWidget {
   final bool needGoBack;
   final VoidCallback navigateTo;
+   final bool? showDownload;
+   final VoidCallback? onDownload;
   const AppBarHeader({
     super.key,
     required this.needGoBack,
-    required this.navigateTo,
+    required this.navigateTo, this.showDownload, this.onDownload,
   });
 
   @override
@@ -41,6 +44,10 @@ class AppBarHeader extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       surfaceTintColor: Colors.white,
       backgroundColor: Colors.white,
+      actions: [
+         if(showDownload != null && showDownload!)
+                  IconButton(onPressed: () => onDownload!(), icon: Icon(Icons.download_outlined,color: AppConstants.secondaryColor,))
+      ],
     );
   }
 

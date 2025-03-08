@@ -527,7 +527,7 @@ class StudentAttendanceList extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(attendance.hostellerName!,
+                        child: Text(attendance.studentName ?? '',
                             style: GoogleFonts.nunito(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,

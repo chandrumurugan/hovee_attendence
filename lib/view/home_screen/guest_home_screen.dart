@@ -27,6 +27,8 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
   int _currentIndex = 0;
   GlobalKey<ScaffoldState> guestScaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = false;
+   bool isLoadingBanner = false;
+   bool isLoadingguestTestData = false;
   Data? guestHomeData;
   int mycount = 0;
   int _currentIndexSlider = 0;
@@ -61,13 +63,13 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
 
   void fetchGuestUserBannerList() async {
     setState(() {
-      isLoading = true;
+      isLoadingBanner = true;
     });
     var response = await WebService.fetchGuestUserBannerList();
     if (response != null && response.statusCode == 200) {
       setState(() {
         userBannerData = response.data;
-        isLoading = false;
+        isLoadingBanner = false;
       });
 
       // guestHomeData.teacherList
@@ -76,13 +78,13 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
 
   void fetchGuestUserTestimonialsList() async {
     setState(() {
-      isLoading = true;
+      isLoadingguestTestData = true;
     });
     var response = await WebService.fetchGuestUserTestimonialsList();
     if (response != null && response.statusCode == 200) {
       setState(() {
         guestTestData = response.data;
-        isLoading = false;
+        isLoadingguestTestData = false;
       });
 
       // guestHomeData.teacherList
@@ -201,7 +203,7 @@ void getGuestUserHomeHostelList() async {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        isLoading
+                        isLoadingBanner
                             ? CircularProgressIndicator()
                             : Container(
                                 height:
@@ -496,6 +498,7 @@ void getGuestUserHomeHostelList() async {
                         SizedBox(
                           height: 10,
                         ),
+                        isLoading? Center(child: CircularProgressIndicator()):
                         Container(
                             height: 220,
                             width: MediaQuery.of(context).size.width,
@@ -622,6 +625,7 @@ void getGuestUserHomeHostelList() async {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
+                        isLoadingguestTestData? Center(child: CircularProgressIndicator()):
                         CarouselSlider(
                           options: CarouselOptions(
                             height: MediaQuery.of(context).size.height * 0.2,
@@ -752,6 +756,7 @@ void getGuestUserHomeHostelList() async {
                         ),
                         SizedBox(height: 16),
                         // Indicator
+                       isLoadingguestTestData?CircularProgressIndicator():
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(

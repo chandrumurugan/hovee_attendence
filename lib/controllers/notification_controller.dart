@@ -82,9 +82,11 @@ class NotificationController extends GetxController {
   var response = await WebService.fetchHostelNotificationsType();
   if (response.isNotEmpty) {
     // Move "Announcements" to the last index
-    if (response.contains("Announcement")) {
+    if (response.contains("Announcement") || response.contains("announcement")) {
       response.remove("Announcement");
       response.add("Announcement");
+      response.remove("announcement");
+      response.add("announcement");
     }
     categories.value = response;
     isLoading(false);
@@ -98,9 +100,11 @@ class NotificationController extends GetxController {
       var response = await WebService.fetchNotificationsType();
   if (response.isNotEmpty) {
     // Move "Announcements" to the last index
-    if (response.contains("Announcements")) {
+    if (response.contains("Announcements") || response.contains("announcement")) {
       response.remove("Announcements");
       response.add("Announcements");
+      response.remove("announcement");
+      response.add("announcement");
     }
     categories.value = response;
     isLoading(false);

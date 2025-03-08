@@ -236,11 +236,13 @@ class HomePageHeader extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(
-                        height: 5,
+                        height: 10,
                       ),
+                      
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          userType=='Tutee'?const SizedBox():
                           Animate(
                             effects: [
                               SlideEffect(
@@ -255,7 +257,9 @@ class HomePageHeader extends StatelessWidget {
                                 duration: 400.ms,
                               ),
                             ],
-                            child: Container(
+                            child: 
+                            
+                            Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 3),
                               decoration: BoxDecoration(
@@ -277,6 +281,7 @@ class HomePageHeader extends StatelessWidget {
                           const SizedBox(
                             width: 10,
                           ),
+                          userType=='Tutee'?const SizedBox():
                           Animate(
                             effects: [
                               SlideEffect(

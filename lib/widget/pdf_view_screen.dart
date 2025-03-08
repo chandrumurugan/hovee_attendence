@@ -8,6 +8,127 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:flutter_media_downloader/flutter_media_downloader.dart';
+// class PDFScreen extends StatefulWidget {
+//   final String? path;
+//   const PDFScreen({super.key, this.path});
+
+//   @override
+//   State<PDFScreen> createState() => _PDFScreenState();
+// }
+
+// class _PDFScreenState extends State<PDFScreen> {
+//    final Completer<PDFViewController> _controller =
+//       Completer<PDFViewController>();
+//   int? pages = 0;
+//   int? currentPage = 0;
+//   bool isReady = false;
+//   String errorMessage = '';
+//     bool isDownloading = false;
+//   String? downloadedFilePath;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBarHeader(
+//           needGoBack: true,
+//           navigateTo: () {
+//             Get.back();
+//           }),
+//       body: Stack(
+//         children: <Widget>[
+//           PDFView(
+//             filePath: widget.path,
+//             enableSwipe: true,
+//             swipeHorizontal: true,
+//             autoSpacing: false,
+//             pageFling: true,
+//             pageSnap: true,
+//             defaultPage: currentPage!,
+//             fitPolicy: FitPolicy.BOTH,
+//             preventLinkNavigation:
+//                 false, // if set to true the link is handled in flutter
+//             backgroundColor: Colors.black,
+//             onRender: (_pages) {
+//               setState(() {
+//                 pages = _pages;
+//                 isReady = true;
+//               });
+//             },
+//             onError: (error) {
+//               setState(() {
+//                 errorMessage = error.toString();
+//               });
+//               print(error.toString());
+//             },
+//             onPageError: (page, error) {
+//               setState(() {
+//                 errorMessage = '$page: ${error.toString()}';
+//               });
+//               print('$page: ${error.toString()}');
+//             },
+//             onViewCreated: (PDFViewController pdfViewController) {
+//               _controller.complete(pdfViewController);
+//             },
+//             onLinkHandler: (String? uri) {
+//               print('goto uri: $uri');
+//             },
+//             onPageChanged: (int? page, int? total) {
+//               print('page change: ${page ?? 0 + 1}/$total');
+//               setState(() {
+//                 currentPage = page;
+//               });
+//             },
+//           ),
+//           errorMessage.isEmpty
+//               ? !isReady
+//                   ? Center(
+//                       child: CircularProgressIndicator(),
+//                     )
+//                   : Container()
+//               : Center(
+//                   child: Text(errorMessage),
+//                 )
+//         ],
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: () {
+//          _downloadPDF();
+//         },
+//         child: Icon(Icons.download),
+//       ),
+//     );
+//   }
+
+//   Future<void> _downloadPDF() async {
+//     setState(() {
+//       isDownloading = true;
+//     });
+
+//     try {
+//       String url = widget.path ?? "";
+//       Directory directory = await getApplicationDocumentsDirectory();
+//       String filePath = "${directory.path}/downloaded_file.pdf";
+
+//       Dio dio = Dio();
+//       await dio.download(url, filePath);
+
+//       setState(() {
+//         isDownloading = false;
+//         downloadedFilePath = filePath;
+//       });
+
+//       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download Complete")));
+//     } catch (e) {
+//       setState(() {
+//         isDownloading = false;
+//       });
+//       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download Failed")));
+//     }
+//   }
+// }
+
+
 class PDFScreen extends StatefulWidget {
   final String? path;
   const PDFScreen({super.key, this.path});
@@ -17,111 +138,23 @@ class PDFScreen extends StatefulWidget {
 }
 
 class _PDFScreenState extends State<PDFScreen> {
-   final Completer<PDFViewController> _controller =
-      Completer<PDFViewController>();
-  int? pages = 0;
-  int? currentPage = 0;
-  bool isReady = false;
-  String errorMessage = '';
-    bool isDownloading = false;
-  String? downloadedFilePath;
   @override
-  Widget build(BuildContext context) {
+    Widget build(BuildContext context) {
+    final _flutterMediaDownloaderPlugin = MediaDownload();
     return Scaffold(
-      appBar: AppBarHeader(
+       appBar: AppBarHeader(
           needGoBack: true,
           navigateTo: () {
             Get.back();
-          }),
-      body: Stack(
-        children: <Widget>[
-          PDFView(
-            filePath: widget.path,
-            enableSwipe: true,
-            swipeHorizontal: true,
-            autoSpacing: false,
-            pageFling: true,
-            pageSnap: true,
-            defaultPage: currentPage!,
-            fitPolicy: FitPolicy.BOTH,
-            preventLinkNavigation:
-                false, // if set to true the link is handled in flutter
-            backgroundColor: Colors.black,
-            onRender: (_pages) {
-              setState(() {
-                pages = _pages;
-                isReady = true;
-              });
-            },
-            onError: (error) {
-              setState(() {
-                errorMessage = error.toString();
-              });
-              print(error.toString());
-            },
-            onPageError: (page, error) {
-              setState(() {
-                errorMessage = '$page: ${error.toString()}';
-              });
-              print('$page: ${error.toString()}');
-            },
-            onViewCreated: (PDFViewController pdfViewController) {
-              _controller.complete(pdfViewController);
-            },
-            onLinkHandler: (String? uri) {
-              print('goto uri: $uri');
-            },
-            onPageChanged: (int? page, int? total) {
-              print('page change: ${page ?? 0 + 1}/$total');
-              setState(() {
-                currentPage = page;
-              });
-            },
-          ),
-          errorMessage.isEmpty
-              ? !isReady
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Container()
-              : Center(
-                  child: Text(errorMessage),
-                )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-         _downloadPDF();
-        },
-        child: Icon(Icons.download),
+          },
+          showDownload: true,onDownload: (){
+         _flutterMediaDownloaderPlugin.downloadMedia(context,widget.path!);
+       },),
+      body: const PDF().cachedFromUrl(
+        widget.path!,
+        placeholder: (double progress) => Center(child: Text('$progress %')),
+        errorWidget: (dynamic error) => Center(child: Text(error.toString())),
       ),
     );
-  }
-
-  Future<void> _downloadPDF() async {
-    setState(() {
-      isDownloading = true;
-    });
-
-    try {
-      String url = widget.path ?? "";
-      Directory directory = await getApplicationDocumentsDirectory();
-      String filePath = "${directory.path}/downloaded_file.pdf";
-
-      Dio dio = Dio();
-      await dio.download(url, filePath);
-
-      setState(() {
-        isDownloading = false;
-        downloadedFilePath = filePath;
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download Complete")));
-    } catch (e) {
-      setState(() {
-        isDownloading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download Failed")));
-    }
   }
 }

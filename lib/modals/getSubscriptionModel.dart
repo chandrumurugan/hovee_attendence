@@ -102,7 +102,7 @@ class Plan {
             category: json["category"],
             duration: json["duration"],
             durationType: json["durationType"],
-            price: json["price"],
+           price: (json["price"] as num?)?.toDouble(),
             description: json["description"] == null ? [] : List<String>.from(json["description"]!.map((x) => x)),
             id: json["_id"],
         );

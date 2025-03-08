@@ -148,6 +148,10 @@ class currentsubscriptionData {
         required this.paymentTxtId,
         required this.invoiceId,
         required this.createdAt,
+        required this.isExpired,
+        required this.allowBronze,
+        required this.allowSilver,
+        required this.allowGold,
     });
 
     final String? id;
@@ -164,7 +168,10 @@ class currentsubscriptionData {
     final String? paymentTxtId;
     final String? invoiceId;
     final DateTime? createdAt;
-
+    final bool? isExpired;
+    final bool? allowBronze;
+    final bool? allowSilver;
+    final bool? allowGold;
     factory currentsubscriptionData.fromJson(Map<String, dynamic> json){ 
         return currentsubscriptionData(
             id: json["id"],
@@ -181,6 +188,10 @@ class currentsubscriptionData {
             paymentTxtId: json["payment_txt_id"],
             invoiceId: json["invoice_id"],
             createdAt: DateTime.tryParse(json["created_at"] ?? ""),
+            isExpired: json["is_expired"],
+            allowBronze: json["allow_bronze"],
+            allowSilver: json["allow_silver"],
+            allowGold: json["allow_gold"],
         );
     }
 
@@ -199,6 +210,10 @@ class currentsubscriptionData {
         "payment_txt_id": paymentTxtId,
         "invoice_id": invoiceId,
         "created_at": createdAt?.toIso8601String(),
+        "is_expired": isExpired,
+        "allow_bronze": allowBronze,
+        "allow_silver": allowSilver,
+        "allow_gold": allowGold,
     };
 
 }

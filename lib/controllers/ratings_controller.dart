@@ -26,7 +26,7 @@ class RatingsController extends GetxController {
   }
 
   void getMyRatings() async {
-    // isLoading(true);
+    isLoading(true);
 
     try {
       var myratings = await WebService.getMyRatings();
