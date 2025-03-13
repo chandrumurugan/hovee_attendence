@@ -63,7 +63,7 @@ class TutorHome extends StatelessWidget {
         key: controller.tutorScaffoldKey,
         drawer: SideMenu(isGuest: false),
          floatingActionButton: FloatingActionButton.extended(onPressed: (){
-        Get.to(() => CustomerChat());
+        Get.to(() => CustomerChat(chatId: '',));
       }, label: Icon(Icons.chat)),
         appBar: AppBar(
           automaticallyImplyLeading: false,

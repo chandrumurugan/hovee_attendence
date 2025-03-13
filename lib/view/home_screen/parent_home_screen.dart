@@ -72,7 +72,7 @@ class _ParentViewState extends State<ParentView> {
     return Scaffold(
         key: parentController.tuteeScaffoldKey,
         floatingActionButton: FloatingActionButton.extended(onPressed: (){
-          Get.to(() => CustomerChat());
+          Get.to(() => CustomerChat(chatId: '',));
         }, label: Icon(Icons.chat)),
         drawer: SideMenu(
           isGuest: false,

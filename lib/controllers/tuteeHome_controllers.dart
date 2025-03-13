@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -8,9 +10,11 @@ import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
 import 'package:hovee_attendence/modals/userProfile_modal.dart';
+import 'package:hovee_attendence/services/chat_service.dart';
 import 'package:hovee_attendence/services/firestoreService.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/view/Tutor/tutorEnquirList.dart';
+import 'package:hovee_attendence/view/chat_screen/chat_screen.dart';
 import 'package:hovee_attendence/view/enrollment_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -109,6 +113,8 @@ class TuteeHomeController extends GetxController with GetSingleTickerProviderSta
   var notificationCount = 0.obs; // Observable
   
   final NotificationController noticontroller = Get.put(NotificationController());
+
+   final ChatService _chatService = ChatService();
 
   @override
   void onInit() {
@@ -259,5 +265,38 @@ class TuteeHomeController extends GetxController with GetSingleTickerProviderSta
     // TODO: implement onClose
     super.onClose();
      animationController.dispose();
+  }
+
+  Future<void> startChat(BuildContext context) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    var agents = await FirebaseFirestore.instance
+        .collection('users')
+        .where('role', isEqualTo: 'agent')
+        .where('isAvailable', isEqualTo: true)
+        .limit(1)
+        .get();
+
+    if (agents.docs.isNotEmpty) {
+      var agent = agents.docs.first;
+      String chatId = FirebaseFirestore.instance.collection('chats').doc().id;
+
+      await FirebaseFirestore.instance.collection('chats').doc(chatId).set({
+        'customerId': user.uid,
+        'agentId': agent.id,
+        'isActive': true
+      });
+
+      await FirebaseFirestore.instance.collection('users').doc(agent.id).update({
+        'isAvailable': false,
+        'assignedChatId': chatId
+      });
+          await _chatService.sendNotificationToAgent(chatId, user.displayName ?? "Customer");
+
+      Navigator.push(context, MaterialPageRoute(builder: (_) => CustomerChat(chatId: chatId)));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("No agents available")));
+    }
   }
 }

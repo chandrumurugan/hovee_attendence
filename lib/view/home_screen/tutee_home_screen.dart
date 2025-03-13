@@ -50,7 +50,8 @@ class TuteeHome extends StatelessWidget {
     return Scaffold(
       key: controller.tuteeScaffoldKey,
       floatingActionButton: FloatingActionButton.extended(onPressed: (){
-        Get.to(() => CustomerChat());
+        Get.to(() => CustomerChat(chatId: '',));  
+       //controller.startChat(context);
       }, label: Icon(Icons.chat)),
       drawer: SideMenu(
         isGuest: false,
@@ -151,7 +152,8 @@ class TuteeHome extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                    Get.to(() => CustomerChat());
+                     //controller.startChat(context);
+                     
                     },
                     child: Icon(
                       Icons.message,

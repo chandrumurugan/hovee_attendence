@@ -6,10 +6,12 @@ import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/modals/addbatch_model.dart';
 import 'package:hovee_attendence/modals/appConfigModal.dart';
 import 'package:hovee_attendence/modals/deletebatch_model.dart';
+import 'package:hovee_attendence/modals/getBatchtuteelistModel.dart';
 import 'package:hovee_attendence/modals/getbatchlist_model.dart';
 import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/snackbar_utils.dart';
 import 'package:hovee_attendence/view/add_batch.dart';
+import 'package:hovee_attendence/widget/tutee_list.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -70,6 +72,10 @@ var batchDaysController = "".obs;
   var searchKey = ''.obs;
  UserProfileController accountController = Get.put(UserProfileController());
  var instituteId =''.obs;
+ var batchTuteeList = <Datum>[].obs;
+  RxBool initialLoad1 = true.obs;
+  String? profileUrl,tuteeName;
+  List<Tutee>? tutee;
   // Method to fetch batch list
 //   void fetchBatchList() async {o
 //   try {
@@ -139,6 +145,12 @@ var batchDaysController = "".obs;
           SharedPreferences prefs = await SharedPreferences.getInstance();
        instituteId.value=   prefs.getString('InstituteId') ?? '';
        update();
+        // Send all batchIds to fetchBatchTuteeList
+      for (var batch in batchResponse.data!) {
+        if (batch.sId != null && batch.sId!.isNotEmpty) {
+          fetchBatchTuteeList(batchId: batch.sId!);
+        }
+      }
     } else {
       batchList.clear();
       update();
@@ -489,4 +501,41 @@ var batchDaysController = "".obs;
       }
     }
   }
+
+
+    void fetchBatchTuteeList({String searchTerm = '', String?batchId}) async {
+  try {
+    isLoading.value = true; // Start loading
+    initialLoad1.value=true;
+    // Prepare the request payload
+    final requestPayload = 
+{
+    "batchId":batchId,
+    "page":"",
+    "limit":'',
+    "search":""
+};
+
+    // Fetch batch list from the API
+    var batchResponse = await WebService.fetchBatchTuteeList(requestPayload);
+
+    if (batchResponse!.data != null) {
+       batchTuteeList.value = batchResponse.data;
+       for (var batch in batchTuteeList.value) {
+        tutee=batch.tutees;
+        update();
+      }
+    } else {
+      batchList.clear();
+      update();
+    }
+  } catch (e) {
+    batchList.clear(); // Clear the list on error
+    print('Error fetching batch list: $e');
+  } finally {
+    isLoading.value = false; // Stop loading
+     initialLoad1.value=false;
+     update();
+  }
+}
 }

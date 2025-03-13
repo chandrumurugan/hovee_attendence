@@ -6,9 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
 import 'package:hovee_attendence/view/chat_screen/message_module.dart';
+import 'package:hovee_attendence/widget/live_chat.dart';
 
 class CustomerChat extends StatefulWidget {
-  const CustomerChat({Key? key}) : super(key: key);
+ final String chatId;
+  const CustomerChat({Key? key, required this.chatId}) : super(key: key);
 
   @override
   ChatScreenState createState() => ChatScreenState();
@@ -25,7 +27,8 @@ class ChatScreenState extends State<CustomerChat> {
     "General & Account Related",
     "Tutee Related",
     "Tutor Related",
-    "Others"
+    "Others",
+    "Live chat"
   ];
 
   @override
@@ -168,7 +171,14 @@ class ChatScreenState extends State<CustomerChat> {
                         style: GoogleFonts.nunito(color: Colors.white),
                       ),
                       onPressed: () {
-                        sendMessage(text);
+                        if (text == "Live chat") {
+              // Navigate to Live Chat screen
+              Get.to(() => LiveChat()); // If using GetX
+              // OR
+              // Navigator.push(context, MaterialPageRoute(builder: (context) => LiveChatScreen()));
+            } else {
+              sendMessage(text);
+            }
                       },
                       backgroundColor:
                           AppConstants.secondaryColor,

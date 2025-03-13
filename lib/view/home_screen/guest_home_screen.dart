@@ -14,6 +14,7 @@ import 'package:hovee_attendence/view/loginSignup/loginSingup.dart';
 import 'package:hovee_attendence/view/sidemenu.dart';
 
 import 'package:hovee_attendence/modals/institudeTutorsListModel.dart';
+import 'package:hovee_attendence/widget/search_guest_screen.dart';
 import '../../modals/fetchGuestUserHostelListModel.dart';
 
 class GuestHomeScreen extends StatefulWidget {
@@ -1103,13 +1104,20 @@ void getGuestUserHomeHostelList() async {
                   color: Colors.white,
                 ),
               ),
-              // const Row(
-              //   children: [
-              //     Icon(Icons.search, color: Colors.white),
-              //     SizedBox(width: 16),
-              //     // Icon(Icons.g_translate, color: Colors.white),
-              //   ],
-              // ),
+               Row(
+                children: [
+                IconButton(
+          icon:  Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+          onPressed: () {
+           Get.to(() => SearchGuestScreen());
+          }),
+                  SizedBox(width: 16),
+                  // Icon(Icons.g_translate, color: Colors.white),
+                ],
+              ),
             ],
           ),
         ),

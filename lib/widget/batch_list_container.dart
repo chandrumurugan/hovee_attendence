@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
+import 'package:hovee_attendence/modals/getBatchtuteelistModel.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/add_batch.dart';
 import 'package:hovee_attendence/view/edit_batch_screen.dart';
@@ -9,7 +10,6 @@ import '../modals/getbatchlist_model.dart';
 
 class BatchListConatiner extends StatelessWidget {
   final Data2 batch;
-
    BatchListConatiner({super.key, required this.batch});
    final BatchController batchController = Get.put(BatchController());
   @override
@@ -52,10 +52,44 @@ class BatchListConatiner extends StatelessWidget {
                       ),
                     ],
                   ),
-              Image.asset(
-                'assets/Rectangle 18416.png',
-                height: 150,
-                fit: BoxFit.fill,
+              Stack(
+                children: [
+                  Image.asset(
+                    'assets/Rectangle 18416.png',
+                    height: 150,
+                    fit: BoxFit.fill,
+                  ),
+                  // Positioned(
+                  //   bottom: -10,
+                  //   child: Padding(
+                  //   padding:
+                  //       const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                  //   child: Card(
+                  //     elevation: 10,
+                  //     shadowColor: Colors.black,
+                  //     surfaceTintColor: Colors.white,
+                  //     child: Container(
+                  //       width: 120,
+                  //       padding: const EdgeInsets.symmetric(
+                  //           horizontal: 10, vertical: 10),
+                  //       decoration: BoxDecoration(
+                  //         color: Colors.white,
+                  //         borderRadius: BorderRadius.circular(40),
+                  //       ),
+                  //       child:   Row(
+                  //         children: [
+                  //           CircleAvatar(
+                  //             radius: 20,
+                  //             backgroundImage: NetworkImage( tutee.profileUrl?? ''), // Placeholder profile
+                  //           ),
+                  //           SizedBox(width: 10),
+                  //           Text(tutee.firstName ?? '',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),),
+                  //         ],
+                  //       ),
+                  //       ),)),
+                  // )
+        
+                ],
               ),
               const SizedBox(height: 20),
               _buildRow('Batch name', batch.batchName,context),

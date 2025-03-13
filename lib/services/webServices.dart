@@ -24,6 +24,7 @@ import 'package:hovee_attendence/modals/getAnnounment_model.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getAttendancePunchIn_model.dart';
 import 'package:hovee_attendence/modals/getBannerModel.dart';
+import 'package:hovee_attendence/modals/getBatchtuteelistModel.dart';
 import 'package:hovee_attendence/modals/getClassTuteeById_model.dart';
 import 'package:hovee_attendence/modals/getCouseList_model.dart';
 import 'package:hovee_attendence/modals/getDashboardYearFlow_model.dart';
@@ -64,6 +65,7 @@ import 'package:hovee_attendence/modals/getmarkedNotification_model.dart';
 import 'package:hovee_attendence/modals/getsubscriptionPdfModel.dart';
 import 'package:hovee_attendence/modals/googleSignInModel.dart';
 import 'package:hovee_attendence/modals/guestHome_modal.dart';
+import 'package:hovee_attendence/modals/guest_searchModel.dart';
 import 'package:hovee_attendence/modals/institudeTutorsListModel.dart';
 import 'package:hovee_attendence/modals/loginModal.dart';
 import 'package:hovee_attendence/modals/my_payments_modal.dart';
@@ -3285,6 +3287,47 @@ class WebService {
     print(token);
     if (response.statusCode == 200) {
       return GetsubscriptionPdfModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load batch list');
+    }
+  }
+
+   static Future<GuestsearchModel?> fetchGuestUserSearch( Map<String, dynamic> batchData) async {
+    final url = Uri.parse('${baseUrl}guest/search');
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: json.encode(batchData),
+      headers: {
+// Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return GuestsearchModel.fromJson(json.decode(response.body));
+    } else {
+      return null;
+    }
+  }
+
+    static Future<GetBatchtuteelistModel?> fetchBatchTuteeList(
+      Map<String, dynamic> batchData) async {
+    final url = Uri.parse('${baseUrl}guest/getBatchtuteelist');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      body: jsonEncode(batchData),
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+    );
+    print(token);
+    if (response.statusCode == 200) {
+      return GetBatchtuteelistModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load batch list');
     }

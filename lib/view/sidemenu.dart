@@ -238,6 +238,7 @@ class SideMenu extends StatelessWidget {
                     style: GoogleFonts.nunito(
                         fontSize: 16, fontWeight: FontWeight.w600),
                   ),
+                  
                   // trailing: Switch(
                   //     activeTrackColor: AppColors.primary_color,
                   //     value: notification,
@@ -248,6 +249,26 @@ class SideMenu extends StatelessWidget {
                   //     }),
                 );
               }),
+
+              if (isGuest)
+           ListTile(
+                  onTap: () async {
+                    // _logoutPopup(context);
+                   Get.to(LoginSignUp());
+                  },
+                  leading: const Icon(
+                    Icons.logout_rounded,
+                    size: 30,
+                    color: Colors.black,
+                  ),
+                  title: Text(
+                    "Log In",
+                    style: GoogleFonts.nunito(
+                        fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                )
+             
           ],
         ),
       )),

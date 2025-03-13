@@ -1,26 +1,64 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/batch_controller.dart';
+import 'package:hovee_attendence/modals/getBatchtuteelistModel.dart';
+import 'package:hovee_attendence/services/webServices.dart';
 import 'package:hovee_attendence/utils/search_filter_tabber.dart';
-import 'package:hovee_attendence/view/dashboard_screen.dart';
-import 'package:hovee_attendence/widget/batch_list_container.dart';
-import 'package:hovee_attendence/widget/single_custom_button.dart';
-import 'package:hovee_attendence/widget/tutee_list.dart';
 
-class TutorBatchList extends StatelessWidget {
-  final String type;
-  final String? firstname, lastname, wowid;
-  TutorBatchList(
-      {super.key,
-      required this.type,
-      this.firstname,
-      this.lastname,
-      this.wowid});
-  final BatchController batchController = Get.put(BatchController());
+class TuteeList extends StatefulWidget {
+  final String batchId;
+  const TuteeList({super.key, required this.batchId});
 
+  @override
+  State<TuteeList> createState() => _TuteeListState();
+}
+   final BatchController batchController = Get.put(BatchController());
+class _TuteeListState extends State<TuteeList> {
+   bool isLoading = true;
+  List<Datum>? batchTuteeList ;
+ Tutee? tutee;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+fetchBatchTuteeList(batchId: widget.batchId);
+  }
+
+  void fetchBatchTuteeList({String searchTerm = '', String?batchId}) async {
+  try {
+    isLoading = true; // Start loading
+    // Prepare the request payload
+    final requestPayload = 
+{
+    "batchId":batchId,
+    "page":"",
+    "limit":'',
+    "search":""
+};
+
+    // Fetch batch list from the API
+    var batchResponse = await WebService.fetchBatchTuteeList(requestPayload);
+
+    if (batchResponse!.data != null) {
+      setState(() {
+         batchTuteeList = batchResponse.data;
+         isLoading=false;
+      });
+      
+    } else {
+        isLoading=false;
+    }
+  } catch (e) {
+  
+    print('Error fetching batch list: $e');
+  } finally {
+    isLoading = false; // Stop loading
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,12 +90,7 @@ class TutorBatchList extends StatelessWidget {
                         children: [
                           IconButton(
                             onPressed: () {
-                              Get.offAll(DashboardScreen(
-                                rolename: type,
-                                firstname: firstname,
-                                lastname: lastname,
-                                wowid: wowid,
-                              ));
+                              Get.back();
                             },
                             icon: Icon(Icons.arrow_back, color: Colors.white),
                           ),
@@ -162,79 +195,88 @@ class TutorBatchList extends StatelessWidget {
 
           // Search and Filter Section
           SearchfiltertabBar(
-            title: 'Batch list',
+            title: 'Student list',
             onSearchChanged: (searchTerm) {
               // Trigger the search functionality by passing the search term
-              batchController.fetchBatchList(searchTerm: searchTerm);
             },
             filterOnTap: () {
               // Implement filter logic here if needed
             },
           ),
-          Obx(() {
-            if (batchController.isLoading.value) {
-              return Center(child: CircularProgressIndicator());
-            } else if (batchController.initialLoad.value) {
-              return Center(
-                  child:
-                      CircularProgressIndicator()); // Show loader during initial load
-            } else if (batchController.batchList.isEmpty) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Column(
-                  children: [
-                    SizedBox(height: 30),
-                    Image.asset(
-                      'assets/logo/No_Verification_Found_Image_app.png',
-                      height: 200,
-                    ),
-                    SizedBox(height: 30),
-                    Center(
-                      child: Text(
-                        "No listing found",
-                        style: GoogleFonts.nunito(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ],
+isLoading
+    ? Center(child: CircularProgressIndicator())
+    : (batchTuteeList == null ||
+            batchTuteeList!.isEmpty ||
+            batchTuteeList!.every((batch) => batch.tutees.isEmpty))
+        ? Center(child: Text("No tutee found"))
+        : Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GridView.builder(
+                padding: EdgeInsets.zero,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4, // 4 columns
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 0,
+                  childAspectRatio: 0.1,
                 ),
-              );
-            } else {
-              return Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemCount: batchController.batchList.length,
-                  itemBuilder: (context, index) {
-                    final batch = batchController.batchList[index];
-                    return GestureDetector(
-                      onTap: () {
-                       Get.to(() => TuteeList(batchId: batch.sId));
-                      },
-                      child: BatchListConatiner(batch: batch,));
-                  },
-                ),
-              );
-            }
-          }),
+                scrollDirection: Axis.vertical,
+                itemCount: batchTuteeList!
+                    .fold(0, (sum, batch) => sum! + batch.tutees.length), 
+                itemBuilder: (context, index) {
+                  List<Tutee> allTutees = batchTuteeList!
+                      .expand((batch) => batch.tutees)
+                      .toList();
+
+                  Tutee tutee = allTutees[index];
+
+                  return Container(
+                    margin: EdgeInsets.only(left: index == 0 ? 0 : 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.grey.shade200,
+                          radius: 38,
+                          child: tutee.profileUrl != null &&
+                                  tutee.profileUrl!.isNotEmpty
+                              ? ClipOval(
+                                  child: Image.network(
+                                    tutee.profileUrl!,
+                                    fit: BoxFit.cover,
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                                )
+                              : const Icon(
+                                  Icons.person,
+                                  size: 36,
+                                  color: Colors.black,
+                                ),
+                        ),
+                        const SizedBox(height: 5),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          child: Text(
+                            '${tutee.firstName ?? ''} ${tutee.lastName ?? ''}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black.withOpacity(0.4),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          )
+
         ],
       ),
-      bottomNavigationBar: GetBuilder<BatchController>(
-  builder: (controller) {
-    return (controller.instituteId == null || controller.instituteId == '')
-        ? SingleCustomButtom(
-            btnName: 'Add',
-            isPadded: false,
-            onTap: () {
-              controller.navigateToAddBatchScreen();
-            },
-          )
-        : SizedBox.shrink();
-  },
-),
-
     );
   }
 }
