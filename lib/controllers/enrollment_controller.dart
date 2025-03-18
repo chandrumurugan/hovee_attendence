@@ -194,15 +194,15 @@ void onInit() {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:  SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        response?.message ?? 'Failed to add Enrollment',
-        style: const TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:  SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //       response?.message ?? 'Failed to add Enrollment',
+  //       style: const TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
 return false;
           // Get.snackbar(
@@ -223,15 +223,15 @@ return false;
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:  SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Error: $e',
-        style: const TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:  SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //      'Error: $e',
+  //       style: const TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
 return false;
         // Get.snackbar(
@@ -289,15 +289,15 @@ return false;
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: const SizedBox(
-            height: 40,
-            child: Center(
-              child: Text(
-                'Enrollment rejected successfully',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // messageText: const SizedBox(
+          //   height: 40,
+          //   child: Center(
+          //     child: Text(
+          //       'Enrollment rejected successfully',
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
          tabController.animateTo(2);
           handleTabChange(2);

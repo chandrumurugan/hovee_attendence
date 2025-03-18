@@ -456,15 +456,15 @@ class ParentController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       response.message!,
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:   SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //      response.message!,
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         // Get.snackbar(
         //   icon: const Icon(
@@ -494,15 +494,15 @@ class ParentController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       response.message!,
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:   SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //      response.message!,
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
       }
     } catch (e) {
@@ -542,15 +542,15 @@ class ParentController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Accepted successfully',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:   const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //      'Accepted successfully',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         Get.offAll(() =>  RoleSelection(
               isFromParentOtp: false,
@@ -563,15 +563,15 @@ class ParentController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       response!.message!,
-        style: const TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:   SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //      response!.message!,
+  //       style: const TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         // Get.snackbar(
         //   icon: const Icon(

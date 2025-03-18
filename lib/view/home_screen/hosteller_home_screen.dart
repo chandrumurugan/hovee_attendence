@@ -22,6 +22,7 @@ import 'package:hovee_attendence/view/Hosteller/hostel_msp_screen.dart';
 import 'package:hovee_attendence/view/Tutee/tuteeAttendanceList.dart';
 import 'package:hovee_attendence/view/announcement_screen.dart';
 import 'package:hovee_attendence/view/attendanceCourseList_screen.dart';
+import 'package:hovee_attendence/view/chat_screen/chat_screen.dart';
 import 'package:hovee_attendence/view/leave_screen.dart';
 import 'package:hovee_attendence/view/msp_screen.dart';
 import 'package:hovee_attendence/view/notification_screen.dart';
@@ -55,6 +56,10 @@ class HostellerHomeScreen extends StatelessWidget {
       drawer: SideMenu(
         isGuest: false,
       ),
+       floatingActionButton: FloatingActionButton.extended(onPressed: (){
+        Get.to(() => CustomerChat());  
+       //controller.startChat(context);
+      }, label: Icon(Icons.chat)),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 5,
@@ -196,6 +201,7 @@ class HostellerHomeScreen extends StatelessWidget {
                         firstName: firstname,
                         lastName: lastname,
                         wowId: wowid, planName: noticontroller.planName ?? "",
+                        colorCode: noticontroller.colorCode ?? "",
                       ),
                     ),
                     // SizedBox(

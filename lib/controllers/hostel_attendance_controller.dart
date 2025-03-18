@@ -125,36 +125,36 @@ void fetchStudentsList(
       if (groupedEnrollmentByBatchResponse!.data != null) {
         data = groupedEnrollmentByBatchResponse.data!;
         //Logger().i("====1234567890=====${data!.attendanceDetails![0].attendanceStatus}");
-        data!.holidays!=null?
-         holidayDatesTutor.value = data!.holidays!
-          .map((date) {
-                    final parsedDate = DateFormat('dd-MM-yyyy').parse(date.holidayDate!);
-            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
-          })
-          .toSet():'';
-           print("Holiday===========>${holidayDatesTutor.value}");
-          data!.leave!=null?
-           leaveDatesTutor.value = data!.leave!.map((date) {
-               final parsedDate = DateFormat('dd-MM-yyyy').parse(date.leaveDate!);
-            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
-           }) .toSet():'';
-           print("leave===========>${leaveDatesTutor.value}");
+        // data!.holidays!=null?
+        //  holidayDatesTutor.value = data!.holidays!
+        //   .map((date) {
+        //             final parsedDate = DateFormat('dd-MM-yyyy').parse(date.holidayDate!);
+        //     return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+        //   })
+        //   .toSet():'';
+        //    print("Holiday===========>${holidayDatesTutor.value}");
+        //   data!.leave!=null?
+        //    leaveDatesTutor.value = data!.leave!.map((date) {
+        //        final parsedDate = DateFormat('dd-MM-yyyy').parse(date.leaveDate!);
+        //     return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+        //    }) .toSet():'';
+        //    print("leave===========>${leaveDatesTutor.value}");
         attendanceData.value = [
           AttendanceData(
               category: "All",
-              percentage: data!.statusCounts!.totalStudents!.toDouble(),
+              percentage: data!.totalRecords!.toDouble(),
               pointColor: const Color(0xff014EA9)),
           AttendanceData(
               category: "Present",
-              percentage: data!.statusCounts!.present!.toDouble(),
+              percentage: data!.totalPresent!.toDouble(),
               pointColor: const Color(0xffF07721)),
           AttendanceData(
               category: "Absent",
-              percentage: data!.statusCounts!.totalStudents!.toDouble(),
+              percentage: data!.totalAbsent!.toDouble(),
               pointColor: const Color(0xffAD0F60)),
           AttendanceData(
               category: "Partial\nAttendance",
-              percentage: data!.statusCounts!.missPunch!.toDouble(),
+              percentage: data!.totalMisspunch!.toDouble(),
               pointColor: Color(0xff2E5BB5)),
         ];
          update();

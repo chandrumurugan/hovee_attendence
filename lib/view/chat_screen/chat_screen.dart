@@ -1,16 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/view/chat_screen/live_chat_screen.dart';
 import 'package:hovee_attendence/view/chat_screen/message_module.dart';
-import 'package:hovee_attendence/widget/live_chat.dart';
+
 
 class CustomerChat extends StatefulWidget {
- final String chatId;
-  const CustomerChat({Key? key, required this.chatId}) : super(key: key);
+  const CustomerChat({Key? key,}) : super(key: key);
 
   @override
   ChatScreenState createState() => ChatScreenState();
@@ -27,9 +29,16 @@ class ChatScreenState extends State<CustomerChat> {
     "General & Account Related",
     "Tutee Related",
     "Tutor Related",
-    "Others",
+    //thers",
     "Live chat"
   ];
+
+   String?profileImage = "";
+   String? wowId = "";
+  String? firstName = "";
+  String? lastname = "";
+
+   final UserProfileController userProfileData = Get.put(UserProfileController());
 
   @override
   void initState() {
@@ -47,6 +56,10 @@ class ChatScreenState extends State<CustomerChat> {
         isLoading = true;
       });
       dialogFlowtter = DialogFlowtter(jsonPath: "assets/dialog_flow_auth.json");
+   firstName =userProfileData.userProfileResponse.value.data?.firstName;
+  lastname=  userProfileData.userProfileResponse.value.data?.lastName;
+   wowId =  userProfileData.userProfileResponse.value.data?.wowId;
+   profileImage =  userProfileData.userProfileResponse.value.data?.profileUrl.toString();
     } catch (e) {
       if (kDebugMode) {
         print('Error initializing DialogFlowtter: $e');
@@ -173,7 +186,7 @@ class ChatScreenState extends State<CustomerChat> {
                       onPressed: () {
                         if (text == "Live chat") {
               // Navigate to Live Chat screen
-              Get.to(() => LiveChat()); // If using GetX
+               startChat(context);
               // OR
               // Navigator.push(context, MaterialPageRoute(builder: (context) => LiveChatScreen()));
             } else {
@@ -272,5 +285,68 @@ class ChatScreenState extends State<CustomerChat> {
         curve: Curves.easeOut,
       );
     });
+  }
+
+   Future<void> startChat(BuildContext context) async {
+    var agents = await FirebaseFirestore.instance
+        .collection('users')
+        .where('role', isEqualTo: 'agent')
+        .where('isAvailable', isEqualTo: true)
+        .limit(1)
+        .get();
+
+    if (agents.docs.isNotEmpty) {
+      var agent = agents.docs.first;
+      // Check if chat already exists
+      var existingChat = await FirebaseFirestore.instance
+          .collection('chats')
+          .where('customerId', isEqualTo: wowId)
+          .where('agentId', isEqualTo: agent.id)
+          .limit(1)
+          .get();
+
+      if (existingChat.docs.isNotEmpty) {
+        String existingChatId = existingChat.docs.first.id;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => ChatScreen(
+                    chatId: existingChatId,
+                    senderId: wowId ?? "",
+                  )),
+        );
+        return;
+      }
+
+      // Ensure profile image exists
+      String newImageUrl = profileImage ?? "";
+      String chatId = FirebaseFirestore.instance.collection('chats').doc().id;
+      // String newImageUrl = await uploadProfileImage(user.photoURL!, user.uid);
+
+      await FirebaseFirestore.instance.collection('chats').doc(chatId).set({
+        'customerId': wowId,
+        'agentId': agent.id,
+        'customerName': '${firstName} ${lastname}',
+        'customerImage': newImageUrl,
+        'isActive': true,
+      });
+
+      await FirebaseFirestore.instance.collection('users').doc(agent.id).update(
+        {'isAvailable': false, 'assignedChatId': chatId},
+      );
+      
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => ChatScreen(
+                  chatId: chatId,
+                  senderId: wowId ?? "",
+                )),
+      );
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("No agents available")));
+    }
   }
 }

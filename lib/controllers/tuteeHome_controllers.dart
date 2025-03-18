@@ -267,36 +267,36 @@ class TuteeHomeController extends GetxController with GetSingleTickerProviderSta
      animationController.dispose();
   }
 
-  Future<void> startChat(BuildContext context) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
+  // Future<void> startChat(BuildContext context) async {
+  //   User? user = FirebaseAuth.instance.currentUser;
+  //   if (user == null) return;
 
-    var agents = await FirebaseFirestore.instance
-        .collection('users')
-        .where('role', isEqualTo: 'agent')
-        .where('isAvailable', isEqualTo: true)
-        .limit(1)
-        .get();
+  //   var agents = await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .where('role', isEqualTo: 'agent')
+  //       .where('isAvailable', isEqualTo: true)
+  //       .limit(1)
+  //       .get();
 
-    if (agents.docs.isNotEmpty) {
-      var agent = agents.docs.first;
-      String chatId = FirebaseFirestore.instance.collection('chats').doc().id;
+  //   if (agents.docs.isNotEmpty) {
+  //     var agent = agents.docs.first;
+  //     String chatId = FirebaseFirestore.instance.collection('chats').doc().id;
 
-      await FirebaseFirestore.instance.collection('chats').doc(chatId).set({
-        'customerId': user.uid,
-        'agentId': agent.id,
-        'isActive': true
-      });
+  //     await FirebaseFirestore.instance.collection('chats').doc(chatId).set({
+  //       'customerId': user.uid,
+  //       'agentId': agent.id,
+  //       'isActive': true
+  //     });
 
-      await FirebaseFirestore.instance.collection('users').doc(agent.id).update({
-        'isAvailable': false,
-        'assignedChatId': chatId
-      });
-          await _chatService.sendNotificationToAgent(chatId, user.displayName ?? "Customer");
+  //     await FirebaseFirestore.instance.collection('users').doc(agent.id).update({
+  //       'isAvailable': false,
+  //       'assignedChatId': chatId
+  //     });
+  //         await _chatService.sendNotificationToAgent(chatId, user.displayName ?? "Customer");
 
-      Navigator.push(context, MaterialPageRoute(builder: (_) => CustomerChat(chatId: chatId)));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("No agents available")));
-    }
-  }
+  //     Navigator.push(context, MaterialPageRoute(builder: (_) => CustomerChat(chatId: chatId)));
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("No agents available")));
+  //   }
+  // }
 }

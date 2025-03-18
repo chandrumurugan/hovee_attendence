@@ -127,6 +127,7 @@ class _MyPaymentScreenState extends State<MyPaymentScreen> {
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: filteredList.length,
                         itemBuilder: (BuildContext context, int index) {
+                        Color parsedColor = Color(int.parse(filteredList[index].selectedPlan.colorCode.replaceFirst("#", "0xff")));
                           return InkWell(
                             onTap: () {
                               Get.to(
@@ -158,7 +159,7 @@ class _MyPaymentScreenState extends State<MyPaymentScreen> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: Container(
-                                      color: AppConstants.secondaryColor.withOpacity(0.6),
+                                      color: parsedColor,
                                       child: CachedNetworkImage(
                                         imageUrl: "imageUrl",
                                         height: 100,

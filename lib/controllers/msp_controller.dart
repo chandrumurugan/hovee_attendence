@@ -223,15 +223,15 @@ class MspController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'You have successfully accepted the misspunch request.',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:   const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'You have successfully accepted the misspunch request.',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         // Get.snackbar(icon: const Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white,'MSP accepted successfully',backgroundColor: const Color.fromRGBO(186, 1, 97, 1),);
 
@@ -244,15 +244,15 @@ class MspController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'You have rejected the misspunch request ',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:   const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'You have rejected the misspunch request ',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
                //Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white,'MSP rejected successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           }
@@ -289,15 +289,15 @@ class MspController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'Deletion Successful! The misspunch has removed.',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:   const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'Deletion Successful! The misspunch has removed.',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
   //Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white, 'MSP deleted successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } else {
@@ -307,15 +307,15 @@ class MspController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'Failed to deleted MSP',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:   const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'Failed to deleted MSP',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
       //Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),colorText: Colors.white,  'Failed to deleted MSP',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     }
@@ -326,15 +326,15 @@ class MspController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'Error: $e',
-        style: const TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:   SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'Error: $e',
+  //       style: const TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
    // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
   } finally {

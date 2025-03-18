@@ -152,6 +152,10 @@ class currentsubscriptionData {
         required this.allowBronze,
         required this.allowSilver,
         required this.allowGold,
+         required this.allowBronzeYear,
+        required this.allowSilverYear,
+        required this.allowGoldYear,
+        required this.planColorCode,
     });
 
     final String? id;
@@ -172,6 +176,10 @@ class currentsubscriptionData {
     final bool? allowBronze;
     final bool? allowSilver;
     final bool? allowGold;
+    final bool? allowBronzeYear;
+    final bool? allowSilverYear;
+    final bool? allowGoldYear;
+    final String? planColorCode;
     factory currentsubscriptionData.fromJson(Map<String, dynamic> json){ 
         return currentsubscriptionData(
             id: json["id"],
@@ -192,6 +200,10 @@ class currentsubscriptionData {
             allowBronze: json["allow_bronze"],
             allowSilver: json["allow_silver"],
             allowGold: json["allow_gold"],
+            allowBronzeYear: json["allow_bronze_year"],
+            allowSilverYear: json["allow_silver_year"],
+            allowGoldYear: json["allow_gold_year"],
+            planColorCode: json["plan_color_code"],
         );
     }
 
@@ -214,6 +226,10 @@ class currentsubscriptionData {
         "allow_bronze": allowBronze,
         "allow_silver": allowSilver,
         "allow_gold": allowGold,
+         "allow_bronze_year": allowBronzeYear,
+        "allow_silver_year": allowSilverYear,
+        "allow_gold_year": allowGoldYear,
+        "plan_color_code":planColorCode
     };
 
 }

@@ -51,6 +51,7 @@ class Datum {
     final DateTime? createdAt;
     final DateTime? updatedAt;
     final int? v;
+    
 
     factory Datum.fromJson(Map<String, dynamic> json){ 
         return Datum(
@@ -88,6 +89,8 @@ class Plan {
         required this.price,
         required this.description,
         required this.id,
+        required this.colorCode,
+
     });
 
     final String? category;
@@ -96,6 +99,7 @@ class Plan {
     final double? price;
     final List<String> description;
     final String? id;
+    final String? colorCode;
 
     factory Plan.fromJson(Map<String, dynamic> json){ 
         return Plan(
@@ -105,6 +109,7 @@ class Plan {
            price: (json["price"] as num?)?.toDouble(),
             description: json["description"] == null ? [] : List<String>.from(json["description"]!.map((x) => x)),
             id: json["_id"],
+            colorCode: json["colorCode"],
         );
     }
 
@@ -115,6 +120,8 @@ class Plan {
         "price": price,
         "description": description.map((x) => x).toList(),
         "_id": id,
+        'colorCode':colorCode
+        
     };
 
 }

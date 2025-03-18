@@ -221,7 +221,8 @@ class SideMenu extends StatelessWidget {
                       prefs.remove('Token');
                       prefs.remove('PrentToken');
                       prefs.remove("PrentToken");
-
+                     prefs.remove("planName");
+                     prefs.remove("planColorCode");
                       authController.tabController.animateTo(0);
                       authController.resetTabIndex();
                       Get.offAll(() => const LoginSignUp());

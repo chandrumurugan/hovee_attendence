@@ -63,7 +63,7 @@ class TutorHome extends StatelessWidget {
         key: controller.tutorScaffoldKey,
         drawer: SideMenu(isGuest: false),
          floatingActionButton: FloatingActionButton.extended(onPressed: (){
-        Get.to(() => CustomerChat(chatId: '',));
+        Get.to(() => CustomerChat());
       }, label: Icon(Icons.chat)),
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -187,6 +187,7 @@ class TutorHome extends StatelessWidget {
                           lastName: lastname,
                           wowId: wowid,
                           planName: noticontroller.planName ?? "",
+                          colorCode: noticontroller.colorCode ?? "",
                         ),
                       ),
                       SizedBox(

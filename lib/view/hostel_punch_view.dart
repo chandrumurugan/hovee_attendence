@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/hostel_punchin_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/view/dashboard_screen.dart';
 import 'package:hovee_attendence/widget/addres_indicator.dart';
 import 'package:hovee_attendence/widget/button_splash.dart';
 import 'package:hovee_attendence/widget/custom_texts.dart';
@@ -22,17 +23,25 @@ class HostelPunchView extends StatelessWidget {
   final String hostelStartTime;
   final String hostelEndTime;
   final String wowId,hostelType,room;
-  const HostelPunchView({super.key, required this.hostelName, required this.hostelId, required this.hostelObjId, required this.hostelStartTime, required this.hostelEndTime, required this.wowId, required this.hostelType, required this.room});
+    final RxString  type;
+    final String firstname, lastname,wowid;
+  const HostelPunchView({super.key, required this.hostelName, required this.hostelId, required this.hostelObjId, required this.hostelStartTime, required this.hostelEndTime, required this.wowId, required this.hostelType, required this.room, required this.type,required this.firstname,required this.lastname,required this.wowid});
    
   @override
   Widget build(BuildContext context) {
    final HostelPunchinController _controller = Get.put(HostelPunchinController(),permanent: true);
-     
+     _controller.getCurrentLocation();
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
         navigateTo: () {
-          Get.back();
+          
+        Get.offAll(DashboardScreen(
+            rolename: type.value,
+            firstname: firstname ?? '',
+            lastname: lastname ?? '',
+            wowid: wowid ?? '',
+          ));
         },
       ),
       body: Stack(
@@ -171,7 +180,7 @@ class HostelPunchView extends StatelessWidget {
   () => Center(
     child: _controller.hasScanned.value
       ? regularText(
-          text: _controller.punchedIn.value ? 'Punch Out' : 'Punch In',
+          text: _controller.punchedIn.value ? 'Punch In' : 'Punch Out',
           fontSize: 12,
           color: Colors.white,
         )
@@ -273,15 +282,15 @@ void _onBarcodeScanned(String? scannedData) async {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:  const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Invalid QR Code',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:  const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //      'Invalid QR Code',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
     return;
   }
@@ -299,15 +308,15 @@ void _onBarcodeScanned(String? scannedData) async {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: const SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                'Invalid QR Code',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // messageText: const SizedBox(
+          //   height: 40, // Set desired height here
+          //   child: Center(
+          //     child: Text(
+          //       'Invalid QR Code',
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
     }
   } else {
@@ -317,15 +326,15 @@ void _onBarcodeScanned(String? scannedData) async {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: const SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                'Invalid QR Code',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // messageText: const SizedBox(
+          //   height: 40, // Set desired height here
+          //   child: Center(
+          //     child: Text(
+          //       'Invalid QR Code',
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
   }
 

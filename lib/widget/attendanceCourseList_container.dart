@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
+import 'package:hovee_attendence/controllers/hostel_punchin_controller.dart';
 import 'package:hovee_attendence/modals/getAttendanceCourseList_model.dart';
 import 'package:hovee_attendence/modals/getEnrollmentDataModel.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
@@ -153,16 +154,16 @@ class AttendancecourselistContainer extends StatelessWidget {
                           colorText: Colors.white,
                           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
                           shouldIconPulse: false,
-                          messageText: const SizedBox(
-                            height: 40, // Set desired height here
-                            child: Center(
-                              child: Text(
-                                'Attendance can only be started 30 minutes before the start time.',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                            ),
-                          ),
+                          // messageText: const SizedBox(
+                          //   height: 40, // Set desired height here
+                          //   child: Center(
+                          //     child: Text(
+                          //       'Attendance can only be started 30 minutes before the start time.',
+                          //       style: TextStyle(
+                          //           color: Colors.white, fontSize: 16),
+                          //     ),
+                          //   ),
+                          // ),
                         );
 
                         // Get.snackbar(
@@ -183,16 +184,16 @@ class AttendancecourselistContainer extends StatelessWidget {
                           shouldIconPulse: false,
                           colorText: Colors.white,
                           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-                          messageText: const SizedBox(
-                            height: 40, // Set desired height here
-                            child: Center(
-                              child: Text(
-                                'Attendance can only be started 30 minutes before the start time.',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                            ),
-                          ),
+                          // messageText: const SizedBox(
+                          //   height: 40, // Set desired height here
+                          //   child: Center(
+                          //     child: Text(
+                          //       'Attendance can only be started 30 minutes before the start time.',
+                          //       style: TextStyle(
+                          //           color: Colors.white, fontSize: 16),
+                          //     ),
+                          //   ),
+                          // ),
                         );
                         // Get.snackbar(
                         //     'Attendance can only be started 30 minutes before the start time.',backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
@@ -424,16 +425,16 @@ class AttendanceHostellistContainer extends StatelessWidget {
                           colorText: Colors.white,
                           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
                           shouldIconPulse: false,
-                          messageText: const SizedBox(
-                            height: 40, // Set desired height here
-                            child: Center(
-                              child: Text(
-                                'Attendance can only be started 30 minutes before the start time.',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                            ),
-                          ),
+                          // messageText: const SizedBox(
+                          //   height: 40, // Set desired height here
+                          //   child: Center(
+                          //     child: Text(
+                          //       'Attendance can only be started 30 minutes before the start time.',
+                          //       style: TextStyle(
+                          //           color: Colors.white, fontSize: 16),
+                          //     ),
+                          //   ),
+                          // ),
                         );
 
                         // Get.snackbar(
@@ -454,16 +455,16 @@ class AttendanceHostellistContainer extends StatelessWidget {
                           shouldIconPulse: false,
                           colorText: Colors.white,
                           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-                          messageText: const SizedBox(
-                            height: 40, // Set desired height here
-                            child: Center(
-                              child: Text(
-                                'Attendance can only be started 30 minutes before the start time.',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                            ),
-                          ),
+                          // messageText: const SizedBox(
+                          //   height: 40, // Set desired height here
+                          //   child: Center(
+                          //     child: Text(
+                          //       'Attendance can only be started 30 minutes before the start time.',
+                          //       style: TextStyle(
+                          //           color: Colors.white, fontSize: 16),
+                          //     ),
+                          //   ),
+                          // ),
                         );
                         // Get.snackbar(
                         //     'Attendance can only be started 30 minutes before the start time.',backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
@@ -484,7 +485,7 @@ class AttendanceHostellistContainer extends StatelessWidget {
                                 attendanceCourse!.hostelTimingEnd ?? '',
                             wowId: hostelObjectIdDetails!.wowId ?? '',
                             hostelType: attendanceCourse!.hostelType ?? '',
-                            room: attendanceCourse!.food ?? '',
+                            room: attendanceCourse!.food ?? '', type: 'Hosteller'.obs, firstname: hostellerObjectIdDetails!.firstName ?? '', lastname: hostellerObjectIdDetails!.lastName ?? '', wowid: hostellerObjectIdDetails!.wowId ?? '',
                           ),
                         );
                       } else {
@@ -500,7 +501,7 @@ class AttendanceHostellistContainer extends StatelessWidget {
                                 attendanceCourse!.hostelTimingEnd ?? '',
                             wowId: hostellerObjectIdDetails!.wowId ?? '',
                             hostelType: attendanceCourse!.hostelType ?? '',
-                            room: attendanceCourse!.food ?? '',
+                            room: attendanceCourse!.food ?? '', type: 'Hosteller'.obs, firstname: hostellerObjectIdDetails!.firstName ?? '', lastname: hostellerObjectIdDetails!.lastName ?? '', wowid: hostellerObjectIdDetails!.wowId ?? '',
                           ),
                         );
                       }

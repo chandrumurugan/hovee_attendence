@@ -441,7 +441,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         type: 'Tutor',
         onDashBoardBack: () => _navigateBack(),
       ),
-    if (userProfileResponse?.data?.institudeId == null)
+    if (userProfileResponse?.data?.institudeId== null)
       PlanList(fromBottomNav: true,type: widget.rolename,
         onDashBoardBack: () => _navigateBack(),),
   ];
@@ -465,7 +465,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       _buildBottomNavItem(label: 'Enrollments', iconPath: 'assets/bottomBar/online-learning 1.png'),
        if (widget.rolename == 'Tutor')
       _buildBottomNavItem(label: 'Rating', iconPath: 'assets/bottomBar/Vector (4).png'),
-    if (userProfileResponse?.data?.institudeId == null)
+    if (userProfileResponse?.data?.institudeId== null)
       _buildBottomNavItem(label: 'Plan', iconPath: 'assets/bottomBar/Vector (2).png'),
     ];
   }

@@ -384,27 +384,27 @@ class HostelAttendanceScreen extends StatelessWidget {
                                     //     )
                                     //   ],
                                     // ),
-                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 18,
-                                          width: 18,
-                                          color: Colors.amber,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Holiday',
-                                          style: GoogleFonts.nunito(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
+                                    //  Row(
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.start,
+                                    //   children: [
+                                    //     Container(
+                                    //       height: 18,
+                                    //       width: 18,
+                                    //       color: Colors.amber,
+                                    //     ),
+                                    //     const SizedBox(
+                                    //       width: 10,
+                                    //     ),
+                                    //     Text(
+                                    //       'Holiday',
+                                    //       style: GoogleFonts.nunito(
+                                    //           fontSize: 14,
+                                    //           fontWeight: FontWeight.bold,
+                                    //           color: Colors.black),
+                                    //     )
+                                    //   ],
+                                    // ),
                                   ],
                                 ),
                                 const SizedBox(
@@ -566,25 +566,25 @@ class HostelAttendanceScreen extends StatelessWidget {
                                 barChart(
                                   color: const Color(0xff014EA9),
                                   count:
-                                      '${controller.data?.statusCounts?.totalStudents ?? 0}',
+                                      '${controller.data?.totalRecords ?? 0}',
                                   title: 'All',
                                 ),
                                 barChart(
                                   color: const Color(0xffF07721),
                                   count:
-                                      '${controller.data?.statusCounts?.present ?? 0}',
+                                      '${controller.data?.totalPresent ?? 0}',
                                   title: 'Present',
                                 ),
                                 barChart(
                                   color: const Color(0xffAD0F60),
                                   count:
-                                      '${controller.data?.statusCounts?.absent ?? 0}',
+                                      '${controller.data?.totalAbsent ?? 0}',
                                   title: 'Absent',
                                 ),
                                 barChart(
                                   color: const Color(0xff2E5BB5),
                                   count:
-                                      '${controller.data?.statusCounts?.missPunch ?? 0}',
+                                      '${controller.data?.totalMisspunch ?? 0}',
                                   title: 'Miss\npunch',
                                 ),
                                 // barChart(
@@ -630,7 +630,7 @@ class HostelAttendanceScreen extends StatelessWidget {
                         children: [
                           // Column headers
                           Expanded(
-                            child: Text('Date',
+                            child: Text(type.value!='Hostel' ? 'Date' : 'Name',
                                 style: GoogleFonts.nunito(
                                     fontSize: 17,
                                     fontWeight: FontWeight.w700,
@@ -658,17 +658,17 @@ class HostelAttendanceScreen extends StatelessWidget {
                       // Check if attendance data is available and load it dynamically
                       if (controller.isLoadingList.value) {
                         return const CircularProgressIndicator();
-                      } else if (controller.data?.attendanceDetails !=
+                      } else if (controller.data?.attendances !=
                               null &&
-                          controller.data!.attendanceDetails!.isNotEmpty) {
+                          controller.data!.attendances!.isNotEmpty) {
                         return ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount:
-                              controller.data!.attendanceDetails!.length,
+                              controller.data!.attendances!.length,
                           itemBuilder: (context, index) {
                             final attendance =
-                                controller.data!.attendanceDetails![index];
+                                controller.data!.attendances![index];
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(
@@ -681,7 +681,7 @@ class HostelAttendanceScreen extends StatelessWidget {
                                   // Date
                                   Expanded(
                                     child: Text(
-                                      attendance.punchInDate ?? '',
+                                   type.value!='Hostel' ?  attendance.punchDate ?? '' :attendance.name ?? '' ,
                                       style: GoogleFonts.nunito(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
@@ -707,9 +707,9 @@ class HostelAttendanceScreen extends StatelessWidget {
                                                 color: Colors.blue),
                                             onPressed: () {
                                               // Handle edit action for punch in time
-                                            // Get.to(() => HostelAddmspScreen(
-                                            //   data: attendance,
-                                            //       ));
+                                            Get.to(() => HostelAddmspScreen(
+                                              data: attendance,
+                                                  ));
                                             },
                                           ),
                                   ),

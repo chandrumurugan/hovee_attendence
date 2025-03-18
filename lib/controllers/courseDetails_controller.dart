@@ -100,15 +100,15 @@ class CourseDetailController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText: const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        'Enquiry already submitted',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText: const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //       'Enquiry already submitted',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
  return false;
       }
@@ -119,15 +119,15 @@ class CourseDetailController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:  SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        'Error: $e',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:  SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //       'Error: $e',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
  return false;
       //  Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
@@ -179,15 +179,15 @@ class CourseDetailController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText: const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        'Enquiry already submitted',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText: const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //       'Enquiry already submitted',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
 return false;
       }
@@ -198,15 +198,15 @@ return false;
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:  SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        'Error: $e',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:  SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //       'Error: $e',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
 return false;
       //  Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)

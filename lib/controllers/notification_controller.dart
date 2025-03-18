@@ -34,7 +34,7 @@ class NotificationController extends GetxController {
   // final UserProfileController controller =
   //     Get.put(UserProfileController());
 
-       String? role,planName;
+       String? role,planName,colorCode;
 
      final otpController = TextEditingController();
   final focusNode = FocusNode();
@@ -60,6 +60,7 @@ class NotificationController extends GetxController {
      SharedPreferences prefs = await SharedPreferences.getInstance();
     // role = prefs.getString('Rolename') ?? '';
    planName = prefs.getString("planName")  ?? '';
+  colorCode= prefs.getString("planColorCode") ?? '';
     isLoading(true);
     var batchData = {"role": role, "isRead ": false};
     var response = await WebService.getNotifications(batchData);
@@ -123,6 +124,7 @@ class NotificationController extends GetxController {
     isLoading(true);
      SharedPreferences prefs = await SharedPreferences.getInstance();
     planName = prefs.getString("planName")  ?? '';
+     colorCode= prefs.getString("planColorCode") ?? '';
     var batchData = {"role": role, "type": type, "isRead ": false};
     if(role =='Hostel' || role =='Hosteller' ){
     var response = await WebService.getNotificationsHostel(batchData);

@@ -965,7 +965,7 @@ class WebService {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: SizedBox(
+          titleText: SizedBox(
             height: 40, // Set desired height here
             child: Center(
               child: Text(
@@ -1392,7 +1392,7 @@ class WebService {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: SizedBox(
+          titleText: SizedBox(
             height: 40, // Set desired height here
             child: Center(
               child: Text(
@@ -1581,7 +1581,7 @@ class WebService {
         colorText: Colors.white,
         backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
         shouldIconPulse: false,
-        messageText: SizedBox(
+        titleText: SizedBox(
           height: 40, // Set desired height here
           child: Center(
             child: Text(
@@ -1737,7 +1737,7 @@ class WebService {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: SizedBox(
+          titleText: SizedBox(
             height: 40, // Set desired height here
             child: Center(
               child: Text(
@@ -2056,7 +2056,7 @@ class WebService {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: SizedBox(
+          titleText: SizedBox(
             height: 40, // Set desired height here
             child: Center(
               child: Text(
@@ -2734,11 +2734,11 @@ class WebService {
     }
   }
 
-  static Future<getGroupedEnrollmentByAttendanceModel?>
+  static Future<GetGroupedEnrollmentByAttendanceModel?>
       fetchgetGroupedEnrollmentByAttendance(
           String batchId, String selectedDate, selectedMonth, type) async {
     final url = Uri.parse(
-        '${baseUrl}hostel_attendance/getGroupedEnrollmentByAttendanceTutor');
+        '${baseUrl}hostel_attendance/getHostelAttendance');
     final box = GetStorage(); // Get an instance of GetStorage
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -2764,7 +2764,7 @@ class WebService {
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
       Logger().i(result);
-      return getGroupedEnrollmentByAttendanceModel.fromJson(result);
+      return GetGroupedEnrollmentByAttendanceModel.fromJson(result);
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
       // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
@@ -2993,7 +2993,7 @@ class WebService {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: SizedBox(
+          titleText: SizedBox(
             height: 40, // Set desired height here
             child: Center(
               child: Text(

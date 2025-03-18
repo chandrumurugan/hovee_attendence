@@ -765,15 +765,15 @@ print('Wow ID: $wowId');
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: const SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                'Profile updated successfully',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // messageText: const SizedBox(
+          //   height: 40, // Set desired height here
+          //   child: Center(
+          //     child: Text(
+          //       'Profile updated successfully',
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
         // Get.offAll(() => DashboardScreen(
         //       rolename: 'Tutor',
@@ -938,15 +938,15 @@ print('Wow ID: $wowId');
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: const SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                'Profile updated successfully',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // messageText: const SizedBox(
+          //   height: 40, // Set desired height here
+          //   child: Center(
+          //     child: Text(
+          //       'Profile updated successfully',
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
                 final firstName = personalInfo.value['first_name'] ?? '';
       final lastName = personalInfo.value['last_name'] ?? '';
@@ -1272,15 +1272,15 @@ print('Wow ID: $wowId');
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: const SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                'Profile updated successfully',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // messageText: const SizedBox(
+          //   height: 40, // Set desired height here
+          //   child: Center(
+          //     child: Text(
+          //       'Profile updated successfully',
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
       } else {
         print(response.statusCode);

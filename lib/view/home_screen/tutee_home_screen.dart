@@ -50,7 +50,7 @@ class TuteeHome extends StatelessWidget {
     return Scaffold(
       key: controller.tuteeScaffoldKey,
       floatingActionButton: FloatingActionButton.extended(onPressed: (){
-        Get.to(() => CustomerChat(chatId: '',));  
+        Get.to(() => CustomerChat());  
        //controller.startChat(context);
       }, label: Icon(Icons.chat)),
       drawer: SideMenu(
@@ -194,6 +194,7 @@ class TuteeHome extends StatelessWidget {
                         lastName: lastname,
                         wowId: wowid,
                         planName: noticontroller.planName ?? "",
+                        colorCode: noticontroller.colorCode ?? "",
                       ),
                     ),
                     // SizedBox(

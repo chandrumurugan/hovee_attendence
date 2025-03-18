@@ -46,6 +46,7 @@ class _MyPaymentDetailScreenState extends State<MyPaymentDetailScreen> {
   }
   @override
   Widget build(BuildContext context) {
+     Color parsedColor = Color(int.parse(widget.paymentDetail.selectedPlan.colorCode.replaceFirst("#", "0xff")));
         return Scaffold(
       appBar: AppBarHeader(
           needGoBack: true,
@@ -68,7 +69,7 @@ class _MyPaymentDetailScreenState extends State<MyPaymentDetailScreen> {
                     backgroundColor: AppConstants.secondaryColor,
                     child: CircleAvatar(
                       radius: 45,
-                      backgroundColor: Colors.white,
+                      backgroundColor: parsedColor,
                       child: CachedNetworkImage(
                         imageUrl: "",
                         fit: BoxFit.cover,

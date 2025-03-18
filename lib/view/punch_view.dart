@@ -333,15 +333,15 @@ void _onBarcodeScanned(String? scannedData) async {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:  const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Invalid QR Code',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:  const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //      'Invalid QR Code',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
     return;
   }
@@ -365,15 +365,15 @@ void _onBarcodeScanned(String? scannedData) async {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: const SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                'Invalid QR Code',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // messageText: const SizedBox(
+          //   height: 40, // Set desired height here
+          //   child: Center(
+          //     child: Text(
+          //       'Invalid QR Code',
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
       // SnackBarUtils.showErrorSnackBar(
       //   context,
@@ -387,15 +387,15 @@ void _onBarcodeScanned(String? scannedData) async {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: const SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                'Invalid QR Code',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // messageText: const SizedBox(
+          //   height: 40, // Set desired height here
+          //   child: Center(
+          //     child: Text(
+          //       'Invalid QR Code',
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
   }
 

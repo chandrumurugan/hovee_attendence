@@ -124,6 +124,7 @@ class SelectedPlan {
         required this.price,
         required this.description,
         required this.id,
+        required this.colorCode,
     });
 
     final String? category;
@@ -132,15 +133,17 @@ class SelectedPlan {
     final double? price;
     final List<String> description;
     final String? id;
+    final String? colorCode;
 
     factory SelectedPlan.fromJson(Map<String, dynamic> json){ 
         return SelectedPlan(
             category: json["category"],
             duration: json["duration"],
             durationType: json["durationType"],
-            price: json["price"],
+             price: (json["price"] as num?)?.toDouble(),
             description: json["description"] == null ? [] : List<String>.from(json["description"]!.map((x) => x)),
             id: json["_id"],
+            colorCode: json["colorCode"]
         );
     }
 
@@ -151,6 +154,7 @@ class SelectedPlan {
         "price": price,
         "description": description.map((x) => x).toList(),
         "_id": id,
+       "colorCode" :colorCode
     };
 
 }

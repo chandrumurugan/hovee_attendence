@@ -112,15 +112,15 @@ Future<bool> updateEnrollment( String enrollmentId, String type, String code) as
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: const SizedBox(
-            height: 40,
-            child: Center(
-              child: Text(
-                'Enrollment rejected successfully',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // messageText: const SizedBox(
+          //   height: 40,
+          //   child: Center(
+          //     child: Text(
+          //       'Enrollment rejected successfully',
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
          tabController.animateTo(2);
           handleTabChange(2);

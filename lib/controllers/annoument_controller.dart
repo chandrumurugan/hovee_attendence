@@ -284,15 +284,15 @@ void editAnnoument(BuildContext context,String announcementId) async {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:  SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Error: $e',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:  SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //      'Error: $e',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
     } finally {
       isLoading.value = false;
@@ -323,15 +323,15 @@ void deleteAnnouncement(BuildContext context, String batchId,courseId,announceme
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText: const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        'Announcement deleted successfully',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText: const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //       'Announcement deleted successfully',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         //  Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
         // ,'Announcement deleted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
@@ -345,15 +345,15 @@ void deleteAnnouncement(BuildContext context, String batchId,courseId,announceme
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:  SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        response?.message ?? 'Failed to deleted announcement',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:  SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //       response?.message ?? 'Failed to deleted announcement',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
     // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),response?.message ?? 'Failed to deleted announcement',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
@@ -364,15 +364,15 @@ void deleteAnnouncement(BuildContext context, String batchId,courseId,announceme
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:  SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-       'Error: $e',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:  SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //      'Error: $e',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
        //Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } finally {

@@ -213,6 +213,7 @@ isLoading
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.zero,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4, // 4 columns

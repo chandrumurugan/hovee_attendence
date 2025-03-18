@@ -124,6 +124,7 @@ class _PlanListState extends State<PlanList> {
         currentSubscription = response.data;
         Logger().i("currentSubscription==>${currentSubscription}");
         prefs.setString("planName", "${currentSubscription!.planName}");
+         prefs.setString("planColorCode", "${currentSubscription!.planColorCode}");
         isLoadingcategoryList = false;
       });
     } else {
@@ -202,6 +203,7 @@ class _PlanListState extends State<PlanList> {
                                 isMonthlySelected = true;
                                 selectedIndex = -1;
                               });
+                              getcurrentsubscription();
                               await fetchSubscriptionData("month");
                             },
                             child: Container(
@@ -235,6 +237,7 @@ class _PlanListState extends State<PlanList> {
                                 isMonthlySelected = false;
                                 selectedIndex = -1;
                               });
+                              getcurrentsubscription();
                               await fetchSubscriptionData("year");
                             },
                             child: Container(
@@ -348,11 +351,16 @@ class _PlanListState extends State<PlanList> {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      InkWell(
+InkWell(
   onTap: (currentSubscription == null) ||
-          (plan.category == "Bronze" && currentSubscription!.allowBronze!) ||
-          (plan.category == "Silver" && currentSubscription!.allowSilver!) ||
-          (plan.category == "Gold" && currentSubscription!.allowGold!)
+          (!isMonthlySelected
+              ? (plan.category == "Bronze" && currentSubscription!.allowBronzeYear!) ||
+                (plan.category == "Silver" && currentSubscription!.allowSilverYear!) ||
+                (plan.category == "Gold" && currentSubscription!.allowGoldYear!)
+              : (plan.category == "Bronze" && currentSubscription!.allowBronze!) ||
+                (plan.category == "Silver" && currentSubscription!.allowSilver!) ||
+                (plan.category == "Gold" && currentSubscription!.allowGold!)
+          )
       ? () {
           handlePayment(plan);
         }
@@ -363,25 +371,38 @@ class _PlanListState extends State<PlanList> {
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(8),
       border: Border.all(color: Colors.white),
-      color:currentSubscription == null?Colors.transparent :
-       (currentSubscription != null && currentSubscription!.planName == plan.category)
+      color: currentSubscription == null ? Colors.transparent :
+        (currentSubscription != null && currentSubscription!.planName == plan.category &&  ((isMonthlySelected &&
+                        currentSubscription!.durationType!.toLowerCase() ==
+                            "month") ||
+                    (!isMonthlySelected &&
+                        currentSubscription!.durationType!.toLowerCase() ==
+                            "year")))
         ? Colors.green // Display "Active" if the current plan matches
-        : (plan.category == "Bronze" && currentSubscription!.allowBronze!) ||
-          (plan.category == "Silver" && currentSubscription!.allowSilver!) ||
-          (plan.category == "Gold" && currentSubscription!.allowGold!)
+        : (!isMonthlySelected
+            ? (plan.category == "Bronze" && currentSubscription!.allowBronzeYear!) ||
+              (plan.category == "Silver" && currentSubscription!.allowSilverYear!) ||
+              (plan.category == "Gold" && currentSubscription!.allowGoldYear!)
+            : (plan.category == "Bronze" && currentSubscription!.allowBronze!) ||
+              (plan.category == "Silver" && currentSubscription!.allowSilver!) ||
+              (plan.category == "Gold" && currentSubscription!.allowGold!)
+          )
           ? Colors.transparent // Enabled state
           : Colors.grey, // Disabled state
     ),
     child: Center(
   child: Text(
-    currentSubscription == null?"Pay Now" :
-    (currentSubscription != null && currentSubscription!.planName == plan.category)
-        ? "Active" // Display "Active" if the current plan matches
-        : (plan.category == "Bronze" && currentSubscription!.allowBronze!) ||
-          (plan.category == "Silver" && currentSubscription!.allowSilver!) ||
-          (plan.category == "Gold" && currentSubscription!.allowGold!)
-          ? "Pay Now" // Display "Pay Now" if the plan is available for purchase
-          : "Pay Now", // If not available, keep it disabled as "Active"
+    currentSubscription == null
+        ? "Pay Now"
+        : (currentSubscription!.planName == plan.category &&
+                ((isMonthlySelected &&
+                        currentSubscription!.durationType!.toLowerCase() ==
+                            "month") ||
+                    (!isMonthlySelected &&
+                        currentSubscription!.durationType!.toLowerCase() ==
+                            "year")))
+            ? "Active" // Display "Active" if the current plan matches and the durationType is correct
+            : "Pay Now", // Otherwise, show "Pay Now"
     style: GoogleFonts.nunito(
       color: Colors.white,
       fontWeight: FontWeight.bold,
@@ -389,9 +410,11 @@ class _PlanListState extends State<PlanList> {
     ),
   ),
 )
-,
+
+
   ),
 )
+
 
                                     ],
                                   ),

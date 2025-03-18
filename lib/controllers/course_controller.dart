@@ -371,15 +371,15 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText: const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        'Course deleted successfully',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText: const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //       'Course deleted successfully',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
 fetchBatchList();
         //SnackBarUtils.showSuccessSnackBar(context, 'Course delete successfully');
@@ -392,15 +392,15 @@ fetchBatchList();
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText:  SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                response?.message ?? "",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // messageText:  SizedBox(
+          //   height: 40, // Set desired height here
+          //   child: Center(
+          //     child: Text(
+          //       response?.message ?? "",
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
       //Get.snackbar(response?.message ?? "");
        
@@ -415,15 +415,15 @@ fetchBatchList();
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText:  SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                e.toString().replaceFirst("Exception: ", "") ?? "",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // messageText:  SizedBox(
+          //   height: 40, // Set desired height here
+          //   child: Center(
+          //     child: Text(
+          //       e.toString().replaceFirst("Exception: ", "") ?? "",
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
         // Get.snackbar(e.toString().replaceFirst("Exception: ", "") ?? "",backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
       

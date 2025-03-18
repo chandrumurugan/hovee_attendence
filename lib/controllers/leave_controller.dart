@@ -192,15 +192,15 @@ class TuteeLeaveController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'Leave added successfully',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:   const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'Leave added successfully',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         } else {
           Get.snackbar(
@@ -209,15 +209,15 @@ class TuteeLeaveController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:    SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      response?.message ?? 'Leave already applied for these dates',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:    SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     response?.message ?? 'Leave already applied for these dates',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         }
       } catch (e) {
@@ -227,15 +227,15 @@ class TuteeLeaveController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:    SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'Error: $e',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:    SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'Error: $e',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
       } finally {
         isLoading.value = false;
@@ -276,15 +276,15 @@ class TuteeLeaveController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'Success! The leave details have been updated.',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:   const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'Success! The leave details have been updated.',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         //   Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
         // ,'Leave updated  successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
@@ -296,15 +296,15 @@ class TuteeLeaveController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:    SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      response?.message ?? 'Failed to updated batch',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:    SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     response?.message ?? 'Failed to updated batch',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
           // SnackBarUtils.showErrorSnackBar(
           //     context, response?.message ?? 'Failed to updated batch');
@@ -316,15 +316,15 @@ class TuteeLeaveController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:    SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'Error: $e',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:    SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'Error: $e',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         //SnackBarUtils.showErrorSnackBar(context, 'Error: $e');
       } finally {
@@ -357,15 +357,15 @@ class TuteeLeaveController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:    SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      "Leave deleted  successfully",
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:    SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     "Leave deleted  successfully",
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
        // Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,), 'Leave deleted  successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
            //Get.off(()=> TuteeLeaveScreen(type: 'Tutee',));
@@ -376,15 +376,15 @@ class TuteeLeaveController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:    SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      response?.message ?? 'Failed to updated batch',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:    SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     response?.message ?? 'Failed to updated batch',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),colorText: Colors.white, response?.message ?? 'Failed to delete leave',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
@@ -395,15 +395,15 @@ class TuteeLeaveController extends GetxController {
   colorText: Colors.white,
   backgroundColor:  Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:    SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'Error: $e',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:    SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'Error: $e',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       } finally {
@@ -432,15 +432,15 @@ class TuteeLeaveController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:    SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      "You have successfully accepted the leave request.",
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:    SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     "You have successfully accepted the leave request.",
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         // Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),'Leave accepted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
 
@@ -453,15 +453,15 @@ class TuteeLeaveController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:    SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      "You have rejected the leave request",
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // messageText:    SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     "You have rejected the leave request",
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
              // Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),'Leave rejected successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           }

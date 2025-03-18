@@ -18,9 +18,8 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:widget_to_marker/widget_to_marker.dart';
 
-class HostelPunchinController extends GetxController{
-
-GoogleMapController? _mapController;
+class HostelPunchinController extends GetxController {
+  GoogleMapController? _mapController;
   var currentLocation = Rxn<LatLng>();
   var currentAddress = Rxn<String>();
   var markers = <Marker>{}.obs;
@@ -52,7 +51,6 @@ GoogleMapController? _mapController;
   var hasScanned = false.obs;
   String? name;
   var draggablePosition = Rx<Offset>(Offset(50, 50));
-  
 
   @override
   void onInit() {
@@ -60,7 +58,7 @@ GoogleMapController? _mapController;
     targetLocation.value = LatLng(targetLat ?? 0.0, targetLong ?? 0.0);
     setInatlizeLocation();
     getCurrentLocation();
-     loadPunchState();
+    loadPunchState();
   }
 
   Future<void> setInatlizeLocation() async {
@@ -125,7 +123,6 @@ GoogleMapController? _mapController;
     }
   }
 
-
   Future<void> _fetchAddress() async {
     try {
       if (currentLocation.value != null) {
@@ -144,7 +141,7 @@ GoogleMapController? _mapController;
     }
   }
 
-  Future<void>    checkDistanceFromSpecificLocation(
+  Future<void> checkDistanceFromSpecificLocation(
       BuildContext context,
       String hostelId,
       String hostelObjId,
@@ -183,7 +180,8 @@ GoogleMapController? _mapController;
         // Within punchable range, call the API to punch in
 
         final getAttendancePunchInModel? response =
-            await WebService.getHostelAttendancePunchIn(hostelId, hostelObjId, context);
+            await WebService.getHostelAttendancePunchIn(
+                hostelId, hostelObjId, context);
         Logger().i(response);
 
         if (response != null && response.success == true) {
@@ -192,8 +190,14 @@ GoogleMapController? _mapController;
           await savePunchState(punchedIn.value);
           buttonLoader(false);
           hasScanned.value = false;
-          showAnimatedDialog('Punched in successfully!',
-              "assets/images/success_punching.png",context);
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setDouble('target_lat', 0.0);
+          await prefs.setDouble('target_long', 0.0);
+           targetLat =  0.0;
+      targetLong =  0.0;
+          getCurrentLocation();
+          showAnimatedDialog('Punched out successfully!',
+              "assets/images/success_punching.png", context);
           //SnackBarUtils.showSuccessSnackBar(context, 'Attendance successfully marked');
         } else {
           // Show error if the API call failed
@@ -206,20 +210,28 @@ GoogleMapController? _mapController;
         }
       } else {
         final getAttendancePunchInModel? response =
-            await WebService.getHostelAttendancePunchOut(context,hostelId,hostelObjId);
+            await WebService.getHostelAttendancePunchOut(
+                context, hostelId, hostelObjId);
 
         if (response != null && response.success == true) {
           // API call was successful, update state and show success message
           hasScanned.value = false;
           punchedIn.value = false;
-           await savePunchState(punchedIn.value);
+          await savePunchState(punchedIn.value);
           buttonLoader(false);
-          showAnimatedDialog('Punched out successfully!',
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setDouble('target_lat', 0.0);
+          await prefs.setDouble('target_long', 0.0);
+           getCurrentLocation();
+          showAnimatedDialog('Punched in successfully!',
               "assets/images/success_punching.png", context);
 
           // After the dialog is dismissed, navigate to the next page
           Future.delayed(const Duration(milliseconds: 1500), () {
-            Get.to(() => HostelAttendanceScreen(type: 'Hosteller'.obs,batchname:hostelName),arguments: hostelId);
+            Get.to(
+                () => HostelAttendanceScreen(
+                    type: 'Hosteller'.obs, batchname: hostelName),
+                arguments: hostelId);
           });
         } else {
           // Show error if the API call failed
@@ -257,19 +269,18 @@ GoogleMapController? _mapController;
         now.year, now.month, now.day, parsedTime.hour, parsedTime.minute);
   }
 
-
   void updateDraggablePosition(Offset delta) {
     draggablePosition.value += delta;
   }
 
   Future<void> loadPunchState() async {
-  final prefs = await SharedPreferences.getInstance();
-  final storedState = prefs.getBool('punchedIn') ?? false; // Default to false
-  punchedIn.value = storedState;
-}
+    final prefs = await SharedPreferences.getInstance();
+    final storedState = prefs.getBool('punchedIn') ?? false; // Default to false
+    punchedIn.value = storedState;
+  }
 
-Future<void> savePunchState(bool state) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setBool('punchedIn', state);
-}
+  Future<void> savePunchState(bool state) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('punchedIn', state);
+  }
 }

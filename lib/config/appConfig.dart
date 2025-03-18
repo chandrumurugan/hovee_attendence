@@ -9,10 +9,10 @@ class APIConfig {
         return "https://api.hoveeattendance.com/dev/api/";
         //"https://express.insakal.com/api/";
       case Environments.UAT:
-        return "https://api.hoveeattendance.com/dev/api/";
+        return "https://api.hoveeattendance.com/api/";
         //"https://express.insakal.com/api/";
       case Environments.PRO:
-        return "https://api.hoveeattendance.com/dev/api/";
+        return "https://api.hoveeattendance.com/api/";
         //"https://express.insakal.com/api/";
       default:
         return "https://api.hoveeattendance.com/dev/api/";

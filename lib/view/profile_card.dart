@@ -8,11 +8,11 @@ import 'package:hovee_attendence/controllers/userProfileView_controller.dart';
 
 class HomePageHeader extends StatelessWidget {
   @override
-  HomePageHeader({super.key, required this.title, required this.userType, this.firstName, this.lastName, this.wowId, required this.planName});
+  HomePageHeader({super.key, required this.title, required this.userType, this.firstName, this.lastName, this.wowId, required this.planName, required this.colorCode});
   final String title;
   final String userType;
   final String? firstName,lastName,wowId;
-  final String planName;
+  final String planName,colorCode;
   @override
   Widget build(BuildContext context) {
     final AuthControllers authController = Get.put(AuthControllers());
@@ -22,7 +22,8 @@ class HomePageHeader extends StatelessWidget {
     final ParentDashboardController parentController =
         Get.put(ParentDashboardController(), permanent: true);
     // final ParentDashboardController  parentController =Get.put(ParentDashboardController());
-
+  //Color parsedColor = Color(int.parse(colorCode.replaceFirst("#", "0xff")?? ''));
+  Color parsedColor = _getColorFromHex(colorCode);
     return FutureBuilder(    future: authController.getStoredUserData(),
     
     
@@ -347,6 +348,7 @@ class HomePageHeader extends StatelessWidget {
                   ),
                 ],
               ),
+              planName!=null&& planName.isNotEmpty?
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
@@ -368,7 +370,7 @@ class HomePageHeader extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        border: Border.all(color: Color(0xFFCD7F32)),
+                        border: Border.all(color: parsedColor),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Row(
@@ -379,7 +381,7 @@ class HomePageHeader extends StatelessWidget {
                             style: GoogleFonts.nunito(
                               fontWeight: FontWeight.w700,
                               fontSize: 14,
-                              color: Color(0xFFCD7F32),
+                              color: parsedColor,
                             ),
                           ),
                         ],
@@ -388,7 +390,7 @@ class HomePageHeader extends StatelessWidget {
                   ),
                   ],
                 ),
-              ),
+              ):SizedBox.shrink(),
               if (userType == "Tutor")
                 const SizedBox(
                   height: 20,
@@ -404,4 +406,22 @@ class HomePageHeader extends StatelessWidget {
    
   
   }
+
+Color _getColorFromHex(String? hexColor) {
+  if (hexColor == null || hexColor.isEmpty) {
+    return Colors.transparent; // Default color when colorCode is empty
+  }
+
+  // Ensure the color code starts with "#"
+  if (!hexColor.startsWith("#")) {
+    hexColor = "#$hexColor";
+  }
+
+  try {
+    return Color(int.parse(hexColor.replaceFirst("#", "0xff")));
+  } catch (e) {
+    return Colors.transparent; // Fallback color in case of parsing error
+  }
+}
+
 }

@@ -13,7 +13,7 @@ import 'package:hovee_attendence/widget/addteacher_inputfiled.dart';
 import 'package:hovee_attendence/widget/single_button.dart';
 
 class HostelAddmspScreen extends StatelessWidget {
-  final AttendanceDetails data;
+  final Attendance data;
    HostelAddmspScreen({super.key, required this.data});
   final HostelMspController mspController = Get.put(HostelMspController());
   final HostelAttendanceController controller = Get.put(HostelAttendanceController());
@@ -21,9 +21,9 @@ class HostelAddmspScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      Size size = MediaQuery.sizeOf(context);
-       mspController.batchNameController.value = data.hostelList!.hostelName ?? '';
-    mspController.startDateController.text = data.enrollement!.startDate ?? '';
-    mspController.batchTiming.text = data.hostelList!.hostelTimingEnd ?? '';
+    mspController.batchNameController.value = data.hostelName ?? '';
+    mspController.startDateController.text = data.punchDate ?? '';
+  // mspController.batchTiming.text = data.hostelList!.hostelTimingEnd ?? '';
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
@@ -67,7 +67,7 @@ class HostelAddmspScreen extends StatelessWidget {
                     Row(
                       children: [
                         const Text(
-                          'Choose batch name',
+                          'Hostel name',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -219,7 +219,7 @@ class HostelAddmspScreen extends StatelessWidget {
             SingleButton(
               btnName: 'Add',
               onTap: () {
-              mspController.addMSPHostel(context,data.hostelList!.sId ?? '',data.hostelList!.hostelObjectId ?? '',data.hostellerObjectId ?? '');
+             mspController.addMSPHostel(context,data.hostelId ?? '',data.id ?? '',data.userId ?? '');
               },
             )
           ],

@@ -72,7 +72,7 @@ class _ParentViewState extends State<ParentView> {
     return Scaffold(
         key: parentController.tuteeScaffoldKey,
         floatingActionButton: FloatingActionButton.extended(onPressed: (){
-          Get.to(() => CustomerChat(chatId: '',));
+          Get.to(() => CustomerChat());
         }, label: Icon(Icons.chat)),
         drawer: SideMenu(
           isGuest: false,
@@ -220,6 +220,7 @@ class _ParentViewState extends State<ParentView> {
                           lastName: widget.lastname,
                           wowId: widget.wowid,
                           planName: noticontroller.planName ?? "",
+                          colorCode: noticontroller.colorCode ?? "",
                         ),
                       ),
                   const SizedBox(

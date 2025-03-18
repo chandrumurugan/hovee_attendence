@@ -74,8 +74,9 @@ var batchDaysController = "".obs;
  var instituteId =''.obs;
  var batchTuteeList = <Datum>[].obs;
   RxBool initialLoad1 = true.obs;
-  String? profileUrl,tuteeName;
-  List<Tutee>? tutee;
+  String? profileUrl,tuteeName,bName;
+  // List<Tutee>? tutee;
+  var tutee = <Tutee>[].obs;
   // Method to fetch batch list
 //   void fetchBatchList() async {o
 //   try {
@@ -149,6 +150,7 @@ var batchDaysController = "".obs;
       for (var batch in batchResponse.data!) {
         if (batch.sId != null && batch.sId!.isNotEmpty) {
           fetchBatchTuteeList(batchId: batch.sId!);
+           update();
         }
       }
     } else {
@@ -415,15 +417,15 @@ var batchDaysController = "".obs;
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText: const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-        'Batch deleted successfully',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // titleText: const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //       'Batch deleted successfully',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
         //  Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
         // ,'Batch delete successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
@@ -436,7 +438,7 @@ var batchDaysController = "".obs;
 //   icon: const Icon(Icons.info, color: Colors.white, size: 40),
 //   colorText: Colors.white,
 //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-//   messageText: const SizedBox(
+//   titleText: const SizedBox(
 //     height: 40, // Set desired height here
 //     child: Center(
 //       child: Text(
@@ -522,7 +524,8 @@ var batchDaysController = "".obs;
     if (batchResponse!.data != null) {
        batchTuteeList.value = batchResponse.data;
        for (var batch in batchTuteeList.value) {
-        tutee=batch.tutees;
+        tutee.value =batch.tutees;
+        bName=batch.batchName;
         update();
       }
     } else {

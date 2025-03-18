@@ -149,15 +149,15 @@ class HostelMspController extends GetxController {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: const SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                'MSP added successfully',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // titleText: const SizedBox(
+          //   height: 40, // Set desired height here
+          //   child: Center(
+          //     child: Text(
+          //       'MSP added successfully',
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
         } else {
          Get.snackbar(
@@ -166,15 +166,15 @@ class HostelMspController extends GetxController {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          messageText: const SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                'MSP failed to added',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
-          ),
+          // titleText: const SizedBox(
+          //   height: 40, // Set desired height here
+          //   child: Center(
+          //     child: Text(
+          //       'MSP failed to added',
+          //       style: TextStyle(color: Colors.white, fontSize: 16),
+          //     ),
+          //   ),
+          // ),
         );
         }
       } catch (e) {
@@ -191,7 +191,7 @@ class HostelMspController extends GetxController {
       try {
         var batchData = {
           // 'branch_short_name': branchShortName.text,
-        "type": "N",
+        "type": "U",
            "hostelId":hostelId,
             "hostel_ObjectId":hostel_ObjectId,
             "hosteller_ObjectId":hosteller_ObjectId,
@@ -246,7 +246,7 @@ class HostelMspController extends GetxController {
 //   colorText: Colors.white,
 //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
 //   shouldIconPulse: false,
-//   messageText:   const SizedBox(
+//   titleText:   const SizedBox(
 //     height: 40, // Set desired height here
 //     child: Center(
 //       child: Text(
@@ -267,7 +267,7 @@ class HostelMspController extends GetxController {
 //   colorText: Colors.white,
 //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
 //   shouldIconPulse: false,
-//   messageText:   const SizedBox(
+//   titleText:   const SizedBox(
 //     height: 40, // Set desired height here
 //     child: Center(
 //       child: Text(
@@ -312,15 +312,15 @@ class HostelMspController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'Deletion Successful! The misspunch has removed.',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // titleText:   const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'Deletion Successful! The misspunch has removed.',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
   //Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white, 'MSP deleted successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } else {
@@ -330,15 +330,15 @@ class HostelMspController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   const SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'Failed to deleted MSP',
-        style: TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // titleText:   const SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'Failed to deleted MSP',
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
       //Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),colorText: Colors.white,  'Failed to deleted MSP',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     }
@@ -349,15 +349,15 @@ class HostelMspController extends GetxController {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  messageText:   SizedBox(
-    height: 40, // Set desired height here
-    child: Center(
-      child: Text(
-      'Error: $e',
-        style:  TextStyle(color: Colors.white, fontSize: 16),
-      ),
-    ),
-  ),
+  // titleText:   SizedBox(
+  //   height: 40, // Set desired height here
+  //   child: Center(
+  //     child: Text(
+  //     'Error: $e',
+  //       style:  TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
 );
    // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
   } finally {
