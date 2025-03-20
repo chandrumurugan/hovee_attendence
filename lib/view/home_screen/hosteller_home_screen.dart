@@ -278,29 +278,32 @@ class HostellerHomeScreen extends StatelessWidget {
                       } else {
                         return Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'My hostel',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Get.to(() => AttendanceHostelListScreen());
-                                  },
-                                  child: const Text(
-                                    'See All',
+                            Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'My hostel',
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black),
                                   ),
-                                ),
-                              ],
+                                  InkWell(
+                                    onTap: () {
+                                      Get.to(() => AttendanceHostelListScreen());
+                                    },
+                                    child: const Text(
+                                      'See All',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             SubjectContainerHostel(),
                           ],
@@ -367,7 +370,7 @@ class HostellerHomeScreen extends StatelessWidget {
         onTap: () {
           if (item.name == 'Hostel List') {
             Get.to(() => HostelList());
-          } else if (item.name == 'Verifications') {
+          } else if (item.name == 'Enquiries') {
              hostelEnquiryController.onInit();
             Get.to(() => HostelEnquiryList(
                   type: controller.role.value ?? '',

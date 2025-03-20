@@ -33,6 +33,7 @@ class _PlanListState extends State<PlanList> {
   bool isMonthlySelected = true;
   int selectedIndex = -1;
   late Razorpay _razorpay;
+  bool isYearlySelected = true;
   // List<Map<String, dynamic>> populateSampleData = [
   //   {
   //     "plan_name": "Bronze",
@@ -235,6 +236,7 @@ class _PlanListState extends State<PlanList> {
                             onTap: () async {
                               setState(() {
                                 isMonthlySelected = false;
+                               //isYearlySelected = true;
                                 selectedIndex = -1;
                               });
                               getcurrentsubscription();
@@ -244,7 +246,9 @@ class _PlanListState extends State<PlanList> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 8),
                               decoration: BoxDecoration(
-                                color: !isMonthlySelected
+                                color: 
+                                !isMonthlySelected
+                                //isYearlySelected
                                     ? Colors.white
                                     : Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
@@ -253,7 +257,9 @@ class _PlanListState extends State<PlanList> {
                                 child: Text(
                                   "Yearly",
                                   style: GoogleFonts.nunito(
-                                      color: !isMonthlySelected
+                                      color: 
+                                      !isMonthlySelected
+                                      //isYearlySelected
                                           ? AppConstants.primaryColor
                                           : Colors.white,
                                       fontWeight: FontWeight.normal,

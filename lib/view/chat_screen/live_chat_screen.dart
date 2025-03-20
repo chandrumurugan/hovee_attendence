@@ -94,172 +94,201 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var w = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBarHeader(
-          needGoBack: true,
-          navigateTo: () {
-          Get.back();
-          }),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Expanded(
-                child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('chats')
-                      .doc(widget.chatId)
-                      .collection('messages')
-                      .orderBy('timestamp', descending: false)
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-
-                    if (snapshot.hasError) {
-                      return Center(child: Text("Error loading messages"));
-                    }
-
-                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return Center(child: Text("No messages yet"));
-                    }
-                    return ListView(
-                      controller: _scrollController,
-                      children: snapshot.data!.docs.map((msg) {
-                        bool isMe = msg['senderId'] == widget.senderId;
-                        return Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8.0, right: 8.0, bottom: 10, top: 10),
-                          child: Align(
-                            alignment: isMe
-                                ? Alignment.centerRight
-                                : Alignment.centerLeft,
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: isMe
-                                      ? MainAxisAlignment.end
-                                      : MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    if (!isMe) ...[
-                                      _buildProfileIcon(Icons.person,
-                                          AppConstants.secondaryColor),
-                                    ],
-                                    _buildMessageBubble(
-                                        isMe, msg['message'], w),
-                                    // if (isMe) ...[
-                                    //   _buildProfileIcon(
-                                    //       Icons.person, AppColors.primary_color),
-                                    // ],
-                                  ],
-                                ),
-                                //  _buildMessageBubble(isMe, msg['message'], w),
-
-                                Align(
-                                  alignment: isMe
-                                      ? Alignment.centerRight
-                                      : Alignment.centerLeft,
-                                  child: Text(
-                                    _formatTimestamp(msg['timestamp']),
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey[700],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    );
-                  },
-                ),
+  Future<bool> _onBackPressed() async {
+    return await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("Are you satisfied with the support? before closing the chat."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true); // Close dialog and exit screen
+                  Get.back();
+                },
+                child: Text("Yes"),
               ),
-              Container(
-                color: Colors.grey[300],
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _controller,
-                          decoration: InputDecoration(
-                              hintText: "Type a message",
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20))),
-                        ),
-                      ),
-                      IconButton(
-                          icon: Icon(Icons.send), onPressed: sendMessage),
-                    ],
-                  ),
-                ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false); // Close dialog only
+                },
+                child: Text("No"),
               ),
             ],
           ),
-          Positioned(
-              child: Container(
-            width: double.infinity,
-            height: 80,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [AppConstants.primaryColor,AppConstants.secondaryColor],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight),
-            ),
-            padding: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+        ) ??
+        false; // Default to false if dialog is dismissed
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var w = MediaQuery.of(context).size.width;
+    return WillPopScope(
+      onWillPop:  _onBackPressed,
+      child: Scaffold(
+        appBar: AppBarHeader(
+            needGoBack: true,
+            navigateTo: () {
+              _onBackPressed();
+            //Get.back();
+            }),
+        body: Stack(
+          children: [
+            Column(
               children: [
-                Stack(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.white,
-                      child: Icon(
-                        Icons.person,
-                        color: AppConstants.secondaryColor,
-                        size: 18,
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,right: 0,
-                      child: CircleAvatar(
-                        radius: 8,
-                        backgroundColor: Colors.green,
-                        
-                      ),
-                    ),
-                  ],
+                Expanded(
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('chats')
+                        .doc(widget.chatId)
+                        .collection('messages')
+                        .orderBy('timestamp', descending: false)
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+      
+                      if (snapshot.hasError) {
+                        return Center(child: Text("Error loading messages"));
+                      }
+      
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return Center(child: Text("No messages yet"));
+                      }
+                      return ListView(
+                        controller: _scrollController,
+                        children: snapshot.data!.docs.map((msg) {
+                          bool isMe = msg['senderId'] == widget.senderId;
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8.0, right: 8.0, bottom: 10, top: 10),
+                            child: Align(
+                              alignment: isMe
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: isMe
+                                        ? MainAxisAlignment.end
+                                        : MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      if (!isMe) ...[
+                                        _buildProfileIcon(Icons.person,
+                                            AppConstants.secondaryColor),
+                                      ],
+                                      _buildMessageBubble(
+                                          isMe, msg['message'], w),
+                                      // if (isMe) ...[
+                                      //   _buildProfileIcon(
+                                      //       Icons.person, AppColors.primary_color),
+                                      // ],
+                                    ],
+                                  ),
+                                  //  _buildMessageBubble(isMe, msg['message'], w),
+      
+                                  Align(
+                                    alignment: isMe
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    child: Text(
+                                      _formatTimestamp(msg['timestamp']),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey[700],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    },
+                  ),
                 ),
-                SizedBox(
-                  width: 10,
+                Container(
+                  color: Colors.grey[300],
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _controller,
+                            decoration: InputDecoration(
+                                hintText: "Type a message",
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20))),
+                          ),
+                        ),
+                        IconButton(
+                            icon: Icon(Icons.send), onPressed: sendMessage),
+                      ],
+                    ),
+                  ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "hovee rent support!",
-                      style: GoogleFonts.nunito(color: Colors.white,fontSize: 20),
-                    ),
-                    Text(
-                      "Online",
-                      style: GoogleFonts.nunito(color: Colors.white),
-                    ),
-                  ],
-                )
               ],
             ),
-          ))
-        ],
+            Positioned(
+                child: Container(
+              width: double.infinity,
+              height: 80,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [AppConstants.primaryColor,AppConstants.secondaryColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight),
+              ),
+              padding: EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.person,
+                          color: AppConstants.secondaryColor,
+                          size: 18,
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,right: 0,
+                        child: CircleAvatar(
+                          radius: 8,
+                          backgroundColor: Colors.green,
+                          
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "hovee attendance support!",
+                        style: GoogleFonts.nunito(color: Colors.white,fontSize: 20),
+                      ),
+                      Text(
+                        "Online",
+                        style: GoogleFonts.nunito(color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ))
+          ],
+        ),
       ),
     );
   }
@@ -267,7 +296,10 @@ class _ChatScreenState extends State<ChatScreen> {
   String _formatTimestamp(dynamic timestamp) {
     if (timestamp == null || timestamp is! Timestamp) return 'Just now';
     DateTime date = timestamp.toDate();
-    return "${date.hour}:${date.minute < 10 ? '0${date.minute}' : date.minute} ${date.hour < 12 ? 'AM' : 'PM'}";
+    int hour = date.hour > 12 ? date.hour - 12 : date.hour == 0 ? 12 : date.hour;
+  String period = date.hour < 12 ? 'AM' : 'PM';
+  
+  return "$hour.${date.minute < 10 ? '0${date.minute}' : date.minute} $period";
   }
 
   Widget _buildMessageBubble(

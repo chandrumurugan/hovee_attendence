@@ -412,20 +412,22 @@ var batchDaysController = "".obs;
         clearData();
         fetchBatchList();
         Get.snackbar(
-          'Batch deleted successfully',
+          '',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // titleText: const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //       'Batch deleted successfully',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Text(
+       'Batch deleted successfully',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
         //  Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
         // ,'Batch delete successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);

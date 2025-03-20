@@ -107,20 +107,22 @@ Future<bool> updateEnrollment( String enrollmentId, String type, String code) as
         return true; // Enrollment successful
       } else {
         Get.snackbar(
-          'Enrollment rejected successfully',
+          '',
           icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText: const SizedBox(
-          //   height: 40,
-          //   child: Center(
-          //     child: Text(
-          //       'Enrollment rejected successfully',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+          messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+       'Enrollment rejected successfully',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
         );
          tabController.animateTo(2);
           handleTabChange(2);

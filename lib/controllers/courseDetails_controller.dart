@@ -95,39 +95,43 @@ class CourseDetailController extends GetxController {
         return true;
       } else {
         Get.snackbar(
-          'Enquiry already submitted',
+          '',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText: const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //       'Enquiry already submitted',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+   messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+        "Enquiry already submitted",
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
  return false;
       }
     } catch (e) {
           Get.snackbar(
-         'Error: $e',
+         '',
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:  SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //       'Error: $e',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+ messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+        "Error: $e",
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
  return false;
       //  Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)
@@ -174,39 +178,43 @@ class CourseDetailController extends GetxController {
         //  Get.off(() => HostelEnquiryList(type: 'Hostel', fromBottomNav: true,)); 
       } else {
         Get.snackbar(
-          'Enquiry already submitted',
+          '',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText: const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //       'Enquiry already submitted',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+ messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+        "Enquiry already submitted",
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
 return false;
       }
     } catch (e) {
           Get.snackbar(
-         'Error: $e',
+         '',
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:  SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //       'Error: $e',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+ messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+        "Error: $e",
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
 return false;
       //  Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,)

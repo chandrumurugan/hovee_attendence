@@ -63,8 +63,8 @@ class ValidateTokenData {
   String? idProofUrl;
   String? profileFilename;
   String? profileUrl;
-  Null? latitude;
-  Null? longitude;
+  double? latitude;
+  double? longitude;
   String? qrCodeUrl;
   int? isActive;
   int? isDeleted;

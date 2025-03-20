@@ -15,14 +15,17 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HostelAttendanceScreen extends StatelessWidget {
-   final RxString  type;
+  final RxString type;
   final HostelAttendanceController controller;
   final String? firstname, lastname, wowid, batchname;
-   HostelAttendanceScreen({super.key,required this.type,
+  HostelAttendanceScreen(
+      {super.key,
+      required this.type,
       this.firstname,
       this.lastname,
       this.wowid,
-      this.batchname}): controller = Get.put(HostelAttendanceController());
+      this.batchname})
+      : controller = Get.put(HostelAttendanceController());
 
   @override
   Widget build(BuildContext context) {
@@ -69,22 +72,28 @@ class HostelAttendanceScreen extends StatelessWidget {
                                       vertical: 6, horizontal: 10),
                                   hintText: 'Select batch',
                                   items: controller.batchList
-                                      .map((batch) => batch.hostelListDetails!.hostelName ?? '')
+                                      .map((batch) =>
+                                          batch.hostelListDetails!.hostelName ??
+                                          '')
                                       .toList(),
-                                  initialItem: controller
-                                      .selectedBatchIN.value?.hostelListDetails!.hostelName,
+                                  initialItem: controller.selectedBatchIN.value
+                                      ?.hostelListDetails!.hostelName,
                                   onChanged: (String? selectedValue) {
                                     if (selectedValue != null) {
                                       controller.selectedBatch =
                                           controller.batchList.firstWhere(
                                         (batch) =>
-                                            batch.hostelListDetails!.hostelName == selectedValue,
+                                            batch.hostelListDetails!
+                                                .hostelName ==
+                                            selectedValue,
                                       );
-                                      controller.selectBatch(controller.selectedBatch!);
+                                      controller.selectBatch(
+                                          controller.selectedBatch!);
                                       controller.isBatchSelected.value = true;
                                       controller.fetchStudentsList(
-                                       controller. selectedBatch!.hostelListDetails!.id!,
-                                       '',
+                                        controller.selectedBatch!
+                                            .hostelListDetails!.id!,
+                                        '',
                                         DateFormat('MMM')
                                             .format(DateTime.now()),
                                       );
@@ -164,8 +173,9 @@ class HostelAttendanceScreen extends StatelessWidget {
                       withinRangeTextStyle: TextStyle(color: Colors.white),
                     ),
                     selectedDayPredicate: (day) {
-                        return isSameDay(controller.selectedDay.value, day) && 
-         isSameDay(controller.selectedDay.value, DateTime.now());
+                      return isSameDay(controller.selectedDay.value, day) &&
+                          isSameDay(
+                              controller.selectedDay.value, DateTime.now());
                     },
                     onDaySelected: (selectedDay, focusedDay) {
                       controller.onDateSelected(selectedDay);
@@ -173,7 +183,7 @@ class HostelAttendanceScreen extends StatelessWidget {
                     },
                     onPageChanged: (focusedDay) {
                       controller.onMonthSelected(focusedDay);
-                       controller.update();
+                      controller.update();
                     },
                     calendarBuilders: CalendarBuilders(
                       defaultBuilder: (context, day, focusedDay) {
@@ -195,8 +205,8 @@ class HostelAttendanceScreen extends StatelessWidget {
                             ),
                           );
                         }
-                        
-                        if (controller.absentDates
+
+                        if (controller.presentDates
                             .contains(DateTime(day.year, day.month, day.day))) {
                           return Container(
                             margin: const EdgeInsets.all(4.0),
@@ -217,7 +227,8 @@ class HostelAttendanceScreen extends StatelessWidget {
                         // Highlight Present dates
                         if (controller.presentDates
                             .contains(DateTime(day.year, day.month, day.day))) {
-                          return Container(
+                          return 
+                          Container(
                             margin: const EdgeInsets.all(4.0),
                             decoration: BoxDecoration(
                               color: Colors
@@ -233,41 +244,41 @@ class HostelAttendanceScreen extends StatelessWidget {
                           );
                         }
                         //controller.leaveDates.refresh();
-                        if (controller.leaveDates
-                            .contains(DateTime(day.year, day.month, day.day))) {
-                          return Container(
-                            margin: const EdgeInsets.all(4.0),
-                            decoration: BoxDecoration(
-                              color: Colors
-                                  .blue, // Background color for miss punch dates
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            alignment: Alignment.center,
-                            child: Center(
-                                child: Text(
-                              '${day.day}',
-                              style: const TextStyle(color: Colors.white),
-                            )),
-                          );
-                        }
-                        if (controller.holidayDates
-                            .contains(DateTime(day.year, day.month, day.day))) {
-                          return Container(
-                            margin: const EdgeInsets.all(4.0),
-                            decoration: BoxDecoration(
-                              color: Colors
-                                  .amber, // Background color for miss punch dates
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            alignment: Alignment.center,
-                            child: Center(
-                                child: Text(
-                              '${day.day}',
-                              style: const TextStyle(color: Colors.white),
-                            )),
-                          );
-                        }
-                        // Return default appearance for other dates
+                        // if (controller.leaveDates
+                        //     .contains(DateTime(day.year, day.month, day.day))) {
+                        //   return Container(
+                        //     margin: const EdgeInsets.all(4.0),
+                        //     decoration: BoxDecoration(
+                        //       color: Colors
+                        //           .blue, // Background color for miss punch dates
+                        //       borderRadius: BorderRadius.circular(8.0),
+                        //     ),
+                        //     alignment: Alignment.center,
+                        //     child: Center(
+                        //         child: Text(
+                        //       '${day.day}',
+                        //       style: const TextStyle(color: Colors.white),
+                        //     )),
+                        //   );
+                        // }
+                        // if (controller.holidayDates
+                        //     .contains(DateTime(day.year, day.month, day.day))) {
+                        //   return Container(
+                        //     margin: const EdgeInsets.all(4.0),
+                        //     decoration: BoxDecoration(
+                        //       color: Colors
+                        //           .amber, // Background color for miss punch dates
+                        //       borderRadius: BorderRadius.circular(8.0),
+                        //     ),
+                        //     alignment: Alignment.center,
+                        //     child: Center(
+                        //         child: Text(
+                        //       '${day.day}',
+                        //       style: const TextStyle(color: Colors.white),
+                        //     )),
+                        //   );
+                        // }
+                        // // Return default appearance for other dates
                         return null;
                       },
                     ),
@@ -475,7 +486,6 @@ class HostelAttendanceScreen extends StatelessWidget {
                 ),
               );
             }),
-
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
@@ -577,8 +587,7 @@ class HostelAttendanceScreen extends StatelessWidget {
                                 ),
                                 barChart(
                                   color: const Color(0xffAD0F60),
-                                  count:
-                                      '${controller.data?.totalAbsent ?? 0}',
+                                  count: '${controller.data?.totalAbsent ?? 0}',
                                   title: 'Absent',
                                 ),
                                 barChart(
@@ -605,7 +614,8 @@ class HostelAttendanceScreen extends StatelessWidget {
             ),
             const SizedBox(
               height: 10,
-            ),  Padding(
+            ),
+            Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
               child: Text(
@@ -630,14 +640,8 @@ class HostelAttendanceScreen extends StatelessWidget {
                         children: [
                           // Column headers
                           Expanded(
-                            child: Text(type.value!='Hostel' ? 'Date' : 'Name',
-                                style: GoogleFonts.nunito(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black)),
-                          ),
-                          Expanded(
-                            child: Text('Punch In',
+                            child: Text(
+                                type.value != 'Hostel' ? 'Date' : 'Name',
                                 style: GoogleFonts.nunito(
                                     fontSize: 17,
                                     fontWeight: FontWeight.w700,
@@ -645,6 +649,13 @@ class HostelAttendanceScreen extends StatelessWidget {
                           ),
                           Expanded(
                             child: Text('Punch Out',
+                                style: GoogleFonts.nunito(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black)),
+                          ),
+                          Expanded(
+                            child: Text('Punch In',
                                 style: GoogleFonts.nunito(
                                     fontSize: 17,
                                     fontWeight: FontWeight.w700,
@@ -658,14 +669,12 @@ class HostelAttendanceScreen extends StatelessWidget {
                       // Check if attendance data is available and load it dynamically
                       if (controller.isLoadingList.value) {
                         return const CircularProgressIndicator();
-                      } else if (controller.data?.attendances !=
-                              null &&
+                      } else if (controller.data?.attendances != null &&
                           controller.data!.attendances!.isNotEmpty) {
                         return ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount:
-                              controller.data!.attendances!.length,
+                          itemCount: controller.data!.attendances!.length,
                           itemBuilder: (context, index) {
                             final attendance =
                                 controller.data!.attendances![index];
@@ -681,7 +690,9 @@ class HostelAttendanceScreen extends StatelessWidget {
                                   // Date
                                   Expanded(
                                     child: Text(
-                                   type.value!='Hostel' ?  attendance.punchDate ?? '' :attendance.name ?? '' ,
+                                      type.value != 'Hostel'
+                                          ? attendance.punchDate ?? ''
+                                          : attendance.name ?? '',
                                       style: GoogleFonts.nunito(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
@@ -690,30 +701,6 @@ class HostelAttendanceScreen extends StatelessWidget {
                                     ),
                                   ),
                                   // Punch In
-                                  Expanded(
-                                    child: attendance.punchInTime != null &&
-                                            attendance.punchInTime!.isNotEmpty
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 20),
-                                            child: Image.asset(
-                                              "assets/appbar/check.png",
-                                              height: 25,
-                                              width: 25,
-                                            ),
-                                          )
-                                        : IconButton(
-                                            icon: const Icon(Icons.edit,
-                                                color: Colors.blue),
-                                            onPressed: () {
-                                              // Handle edit action for punch in time
-                                            Get.to(() => HostelAddmspScreen(
-                                              data: attendance,
-                                                  ));
-                                            },
-                                          ),
-                                  ),
-                                  // Punch Out
                                   Expanded(
                                     child: attendance.punchOutTime != null &&
                                             attendance.punchOutTime!.isNotEmpty
@@ -726,16 +713,48 @@ class HostelAttendanceScreen extends StatelessWidget {
                                               width: 25,
                                             ),
                                           )
-                                        : IconButton(
-                                            icon: const Icon(Icons.edit,
-                                                color: Colors.blue),
-                                            onPressed: () {
-                                              // Handle edit action for punch out time
-                                               Get.to(() => HostelAddmspScreen(
-                                                data: attendance,
-                                                  ));
-                                            },
-                                          ),
+                                        : type.value !=
+                                                'Hostel' // Check if type is not 'Hostel'
+                                            ? IconButton(
+                                                icon: const Icon(Icons.edit,
+                                                    color: Colors.blue),
+                                                onPressed: () {
+                                                  // Handle edit action for punch-in time
+                                                  Get.to(
+                                                      () => HostelAddmspScreen(
+                                                            data: attendance,
+                                                          ));
+                                                },
+                                              )
+                                            : const SizedBox(),
+                                  ),
+                                  // Punch Out
+                                  Expanded(
+                                    child: attendance.punchInTime != null &&
+                                            attendance.punchInTime!.isNotEmpty
+                                        ? Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 20),
+                                            child: Image.asset(
+                                              "assets/appbar/check.png",
+                                              height: 25,
+                                              width: 25,
+                                            ),
+                                          )
+                                        : type.value !=
+                                                'Hostel' // Check if type is not 'Hostel'
+                                            ? IconButton(
+                                                icon: const Icon(Icons.edit,
+                                                    color: Colors.blue),
+                                                onPressed: () {
+                                                  // Handle edit action for punch-in time
+                                                  Get.to(
+                                                      () => HostelAddmspScreen(
+                                                            data: attendance,
+                                                          ));
+                                                },
+                                              )
+                                            : const SizedBox(),
                                   ),
                                 ],
                               ),

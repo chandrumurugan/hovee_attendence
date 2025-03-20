@@ -328,20 +328,22 @@ void _onBarcodeScanned(String? scannedData) async {
 
   if (wowIdFromCode == null) {
      Get.snackbar(
-         'Invalid QR Code',
+         '',
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:  const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //      'Invalid QR Code',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+   messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Text(
+        'Invalid QR Code',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
     return;
   }
@@ -360,20 +362,22 @@ void _onBarcodeScanned(String? scannedData) async {
       _controller.hasScanned.value = true;
     } else {
        Get.snackbar(
-          'Invalid QR Code',
+          '',
           icon: const Icon(Icons.info, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText: const SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       'Invalid QR Code',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+          messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Text(
+        'Invalid QR Code',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
         );
       // SnackBarUtils.showErrorSnackBar(
       //   context,
@@ -382,20 +386,22 @@ void _onBarcodeScanned(String? scannedData) async {
     }
   } else {
    Get.snackbar(
-          'Invalid QR Code',
+          '',
           icon: const Icon(Icons.info, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText: const SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       'Invalid QR Code',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+          messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Text(
+        'Invalid QR Code',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
         );
   }
 

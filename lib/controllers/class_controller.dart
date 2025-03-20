@@ -45,9 +45,9 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
   final CourseController courseController = Get.put(CourseController());
   final BatchController controller = Get.put(BatchController());
 
-  var instituteId =''.obs;
+  var instituteId = ''.obs;
 
-   var fullClassesList =<TutionData>[].obs;
+  var fullClassesList = <TutionData>[].obs;
 
   @override
   void onInit() {
@@ -100,42 +100,51 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void fetchClassesList(String type, {String searchTerm = ''}) async {
-  try {
-    var batchData = {
-      "type": type,
-    };
-    isLoading(true);
-    var classesResponse = await WebService.fetchClassesList(batchData);
-    if (classesResponse.data != null) {
-      // Store the full list of classes before filtering
-      fullClassesList.value = classesResponse.data!;
+    try {
+      var batchData = {
+        "type": type,
+      };
+      isLoading(true);
+      var classesResponse = await WebService.fetchClassesList(batchData);
+      if (classesResponse.data != null) {
+        // Store the full list of classes before filtering
+        fullClassesList.value = classesResponse.data!;
 
-      // Apply search filter
-       // Apply search filter
+        // Apply search filter
+        // Apply search filter
         if (searchTerm.isNotEmpty) {
           classesList.value = fullClassesList.where((classItem) {
-            return classItem.batchName!.toLowerCase().contains(searchTerm.toLowerCase()) ||
-                   classItem.courseCode!.toLowerCase().contains(searchTerm.toLowerCase()) ||
-                   classItem.board!.toLowerCase().contains(searchTerm.toLowerCase()) ||
-                   classItem.subject!.toLowerCase().contains(searchTerm.toLowerCase()) ||
-                   classItem.status!.toLowerCase().contains(searchTerm.toLowerCase());
+            return classItem.batchName!
+                    .toLowerCase()
+                    .contains(searchTerm.toLowerCase()) ||
+                classItem.courseCode!
+                    .toLowerCase()
+                    .contains(searchTerm.toLowerCase()) ||
+                classItem.board!
+                    .toLowerCase()
+                    .contains(searchTerm.toLowerCase()) ||
+                classItem.subject!
+                    .toLowerCase()
+                    .contains(searchTerm.toLowerCase()) ||
+                classItem.status!
+                    .toLowerCase()
+                    .contains(searchTerm.toLowerCase());
           }).toList();
         } else {
           classesList.value = fullClassesList;
         }
-    }
-    
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    instituteId.value = prefs.getString('InstituteId') ?? '';
-    update();
-  } catch (e) {
-    // Handle errors if needed
-  } finally {
-    isLoading(false);
-    update();
-  }
-}
+      }
 
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      instituteId.value = prefs.getString('InstituteId') ?? '';
+      update();
+    } catch (e) {
+      // Handle errors if needed
+    } finally {
+      isLoading(false);
+      update();
+    }
+  }
 
   void updateClass(BuildContext context, String courseCode, courseId, batchId,
       batchName, tuitionId) async {
@@ -155,20 +164,22 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
 
       if (response != null && response.statusCode == 200) {
         Get.snackbar(
-          'Your class is now live',
+          '',
           icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText: const SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       'Your class is now live',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+          messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0),
+              child: Text(
+                'Your class is now live',
+                textAlign: TextAlign.start,
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
         );
 
         // onInit();
@@ -183,10 +194,21 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
             color: Colors.white,
             size: 40,
           ),
-          response?.message ?? 'Failed to update Enquire',
+          '',
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
+          messageText: SizedBox(
+            height: 40, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Text(
+                response?.message ?? 'Failed to update Enquire',
+                textAlign: TextAlign.start,
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
         );
       }
     } catch (e) {
@@ -262,13 +284,13 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
             'Success! Your new class is added.',
           );
           isSelected.value = false;
-           selectedCourseData.value = TutionData();
-          courseCodeController.value = ''; 
-          courseCode=[];
+          selectedCourseData.value = TutionData();
+          courseCodeController.value = '';
+          courseCode = [];
           update();
           // Get.snackbar( 'Class added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           controller.onInit();
-            Navigator.pop(context);
+          Navigator.pop(context);
           //onInit();
           fetchClassesList("Draft");
         } else {
@@ -293,7 +315,6 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void navigateToAddCourseScreen() {
-    
     Get.to(() => const TutorClassForm());
   }
 
@@ -326,43 +347,44 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
     courseCodeController.value = '';
   }
 
-  void deleteClass(BuildContext context,String courseId,status ) async {
-      isLoading.value = true;
-      try {
-        var batchData = {
-          "type": "D",
-          "courseId": courseId,
-        };
+  void deleteClass(BuildContext context, String courseId, status) async {
+    isLoading.value = true;
+    try {
+      var batchData = {
+        "type": "D",
+        "courseId": courseId,
+      };
 
-        final AddClassDataModel? response =
-            await WebService.addClass(batchData);
+      final AddClassDataModel? response = await WebService.addClass(batchData);
 
-        if (response != null && response.success == true) {
-          _clearData();
-          Get.snackbar(
-          response.message ?? 'Class deleted successfully',
+      if (response != null && response.success == true) {
+        _clearData();
+        Get.snackbar(
+          '',
           icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText:  SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //        response.message ?? 'Class deleted successfully',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+          messageText: SizedBox(
+            height: 40, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Text(
+                response.message ?? 'Class deleted successfully',
+                textAlign: TextAlign.start,
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          ),
         );
-          update();
-          // Get.snackbar( 'Class added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
-          // onInit();
-          fetchCourseList();
-          status=="Public"?
-          fetchClassesList("Public")
-          :fetchClassesList("Draft");
-        } else {
+        update();
+        // Get.snackbar( 'Class added successfully','',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
+        // onInit();
+        fetchCourseList();
+        status == "Public"
+            ? fetchClassesList("Public")
+            : fetchClassesList("Draft");
+      } else {
         //  Get.snackbar(
         //   icon: const Icon(
         //     Icons.info,
@@ -374,23 +396,34 @@ class ClassController extends GetxController with GetTickerProviderStateMixin {
         //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
         //   shouldIconPulse: false,
         // );
-       isLoading.value = false;
-        }
-      } catch (e) {
-           Get.snackbar(
-          icon: const Icon(
-            Icons.info,
-            color: Colors.white,
-            size: 40,
-          ),
-          'Error: $e',
-          colorText: Colors.white,
-          backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-          shouldIconPulse: false,
-        );
-         isLoading.value = true;
-      } finally {
         isLoading.value = false;
       }
+    } catch (e) {
+      Get.snackbar(
+        icon: const Icon(
+          Icons.info,
+          color: Colors.white,
+          size: 40,
+        ),
+        '',
+        colorText: Colors.white,
+        backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
+        shouldIconPulse: false,
+        messageText: SizedBox(
+          height: 40, // Set desired height here
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Text(
+              'Error: $e',
+              textAlign: TextAlign.start,
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        ),
+      );
+      isLoading.value = true;
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

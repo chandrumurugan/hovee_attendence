@@ -25,12 +25,13 @@ class HostelPunchView extends StatelessWidget {
   final String wowId,hostelType,room;
     final RxString  type;
     final String firstname, lastname,wowid;
-  const HostelPunchView({super.key, required this.hostelName, required this.hostelId, required this.hostelObjId, required this.hostelStartTime, required this.hostelEndTime, required this.wowId, required this.hostelType, required this.room, required this.type,required this.firstname,required this.lastname,required this.wowid});
+    final HostelPunchinController _controller;
+   HostelPunchView({super.key, required this.hostelName, required this.hostelId, required this.hostelObjId, required this.hostelStartTime, required this.hostelEndTime, required this.wowId, required this.hostelType, required this.room, required this.type,required this.firstname,required this.lastname,required this.wowid}): _controller = Get.put(HostelPunchinController());
    
   @override
   Widget build(BuildContext context) {
-   final HostelPunchinController _controller = Get.put(HostelPunchinController(),permanent: true);
-     _controller.getCurrentLocation();
+   //final HostelPunchinController _controller = Get.put(HostelPunchinController(),permanent: true);
+     _controller.onInit();
     return Scaffold(
       appBar: AppBarHeader(
         needGoBack: true,
@@ -51,7 +52,7 @@ class HostelPunchView extends StatelessWidget {
               Expanded(
                 child: SizedBox(
                   child: Obx(
-  () => _controller.currentLocation.value == null
+  () => _controller.currentLocation.value == null 
       ? const Center(child: CircularProgressIndicator())
       : Stack(
           children: [
@@ -282,11 +283,13 @@ void _onBarcodeScanned(String? scannedData) async {
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:  const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
+  // messageText:    SizedBox(
+  //   height: 30, // Set desired height here
+  //   child: Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 5.0),
   //     child: Text(
-  //      'Invalid QR Code',
+  //       'Invalid QR Code',
+  //     textAlign: TextAlign.start,
   //       style: TextStyle(color: Colors.white, fontSize: 16),
   //     ),
   //   ),
@@ -308,15 +311,17 @@ void _onBarcodeScanned(String? scannedData) async {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText: const SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       'Invalid QR Code',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+  //         messageText:    SizedBox(
+  //   height: 30, // Set desired height here
+  //   child: Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 5.0),
+  //     child: Text(
+  //       'Invalid QR Code',
+  //     textAlign: TextAlign.start,
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
         );
     }
   } else {
@@ -326,15 +331,17 @@ void _onBarcodeScanned(String? scannedData) async {
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText: const SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       'Invalid QR Code',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+  //          messageText:    SizedBox(
+  //   height: 30, // Set desired height here
+  //   child: Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 5.0),
+  //     child: Text(
+  //       'Invalid QR Code',
+  //     textAlign: TextAlign.start,
+  //       style: TextStyle(color: Colors.white, fontSize: 16),
+  //     ),
+  //   ),
+  // ),
         );
   }
 

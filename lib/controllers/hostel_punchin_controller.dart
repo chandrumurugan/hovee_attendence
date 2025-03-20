@@ -116,6 +116,7 @@ class HostelPunchinController extends GetxController {
       //     ?.animateCamera(CameraUpdate.newLatLng(currentLocation.value!));
 
       await _fetchAddress();
+      update();
     } catch (e) {
       print('Error fetching location: $e');
       Logger().i('Error fetching location: $e');
@@ -180,8 +181,11 @@ class HostelPunchinController extends GetxController {
         // Within punchable range, call the API to punch in
 
         final getAttendancePunchInModel? response =
-            await WebService.getHostelAttendancePunchIn(
-                hostelId, hostelObjId, context);
+            await WebService.getHostelAttendancePunchOut(
+          context,
+          hostelId,
+          hostelObjId,
+        );
         Logger().i(response);
 
         if (response != null && response.success == true) {
@@ -193,9 +197,10 @@ class HostelPunchinController extends GetxController {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setDouble('target_lat', 0.0);
           await prefs.setDouble('target_long', 0.0);
-           targetLat =  0.0;
-      targetLong =  0.0;
-          getCurrentLocation();
+          targetLat = 0.0;
+          targetLong = 0.0;
+          //getCurrentLocation();
+          onInit();
           showAnimatedDialog('Punched out successfully!',
               "assets/images/success_punching.png", context);
           //SnackBarUtils.showSuccessSnackBar(context, 'Attendance successfully marked');
@@ -210,8 +215,11 @@ class HostelPunchinController extends GetxController {
         }
       } else {
         final getAttendancePunchInModel? response =
-            await WebService.getHostelAttendancePunchOut(
-                context, hostelId, hostelObjId);
+            await WebService.getHostelAttendancePunchIn(
+          hostelId,
+          hostelObjId,
+          context,
+        );
 
         if (response != null && response.success == true) {
           // API call was successful, update state and show success message
@@ -222,7 +230,8 @@ class HostelPunchinController extends GetxController {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setDouble('target_lat', 0.0);
           await prefs.setDouble('target_long', 0.0);
-           getCurrentLocation();
+          onInit();
+          // getCurrentLocation();
           showAnimatedDialog('Punched in successfully!',
               "assets/images/success_punching.png", context);
 

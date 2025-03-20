@@ -54,7 +54,7 @@ class HostelMspController extends GetxController {
     if (batchNameController.value.isEmpty) {
       SnackBarUtils.showSuccessSnackBar(
         context,
-        'Branch name is required',
+        'Hostel name is required',
       );
       return false;
     }
@@ -144,37 +144,41 @@ class HostelMspController extends GetxController {
           onInit();
           _clearData();
           Get.snackbar(
-          'MSP added successfully',
+          '',
           icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // titleText: const SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       'MSP added successfully',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+           messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+       'MSP added successfully',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
         );
         } else {
          Get.snackbar(
-          'MSP failed to added',
+          '',
           icon: const Icon(Icons.info, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // titleText: const SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       'MSP failed to added',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+          messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+       'MSP failed to added',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
         );
         }
       } catch (e) {
@@ -307,57 +311,63 @@ class HostelMspController extends GetxController {
       // Notify listeners about the updated list
       mspDataList.refresh(); // Ensures the UI is updated
        Get.snackbar(
-       'Deletion Successful! The misspunch has removed.',
+       '',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // titleText:   const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //     'Deletion Successful! The misspunch has removed.',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+  messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+       'Deletion Successful! The misspunch has removed.',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
   //Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white, 'MSP deleted successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } else {
        Get.snackbar(
-       'Failed to deleted MSP',
+       '',
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // titleText:   const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //     'Failed to deleted MSP',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+  messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+       'Failed to deleted MSP',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
       //Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),colorText: Colors.white,  'Failed to deleted MSP',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     }
   } catch (e) {
             Get.snackbar(
-       'Error: $e',
+       '',
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // titleText:   SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //     'Error: $e',
-  //       style:  TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+   messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+       'Error: $e',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
    // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
   } finally {

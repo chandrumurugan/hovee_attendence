@@ -279,20 +279,23 @@ void editAnnoument(BuildContext context,String announcementId) async {
       }
     } catch (e) {
        Get.snackbar(
-          'Error: $e',
+          '',
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:  SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //      'Error: $e',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+            messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Text(
+       'Error: $e',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
+    
 );
     } finally {
       isLoading.value = false;
@@ -318,20 +321,22 @@ void deleteAnnouncement(BuildContext context, String batchId,courseId,announceme
       // Notify listeners about the updated list
       announmentList.refresh(); 
        Get.snackbar(
-          'Announcement deleted successfully',
+          '',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText: const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //       'Announcement deleted successfully',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Text(
+       'Announcement deleted successfully',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
         //  Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,)
         // ,'Announcement deleted successfully',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
@@ -340,39 +345,43 @@ void deleteAnnouncement(BuildContext context, String batchId,courseId,announceme
         //  onInit();
       } else {
          Get.snackbar(
-          response?.message ?? 'Failed to deleted announcement',
+          '',
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:  SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //       response?.message ?? 'Failed to deleted announcement',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+  messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Text(
+       response?.message ?? 'Failed to deleted announcement',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
     // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),response?.message ?? 'Failed to deleted announcement',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
       }
     } catch (e) {
         Get.snackbar(
-          'Error: $e',
+          '',
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:  SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //      'Error: $e',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+ messageText:    SizedBox(
+    height: 40, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Text(
+       'Error: $e',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
        //Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } finally {

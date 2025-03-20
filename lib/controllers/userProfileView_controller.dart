@@ -760,20 +760,23 @@ print('Wow ID: $wowId');
      isNonEdit.value=true;
      update();
  Get.snackbar(
-          'Profile updated successfully',
+          '',
           icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText: const SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       'Profile updated successfully',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+          messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                  'Profile updated successfully',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+        )
         );
         // Get.offAll(() => DashboardScreen(
         //       rolename: 'Tutor',
@@ -933,20 +936,23 @@ print('Wow ID: $wowId');
         update();
         isLoading.value = false;
          Get.snackbar(
-          'Profile updated successfully',
+          '',
           icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText: const SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       'Profile updated successfully',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+          messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                  'Profile updated successfully',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+        )
         );
                 final firstName = personalInfo.value['first_name'] ?? '';
       final lastName = personalInfo.value['last_name'] ?? '';
@@ -1267,20 +1273,23 @@ print('Wow ID: $wowId');
      isNonEdit.value=true;
      update();
  Get.snackbar(
-          'Profile updated successfully',
+          '',
           icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText: const SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       'Profile updated successfully',
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+          messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                  'Profile updated successfully',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+        )
         );
       } else {
         print(response.statusCode);

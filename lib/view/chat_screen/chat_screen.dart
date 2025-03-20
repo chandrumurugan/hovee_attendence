@@ -124,7 +124,7 @@ class ChatScreenState extends State<CustomerChat> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        'Chat',
+                        'hovee attendance support!',
                         style: GoogleFonts.nunito(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -164,9 +164,9 @@ class ChatScreenState extends State<CustomerChat> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   gradient: const LinearGradient(
-                    colors: [Color(0xFFC13584), Color(0xFF833AB4)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+                    colors: [ Color(0xFF833AB4),Color(0xFFC13584)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
                 ),
                 child: Wrap(

@@ -74,7 +74,7 @@ class Data {
         "toDate": toDate,
         "month": month,
         "statusCounts": statusCounts?.toJson(),
-        "attendanceDetails": attendanceDetails.map((x) => x?.toJson()).toList(),
+        "attendanceDetails": attendanceDetails.map((x) => x?.toJson()).toList(),  
         "miss_punch": missPunch.map((x) => x).toList(),
         "parent": parent.map((x) => x).toList(),
         "absent": absent.map((x) => x).toList(),

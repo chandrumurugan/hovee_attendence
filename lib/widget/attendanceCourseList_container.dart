@@ -148,22 +148,23 @@ class AttendancecourselistContainer extends StatelessWidget {
                             startTime.minute);
                       } catch (e) {
                         Get.snackbar(
-                          'Attendance can only be started 30 minutes before the start time.',
+                          '',
                           icon: const Icon(Icons.check_circle,
                               color: Colors.white, size: 40),
                           colorText: Colors.white,
                           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
                           shouldIconPulse: false,
-                          // messageText: const SizedBox(
-                          //   height: 40, // Set desired height here
-                          //   child: Center(
-                          //     child: Text(
-                          //       'Attendance can only be started 30 minutes before the start time.',
-                          //       style: TextStyle(
-                          //           color: Colors.white, fontSize: 16),
-                          //     ),
-                          //   ),
-                          // ),
+                          messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+        'Attendance can only be started 30 minutes before the start time.',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
                         );
 
                         // Get.snackbar(
@@ -178,22 +179,23 @@ class AttendancecourselistContainer extends StatelessWidget {
                       if (currentTime.isBefore(allowedStartTime)) {
                         // Too early to start
                         Get.snackbar(
-                          'Attendance can only be started 30 minutes before the start time.',
+                          '',
                           icon: const Icon(Icons.check_circle,
                               color: Colors.white, size: 40),
                           shouldIconPulse: false,
                           colorText: Colors.white,
                           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-                          // messageText: const SizedBox(
-                          //   height: 40, // Set desired height here
-                          //   child: Center(
-                          //     child: Text(
-                          //       'Attendance can only be started 30 minutes before the start time.',
-                          //       style: TextStyle(
-                          //           color: Colors.white, fontSize: 16),
-                          //     ),
-                          //   ),
-                          // ),
+                         messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+        'Attendance can only be started 30 minutes before the start time.',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
                         );
                         // Get.snackbar(
                         //     'Attendance can only be started 30 minutes before the start time.',backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
@@ -320,7 +322,7 @@ class AttendanceHostellistContainer extends StatelessWidget {
                     child: Image.network(
                         attendanceCourse!.profileUrl ?? '',
                         width: 120,
-                        height: 150,
+                        height: 120,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
@@ -339,7 +341,7 @@ class AttendanceHostellistContainer extends StatelessWidget {
                  //color: Colors.amber,
                       width: MediaQuery.of(context).size.width * 0.39,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // SizedBox(
@@ -351,7 +353,7 @@ class AttendanceHostellistContainer extends StatelessWidget {
                       child: Text(
                         "${attendanceCourse!.hostelName}",
                         style: GoogleFonts.nunito(
-                            fontSize: 16,
+                            fontSize: 17,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
                       ),
@@ -419,22 +421,23 @@ class AttendanceHostellistContainer extends StatelessWidget {
                             startTime.minute);
                       } catch (e) {
                         Get.snackbar(
-                          'Attendance can only be started 30 minutes before the start time.',
+                          '',
                           icon: const Icon(Icons.check_circle,
                               color: Colors.white, size: 40),
                           colorText: Colors.white,
                           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
                           shouldIconPulse: false,
-                          // messageText: const SizedBox(
-                          //   height: 40, // Set desired height here
-                          //   child: Center(
-                          //     child: Text(
-                          //       'Attendance can only be started 30 minutes before the start time.',
-                          //       style: TextStyle(
-                          //           color: Colors.white, fontSize: 16),
-                          //     ),
-                          //   ),
-                          // ),
+                           messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+        'Attendance can only be started 30 minutes before the start time.',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
                         );
 
                         // Get.snackbar(
@@ -449,22 +452,23 @@ class AttendanceHostellistContainer extends StatelessWidget {
                       if (currentTime.isBefore(allowedStartTime)) {
                         // Too early to start
                         Get.snackbar(
-                          'Attendance can only be started 30 minutes before the start time.',
+                          '',
                           icon: const Icon(Icons.check_circle,
                               color: Colors.white, size: 40),
                           shouldIconPulse: false,
                           colorText: Colors.white,
                           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
-                          // messageText: const SizedBox(
-                          //   height: 40, // Set desired height here
-                          //   child: Center(
-                          //     child: Text(
-                          //       'Attendance can only be started 30 minutes before the start time.',
-                          //       style: TextStyle(
-                          //           color: Colors.white, fontSize: 16),
-                          //     ),
-                          //   ),
-                          // ),
+                          messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+        'Attendance can only be started 30 minutes before the start time.',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
                         );
                         // Get.snackbar(
                         //     'Attendance can only be started 30 minutes before the start time.',backgroundColor: AppConstants.primaryColor,colorText: Colors.white);

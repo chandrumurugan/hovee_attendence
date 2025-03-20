@@ -218,20 +218,23 @@ class MspController extends GetxController {
           if(response.data!.status=='Accepted'){
              fetchBatchList();
               Get.snackbar(
-       'You have successfully accepted the misspunch request.',
+       '',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:   const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //     'You have successfully accepted the misspunch request.',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+   messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                'You have successfully accepted the misspunch request.',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+        )
 );
         // Get.snackbar(icon: const Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white,'MSP accepted successfully',backgroundColor: const Color.fromRGBO(186, 1, 97, 1),);
 
@@ -239,20 +242,23 @@ class MspController extends GetxController {
           else{
              fetchBatchList();
               Get.snackbar(
-       'You have rejected the misspunch request ',
+       ' ',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:   const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //     'You have rejected the misspunch request ',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+   messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                'You have rejected the misspunch request',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+        )
 );
                //Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white,'MSP rejected successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
           }
@@ -284,57 +290,66 @@ class MspController extends GetxController {
       // Notify listeners about the updated list
       mspDataList.refresh(); // Ensures the UI is updated
        Get.snackbar(
-       'Deletion Successful! The misspunch has removed.',
+       '',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:   const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //     'Deletion Successful! The misspunch has removed.',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+   messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                'Deletion Successful! The misspunch has removed.',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+        )
 );
   //Get.snackbar(icon: Icon(Icons.check_circle,color: Colors.white,size: 40,),colorText: Colors.white, 'MSP deleted successfully',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     } else {
        Get.snackbar(
-       'Failed to deleted MSP',
+       '',
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:   const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //     'Failed to deleted MSP',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+  messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                'Failed to deleted MSP',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+        )
 );
       //Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,),colorText: Colors.white,  'Failed to deleted MSP',backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
     }
   } catch (e) {
             Get.snackbar(
-       'Error: $e',
+       '',
   icon: const Icon(Icons.info, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:   SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //     'Error: $e',
-  //       style: const TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+ messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                'Error: $e',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+        )
 );
    // Get.snackbar(icon: Icon(Icons.info,color: Colors.white,size: 40,), 'Error: $e',colorText: Colors.white,backgroundColor: Color.fromRGBO(186, 1, 97, 1),);
   } finally {

@@ -366,20 +366,22 @@ batchName = (storage.read<List<dynamic>>('batchList') ?? [])
         _clearData();
         fetchCourseList();
         Get.snackbar(
-          'Course deleted successfully',
+          '',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText: const SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //       'Course deleted successfully',
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+  messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+       'Course deleted successfully',
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
 );
 fetchBatchList();
         //SnackBarUtils.showSuccessSnackBar(context, 'Course delete successfully');
@@ -387,20 +389,22 @@ fetchBatchList();
         //  onInit();
       } else {
               Get.snackbar(
-          response?.message ?? "",
+           "",
           icon: const Icon(Icons.info, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText:  SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       response?.message ?? "",
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+         messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+        response?.message ?? "",
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
         );
       //Get.snackbar(response?.message ?? "");
        
@@ -410,20 +414,22 @@ fetchBatchList();
       }
     } catch (e) {
       Get.snackbar(
-         e.toString().replaceFirst("Exception: ", "") ?? "",
+          "",
           icon: const Icon(Icons.info, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          // messageText:  SizedBox(
-          //   height: 40, // Set desired height here
-          //   child: Center(
-          //     child: Text(
-          //       e.toString().replaceFirst("Exception: ", "") ?? "",
-          //       style: TextStyle(color: Colors.white, fontSize: 16),
-          //     ),
-          //   ),
-          // ),
+          messageText:    SizedBox(
+    height: 30, // Set desired height here
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Text(
+        e.toString().replaceFirst("Exception: ", "") ?? "",
+      textAlign: TextAlign.start,
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  ),
         );
         // Get.snackbar(e.toString().replaceFirst("Exception: ", "") ?? "",backgroundColor: AppConstants.primaryColor,colorText: Colors.white);
       
