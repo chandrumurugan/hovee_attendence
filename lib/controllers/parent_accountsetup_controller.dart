@@ -478,20 +478,23 @@ class ParentAccountSetupController extends GetxController
         //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
         // );
                 Get.snackbar(
-       response.message!,
+       '',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:   SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //      response.message!,
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+  messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                response!.message!,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+        )
 );
         Get.off(() => DashboardScreen(rolename: 'Parent',firstname:parentdata!.firstName,lastname: parentdata!.lastName,wowid: parentdata!.wowId,));
       } else {
@@ -506,20 +509,23 @@ class ParentAccountSetupController extends GetxController
         //   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
         // );
                 Get.snackbar(
-       response!.message!,
+       '',
   icon: const Icon(Icons.check_circle, color: Colors.white, size: 40),
   colorText: Colors.white,
   backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
   shouldIconPulse: false,
-  // messageText:   SizedBox(
-  //   height: 40, // Set desired height here
-  //   child: Center(
-  //     child: Text(
-  //      response!.message!,
-  //       style: TextStyle(color: Colors.white, fontSize: 16),
-  //     ),
-  //   ),
-  // ),
+ messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                response!.message!,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ),
+        )
 );
       }
     } catch (e) {

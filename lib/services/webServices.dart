@@ -40,6 +40,7 @@ import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByHostelModel.dart';
 import 'package:hovee_attendence/modals/getHolidayDataModel.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
+import 'package:hovee_attendence/modals/getHostelAttendanceCalendarReportModel.dart';
 import 'package:hovee_attendence/modals/getHostelEnquiryListModel.dart';
 import 'package:hovee_attendence/modals/getHostelEnrollmentListModel.dart';
 import 'package:hovee_attendence/modals/getHostelFilterListModel.dart';
@@ -960,20 +961,23 @@ class WebService {
       } else {
         var result = AddClassDataModel.fromJson(json.decode(response.body));
         Get.snackbar(
-          result.message.toString(),
+          '',
           icon: const Icon(Icons.info, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          titleText: SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                result.message.toString(),
-                style: TextStyle(color: Colors.white, fontSize: 16),
+         messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                  result.message.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
               ),
             ),
-          ),
+        )
         );
         // Either return a default instance or throw an error
         return AddClassDataModel(message: result.message);
@@ -1181,6 +1185,7 @@ class WebService {
 
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
+       Logger().i(result);
       return getGroupedEnrollmentByAttendanceTutee.fromJson(result);
     } else {
       Map<String, dynamic> result = jsonDecode(response.body);
@@ -1387,20 +1392,23 @@ class WebService {
         var result =
             UpdateEnrollmentStatusModel.fromJson(json.decode(response.body));
         Get.snackbar(
-          result.message.toString(),
+          '',
           icon: const Icon(Icons.info, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          titleText: SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                result.message.toString(),
-                style: TextStyle(color: Colors.white, fontSize: 16),
+          messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                  result.message.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
               ),
             ),
-          ),
+        )
         );
         return null;
       }
@@ -1576,20 +1584,23 @@ class WebService {
     } else {
       var result = deleteBatchDataModel.fromJson(json.decode(response.body));
       Get.snackbar(
-        result.message.toString(),
+        '',
         icon: const Icon(Icons.info, color: Colors.white, size: 40),
         colorText: Colors.white,
         backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
         shouldIconPulse: false,
-        titleText: SizedBox(
-          height: 40, // Set desired height here
-          child: Center(
-            child: Text(
-              result.message.toString(),
-              style: TextStyle(color: Colors.white, fontSize: 16),
+        messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                  result.message.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
             ),
-          ),
-        ),
+        )
       );
       // Either return a default instance or throw an error
       return deleteBatchDataModel(message: result.message);
@@ -1732,20 +1743,23 @@ class WebService {
       } else {
         var result = AddHolidayModel.fromJson(json.decode(response.body));
         Get.snackbar(
-          result.message.toString(),
+          '',
           icon: const Icon(Icons.info, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          titleText: SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                result.message.toString(),
-                style: TextStyle(color: Colors.white, fontSize: 16),
+          messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                  result.message.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
               ),
             ),
-          ),
+        )
         );
         // Either return a default instance or throw an error
         return AddHolidayModel(message: result.message);
@@ -2051,20 +2065,23 @@ class WebService {
       } else {
         var result = addAnnouncementModel.fromJson(json.decode(response.body));
         Get.snackbar(
-          result.message.toString(),
+          '',
           icon: const Icon(Icons.info, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          titleText: SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                result.message ?? 'Failed to add announcement',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+          messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                  result.message.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
               ),
             ),
-          ),
+        )
         );
         // Either return a default instance or throw an error
         return addAnnouncementModel(message: result.message);
@@ -2736,7 +2753,7 @@ class WebService {
 
   static Future<GetGroupedEnrollmentByAttendanceModel?>
       fetchgetGroupedEnrollmentByAttendance(
-          String batchId, String selectedDate, selectedMonth, type) async {
+          String batchId, String selectedDate, selectedMonth, type,fromDate,toDate) async {
     final url = Uri.parse(
         '${baseUrl}hostel_attendance/getHostelAttendance');
     final box = GetStorage(); // Get an instance of GetStorage
@@ -2744,11 +2761,11 @@ class WebService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
     var data = {
-      "date": selectedDate,
+      //"date": selectedDate,
       "hostelId": batchId,
-      "month": selectedMonth,
-      "fromDate": '',
-      "toDate": '',
+      //"month": selectedMonth,
+      "fromDate": fromDate,
+      "toDate": toDate,
       "roleType": type
     };
     print(data);
@@ -2988,17 +3005,20 @@ class WebService {
         var result =
             UpdateEnrollmentStatusModel.fromJson(json.decode(response.body));
         Get.snackbar(
-          result.message.toString(),
+          '',
           icon: const Icon(Icons.info, color: Colors.white, size: 40),
           colorText: Colors.white,
           backgroundColor: const Color.fromRGBO(186, 1, 97, 1),
           shouldIconPulse: false,
-          titleText: SizedBox(
-            height: 40, // Set desired height here
-            child: Center(
-              child: Text(
-                result.message.toString(),
-                style: TextStyle(color: Colors.white, fontSize: 16),
+          messageText: SizedBox(
+            height: 30, // Set desired height here
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5.0,),
+              child: Center(
+                child: Text(
+                  result.message.toString(),
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
               ),
             ),
           ),
@@ -3330,6 +3350,44 @@ class WebService {
       return GetBatchtuteelistModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to load batch list');
+    }
+  }
+
+    static Future<GetHostelAttendanceCalendarReportModel?>
+      getHostelAttendanceCalendarReport(
+          String batchId, String selectedDate, selectedMonth, type,fromDate, toDate) async {
+    final url = Uri.parse(
+        '${baseUrl}hostel_attendance/getHostelAttendanceCalendarReport');
+    final box = GetStorage(); // Get an instance of GetStorage
+    // Retrieve the token from storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('Token') ?? "";
+    var data = {
+      //"date": selectedDate,
+      "hostelId": batchId,
+      //"month": selectedMonth,
+      "fromDate": fromDate,
+      "toDate": toDate,
+      "roleType": type
+    };
+    print(data);
+    final response = await http.post(
+      url, // Replace with the actual API URL
+      headers: {
+        'Authorization': 'Bearer $token', // Add the authorization token here
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(data),
+    );
+
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body);
+      Logger().i(result);
+      return GetHostelAttendanceCalendarReportModel.fromJson(result);
+    } else {
+      Map<String, dynamic> result = jsonDecode(response.body);
+      // SnackBarUtils.showErrorSnackBar(context, "${result["message"]}");
+      return null;
     }
   }
 
