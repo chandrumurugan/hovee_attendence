@@ -9,9 +9,12 @@ import 'package:hovee_attendence/modals/getGroupedEnrollmentByBatch_model.dart';
 import 'package:hovee_attendence/modals/getGroupedEnrollmentByHostelModel.dart';
 import 'package:hovee_attendence/modals/getHomeDashboardModel.dart';
 import 'package:hovee_attendence/services/webServices.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../modals/getHostelAttendanceCalendarReportModel.dart';
 
 class HostellerController extends GetxController with GetSingleTickerProviderStateMixin{
 
@@ -32,6 +35,9 @@ class HostellerController extends GetxController with GetSingleTickerProviderSta
   Uint8List? qrcodeImageData;
   String? hostelId;
   final NotificationController noticontroller = Get.put(NotificationController());
+   String? batchname;
+   var type = "".obs;
+   var dailyattendance = Rxn<PercentageSummary>();
   @override
 
   void onInit() {
@@ -39,6 +45,11 @@ class HostellerController extends GetxController with GetSingleTickerProviderSta
     super.onInit();
      fetchHomeDashboardTuteeList();
      getRole();
+     final args = Get.arguments ?? "Tutee";
+    type.value=args;
+    batchname=args;
+    print(batchname);
+    fetchBatch();
   }
 
   getRole() async {
@@ -89,76 +100,68 @@ class HostellerController extends GetxController with GetSingleTickerProviderSta
     }
   }
 
-  // void fetchGroupedEnrollmentByHostel() async {
-  //   isLoading(true);
-  //   try {
-  //     // Call your API to fetch the data
-  //     var response = await WebService.fetchGroupedEnrollmentByHostel();
-  //     Logger().i(response);
-  //     if (response != null && response.data != null) {
-  //       batchList.clear();
-  //       batchList.addAll(response.data!);
-  //       // isLoading(false); // Add batches to the observable list
-  //       if (batchList.isNotEmpty) {
-  //         selectedBatchIN.value = batchList.first;
-  //         fetchHostelList(selectedBatchIN.value!.hostelListDetails!.id! );
-  //         isBatchSelected.value = true;
-  //         print(selectedBatchIN.value);
-  //       }
-  //     }
-  //   } catch (e) {
-  //     // Handle any errors
-  //     isLoading(false);
-  //     print('Error fetching batches: $e');
-  //   } finally{
-  //       isLoading(false);
+  void fetchBatch() async {
+  isLoading(true);
+  try {
+    var response = await WebService.fetchGroupedEnrollmentByHostel();
+    Logger().i(response);
+    if (response != null && response.data != null) {
+      batchList.clear();
+      batchList.addAll(response.data!);
+      
+      // If the batch list is not empty, try to find a batch that matches the batchname
+      if (batchList.isNotEmpty) {
+        // Try to find the batch by name
+        final matchedBatch = batchList.firstWhere(
+          (batch) => batch.hostelListDetails!.hostelName == batchname,
+          orElse: () => batchList.first,
+        );
 
-  //   }
-  // }
+        if (matchedBatch != null) {
+          selectedBatchIN.value = matchedBatch;
+          isBatchSelected.value = true;
+        } else {
+          // Set the first item in the list if no match found
+          selectedBatchIN.value = batchList.first;
+          isBatchSelected.value = true;
+        }
+        String currentMonth = DateFormat('MMM').format(DateTime.now());
+        Logger().i("type==>${type.value}");
+        fetchHostelList(selectedBatchIN.value!.hostelListDetails!.id!);
+      }
+      Logger().i(batchList.length);
+      isLoading(false);
+    }
+  } catch (e) {
+    isLoading(false);
+    print(e);
+  }
+}
 
-  // void fetchHostelList(String batchId) async {
-  //   try {
-  //     isLoading(true);
-  //     var homeDashboardAttendanceResponse =
-  //         await WebService.fetchHomeAttendanceList(batchId);
+  void fetchHostelList(String batchId) async {
+    try {
+      isLoading(true);
+      var homeDashboardAttendanceResponse =
+          await WebService.getHostelAttendanceCalendarReport(
+        batchId, '', '', '','', ''
+      );
 
-  //     if (homeDashboardAttendanceResponse?.data != null) {
-  //       currentMonthYear = homeDashboardAttendanceResponse!.data!.currentMonthYear;
-  //       var attendacemonth =
-  //           homeDashboardAttendanceResponse.data!.attendacemonth;
-  //       var attendaceyear = homeDashboardAttendanceResponse.data!.attendaceYrs;
-  //       dailyattendance.value =
-  //           homeDashboardAttendanceResponse.data!.dailyattendance ;
-
-  //       if (attendacemonth != null) {
-  //         chartData.value = attendacemonth.map((item) {
-  //           return ChartData(
-  //             x: item.month ?? '',
-  //             y: (item.studentCount ?? 0).toDouble(),
-  //           );
-  //         }).toList();
-  //       }
-
-  //       if (attendaceyear != null) {
-  //         chartData1.value = attendaceyear.map((item) {
-  //           return ChartData1(
-  //             x: (item.year ?? '').toString(),
-  //             y: (item.studentCount ?? 0).toDouble(),
-  //           );
-  //         }).toList();
-  //       }
-  //     }
-  //     Logger().i("${isLoading.value}");
+      if (homeDashboardAttendanceResponse?.data != null) {
+        dailyattendance.value =
+            homeDashboardAttendanceResponse!.data!.percentageSummary ;
+            Logger().i("attendance==>${dailyattendance.value}");
+      }
+      Logger().i("${isLoading.value}");
 
   
-  //   } catch (e) {
-  //     print("Error: $e");
-  //       isLoading(false);
+    } catch (e) {
+      print("Error: $e");
+        isLoading(false);
 
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
+    } finally {
+      isLoading(false);
+    }
+  }
 
   void fetchQrCodeImage() async {
     try {

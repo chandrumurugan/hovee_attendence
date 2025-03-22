@@ -59,7 +59,7 @@ var absentDates = <DateTime>{}.obs;
 var presentDates = <DateTime>{}.obs;
 var leaveDates = <DateTime>{}.obs;
 var holidayDates = <DateTime>{}.obs;
- CalendarReportData? calendarReportData;
+ AttendanceByStatus? calendarReportData;
  String? presentDate;
   @override
   void onInit() {
@@ -211,8 +211,33 @@ void fetchStudentsList(String batchId, String selectedDate, String selectedMonth
       );
 
       if (hostelAttendanceCalendarReportResponse?.data != null) {
-        calendarReportData = hostelAttendanceCalendarReportResponse!.data!;
-        print('Attendance on : ${calendarReportData!.attendanceByDate!.date}');
+        calendarReportData = hostelAttendanceCalendarReportResponse!.data!.attendanceByStatus;
+               calendarReportData!.missPunch!=null?
+     missPunchDates.value = calendarReportData!.missPunch!
+          .map((date) {
+            final parsedDate = DateFormat('dd-MM-yyyy').parse(date.date!);
+            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+          })
+          .toSet():'';
+    
+  print("Miss punch===========>${missPunchDates.value}");
+   calendarReportData!.absent!=null?
+    absentDates.value = calendarReportData!.absent!
+          .map((date) {
+             final parsedDate = DateFormat('dd-MM-yyyy').parse(date.date!);
+            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+
+          } )
+          .toSet():'';
+           print("absentDates===========>${absentDates.value}");
+          calendarReportData!.present!=null?
+            presentDates.value = calendarReportData!.present!
+          .map((date) {
+                    final parsedDate = DateFormat('dd-MM-yyyy').parse(date.date!);
+            return DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+          })
+          .toSet():'';
+           print("Present===========>${presentDates.value}");
       }
 
       update();

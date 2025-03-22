@@ -213,7 +213,7 @@ class TutorBatchList extends StatelessWidget {
                       onTap: () {
                        Get.to(() => TuteeList(batchId: batch.sId));
                       },
-                      child: BatchListConatiner(batch: batch,));
+                      child: BatchListConatiner(batch: batch,wowid: wowid,));
                   },
                 ),
               );

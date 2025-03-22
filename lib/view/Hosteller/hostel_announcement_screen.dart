@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hovee_attendence/controllers/annoument_controller.dart';
 import 'package:hovee_attendence/utils/customAppBar.dart';
+import 'package:hovee_attendence/utils/search_filter_tabber.dart';
 import 'package:hovee_attendence/view/dashboard_screen.dart';
 
 class HostelAnnouncementScreen extends StatelessWidget {
@@ -96,27 +97,27 @@ class HostelAnnouncementScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-                    'Announcement list',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                    ),
-                  ),
-          ),
-            // SearchfiltertabBar(
-            //   title: 'Announcement list',
-            //   onSearchChanged: (searchTerm) {
-            //     // Trigger the search functionality by passing the search term
-            //     //batchController.fetchBatchList(searchTerm: searchTerm);
-            //   },
-            //   filterOnTap: () {
-            //     // Implement filter logic here if needed
-            //   },
-            // ),
+          //   const Padding(
+          //   padding: EdgeInsets.all(8.0),
+          //   child: Text(
+          //           'Announcement list',
+          //           style: TextStyle(
+          //             color: Colors.black,
+          //             fontWeight: FontWeight.w500,
+          //             fontSize: 18,
+          //           ),
+          //         ),
+          // ),
+            SearchfiltertabBar(
+              title: 'Announcement list',
+              onSearchChanged: (searchTerm) {
+                // Trigger the search functionality by passing the search term
+                anoumentController.fetchAnnounmentsList(searchTerm: searchTerm);
+              },
+              filterOnTap: () {
+                // Implement filter logic here if needed
+              },
+            ),
            Obx(() {
   if (anoumentController.isLoading.value) {
     return const Center(child: CircularProgressIndicator());

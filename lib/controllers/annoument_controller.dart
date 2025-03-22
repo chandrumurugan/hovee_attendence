@@ -124,11 +124,16 @@ class AnnoumentController extends GetxController {
     role = prefs.getString('Rolename') ?? '';
     if(role=='Hostel' || role=='Hosteller'){
       var courseResponse = await WebService.fetchHostelAnnounmentsList(searchTerm);
-      if (courseResponse.data != null) {
-        announmentHostelList.value = courseResponse.data!;
-      } else {
-        print('Course data is null');
-      }
+      if (searchTerm.isEmpty) {
+          announmentHostelList.value = courseResponse.data!;
+        } else {
+          announmentHostelList.value = courseResponse.data!.where((item) {
+            return (item.title?.toLowerCase() ?? '').contains(searchTerm.toLowerCase()) ||
+                   (item.hostelListsDetails?.hostelName?.toLowerCase() ?? '').contains(searchTerm.toLowerCase()) ||
+                   (item.hostellerObjectId.isNotEmpty &&
+                    item.hostellerObjectId.first.hostellerFirstName!.toLowerCase().contains(searchTerm.toLowerCase()));
+          }).toList();
+        }
     }
     else{
        var courseResponse = await WebService.fetchAnnounmentsList(searchTerm);

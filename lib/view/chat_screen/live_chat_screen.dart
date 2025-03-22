@@ -98,7 +98,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text("Are you satisfied with the support? before closing the chat."),
+            title: Text("Are you satisfied with the support?"),
             actions: [
               TextButton(
                 onPressed: () {
@@ -275,7 +275,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "hovee attendance support!",
+                        "Surya",
                         style: GoogleFonts.nunito(color: Colors.white,fontSize: 20),
                       ),
                       Text(

@@ -2870,7 +2870,7 @@ class WebService {
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
-    var data = {"searchKey": searchitems};
+    var data = {"search": searchitems};
     final response = await http.post(
       url, // Replace with the actual API URL
       body: jsonEncode(data),
@@ -3362,13 +3362,14 @@ class WebService {
     // Retrieve the token from storage
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('Token') ?? "";
+    final rolename = prefs.getString('Rolename') ?? "";
     var data = {
       //"date": selectedDate,
       "hostelId": batchId,
       //"month": selectedMonth,
       "fromDate": fromDate,
       "toDate": toDate,
-      "roleType": type
+      "roleType": rolename
     };
     print(data);
     final response = await http.post(

@@ -5,45 +5,93 @@ class GetHostelAttendanceCalendarReportModel {
     });
 
     final int? statusCode;
-    final CalendarReportData? data;
+    final CalendarData? data;
 
     factory GetHostelAttendanceCalendarReportModel.fromJson(Map<String, dynamic> json){ 
         return GetHostelAttendanceCalendarReportModel(
             statusCode: json["statusCode"],
-            data: json["data"] == null ? null : CalendarReportData.fromJson(json["data"]),
+            data: json["data"] == null ? null : CalendarData.fromJson(json["data"]),
         );
     }
 
 }
 
-class CalendarReportData {
-    CalendarReportData({
+class CalendarData {
+    CalendarData({
         required this.status,
-        required this.attendanceByDate,
+        required this.percentageSummary,
+        required this.attendanceByStatus,
     });
 
     final Status? status;
-    final AttendanceByDate? attendanceByDate;
+    final PercentageSummary? percentageSummary;
+    final AttendanceByStatus? attendanceByStatus;
 
-    factory CalendarReportData.fromJson(Map<String, dynamic> json){ 
-        return CalendarReportData(
+    factory CalendarData.fromJson(Map<String, dynamic> json){ 
+        return CalendarData(
             status: json["status"] == null ? null : Status.fromJson(json["status"]),
-            attendanceByDate: json["attendanceByDate"] == null ? null : AttendanceByDate.fromJson(json["attendanceByDate"]),
+            percentageSummary: json["percentageSummary"] == null ? null : PercentageSummary.fromJson(json["percentageSummary"]),
+            attendanceByStatus: json["attendanceByStatus"] == null ? null : AttendanceByStatus.fromJson(json["attendanceByStatus"]),
         );
     }
 
 }
 
-class AttendanceByDate {
-    AttendanceByDate({
+class AttendanceByStatus {
+    AttendanceByStatus({
+        required this.present,
+        required this.absent,
+        required this.missPunch,
+    });
+
+    final List<Sent> present;
+    final List<Sent> absent;
+    final List<Sent> missPunch;
+
+    factory AttendanceByStatus.fromJson(Map<String, dynamic> json){ 
+        return AttendanceByStatus(
+            present: json["present"] == null ? [] : List<Sent>.from(json["present"]!.map((x) => Sent.fromJson(x))),
+            absent: json["absent"] == null ? [] : List<Sent>.from(json["absent"]!.map((x) => Sent.fromJson(x))),
+            missPunch: json["missPunch"] == null ? [] : List<Sent>.from(json["missPunch"]!.map((x) => x)),
+        );
+    }
+
+}
+
+class Sent {
+    Sent({
         required this.date,
+        required this.count,
     });
 
     final String? date;
+    final int? count;
 
-    factory AttendanceByDate.fromJson(Map<String, dynamic> json){ 
-        return AttendanceByDate(
-            date: json["2025-03-19"],
+    factory Sent.fromJson(Map<String, dynamic> json){ 
+        return Sent(
+            date: json["date"],
+            count: json["count"],
+        );
+    }
+
+}
+
+class PercentageSummary {
+    PercentageSummary({
+        required this.present,
+        required this.absent,
+        required this.missPunch,
+    });
+
+    final String? present;
+    final String? absent;
+    final String? missPunch;
+
+    factory PercentageSummary.fromJson(Map<String, dynamic> json){ 
+        return PercentageSummary(
+            present: json["Present"],
+            absent: json["Absent"],
+            missPunch: json["Miss_Punch"],
         );
     }
 

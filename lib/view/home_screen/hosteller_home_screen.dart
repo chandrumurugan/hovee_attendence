@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hovee_attendence/components/hostellerHomeComponents.dart';
 import 'package:hovee_attendence/components/tutorHomeComponents.dart';
 import 'package:hovee_attendence/constants/colors_constants.dart';
 import 'package:hovee_attendence/controllers/hostel_enquiry_controller.dart';
@@ -208,66 +209,69 @@ class HostellerHomeScreen extends StatelessWidget {
                     //   height: MediaQuery.sizeOf(context).height * 0.8,
                     // ),
 
-                    // Padding(
-                    //   padding: const EdgeInsets.all(5.0),
-                    //   child: Text(
-                    //     'Attendance',
-                    //     style: GoogleFonts.nunito(
-                    //         fontSize: 18, fontWeight: FontWeight.w700),
-                    //   ),
-                    // ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(0),
-                    //   child: Card(
-                    //     elevation: 10,
-                    //     shadowColor: Colors.grey.shade100,
-                    //     surfaceTintColor: Colors.white,
-                    //     child: Container(
-                    //       width: MediaQuery.sizeOf(context).width * 0.9,
-                    //       child: Column(
-                    //         mainAxisSize: MainAxisSize.min,
-                    //         children: [
-                    //           // const SizedBox(height: 10),
-                    //           Obx(() {
-                    //             if (controller.isLoading.value) {
-                    //               return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
-                    //             } else {
-                    //               return CustomDropdown(
-                    //                 hintText: 'Select batch',
-                    //                 items: controller.batchList
-                    //                     .map((batch) => batch.batchName ?? '')
-                    //                     .toSet() // Remove duplicates
-                    //                     .toList(),
-                    //                 initialItem: controller
-                    //                     .selectedBatchIN.value?.batchName,
-                    //                 onChanged: (String? selectedValue) {
-                    //                   if (selectedValue != null) {
-                    //                     final selectedBatch =
-                    //                         controller.batchList.firstWhere(
-                    //                       (batch) =>
-                    //                           batch.batchName == selectedValue,
-                    //                     );
-                    //                     controller.selectBatch(selectedBatch);
-                    //                     controller.isBatchSelected.value =
-                    //                         true;
-                    //                     controller.fetchBatchList(
-                    //                         selectedBatch.batchId!);
-                    //                   }
-                    //                 },
-                    //               );
-                    //             }
-                    //           }),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // controller.dailyattendance.value != null
-                    //     ? ChartApp()
-                    //     : ChartApp1(),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Text(
+                        'Attendance',
+                        style: GoogleFonts.nunito(
+                            fontSize: 18, fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: Card(
+                        elevation: 10,
+                        shadowColor: Colors.grey.shade100,
+                        surfaceTintColor: Colors.white,
+                        child: Container(
+                          width: MediaQuery.sizeOf(context).width * 0.9,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // const SizedBox(height: 10),
+                              Obx(() {
+                                if (controller.isLoading.value) {
+                                  return const CircularProgressIndicator(); // Show loading indicator if no batches are fetched
+                                } else {
+                                  return CustomDropdown(
+                                    hintText: 'Select hostel',
+                                    items: controller.batchList
+                                      .map((batch) =>
+                                          batch.hostelListDetails!.hostelName ??
+                                          '')
+                                      .toList(),
+                                     initialItem: controller.selectedBatchIN.value
+                                      ?.hostelListDetails!.hostelName,
+                                    onChanged: (String? selectedValue) {
+                                      if (selectedValue != null) {
+                                        final selectedBatch =
+                                            controller.batchList.firstWhere(
+                                          (batch) =>
+                                              batch.hostelListDetails!
+                                                .hostelName == selectedValue,
+                                        );
+                                        controller.selectBatch(selectedBatch);
+                                        controller.isBatchSelected.value =
+                                            true;
+                                        controller.fetchHostelList(
+                                          selectedBatch
+                                            .hostelListDetails!.id!,);
+                                      }
+                                    },
+                                  );
+                                }
+                              }),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    controller.dailyattendance.value != null
+                        ? HostellerChartApp()
+                        : HostellerChartApp1(),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     controller.role!='Hostel'?
                     Obx(() {
                       if (controller.isLoading.value) {
@@ -379,7 +383,7 @@ class HostellerHomeScreen extends StatelessWidget {
                   lastname: lastname,
                   wowid: wowid,
                 ));
-          } else if (item.name == 'Enrollments') {
+          } else if (item.name == 'Enrollment') {
              hostelEnrollmentController.onInit();
             Get.to(() => HostelEnrollmentScreen(
                   type: controller.role.value ?? '',

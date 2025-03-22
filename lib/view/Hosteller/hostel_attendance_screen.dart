@@ -206,7 +206,7 @@ class HostelAttendanceScreen extends StatelessWidget {
                           );
                         }
 
-                        if (controller.presentDates
+                        if (controller.absentDates
                             .contains(DateTime(day.year, day.month, day.day))) {
                           return Container(
                             margin: const EdgeInsets.all(4.0),

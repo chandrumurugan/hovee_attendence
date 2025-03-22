@@ -5,13 +5,16 @@ import 'package:hovee_attendence/controllers/batch_controller.dart';
 import 'package:hovee_attendence/modals/getBatchtuteelistModel.dart';
 import 'package:hovee_attendence/utils/customDialogBox.dart';
 import 'package:hovee_attendence/view/add_batch.dart';
+import 'package:hovee_attendence/view/chat_screen/live_chat_screen.dart';
+import 'package:hovee_attendence/view/chat_screen/tutee_chat_list.dart';
 import 'package:hovee_attendence/view/edit_batch_screen.dart';
 import '../modals/getbatchlist_model.dart';
 
 class BatchListConatiner extends StatelessWidget {
   final Data2 batch;
-   BatchListConatiner({super.key, required this.batch});
-   final BatchController batchController = Get.put(BatchController());
+  String? wowid;
+  BatchListConatiner({super.key, required this.batch, this.wowid});
+  final BatchController batchController = Get.put(BatchController());
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,35 +26,36 @@ class BatchListConatiner extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              batch.institudeId!=null?
-               SizedBox.shrink()
-               : Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          // Add edit functionality
-                          Get.to(EditBatchScreen(batch: batch,));
-                        },
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.blue,
+              batch.institudeId != null
+                  ? SizedBox.shrink()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            // Add edit functionality
+                            Get.to(EditBatchScreen(
+                              batch: batch,
+                            ));
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.blue,
+                          ),
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          // Add delete functionality
-                         //Navigator.pop(context);
-                                           _showConfirmationDialog(
-                                              context, batch.sId!);
-                        },
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
+                        IconButton(
+                          onPressed: () {
+                            // Add delete functionality
+                            //Navigator.pop(context);
+                            _showConfirmationDialog(context, batch.sId!);
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
               Stack(
                 children: [
                   Image.asset(
@@ -88,29 +92,34 @@ class BatchListConatiner extends StatelessWidget {
                   //       ),
                   //       ),)),
                   // )
-        
                 ],
               ),
               const SizedBox(height: 20),
-              _buildRow('Batch name', batch.batchName,context),
+              _buildRow('Batch name', batch.batchName, context),
               const SizedBox(height: 10),
-              _buildRow('Tutor', batch.batchTeacher,context),
+              _buildRow('Tutor', batch.batchTeacher, context),
               const SizedBox(height: 10),
-              _buildRow('Timing', '${batch.batchTimingStart} - ${batch.batchTimingEnd}',context),
+              _buildRow(
+                  'Timing',
+                  '${batch.batchTimingStart} - ${batch.batchTimingEnd}',
+                  context),
               const SizedBox(height: 10),
-              _buildRow('Days', batch.batchDays.toString(),context),
+              _buildRow('Days', batch.batchDays.toString(), context),
               const SizedBox(height: 10),
-              _buildRow('Mode', batch.batchMode,context),
+              _buildRow('Mode', batch.batchMode, context),
               const SizedBox(height: 10),
-              _buildRow('Fees', '${batch.fees}',context),
-                const SizedBox(height: 10),
-               _buildRow('Batch start date', '${batch.startDate ??''}',context),
-                const SizedBox(height: 10),
-                _buildRow('Batch end date', '${batch.endDate??''}',context),
+              _buildRow('Fees', '${batch.fees}', context),
+              const SizedBox(height: 10),
+              _buildRow(
+                  'Batch start date', '${batch.startDate ?? ''}', context),
+              const SizedBox(height: 10),
+              _buildRow('Batch end date', '${batch.endDate ?? ''}', context),
               Divider(),
               TextButton(
                 onPressed: () {
                   // Add chat functionality
+
+                  Get.to(() => TuteeChatList(batchId: batch.sId!,wowid: wowid,));
                 },
                 child: Text(
                   'Chat',
@@ -128,8 +137,9 @@ class BatchListConatiner extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(String title, String? value,BuildContext context) {
-    final displayValue = title == 'Fees' ? '₹ ${value ?? 'N/A'} /month' : value ?? 'N/A';
+  Widget _buildRow(String title, String? value, BuildContext context) {
+    final displayValue =
+        title == 'Fees' ? '₹ ${value ?? 'N/A'} /month' : value ?? 'N/A';
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,7 +153,7 @@ class BatchListConatiner extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width*0.5,
+          width: MediaQuery.of(context).size.width * 0.5,
           child: Text(
             displayValue,
             style: TextStyle(
@@ -157,7 +167,7 @@ class BatchListConatiner extends StatelessWidget {
     );
   }
 
-   void _showConfirmationDialog(BuildContext context, String id) {
+  void _showConfirmationDialog(BuildContext context, String id) {
     showDialog(
       context: context,
       builder: (context) {
